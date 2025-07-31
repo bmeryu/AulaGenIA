@@ -45,6 +45,7 @@
             color: #9ca3af; /* gray-400 */
             border-bottom: 2px solid transparent;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
         .auth-tab:hover {
             color: #d1d5db; /* gray-300 */
@@ -186,13 +187,39 @@
     <!-- CookieConsent JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
 
-    <!-- Scripts personalizados (Auth + Icons + Cookies) -->
-    <script src="auth.js"></script>
+    <!-- Scripts personalizados (Icons + Cookies + Auth Tabs) -->
     <script>
-        lucide.createIcons();
-
-        // Inicialización de Cookie Consent al cargar la página
+        // Inicialización de Cookie Consent y otras lógicas al cargar la página
         window.addEventListener('load', () => {
+            
+            // Lógica para cambiar entre pestañas de Login y Registro
+            const loginTab = document.getElementById('login-tab');
+            const registerTab = document.getElementById('register-tab');
+            const loginFormContainer = document.getElementById('login-form-container');
+            const registerFormContainer = document.getElementById('register-form-container');
+
+            if(registerTab) {
+                registerTab.addEventListener('click', () => {
+                    loginTab.classList.remove('active-tab');
+                    registerTab.classList.add('active-tab');
+                    loginFormContainer.classList.add('hidden');
+                    registerFormContainer.classList.remove('hidden');
+                });
+            }
+
+            if(loginTab) {
+                loginTab.addEventListener('click', () => {
+                    registerTab.classList.remove('active-tab');
+                    loginTab.classList.add('active-tab');
+                    registerFormContainer.classList.add('hidden');
+                    loginFormContainer.classList.remove('hidden');
+                });
+            }
+
+            // Renderizar iconos de Lucide
+            lucide.createIcons();
+
+            // Inicialización de Cookie Consent
             window.cookieconsent.initialise({
                 palette: {
                     popup:  { background: '#1f2937' }, // gray-800
