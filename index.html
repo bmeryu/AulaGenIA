@@ -472,49 +472,14 @@
         </div>
     </section>
     
-    <!-- Footer -->
-    <footer class="bg-gray-100 border-t border-gray-200">
-        <div class="container mx-auto px-6 py-8 text-center text-gray-600">
-            <div class="flex justify-center items-center gap-2 mb-2">
-                <div class="relative w-8 h-8">
-                    <span class="block w-4 h-4 rounded-full absolute" style="background-color: var(--brand-teal); top: 6px; left: 0;"></span>
-                    <span class="block w-2 h-2 rounded-full absolute" style="background-color: var(--brand-yellow); top: 0; left: 10px;"></span>
-                    <span class="block w-1.5 h-1.5 rounded-full absolute" style="background-color: var(--brand-blue); top: 12px; left: 14px;"></span>
-                </div>
-                <div class="text-base font-bold text-gray-900 leading-tight"><div>Aula</div><div>Gen IA</div></div>
-            </div>
-            <p class="text-sm">&copy; 2025 - MoleIA - Todos los derechos reservados.</p>
-        </div>
     </footer>
-
-    <!-- Botón CTA Fijo para Móvil -->
-    <div id="sticky-cta-container" class="sticky-cta md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-sm border-t border-gray-200 z-40">
-        <a href="#precios" class="gradient-button w-full inline-block font-bold text-lg py-4 px-10 rounded-full text-white text-center">
-            ¡Lo quiero por solo $5!
-        </a>
-    </div>
-
-    <!-- Swiper JS -->
-    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
-    <!-- CookieConsent JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
     
-    <!-- Scripts personalizados -->
+    <!-- Scripts -->
+    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
     <script>
         window.addEventListener('load', () => {
-            // Inicialización de Swiper
-            new Swiper('.testimonial-swiper', {
-                loop: true,
-                autoplay: { delay: 5000, disableOnInteraction: false },
-                pagination: { el: '.swiper-pagination', clickable: true },
-                breakpoints: {
-                    0: { slidesPerView: 1, spaceBetween: 20 },
-                    768: { slidesPerView: 2, spaceBetween: 24 },
-                    1024: { slidesPerView: 3, spaceBetween: 24 },
-                },
-            });
-
-            // Inicialización de Cookie Consent
+            // Inicialización de Cookie Consent (si es necesario en esta página)
             window.cookieconsent.initialise({
                 palette: {
                     popup:  { background: '#1f2937' },
@@ -531,70 +496,8 @@
                     href:    'politica-cookies.html'
                 },
             });
-
-            // Lógica para el contador regresivo
-            const countdownElement = document.getElementById('countdown');
-            if (countdownElement) {
-                const countDownDate = new Date().getTime() + (41 * 60 * 60 * 1000) + (12 * 60 * 1000);
-                const updateCountdown = () => {
-                    const now = new Date().getTime();
-                    const distance = countDownDate - now;
-                    if (distance < 0) {
-                        clearInterval(interval);
-                        const countdownContainer = countdownElement.parentElement;
-                        if(countdownContainer) {
-                           countdownContainer.innerHTML = "<p class='font-bold text-red-500'>¡La oferta ha terminado!</p>";
-                        }
-                        return;
-                    }
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    countdownElement.innerHTML = `
-                        <span class="tabular-nums">${hours.toString().padStart(2, '0')}</span>h : 
-                        <span class="tabular-nums">${minutes.toString().padStart(2, '0')}</span>m : 
-                        <span class="tabular-nums">${seconds.toString().padStart(2, '0')}</span>s`;
-                };
-                const interval = setInterval(updateCountdown, 1000);
-                updateCountdown();
-            }
-
-            // Lógica para la barra de progreso de plazas
-            const progressBar = document.getElementById('progress-bar');
-            const progressLabel = document.getElementById('progress-label');
-            if (progressBar && progressLabel) {
-                const totalPlazas = 50;
-                const plazasOcupadas = 37; // Esta variable se puede ajustar manualmente
-                const porcentaje = (plazasOcupadas / totalPlazas) * 100;
-                
-                setTimeout(() => {
-                    progressBar.style.width = `${porcentaje}%`;
-                }, 300); // Pequeño delay para la animación
-                
-                progressLabel.textContent = `¡Quedan ${totalPlazas - plazasOcupadas} de ${totalPlazas} plazas early-bird!`;
-            }
-
-            // Lógica para el botón CTA Fijo en móvil
-            const stickyCtaContainer = document.getElementById('sticky-cta-container');
-            const mainCta = document.getElementById('main-cta');
-            const preciosSection = document.getElementById('precios');
-
-            if (stickyCtaContainer && mainCta && preciosSection) {
-                const showStickyCta = () => {
-                    const mainCtaRect = mainCta.getBoundingClientRect();
-                    const preciosRect = preciosSection.getBoundingClientRect();
-                    
-                    if (window.innerWidth < 768 && mainCtaRect.bottom < 0 && preciosRect.bottom > window.innerHeight) {
-                        stickyCtaContainer.classList.add('visible');
-                    } else {
-                        stickyCtaContainer.classList.remove('visible');
-                    }
-                };
-
-                window.addEventListener('scroll', showStickyCta);
-                window.addEventListener('resize', showStickyCta);
-            }
         });
     </script>
+
 </body>
 </html>
