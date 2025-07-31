@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus GenIA Lab</title>
     
-    <!-- Favicon -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <!-- Favicon (SVG inlined) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%2314b8a6%22></circle></svg>" />
 
     <!-- Tailwind CSS (v3 CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -379,9 +379,7 @@
     
     <!-- Scripts personalizados -->
     <script>
-        // Usamos el evento 'load' para asegurar que todos los recursos,
-        // incluyendo los de la librería de cookies, estén listos.
-        window.addEventListener('load', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             // Inicialización de Swiper
             new Swiper('.testimonial-swiper', {
                 loop: true,
@@ -417,14 +415,10 @@
                     href:    '/politica-cookies.html'
                 },
                 onInitialise: function (status) {
-                    if (this.hasConsented()) {
-                        habilitarScriptsAnalitica();
-                    }
+                    if (status === this.status.allow) { habilitarScriptsAnalitica(); }
                 },
-                onStatusChange: function(status, chosenBefore) {
-                    if (this.hasConsented()) {
-                        habilitarScriptsAnalitica();
-                    }
+                onStatusChange: function (status) {
+                    if (status === this.status.allow) { habilitarScriptsAnalitica(); }
                 }
             });
         });
