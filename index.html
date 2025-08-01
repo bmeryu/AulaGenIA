@@ -478,42 +478,48 @@
         Pero eso es solo el comienzo. Cada semana recibirás en tu correo los prompts, herramientas y noticias de nuestro Campus.
         <br class="hidden sm:block" />¡Prepárate para llevar tu juego al siguiente nivel!
       </p>
-<!-- INICIO DEL FORMULARIO CORREGIDO -->
-<form id="suscripcion-form" class="flex flex-col sm:flex-row items-center justify-center gap-4">
-  <input
-    id="suscripcion-email"
-    name="email"
-    type="email"
-    placeholder="tu.correo@ejemplo.com"
-    required
-    class="w-full sm:w-80 px-4 py-3 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
-  />
 
-  <button
-    id="suscripcion-btn"
-    type="submit"
-    class="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-green-400 to-yellow-400 text-white font-semibold shadow-md hover:shadow-lg transition duration-200"
-  >
-    Suscribirme ahora
-  </button>
+      <!-- INICIO DEL FORMULARIO CORREGIDO -->
+      <form id="suscripcion-form" class="max-w-xl mx-auto">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <input
+              id="suscripcion-email"
+              type="email"
+              name="email"
+              placeholder="tu.correo@ejemplo.com"
+              class="w-full sm:w-80 px-4 py-3 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
+              required
+            />
+            <button
+              id="suscripcion-btn"
+              type="submit"
+              class="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-green-400 to-yellow-400 text-white font-semibold shadow-md hover:shadow-lg transition duration-200"
+            >
+              Suscribirme ahora
+            </button>
+        </div>
+        
+        <!-- CHECKBOX MOVIDO DENTRO DEL FORMULARIO -->
+        <div class="flex items-center justify-center mt-4 text-sm text-gray-600">
+            <!-- COMENTARIO MOVIDO FUERA DE LA ETIQUETA -->
+            <!-- ATRIBUTO 'name' AÑADIDO POR BUENA PRÁCTICA -->
+            <input
+              id="suscripcion-optin"
+              name="optin"
+              type="checkbox"
+              checked
+              class="mr-2 accent-teal-600"
+            />
+            <label for="suscripcion-optin">
+              Acepto recibir comunicaciones por correo. Respetamos tu privacidad.
+            </label>
+        </div>
+      </form>
+      <!-- FIN DEL FORMULARIO CORREGIDO -->
+      
+      <div id="suscripcion-mensaje" class="mt-4 text-md font-semibold"></div>
 
-  <!-- Checkbox incluido dentro del formulario -->
-  <div class="flex items-center text-sm text-gray-600 mt-2 sm:mt-0 sm:ml-4">
-    <input
-      id="suscripcion-optin"
-      name="optin"
-      type="checkbox"
-      checked
-      class="mr-2 accent-teal-600"
-    />
-    <label for="suscripcion-optin">Acepto recibir comunicaciones.</label>
-  </div>
-</form> <!--  ← cerramos el formulario -->
-
-<!-- Contenedor ÚNICO para mensajes de éxito o error -->
-<div id="suscripcion-mensaje" class="mt-4 text-md font-semibold"></div>
-
-</section>
+    </section>
 
     <footer class="bg-gray-100 border-t border-gray-200">
         <div class="container mx-auto px-6 py-8 text-center text-gray-600">
@@ -540,49 +546,65 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-  // --- LÓGICA DEL WEBHOOK (SE EJECUTA PRIMERO) ---
-const form       = document.getElementById('suscripcion-form');
-const msg        = document.getElementById('suscripcion-mensaje');
-const btn        = document.getElementById('suscripcion-btn');
-const webhookUrl = 'https://muna.auto.hostybee.com/webhook-test/7b801ad6-994e-422e-99ef-76da3e7f424a';
+            // --- LÓGICA DEL WEBHOOK (SE EJECUTA PRIMERO) ---
+            const form = document.getElementById('suscripcion-form');
+            const emailInput = document.getElementById('suscripcion-email');
+            const optinCheckbox = document.getElementById('suscripcion-optin');
+            const messageDiv = document.getElementById('suscripcion-mensaje');
+            const submitButton = document.getElementById('suscripcion-btn');
+            
+            const webhookUrl = 'https://muna.auto.hostybee.com/webhook-test/7b801ad6-994e-422e-99ef-76da3e7f424a';
 
-if (form && btn && msg) {
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+            if (form && emailInput && optinCheckbox && submitButton) {
+                // CAMBIO: Escuchamos el evento 'submit' del formulario, no el 'click' del botón.
+                // Esto es más robusto (funciona con Enter, etc.)
+                form.addEventListener('submit', async (event) => {
+                    event.preventDefault(); 
+                    
+                    // La validación del HTML5 se ejecuta automáticamente con 'submit'
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return;
+                    }
 
-    const email = document.getElementById('suscripcion-email').value.trim();
-    const optin = document.getElementById('suscripcion-optin').checked ? "1" : "0";
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Enviando...';
+                    messageDiv.textContent = '';
 
-    if (!email) return;  // el propio navegador mostrará la validación
+                    const email = emailInput.value;
+                    const optin = optinCheckbox.checked;
 
-    btn.disabled = true; btn.textContent = 'Enviando…'; msg.textContent = '';
+                    const dataToSend = { email, optin };
+                    console.log("Datos que se enviarán al webhook:", dataToSend);
 
-    try {
-      const r = await fetch(webhookUrl, {
-        method : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body   : JSON.stringify({ email, optin })
-      });
-      if (!r.ok) throw new Error(await r.text());
+                    try {
+                        const response = await fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(dataToSend),
+                        });
 
-      msg.textContent = '¡Gracias por suscribirte! Revisa tu correo.';
-      msg.className   = 'mt-4 text-md font-semibold text-green-600';
-      form.reset();                         // limpia el email
-      document.getElementById('suscripcion-optin').checked = true;
-    } catch (err) {
-      console.error(err);
-      msg.textContent = 'Error al conectar. Revisa F12 → Console.';
-      msg.className   = 'mt-4 text-md font-semibold text-red-600';
-    } finally {
-      btn.disabled = false; btn.textContent = 'Suscribirme ahora';
-    }
-  });
-} else {
-  console.error('Formulario o elementos no encontrados');
-}
-// --- OTRAS INICIALIZACIONES (se ejecutan después) ---
+                        if (response.ok) {
+                            messageDiv.textContent = '¡Gracias por suscribirte! Revisa tu correo.';
+                            messageDiv.className = 'mt-4 text-md font-semibold text-green-600';
+                            form.reset();
+                        } else {
+                            const errorText = await response.text();
+                            throw new Error(`El servidor respondió con un error: ${response.status}. Detalles: ${errorText}`);
+                        }
+                    } catch (error) {
+                        console.error('Error detallado al enviar el webhook:', error);
+                        messageDiv.textContent = 'Hubo un error al conectar. Revisa la consola (F12) para más detalles.';
+                        messageDiv.className = 'mt-4 text-md font-semibold text-red-600';
+                    } finally {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Suscribirme ahora';
+                    }
+                });
+            } else {
+                console.error("Error crítico: No se encontró uno o más elementos del formulario (form, email, checkbox, o botón).");
+            }
 
-    
             // --- OTRAS INICIALIZACIONES (se ejecutan después) ---
             window.addEventListener('load', () => {
                 if (typeof Swiper !== 'undefined') {
@@ -652,7 +674,4 @@ if (form && btn && msg) {
     </script>
 
 </body>
-</html>
-
-
-
+</ht
