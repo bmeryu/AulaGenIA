@@ -4,15 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const userInfo = document.getElementById("userInfo");
   const userName = document.getElementById("userName");
 
-  if (!loginBtn) {
-    console.error('No se encontró el botón con id "google-signin-btn"');
+  if (!loginBtn || !logoutBtn || !userInfo || !userName) {
+    console.warn("Elementos de login no encontrados en el DOM.");
     return;
   }
 
   const auth = firebase.auth();
   const provider = new firebase.auth.GoogleAuthProvider();
 
-  // Detectar si ya hay un usuario logueado
+  // Detectar si ya hay sesión iniciada
   auth.onAuthStateChanged((user) => {
     if (user) {
       userName.textContent = `¡Hola, ${user.displayName}!`;
@@ -20,11 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
       loginBtn.style.display = "none";
     } else {
       userInfo.style.display = "none";
-      loginBtn.style.display = "inline-block";
+      loginBtn.style.display = "flex";
     }
   });
 
-  // Login
+  // Login con popup
   loginBtn.addEventListener("click", () => {
     auth.signInWithPopup(provider)
       .then((result) => {
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   logoutBtn.addEventListener("click", () => {
     auth.signOut().then(() => {
       userInfo.style.display = "none";
-      loginBtn.style.display = "inline-block";
+      loginBtn.style.display = "flex";
     });
   });
 });
