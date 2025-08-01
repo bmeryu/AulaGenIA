@@ -58,7 +58,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-black text-white"> <!-- Cambio: bg-gray-900 a bg-black -->
+<body class="bg-black text-white">
 
     <!-- ========= HEADER ========= -->
     <header class="container mx-auto flex justify-center px-6 py-4">
@@ -68,7 +68,7 @@
           src="logo_dark.png"
           alt="Aula Gen IA"
           class="h-12 w-auto"
-          onerror="this.onerror=null; this.src='https://placehold.co/200x48/ff0000/ffffff?text=Error+al+cargar';"
+          onerror="this.onerror=null; this.src='https://placehold.co/200x48/000000/ffffff?text=AulaGenIA';"
         />
       </a>
     </header>
@@ -80,7 +80,7 @@
             <h2 class="mb-6 text-center text-3xl font-bold">Accede a tu Cuenta</h2>
 
             <!-- Google Sign-In Button -->
-            <button id="google-signin-btn" class="cta-button flex w-full items-center justify-center rounded-lg bg-white py-3 px-4 font-semibold text-gray-800 shadow-md transition-all duration-300 ease-in-out hover:bg-gray-100">
+            <button id="google-signin-btn" class="flex w-full items-center justify-center rounded-lg bg-white py-3 px-4 font-semibold text-gray-800 shadow-md transition-all duration-300 ease-in-out hover:bg-gray-100">
                 <svg class="mr-3 h-6 w-6" viewBox="0 0 48 48">
                     <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
                     <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path>
@@ -89,11 +89,12 @@
                 </svg>
                 Continuar con Google
             </button>
-<!-- Info del usuario (oculta por defecto) -->
-<div id="userInfo" style="display: none;" class="mt-6 text-center">
-  <p id="userName" class="text-lg font-semibold mb-4"></p>
-  <button id="logoutBtn" class="gradient-button w-full py-2 px-4 rounded-lg text-white font-bold">Cerrar sesión</button>
-</div>
+
+            <!-- Info del usuario (oculta por defecto) -->
+            <div id="userInfo" style="display: none;" class="mt-6 text-center">
+              <p id="userName" class="text-lg font-semibold mb-4"></p>
+              <button id="logoutBtn" class="gradient-button w-full py-2 px-4 rounded-lg text-white font-bold">Cerrar sesión</button>
+            </div>
 
             <!-- Divider -->
             <div class="my-6 flex items-center">
@@ -132,7 +133,7 @@
                             <a href="#" class="float-right mt-2 text-sm text-teal-400 hover:text-teal-300">¿Olvidaste tu contraseña?</a>
                         </div>
                     </div>
-                    <button type="submit" class="gradient-button cta-button mt-10 w-full rounded-lg py-3 text-lg font-bold">
+                    <button type="submit" class="gradient-button mt-10 w-full rounded-lg py-3 text-lg font-bold">
                         Iniciar Sesión
                     </button>
                 </form>
@@ -181,7 +182,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="gradient-button cta-button mt-6 w-full rounded-lg py-3 text-lg font-bold">
+                    <button type="submit" class="gradient-button mt-6 w-full rounded-lg py-3 text-lg font-bold">
                         Crear mi Cuenta
                     </button>
 
@@ -194,95 +195,34 @@
         </div>
     </main>
     
+    <!-- ========= START OF SCRIPTS ========= -->
+
     <!-- CookieConsent JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
 
-    <!-- Scripts personalizados (Icons + Cookies + Auth Tabs) -->
-    <script>
-        window.addEventListener('load', () => {
-            
-            // Lógica para cambiar entre pestañas de Login y Registro
-            const loginTab = document.getElementById('login-tab');
-            const registerTab = document.getElementById('register-tab');
-            const loginFormContainer = document.getElementById('login-form-container');
-            const registerFormContainer = document.getElementById('register-form-container');
-
-            if(registerTab) {
-                registerTab.addEventListener('click', () => {
-                    loginTab.classList.remove('active-tab');
-                    registerTab.classList.add('active-tab');
-                    loginFormContainer.classList.add('hidden');
-                    registerFormContainer.classList.remove('hidden');
-                });
-            }
-
-            if(loginTab) {
-                loginTab.addEventListener('click', () => {
-                    registerTab.classList.remove('active-tab');
-                    loginTab.classList.add('active-tab');
-                    registerFormContainer.classList.add('hidden');
-                    loginFormContainer.classList.remove('hidden');
-                });
-            }
-
-            // Renderizar iconos de Lucide
-            lucide.createIcons();
-
-            // Inicialización de Cookie Consent
-            window.cookieconsent.initialise({
-                palette: {
-                    popup:  { background: '#1f2937' }, // gray-800
-                    button: { background: '#14b8a6' }  // brand-teal
-                },
-                theme: 'classic',
-                position: 'bottom',
-                type: 'opt-in',
-                content: {
-                    message: 'Usamos cookies para mejorar tu experiencia.',
-                    dismiss: 'Aceptar',
-                    deny:    'Rechazar',
-                    link:    'Más info',
-                    href:    '/politica-cookies.html'
-                },
-                onInitialise: function (status) {
-                    if (this.hasConsented()) {
-                        // Aquí puedes añadir scripts que dependen de las cookies
-                    }
-                },
-                onStatusChange: function(status, chosenBefore) {
-                    if (this.hasConsented()) {
-                        // Aquí puedes añadir scripts que dependen de las cookies
-                    }
-                }
-            });
-        });
-    </script>
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "...",
-    // ...
-  };
-  firebase.initializeApp(firebaseConfig);
-</script>
+    <!-- Firebase Configuration and Initialization -->
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCM8UaLUo5D0edu67ApLtxaBbChmym8FNU",
+        authDomain: "aulagenia.firebaseapp.com",
+        projectId: "aulagenia",
+        storageBucket: "aulagenia.firebasestorage.com",
+        messagingSenderId: "173328075630",
+        appId: "1:173328075630:web:825606db4271ea1e66cf7f",
+        measurementId: "G-X500LE6Z8X"
+      };
 
-<script>
-  // Tu configuración de Firebase (¡esta es la que acabas de obtener!)
-  const firebaseConfig = {
-    apiKey: "AIzaSyCM8UaLUo5D0edu67ApLtxaBbChmym8FNU",
-    authDomain: "aulagenia.firebaseapp.com",
-    projectId: "aulagenia",
-    storageBucket: "aulagenia.firebasestorage.com",
-    messagingSenderId: "173328075630",
-    appId: "1:173328075630:web:825606db4271ea1e66cf7f",
-    measurementId: "G-X500LE6Z8X"
-  };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
 
-
-<!-- Tu JS personalizado -->
-<script src="script.js"></script>
+    <!-- Your Custom Scripts (Tabs, Icons, Cookies, and now Auth) -->
+    <script src="script.js"></script>
 
 </body>
 </html>
