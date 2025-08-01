@@ -505,42 +505,49 @@
     
     <!-- Newsletter Subscription Section -->
     <section class="bg-white py-16 px-6 text-center max-w-3xl mx-auto">
-  <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-    Tu Pase Backstage al Campus GenIA
-  </h2>
-  <p class="text-lg text-gray-700 mb-6 leading-relaxed">
-    Suscríbete y recibe <strong>GRATIS</strong> nuestro PDF con los 10 prompts de IA que simplificarán tu vida y dispararán tu creatividad.
-    Pero eso es solo el comienzo. Cada semana recibirás en tu correo los prompts, herramientas y noticias de nuestro Campus.
-    <br class="hidden sm:block" />¡Prepárate para llevar tu juego al siguiente nivel!
-  </p>
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        Tu Pase Backstage al Campus GenIA
+      </h2>
+      <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+        Suscríbete y recibe <strong>GRATIS</strong> nuestro PDF con los 10 prompts de IA que simplificarán tu vida y dispararán tu creatividad.
+        Pero eso es solo el comienzo. Cada semana recibirás en tu correo los prompts, herramientas y noticias de nuestro Campus.
+        <br class="hidden sm:block" />¡Prepárate para llevar tu juego al siguiente nivel!
+      </p>
 
-  <form class="flex flex-col sm:flex-row items-center justify-center gap-4">
-    <input
-      type="email"
-      placeholder="tu.correo@ejemplo.com"
-      class="w-full sm:w-80 px-4 py-3 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
-      required
-    />
-    <button
-      type="submit"
-      class="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-green-400 to-yellow-400 text-white font-semibold shadow-md hover:shadow-lg transition duration-200"
-    >
-      Suscribirme ahora
-    </button>
-  </form>
+      <!-- Formulario de suscripción corregido -->
+      <form id="suscripcion-form" class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <input
+          id="suscripcion-email"
+          type="email"
+          name="email"
+          placeholder="tu.correo@ejemplo.com"
+          class="w-full sm:w-80 px-4 py-3 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
+          required
+        />
+        <button
+          id="suscripcion-btn"
+          type="submit"
+          class="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-green-400 to-yellow-400 text-white font-semibold shadow-md hover:shadow-lg transition duration-200"
+        >
+          Suscribirme ahora
+        </button>
+      </form>
+      
+      <!-- Contenedor para mostrar mensajes de éxito o error -->
+      <div id="suscripcion-mensaje" class="mt-4 text-md font-semibold"></div>
 
-  <div class="flex items-center justify-center mt-4 text-sm text-gray-600">
-    <input
-      id="checkbox"
-      type="checkbox"
-      checked
-      class="mr-2 accent-teal-600"
-    />
-    <label for="checkbox">
-      Acepto recibir comunicaciones por correo. Respetamos tu privacidad.
-    </label>
-  </div>
-</section>
+      <div class="flex items-center justify-center mt-4 text-sm text-gray-600">
+        <input
+          id="checkbox"
+          type="checkbox"
+          checked
+          class="mr-2 accent-teal-600"
+        />
+        <label for="checkbox">
+          Acepto recibir comunicaciones por correo. Respetamos tu privacidad.
+        </label>
+      </div>
+    </section>
 
     <!-- Footer -->
     <footer class="bg-gray-100 border-t border-gray-200">
@@ -661,6 +668,58 @@
                 window.addEventListener('scroll', showStickyCta);
                 window.addEventListener('resize', showStickyCta);
             }
+
+            // --- INICIO: LÓGICA DEL WEBHOOK PARA N8N ---
+            const form = document.getElementById('suscripcion-form');
+            const emailInput = document.getElementById('suscripcion-email');
+            const messageDiv = document.getElementById('suscripcion-mensaje');
+            const submitButton = document.getElementById('suscripcion-btn');
+
+            if (form) {
+                form.addEventListener('submit', async (event) => {
+                    // Prevenimos que la página se recargue
+                    event.preventDefault();
+
+                    // Deshabilitamos el botón para evitar envíos múltiples
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Enviando...';
+
+                    // IMPORTANTE: Reemplaza esta URL con la URL de tu webhook de n8n
+                    const webhookUrl = 'https://muna.auto.hostybee.com/webhook-test/7b801ad6-994e-422e-99ef-76da3ef7424a';
+                    const email = emailInput.value;
+
+                    try {
+                        const response = await fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ email: email }),
+                        });
+
+                        if (response.ok) {
+                            // Si n8n responde correctamente (200 OK)
+                            messageDiv.textContent = '¡Gracias por suscribirte! Revisa tu correo.';
+                            messageDiv.className = 'mt-4 text-md font-semibold text-green-600';
+                            form.reset(); // Limpiamos el formulario
+                        } else {
+                            // Si hay un error en la respuesta del servidor
+                            throw new Error('Respuesta del servidor no fue exitosa.');
+                        }
+
+                    } catch (error) {
+                        // Si hay un error en la conexión o en el proceso
+                        console.error('Error al enviar el webhook:', error);
+                        messageDiv.textContent = 'Hubo un error. Por favor, inténtalo de nuevo.';
+                        messageDiv.className = 'mt-4 text-md font-semibold text-red-600';
+                    } finally {
+                        // Volvemos a habilitar el botón
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Suscribirme ahora';
+                    }
+                });
+            }
+            // --- FIN: LÓGICA DEL WEBHOOK PARA N8N ---
         });
     </script>
 
