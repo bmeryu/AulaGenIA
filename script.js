@@ -1,14 +1,10 @@
-/*
-  Archivo JavaScript para Aula Gen IA
-*/
-
-console.log("¡Bienvenido a Aula Gen IA! El sitio está listo para la acción."); XD
-
-// Firebase Auth con Google
 document.addEventListener("DOMContentLoaded", () => {
   const loginBtn = document.getElementById('google-signin-btn');
 
-  if (!loginBtn) return;
+  if (!loginBtn) {
+    console.error('No se encontró el botón con id "google-signin-btn"');
+    return;
+  }
 
   const auth = firebase.auth();
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -17,14 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
     auth.signInWithPopup(provider)
       .then((result) => {
         const user = result.user;
-        console.log('Usuario autenticado:', user.displayName);
         alert(`¡Bienvenido/a ${user.displayName}!`);
-        // Aquí podrías redirigir a otra página, mostrar el nombre, etc.
-        // Por ejemplo: window.location.href = "dashboard.html";
       })
       .catch((error) => {
         console.error('Error en el login:', error);
-        alert("Ocurrió un error al iniciar sesión con Google.");
+        alert("Error al iniciar sesión con Google.");
       });
   });
 });
