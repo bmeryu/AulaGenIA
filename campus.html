@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<!-- 
+    ANÁLISIS Y MEJORAS POR DESARROLLADOR SENIOR (PÁGINA DE CAMPUS VIRTUAL):
+    ----------------------------------------------------------------------
+    1.  **Funcionalidad y Seguridad (Corrección Crítica):**
+        -   Se ha reemplazado el script estático con una implementación completa de Firebase Authentication.
+        -   **Protección de Ruta:** Se utiliza `onAuthStateChanged` para verificar el estado de la sesión al cargar la página. Si no hay un usuario autenticado, la página redirige automáticamente a `acceso.html`. Esto es fundamental para proteger el contenido exclusivo del campus.
+        -   **Datos Dinámicos:** Si hay un usuario, su nombre y foto de perfil se cargan dinámicamente en el encabezado y en el mensaje de bienvenida.
+        -   **Cierre de Sesión Funcional:** El botón "Cerrar sesión" ahora utiliza `auth.signOut()` para terminar la sesión del usuario de forma segura y lo redirige a la página de inicio.
+
+    2.  **SEO y Metadatos:**
+        -   Se mantiene la metaetiqueta `<meta name="robots" content="noindex, nofollow">`, que es la directiva SEO más importante para una página de acceso restringido, ya que evita que aparezca en los resultados de búsqueda.
+        -   Se han añadido metadatos completos (descripción, Open Graph, Twitter Cards) para mantener la coherencia del sitio, aunque esta página no esté destinada a ser compartida.
+        -   Se ha añadido una URL canónica para seguir las mejores prácticas.
+
+    3.  **Datos Estructurados (JSON-LD):**
+        -   Se han incluido los schemas de "Organization" y "WebSite" para reforzar la identidad de la marca. Se ha añadido un schema de "WebPage" que identifica esta página como parte del sitio principal.
+
+    4.  **Accesibilidad (A11y):**
+        -   Se han mantenido las buenas prácticas de la estructura original, como el uso de etiquetas semánticas (`<header>`, `<main>`, `<section>`, `<article>`) y el atributo `aria-labelledby`.
+        -   Se ha añadido un `aria-label` al enlace del logo para mayor claridad en los lectores de pantalla.
+
+    El resultado es una página de campus virtual segura, funcional y que sigue las mejores prácticas técnicas, sin alterar en absoluto el diseño visual.
+-->
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8" />
+    <title>Campus Virtual - Aula GenIA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow"> <!-- Evita que esta página sea indexada por Google -->
+    <meta name="description" content="Accede a tus cursos, recursos y a la comunidad de Aula GenIA. Tu viaje de aprendizaje en Inteligencia Artificial continúa aquí.">
+
+    <link rel="canonical" href="https://aulagenia.cl/campus.html">
+    <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
+
+    <meta property="og:title" content="Campus Virtual - Aula GenIA">
+    <meta property="og:description" content="Accede a tus cursos, recursos y a la comunidad de Aula GenIA.">
+    <meta property="og:image" content="https://aulagenia.cl/og-image.jpg">
+    <meta property="og:url" content="https://aulagenia.cl/campus.html">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Campus Virtual - Aula GenIA">
+    <meta name="twitter:description" content="Accede a tus cursos, recursos y a la comunidad de Aula GenIA.">
+    <meta name="twitter:image" content="https://aulagenia.cl/Logo_AGIA.png">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Aula GenIA",
+          "url": "https://aulagenia.cl/",
+          "logo": "https://aulagenia.cl/Logo_AGIA.png"
+        },
+        {
+          "@type": "WebSite",
+          "name": "Aula GenIA",
+          "url": "https://aulagenia.cl/"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Campus Virtual",
+          "url": "https://aulagenia.cl/campus.html",
+          "description": "Dashboard para estudiantes de Aula GenIA para acceder a sus cursos y recursos.",
+          "isPartOf": {
+            "@id": "https://aulagenia.cl/#website"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --brand-teal: #14b8a6;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc; /* bg-slate-50 */
+        }
+        .progress-bar-bg {
+            background-color: #e2e8f0; /* bg-slate-200 */
+        }
+        .progress-bar-fill {
+            background-color: var(--brand-teal);
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" aria-label="Página de inicio de Aula GenIA">
+                <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-10 w-auto">
+            </a>
+            <div id="user-profile-container" class="flex items-center gap-4" style="display: none;">
+                <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
+                <img id="user-avatar" src="" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500">
+                <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section class="mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">¡Bienvenido de nuevo, <span id="welcome-name"></span>!</h1>
+            <p class="text-lg text-gray-600 mt-2">Listos para seguir aprendiendo y creando cosas increíbles con IA.</p>
+        </section>
+
+        <section aria-labelledby="courses-heading">
+            <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <article class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="p-6">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En Progreso</span>
+                        <h3 class="text-xl font-bold mt-4 mb-2">GenIA Week: Acceso Total</h3>
+                        <p class="text-gray-600 text-sm mb-6">El viaje completo para dominar la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
+                        
+                        <div class="mb-2">
+                            <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
+                                <span>Progreso</span>
+                                <span>25%</span>
+                            </div>
+                            <div class="w-full progress-bar-bg rounded-full h-2.5">
+                                <div class="progress-bar-fill h-2.5 rounded-full" style="width: 25%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-6 py-4">
+                        <a href="#" class="w-full text-center block bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                            Continuar Aprendiendo
+                        </a>
+                    </div>
+                </article>
+
+                <article class="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-dashed border-gray-300">
+                       <div class="p-6 text-center flex flex-col justify-center items-center h-full">
+                        <h3 class="text-xl font-bold text-gray-500 mb-2">IA para Marketing Digital</h3>
+                        <p class="text-gray-400 text-sm mb-4">Aprende a crear campañas y contenido que convierten usando IA.</p>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-100 px-3 py-1.5 rounded-full">Próximamente</span>
+                    </div>
+                </article>
+
+                <article class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="p-6">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">Recursos</span>
+                        <h3 class="text-xl font-bold mt-4 mb-2">Comunidad y Plantillas</h3>
+                        <p class="text-gray-600 text-sm mb-6">Accede a nuestro grupo exclusivo de Discord y descarga más de 20 plantillas de prompts listos para usar.</p>
+                    </div>
+                       <div class="bg-gray-50 px-6 py-4">
+                        <a href="#" class="w-full text-center block bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                            Acceder a Recursos
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white mt-16 border-t">
+        <div class="container mx-auto px-6 py-6 text-center text-gray-500 text-sm">
+             &copy; 2024 Aula GenIA - Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- CONFIGURACIÓN DE FIREBASE ---
+            const firebaseConfig = {
+                apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
+                authDomain: "aulagenia.firebaseapp.com",
+                projectId: "aulagenia",
+                storageBucket: "aulagenia.appspot.com",
+                messagingSenderId: "173328075630",
+                appId: "1:173328075630:web:825606db4271ea1e66cf7f",
+                measurementId: "G-X500LE6Z8X"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth();
+
+            // --- REFERENCIAS A ELEMENTOS DEL DOM ---
+            const userNameElements = document.querySelectorAll('#user-name, #welcome-name');
+            const userAvatar = document.getElementById('user-avatar');
+            const logoutButton = document.getElementById('logout-button');
+            const userProfileContainer = document.getElementById('user-profile-container');
+
+            // --- MANEJO DEL ESTADO DE AUTENTICACIÓN ---
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    // Si el usuario está autenticado, muestra sus datos
+                    console.log("Usuario autenticado:", user);
+                    const displayName = user.displayName || 'Alumno';
+                    const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${displayName.charAt(0).toUpperCase()}`;
+
+                    userNameElements.forEach(el => el.textContent = displayName);
+                    userAvatar.src = photoURL;
+                    userAvatar.alt = `Avatar de ${displayName}`;
+                    userProfileContainer.style.display = 'flex';
+
+                } else {
+                    // Si no hay usuario, redirige a la página de acceso
+                    console.log("Usuario no autenticado. Redirigiendo a acceso.html...");
+                    window.location.href = 'acceso.html';
+                }
+            });
+
+            // --- LÓGICA DE CERRAR SESIÓN ---
+            if (logoutButton) {
+                logoutButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    auth.signOut().then(() => {
+                        console.log('Sesión cerrada. Redirigiendo a index.html...');
+                        window.location.href = 'index.html';
+                    }).catch((error) => {
+                        console.error('Error al cerrar sesión:', error);
+                    });
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
