@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Aula Gen IA</title>
+    
+    <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --brand-teal: #14b8a6;
+            --brand-blue: #3b82f6;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .gradient-button {
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-blue));
+            transition: opacity 0.3s ease;
+        }
+        .gradient-button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="bg-black text-white flex items-center justify-center min-h-screen">
+
+    <!-- Loading Spinner (se muestra mientras se verifica la sesión) -->
+    <div id="loader" class="text-center">
+        <svg class="animate-spin h-10 w-10 text-teal-400 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="mt-4">Cargando...</p>
+    </div>
+
+    <!-- Contenido del Dashboard (oculto por defecto) -->
+    <main id="dashboard-content" class="hidden text-center">
+        <div class="w-full max-w-md rounded-2xl border border-gray-700 bg-gray-800 p-8 shadow-lg">
+            <h1 class="text-3xl font-bold mb-2">¡Bienvenido de nuevo!</h1>
+            <p id="userName" class="text-xl text-teal-400 mb-8"></p>
+            <p class="mb-6">Este es tu panel de control. Desde aquí podrás acceder a todo el contenido exclusivo.</p>
+            <button id="logoutBtn" class="gradient-button w-full py-3 px-4 rounded-lg text-white font-bold">
+                Cerrar sesión
+            </button>
+        </div>
+    </main>
+
+    <!-- ========= START OF SCRIPTS ========= -->
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+    <!-- Firebase Configuration and Initialization -->
+    <script>
+        // Tu configuración de Firebase (la misma que en acceso.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCM8UaLuo5DOedu67ApLtxaBbChmym8FNU",
+            authDomain: "aulagenia.firebaseapp.com",
+            projectId: "aulagenia",
+            storageBucket: "aulagenia.appspot.com", // Corregido el dominio
+            messagingSenderId: "173328075630",
+            appId: "1:173328075630:web:825606db4271ea1e66cf7f",
+            measurementId: "G-X500LE6Z8X"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- Lógica de autenticación del Dashboard -->
+    <script>
+        const auth = firebase.auth();
+
+        const loader = document.getElementById('loader');
+        const dashboardContent = document.getElementById('dashboard-content');
+        const userNameEl = document.getElementById('userName');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Escuchador del estado de autenticación
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Si hay un usuario, mostramos el dashboard
+                console.log("Usuario autenticado:", user.displayName);
+                userNameEl.textContent = user.displayName || user.email;
+                loader.style.display = 'none';
+                dashboardContent.classList.remove('hidden');
+            } else {
+                // Si NO hay usuario, lo redirigimos a la página de acceso
+                console.log("Usuario no autenticado. Redirigiendo a acceso.html");
+                window.location.href = 'acceso.html';
+            }
+        });
+
+        // Lógica del botón de cerrar sesión
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                console.log('Sesión cerrada exitosamente.');
+                // onAuthStateChanged se encargará de la redirección
+            }).catch(error => {
+                console.error('Error al cerrar sesión:', error);
+            });
+        });
+    </script>
+
+</body>
+</html>
