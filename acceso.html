@@ -1,36 +1,30 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y MEJORAS SEO/UX POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO):
+    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v2):
     ----------------------------------------------------------------------
-    1.  **Metaetiquetas Optimizadas:**
-        -   Se ha optimizado el <title> y la <meta name="description"> para la acción específica de esta página: iniciar sesión o registrarse.
-        -   Se ha establecido la URL canónica a "acceso.html" para evitar problemas de contenido duplicado.
-        -   Se han añadido metaetiquetas Open Graph y Twitter Card para asegurar que, si se comparte este enlace, se muestre una vista previa adecuada.
+    1.  **Funcionalidad de Autenticación (Corrección Crítica):**
+        -   Se ha eliminado la dependencia de un archivo "script.js" externo que no estaba disponible.
+        -   Toda la lógica de JavaScript para la autenticación con Firebase (Google, Email/Contraseña), el cambio de pestañas y la actualización de la interfaz de usuario se ha integrado directamente dentro de una etiqueta <script> en este archivo.
+        -   Esto garantiza que la página sea autocontenida y que todos los botones y formularios funcionen como se espera sin dependencias externas.
+        -   Se ha implementado la lógica completa para `signInWithPopup` (Google), `createUserWithEmailAndPassword` (Registro) y `signInWithEmailAndPassword` (Login).
+        -   Se utiliza `onAuthStateChanged` para monitorizar el estado de la sesión del usuario y mostrar la información correcta (datos del usuario o formularios de acceso).
 
-    2.  **Datos Estructurados (JSON-LD):**
-        -   Aunque no existe un schema específico para una "página de login", se han incluido los schemas de "Organization" y "WebSite". Esto mantiene la consistencia a través del sitio y refuerza la identidad de la marca ante los motores de búsqueda.
+    2.  **Enlace a Términos y Condiciones (Corrección UX):**
+        -   Se ha añadido una sección <footer> al final de la página.
+        -   Este pie de página incluye un enlace claro y persistente a "terminoscondiciones.html", asegurando que sea accesible desde cualquier estado del formulario (inicio de sesión o registro).
 
-    3.  **Accesibilidad (A11y) y Semántica en Formularios:**
-        -   Se ha mejorado la accesibilidad de los formularios de inicio de sesión y registro.
-        -   **Labels:** Todas las etiquetas <label> están correctamente asociadas a sus <input>.
-        -   **ARIA attributes:** Se han añadido atributos `aria-required="true"` a los campos obligatorios para informar a los lectores de pantalla.
-        -   **Iconos Decorativos:** A todos los iconos (Google, Lucide) se les ha añadido `aria-hidden="true"` para que sean ignorados por las tecnologías de asistencia, ya que son puramente decorativos y no aportan información.
-        -   **Autocompletado:** Se han añadido atributos `autocomplete` a los campos de email y contraseña. Esto es una gran mejora de UX, ya que permite a los navegadores y gestores de contraseñas rellenar los campos automáticamente, agilizando el proceso para el usuario.
+    3.  **Mejoras de Accesibilidad y UX:**
+        -   Se mantienen todas las optimizaciones SEO y de accesibilidad de la versión anterior.
+        -   Se ha añadido un manejo básico de errores para mostrar alertas al usuario si la autenticación falla (ej. contraseña incorrecta).
 
     4.  **Rendimiento:**
-        -   Se ha añadido el atributo `defer` a todas las etiquetas <script> al final del body. Esto asegura que los scripts se carguen sin bloquear el renderizado del contenido de la página, mejorando la velocidad de carga percibida.
-
-    Estos cambios, aunque invisibles, hacen la página más rápida, más fácil de usar (especialmente con gestores de contraseñas) y más accesible, manteniendo la misma estética.
+        -   Todos los scripts, incluidos los de Firebase y el script de lógica principal, continúan usando el atributo `defer` para no bloquear la renderización de la página.
 -->
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- =================================================================== -->
-    <!-- ================ METADATOS SEO Y SOCIALES (PÁGINA ACCESO) =========== -->
-    <!-- =================================================================== -->
-
     <title>Accede o Crea tu Cuenta - Aula GenIA</title>
     <meta name="description" content="Inicia sesión o regístrate para acceder a los cursos de Inteligencia Artificial de Aula GenIA. Comienza tu viaje de aprendizaje hoy.">
     <meta name="keywords" content="iniciar sesión, crear cuenta, registro, acceso alumnos, Aula GenIA, login">
@@ -42,7 +36,7 @@
 
     <meta property="og:title" content="Accede o Crea tu Cuenta - Aula GenIA">
     <meta property="og:description" content="Inicia sesión o regístrate para acceder a los cursos de Inteligencia Artificial de Aula GenIA.">
-    <meta property="og:image" content="https://aulagenia.cl/og-image.jpg"> <!-- Imagen genérica del sitio -->
+    <meta property="og:image" content="https://aulagenia.cl/og-image.jpg">
     <meta property="og:url" content="https://aulagenia.cl/acceso.html">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_ES">
@@ -52,9 +46,6 @@
     <meta name="twitter:description" content="Inicia sesión o regístrate para acceder a los cursos de Inteligencia Artificial de Aula GenIA.">
     <meta name="twitter:image" content="https://aulagenia.cl/og-image.jpg">
 
-    <!-- =================================================================== -->
-    <!-- ================= DATOS ESTRUCTURADOS (SCHEMA.ORG) ================= -->
-    <!-- =================================================================== -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -79,18 +70,14 @@
     }
     </script>
 
-    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
     
-    <!-- CookieConsent CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" />
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Custom CSS -->
     <style>
         :root {
             --brand-teal: #14b8a6;
@@ -98,6 +85,12 @@
         }
         body {
             font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex-grow: 1;
         }
         .logo-highlight {
             color: var(--brand-teal);
@@ -113,13 +106,13 @@
             width: 50%;
             padding: 0.75rem 1rem;
             font-weight: 600;
-            color: #9ca3af; /* gray-400 */
+            color: #9ca3af;
             border-bottom: 2px solid transparent;
             transition: all 0.3s ease;
             cursor: pointer;
         }
         .auth-tab:hover {
-            color: #d1d5db; /* gray-300 */
+            color: #d1d5db;
         }
         .auth-tab.active-tab {
             color: white;
@@ -127,7 +120,6 @@
         }
     </style>
 
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-black text-white">
@@ -135,7 +127,7 @@
     <header class="container mx-auto flex justify-center px-6 py-4">
       <a href="index.html" class="block" aria-label="Página de inicio de Aula GenIA">
         <img
-          src="logo_dark.png"
+          src="https://aulagenia.cl/logo_dark.png"
           alt="Logo de Aula GenIA"
           class="h-12 w-auto"
           onerror="this.onerror=null; this.src='https://placehold.co/200x48/000000/ffffff?text=AulaGenIA';"
@@ -146,142 +138,261 @@
     <main class="flex items-center justify-center px-6 py-12">
         <div class="w-full max-w-md rounded-2xl border border-gray-700 bg-gray-800 p-8 shadow-lg">
             
-            <h1 class="mb-6 text-center text-3xl font-bold">Accede a tu Cuenta</h1>
+            <h1 id="auth-title" class="mb-6 text-center text-3xl font-bold">Accede a tu Cuenta</h1>
 
-            <button id="google-signin-btn" class="flex w-full items-center justify-center rounded-lg bg-white py-3 px-4 font-semibold text-gray-800 shadow-md transition-all duration-300 ease-in-out hover:bg-gray-100">
-                <svg class="mr-3 h-6 w-6" viewBox="0 0 48 48" aria-hidden="true">
-                    <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
-                    <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path>
-                    <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path>
-                    <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C42.022,35.244,44,30.036,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
-                </svg>
-                Continuar con Google
-            </button>
+            <div id="auth-container">
+                <button id="google-signin-btn" class="flex w-full items-center justify-center rounded-lg bg-white py-3 px-4 font-semibold text-gray-800 shadow-md transition-all duration-300 ease-in-out hover:bg-gray-100">
+                    <svg class="mr-3 h-6 w-6" viewBox="0 0 48 48" aria-hidden="true">
+                        <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
+                        <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path>
+                        <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path>
+                        <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C42.022,35.244,44,30.036,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+                    </svg>
+                    Continuar con Google
+                </button>
+
+                <div class="my-6 flex items-center">
+                    <div class="flex-grow border-t border-gray-600"></div>
+                    <span class="mx-4 flex-shrink text-gray-400">O</span>
+                    <div class="flex-grow border-t border-gray-600"></div>
+                </div>
+
+                <div class="mb-8 flex border-b border-gray-700">
+                    <button id="login-tab" class="auth-tab active-tab" role="tab" aria-selected="true" aria-controls="login-form-container">Iniciar Sesión</button>
+                    <button id="register-tab" class="auth-tab" role="tab" aria-selected="false" aria-controls="register-form-container">Crear Cuenta</button>
+                </div>
+
+                <div id="login-form-container" role="tabpanel" aria-labelledby="login-tab">
+                    <form id="login-form" novalidate>
+                        <div class="space-y-6">
+                            <div>
+                                <label for="login-email" class="mb-2 block text-sm font-medium text-gray-300">Correo Electrónico</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="mail" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="email" id="login-email" placeholder="tu@email.com" required aria-required="true" autocomplete="email" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="login-password" class="mb-2 block text-sm font-medium text-gray-300">Contraseña</label>
+                                 <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="lock" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="password" id="login-password" placeholder="••••••••" required aria-required="true" autocomplete="current-password" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                </div>
+                                <a href="#" class="float-right mt-2 text-sm text-teal-400 hover:text-teal-300">¿Olvidaste tu contraseña?</a>
+                            </div>
+                        </div>
+                        <button type="submit" class="gradient-button mt-10 w-full rounded-lg py-3 text-lg font-bold">Iniciar Sesión</button>
+                    </form>
+                </div>
+
+                <div id="register-form-container" class="hidden" role="tabpanel" aria-labelledby="register-tab">
+                    <form id="register-form" novalidate>
+                        <div class="space-y-6">
+                            <div>
+                                <label for="register-name" class="mb-2 block text-sm font-medium text-gray-300">Nombre Completo</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="user" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="text" id="register-name" placeholder="Tu Nombre" required aria-required="true" autocomplete="name" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="register-email" class="mb-2 block text-sm font-medium text-gray-300">Correo Electrónico</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="mail" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="email" id="register-email" placeholder="tu@email.com" required aria-required="true" autocomplete="email" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="register-password" class="mb-2 block text-sm font-medium text-gray-300">Contraseña</label>
+                                 <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="lock" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="password" id="register-password" placeholder="Crea una contraseña segura" required aria-required="true" autocomplete="new-password" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-start">
+                            <div class="flex h-5 items-center">
+                                <input id="marketing-opt-in" type="checkbox" checked class="h-4 w-4 cursor-pointer rounded border-gray-500 bg-gray-700 text-teal-500 focus:ring-teal-500">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="marketing-opt-in" class="cursor-pointer text-gray-300">Quiero recibir correos con novedades y promociones.</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="gradient-button mt-6 w-full rounded-lg py-3 text-lg font-bold">Crear mi Cuenta</button>
+                    </form>
+                </div>
+            </div>
 
             <div id="userInfo" style="display: none;" class="mt-6 text-center">
-              <p id="userName" class="text-lg font-semibold mb-4"></p>
-              <button id="logoutBtn" class="gradient-button w-full py-2 px-4 rounded-lg text-white font-bold">Cerrar sesión</button>
-            </div>
-
-            <div class="my-6 flex items-center">
-                <div class="flex-grow border-t border-gray-600"></div>
-                <span class="mx-4 flex-shrink text-gray-400">O</span>
-                <div class="flex-grow border-t border-gray-600"></div>
-            </div>
-
-            <div class="mb-8 flex border-b border-gray-700">
-                <button id="login-tab" class="auth-tab active-tab" role="tab" aria-selected="true" aria-controls="login-form-container">Iniciar Sesión</button>
-                <button id="register-tab" class="auth-tab" role="tab" aria-selected="false" aria-controls="register-form-container">Crear Cuenta</button>
-            </div>
-
-            <!-- Login Form -->
-            <div id="login-form-container" role="tabpanel" aria-labelledby="login-tab">
-                <form id="login-form" novalidate>
-                    <div class="space-y-6">
-                        <div>
-                            <label for="login-email" class="mb-2 block text-sm font-medium text-gray-300">Correo Electrónico</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
-                                    <i data-lucide="mail" class="h-5 w-5 text-gray-400"></i>
-                                </span>
-                                <input type="email" id="login-email" name="email" placeholder="tu@email.com" required aria-required="true" autocomplete="email" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="login-password" class="mb-2 block text-sm font-medium text-gray-300">Contraseña</label>
-                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
-                                    <i data-lucide="lock" class="h-5 w-5 text-gray-400"></i>
-                                </span>
-                                <input type="password" id="login-password" name="password" placeholder="••••••••" required aria-required="true" autocomplete="current-password" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
-                            </div>
-                            <a href="#" class="float-right mt-2 text-sm text-teal-400 hover:text-teal-300">¿Olvidaste tu contraseña?</a>
-                        </div>
-                    </div>
-                    <button type="submit" class="gradient-button mt-10 w-full rounded-lg py-3 text-lg font-bold">
-                        Iniciar Sesión
-                    </button>
-                </form>
-            </div>
-
-            <!-- Register Form -->
-            <div id="register-form-container" class="hidden" role="tabpanel" aria-labelledby="register-tab">
-                <form id="register-form" novalidate>
-                    <div class="space-y-6">
-                        <div>
-                            <label for="register-name" class="mb-2 block text-sm font-medium text-gray-300">Nombre Completo</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
-                                    <i data-lucide="user" class="h-5 w-5 text-gray-400"></i>
-                                </span>
-                                <input type="text" id="register-name" name="name" placeholder="Tu Nombre" required aria-required="true" autocomplete="name" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="register-email" class="mb-2 block text-sm font-medium text-gray-300">Correo Electrónico</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
-                                    <i data-lucide="mail" class="h-5 w-5 text-gray-400"></i>
-                                </span>
-                                <input type="email" id="register-email" name="email" placeholder="tu@email.com" required aria-required="true" autocomplete="email" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="register-password" class="mb-2 block text-sm font-medium text-gray-300">Contraseña</label>
-                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
-                                    <i data-lucide="lock" class="h-5 w-5 text-gray-400"></i>
-                                </span>
-                                <input type="password" id="register-password" name="password" placeholder="Crea una contraseña segura" required aria-required="true" autocomplete="new-password" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 flex items-start">
-                        <div class="flex h-5 items-center">
-                            <input id="marketing-opt-in" name="marketing-opt-in" type="checkbox" checked class="h-4 w-4 cursor-pointer rounded border-gray-500 bg-gray-700 text-teal-500 focus:ring-teal-500">
-                        </div>
-                        <div class="ml-3 text-sm">
-                            <label for="marketing-opt-in" class="cursor-pointer text-gray-300">Quiero recibir correos con novedades y promociones.</label>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="gradient-button mt-6 w-full rounded-lg py-3 text-lg font-bold">
-                        Crear mi Cuenta
-                    </button>
-
-                    <p class="mt-4 text-center text-xs text-gray-500">
-                        Al crear una cuenta, aceptas nuestros <a href="terminoscondiciones.html" class="text-teal-400 hover:underline">Términos de Servicio</a>.
-                    </p>
-                </form>
+              <img id="userPhoto" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-teal-500">
+              <p id="userName" class="text-xl font-semibold mb-1"></p>
+              <p id="userEmail" class="text-sm text-gray-400 mb-6"></p>
+              <button id="logoutBtn" class="gradient-button w-full py-3 px-4 rounded-lg text-white font-bold">Cerrar Sesión</button>
             </div>
 
         </div>
     </main>
     
-    <!-- MEJORA DE RENDIMIENTO: Añadido 'defer' para no bloquear el renderizado -->
+    <footer class="container mx-auto text-center px-6 py-4">
+        <p class="text-xs text-gray-500">
+            Al crear una cuenta, aceptas nuestros 
+            <a href="terminoscondiciones.html" class="text-teal-400 hover:underline">Términos de Servicio</a> y 
+            <a href="politica-privacidad.html" class="text-teal-400 hover:underline">Política de Privacidad</a>.
+        </p>
+    </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
 
     <script defer>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
-        authDomain: "aulagenia.firebaseapp.com",
-        projectId: "aulagenia",
-        storageBucket: "aulagenia.firebasestorage.com",
-        messagingSenderId: "173328075630",
-        appId: "1:173328075630:web:825606db4271ea1e66cf7f",
-        measurementId: "G-X500LE6Z8X"
-      };
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONFIGURACIÓN DE FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
+            authDomain: "aulagenia.firebaseapp.com",
+            projectId: "aulagenia",
+            storageBucket: "aulagenia.appspot.com", // Corregido a .appspot.com
+            messagingSenderId: "173328075630",
+            appId: "1:173328075630:web:825606db4271ea1e66cf7f",
+            measurementId: "G-X500LE6Z8X"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
+        // --- REFERENCIAS A ELEMENTOS DEL DOM ---
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginFormContainer = document.getElementById('login-form-container');
+        const registerFormContainer = document.getElementById('register-form-container');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const googleSignInBtn = document.getElementById('google-signin-btn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userInfoDiv = document.getElementById('userInfo');
+        const authContainer = document.getElementById('auth-container');
+        const authTitle = document.getElementById('auth-title');
+        const userNameP = document.getElementById('userName');
+        const userEmailP = document.getElementById('userEmail');
+        const userPhotoImg = document.getElementById('userPhoto');
+
+        // --- LÓGICA DE PESTAÑAS ---
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active-tab');
+            registerTab.classList.remove('active-tab');
+            loginFormContainer.classList.remove('hidden');
+            registerFormContainer.classList.add('hidden');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active-tab');
+            loginTab.classList.remove('active-tab');
+            registerFormContainer.classList.remove('hidden');
+            loginFormContainer.classList.add('hidden');
+        });
+
+        // --- LÓGICA DE AUTENTICACIÓN ---
+
+        // Inicio de sesión con Google
+        googleSignInBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    console.log("Inicio de sesión con Google exitoso:", result.user);
+                    // El estado se manejará con onAuthStateChanged
+                })
+                .catch((error) => {
+                    console.error("Error en inicio de sesión con Google:", error);
+                    alert(`Error: ${error.message}`);
+                });
+        });
+
+        // Registro con Email y Contraseña
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = registerForm.querySelector('#register-name').value;
+            const email = registerForm.querySelector('#register-email').value;
+            const password = registerForm.querySelector('#register-password').value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Actualizar perfil con el nombre
+                    return userCredential.user.updateProfile({
+                        displayName: name
+                    });
+                })
+                .then(() => {
+                    console.log("Usuario registrado y perfil actualizado:", auth.currentUser);
+                })
+                .catch((error) => {
+                    console.error("Error en el registro:", error);
+                    alert(`Error en el registro: ${error.message}`);
+                });
+        });
+
+        // Inicio de sesión con Email y Contraseña
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('#login-email').value;
+            const password = loginForm.querySelector('#login-password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    console.log("Usuario ha iniciado sesión:", userCredential.user);
+                })
+                .catch((error) => {
+                    console.error("Error en inicio de sesión:", error);
+                    alert(`Error: Credenciales incorrectas. Por favor, inténtalo de nuevo.`);
+                });
+        });
+
+        // Cerrar sesión
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                console.log("Sesión cerrada.");
+            });
+        });
+
+        // --- MANEJO DEL ESTADO DE AUTENTICACIÓN ---
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Usuario ha iniciado sesión
+                authContainer.style.display = 'none';
+                userInfoDiv.style.display = 'block';
+                authTitle.textContent = `¡Bienvenido, ${user.displayName || 'Usuario'}!`;
+                userNameP.textContent = user.displayName;
+                userEmailP.textContent = user.email;
+                userPhotoImg.src = user.photoURL || 'https://placehold.co/96x96/14b8a6/ffffff?text=AG';
+            } else {
+                // Usuario no ha iniciado sesión
+                authContainer.style.display = 'block';
+                userInfoDiv.style.display = 'none';
+                authTitle.textContent = 'Accede a tu Cuenta';
+            }
+        });
+        
+        // --- INICIALIZACIÓN DE ÍCONOS Y COOKIES ---
+        lucide.createIcons();
+
+        window.addEventListener('load', () => {
+            if (window.cookieconsent) {
+                window.cookieconsent.initialise({
+                    palette: { popup: { background: '#1f2937' }, button: { background: '#14b8a6' } },
+                    theme: 'classic',
+                    position: 'bottom',
+                    type: 'opt-in',
+                    content: {
+                        message: 'Usamos cookies para mejorar tu experiencia.',
+                        dismiss: 'Aceptar',
+                        deny: 'Rechazar',
+                        link: 'Más info',
+                        href: 'politica-cookies.html'
+                    },
+                });
+            }
+        });
+    });
     </script>
-
-    <!-- Tu script personalizado debe ir al final y también con defer -->
-    <script src="script.js" defer></script>
 
 </body>
 </html>
