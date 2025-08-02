@@ -1,15 +1,84 @@
 <!DOCTYPE html>
-<html lang="es">
+<!-- 
+    ANÁLISIS Y MEJORAS SEO/UX POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO):
+    ----------------------------------------------------------------------
+    1.  **Metaetiquetas Optimizadas:**
+        -   Se ha optimizado el <title> y la <meta name="description"> para la acción específica de esta página: iniciar sesión o registrarse.
+        -   Se ha establecido la URL canónica a "acceso.html" para evitar problemas de contenido duplicado.
+        -   Se han añadido metaetiquetas Open Graph y Twitter Card para asegurar que, si se comparte este enlace, se muestre una vista previa adecuada.
+
+    2.  **Datos Estructurados (JSON-LD):**
+        -   Aunque no existe un schema específico para una "página de login", se han incluido los schemas de "Organization" y "WebSite". Esto mantiene la consistencia a través del sitio y refuerza la identidad de la marca ante los motores de búsqueda.
+
+    3.  **Accesibilidad (A11y) y Semántica en Formularios:**
+        -   Se ha mejorado la accesibilidad de los formularios de inicio de sesión y registro.
+        -   **Labels:** Todas las etiquetas <label> están correctamente asociadas a sus <input>.
+        -   **ARIA attributes:** Se han añadido atributos `aria-required="true"` a los campos obligatorios para informar a los lectores de pantalla.
+        -   **Iconos Decorativos:** A todos los iconos (Google, Lucide) se les ha añadido `aria-hidden="true"` para que sean ignorados por las tecnologías de asistencia, ya que son puramente decorativos y no aportan información.
+        -   **Autocompletado:** Se han añadido atributos `autocomplete` a los campos de email y contraseña. Esto es una gran mejora de UX, ya que permite a los navegadores y gestores de contraseñas rellenar los campos automáticamente, agilizando el proceso para el usuario.
+
+    4.  **Rendimiento:**
+        -   Se ha añadido el atributo `defer` a todas las etiquetas <script> al final del body. Esto asegura que los scripts se carguen sin bloquear el renderizado del contenido de la página, mejorando la velocidad de carga percibida.
+
+    Estos cambios, aunque invisibles, hacen la página más rápida, más fácil de usar (especialmente con gestores de contraseñas) y más accesible, manteniendo la misma estética.
+-->
+<html lang="es-CL">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso - Aula Gen IA</title>
     
+    <!-- =================================================================== -->
+    <!-- ================ METADATOS SEO Y SOCIALES (PÁGINA ACCESO) =========== -->
+    <!-- =================================================================== -->
+
+    <title>Accede o Crea tu Cuenta - Aula GenIA</title>
+    <meta name="description" content="Inicia sesión o regístrate para acceder a los cursos de Inteligencia Artificial de Aula GenIA. Comienza tu viaje de aprendizaje hoy.">
+    <meta name="keywords" content="iniciar sesión, crear cuenta, registro, acceso alumnos, Aula GenIA, login">
+    
+    <link rel="canonical" href="https://aulagenia.cl/acceso.html">
+
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
+
+    <meta property="og:title" content="Accede o Crea tu Cuenta - Aula GenIA">
+    <meta property="og:description" content="Inicia sesión o regístrate para acceder a los cursos de Inteligencia Artificial de Aula GenIA.">
+    <meta property="og:image" content="https://aulagenia.cl/og-image.jpg"> <!-- Imagen genérica del sitio -->
+    <meta property="og:url" content="https://aulagenia.cl/acceso.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_ES">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Accede o Crea tu Cuenta - Aula GenIA">
+    <meta name="twitter:description" content="Inicia sesión o regístrate para acceder a los cursos de Inteligencia Artificial de Aula GenIA.">
+    <meta name="twitter:image" content="https://aulagenia.cl/og-image.jpg">
+
+    <!-- =================================================================== -->
+    <!-- ================= DATOS ESTRUCTURADOS (SCHEMA.ORG) ================= -->
+    <!-- =================================================================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Aula GenIA",
+          "url": "https://aulagenia.cl/",
+          "logo": "https://aulagenia.cl/Logo_AGIA.png"
+        },
+        {
+          "@type": "WebSite",
+          "name": "Aula GenIA",
+          "url": "https://aulagenia.cl/",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://aulagenia.cl/cursos.html?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+    </script>
+
     <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +87,9 @@
     <!-- CookieConsent CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" />
 
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <!-- Custom CSS -->
     <style>
         :root {
@@ -60,28 +132,24 @@
 </head>
 <body class="bg-black text-white">
 
-    <!-- ========= HEADER ========= -->
     <header class="container mx-auto flex justify-center px-6 py-4">
-      <a href="index.html" class="block">
-        <!-- Logo versión fondo oscuro -->
+      <a href="index.html" class="block" aria-label="Página de inicio de Aula GenIA">
         <img
           src="logo_dark.png"
-          alt="Aula Gen IA"
+          alt="Logo de Aula GenIA"
           class="h-12 w-auto"
           onerror="this.onerror=null; this.src='https://placehold.co/200x48/000000/ffffff?text=AulaGenIA';"
         />
       </a>
     </header>
 
-    <!-- ========= AUTH FORM SECTION ========= -->
     <main class="flex items-center justify-center px-6 py-12">
         <div class="w-full max-w-md rounded-2xl border border-gray-700 bg-gray-800 p-8 shadow-lg">
             
-            <h2 class="mb-6 text-center text-3xl font-bold">Accede a tu Cuenta</h2>
+            <h1 class="mb-6 text-center text-3xl font-bold">Accede a tu Cuenta</h1>
 
-            <!-- Google Sign-In Button -->
             <button id="google-signin-btn" class="flex w-full items-center justify-center rounded-lg bg-white py-3 px-4 font-semibold text-gray-800 shadow-md transition-all duration-300 ease-in-out hover:bg-gray-100">
-                <svg class="mr-3 h-6 w-6" viewBox="0 0 48 48">
+                <svg class="mr-3 h-6 w-6" viewBox="0 0 48 48" aria-hidden="true">
                     <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
                     <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path>
                     <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path>
@@ -90,45 +158,42 @@
                 Continuar con Google
             </button>
 
-            <!-- Info del usuario (oculta por defecto) -->
             <div id="userInfo" style="display: none;" class="mt-6 text-center">
               <p id="userName" class="text-lg font-semibold mb-4"></p>
               <button id="logoutBtn" class="gradient-button w-full py-2 px-4 rounded-lg text-white font-bold">Cerrar sesión</button>
             </div>
 
-            <!-- Divider -->
             <div class="my-6 flex items-center">
                 <div class="flex-grow border-t border-gray-600"></div>
                 <span class="mx-4 flex-shrink text-gray-400">O</span>
                 <div class="flex-grow border-t border-gray-600"></div>
             </div>
 
-            <!-- Tab Switcher -->
             <div class="mb-8 flex border-b border-gray-700">
-                <button id="login-tab" class="auth-tab active-tab">Iniciar Sesión</button>
-                <button id="register-tab" class="auth-tab">Crear Cuenta</button>
+                <button id="login-tab" class="auth-tab active-tab" role="tab" aria-selected="true" aria-controls="login-form-container">Iniciar Sesión</button>
+                <button id="register-tab" class="auth-tab" role="tab" aria-selected="false" aria-controls="register-form-container">Crear Cuenta</button>
             </div>
 
             <!-- Login Form -->
-            <div id="login-form-container">
-                <form id="login-form">
+            <div id="login-form-container" role="tabpanel" aria-labelledby="login-tab">
+                <form id="login-form" novalidate>
                     <div class="space-y-6">
                         <div>
                             <label for="login-email" class="mb-2 block text-sm font-medium text-gray-300">Correo Electrónico</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                     <i data-lucide="mail" class="h-5 w-5 text-gray-400"></i>
                                 </span>
-                                <input type="email" id="login-email" name="email" placeholder="tu@email.com" required class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                <input type="email" id="login-email" name="email" placeholder="tu@email.com" required aria-required="true" autocomplete="email" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
                             </div>
                         </div>
                         <div>
                             <label for="login-password" class="mb-2 block text-sm font-medium text-gray-300">Contraseña</label>
                              <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                     <i data-lucide="lock" class="h-5 w-5 text-gray-400"></i>
                                 </span>
-                                <input type="password" id="login-password" name="password" placeholder="••••••••" required class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                <input type="password" id="login-password" name="password" placeholder="••••••••" required aria-required="true" autocomplete="current-password" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
                             </div>
                             <a href="#" class="float-right mt-2 text-sm text-teal-400 hover:text-teal-300">¿Olvidaste tu contraseña?</a>
                         </div>
@@ -139,40 +204,39 @@
                 </form>
             </div>
 
-            <!-- Register Form (hidden by default) -->
-            <div id="register-form-container" class="hidden">
-                <form id="register-form">
+            <!-- Register Form -->
+            <div id="register-form-container" class="hidden" role="tabpanel" aria-labelledby="register-tab">
+                <form id="register-form" novalidate>
                     <div class="space-y-6">
                         <div>
                             <label for="register-name" class="mb-2 block text-sm font-medium text-gray-300">Nombre Completo</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                     <i data-lucide="user" class="h-5 w-5 text-gray-400"></i>
                                 </span>
-                                <input type="text" id="register-name" name="name" placeholder="Tu Nombre" required class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                <input type="text" id="register-name" name="name" placeholder="Tu Nombre" required aria-required="true" autocomplete="name" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
                             </div>
                         </div>
                         <div>
                             <label for="register-email" class="mb-2 block text-sm font-medium text-gray-300">Correo Electrónico</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                     <i data-lucide="mail" class="h-5 w-5 text-gray-400"></i>
                                 </span>
-                                <input type="email" id="register-email" name="email" placeholder="tu@email.com" required class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                <input type="email" id="register-email" name="email" placeholder="tu@email.com" required aria-required="true" autocomplete="email" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
                             </div>
                         </div>
                         <div>
                             <label for="register-password" class="mb-2 block text-sm font-medium text-gray-300">Contraseña</label>
                              <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                     <i data-lucide="lock" class="h-5 w-5 text-gray-400"></i>
                                 </span>
-                                <input type="password" id="register-password" name="password" placeholder="Crea una contraseña segura" required class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                <input type="password" id="register-password" name="password" placeholder="Crea una contraseña segura" required aria-required="true" autocomplete="new-password" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Opt-in Checkbox -->
                     <div class="mt-6 flex items-start">
                         <div class="flex h-5 items-center">
                             <input id="marketing-opt-in" name="marketing-opt-in" type="checkbox" checked class="h-4 w-4 cursor-pointer rounded border-gray-500 bg-gray-700 text-teal-500 focus:ring-teal-500">
@@ -195,17 +259,12 @@
         </div>
     </main>
     
-    <!-- ========= START OF SCRIPTS ========= -->
+    <!-- MEJORA DE RENDIMIENTO: Añadido 'defer' para no bloquear el renderizado -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
 
-    <!-- CookieConsent JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
-
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-
-    <!-- Firebase Configuration and Initialization -->
-    <script>
+    <script defer>
       // Your web app's Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
@@ -221,8 +280,8 @@
       firebase.initializeApp(firebaseConfig);
     </script>
 
-    <!-- Your Custom Scripts (Tabs, Icons, Cookies, and now Auth) -->
-    <script src="script.js"></script>
+    <!-- Tu script personalizado debe ir al final y también con defer -->
+    <script src="script.js" defer></script>
 
 </body>
 </html>
