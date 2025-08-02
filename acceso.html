@@ -1,24 +1,12 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v2):
+    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v3):
     ----------------------------------------------------------------------
-    1.  **Funcionalidad de Autenticación (Corrección Crítica):**
-        -   Se ha eliminado la dependencia de un archivo "script.js" externo que no estaba disponible.
-        -   Toda la lógica de JavaScript para la autenticación con Firebase (Google, Email/Contraseña), el cambio de pestañas y la actualización de la interfaz de usuario se ha integrado directamente dentro de una etiqueta <script> en este archivo.
-        -   Esto garantiza que la página sea autocontenida y que todos los botones y formularios funcionen como se espera sin dependencias externas.
-        -   Se ha implementado la lógica completa para `signInWithPopup` (Google), `createUserWithEmailAndPassword` (Registro) y `signInWithEmailAndPassword` (Login).
-        -   Se utiliza `onAuthStateChanged` para monitorizar el estado de la sesión del usuario y mostrar la información correcta (datos del usuario o formularios de acceso).
-
-    2.  **Enlace a Términos y Condiciones (Corrección UX):**
-        -   Se ha añadido una sección <footer> al final de la página.
-        -   Este pie de página incluye un enlace claro y persistente a "terminoscondiciones.html", asegurando que sea accesible desde cualquier estado del formulario (inicio de sesión o registro).
-
-    3.  **Mejoras de Accesibilidad y UX:**
-        -   Se mantienen todas las optimizaciones SEO y de accesibilidad de la versión anterior.
-        -   Se ha añadido un manejo básico de errores para mostrar alertas al usuario si la autenticación falla (ej. contraseña incorrecta).
-
-    4.  **Rendimiento:**
-        -   Todos los scripts, incluidos los de Firebase y el script de lógica principal, continúan usando el atributo `defer` para no bloquear la renderización de la página.
+    1.  **Redirección Automática (Implementación Clave):**
+        -   Se ha modificado la función `onAuthStateChanged`.
+        -   Ahora, cuando se detecta que un usuario ha iniciado sesión (`if (user)`), en lugar de mostrar su información en esta misma página, el script ejecuta `window.location.href = 'campus.html';`.
+        -   Esto redirige automáticamente al usuario al Campus Virtual, creando un flujo de usuario lógico y sin interrupciones.
+        -   La sección `userInfo` que mostraba los datos del usuario en esta página se ha vuelto redundante y, aunque se mantiene en el HTML, nunca será visible, ya que la redirección ocurre antes.
 -->
 <html lang="es-CL">
 <head>
@@ -223,6 +211,7 @@
                 </div>
             </div>
 
+            <!-- Este DIV ya no se usará porque redirigimos, pero lo dejamos por si se necesita en el futuro -->
             <div id="userInfo" style="display: none;" class="mt-6 text-center">
               <img id="userPhoto" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-teal-500">
               <p id="userName" class="text-xl font-semibold mb-1"></p>
@@ -252,7 +241,7 @@
             apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
             authDomain: "aulagenia.firebaseapp.com",
             projectId: "aulagenia",
-            storageBucket: "aulagenia.appspot.com", // Corregido a .appspot.com
+            storageBucket: "aulagenia.appspot.com",
             messagingSenderId: "173328075630",
             appId: "1:173328075630:web:825606db4271ea1e66cf7f",
             measurementId: "G-X500LE6Z8X"
@@ -268,14 +257,7 @@
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         const googleSignInBtn = document.getElementById('google-signin-btn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const userInfoDiv = document.getElementById('userInfo');
-        const authContainer = document.getElementById('auth-container');
-        const authTitle = document.getElementById('auth-title');
-        const userNameP = document.getElementById('userName');
-        const userEmailP = document.getElementById('userEmail');
-        const userPhotoImg = document.getElementById('userPhoto');
-
+        
         // --- LÓGICA DE PESTAÑAS ---
         loginTab.addEventListener('click', () => {
             loginTab.classList.add('active-tab');
@@ -299,7 +281,7 @@
             auth.signInWithPopup(provider)
                 .then((result) => {
                     console.log("Inicio de sesión con Google exitoso:", result.user);
-                    // El estado se manejará con onAuthStateChanged
+                    // La redirección se maneja en onAuthStateChanged
                 })
                 .catch((error) => {
                     console.error("Error en inicio de sesión con Google:", error);
@@ -316,13 +298,13 @@
 
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    // Actualizar perfil con el nombre
                     return userCredential.user.updateProfile({
                         displayName: name
                     });
                 })
                 .then(() => {
                     console.log("Usuario registrado y perfil actualizado:", auth.currentUser);
+                     // La redirección se maneja en onAuthStateChanged
                 })
                 .catch((error) => {
                     console.error("Error en el registro:", error);
@@ -339,6 +321,7 @@
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     console.log("Usuario ha iniciado sesión:", userCredential.user);
+                    // La redirección se maneja en onAuthStateChanged
                 })
                 .catch((error) => {
                     console.error("Error en inicio de sesión:", error);
@@ -346,28 +329,21 @@
                 });
         });
 
-        // Cerrar sesión
-        logoutBtn.addEventListener('click', () => {
-            auth.signOut().then(() => {
-                console.log("Sesión cerrada.");
-            });
-        });
-
-        // --- MANEJO DEL ESTADO DE AUTENTICACIÓN ---
+        // --- MANEJO DEL ESTADO DE AUTENTICACIÓN Y REDIRECCIÓN ---
         auth.onAuthStateChanged(user => {
             if (user) {
-                // Usuario ha iniciado sesión
-                authContainer.style.display = 'none';
-                userInfoDiv.style.display = 'block';
-                authTitle.textContent = `¡Bienvenido, ${user.displayName || 'Usuario'}!`;
-                userNameP.textContent = user.displayName;
-                userEmailP.textContent = user.email;
-                userPhotoImg.src = user.photoURL || 'https://placehold.co/96x96/14b8a6/ffffff?text=AG';
+                // Usuario ha iniciado sesión.
+                console.log('Usuario autenticado. Redirigiendo al campus...');
+                
+                // ** CAMBIO CLAVE: Redirigir al usuario a la página del campus. **
+                window.location.href = 'campus.html';
+
             } else {
-                // Usuario no ha iniciado sesión
-                authContainer.style.display = 'block';
-                userInfoDiv.style.display = 'none';
-                authTitle.textContent = 'Accede a tu Cuenta';
+                // Usuario no ha iniciado sesión. 
+                // Aseguramos que los formularios de login/registro estén visibles.
+                document.getElementById('auth-container').style.display = 'block';
+                document.getElementById('userInfo').style.display = 'none';
+                document.getElementById('auth-title').textContent = 'Accede a tu Cuenta';
             }
         });
         
