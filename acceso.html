@@ -308,37 +308,51 @@
                 .catch((error) => {
                     console.error("Error en inicio de sesión con Facebook:", error);
                     
-                    // **INICIO DE LA LÓGICA DE VINCULACIÓN DE CUENTAS**
+                    // **INICIO DE LA LÓGICA DE VINCULACIÓN DE CUENTAS MEJORADA**
                     if (error.code === 'auth/account-exists-with-different-credential') {
                         const pendingCred = error.credential;
                         const email = error.email;
                         
                         auth.fetchSignInMethodsForEmail(email).then((methods) => {
-                            const originalProvider = methods[0];
-                            
-                            alert(`Ya tienes una cuenta con este correo a través de ${originalProvider}. Por favor, inicia sesión con ese método para vincular tu cuenta de Facebook.`);
-
-                            let providerToLink;
-                            if (originalProvider === 'google.com') {
-                                providerToLink = new firebase.auth.GoogleAuthProvider();
-                            } else {
-                                alert('No se pudo determinar el proveedor original. Por favor, inicia sesión de la forma habitual.');
+                            if (!methods || methods.length === 0) {
+                                alert('Ocurrió un error inesperado. Por favor, intenta iniciar sesión con tu método original.');
                                 return;
                             }
 
-                            auth.signInWithPopup(providerToLink).then((result) => {
-                                return result.user.linkWithCredential(pendingCred);
-                            }).then(() => {
-                                console.log("Cuentas de Google y Facebook vinculadas exitosamente.");
-                            }).catch((linkError) => {
-                                console.error("Error al vincular las cuentas:", linkError);
-                                alert("Hubo un error al intentar vincular tus cuentas.");
-                            });
+                            const originalProviderId = methods[0];
+                            let originalProviderName = 'un método desconocido';
+                            let providerToLink = null;
+
+                            if (originalProviderId === 'google.com') {
+                                originalProviderName = 'Google';
+                                providerToLink = new firebase.auth.GoogleAuthProvider();
+                            } else if (originalProviderId === 'password') {
+                                originalProviderName = 'tu correo y contraseña';
+                            }
+                            
+                            // Informamos al usuario y le guiamos
+                            alert(`Ya tienes una cuenta con este correo a través de ${originalProviderName}. A continuación, inicia sesión con ese método para conectar tu cuenta de Facebook.`);
+
+                            if (providerToLink) {
+                                // Si es un proveedor de popup (Google), lo iniciamos
+                                auth.signInWithPopup(providerToLink).then((result) => {
+                                    return result.user.linkWithCredential(pendingCred);
+                                }).then(() => {
+                                    console.log("Cuentas vinculadas exitosamente.");
+                                    // onAuthStateChanged se encargará de la redirección
+                                }).catch((linkError) => {
+                                    console.error("Error al vincular las cuentas:", linkError);
+                                    alert("Hubo un error al intentar vincular tus cuentas.");
+                                });
+                            } else {
+                                // Si es email/password, no podemos hacer un popup. Le damos instrucciones.
+                                alert('Por favor, cierra esta ventana e inicia sesión con tu correo y contraseña para continuar.');
+                            }
                         });
                     } else {
                         alert(`Error: ${error.message}`);
                     }
-                    // **FIN DE LA LÓGICA DE VINCULACIÓN DE CUENTAS**
+                    // **FIN DE LA LÓGICA DE VINCULACIÓN DE CUENTAS MEJORADA**
                 });
         });
 
