@@ -310,8 +310,9 @@ async function trySignIn(provider) {
 
     /* ----- colisión: el correo ya existe con otro método ----- */
     const pendingCred = error.credential;
-    const email = error.customData?.email?.toLowerCase();
+    const email = (error.email || error.customData?.email || '').toLowerCase();
 
+console.log('[collision] métodos encontrados:', methods);
 
     if (!email) {
       alert('No pudimos obtener tu correo del proveedor.');
@@ -323,6 +324,8 @@ async function trySignIn(provider) {
       alert('No encontramos otro método de inicio de sesión para este correo.');
       return;
     }
+      
+
 
     const originalId   = methods[0];
     const info         = providerInfo[originalId] || { name: originalId, instance: () => null };
