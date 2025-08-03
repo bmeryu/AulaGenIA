@@ -315,17 +315,19 @@
                     }
 
                     const [originalId] = await auth.fetchSignInMethodsForEmail(email);
-                    const info = providerInfo[originalId] || { name: originalId, instance: () => null };
+                    const info           = providerInfo[originalId] || { name: originalId, instance: () => null };
+const originalPvdr   = info.instance();           // 1) ejecuta la función
 
-                    if (!info.instance) {
-                        alert(`Ya tienes una cuenta con ${info.name}. Inicia sesión con ese método y, una vez dentro, agrega Facebook/Google desde tu perfil.`);
-                        return;
-                    }
+if (!originalPvdr) {                              // 2) ¿devuelve null?  ⇒ contraseña
+  alert(`Ya tienes una cuenta con ${info.name}. Inicia sesión con ese método…`);
+  return;
+}
 
-                    alert(`Ya tienes una cuenta con ${info.name}. Por favor, inicia sesión con ${info.name} para vincular tu cuenta.`);
-                    const { user } = await auth.signInWithPopup(info.instance());
-                    await user.linkWithCredential(pendingCred);
-                    console.log('Cuentas vinculadas con éxito.');
+alert(`Ya tienes una cuenta con ${info.name}. Por favor, inicia sesión…`);
+const { user } = await auth.signInWithPopup(originalPvdr);   // 3) úsalo
+await user.linkWithCredential(pendingCred);
+
+                              console.log('Cuentas vinculadas con éxito.');
                     // onAuthStateChanged se encargará de la redirección
                 } catch (linkError) {
                     console.error("Error durante la vinculación:", linkError);
