@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v5):
+    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v6):
     ----------------------------------------------------------------------
-    1.  **Robustez en Vinculación de Cuentas (Corrección Final):**
-        -   Se ha mejorado la forma en que se obtiene el email del usuario cuando ocurre un error de 'cuenta ya existente'.
-        -   El script ahora intenta obtener el email desde `error.credential` si no está disponible directamente en `error.email`.
-        -   Esto soluciona el "error inesperado" y hace que el flujo de vinculación sea mucho más fiable, funcionando en todos los casos.
+    1.  **Corrección Crítica de Configuración:**
+        -   Se ha corregido un error de tipeo en el `appId` dentro del objeto `firebaseConfig`.
+        -   Un `appId` incorrecto impedía la correcta inicialización de Firebase, causando que los botones de inicio de sesión no funcionaran.
+        -   Con esta corrección, la conexión a Firebase se establecerá correctamente y toda la funcionalidad de autenticación será restaurada.
 -->
 <html lang="es-CL">
 <head>
@@ -191,4 +191,240 @@
                                 </div>
                             </div>
                             <div>
-                                <label for="register-email" class="mb-2 block text
+                                <label for="register-email" class="mb-2 block text-sm font-medium text-gray-300">Correo Electrónico</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="mail" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="email" id="register-email" placeholder="tu@email.com" required aria-required="true" autocomplete="email" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="register-password" class="mb-2 block text-sm font-medium text-gray-300">Contraseña</label>
+                                 <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="lock" class="h-5 w-5 text-gray-400"></i></span>
+                                    <input type="password" id="register-password" placeholder="Crea una contraseña segura" required aria-required="true" autocomplete="new-password" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-start">
+                            <div class="flex h-5 items-center">
+                                <input id="marketing-opt-in" type="checkbox" checked class="h-4 w-4 cursor-pointer rounded border-gray-500 bg-gray-700 text-teal-500 focus:ring-teal-500">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="marketing-opt-in" class="cursor-pointer text-gray-300">Quiero recibir correos con novedades y promociones.</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="gradient-button mt-6 w-full rounded-lg py-3 text-lg font-bold">Crear mi Cuenta</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Este DIV ya no se usará porque redirigimos, pero lo dejamos por si se necesita en el futuro -->
+            <div id="userInfo" style="display: none;" class="mt-6 text-center">
+              <img id="userPhoto" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-teal-500">
+              <p id="userName" class="text-xl font-semibold mb-1"></p>
+              <p id="userEmail" class="text-sm text-gray-400 mb-6"></p>
+              <button id="logoutBtn" class="gradient-button w-full py-3 px-4 rounded-lg text-white font-bold">Cerrar Sesión</button>
+            </div>
+
+        </div>
+    </main>
+    
+    <footer class="container mx-auto text-center px-6 py-4">
+        <p class="text-xs text-gray-500">
+            Al crear una cuenta, aceptas nuestros 
+            <a href="terminoscondiciones.html" class="text-teal-400 hover:underline">Términos de Servicio</a> y 
+            <a href="politica-privacidad.html" class="text-teal-400 hover:underline">Política de Privacidad</a>.
+        </p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+
+    <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONFIGURACIÓN DE FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
+            authDomain: "aulagenia.firebaseapp.com",
+            projectId: "aulagenia",
+            storageBucket: "aulagenia.appspot.com",
+            messagingSenderId: "173328075630",
+            appId: "1:173328075630:web:825606db4271ea1e66cf7f", // <-- CORRECCIÓN APLICADA AQUÍ
+            measurementId: "G-X500LE6Z8X"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // --- REFERENCIAS A ELEMENTOS DEL DOM ---
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginFormContainer = document.getElementById('login-form-container');
+        const registerFormContainer = document.getElementById('register-form-container');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const googleSignInBtn = document.getElementById('google-signin-btn');
+        const facebookSignInBtn = document.getElementById('facebook-signin-btn');
+        
+        // --- LÓGICA DE PESTAÑAS ---
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active-tab');
+            registerTab.classList.remove('active-tab');
+            loginFormContainer.classList.remove('hidden');
+            registerFormContainer.classList.add('hidden');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active-tab');
+            loginTab.classList.remove('active-tab');
+            registerFormContainer.classList.remove('hidden');
+            loginFormContainer.classList.add('hidden');
+        });
+
+        // --- LÓGICA DE AUTENTICACIÓN ---
+
+        // Inicio de sesión con Google
+        googleSignInBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    console.log("Inicio de sesión con Google exitoso:", result.user);
+                })
+                .catch((error) => {
+                    console.error("Error en inicio de sesión con Google:", error);
+                    alert(`Error: ${error.message}`);
+                });
+        });
+
+        // Inicio de sesión con Facebook
+        facebookSignInBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.FacebookAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    console.log("Inicio de sesión con Facebook exitoso:", result.user);
+                })
+                .catch((error) => {
+                    console.error("Error en inicio de sesión con Facebook:", error);
+                    
+                    if (error.code === 'auth/account-exists-with-different-credential') {
+                        const pendingCred = error.credential;
+                        const email = error.email || (pendingCred && pendingCred.providerData[0].email);
+
+                        if (!email) {
+                            alert("No pudimos obtener tu correo electrónico de Facebook para vincular la cuenta. Por favor, inténtalo de nuevo.");
+                            return;
+                        }
+                        
+                        auth.fetchSignInMethodsForEmail(email).then((methods) => {
+                            if (!methods || methods.length === 0) {
+                                alert('Ocurrió un error inesperado. Por favor, intenta iniciar sesión con tu método original.');
+                                return;
+                            }
+
+                            const originalProviderId = methods[0];
+                            let originalProviderName = 'un método desconocido';
+                            let providerToLink = null;
+
+                            if (originalProviderId === 'google.com') {
+                                originalProviderName = 'Google';
+                                providerToLink = new firebase.auth.GoogleAuthProvider();
+                            } else if (originalProviderId === 'password') {
+                                originalProviderName = 'tu correo y contraseña';
+                            }
+                            
+                            alert(`Ya tienes una cuenta con este correo a través de ${originalProviderName}. A continuación, inicia sesión con ese método para conectar tu cuenta de Facebook.`);
+
+                            if (providerToLink) {
+                                auth.signInWithPopup(providerToLink).then((result) => {
+                                    return result.user.linkWithCredential(pendingCred);
+                                }).then(() => {
+                                    console.log("Cuentas vinculadas exitosamente.");
+                                }).catch((linkError) => {
+                                    console.error("Error al vincular las cuentas:", linkError);
+                                    alert("Hubo un error al intentar vincular tus cuentas.");
+                                });
+                            } else {
+                                alert('Por favor, cierra esta ventana e inicia sesión con tu correo y contraseña para continuar.');
+                            }
+                        });
+                    } else {
+                        alert(`Error: ${error.message}`);
+                    }
+                });
+        });
+
+        // Registro con Email y Contraseña
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = registerForm.querySelector('#register-name').value;
+            const email = registerForm.querySelector('#register-email').value;
+            const password = registerForm.querySelector('#register-password').value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    return userCredential.user.updateProfile({
+                        displayName: name
+                    });
+                })
+                .then(() => {
+                    console.log("Usuario registrado y perfil actualizado:", auth.currentUser);
+                })
+                .catch((error) => {
+                    console.error("Error en el registro:", error);
+                    alert(`Error en el registro: ${error.message}`);
+                });
+        });
+
+        // Inicio de sesión con Email y Contraseña
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('#login-email').value;
+            const password = loginForm.querySelector('#login-password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    console.log("Usuario ha iniciado sesión:", userCredential.user);
+                })
+                .catch((error) => {
+                    console.error("Error en inicio de sesión:", error);
+                    alert(`Error: Credenciales incorrectas. Por favor, inténtalo de nuevo.`);
+                });
+        });
+
+        // --- MANEJO DEL ESTADO DE AUTENTICACIÓN Y REDIRECCIÓN ---
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log('Usuario autenticado. Redirigiendo al campus...');
+                window.location.href = 'campus.html';
+            } else {
+                document.getElementById('auth-container').style.display = 'block';
+                document.getElementById('userInfo').style.display = 'none';
+                document.getElementById('auth-title').textContent = 'Accede a tu Cuenta';
+            }
+        });
+        
+        // --- INICIALIZACIÓN DE ÍCONOS Y COOKIES ---
+        lucide.createIcons();
+
+        window.addEventListener('load', () => {
+            if (window.cookieconsent) {
+                window.cookieconsent.initialise({
+                    palette: { popup: { background: '#1f2937' }, button: { background: '#14b8a6' } },
+                    theme: 'classic',
+                    position: 'bottom',
+                    type: 'opt-in',
+                    content: {
+                        message: 'Usamos cookies para mejorar tu experiencia.',
+                        dismiss: 'Aceptar',
+                        deny: 'Rechazar',
+                        link: 'Más info',
+                        href: 'politica-cookies.html'
+                    },
+                });
+            }
+        });
+    });
+    </script>
+
+</body>
+</html>
