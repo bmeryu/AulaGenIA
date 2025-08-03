@@ -284,9 +284,17 @@
 
 const providerInfo = {
   'google.com'  : { name: 'Google',   instance: () => new firebase.auth.GoogleAuthProvider() },
-  'facebook.com': { name: 'Facebook', instance: () => new firebase.auth.FacebookAuthProvider() },
+  'facebook.com': {                    // ← EDITADO
+    name: 'Facebook',
+    instance: () => {
+      const p = new firebase.auth.FacebookAuthProvider();
+      p.addScope('email');             // <-- PEDIMOS EL EMAIL
+      return p;
+    }
+  },
   'password'    : { name: 'correo y contraseña', instance: () => null }
 };
+
 
 async function trySignIn(provider) {
   try {
@@ -302,7 +310,8 @@ async function trySignIn(provider) {
 
     /* ----- colisión: el correo ya existe con otro método ----- */
     const pendingCred = error.credential;
-    const email       = error.customData?.email;
+    const email = error.customData?.email?.toLowerCase();
+
 
     if (!email) {
       alert('No pudimos obtener tu correo del proveedor.');
