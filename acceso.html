@@ -4,8 +4,12 @@
     ----------------------------------------------------------------------
     1.  **Refactorización a Función Única (Implementación del Usuario):**
         -   Se ha implementado la excelente sugerencia del usuario de refactorizar la lógica de inicio de sesión en una única función asíncrona `trySignIn(provider)`.
-        -   Este enfoque elimina la duplicación de código, haciendo el script más limpio, más fácil de mantener y menos propenso a errores.
-        -   La función maneja de forma robusta y centralizada el flujo de inicio de sesión y la vinculación de cuentas para cualquier proveedor. Es una mejora de calidad profesional.
+        -   Este enfoque elimina la duplicación de código, haciendo el script más limpio, más fácil de<!DOCTYPE html>
+<!-- 
+    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v10):
+    -----------------------------------------------------------------------
+    1.  **Corrección de `storageBucket`:** Se ha corregido el valor en el objeto `firebaseConfig` para evitar advertencias en la consola y asegurar la correcta inicialización de todos los servicios de Firebase.
+    2.  **Lógica de Vinculación Mejorada (Implementación del Usuario):** Se ha adoptado la sugerencia del usuario de usar un objeto `providerInfo` y una función `trySignIn` genérica. Este enfoque es más limpio, escalable y elimina la lógica duplicada, resultando en un código de calidad de producción.
 -->
 <html lang="es-CL">
 <head>
@@ -248,7 +252,7 @@
             apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
             authDomain: "aulagenia.firebaseapp.com",
             projectId: "aulagenia",
-            storageBucket: "aulagenia.firebasestorage.com",
+            storageBucket: "aulagenia.appspot.com", // <-- CORRECCIÓN APLICADA AQUÍ
             messagingSenderId: "173328075630",
             appId: "1:173328075630:web:825606db4271ea1e66cf7f",
             measurementId: "G-X500LE6Z8X"
@@ -281,7 +285,13 @@
             loginFormContainer.classList.add('hidden');
         });
 
-        // --- LÓGICA DE AUTENTICACIÓN REFACTORIZADA ---
+        // --- LÓGICA DE AUTENTICACIÓN REFACTORIZADA (SUGERENCIA DEL USUARIO) ---
+
+        const providerInfo = {
+            'google.com':   { name: 'Google',   instance: () => new firebase.auth.GoogleAuthProvider() },
+            'facebook.com': { name: 'Facebook', instance: () => new firebase.auth.FacebookAuthProvider() },
+            'password':     { name: 'correo y contraseña', instance: () => null }
+        };
 
         async function trySignIn(provider) {
             try {
@@ -297,33 +307,24 @@
                 // --- Lógica de vinculación de cuentas ---
                 try {
                     const pendingCred = error.credential;
-                    const email = error.customData.email;
+                    const email = error.customData?.email;
                     
                     if (!email) {
                         alert("No se pudo obtener el email del proveedor. Asegúrate de que tu cuenta tenga un email verificado.");
                         return;
                     }
 
-                    const methods = await auth.fetchSignInMethodsForEmail(email);
-                    const originalProviderId = methods[0];
-                    
-                    let originalProvider;
-                    if (originalProviderId === 'google.com') {
-                        originalProvider = new firebase.auth.GoogleAuthProvider();
-                        alert("Ya tienes una cuenta con Google. Por favor, inicia sesión con Google para vincular tu cuenta.");
-                    } else if (originalProviderId === 'facebook.com') {
-                        originalProvider = new firebase.auth.FacebookAuthProvider();
-                         alert("Ya tienes una cuenta con Facebook. Por favor, inicia sesión con Facebook para vincular tu cuenta.");
-                    } else if (originalProviderId === 'password') {
-                        alert('Ya tienes una cuenta con correo y contraseña. Por favor, inicia sesión con ese método primero.');
-                        return;
-                    } else {
-                        alert(`Ya tienes una cuenta con ${originalProviderId}. Inicia sesión con ese método.`);
+                    const [originalId] = await auth.fetchSignInMethodsForEmail(email);
+                    const info = providerInfo[originalId] || { name: originalId, instance: () => null };
+
+                    if (!info.instance) {
+                        alert(`Ya tienes una cuenta con ${info.name}. Inicia sesión con ese método y, una vez dentro, agrega Facebook/Google desde tu perfil.`);
                         return;
                     }
-                    
-                    const result = await auth.signInWithPopup(originalProvider);
-                    await result.user.linkWithCredential(pendingCred);
+
+                    alert(`Ya tienes una cuenta con ${info.name}. Por favor, inicia sesión con ${info.name} para vincular tu cuenta.`);
+                    const { user } = await auth.signInWithPopup(info.instance());
+                    await user.linkWithCredential(pendingCred);
                     console.log('Cuentas vinculadas con éxito.');
                     // onAuthStateChanged se encargará de la redirección
                 } catch (linkError) {
