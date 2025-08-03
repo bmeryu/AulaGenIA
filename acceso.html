@@ -1,11 +1,5 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v9):
-    ----------------------------------------------------------------------
-    1.  **Refactorización a Función Única (Implementación del Usuario):**
-        -   Se ha implementado la excelente sugerencia del usuario de refactorizar la lógica de inicio de sesión en una única función asíncrona `trySignIn(provider)`.
-        -   Este enfoque elimina la duplicación de código, haciendo el script más limpio, más fácil de<!DOCTYPE html>
-<!-- 
     ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v10):
     -----------------------------------------------------------------------
     1.  **Corrección de `storageBucket`:** Se ha corregido el valor en el objeto `firebaseConfig` para evitar advertencias en la consola y asegurar la correcta inicialización de todos los servicios de Firebase.
@@ -285,57 +279,57 @@
             loginFormContainer.classList.add('hidden');
         });
 
-        // --- LÓGICA DE AUTENTICACIÓN REFACTORIZADA (SUGERENCIA DEL USUARIO) ---
+        
+// --- LÓGICA DE AUTENTICACIÓN REFACTORIZADA ---
 
-        const providerInfo = {
-            'google.com':   { name: 'Google',   instance: () => new firebase.auth.GoogleAuthProvider() },
-            'facebook.com': { name: 'Facebook', instance: () => new firebase.auth.FacebookAuthProvider() },
-            'password':     { name: 'correo y contraseña', instance: () => null }
-        };
+const providerInfo = {
+  'google.com'  : { name: 'Google',   instance: () => new firebase.auth.GoogleAuthProvider() },
+  'facebook.com': { name: 'Facebook', instance: () => new firebase.auth.FacebookAuthProvider() },
+  'password'    : { name: 'correo y contraseña', instance: () => null }
+};
 
-        async function trySignIn(provider) {
-            try {
-                await auth.signInWithPopup(provider);
-                // Si tiene éxito, onAuthStateChanged se encargará de la redirección
-            } catch (error) {
-                if (error.code !== 'auth/account-exists-with-different-credential') {
-                    console.error("Error de inicio de sesión:", error);
-                    alert(error.message);
-                    return;
-                }
+async function trySignIn(provider) {
+  try {
+    await auth.signInWithPopup(provider);            // login normal
+    // onAuthStateChanged hará la redirección
+  } catch (error) {
 
-                // --- Lógica de vinculación de cuentas ---
-                try {
-                    const pendingCred = error.credential;
-                    const email = error.customData?.email;
-                    
-                    if (!email) {
-                        alert("No se pudo obtener el email del proveedor. Asegúrate de que tu cuenta tenga un email verificado.");
-                        return;
-                    }
+    if (error.code !== 'auth/account-exists-with-different-credential') {
+      console.error(error);
+      alert(error.message);
+      return;
+    }
 
-                    const [originalId] = await auth.fetchSignInMethodsForEmail(email);
-                    const info           = providerInfo[originalId] || { name: originalId, instance: () => null };
-const originalPvdr   = info.instance();           // 1) ejecuta la función
+    /* ----- colisión: el correo ya existe con otro método ----- */
+    const pendingCred = error.credential;
+    const email       = error.customData?.email;
 
-if (!originalPvdr) {                              // 2) ¿devuelve null?  ⇒ contraseña
-  alert(`Ya tienes una cuenta con ${info.name}. Inicia sesión con ese método…`);
-  return;
+    if (!email) {
+      alert('No pudimos obtener tu correo del proveedor.');
+      return;
+    }
+
+    const methods = await auth.fetchSignInMethodsForEmail(email);
+    if (!methods || methods.length === 0) {
+      alert('No encontramos otro método de inicio de sesión para este correo.');
+      return;
+    }
+
+    const originalId   = methods[0];
+    const info         = providerInfo[originalId] || { name: originalId, instance: () => null };
+    const originalPvdr = info.instance();            // crea el AuthProvider
+
+    if (!originalPvdr) {                             // caso contraseña
+      alert(`Ya tienes una cuenta con ${info.name}. Inicia sesión con ese método y, una vez dentro, vincula el nuevo proveedor desde tu perfil.`);
+      return;
+    }
+
+    alert(`Ya tienes una cuenta con ${info.name}. Por favor, inicia sesión con ${info.name} para vincular tu cuenta.`);
+    const { user } = await auth.signInWithPopup(originalPvdr); // popup del método original
+    await user.linkWithCredential(pendingCred);                // vínculo único
+    console.log('Cuentas vinculadas con éxito');
+  }
 }
-
-alert(`Ya tienes una cuenta con ${info.name}. Por favor, inicia sesión…`);
-const { user } = await auth.signInWithPopup(originalPvdr);   // 3) úsalo
-await user.linkWithCredential(pendingCred);
-
-                              console.log('Cuentas vinculadas con éxito.');
-                    // onAuthStateChanged se encargará de la redirección
-                } catch (linkError) {
-                    console.error("Error durante la vinculación:", linkError);
-                    alert("Hubo un error al intentar vincular las cuentas.");
-                }
-            }
-        }
-
         googleSignInBtn.addEventListener('click', () => trySignIn(new firebase.auth.GoogleAuthProvider()));
         facebookSignInBtn.addEventListener('click', () => trySignIn(new firebase.auth.FacebookAuthProvider()));
 
