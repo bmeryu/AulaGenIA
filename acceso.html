@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v3):
+    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v4):
     ----------------------------------------------------------------------
-    1.  **Redirección Automática (Implementación Clave):**
-        -   Se ha modificado la función `onAuthStateChanged`.
-        -   Ahora, cuando se detecta que un usuario ha iniciado sesión (`if (user)`), en lugar de mostrar su información en esta misma página, el script ejecuta `window.location.href = 'campus.html';`.
-        -   Esto redirige automáticamente al usuario al Campus Virtual, creando un flujo de usuario lógico y sin interrupciones.
-        -   La sección `userInfo` que mostraba los datos del usuario en esta página se ha vuelto redundante y, aunque se mantiene en el HTML, nunca será visible, ya que la redirección ocurre antes.
+    1.  **Lógica de Vinculación de Cuentas (Implementación Clave):**
+        -   Se ha mejorado drásticamente el bloque `.catch()` para el inicio de sesión con Facebook.
+        -   Cuando Firebase devuelve el error `auth/account-exists-with-different-credential`, el script ya no solo muestra una alerta.
+        -   Ahora, detecta cuál fue el proveedor original (ej. Google), le informa al usuario, y lo invita a iniciar sesión con ese proveedor para vincular las cuentas.
+        -   Este flujo guiado soluciona el problema de raíz y proporciona una experiencia de usuario fluida y segura.
 -->
 <html lang="es-CL">
 <head>
@@ -265,6 +265,7 @@
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         const googleSignInBtn = document.getElementById('google-signin-btn');
+        const facebookSignInBtn = document.getElementById('facebook-signin-btn');
         
         // --- LÓGICA DE PESTAÑAS ---
         loginTab.addEventListener('click', () => {
@@ -289,30 +290,57 @@
             auth.signInWithPopup(provider)
                 .then((result) => {
                     console.log("Inicio de sesión con Google exitoso:", result.user);
-                    // La redirección se maneja en onAuthStateChanged
                 })
                 .catch((error) => {
                     console.error("Error en inicio de sesión con Google:", error);
+                    // Aquí también se podría implementar la lógica de vinculación si fuera necesario
                     alert(`Error: ${error.message}`);
                 });
         });
-        // --- REFERENCIA AL BOTÓN DE FACEBOOK ---
-const facebookSignInBtn = document.getElementById('facebook-signin-btn');
 
-// Inicio de sesión con Facebook
-facebookSignInBtn.addEventListener('click', () => {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    auth.signInWithPopup(provider)
-        .then((result) => {
-            console.log("Inicio de sesión con Facebook exitoso:", result.user);
-            // La redirección se maneja en onAuthStateChanged
-        })
-        .catch((error) => {
-            console.error("Error en inicio de sesión con Facebook:", error);
-            alert(`Error: ${error.message}`);
+        // Inicio de sesión con Facebook
+        facebookSignInBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.FacebookAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    console.log("Inicio de sesión con Facebook exitoso:", result.user);
+                })
+                .catch((error) => {
+                    console.error("Error en inicio de sesión con Facebook:", error);
+                    
+                    // **INICIO DE LA LÓGICA DE VINCULACIÓN DE CUENTAS**
+                    if (error.code === 'auth/account-exists-with-different-credential') {
+                        const pendingCred = error.credential;
+                        const email = error.email;
+                        
+                        auth.fetchSignInMethodsForEmail(email).then((methods) => {
+                            const originalProvider = methods[0];
+                            
+                            alert(`Ya tienes una cuenta con este correo a través de ${originalProvider}. Por favor, inicia sesión con ese método para vincular tu cuenta de Facebook.`);
+
+                            let providerToLink;
+                            if (originalProvider === 'google.com') {
+                                providerToLink = new firebase.auth.GoogleAuthProvider();
+                            } else {
+                                alert('No se pudo determinar el proveedor original. Por favor, inicia sesión de la forma habitual.');
+                                return;
+                            }
+
+                            auth.signInWithPopup(providerToLink).then((result) => {
+                                return result.user.linkWithCredential(pendingCred);
+                            }).then(() => {
+                                console.log("Cuentas de Google y Facebook vinculadas exitosamente.");
+                            }).catch((linkError) => {
+                                console.error("Error al vincular las cuentas:", linkError);
+                                alert("Hubo un error al intentar vincular tus cuentas.");
+                            });
+                        });
+                    } else {
+                        alert(`Error: ${error.message}`);
+                    }
+                    // **FIN DE LA LÓGICA DE VINCULACIÓN DE CUENTAS**
+                });
         });
-});
-
 
         // Registro con Email y Contraseña
         registerForm.addEventListener('submit', (e) => {
@@ -329,7 +357,6 @@ facebookSignInBtn.addEventListener('click', () => {
                 })
                 .then(() => {
                     console.log("Usuario registrado y perfil actualizado:", auth.currentUser);
-                     // La redirección se maneja en onAuthStateChanged
                 })
                 .catch((error) => {
                     console.error("Error en el registro:", error);
@@ -346,7 +373,6 @@ facebookSignInBtn.addEventListener('click', () => {
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     console.log("Usuario ha iniciado sesión:", userCredential.user);
-                    // La redirección se maneja en onAuthStateChanged
                 })
                 .catch((error) => {
                     console.error("Error en inicio de sesión:", error);
@@ -357,15 +383,9 @@ facebookSignInBtn.addEventListener('click', () => {
         // --- MANEJO DEL ESTADO DE AUTENTICACIÓN Y REDIRECCIÓN ---
         auth.onAuthStateChanged(user => {
             if (user) {
-                // Usuario ha iniciado sesión.
                 console.log('Usuario autenticado. Redirigiendo al campus...');
-                
-                // ** CAMBIO CLAVE: Redirigir al usuario a la página del campus. **
                 window.location.href = 'campus.html';
-
             } else {
-                // Usuario no ha iniciado sesión. 
-                // Aseguramos que los formularios de login/registro estén visibles.
                 document.getElementById('auth-container').style.display = 'block';
                 document.getElementById('userInfo').style.display = 'none';
                 document.getElementById('auth-title').textContent = 'Accede a tu Cuenta';
