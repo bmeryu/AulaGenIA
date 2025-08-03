@@ -308,23 +308,24 @@ async function trySignIn(provider) {
       return;
     }
 
-    /* ----- colisión: el correo ya existe con otro método ----- */
-    const pendingCred = error.credential;
-    const email = (error.email || error.customData?.email || '').toLowerCase();
+ /* ----- colisión: el correo ya existe con otro método ----- */
+const pendingCred = error.credential;
+const email = (error.email || error.customData?.email || '').toLowerCase();
+console.log('[collision] email recibido:', email);   // ✔️ ahora SÍ se puede loguear
 
-console.log('[collision] métodos encontrados:', methods);
+if (!email) {
+  alert('No pudimos obtener tu correo del proveedor.');
+  return;
+}
 
-    if (!email) {
-      alert('No pudimos obtener tu correo del proveedor.');
-      return;
-    }
+const methods = await auth.fetchSignInMethodsForEmail(email);
+console.log('[collision] métodos encontrados:', methods);  // ✔️ ya existe “methods”
 
-    const methods = await auth.fetchSignInMethodsForEmail(email);
-    if (!methods || methods.length === 0) {
-      alert('No encontramos otro método de inicio de sesión para este correo.');
-      return;
-    }
-      
+if (!methods || methods.length === 0) {
+  alert('No encontramos otro método de inicio de sesión para este correo.');
+  return;
+}
+     
 
 
     const originalId   = methods[0];
