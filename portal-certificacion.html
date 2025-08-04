@@ -133,10 +133,16 @@
     <script defer>
         document.addEventListener('DOMContentLoaded', () => {
             const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
-            firebase.initializeApp(firebaseConfig);
+            
+            try {
+                firebase.initializeApp(firebaseConfig);
+            } catch(e) {
+                console.error("Firebase ya fue inicializado.");
+            }
+
             const auth = firebase.auth();
             const db = firebase.firestore();
-            const appId = 'default-app-id'; // Consistente con otros scripts
+            const appId = 'default-app-id';
             
             let currentUser = null;
 
@@ -158,7 +164,6 @@
 
             const { jsPDF } = window.jspdf;
             
-            // **CORRECCIÓN:** Lógica de autenticación estandarizada
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUser = {
@@ -167,12 +172,10 @@
                     };
                     loadUserDashboard();
                 } else {
-                    // **CORRECCIÓN:** Redirigir si no hay sesión
                     window.location.href = 'acceso.html';
                 }
             });
 
-            // **MEJORA:** Cargar dinámicamente los cursos completados
             async function loadUserDashboard() {
                 if (!currentUser) return;
                 dom.studentNameDisplay.textContent = currentUser.name;
