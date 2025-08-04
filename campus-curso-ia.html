@@ -1,402 +1,228 @@
 <!DOCTYPE html>
-<html lang="es-CL">
+<!-- 
+  CAMPUS DASHBOARD · AULA GENIA v2.5 (Robust Auth Flow)
+  -------------------------------------------------------------------
+  Esta versión refactoriza el script para usar onAuthStateChanged como
+  punto de entrada principal, garantizando que la base de datos y la
+  autenticación estén listas antes de cualquier operación.
+  -------------------------------------------------------------------
+-->
+<html lang="es-CL" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8" />
-    <title>Lección del Curso - Aula GenIA</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
-    <link rel="canonical" href="https://aulagenia.cl/campus-curso-ia.html">
-    <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
-    <style>
-        :root {
-            --brand-teal: #14b8a6;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc;
-        }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-        }
-        .accordion-content.open {
-            max-height: 1000px;
-        }
-        .tab-button.active {
-            color: var(--brand-teal);
-            border-bottom-color: var(--brand-teal);
-        }
-        .toast-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            transform: translateX(120%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        .toast-notification.show {
-            transform: translateX(0);
-        }
-        .quiz-option {
-            transition: all 0.2s ease-in-out;
-        }
-        .quiz-option.selected {
-            border-color: var(--brand-teal);
-            background-color: #f0fdfa;
-            box-shadow: 0 0 0 2px var(--brand-teal);
-        }
-        .quiz-option.correct {
-            border-color: #22c55e;
-            background-color: #f0fdf4;
-        }
-        .quiz-option.incorrect {
-            border-color: #ef4444;
-            background-color: #fef2f2;
-        }
-        #completion-modal.show > div {
-            transform: scale(1);
-            opacity: 1;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Campus Virtual – Aula GenIA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
+  <link rel="canonical" href="https://aulagenia.cl/campus.html">
+  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    :root {
+      --brand-teal: #14b8a6;
+      --brand-green: #22c55e;
+      --brand-blue: #3b82f6;
+      --brand-yellow: #facc15;
+    }
+    html { font-family: 'Poppins', sans-serif; }
+    body { background-color: #f8fafc; }
+    .card-hover {
+      @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
+    }
+  </style>
 </head>
 <body class="text-gray-800">
 
-    <div id="app" class="flex flex-col h-screen">
-        <header class="bg-white shadow-sm z-20">
-            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <a href="campus.html" aria-label="Volver al Campus de Aula GenIA">
-                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-10 w-auto">
-                </a>
-                <div id="user-profile-container" class="flex items-center gap-4" style="display: none;">
-                    <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
-                    <img id="user-avatar" src="" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500">
-                    <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
-                </div>
-            </nav>
-        </header>
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2" aria-label="Ir al inicio de Aula GenIA">
+        <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-10 w-auto" />
+      </a>
+      <div id="user-profile" class="hidden sm:flex items-center gap-3">
+        <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[10ch]"></span>
+        <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500" />
+        <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar sesión</button>
+      </div>
+    </nav>
+  </header>
 
-        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
-                <div class="p-6">
-                    <a href="campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
-                    <h1 class="text-2xl font-bold text-gray-900">GenIA Week: Acceso Total</h1>
-                    <div class="mt-4">
-                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
-                        <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
-                    </div>
-                </div>
-                <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
-            </aside>
+  <main class="container mx-auto px-6 py-12 max-w-7xl">
+    <section class="mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Aprendiz</span>!</h1>
+      <p class="text-lg text-gray-600 mt-2">Sigamos creando cosas increíbles con&nbsp;IA ✨</p>
+    </section>
 
-            <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
-                <div class="p-6 md:p-8 lg:p-10">
-                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-4">Cargando...</h2>
-                    <div id="lesson-material-container" class="mb-6"></div>
-                    <div id="tabs-container">
-                        <div class="border-b border-slate-200">
-                            <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                                <button class="tab-button active" data-tab="descripcion">Descripción</button>
-                                <button class="tab-button" data-tab="recursos">Recursos</button>
-                                <button class="tab-button" data-tab="notas">Mis Notas</button>
-                            </nav>
-                        </div>
-                        <div class="py-6">
-                            <div id="descripcion" class="tab-content prose max-w-none text-gray-600"></div>
-                            <div id="recursos" class="tab-content hidden prose max-w-none text-gray-600"></div>
-                            <div id="notas" class="tab-content hidden"><textarea class="w-full h-40 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Escribe tus notas privadas para esta lección..."></textarea></div>
-                        </div>
-                    </div>
-                    <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
-                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
-                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+    <section aria-labelledby="courses-heading">
+      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-    <!-- Notificaciones y Modales -->
-    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div>
-    <div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
-    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 transition-opacity duration-300"></div>
-    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "GenIA Week: Acceso Total".</p><div class="text-left bg-slate-100 p-4 rounded-lg mt-6"><h3 class="font-semibold flex items-center gap-2"><i data-lucide="award"></i>Tu Certificado</h3><p class="text-sm text-gray-600 mt-1">Tu certificado digital está siendo procesado por nuestro equipo académico. Una vez validado, recibirás un correo con el documento y un enlace para añadirlo a tu perfil de LinkedIn.</p></div><div class="text-left bg-teal-50 border border-teal-200 p-4 rounded-lg mt-4"><h3 class="font-semibold flex items-center gap-2 text-teal-800"><i data-lucide="gift"></i>Tu Recompensa Exclusiva</h3><p class="text-sm text-teal-700 mt-1">Como premio a tu dedicación, hemos desbloqueado un <strong>cupón del 20% de descuento</strong> para tu próximo curso.</p></div><button id="close-modal-btn" class="mt-8 w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Ir a Mis Certificaciones</button></div></div>
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="geniaweek">
+          <div class="p-6 flex-grow">
+            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">Inteligencia Artificial Aplicada</h3>
+            <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
+            <div class="mb-2">
+              <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
+                <span>Progreso</span>
+                <span class="percent">0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="fill h-2.5 rounded-full transition-all duration-500" style="background-color: var(--brand-teal); width: 0%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-gray-50 px-6 py-4">
+            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+              Continuar aprendiendo
+            </a>
+          </div>
+        </article>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+        <article class="bg-white rounded-2xl shadow overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center p-8 text-center">
+          <div>
+            <h3 class="text-xl font-bold text-gray-500 mb-2">IA para Marketing Digital</h3>
+            <p class="text-gray-400 text-sm mb-4">Aprende a crear campañas y contenido que convierten usando IA.</p>
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-100 px-3 py-1.5 rounded-full">Próximamente</span>
+          </div>
+        </article>
 
-    <script defer>
-        document.addEventListener('DOMContentLoaded', () => {
-            const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden">
+          <div class="p-6">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">Recursos</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">Comunidad &amp; Plantillas</h3>
+            <p class="text-gray-600 text-sm mb-6">Únete a nuestro Discord exclusivo y descarga más de 20 plantillas de prompts.</p>
+          </div>
+          <div class="bg-gray-50 px-6 py-4">
+            <a href="#" class="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Acceder a recursos</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
+    © 2025 Aula GenIA · Todos los derechos reservados.
+  </footer>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+      
+      try {
+        firebase.initializeApp(firebaseConfig);
+      } catch(e) {
+        console.error("Firebase ya fue inicializado.");
+      }
+      
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      
+      const courseStructure = {
+          geniaweek: {
+              modules: [
+                  { lessons: [{}, {}, {}, {}] },
+                  { lessons: [{}, {}, {}, {}] }
+              ]
+          }
+      };
+
+      function getTotalLessons(courseId) {
+          const course = courseStructure[courseId];
+          if (!course) return 0;
+          return course.modules.reduce((total, module) => total + module.lessons.length, 0);
+      }
+
+      function updateCardUI(card, progress) {
+        const tagEl = card.querySelector('.tag');
+        const percentEl = card.querySelector('.percent');
+        const fillEl = card.querySelector('.fill');
+        const footerEl = card.querySelector('.card-footer');
+
+        percentEl.textContent = `${progress}%`;
+        fillEl.style.width = `${progress}%`;
+
+        if (progress >= 100) {
+          tagEl.textContent = 'Completado';
+          tagEl.classList.remove('bg-teal-100', 'text-teal-600');
+          tagEl.classList.add('bg-green-100', 'text-green-600');
+          fillEl.style.backgroundColor = 'var(--brand-green)';
+          
+          footerEl.innerHTML = `
+            <div class="space-y-3">
+              <a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                <i data-lucide="award" class="h-5 w-5"></i>
+                <span>Ver Certificado</span>
+              </a>
+              <div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">
+                ¡Cupón del 20% DESBLOQUEADO!
+              </div>
+            </div>
+          `;
+        } else {
+          footerEl.innerHTML = `
+            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+              Continuar aprendiendo
+            </a>
+          `;
+        }
+        lucide.createIcons();
+      }
+
+      async function loadCourseProgressFromFirestore(userId) {
+        const progressRef = db.collection('userProgress').doc(userId);
+        try {
+          const doc = await progressRef.get();
+          const progressData = doc.exists ? doc.data() : {};
+          
+          document.querySelectorAll('[data-course-id]').forEach(card => {
+            const courseId = card.dataset.courseId;
+            const courseProgressData = progressData[courseId] || { completedLessons: [] };
             
-            try {
-                firebase.initializeApp(firebaseConfig);
-            } catch(e) {
-                console.error("Firebase ya fue inicializado.");
-            }
+            const totalLessons = getTotalLessons(courseId);
+            const completedCount = courseProgressData.completedLessons.length;
+            const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
-            const auth = firebase.auth();
-            const db = firebase.firestore();
-            
-            const courseId = 'geniaweek';
-            const courseData = {
-                modules: [
-                    {
-                        title: 'Módulo 1: Fundamentos',
-                        badge: 'Maestro de Fundamentos',
-                        lessons: [
-                            { id: '1-1', title: '¿Qué es la IA?', type: 'video', desc: 'Introducción conceptual al mundo de la IA.', res: '<li><a href="#">Paper de Alan Turing</a></li>' },
-                            { id: '1-2', title: 'Historia y Evolución', type: 'video', desc: 'Un recorrido histórico desde los inicios hasta hoy.', res: '' },
-                            { id: '1-3', title: 'IA, ML y Deep Learning', type: 'text', desc: 'Aclarando las diferencias clave entre estos términos.', res: '<li><a href="#">Artículo de Forbes</a></li>' },
-                            { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Pon a prueba tus conocimientos sobre los fundamentos.', questions: [{ text: '¿Cuál de estos es un ejemplo de IA "estrecha"?', options: ['Un robot con conciencia', 'Siri o Alexa', 'Terminator'], correctAnswer: 1 }] }
-                        ]
-                    },
-                    {
-                        title: 'Módulo 2: IA Generativa',
-                        badge: 'Domador de Prompts',
-                        lessons: [
-                            { id: '2-1', title: 'Introducción a los LLMs', type: 'video', desc: 'Descubre cómo funcionan los modelos de lenguaje.', res: '' },
-                            { id: '2-2', title: 'El Arte del Prompt Engineering', type: 'video', desc: 'Aprende a comunicarte efectivamente con la IA.', res: '' },
-                            { id: '2-3', title: 'Taller Práctico: Creando Prompts', type: 'resource', desc: 'Descarga nuestra guía y pon a prueba tus habilidades.', res: '<li><a href="#">Guía de Prompts (PDF)</a></li>' },
-                            { id: 'q-2', title: 'Quiz: Módulo 2', type: 'quiz', desc: 'Valida tu entendimiento sobre IA Generativa.', questions: [{ text: '¿Qué es un "LLM"?', options: ['Un tipo de hardware', 'Un modelo de lenguaje grande', 'Una criptomoneda'], correctAnswer: 1 }] }
-                        ]
-                    }
-                ]
-            };
-            const allLessons = courseData.modules.flatMap(m => m.lessons);
-            let currentUser = null;
-            let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id };
+            updateCardUI(card, progressValue);
+          });
+        } catch (error) {
+          console.error("Error al obtener progreso desde Firestore:", error);
+          document.querySelectorAll('[data-course-id]').forEach(card => {
+            updateCardUI(card, 0);
+          });
+        }
+      }
 
-            const dom = {
-                userProfile: document.getElementById('user-profile-container'), userName: document.getElementById('user-name'), userAvatar: document.getElementById('user-avatar'), logoutButton: document.getElementById('logout-button'), progressBar: document.getElementById('progress-bar'), progressText: document.getElementById('progress-text'), modulesContainer: document.getElementById('modules-container'), lessonTitle: document.getElementById('lesson-title'), prevBtn: document.getElementById('prev-lesson-btn'), mainActionBtn: document.getElementById('main-action-btn'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), badgeToast: document.getElementById('badge-toast'), badgeMessage: document.getElementById('badge-message'), lessonMaterialContainer: document.getElementById('lesson-material-container'), tabs: { descripcion: document.getElementById('descripcion'), recursos: document.getElementById('recursos'), notas: document.getElementById('notas') }, tabButtons: document.querySelectorAll('.tab-button'), completionModalOverlay: document.getElementById('completion-modal-overlay'), completionModal: document.getElementById('completion-modal'), modalUserName: document.getElementById('modal-user-name'), closeModalBtn: document.getElementById('close-modal-btn')
-            };
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          const name = user.displayName || 'Alumno';
+          document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
+          document.getElementById('user-avatar').src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
+          document.getElementById('user-profile').classList.remove('hidden');
+          
+          document.getElementById('logout-btn').addEventListener('click', e => {
+            e.preventDefault();
+            auth.signOut().then(() => window.location.href = 'index.html');
+          });
 
-            function renderSidebar() {
-                dom.modulesContainer.innerHTML = courseData.modules.map(module => {
-                    const lessonsHtml = module.lessons.map(lesson => {
-                        const isCompleted = userProgress.completedLessons.includes(lesson.id);
-                        const isActive = userProgress.currentLessonId === lesson.id;
-                        const statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
-                        const iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
-                        const activeClass = isActive ? 'bg-teal-50 text-teal-700 font-semibold' : 'text-gray-600 hover:bg-slate-100';
-                        const typeIcon = { video: 'video', text: 'file-text', resource: 'download', quiz: 'edit-3' }[lesson.type] || 'file';
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${activeClass}"><i data-lucide="${isActive ? 'play-circle' : statusIcon}" class="h-5 w-5 mr-3 ${isActive ? '' : iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2"></i></a></li>`;
-                    }).join('');
-                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold text-gray-800">${module.title}</span><i data-lucide="chevron-down" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
-                }).join('');
-                addSidebarListeners();
-            }
-
-            function addSidebarListeners() {
-                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); }));
-                dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => header.addEventListener('click', () => { const content = header.nextElementSibling; content.classList.toggle('open'); header.querySelector('i').style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; }));
-            }
-
-            function renderLessonContent(lesson) {
-                let materialHtml = '';
-                switch(lesson.type) {
-                    case 'video': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i></div></div>`; break;
-                    case 'text': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="file-text" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center">Material de lectura en la pestaña 'Descripción'.</p></div></div>`; break;
-                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos descargables en la pestaña 'Recursos'.</p><a href="#" class="bg-teal-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-teal-600 flex items-center gap-2"><i data-lucide="download"></i>Descargar</a></div></div>`; break;
-                    case 'quiz':
-                        const question = lesson.questions[0];
-                        const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
-                        materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-900">Verificar Respuesta</button></div>`;
-                        break;
-                }
-                dom.lessonMaterialContainer.innerHTML = materialHtml;
-                if (lesson.type === 'quiz') {
-                    dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => {
-                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
-                        opt.classList.add('selected');
-                    }));
-                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson));
-                }
-                dom.tabs.descripcion.innerHTML = lesson.desc || 'No hay descripción.';
-                dom.tabs.recursos.innerHTML = lesson.res ? `<ul>${lesson.res}</ul>` : 'No hay recursos.';
-                lucide.createIcons();
-            }
-
-            function checkQuizAnswer(lesson) {
-                const selectedOption = dom.lessonMaterialContainer.querySelector('.quiz-option.selected');
-                if (!selectedOption) { showToast('Por favor, selecciona una respuesta.'); return; }
-                const selectedIndex = parseInt(selectedOption.dataset.index);
-                const correctIndex = lesson.questions[0].correctAnswer;
-                dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
-                if (selectedIndex === correctIndex) {
-                    selectedOption.classList.add('correct');
-                    showToast('¡Respuesta Correcta!');
-                    dom.mainActionBtn.disabled = false;
-                } else {
-                    selectedOption.classList.add('incorrect');
-                    dom.lessonMaterialContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
-                    showToast('Respuesta incorrecta. ¡Sigue intentando!');
-                    setTimeout(() => {
-                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
-                            opt.classList.remove('incorrect', 'correct', 'selected');
-                            opt.style.pointerEvents = 'auto';
-                        });
-                    }, 2000);
-                }
-            }
-
-            async function navigateToLesson(lessonId) {
-                const lesson = allLessons.find(l => l.id === lessonId);
-                if (!lesson) return;
-                userProgress.currentLessonId = lessonId;
-                await saveProgress(); // **CORRECCIÓN:** Guardar la lección actual al navegar
-                dom.lessonTitle.textContent = lesson.title;
-                renderLessonContent(lesson);
-                updateMainActionButton();
-                dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonId) === 0;
-                renderSidebar();
-            }
-
-            function updateMainActionButton() {
-                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
-                const isCompleted = userProgress.completedLessons.includes(lesson.id);
-                const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1;
-                
-                dom.mainActionBtn.disabled = lesson.type === 'quiz' && !isCompleted;
-                
-                if (isCompleted) {
-                    dom.mainActionBtn.textContent = isLastLesson ? 'Finalizar Curso' : 'Continuar';
-                } else {
-                    dom.mainActionBtn.textContent = 'Marcar como completada';
-                }
-                
-                if (isLastLesson) {
-                    const allOthersCompleted = allLessons.filter(l => l.id !== lesson.id).every(l => userProgress.completedLessons.includes(l.id));
-                    if (!allOthersCompleted && !isCompleted) dom.mainActionBtn.disabled = true;
-                }
-            }
-
-            function updateOverallProgress() {
-                const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / allLessons.length) * 100) : 0;
-                dom.progressBar.style.width = `${percentage}%`;
-                dom.progressText.textContent = `${percentage}%`;
-            }
-
-            async function saveProgress() {
-                if (!currentUser) return;
-                const progressRef = db.collection('userProgress').doc(currentUser.uid);
-                await progressRef.set({ [courseId]: userProgress }, { merge: true });
-            }
-
-            function showToast(message, type = 'generic') {
-                const toastEl = type === 'badge' ? dom.badgeToast : dom.toast;
-                const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage;
-                msgEl.textContent = message;
-                toastEl.classList.add('show');
-                setTimeout(() => toastEl.classList.remove('show'), 4000);
-            }
-
-            function checkForBadgeUnlock(completedLessonId) {
-                const module = courseData.modules.find(m => m.lessons.some(l => l.id === completedLessonId));
-                if (!module || !module.badge) return;
-                const lastLessonOfModule = module.lessons[module.lessons.length - 1].id;
-                if (completedLessonId !== lastLessonOfModule) return;
-                const moduleLessonsIds = module.lessons.map(l => l.id);
-                if (moduleLessonsIds.every(id => userProgress.completedLessons.includes(id))) {
-                    showToast(`Has ganado la insignia: "${module.badge}"`, 'badge');
-                }
-            }
-            
-            function showCompletionModal() {
-                dom.modalUserName.textContent = currentUser.name;
-                dom.completionModalOverlay.classList.remove('hidden');
-                dom.completionModal.classList.remove('hidden');
-                setTimeout(() => {
-                    dom.completionModalOverlay.classList.add('opacity-100');
-                    dom.completionModal.classList.add('show');
-                }, 10);
-            }
-            
-            async function loadProgressAndInitialize() {
-                const docRef = db.collection('userProgress').doc(currentUser.uid);
-                try {
-                    const doc = await docRef.get();
-                    if (doc.exists) {
-                        const courseProgress = doc.data()[courseId];
-                        if (courseProgress) userProgress = { ...userProgress, ...courseProgress };
-                    }
-                } catch (error) { console.error("Error al cargar progreso:", error); }
-                
-                renderSidebar();
-                navigateToLesson(userProgress.currentLessonId);
-                updateOverallProgress();
-                lucide.createIcons();
-            }
-
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    currentUser = {
-                        uid: user.uid,
-                        name: user.displayName || 'Alumno',
-                    };
-                    
-                    const name = currentUser.name;
-                    const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name.charAt(0).toUpperCase()}`;
-                    dom.userName.textContent = name;
-                    dom.userAvatar.src = photoURL;
-                    dom.userProfile.style.display = 'flex';
-                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
-
-                    loadProgressAndInitialize();
-                } else {
-                    window.location.href = 'acceso.html';
-                }
-            });
-
-            dom.mainActionBtn.addEventListener('click', async () => {
-                const lessonId = userProgress.currentLessonId;
-                const isCompleted = userProgress.completedLessons.includes(lessonId);
-                
-                if (!isCompleted) {
-                    userProgress.completedLessons.push(lessonId);
-                    await saveProgress(); // **CORRECCIÓN:** Esperar a que se guarde el progreso
-                    updateOverallProgress();
-                    checkForBadgeUnlock(lessonId);
-                    updateMainActionButton();
-                    showToast('¡Lección completada!');
-                    renderSidebar();
-                } else {
-                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
-                    if (currentIndex < allLessons.length - 1) {
-                        navigateToLesson(allLessons[currentIndex + 1].id);
-                    } else {
-                        showCompletionModal();
-                    }
-                }
-            });
-
-            dom.prevBtn.addEventListener('click', () => {
-                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
-                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id);
-            });
-
-            dom.tabButtons.forEach(button => button.addEventListener('click', () => {
-                dom.tabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                Object.values(dom.tabs).forEach(content => content.classList.add('hidden'));
-                dom.tabs[button.dataset.tab].classList.remove('hidden');
-            }));
-            
-            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
-            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
-        });
-    </script>
+          loadCourseProgressFromFirestore(user.uid);
+        } else {
+          window.location.href = 'acceso.html';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
