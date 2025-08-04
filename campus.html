@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v2.0
+  CAMPUS DASHBOARD · AULA GENIA v2.1 (Firestore Edition)
   -------------------------------------------------------------------
-  Esta versión fusiona tu código original (Firebase Auth, SEO & tarjetas
-  de cursos) con las mejoras de UX que propusimos para la página interna
-  del curso (estilos cohesionados, variables de marca, animaciones y un
-  sistema de progreso persistente por curso usando localStorage).
-  -------------------------------------------------------------------
-  👉  Estructura general
-      /campus.html           → Dashboard del estudiante (este archivo)
-      /campus/genia-week.html → Página interna del curso (versión previa)
+  Esta versión reemplaza el sistema de progreso `localStorage` por
+  Firebase Firestore para una sincronización persistente y en tiempo
+  real del progreso del usuario a través de diferentes dispositivos.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -17,14 +12,12 @@
   <meta charset="UTF-8" />
   <title>Campus Virtual – Aula GenIA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Mantener el campus fuera del índice público -->
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
   <link rel="canonical" href="https://aulagenia.cl/campus.html">
   <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
 
-  <!-- Open Graph / Twitter Cards (consistentes) -->
   <meta property="og:title" content="Campus Virtual – Aula GenIA" />
   <meta property="og:description" content="Accede a tus cursos, recursos y comunidad." />
   <meta property="og:image" content="https://aulagenia.cl/og-image.jpg" />
@@ -36,7 +29,6 @@
   <meta name="twitter:description" content="Accede a tus cursos, recursos y comunidad." />
   <meta name="twitter:image" content="https://aulagenia.cl/og-image.jpg" />
 
-  <!-- Datos estructurados básicos -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -48,38 +40,30 @@
     }
   </script>
 
-  <!-- Fonts + Tailwind CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Estilos globales adicionales -->
   <style>
     :root {
-      /* Paleta consistente con la marca */
       --brand-teal: #14b8a6;
       --brand-blue: #3b82f6;
       --brand-yellow: #facc15;
     }
     html { font-family: 'Poppins', sans-serif; }
-    body { background-color: #f8fafc; } /* slate‑50 */
-    /* Tarjetas flotan sutilmente al pasar el ratón */
+    body { background-color: #f8fafc; }
     .card-hover {
       @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
     }
-    /* Ocultar scroll en contenedores si se usa horizontales más adelante */
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="text-gray-800">
 
-  <!-- ============   HEADER   ============ -->
   <header class="bg-white shadow-sm sticky top-0 z-30">
     <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2" aria-label="Ir al inicio de Aula GenIA">
-        <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-10 w-auto" />
+        <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-10 w-auto" />
       </a>
       <div id="user-profile" class="hidden sm:flex items-center gap-3">
         <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[10ch]"></span>
@@ -89,52 +73,45 @@
     </nav>
   </header>
 
-  <!-- ============   MAIN   ============ -->
   <main class="container mx-auto px-6 py-12 max-w-7xl">
-    <!-- Saludo -->
     <section class="mb-12">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Aprendiz</span>!</h1>
       <p class="text-lg text-gray-600 mt-2">Sigamos creando cosas increíbles con&nbsp;IA ✨</p>
     </section>
 
-    <!-- Tarjetas de curso / recursos -->
     <section aria-labelledby="courses-heading">
       <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
-
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-        <!-- === Curso en progreso === -->
         <article class="bg-white rounded-2xl shadow card-hover overflow-hidden" data-course-id="geniaweek">
           <div class="p-6">
             <span class="inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
             <h3 class="text-xl font-bold mt-4 mb-1">GenIA Week: Acceso Total</h3>
             <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
-
             <div class="mb-2">
               <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
                 <span>Progreso</span>
                 <span class="percent">0%</span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="fill h-2.5 rounded-full" style="background-color: var(--brand-teal); width: 0%"></div>
+                <div class="fill h-2.5 rounded-full transition-all duration-500" style="background-color: var(--brand-teal); width: 0%"></div>
               </div>
             </div>
           </div>
           <div class="bg-gray-50 px-6 py-4">
-            <a href="/campus/genia-week.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Continuar aprendiendo</a>
+            <!-- ENLACE ACTUALIZADO PARA APUNTAR A LA PÁGINA DE LECCIONES -->
+            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Continuar aprendiendo</a>
           </div>
         </article>
 
-        <!-- === Curso próximo === -->
         <article class="bg-white rounded-2xl shadow overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center p-8 text-center">
           <div>
-            <h3 class="text-xl font-bold text-gray-500 mb-2">IA para Marketing Digital</h3>
+            <h3 class="text-xl font-bold text-gray-500 mb-2">IA para Marketing Digital</h3>
             <p class="text-gray-400 text-sm mb-4">Aprende a crear campañas y contenido que convierten usando IA.</p>
             <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-100 px-3 py-1.5 rounded-full">Próximamente</span>
           </div>
         </article>
 
-        <!-- === Recursos / comunidad === -->
         <article class="bg-white rounded-2xl shadow card-hover overflow-hidden">
           <div class="p-6">
             <span class="inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">Recursos</span>
@@ -150,19 +127,18 @@
     </section>
   </main>
 
-  <!-- ============   FOOTER   ============ -->
   <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
-    © 2025 Aula GenIA · Todos los derechos reservados.
+    © 2025 Aula GenIA · Todos los derechos reservados.
   </footer>
 
-  <!-- Firebase (compat) -->
+  <!-- Firebase SDKs (Auth y Firestore) -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
 
-  <!-- =================  APP SCRIPT  ================= -->
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
-      /* ---------- 1. Firebase config & auth ---------- */
+      /* ---------- 1. Firebase config & inicialización ---------- */
       const firebaseConfig = {
         apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
         authDomain: "aulagenia.firebaseapp.com",
@@ -174,6 +150,7 @@
       };
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
+      const db = firebase.firestore(); // Inicializar Firestore
 
       const userNameEls = [document.getElementById('user-name'), document.getElementById('welcome-name')];
       const avatarEl = document.getElementById('user-avatar');
@@ -182,12 +159,17 @@
 
       auth.onAuthStateChanged(user => {
         if (user) {
+          // Cargar perfil de usuario
           const name = user.displayName || 'Alumno';
           const photo = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
           userNameEls.forEach(el => el && (el.textContent = name));
           avatarEl.src = photo;
           avatarEl.alt = `Avatar de ${name}`;
           profileBox.classList.remove('hidden');
+
+          // Cargar progreso desde Firestore
+          loadCourseProgressFromFirestore(user.uid);
+
         } else {
           window.location.href = 'acceso.html';
         }
@@ -198,13 +180,29 @@
         auth.signOut().then(() => window.location.href = 'index.html');
       });
 
-      /* ---------- 2. Progreso por curso (localStorage) ---------- */
-      document.querySelectorAll('[data-course-id]').forEach(card => {
-        const id = card.dataset.courseId;
-        const percent = parseInt(localStorage.getItem(`${id}_progress`) || '0', 10);
-        card.querySelector('.fill').style.width = percent + '%';
-        card.querySelector('.percent').textContent = percent + '%';
-      });
+      /* ---------- 2. Lógica de progreso con Firestore ---------- */
+      async function loadCourseProgressFromFirestore(userId) {
+        const progressRef = db.collection('userProgress').doc(userId);
+        try {
+          const doc = await progressRef.get();
+          if (doc.exists) {
+            const progressData = doc.data();
+            // Recorrer todas las tarjetas de curso y actualizar su progreso
+            document.querySelectorAll('[data-course-id]').forEach(card => {
+              const courseId = card.dataset.courseId; // "geniaweek"
+              // El campo en Firestore debe llamarse 'geniaweekProgress'
+              const progressValue = progressData[`${courseId}Progress`] || 0;
+              
+              card.querySelector('.fill').style.width = `${progressValue}%`;
+              card.querySelector('.percent').textContent = `${progressValue}%`;
+            });
+          } else {
+            console.log("No existe documento de progreso para este usuario. Se mostrará 0%.");
+          }
+        } catch (error) {
+          console.error("Error al obtener progreso desde Firestore:", error);
+        }
+      }
     });
   </script>
 </body>
