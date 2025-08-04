@@ -31,11 +31,23 @@
             transition: max-height 0.3s ease-in-out;
         }
         .accordion-content.open {
-            max-height: 500px;
+            max-height: 1000px; /* Aumentado para más lecciones */
         }
         .tab-button.active {
             color: var(--brand-teal);
             border-bottom-color: var(--brand-teal);
+        }
+        /* Estilos para la notificación Toast */
+        #toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            transform: translateX(120%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        #toast-notification.show {
+            transform: translateX(0);
         }
     </style>
 </head>
@@ -74,37 +86,14 @@
                     </div>
                 </div>
                 
-                <nav class="space-y-1 px-2 pb-6">
-                    <div class="accordion-item">
-                        <button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left">
-                            <span class="font-semibold text-gray-800">Módulo 1: Fundamentos de la IA</span>
-                            <i data-lucide="chevron-down" class="h-5 w-5 transition-transform text-gray-500"></i>
-                        </button>
-                        <div class="accordion-content open pl-4">
-                            <ul class="border-l border-slate-200 py-2 space-y-1">
-                                <li class="lesson-item active">
-                                    <a href="#" class="flex items-center p-2 ml-2 rounded-md bg-teal-50 text-teal-700 font-semibold">
-                                        <i data-lucide="play-circle" class="h-5 w-5 mr-3"></i>
-                                        <span class="flex-1 text-sm">1.1 ¿Qué es la IA?</span>
-                                        <i data-lucide="video" class="h-4 w-4 ml-2"></i>
-                                    </a>
-                                </li>
-                                <li class="lesson-item">
-                                    <a href="#" class="flex items-center p-2 ml-2 rounded-md text-gray-600 hover:bg-slate-100">
-                                        <i data-lucide="circle" class="h-5 w-5 mr-3 text-slate-300"></i>
-                                        <span class="flex-1 text-sm">1.2 Historia y Evolución</span>
-                                        <i data-lucide="video" class="h-4 w-4 ml-2"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                <nav id="modules-container" class="space-y-1 px-2 pb-6">
+                    <!-- Los módulos y lecciones se renderizarán aquí dinámicamente -->
                 </nav>
             </aside>
 
             <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
                 <div class="p-6 md:p-8 lg:p-10">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">1.1 ¿Qué es la Inteligencia Artificial?</h2>
+                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-4">Cargando lección...</h2>
                     
                     <div class="aspect-w-16 aspect-h-9 mb-6">
                         <div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white">
@@ -115,11 +104,11 @@
                     <div id="tabs-container"><!-- Pestañas aquí --></div>
 
                     <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
-                        <button class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100" disabled>
+                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">
                             Lección Anterior
                         </button>
                         <button id="complete-lesson-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                            Marcar como completada y continuar
+                            Marcar como completada
                         </button>
                     </div>
                 </div>
@@ -127,121 +116,261 @@
         </main>
     </div>
 
-    <!-- Firebase SDKs (Auth y Firestore) -->
+    <!-- Notificación Toast -->
+    <div id="toast-notification" class="bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3">
+        <i data-lucide="check-circle" class="text-teal-400"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
 
-    <script defer>
+    <script type="module">
+        // Esperar a que el DOM esté listo
         document.addEventListener('DOMContentLoaded', () => {
-            /* ---------- 1. Firebase config & inicialización ---------- */
+            /* ---------- 1. CONFIGURACIÓN E INICIALIZACIÓN ---------- */
             const firebaseConfig = {
                 apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
                 authDomain: "aulagenia.firebaseapp.com",
                 projectId: "aulagenia",
                 storageBucket: "aulagenia.appspot.com",
                 messagingSenderId: "173328075630",
-                appId: "1:173328075630:web:825606db4271ea1e66cf7f",
-                measurementId: "G-X500LE6Z8X"
+                appId: "1:173328075630:web:825606db4271ea1e66cf7f"
             };
             firebase.initializeApp(firebaseConfig);
             const auth = firebase.auth();
-            const db = firebase.firestore(); // Inicializar Firestore
+            const db = firebase.firestore();
+            
+            lucide.createIcons();
+
+            /* ---------- 2. ESTRUCTURA DEL CURSO ---------- */
+            const courseId = 'geniaweek';
+            const courseData = {
+                title: 'GenIA Week: Acceso Total',
+                modules: [
+                    {
+                        title: 'Módulo 1: Fundamentos de la IA',
+                        lessons: [
+                            { id: '1-1', title: '¿Qué es la Inteligencia Artificial?', type: 'video' },
+                            { id: '1-2', title: 'Historia y Evolución de la IA', type: 'video' },
+                            { id: '1-3', title: 'IA, Machine Learning y Deep Learning', type: 'text' },
+                        ]
+                    },
+                    {
+                        title: 'Módulo 2: IA Generativa y LLMs',
+                        lessons: [
+                            { id: '2-1', title: 'Introducción a los LLMs', type: 'video' },
+                            { id: '2-2', title: 'El Arte del Prompt Engineering', type: 'video' },
+                            { id: '2-3', title: 'Taller Práctico: Creando Prompts Efectivos', type: 'resource' },
+                        ]
+                    }
+                ]
+            };
+            const allLessons = courseData.modules.flatMap(m => m.lessons);
+
+            /* ---------- 3. ESTADO DE LA APLICACIÓN ---------- */
             let currentUserId = null;
+            let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id };
 
-            /* ---------- 2. Elementos del DOM ---------- */
-            const userProfileContainer = document.getElementById('user-profile-container');
-            const userNameEl = document.getElementById('user-name');
-            const userAvatar = document.getElementById('user-avatar');
-            const logoutButton = document.getElementById('logout-button');
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            const completeLessonBtn = document.getElementById('complete-lesson-btn');
+            /* ---------- 4. ELEMENTOS DEL DOM ---------- */
+            const dom = {
+                userProfile: document.getElementById('user-profile-container'),
+                userName: document.getElementById('user-name'),
+                userAvatar: document.getElementById('user-avatar'),
+                logoutButton: document.getElementById('logout-button'),
+                progressBar: document.getElementById('progress-bar'),
+                progressText: document.getElementById('progress-text'),
+                modulesContainer: document.getElementById('modules-container'),
+                lessonTitle: document.getElementById('lesson-title'),
+                prevBtn: document.getElementById('prev-lesson-btn'),
+                nextBtn: document.getElementById('complete-lesson-btn'),
+                toast: document.getElementById('toast-notification'),
+                toastMessage: document.getElementById('toast-message'),
+            };
 
-            /* ---------- 3. Lógica de Autenticación y Carga de Datos ---------- */
+            /* ---------- 5. LÓGICA PRINCIPAL ---------- */
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUserId = user.uid;
-                    const displayName = user.displayName || 'Alumno';
-                    const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${displayName.charAt(0).toUpperCase()}`;
-                    
-                    userNameEl.textContent = displayName;
-                    userAvatar.src = photoURL;
-                    userProfileContainer.style.display = 'flex';
-
-                    // Cargar el progreso inicial del curso desde Firestore
-                    loadCourseProgress(currentUserId);
+                    setupUserProfile(user);
+                    loadProgressAndInitialize();
                 } else {
                     window.location.href = 'acceso.html';
                 }
             });
 
-            if(logoutButton) {
-                logoutButton.addEventListener('click', () => {
-                    auth.signOut().then(() => window.location.href = 'index.html');
-                });
+            function setupUserProfile(user) {
+                const displayName = user.displayName || 'Alumno';
+                const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${displayName.charAt(0).toUpperCase()}`;
+                dom.userName.textContent = displayName;
+                dom.userAvatar.src = photoURL;
+                dom.userProfile.style.display = 'flex';
+                dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
             }
 
-            /* ---------- 4. Lógica de Progreso con Firestore ---------- */
-            const courseId = 'geniaweek'; // ID del curso, debe coincidir con data-course-id en campus.html
-
-            // Función para leer el progreso desde Firestore
-            async function loadCourseProgress(userId) {
-                const progressRef = db.collection('userProgress').doc(userId);
+            async function loadProgressAndInitialize() {
+                const docRef = db.collection('userProgress').doc(currentUserId);
                 try {
-                    const doc = await progressRef.get();
-                    let progressValue = 0;
+                    const doc = await docRef.get();
                     if (doc.exists) {
-                        progressValue = doc.data()[`${courseId}Progress`] || 0;
+                        const data = doc.data();
+                        const courseProgress = data[courseId];
+                        if (courseProgress) {
+                            userProgress = {
+                                completedLessons: courseProgress.completedLessons || [],
+                                currentLessonId: courseProgress.currentLessonId || allLessons[0].id,
+                            };
+                        }
                     }
-                    updateProgressUI(progressValue);
+                    initializeAppUI();
                 } catch (error) {
                     console.error("Error al cargar progreso:", error);
+                    initializeAppUI(); // Iniciar incluso si hay error
                 }
             }
 
-            // Función para actualizar la UI del progreso
-            function updateProgressUI(value) {
-                const percentage = Math.round(value);
-                progressBar.style.width = `${percentage}%`;
-                progressText.textContent = `${percentage}%`;
+            function initializeAppUI() {
+                renderSidebar();
+                navigateToLesson(userProgress.currentLessonId);
+                updateOverallProgress();
+            }
+            
+            function renderSidebar() {
+                dom.modulesContainer.innerHTML = '';
+                courseData.modules.forEach(module => {
+                    const moduleLessonsHtml = module.lessons.map(lesson => {
+                        const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const isActive = userProgress.currentLessonId === lesson.id;
+                        
+                        const statusIcon = isCompleted ? 'check-circle-2' : 'circle';
+                        const iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        const activeClass = isActive ? 'bg-teal-50 text-teal-700 font-semibold' : 'text-gray-600 hover:bg-slate-100';
+                        const lessonTypeIcon = { video: 'video', text: 'file-text', resource: 'download'}[lesson.type] || 'file';
+
+                        return `
+                            <li class="lesson-item ${isActive ? 'active' : ''}" data-lesson-id="${lesson.id}">
+                                <a href="#" class="flex items-center p-2 ml-2 rounded-md ${activeClass}">
+                                    <i data-lucide="${isActive ? 'play-circle' : statusIcon}" class="h-5 w-5 mr-3 ${isActive ? '' : iconColor}"></i>
+                                    <span class="flex-1 text-sm">${lesson.title}</span>
+                                    <i data-lucide="${lessonTypeIcon}" class="h-4 w-4 ml-2"></i>
+                                </a>
+                            </li>
+                        `;
+                    }).join('');
+
+                    dom.modulesContainer.innerHTML += `
+                        <div class="accordion-item">
+                            <button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left">
+                                <span class="font-semibold text-gray-800">${module.title}</span>
+                                <i data-lucide="chevron-down" class="h-5 w-5 transition-transform text-gray-500"></i>
+                            </button>
+                            <div class="accordion-content open pl-4">
+                                <ul class="border-l border-slate-200 py-2 space-y-1">${moduleLessonsHtml}</ul>
+                            </div>
+                        </div>
+                    `;
+                });
+                lucide.createIcons();
+                addSidebarListeners();
             }
 
-            // Evento para guardar el progreso en Firestore
-            completeLessonBtn.addEventListener('click', async () => {
+            function addSidebarListeners() {
+                document.querySelectorAll('.lesson-item a').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const lessonId = e.currentTarget.parentElement.dataset.lessonId;
+                        navigateToLesson(lessonId);
+                    });
+                });
+            }
+
+            function navigateToLesson(lessonId) {
+                const lesson = allLessons.find(l => l.id === lessonId);
+                if (!lesson) return;
+
+                userProgress.currentLessonId = lessonId;
+                const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+
+                // Actualizar contenido principal
+                dom.lessonTitle.textContent = lesson.title;
+
+                // Actualizar botones de navegación
+                dom.prevBtn.disabled = currentIndex === 0;
+                if (currentIndex === allLessons.length - 1) {
+                    dom.nextBtn.textContent = 'Finalizar Curso';
+                } else {
+                    dom.nextBtn.textContent = 'Marcar como completada y continuar';
+                }
+
+                // Volver a renderizar la barra lateral para reflejar el estado activo
+                renderSidebar();
+                saveProgress(); // Guardar la lección actual
+            }
+
+            function updateOverallProgress() {
+                const completedCount = userProgress.completedLessons.length;
+                const totalCount = allLessons.length;
+                const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+                
+                dom.progressBar.style.width = `${percentage}%`;
+                dom.progressText.textContent = `${percentage}%`;
+            }
+
+            async function saveProgress() {
                 if (!currentUserId) return;
-
-                // Simulación: cada lección completada aumenta el progreso en 10%
-                const currentProgress = parseInt(progressBar.style.width) || 0;
-                const newProgress = Math.min(currentProgress + 10, 100);
-
                 const progressRef = db.collection('userProgress').doc(currentUserId);
                 try {
-                    // Usamos .set con { merge: true } para crear o actualizar el campo
                     await progressRef.set({
-                        [`${courseId}Progress`]: newProgress
+                        [courseId]: userProgress
                     }, { merge: true });
-
-                    updateProgressUI(newProgress);
-                    alert('¡Progreso actualizado!');
-                    // Aquí iría la lógica para cargar el contenido de la siguiente lección
                 } catch (error) {
-                    console.error("Error al guardar el progreso:", error);
+                    console.error("Error al guardar progreso:", error);
+                }
+            }
+
+            function showToast(message) {
+                dom.toastMessage.textContent = message;
+                dom.toast.classList.add('show');
+                setTimeout(() => {
+                    dom.toast.classList.remove('show');
+                }, 3000);
+            }
+
+            /* ---------- 6. EVENT LISTENERS ---------- */
+            dom.nextBtn.addEventListener('click', () => {
+                const currentLessonId = userProgress.currentLessonId;
+                
+                // Marcar la lección actual como completada (si no lo estaba ya)
+                if (!userProgress.completedLessons.includes(currentLessonId)) {
+                    userProgress.completedLessons.push(currentLessonId);
+                }
+                
+                updateOverallProgress();
+                
+                // Encontrar la siguiente lección
+                const currentIndex = allLessons.findIndex(l => l.id === currentLessonId);
+                if (currentIndex < allLessons.length - 1) {
+                    const nextLessonId = allLessons[currentIndex + 1].id;
+                    navigateToLesson(nextLessonId);
+                    showToast('¡Progreso guardado!');
+                } else {
+                    // Es la última lección
+                    showToast('¡Felicidades, has completado el curso!');
+                    dom.nextBtn.disabled = true;
+                    saveProgress();
                 }
             });
 
-            /* ---------- 5. Lógica de la Interfaz (acordeón, etc.) ---------- */
-            lucide.createIcons();
-            
-            document.querySelectorAll('.accordion-header').forEach(header => {
-                header.addEventListener('click', () => {
-                    const content = header.nextElementSibling;
-                    content.classList.toggle('open');
-                    header.querySelector('i').style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-                });
+            dom.prevBtn.addEventListener('click', () => {
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
+                if (currentIndex > 0) {
+                    const prevLessonId = allLessons[currentIndex - 1].id;
+                    navigateToLesson(prevLessonId);
+                }
             });
         });
     </script>
 </body>
 </html>
- 
