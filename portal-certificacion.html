@@ -128,7 +128,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "DEMO", authDomain: "DEMO", projectId: "DEMO" };
@@ -159,18 +159,15 @@
         const { jsPDF } = window.jspdf;
 
         onAuthStateChanged(auth, (user) => {
-            if (user) {
+            if (user && !user.isAnonymous) {
                 currentUser = {
                     uid: user.uid,
                     name: user.displayName || "Estudiante de AulaGenIA",
                 };
                 loadUserDashboard();
             } else {
-                currentUser = {
-                    uid: "user_demo_123",
-                    name: "Valentina Rojas",
-                };
-                loadUserDashboard();
+                dom.studentNameDisplay.textContent = "Invitado";
+                dom.programsListContainer.innerHTML = '<p class="text-gray-500 text-center">Por favor, inicia sesión para ver tus certificaciones.</p>';
             }
         });
 
@@ -178,6 +175,7 @@
             if (!currentUser) return;
             dom.studentNameDisplay.textContent = currentUser.name;
 
+            // En una app real, esta lista vendría de la base de datos (ej. userProgress)
             const completedPrograms = [
                 { id: "geniaweek", name: "GenIA Week: Acceso Total" },
             ];
@@ -202,37 +200,46 @@
 
         async function handleGenerateCertificate(event) {
             const button = event.currentTarget;
-            const programId = button.dataset.programId;
-            const programName = button.dataset.programName;
-
-            showStatus("Generando...", '#3b82f6');
-            
-            const certificatesRef = collection(db, `artifacts/${appId}/public/data/certificates`);
-            const q = query(certificatesRef, where("userId", "==", currentUser.uid), where("programId", "==", programId));
-            
-            const querySnapshot = await getDocs(q);
-            let certificateData;
-
-            if (!querySnapshot.empty) {
-                certificateData = querySnapshot.docs[0].data();
-                showStatus("Certificado recuperado.", '#059669');
-            } else {
-                certificateData = {
-                    studentName: currentUser.name,
-                    programName: programName,
-                    completionDate: formatSpanishDate(new Date()),
-                    issuedAt: new Date().toISOString(),
-                    certificateId: generateUniqueCode(),
-                    userId: currentUser.uid,
-                    programId: programId
-                };
-                await saveCertificate(certificateData);
-            }
-            
-            displayCertificate(certificateData);
-            button.textContent = "Ver Certificado";
-            button.classList.replace('bg-teal-500', 'bg-gray-400');
             button.disabled = true;
+            button.textContent = "Generando...";
+
+            try {
+                const programId = button.dataset.programId;
+                const programName = button.dataset.programName;
+
+                showStatus("Buscando certificado existente...", '#3b82f6');
+                
+                const certificatesRef = collection(db, `artifacts/${appId}/public/data/certificates`);
+                const q = query(certificatesRef, where("userId", "==", currentUser.uid), where("programId", "==", programId));
+                
+                const querySnapshot = await getDocs(q);
+                let certificateData;
+
+                if (!querySnapshot.empty) {
+                    certificateData = querySnapshot.docs[0].data();
+                    showStatus("Certificado recuperado.", '#059669');
+                } else {
+                    certificateData = {
+                        studentName: currentUser.name,
+                        programName: programName,
+                        completionDate: formatSpanishDate(new Date()),
+                        issuedAt: new Date().toISOString(),
+                        certificateId: generateUniqueCode(),
+                        userId: currentUser.uid,
+                        programId: programId
+                    };
+                    await saveCertificate(certificateData);
+                }
+                
+                displayCertificate(certificateData);
+                button.textContent = "Ver Certificado";
+                button.classList.replace('bg-teal-500', 'bg-gray-400');
+            } catch (error) {
+                console.error("Error al generar certificado:", error);
+                showStatus("Error al generar. Inténtalo de nuevo.", '#ef4444', 3000);
+                button.disabled = false;
+                button.textContent = "Generar Certificado";
+            }
         }
 
         function displayCertificate(data) {
@@ -245,7 +252,7 @@
         }
         
         async function saveCertificate(data) {
-             showStatus("Guardando...", '#3b82f6');
+             showStatus("Guardando nuevo certificado...", '#3b82f6');
              try {
                  const docRef = doc(db, `artifacts/${appId}/public/data/certificates`, data.certificateId);
                  await setDoc(docRef, data);
