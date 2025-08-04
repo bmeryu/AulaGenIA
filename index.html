@@ -2,12 +2,11 @@
 <!-- 
     ANÁLISIS Y MEJORAS SEO/UX POR DESARROLLADOR SENIOR:
     ----------------------------------------------------
-    15. **FAQ y Notificaciones Proactivas (v15):** Se ha añadido una sección de Preguntas Frecuentes (FAQ) con un diseño de acordeón para resolver dudas comunes. Se ha modificado el sistema de notificaciones para que un modal pregunte al usuario si desea suscribirse, en lugar de requerir un clic en la campana.
-    14. **Sección Hoja de Ruta (v14):** Se ha añadido una nueva sección que detalla los módulos del curso para dar una visión clara del contenido y el viaje de aprendizaje.
+    16. **Depuración de Notificaciones (v16):** Se ha añadido una validación en el JavaScript para verificar si la VAPID_PUBLIC_KEY ha sido reemplazada. Si sigue siendo el placeholder, mostrará un error claro en la consola y un mensaje amigable al usuario, evitando fallos inesperados. Se ha mejorado el comentario para guiar al desarrollador.
+    15. **FAQ y Notificaciones Proactivas (v15):** Se ha añadido una sección de Preguntas Frecuentes (FAQ) y se ha modificado el sistema de notificaciones para ser proactivo.
+    14. **Sección Hoja de Ruta (v14):** Se ha añadido una nueva sección que detalla los módulos del curso.
     13. **Notificaciones Push (v13):** Se ha añadido la funcionalidad para solicitar permiso de notificaciones push.
     12. **Mejoras de Copywriting (v12):** Se ajustó el texto de la tarjeta "+ y más", se refinó el texto del ebook y se añadió un párrafo introductorio clave.
-    11. **Tarjeta "Y más" (v11):** Se añadió una tarjeta "bonus" en la sección de herramientas.
-    10. **Actualización de Herramientas (v10):** Se corrigieron logos y se añadieron Gemini y Gamma.
 -->
 <html lang="es-CL">
 <head>
@@ -129,7 +128,6 @@
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
         
-        /* Estilos para el acordeón de FAQ */
         details > summary {
             list-style: none;
         }
@@ -422,9 +420,6 @@
             </div>
         </section>
 
-        <!-- =================================================================== -->
-        <!-- ================= INICIO: NUEVA SECCIÓN FAQ (v15) ================= -->
-        <!-- =================================================================== -->
         <section id="faq" class="py-16 md:py-24 bg-gray-50">
             <div class="container mx-auto px-6">
                 <div class="text-center max-w-3xl mx-auto">
@@ -483,9 +478,6 @@
                 </div>
             </div>
         </section>
-        <!-- =================================================================== -->
-        <!-- ================== FIN: NUEVA SECCIÓN FAQ (v15) =================== -->
-        <!-- =================================================================== -->
         
         <section id="suscripcion" class="bg-gray-50 py-16 px-6">
             <div class="max-w-4xl mx-auto bg-white rounded-2xl p-8 md:p-12 border border-gray-200">
@@ -585,11 +577,17 @@
                 });
             }
 
-            // --- LÓGICA DE NOTIFICACIONES MEJORADA (v15) ---
+            // --- LÓGICA DE NOTIFICACIONES MEJORADA (v16) ---
             const notificationBell = document.getElementById('notification-bell');
             const notificationPromptModal = document.getElementById('notification-prompt-modal');
             const promptYesBtn = document.getElementById('notification-prompt-yes');
             const promptNoBtn = document.getElementById('notification-prompt-no');
+            
+            // =================================================================================
+            // ¡IMPORTANTE! DEBES REEMPLAZAR ESTA CLAVE.
+            // Puedes generar un nuevo par de claves en https://vapidkeys.com/
+            // La CLAVE PÚBLICA va aquí. La CLAVE PRIVADA la guardas para tu backend.
+            // =================================================================================
             const VAPID_PUBLIC_KEY = 'REEMPLAZA_CON_TU_CLAVE_PUBLICA_VAPID'; 
 
             const showNotificationToast = (message) => {
@@ -622,6 +620,13 @@
             }
 
             const handleSubscription = async () => {
+                // Primero, verificamos que la VAPID key no sea el placeholder.
+                if (VAPID_PUBLIC_KEY === 'REEMPLAZA_CON_TU_CLAVE_PUBLICA_VAPID' || VAPID_PUBLIC_KEY === '') {
+                    console.error('ERROR: Debes generar y configurar tu VAPID_PUBLIC_KEY en el script.');
+                    showNotificationToast('Error de configuración del sitio. Notificaciones no disponibles.');
+                    return;
+                }
+
                 if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
                     showNotificationToast('Las notificaciones push no son soportadas por tu navegador.');
                     return;
@@ -638,7 +643,7 @@
                     showNotificationToast('¡Genial! Has activado las notificaciones.');
 
                 } catch (error) {
-                    console.error('Error al suscribirse a las notificaciones push', error);
+                    console.error('Error al suscribirse a las notificaciones push:', error);
                     showNotificationToast('No se pudieron activar las notificaciones.');
                 }
             };
