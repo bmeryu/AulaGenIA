@@ -15,59 +15,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
     <style>
-        :root {
-            --brand-teal: #14b8a6;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc;
-        }
+        :root { --brand-teal: #14b8a6; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-        }
-        .accordion-content.open {
-            max-height: 1000px;
-        }
-        .tab-button.active {
-            color: var(--brand-teal);
-            border-bottom-color: var(--brand-teal);
-        }
-        .toast-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            transform: translateX(120%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        .toast-notification.show {
-            transform: translateX(0);
-        }
-        .quiz-option {
-            transition: all 0.2s ease-in-out;
-        }
-        .quiz-option.selected {
-            border-color: var(--brand-teal);
-            background-color: #f0fdfa;
-            box-shadow: 0 0 0 2px var(--brand-teal);
-        }
-        .quiz-option.correct {
-            border-color: #22c55e;
-            background-color: #f0fdf4;
-        }
-        .quiz-option.incorrect {
-            border-color: #ef4444;
-            background-color: #fef2f2;
-        }
-        #completion-modal.show > div {
-            transform: scale(1);
-            opacity: 1;
-        }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; }
+        .accordion-content.open { max-height: 1000px; }
+        .tab-button.active { color: var(--brand-teal); border-bottom-color: var(--brand-teal); }
+        .toast-notification { position: fixed; top: 20px; right: 20px; transform: translateX(120%); transition: transform 0.3s ease-in-out; z-index: 1000; }
+        .toast-notification.show { transform: translateX(0); }
+        .quiz-option { transition: all 0.2s ease-in-out; }
+        .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
+        .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
+        .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
+        #completion-modal.show > div { transform: scale(1); opacity: 1; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -126,28 +88,32 @@
         </main>
     </div>
 
+    <!-- Notificaciones y Modales -->
     <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div>
     <div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
     <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 transition-opacity duration-300"></div>
     <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "Inteligencia Artificial Aplicada".</p><div class="text-left bg-slate-100 p-4 rounded-lg mt-6"><h3 class="font-semibold flex items-center gap-2"><i data-lucide="award"></i>Tu Certificado</h3><p class="text-sm text-gray-600 mt-1">Tu certificado digital está siendo procesado por nuestro equipo académico. Una vez validado, recibirás un correo con el documento y un enlace para añadirlo a tu perfil de LinkedIn.</p></div><div class="text-left bg-teal-50 border border-teal-200 p-4 rounded-lg mt-4"><h3 class="font-semibold flex items-center gap-2 text-teal-800"><i data-lucide="gift"></i>Tu Recompensa Exclusiva</h3><p class="text-sm text-teal-700 mt-1">Como premio a tu dedicación, hemos desbloqueado un <strong>cupón del 20% de descuento</strong> para tu próximo curso.</p></div><button id="close-modal-btn" class="mt-8 w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Ir a Mis Certificaciones</button></div></div>
 
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
 
     <script defer>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- CONFIGURACIÓN E INICIALIZACIÓN ---
             const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
             
             try {
                 firebase.initializeApp(firebaseConfig);
             } catch(e) {
-                console.error("Firebase ya fue inicializado.");
+                console.warn("Firebase ya fue inicializado.");
             }
 
             const auth = firebase.auth();
             const db = firebase.firestore();
             
+            // --- DATOS DEL CURSO (Fuente de verdad) ---
             const courseId = 'geniaweek';
             const courseData = {
                 modules: [
@@ -173,13 +139,36 @@
                     }
                 ]
             };
+            
+            // --- ESTADO DE LA APLICACIÓN ---
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
             let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id };
 
+            // --- REFERENCIAS AL DOM ---
             const dom = {
                 userProfile: document.getElementById('user-profile-container'), userName: document.getElementById('user-name'), userAvatar: document.getElementById('user-avatar'), logoutButton: document.getElementById('logout-button'), progressBar: document.getElementById('progress-bar'), progressText: document.getElementById('progress-text'), modulesContainer: document.getElementById('modules-container'), lessonTitle: document.getElementById('lesson-title'), prevBtn: document.getElementById('prev-lesson-btn'), mainActionBtn: document.getElementById('main-action-btn'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), badgeToast: document.getElementById('badge-toast'), badgeMessage: document.getElementById('badge-message'), lessonMaterialContainer: document.getElementById('lesson-material-container'), tabs: { descripcion: document.getElementById('descripcion'), recursos: document.getElementById('recursos'), notas: document.getElementById('notas') }, tabButtons: document.querySelectorAll('.tab-button'), completionModalOverlay: document.getElementById('completion-modal-overlay'), completionModal: document.getElementById('completion-modal'), modalUserName: document.getElementById('modal-user-name'), closeModalBtn: document.getElementById('close-modal-btn')
             };
+
+            // --- FUNCIONES DE RENDERIZADO Y LÓGICA DE UI ---
+
+            /**
+             * Función centralizada para actualizar toda la interfaz de usuario.
+             * Dibuja todo basado en el estado actual de `userProgress`.
+             * Es la única función que debe llamar a lucide.createIcons().
+             */
+            function refreshUI() {
+                renderSidebar();
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                if (lesson) {
+                    dom.lessonTitle.textContent = lesson.title;
+                    renderLessonContent(lesson);
+                    updateMainActionButton();
+                    dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lesson.id) === 0;
+                }
+                updateOverallProgress();
+                lucide.createIcons(); // Dibuja/actualiza todos los íconos del DOM de una vez.
+            }
 
             function renderSidebar() {
                 dom.modulesContainer.innerHTML = courseData.modules.map(module => {
@@ -195,11 +184,6 @@
                     return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold text-gray-800">${module.title}</span><i data-lucide="chevron-down" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
                 }).join('');
                 addSidebarListeners();
-            }
-
-            function addSidebarListeners() {
-                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); }));
-                dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => header.addEventListener('click', () => { const content = header.nextElementSibling; content.classList.toggle('open'); header.querySelector('i').style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; }));
             }
 
             function renderLessonContent(lesson) {
@@ -224,7 +208,27 @@
                 }
                 dom.tabs.descripcion.innerHTML = lesson.desc || 'No hay descripción.';
                 dom.tabs.recursos.innerHTML = lesson.res ? `<ul>${lesson.res}</ul>` : 'No hay recursos.';
-                lucide.createIcons();
+                // Se elimina la llamada a lucide.createIcons() de aquí.
+            }
+            
+            function updateMainActionButton() {
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1;
+                
+                dom.mainActionBtn.disabled = lesson.type === 'quiz' && !isCompleted;
+                dom.mainActionBtn.textContent = isCompleted ? (isLastLesson ? 'Finalizar Curso' : 'Continuar') : 'Marcar como completada';
+                
+                if (isLastLesson && !isCompleted) {
+                    const allOthersCompleted = allLessons.filter(l => l.id !== lesson.id).every(l => userProgress.completedLessons.includes(l.id));
+                    if (!allOthersCompleted) dom.mainActionBtn.disabled = true;
+                }
+            }
+
+            function updateOverallProgress() {
+                const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / allLessons.length) * 100) : 0;
+                dom.progressBar.style.width = `${percentage}%`;
+                dom.progressText.textContent = `${percentage}%`;
             }
 
             function checkQuizAnswer(lesson) {
@@ -250,49 +254,115 @@
                 }
             }
 
+            // --- MANEJO DE ESTADO Y DATOS ---
+
             async function navigateToLesson(lessonId) {
                 const lesson = allLessons.find(l => l.id === lessonId);
-                if (!lesson) return;
+                if (!lesson) {
+                    console.error(`Error: Se intentó navegar a una lección inexistente con ID: ${lessonId}`);
+                    return;
+                }
                 userProgress.currentLessonId = lessonId;
                 await saveProgress();
-                dom.lessonTitle.textContent = lesson.title;
-                renderLessonContent(lesson);
-                updateMainActionButton();
-                dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonId) === 0;
-                renderSidebar();
-            }
-
-            function updateMainActionButton() {
-                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
-                const isCompleted = userProgress.completedLessons.includes(lesson.id);
-                const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1;
-                
-                dom.mainActionBtn.disabled = lesson.type === 'quiz' && !isCompleted;
-                
-                if (isCompleted) {
-                    dom.mainActionBtn.textContent = isLastLesson ? 'Finalizar Curso' : 'Continuar';
-                } else {
-                    dom.mainActionBtn.textContent = 'Marcar como completada';
-                }
-                
-                if (isLastLesson) {
-                    const allOthersCompleted = allLessons.filter(l => l.id !== lesson.id).every(l => userProgress.completedLessons.includes(l.id));
-                    if (!allOthersCompleted && !isCompleted) dom.mainActionBtn.disabled = true;
-                }
-            }
-
-            function updateOverallProgress() {
-                const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / allLessons.length) * 100) : 0;
-                dom.progressBar.style.width = `${percentage}%`;
-                dom.progressText.textContent = `${percentage}%`;
+                refreshUI();
             }
 
             async function saveProgress() {
                 if (!currentUser) return;
-                const progressRef = db.collection('userProgress').doc(currentUser.uid);
-                await progressRef.set({ [courseId]: userProgress }, { merge: true });
+                try {
+                    const progressRef = db.collection('userProgress').doc(currentUser.uid);
+                    await progressRef.set({ [courseId]: userProgress }, { merge: true });
+                } catch (error) {
+                    console.error("Error al guardar el progreso:", error);
+                }
             }
 
+            async function loadProgressAndInitialize() {
+                const docRef = db.collection('userProgress').doc(currentUser.uid);
+                try {
+                    const doc = await docRef.get();
+                    if (doc.exists) {
+                        const courseProgress = doc.data()[courseId];
+                        if (courseProgress) {
+                            // VALIDACIÓN: Asegurarse de que el ID de la lección guardada exista.
+                            const savedLessonIdIsValid = courseProgress.currentLessonId && allLessons.some(l => l.id === courseProgress.currentLessonId);
+                            
+                            userProgress = {
+                                ...userProgress,
+                                ...courseProgress,
+                                // Si el ID guardado no es válido, volver a la primera lección.
+                                currentLessonId: savedLessonIdIsValid ? courseProgress.currentLessonId : allLessons[0].id
+                            };
+                        }
+                    }
+                } catch (error) { 
+                    console.error("Error crítico al cargar progreso. Se usará el progreso por defecto.", error);
+                }
+                
+                // Una vez cargado y validado el progreso, se dibuja la UI.
+                refreshUI();
+            }
+
+            // --- MANEJADORES DE EVENTOS ---
+            function addSidebarListeners() {
+                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); }));
+                dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => header.addEventListener('click', () => { const content = header.nextElementSibling; content.classList.toggle('open'); header.querySelector('i').style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; }));
+            }
+
+            dom.mainActionBtn.addEventListener('click', async () => {
+                const lessonId = userProgress.currentLessonId;
+                const isCompleted = userProgress.completedLessons.includes(lessonId);
+                
+                if (!isCompleted) {
+                    userProgress.completedLessons.push(lessonId);
+                    await saveProgress();
+                    checkForBadgeUnlock(lessonId);
+                    showToast('¡Lección completada!');
+                    refreshUI(); // Actualizar UI para reflejar el cambio
+                } else {
+                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                    if (currentIndex < allLessons.length - 1) {
+                        navigateToLesson(allLessons[currentIndex + 1].id);
+                    } else {
+                        showCompletionModal();
+                    }
+                }
+            });
+
+            dom.prevBtn.addEventListener('click', () => {
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
+                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id);
+            });
+
+            dom.tabButtons.forEach(button => button.addEventListener('click', () => {
+                dom.tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                Object.values(dom.tabs).forEach(content => content.classList.add('hidden'));
+                dom.tabs[button.dataset.tab].classList.remove('hidden');
+            }));
+            
+            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
+            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
+
+            // --- AUTENTICACIÓN Y PUNTO DE ENTRADA ---
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
+                    
+                    const name = currentUser.name;
+                    const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name.charAt(0).toUpperCase()}`;
+                    dom.userName.textContent = name;
+                    dom.userAvatar.src = photoURL;
+                    dom.userProfile.style.display = 'flex';
+                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
+
+                    loadProgressAndInitialize();
+                } else {
+                    window.location.href = 'acceso.html';
+                }
+            });
+
+            // --- FUNCIONES UTILITARIAS ---
             function showToast(message, type = 'generic') {
                 const toastEl = type === 'badge' ? dom.badgeToast : dom.toast;
                 const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage;
@@ -321,82 +391,6 @@
                     dom.completionModal.classList.add('show');
                 }, 10);
             }
-            
-            async function loadProgressAndInitialize() {
-                const docRef = db.collection('userProgress').doc(currentUser.uid);
-                try {
-                    const doc = await docRef.get();
-                    if (doc.exists) {
-                        const courseProgress = doc.data()[courseId];
-                        if (courseProgress) {
-                            // Mezclamos lo que ya hubiera en memoria con lo que hay en la BD
-                            userProgress = { ...userProgress, ...courseProgress };
-                        }
-                    }
-                } catch (error) { console.error("Error al cargar progreso:", error); }
-                
-                renderSidebar();
-                navigateToLesson(userProgress.currentLessonId);
-                updateOverallProgress();
-                lucide.createIcons();
-            }
-
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    currentUser = {
-                        uid: user.uid,
-                        name: user.displayName || 'Alumno',
-                    };
-                    
-                    const name = currentUser.name;
-                    const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name.charAt(0).toUpperCase()}`;
-                    dom.userName.textContent = name;
-                    dom.userAvatar.src = photoURL;
-                    dom.userProfile.style.display = 'flex';
-                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
-
-                    loadProgressAndInitialize();
-                } else {
-                    window.location.href = 'acceso.html';
-                }
-            });
-
-            dom.mainActionBtn.addEventListener('click', async () => {
-                const lessonId = userProgress.currentLessonId;
-                const isCompleted = userProgress.completedLessons.includes(lessonId);
-                
-                if (!isCompleted) {
-                    userProgress.completedLessons.push(lessonId);
-                    await saveProgress();
-                    updateOverallProgress();
-                    checkForBadgeUnlock(lessonId);
-                    updateMainActionButton();
-                    showToast('¡Lección completada!');
-                    renderSidebar();
-                } else {
-                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
-                    if (currentIndex < allLessons.length - 1) {
-                        navigateToLesson(allLessons[currentIndex + 1].id);
-                    } else {
-                        showCompletionModal();
-                    }
-                }
-            });
-
-            dom.prevBtn.addEventListener('click', () => {
-                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
-                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id);
-            });
-
-            dom.tabButtons.forEach(button => button.addEventListener('click', () => {
-                dom.tabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                Object.values(dom.tabs).forEach(content => content.classList.add('hidden'));
-                dom.tabs[button.dataset.tab].classList.remove('hidden');
-            }));
-            
-            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
-            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
         });
     </script>
 </body>
