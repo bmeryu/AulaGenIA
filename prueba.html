@@ -1,205 +1,1363 @@
- (estilos cohesionados, variables de marca, animaciones y un
-  sistema de progreso persistente por curso usando localStorage).
-  -------------------------------------------------------------------
-  👉  Estructura general
-      /campus.html           → Dashboard del estudiante (este archivo)
-      /campus/genia-week.html → Página interna del curso (versión previa)
-  -------------------------------------------------------------------
--->
-<html lang="es-CL" class="scroll-smooth">
+<!DOCTYPE html>
+
+<html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Campus Virtual – Aula GenIA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Mantener el campus fuera del índice público -->
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
-  <link rel="canonical" href="https://aulagenia.cl/campus.html">
-  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
 
-  <!-- Open Graph / Twitter Cards (consistentes) -->
-  <meta property="og:title" content="Campus Virtual – Aula GenIA" />
-  <meta property="og:description" content="Accede a tus cursos, recursos y comunidad." />
-  <meta property="og:image" content="https://aulagenia.cl/og-image.jpg" />
-  <meta property="og:url" content="https://aulagenia.cl/campus.html" />
-  <meta property="og:type" content="website" />
+    <meta charset="UTF-8" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Campus Virtual – Aula GenIA" />
-  <meta name="twitter:description" content="Accede a tus cursos, recursos y comunidad." />
-  <meta name="twitter:image" content="https://aulagenia.cl/og-image.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Datos estructurados básicos -->
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Campus Virtual – Aula GenIA",
-      "url": "https://aulagenia.cl/campus.html",
-      "isPartOf": { "@id": "https://aulagenia.cl/#website" },
-      "about": { "@type": "Thing", "name": "Inteligencia Artificial" }
-    }
-  </script>
+    <title>Aula GenIA</title>
 
-  <!-- Fonts + Tailwind CDN -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+    
 
-  <!-- Estilos globales adicionales -->
-  <style>
-    :root {
-      /* Paleta consistente con la marca */
-      --brand-teal: #14b8a6;
-      --brand-blue: #3b82f6;
-      --brand-yellow: #facc15;
-    }
-    html { font-family: 'Poppins', sans-serif; }
-    body { background-color: #f8fafc; } /* slate‑50 */
-    /* Tarjetas flotan sutilmente al pasar el ratón */
-    .card-hover {
-      @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
-    }
-    /* Ocultar scroll en contenedores si se usa horizontales más adelante */
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  </style>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css" />
+
+    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" />
+
+
+
+    <style>
+
+        /*
+
+          Hoja de Estilos Personalizada para Aula Gen IA
+
+        */
+
+
+
+        /* Variables de color de la marca para fácil mantenimiento */
+
+        :root {
+
+            --brand-teal: #14b8a6;
+
+            --brand-blue: #3b82f6;
+
+            --brand-yellow: #f59e0b;
+
+        }
+
+
+
+        /* Estilo base del cuerpo del documento */
+
+        body {
+
+            font-family: 'Poppins', sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+        }
+
+        
+
+        /* Estilo específico para el H1 del Hero para mejor adaptabilidad */
+
+        .hero-h1 {
+
+            line-height: 1.2; /* Ajuste para mejor legibilidad en tamaños grandes */
+
+        }
+
+
+
+        @media (max-width: 768px) {
+
+            .hero-h1 {
+
+                line-height: 1.3; /* Un poco más de espacio en móviles */
+
+            }
+
+        }
+
+
+
+        /* Clase para crear texto con un gradiente de colores de la marca */
+
+        .gradient-text {
+
+            background: linear-gradient(90deg, var(--brand-teal), #b4d734, var(--brand-yellow), var(--brand-blue));
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+            background-clip: text;
+
+            text-fill-color: transparent;
+
+        }
+
+
+
+        /* Estilos base para los botones de llamada a la acción (Call to Action) */
+
+        .cta-button {
+
+            transition: all 0.3s ease;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+        }
+
+
+
+        /* Efecto hover para los botones CTA */
+
+        .cta-button:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow: 0 8px 25px rgba(45, 212, 191, 0.3);
+
+        }
+
+
+
+        /* Estilo para resaltar la parte "IA" del logo */
+
+        .logo-highlight {
+
+            background-color: var(--brand-teal);
+
+            color: white;
+
+            padding: 0.2em 0.5em;
+
+            border-radius: 0.375rem; /* Equivalente a rounded-md de Tailwind */
+
+            margin-left: 0.25em;
+
+            display: inline-block;
+
+            line-height: 1;
+
+        }
+
+
+
+        /* Estilos para el botón principal con gradiente (MODIFICADO) */
+
+        .gradient-button {
+
+            background-image: linear-gradient(90deg, #2DD4BF 0%, #FBBF24 100%);
+
+            background-size: 100% auto;
+
+            transition: all 0.4s ease;
+
+            color: white;
+
+            border: none;
+
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+        }
+
+
+
+        /* Efecto hover para el botón con gradiente (MODIFICADO) */
+
+        .gradient-button:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+        }
+
+
+
+        /* Estilos para los dots de Swiper */
+
+        .swiper-pagination-bullet {
+
+            background-color: #9ca3af; /* gray-400 */
+
+            opacity: 1;
+
+            transition: background-color 0.3s ease;
+
+        }
+
+        .swiper-pagination-bullet-active {
+
+            background-color: var(--brand-teal);
+
+        }
+
+        
+
+        /* Estilo para el botón CTA Fijo en móvil */
+
+        .sticky-cta {
+
+            transform: translateY(200%);
+
+            transition: transform 0.4s ease-in-out;
+
+        }
+
+        .sticky-cta.visible {
+
+            transform: translateY(0);
+
+        }
+
+        
+
+        /* Animación de brillo para la insignia */
+
+        .shimmer-badge {
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .shimmer-badge::after {
+
+            content: '';
+
+            position: absolute;
+
+            top: 0;
+
+            left: -150%;
+
+            width: 100%;
+
+            height: 100%;
+
+            background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+
+            transform: skewX(-25deg);
+
+            animation: shimmer 3.5s infinite;
+
+        }
+
+        @keyframes shimmer {
+
+            0% { left: -150%; }
+
+            50% { left: 150%; }
+
+            100% { left: 150%; }
+
+        }
+
+    </style>
+
 </head>
-<body class="text-gray-800">
 
-  <!-- ============   HEADER   ============ -->
-  <header class="bg-white shadow-sm sticky top-0 z-30">
-    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" class="flex items-center gap-2" aria-label="Ir al inicio de Aula GenIA">
-        <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-10 w-auto" />
-      </a>
-      <div id="user-profile" class="hidden sm:flex items-center gap-3">
-        <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[10ch]"></span>
-        <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500" />
-        <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar sesión</button>
-      </div>
-    </nav>
-  </header>
+<body class="bg-gray-50 text-gray-800">
 
-  <!-- ============   MAIN   ============ -->
-  <main class="container mx-auto px-6 py-12 max-w-7xl">
-    <!-- Saludo -->
-    <section class="mb-12">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Aprendiz</span>!</h1>
-      <p class="text-lg text-gray-600 mt-2">Sigamos creando cosas increíbles con&nbsp;IA ✨</p>
-    </section>
 
-    <!-- Tarjetas de curso / recursos -->
-    <section aria-labelledby="courses-heading">
-      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
 
-      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- INICIO HEADER MODIFICADO -->
 
-        <!-- === Curso en progreso === -->
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden" data-course-id="geniaweek">
-          <div class="p-6">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">GenIA Week: Acceso Total</h3>
-            <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
 
-            <div class="mb-2">
-              <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
-                <span>Progreso</span>
-                <span class="percent">0%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="fill h-2.5 rounded-full" style="background-color: var(--brand-teal); width: 0%"></div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-50 px-6 py-4">
-            <a href="/campus/genia-week.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Continuar aprendiendo</a>
-          </div>
-        </article>
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
 
-        <!-- === Curso próximo === -->
-        <article class="bg-white rounded-2xl shadow overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center p-8 text-center">
-          <div>
-            <h3 class="text-xl font-bold text-gray-500 mb-2">IA para Marketing Digital</h3>
-            <p class="text-gray-400 text-sm mb-4">Aprende a crear campañas y contenido que convierten usando IA.</p>
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-100 px-3 py-1.5 rounded-full">Próximamente</span>
-          </div>
-        </article>
+            <a href="index.html" class="flex items-center">
 
-        <!-- === Recursos / comunidad === -->
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden">
-          <div class="p-6">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">Recursos</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">Comunidad &amp; Plantillas</h3>
-            <p class="text-gray-600 text-sm mb-6">Únete a nuestro Discord exclusivo y descarga más de 20 plantillas de prompts.</p>
-          </div>
-          <div class="bg-gray-50 px-6 py-4">
-            <a href="#" class="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Acceder a recursos</a>
-          </div>
-        </article>
+                <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-12 w-auto">
 
-      </div>
-    </section>
-  </main>
+            </a>
 
-  <!-- ============   FOOTER   ============ -->
-  <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
-    © 2025 Aula GenIA · Todos los derechos reservados.
-  </footer>
+            <div class="flex items-center gap-6">
 
-  <!-- Firebase (compat) -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+                <a href="cursos.html" class="hidden md:block text-gray-700 hover:text-teal-500 font-semibold transition-colors">Cursos</a>
 
-  <!-- =================  APP SCRIPT  ================= -->
-  <script defer>
-    document.addEventListener('DOMContentLoaded', () => {
-      /* ---------- 1. Firebase config & auth ---------- */
-      const firebaseConfig = {
-        apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
-        authDomain: "aulagenia.firebaseapp.com",
-        projectId: "aulagenia",
-        storageBucket: "aulagenia.appspot.com",
-        messagingSenderId: "173328075630",
-        appId: "1:173328075630:web:825606db4271ea1e66cf7f",
-        measurementId: "G-X500LE6Z8X"
-      };
-      firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
+                <a href="acceso.html" class="cta-button bg-gray-900 text-white font-bold py-2 px-6 rounded-full hover:bg-gray-700 text-sm md:text-center">
 
-      const userNameEls = [document.getElementById('user-name'), document.getElementById('welcome-name')];
-      const avatarEl = document.getElementById('user-avatar');
-      const profileBox = document.getElementById('user-profile');
-      const logoutBtn = document.getElementById('logout-btn');
+                    Únete de forma<br>
 
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          const name = user.displayName || 'Alumno';
-          const photo = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
-          userNameEls.forEach(el => el && (el.textContent = name));
-          avatarEl.src = photo;
-          avatarEl.alt = `Avatar de ${name}`;
-          profileBox.classList.remove('hidden');
-        } else {
-          window.location.href = 'acceso.html';
-        }
-      });
+                    gratuita
 
-      logoutBtn.addEventListener('click', e => {
-        e.preventDefault();
-        auth.signOut().then(() => window.location.href = 'index.html');
-      });
+                </a>
 
-      /* ---------- 2. Progreso por curso (localStorage) ---------- */
-      document.querySelectorAll('[data-course-id]').forEach(card => {
-        const id = card.dataset.courseId;
-        const percent = parseInt(localStorage.getItem(`${id}_progress`) || '0', 10);
-        card.querySelector('.fill').style.width = percent + '%';
-        card.querySelector('.percent').textContent = percent + '%';
-      });
-    });
-  </script>
+            </div>
+
+        </nav>
+
+    </header>
+
+    <!-- FIN HEADER MODIFICADO -->
+
+
+
+    <main class="container mx-auto px-6 py-16 md:py-24 text-center">
+
+        <div class="max-w-4xl mx-auto">
+
+            <h1 class="text-4xl md:text-6xl font-black leading-tight mb-4 hero-h1">
+
+                Domina la IA de principio a fin,<br><span class="gradient-text">ahorra horas y multiplica tu impacto.</span>
+
+            </h1>
+
+            <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+
+                Aprende a usar la IA para trabajar menos y crear más. Sin códigos, sin jerga técnica, ¡solo pura creatividad y eficiencia!
+
+            </p>
+
+
+
+            <div class="my-8">
+
+                <div class="inline-block bg-gradient-to-r from-teal-500 to-blue-500 text-white text-sm font-bold py-2 px-4 rounded-full mb-3 shadow-lg shimmer-badge">
+
+                    GenIA Week
+
+                </div>
+
+                <div class="flex justify-center items-center gap-4">
+
+                    <span class="text-3xl text-gray-400 line-through">$49 USD</span>
+
+                    <span class="text-5xl font-bold text-teal-500">$5 USD</span>
+
+                </div>
+
+                <p class="text-gray-500 mt-1">Pago único por acceso de 12 meses</p>
+
+            </div>
+
+
+
+            <a href="#precios" id="main-cta" class="cta-button inline-block text-white font-bold text-lg py-4 px-10 rounded-full" style="background-color: var(--brand-teal);">
+
+                Descubre Todo tu Potencial
+
+            </a>
+
+        </div>
+
+    </main>
+
+
+
+   <section class="bg-white py-16 md:py-24">
+
+     <div class="container mx-auto px-6">
+
+       <div class="text-center max-w-3xl mx-auto">
+
+         <h2 class="text-3xl md:text-4xl font-bold mb-4">¿Esta aventura es para ti?</h2>
+
+         <p class="text-gray-600 text-lg mb-12">
+
+           Si te identificas con alguna de estas frases, la respuesta es un gran
+
+           <span class="font-bold" style="color: var(--brand-teal);">¡SÍ!</span>
+
+         </p>
+
+       </div>
+
+
+
+       <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-8 text-center">
+
+         <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+
+           <div class="text-4xl mb-4">🎨</div>
+
+           <h3 class="text-xl font-bold mb-2">Mente Creativa y Curiosa</h3>
+
+           <p class="text-gray-600">
+
+             "Quiero crear imágenes, textos e ideas increíbles, pero no sé por dónde empezar."
+
+           </p>
+
+         </div>
+
+         <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+
+           <div class="text-4xl mb-4">🚀</div>
+
+           <h3 class="text-xl font-bold mb-2">Persona Emprendedora y Ocupada</h3>
+
+           <p class="text-gray-600">
+
+             "Tengo mil tareas y necesito automatizar mi trabajo para enfocarme en crecer."
+
+           </p>
+
+         </div>
+
+         <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+
+           <div class="text-4xl mb-4">🤝</div>
+
+           <h3 class="text-xl font-bold mb-2">Quien Lidera Equipos</h3>
+
+           <p class="text-gray-600">
+
+             "Busco que mi equipo sea más innovador y productivo, y sé que la IA es la clave."
+
+           </p>
+
+         </div>
+
+         <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+
+           <div class="text-4xl mb-4">💼</div>
+
+           <h3 class="text-xl font-bold mb-2">Profesional Independiente</h3>
+
+           <p class="text-gray-600">
+
+             "Mis clientes esperan soluciones diferenciales; quiero usar IA para entregar más valor sin trabajar 24/7."
+
+           </p>
+
+         </div>
+
+         <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+
+           <div class="text-4xl mb-4">📊</div>
+
+           <h3 class="text-xl font-bold mb-2">Amante de los Datos</h3>
+
+           <p class="text-gray-600">
+
+             "Tengo datos por todos lados, pero necesito convertirlos en insights claros y accionables."
+
+           </p>
+
+         </div>
+
+         <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+
+           <div class="text-4xl mb-4">🎓</div>
+
+           <h3 class="text-xl font-bold mb-2">Educador Visionario</h3>
+
+           <p class="text-gray-600">
+
+             "Quiero sorprender a mi audiencia con contenidos personalizados usando IA."
+
+           </p>
+
+         </div>
+
+         <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+
+           <div class="text-4xl mb-4">🏢</div>
+
+           <h3 class="text-xl font-bold mb-2">Intraemprendedor Digital</h3>
+
+           <p class="text-gray-600">
+
+             "Deseo lanzar proyectos de IA dentro de mi empresa y ser referente de innovación."
+
+           </p>
+
+         </div>
+
+         <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+
+           <div class="text-4xl mb-4">🌍</div>
+
+           <h3 class="text-xl font-bold mb-2">Impulsor de Impacto Social</h3>
+
+           <p class="text-gray-600">
+
+             "Quiero aplicar IA en causas sociales o medioambientales y maximizar el alcance de mi proyecto."
+
+           </p>
+
+         </div>
+
+       </div>
+
+     </div>
+
+   </section>
+
+
+
+    <section class="bg-teal-50 py-16">
+
+        <div class="container mx-auto px-6 text-center max-w-3xl">
+
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">¿Te sientes identificado?</h2>
+
+            <p class="text-lg text-gray-600 mb-8">Si asentiste con la cabeza al leer alguno de los perfiles, estás a un solo paso de transformar tu manera de trabajar. La IA no es el futuro, es el ahora.</p>
+
+            <a href="#precios" class="gradient-button inline-block font-bold text-lg py-4 px-10 rounded-full text-white">
+
+                Sí, quiero dar el siguiente paso
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="bg-white py-16 md:py-24">
+
+        <div class="container mx-auto px-6">
+
+            <div class="text-center max-w-3xl mx-auto">
+
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Campus GenIA Lab</h2>
+
+                <p class="text-gray-600 text-lg mb-8">
+
+                    No lo decimos nosotros; lo dicen quienes ya pasaron por el campus.
+
+                </p>
+
+            </div>
+
+            <div class="swiper testimonial-swiper">
+
+                <div class="swiper-wrapper pb-8">
+
+                    <div class="swiper-slide h-full">
+
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-full flex flex-col text-left">
+
+                            <div class="flex items-center mb-4">
+
+                                <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/2DD4BF/FFFFFF?text=LJ" alt="Avatar de Lau Jiménez">
+
+                                <div>
+
+                                    <p class="font-bold">Lau Jiménez</p>
+
+                                    <p class="text-sm text-gray-500">hace 2 días</p>
+
+                                </div>
+
+                            </div>
+
+                            <p class="text-gray-700 flex-grow text-sm">
+
+                                ¡Esto es una locura! Pasé de tardar horas en una propuesta de logo a generar 3 conceptos brutales en 15 minutos. Mis clientes (y mi bolsillo) están felices. Mil gracias al equipo de Aula GenIA. <span class="text-teal-500 font-semibold">#DiseñoConIA</span>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="swiper-slide h-full">
+
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-full flex flex-col text-left">
+
+                            <div class="flex items-center mb-4">
+
+                                <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/3B82F6/FFFFFF?text=CM" alt="Avatar de Carlos Morales G.">
+
+                                <div>
+
+                                    <p class="font-bold">Carlos Morales G.</p>
+
+                                    <p class="text-sm text-gray-500">hace 5 días</p>
+
+                                </div>
+
+                            </div>
+
+                            <p class="text-gray-700 flex-grow text-sm">
+
+                                No doy más de la felicidad. Con lo que aprendí, automaticé la creación de todas las descripciones de producto. Me ahorré una fortuna en un copywriter y las ventas subieron un 15%. ¡Posta, recuperé los findes!
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="swiper-slide h-full">
+
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-full flex flex-col text-left">
+
+                            <div class="flex items-center mb-4">
+
+                                <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/F59E0B/FFFFFF?text=AG" alt="Avatar de Ana Gómez Soto">
+
+                                <div>
+
+                                    <p class="font-bold">Ana Gómez Soto</p>
+
+                                    <p class="text-sm text-gray-500">hace 1 semana</p>
+
+                                </div>
+
+                            </div>
+
+                            <p class="text-gray-700 flex-grow text-sm">
+
+                                El módulo de automatización cambió las reglas del juego para nuestra ONG. Ahora podemos procesar solicitudes de ayuda y responder a donantes al instante. El impacto se siente. Gracias por hacer la IA accesible.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="swiper-slide h-full">
+
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-full flex flex-col text-left">
+
+                            <div class="flex items-center mb-4">
+
+                                <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/8B5CF6/FFFFFF?text=RD" alt="Avatar de Rosita Díaz">
+
+                                <div>
+
+                                    <p class="font-bold">Rosita Díaz</p>
+
+                                    <p class="text-sm text-gray-500">hace 4 días</p>
+
+                                </div>
+
+                            </div>
+
+                            <p class="text-gray-700 flex-grow text-sm">
+
+                                Mi jefe me preguntó cómo saqué el reporte trimestral en una tarde en vez de una semana. Mi secreto: ChatGPT + las plantillas del curso. Literalmente un antes y un después en mi pega. 🤫 <span class="text-teal-500 font-semibold">#Productividad</span>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="swiper-slide h-full">
+
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-full flex flex-col text-left">
+
+                            <div class="flex items-center mb-4">
+
+                                <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/EF4444/FFFFFF?text=MT" alt="Avatar de M. Torres">
+
+                                <div>
+
+                                    <p class="font-bold">M. Torres</p>
+
+                                    <p class="text-sm text-gray-500">hace 10 días</p>
+
+                                </div>
+
+                            </div>
+
+                            <p class="text-gray-700 flex-grow text-sm">
+
+                                Como freelance, el tiempo es oro. Ahora genero wireframes y hasta interfaces con IA en una fracción del tiempo. Mis clientes alucinan con la velocidad y yo puedo tomar más proyectos. ¡100% recomendado!
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="swiper-slide h-full">
+
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-full flex flex-col text-left">
+
+                            <div class="flex items-center mb-4">
+
+                                <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/10B981/FFFFFF?text=JV" alt="Avatar de Juan Vallejo">
+
+                                <div>
+
+                                    <p class="font-bold">Juan Vallejo</p>
+
+                                    <p class="text-sm text-gray-500">hace 6 días</p>
+
+                                </div>
+
+                            </div>
+
+                            <p class="text-gray-700 flex-grow text-sm">
+
+                                Creé un chatbot que simula ser un personaje histórico para mis clases. ¡Los alumnos están fascinados! Nunca los había visto tan enganchados con la materia. Gracias Aula GenIA por abrirme la cabeza.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="swiper-pagination mt-8"></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <section id="roadmap" class="py-16 md:py-24 bg-slate-50 mb-16">
+
+        <div class="container mx-auto px-6">
+
+            <div class="text-center max-w-3xl mx-auto mb-12">
+
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Tu Hoja de Ruta en el Aula</h2>
+
+                <p class="text-gray-600 text-lg">Un viaje paso a paso para dominar la IA generativa, ¡divirtiéndote en el proceso!</p>
+
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <div class="bg-indigo-50 rounded-xl shadow-md p-8 flex flex-col items-center text-center h-full">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-indigo-600"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0l-2.072-1.036A48.226 48.226 0 0112 4.5a48.226 48.226 0 0110.072 4.611l-2.072 1.036m-1.452 0A50.434 50.434 0 0112 10.5c-2.436 0-4.817-.435-7.07-1.212a50.433 50.433 0 01-1.452 0z" /></svg>
+
+                    <h3 class="font-semibold text-lg mb-2">Rompiendo el Hielo</h3>
+
+                    <p class="text-sm text-gray-600 leading-snug">Entiende qué es (y qué no es) la IA con ejemplos que sí vas a entender.</p>
+
+                    <span class="text-xs font-medium text-indigo-600 mt-auto pt-4">Duración: 30 min</span>
+
+                </div>
+
+                <div class="bg-indigo-50 rounded-xl shadow-md p-8 flex flex-col items-center text-center h-full">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-indigo-600"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.543L16.5 21.75l-.398-1.207a3.375 3.375 0 00-2.455-2.456L12.75 18l1.207-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.207a3.375 3.375 0 002.456 2.456L20.25 18l-1.207.398a3.375 3.375 0 00-2.456 2.456z" /></svg>
+
+                    <h3 class="font-semibold text-lg mb-2">Tu Varita Mágica</h3>
+
+                    <p class="text-sm text-gray-600 leading-snug">Aprende a "hablarle" a la IA (ChatGPT y más) para que te dé exactamente lo que necesitas.</p>
+
+                    <span class="text-xs font-medium text-indigo-600 mt-auto pt-4">Duración: 1h 15 min</span>
+
+                </div>
+
+                <div class="bg-indigo-50 rounded-xl shadow-md p-8 flex flex-col items-center text-center h-full">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-indigo-600"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+
+                    <h3 class="font-semibold text-lg mb-2">Crea Arte al Instante</h3>
+
+                    <p class="text-sm text-gray-600 leading-snug">Genera imágenes espectaculares para tus redes, presentaciones o por pura diversión.</p>
+
+                    <span class="text-xs font-medium text-indigo-600 mt-auto pt-4">Duración: 1h</span>
+
+                </div>
+
+                <div class="bg-indigo-50 rounded-xl shadow-md p-8 flex flex-col items-center text-center h-full">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-indigo-600"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+
+                    <h3 class="font-semibold text-lg mb-2">Automatiza tu Día</h3>
+
+                    <p class="text-sm text-gray-600 leading-snug">Descubre herramientas que responden emails, resumen documentos y te ahorran horas.</p>
+
+                    <span class="text-xs font-medium text-indigo-600 mt-auto pt-4">Resultado: +5h/semana</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    
+
+    <section id="precios" class="pb-16 bg-gray-50">
+
+        <div class="container mx-auto px-6 text-center">
+
+            
+
+            <div class="max-w-3xl mx-auto">
+
+                
+
+                <h2 class="text-3xl md:text-5xl font-black mb-4 text-gray-900">¡Oferta Irresistible por Tiempo Limitado!</h2>
+
+                <p class="text-lg md:text-xl text-gray-600 mb-8">Consigue acceso total a un precio que no volverás a ver.</p>
+
+                
+
+                <div class="max-w-md mx-auto mb-12">
+
+                    <p class="text-gray-700 font-bold mb-2" id="progress-label">¡Date prisa! Plazas limitadas.</p>
+
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+
+                        <div id="progress-bar" class="bg-yellow-400 h-4 rounded-full transition-all duration-500 ease-out"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="max-w-3xl mx-auto">
+
+                
+
+                <div class="bg-white text-gray-900 p-8 rounded-xl shadow-2xl relative border-2 border-teal-400">
+
+                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-yellow-400 text-gray-900 font-bold py-2 px-6 rounded-full shadow-lg border-2 border-white">
+
+                        -90%
+
+                    </div>
+
+
+
+                    <h3 class="text-2xl font-bold text-center">Aula GenIA: Acceso Total</h3>
+
+                    
+
+                    <p class="text-center text-gray-400 line-through mt-2">$49 USD</p>
+
+                    <p class="text-6xl font-bold text-center my-1 text-teal-500">$5 <span class="text-xl font-normal text-gray-500">USD</span></p>
+
+                    <p class="text-center text-gray-400 text-sm -mt-1 mb-2">(~$4.700 CLP aprox.)</p>
+
+                    <p class="text-center text-gray-500 text-xs">Pago único, sin cuotas ni suscripciones.</p>
+
+                    
+
+                    <ul class="space-y-3 text-gray-700 border-t border-gray-200 pt-6 mt-6 text-left">
+
+                        <li class="flex items-start">
+
+                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+
+                            <div><strong>Acceso por 12 meses</strong> a todos los módulos.</div>
+
+                        </li>
+
+                        <li class="flex items-start">
+
+                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+
+                            <div><strong>Nuevos módulos IA 2025</strong> incluidos sin costo.</div>
+
+                        </li>
+
+                        <li class="flex items-start">
+
+                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+
+                            <div>Acceso al <strong>Campus GenIA Lab</strong> (foros, eventos en vivo mensuales).</div>
+
+                        </li>
+
+                        <li class="flex items-start">
+
+                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+
+                            <div><strong>+20 plantillas de prompts</strong> y dashboards listos.</div>
+
+                        </li>
+
+                        <li class="flex items-start">
+
+                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+
+                            <div>Certificado de AulaGenIA Incluido.</div>
+
+                        </li>
+
+                    </ul>
+
+
+
+                    <a href="acceso.html" class="gradient-button w-full mt-6 inline-block font-bold text-lg py-4 px-10 rounded-full text-white">¡Lo quiero por solo $5!</a>
+
+                
+
+                    <div class="mt-6 text-gray-600">
+
+                        <p class="text-sm uppercase tracking-wider font-semibold">La oferta termina en:</p>
+
+                        <div id="countdown" class="text-2xl font-bold tracking-widest mt-1 text-gray-800"></div>
+
+                    </div>
+
+
+
+                    <div class="flex items-center justify-center gap-2 mt-4 text-gray-500 text-sm">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" /></svg>
+
+                        <span>Reembolso 7 días · Pago 100% seguro</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    
+
+    <!-- INICIO SECCIÓN DE SUSCRIPCIÓN MODIFICADA -->
+
+    <section class="bg-white py-16 px-6">
+
+        <div class="max-w-4xl mx-auto bg-teal-50/50 rounded-2xl p-8 md:p-12 border border-teal-100">
+
+            <div class="text-center mb-8">
+
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+
+                    Tu Pase Backstage al Campus GenIA
+
+                </h2>
+
+                <p class="text-lg text-gray-600">
+
+                    Únete a nuestra comunidad y recibe contenido exclusivo directamente en tu correo.
+
+                </p>
+
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+
+                <!-- Columna de beneficios -->
+
+                <div class="space-y-4 text-left">
+
+                    <h3 class="font-bold text-xl text-gray-800">Al suscribirte, obtienes GRATIS:</h3>
+
+                    <ul class="space-y-3 text-gray-700">
+
+                        <li class="flex items-start">
+
+                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+                            </svg>
+
+                            <span><strong>PDF Exclusivo:</strong> Los 10 prompts de IA que dispararán tu creatividad.</span>
+
+                        </li>
+
+                        <li class="flex items-start">
+
+                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+                            </svg>
+
+                            <span><strong>Contenido Semanal:</strong> Las mejores herramientas y noticias de nuestro Campus.</span>
+
+                        </li>
+
+                        <li class="flex items-start">
+
+                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+                            </svg>
+
+                            <span><strong>Acceso Prioritario:</strong> Sé el primero en enterarte de nuevos cursos y ofertas.</span>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <!-- Columna del formulario -->
+
+                <div class="bg-white p-6 rounded-xl shadow-lg border">
+
+                     <form id="suscripcion-form" class="w-full">
+
+                        <p class="font-semibold text-gray-700 mb-4 text-center">¡Ingresa tu correo y comienza!</p>
+
+                        <div class="flex flex-col gap-4">
+
+                            <input
+
+                              id="suscripcion-email"
+
+                              type="email"
+
+                              name="email"
+
+                              placeholder="tu.correo@ejemplo.com"
+
+                              class="w-full px-4 py-3 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
+
+                              required
+
+                            />
+
+                            <button
+
+                              id="suscripcion-btn"
+
+                              type="submit"
+
+                              class="w-full px-6 py-3 rounded-full bg-gradient-to-r from-green-400 to-yellow-400 text-white font-semibold shadow-md hover:shadow-lg transition duration-200"
+
+                            >
+
+                              Suscribirme ahora
+
+                            </button>
+
+                        </div>
+
+                        <div class="flex items-center justify-center mt-4 text-sm text-gray-600">
+
+                            <input
+
+                              id="suscripcion-optin"
+
+                              name="optin"
+
+                              type="checkbox"
+
+                              checked
+
+                              class="mr-2 accent-teal-600"
+
+                            />
+
+                            <label for="suscripcion-optin">
+
+                              Acepto recibir comunicaciones.
+
+                            </label>
+
+                        </div>
+
+                    </form>
+
+                    <div id="suscripcion-mensaje" class="mt-4 text-md font-semibold text-center"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FIN SECCIÓN DE SUSCRIPCIÓN MODIFICADA -->
+
+
+
+
+
+    <footer class="bg-gray-100 border-t border-gray-200">
+
+        <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+
+            <div class="flex justify-center items-center gap-2 mb-2">
+
+                 <a href="index.html" class="flex items-center">
+
+                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-12 w-auto">
+
+                 </a>
+
+            </div>
+
+            <p class="text-sm">&copy; 2024 - Todos los derechos reservados. Creado con 💙 y un poquito de IA.</p>
+
+        </div>
+
+    </footer>
+
+    
+
+    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"></script>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- LÓGICA DEL WEBHOOK (SE EJECUTA PRIMERO) ---
+
+            const form = document.getElementById('suscripcion-form');
+
+            const emailInput = document.getElementById('suscripcion-email');
+
+            const optinCheckbox = document.getElementById('suscripcion-optin');
+
+            const messageDiv = document.getElementById('suscripcion-mensaje');
+
+            const submitButton = document.getElementById('suscripcion-btn');
+
+            
+
+            const webhookUrl = 'https://muna.auto.hostybee.com/webhook/suscripcion';
+
+
+
+            if (form && emailInput && optinCheckbox && submitButton) {
+
+                form.addEventListener('submit', async (event) => {
+
+                    event.preventDefault(); 
+
+                    
+
+                    if (!form.checkValidity()) {
+
+                        form.reportValidity();
+
+                        return;
+
+                    }
+
+
+
+                    submitButton.disabled = true;
+
+                    submitButton.textContent = 'Enviando...';
+
+                    messageDiv.textContent = '';
+
+
+
+                    const email = emailInput.value;
+
+                    const optin = optinCheckbox.checked;
+
+
+
+                    const dataToSend = { email, optin };
+
+                    console.log("Datos que se enviarán al webhook:", dataToSend);
+
+
+
+                    try {
+
+                        const response = await fetch(webhookUrl, {
+
+                            method: 'POST',
+
+                            headers: { 'Content-Type': 'application/json' },
+
+                            body: JSON.stringify(dataToSend),
+
+                        });
+
+
+
+                        if (response.ok) {
+
+                            messageDiv.textContent = '¡Gracias por suscribirte! Revisa tu correo.';
+
+                            messageDiv.className = 'mt-4 text-md font-semibold text-green-600 text-center';
+
+                            form.reset();
+
+                        } else {
+
+                            const errorText = await response.text();
+
+                            throw new Error(`El servidor respondió con un error: ${response.status}. Detalles: ${errorText}`);
+
+                        }
+
+                    } catch (error) {
+
+                        messageDiv.textContent = 'Hubo un error al conectar. Revisa la consola (F12) para más detalles.';
+
+                        messageDiv.className = 'mt-4 text-md font-semibold text-red-600 text-center';
+
+                        console.error('Error detallado al enviar el webhook:', error);
+
+                    } finally {
+
+                        submitButton.disabled = false;
+
+                        submitButton.textContent = 'Suscribirme ahora';
+
+                    }
+
+                });
+
+            } else {
+
+                console.error("Error crítico: No se encontró uno o más elementos del formulario (form, email, checkbox, o botón).");
+
+            }
+
+
+
+            // --- OTRAS INICIALIZACIONES (se ejecutan después) ---
+
+            window.addEventListener('load', () => {
+
+                if (typeof Swiper !== 'undefined') {
+
+                    new Swiper('.testimonial-swiper', {
+
+                        loop: true,
+
+                        autoplay: { delay: 5000, disableOnInteraction: false },
+
+                        pagination: { el: '.swiper-pagination', clickable: true },
+
+                        breakpoints: {
+
+                            0: { slidesPerView: 1, spaceBetween: 20 },
+
+                            768: { slidesPerView: 2, spaceBetween: 24 },
+
+                            1024: { slidesPerView: 3, spaceBetween: 24 },
+
+                        },
+
+                    });
+
+                }
+
+
+
+                if (window.cookieconsent) {
+
+                    window.cookieconsent.initialise({
+
+                        palette: { popup: { background: '#1f2937' }, button: { background: '#14b8a6' } },
+
+                        theme: 'classic',
+
+                        position: 'bottom',
+
+                        type: 'opt-in',
+
+                        content: {
+
+                            message: 'Usamos cookies para mejorar tu experiencia.',
+
+                            dismiss: 'Aceptar',
+
+                            deny: 'Rechazar',
+
+                            link: 'Más info',
+
+                            href: 'politica-cookies.html'
+
+                        },
+
+                    });
+
+                }
+
+
+
+                const countdownElement = document.getElementById('countdown');
+
+                if (countdownElement) {
+
+                    const countDownDate = new Date().getTime() + (41 * 60 * 60 * 1000) + (12 * 60 * 1000);
+
+                    const interval = setInterval(() => {
+
+                        const now = new Date().getTime();
+
+                        const distance = countDownDate - now;
+
+                        if (distance < 0) {
+
+                            clearInterval(interval);
+
+                            const countdownContainer = countdownElement.parentElement;
+
+                            if (countdownContainer) {
+
+                                countdownContainer.innerHTML = "<p class='font-bold text-red-500'>¡La oferta ha terminado!</p>";
+
+                            }
+
+                            return;
+
+                        }
+
+                        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                        countdownElement.innerHTML = `
+
+                            <span class="tabular-nums">${hours.toString().padStart(2, '0')}</span>h : 
+
+                            <span class="tabular-nums">${minutes.toString().padStart(2, '0')}</span>m : 
+
+                            <span class="tabular-nums">${seconds.toString().padStart(2, '0')}</span>s`;
+
+                    }, 1000);
+
+                }
+
+
+
+                const progressBar = document.getElementById('progress-bar');
+
+                const progressLabel = document.getElementById('progress-label');
+
+                if (progressBar && progressLabel) {
+
+                    const totalPlazas = 50;
+
+                    const plazasOcupadas = 37;
+
+                    const porcentaje = (plazasOcupadas / totalPlazas) * 100;
+
+                    setTimeout(() => { progressBar.style.width = `${porcentaje}%`; }, 300);
+
+                    progressLabel.textContent = `¡Quedan ${totalPlazas - plazasOcupadas} de ${totalPlazas} plazas early-bird!`;
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+
+
 </body>
+
 </html>
