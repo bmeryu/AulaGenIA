@@ -31,13 +31,12 @@
             transition: max-height 0.3s ease-in-out;
         }
         .accordion-content.open {
-            max-height: 1000px; /* Aumentado para más lecciones */
+            max-height: 1000px;
         }
         .tab-button.active {
             color: var(--brand-teal);
             border-bottom-color: var(--brand-teal);
         }
-        /* Estilos para la notificación Toast */
         .toast-notification {
             position: fixed;
             top: 20px;
@@ -48,6 +47,28 @@
         }
         .toast-notification.show {
             transform: translateX(0);
+        }
+        /* Estilos para el Quiz */
+        .quiz-option {
+            transition: all 0.2s ease-in-out;
+        }
+        .quiz-option.selected {
+            border-color: var(--brand-teal);
+            background-color: #f0fdfa; /* teal-50 */
+            box-shadow: 0 0 0 2px var(--brand-teal);
+        }
+        .quiz-option.correct {
+            border-color: #22c55e; /* green-500 */
+            background-color: #f0fdf4; /* green-50 */
+        }
+        .quiz-option.incorrect {
+            border-color: #ef4444; /* red-500 */
+            background-color: #fef2f2; /* red-50 */
+        }
+        /* Estilos para el Modal de Finalización */
+        #completion-modal.show > div {
+            transform: scale(1);
+            opacity: 1;
         }
     </style>
 </head>
@@ -70,33 +91,20 @@
         <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
             <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
                 <div class="p-6">
-                    <a href="campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4">
-                        <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
-                        Volver a Mis Cursos
-                    </a>
+                    <a href="campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
                     <h1 class="text-2xl font-bold text-gray-900">GenIA Week: Acceso Total</h1>
                     <div class="mt-4">
-                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
-                            <span>Progreso</span>
-                            <span id="progress-text">0%</span>
-                        </div>
-                        <div class="w-full bg-slate-200 rounded-full h-2.5">
-                            <div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
-                        </div>
+                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
                     </div>
                 </div>
-                
                 <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
             </aside>
 
             <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
                 <div class="p-6 md:p-8 lg:p-10">
                     <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-4">Cargando...</h2>
-                    
-                    <div id="lesson-material-container" class="aspect-w-16 aspect-h-9 mb-6">
-                        <!-- El contenido dinámico de la lección (video, texto, etc.) se renderizará aquí -->
-                    </div>
-
+                    <div id="lesson-material-container" class="mb-6"></div>
                     <div id="tabs-container">
                         <div class="border-b border-slate-200">
                             <nav class="-mb-px flex space-x-6" aria-label="Tabs">
@@ -108,12 +116,9 @@
                         <div class="py-6">
                             <div id="descripcion" class="tab-content prose max-w-none text-gray-600"></div>
                             <div id="recursos" class="tab-content hidden prose max-w-none text-gray-600"></div>
-                            <div id="notas" class="tab-content hidden">
-                                <textarea class="w-full h-40 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Escribe tus notas privadas para esta lección..."></textarea>
-                            </div>
+                            <div id="notas" class="tab-content hidden"><textarea class="w-full h-40 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Escribe tus notas privadas para esta lección..."></textarea></div>
                         </div>
                     </div>
-
                     <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
                         <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
                         <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
@@ -123,19 +128,11 @@
         </main>
     </div>
 
-    <!-- Notificación Toast Genérica -->
-    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3">
-        <i data-lucide="check-circle" class="text-teal-400"></i>
-        <span id="toast-message"></span>
-    </div>
-    <!-- Notificación Toast de Insignia -->
-    <div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4">
-        <i data-lucide="award" class="h-12 w-12 text-white"></i>
-        <div>
-            <h4 class="font-bold">¡Insignia Desbloqueada!</h4>
-            <p id="badge-message" class="text-sm"></p>
-        </div>
-    </div>
+    <!-- Notificaciones y Modales -->
+    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div>
+    <div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
+    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 transition-opacity duration-300"></div>
+    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "GenIA Week: Acceso Total".</p><div class="text-left bg-slate-100 p-4 rounded-lg mt-6"><h3 class="font-semibold flex items-center gap-2"><i data-lucide="award"></i>Tu Certificado</h3><p class="text-sm text-gray-600 mt-1">Tu certificado digital está siendo procesado por nuestro equipo académico. Será enviado a tu correo electrónico en las próximas 24-48 horas hábiles.</p></div><div class="text-left bg-teal-50 border border-teal-200 p-4 rounded-lg mt-4"><h3 class="font-semibold flex items-center gap-2 text-teal-800"><i data-lucide="gift"></i>Tu Recompensa Exclusiva</h3><p class="text-sm text-teal-700 mt-1">Como premio a tu dedicación, hemos desbloqueado un <strong>cupón del 20% de descuento</strong> para tu próximo curso.</p></div><button id="close-modal-btn" class="mt-8 w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button></div></div>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
@@ -151,24 +148,25 @@
             
             const courseId = 'geniaweek';
             const courseData = {
-                title: 'GenIA Week: Acceso Total',
                 modules: [
                     {
-                        title: 'Módulo 1: Fundamentos de la IA',
+                        title: 'Módulo 1: Fundamentos',
                         badge: 'Maestro de Fundamentos',
                         lessons: [
-                            { id: '1-1', title: '¿Qué es la Inteligencia Artificial?', type: 'video', description: 'Una introducción conceptual al mundo de la IA.', resources: '<li><a href="#">Paper de Alan Turing</a></li>' },
-                            { id: '1-2', title: 'Historia y Evolución de la IA', type: 'video', description: 'Un recorrido histórico desde los inicios hasta hoy.', resources: '' },
-                            { id: '1-3', title: 'IA, Machine Learning y Deep Learning', type: 'text', description: 'Aclarando las diferencias clave entre estos términos.', resources: '<li><a href="#">Artículo de Forbes</a></li>' },
+                            { id: '1-1', title: '¿Qué es la IA?', type: 'video', desc: 'Introducción conceptual al mundo de la IA.', res: '<li><a href="#">Paper de Alan Turing</a></li>' },
+                            { id: '1-2', title: 'Historia y Evolución', type: 'video', desc: 'Un recorrido histórico desde los inicios hasta hoy.', res: '' },
+                            { id: '1-3', title: 'IA, ML y Deep Learning', type: 'text', desc: 'Aclarando las diferencias clave entre estos términos.', res: '<li><a href="#">Artículo de Forbes</a></li>' },
+                            { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Pon a prueba tus conocimientos sobre los fundamentos.', questions: [{ text: '¿Cuál de estos es un ejemplo de IA "estrecha"?', options: ['Un robot con conciencia', 'Siri o Alexa', 'Terminator'], correctAnswer: 1 }] }
                         ]
                     },
                     {
-                        title: 'Módulo 2: IA Generativa y LLMs',
+                        title: 'Módulo 2: IA Generativa',
                         badge: 'Domador de Prompts',
                         lessons: [
-                            { id: '2-1', title: 'Introducción a los LLMs', type: 'video', description: 'Descubre cómo funcionan los modelos de lenguaje grandes.', resources: '' },
-                            { id: '2-2', title: 'El Arte del Prompt Engineering', type: 'video', description: 'Aprende a comunicarte efectivamente con la IA.', resources: '' },
-                            { id: '2-3', title: 'Taller Práctico: Creando Prompts', type: 'resource', description: 'Descarga nuestra guía de prompts y pon a prueba tus habilidades.', resources: '<li><a href="#">Guía de Prompts Avanzados (PDF)</a></li>' },
+                            { id: '2-1', title: 'Introducción a los LLMs', type: 'video', desc: 'Descubre cómo funcionan los modelos de lenguaje.', res: '' },
+                            { id: '2-2', title: 'El Arte del Prompt Engineering', type: 'video', desc: 'Aprende a comunicarte efectivamente con la IA.', res: '' },
+                            { id: '2-3', title: 'Taller Práctico: Creando Prompts', type: 'resource', desc: 'Descarga nuestra guía y pon a prueba tus habilidades.', res: '<li><a href="#">Guía de Prompts (PDF)</a></li>' },
+                            { id: 'q-2', title: 'Quiz: Módulo 2', type: 'quiz', desc: 'Valida tu entendimiento sobre IA Generativa.', questions: [{ text: '¿Qué es un "LLM"?', options: ['Un tipo de hardware', 'Un modelo de lenguaje grande', 'Una criptomoneda'], correctAnswer: 1 }] }
                         ]
                     }
                 ]
@@ -176,25 +174,24 @@
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUserId = null;
             let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id };
+            let currentDisplayName = 'Alumno';
 
             const dom = {
-                userProfile: document.getElementById('user-profile-container'), userName: document.getElementById('user-name'), userAvatar: document.getElementById('user-avatar'), logoutButton: document.getElementById('logout-button'), progressBar: document.getElementById('progress-bar'), progressText: document.getElementById('progress-text'), modulesContainer: document.getElementById('modules-container'), lessonTitle: document.getElementById('lesson-title'), prevBtn: document.getElementById('prev-lesson-btn'), mainActionBtn: document.getElementById('main-action-btn'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), badgeToast: document.getElementById('badge-toast'), badgeMessage: document.getElementById('badge-message'), lessonMaterialContainer: document.getElementById('lesson-material-container'), tabs: { desc: document.getElementById('descripcion'), res: document.getElementById('recursos'), notes: document.getElementById('notas') }, tabButtons: document.querySelectorAll('.tab-button')
+                userProfile: document.getElementById('user-profile-container'), userName: document.getElementById('user-name'), userAvatar: document.getElementById('user-avatar'), logoutButton: document.getElementById('logout-button'), progressBar: document.getElementById('progress-bar'), progressText: document.getElementById('progress-text'), modulesContainer: document.getElementById('modules-container'), lessonTitle: document.getElementById('lesson-title'), prevBtn: document.getElementById('prev-lesson-btn'), mainActionBtn: document.getElementById('main-action-btn'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), badgeToast: document.getElementById('badge-toast'), badgeMessage: document.getElementById('badge-message'), lessonMaterialContainer: document.getElementById('lesson-material-container'), tabs: { descripcion: document.getElementById('descripcion'), recursos: document.getElementById('recursos'), notas: document.getElementById('notas') }, tabButtons: document.querySelectorAll('.tab-button'), completionModalOverlay: document.getElementById('completion-modal-overlay'), completionModal: document.getElementById('completion-modal'), modalUserName: document.getElementById('modal-user-name'), closeModalBtn: document.getElementById('close-modal-btn')
             };
 
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUserId = user.uid;
-                    setupUserProfile(user);
+                    currentDisplayName = user.displayName || 'Alumno';
+                    setupUserProfile(user, currentDisplayName);
                     loadProgressAndInitialize();
-                } else {
-                    window.location.href = 'acceso.html';
-                }
+                } else { window.location.href = 'acceso.html'; }
             });
 
-            function setupUserProfile(user) {
-                const displayName = user.displayName || 'Alumno';
-                const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${displayName.charAt(0).toUpperCase()}`;
-                dom.userName.textContent = displayName;
+            function setupUserProfile(user, name) {
+                const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name.charAt(0).toUpperCase()}`;
+                dom.userName.textContent = name;
                 dom.userAvatar.src = photoURL;
                 dom.userProfile.style.display = 'flex';
                 dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
@@ -208,11 +205,8 @@
                         const courseProgress = doc.data()[courseId];
                         if (courseProgress) userProgress = { ...userProgress, ...courseProgress };
                     }
-                    initializeAppUI();
-                } catch (error) {
-                    console.error("Error al cargar progreso:", error);
-                    initializeAppUI();
-                }
+                } catch (error) { console.error("Error al cargar progreso:", error); }
+                initializeAppUI();
             }
 
             function initializeAppUI() {
@@ -227,10 +221,10 @@
                     const lessonsHtml = module.lessons.map(lesson => {
                         const isCompleted = userProgress.completedLessons.includes(lesson.id);
                         const isActive = userProgress.currentLessonId === lesson.id;
-                        const statusIcon = isCompleted ? 'check-circle-2' : 'circle';
+                        const statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
                         const iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
                         const activeClass = isActive ? 'bg-teal-50 text-teal-700 font-semibold' : 'text-gray-600 hover:bg-slate-100';
-                        const typeIcon = { video: 'video', text: 'file-text', resource: 'download' }[lesson.type] || 'file';
+                        const typeIcon = { video: 'video', text: 'file-text', resource: 'download', quiz: 'edit-3' }[lesson.type] || 'file';
                         return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${activeClass}"><i data-lucide="${isActive ? 'play-circle' : statusIcon}" class="h-5 w-5 mr-3 ${isActive ? '' : iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2"></i></a></li>`;
                     }).join('');
                     return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold text-gray-800">${module.title}</span><i data-lucide="chevron-down" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
@@ -246,38 +240,69 @@
             function renderLessonContent(lesson) {
                 let materialHtml = '';
                 switch(lesson.type) {
-                    case 'video':
-                        materialHtml = `<div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i></div>`;
-                        break;
-                    case 'text':
-                        materialHtml = `<div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="file-text" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center">Este es un material de lectura. Encuentra el contenido en la pestaña de 'Descripción'.</p></div>`;
-                        break;
-                    case 'resource':
-                        materialHtml = `<div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Esta lección contiene recursos descargables.</p><a href="#" class="bg-teal-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-teal-600 flex items-center gap-2"><i data-lucide="download"></i>Descargar Recursos</a></div>`;
+                    case 'video': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i></div></div>`; break;
+                    case 'text': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="file-text" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center">Material de lectura en la pestaña 'Descripción'.</p></div></div>`; break;
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos descargables en la pestaña 'Recursos'.</p><a href="#" class="bg-teal-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-teal-600 flex items-center gap-2"><i data-lucide="download"></i>Descargar</a></div></div>`; break;
+                    case 'quiz':
+                        const question = lesson.questions[0];
+                        const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
+                        materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-900">Verificar Respuesta</button></div>`;
                         break;
                 }
                 dom.lessonMaterialContainer.innerHTML = materialHtml;
-                dom.tabs.desc.innerHTML = lesson.description || 'No hay descripción disponible.';
-                dom.tabs.res.innerHTML = lesson.resources ? `<ul>${lesson.resources}</ul>` : 'No hay recursos para esta lección.';
+                if (lesson.type === 'quiz') {
+                    dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => {
+                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                        opt.classList.add('selected');
+                    }));
+                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson));
+                }
+                dom.tabs.descripcion.innerHTML = lesson.desc || 'No hay descripción.';
+                dom.tabs.recursos.innerHTML = lesson.res ? `<ul>${lesson.res}</ul>` : 'No hay recursos.';
                 lucide.createIcons();
+            }
+
+            function checkQuizAnswer(lesson) {
+                const selectedOption = dom.lessonMaterialContainer.querySelector('.quiz-option.selected');
+                if (!selectedOption) { showToast('Por favor, selecciona una respuesta.'); return; }
+                const selectedIndex = parseInt(selectedOption.dataset.index);
+                const correctIndex = lesson.questions[0].correctAnswer;
+                dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+                if (selectedIndex === correctIndex) {
+                    selectedOption.classList.add('correct');
+                    showToast('¡Respuesta Correcta!');
+                    dom.mainActionBtn.disabled = false;
+                } else {
+                    selectedOption.classList.add('incorrect');
+                    dom.lessonMaterialContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
+                    showToast('Respuesta incorrecta. ¡Sigue intentando!');
+                    setTimeout(() => {
+                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('incorrect', 'correct', 'selected');
+                            opt.style.pointerEvents = 'auto';
+                        });
+                    }, 2000);
+                }
             }
 
             function navigateToLesson(lessonId) {
                 const lesson = allLessons.find(l => l.id === lessonId);
                 if (!lesson) return;
                 userProgress.currentLessonId = lessonId;
-                const currentIndex = allLessons.findIndex(l => l.id === lessonId);
                 dom.lessonTitle.textContent = lesson.title;
                 renderLessonContent(lesson);
                 updateMainActionButton();
-                dom.prevBtn.disabled = currentIndex === 0;
+                dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonId) === 0;
                 renderSidebar();
                 saveProgress();
             }
 
             function updateMainActionButton() {
-                const isCompleted = userProgress.completedLessons.includes(userProgress.currentLessonId);
-                const isLastLesson = allLessons.findIndex(l => l.id === userProgress.currentLessonId) === allLessons.length - 1;
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1;
+                
+                dom.mainActionBtn.disabled = lesson.type === 'quiz' && !isCompleted;
                 
                 if (isCompleted) {
                     dom.mainActionBtn.textContent = isLastLesson ? 'Finalizar Curso' : 'Continuar';
@@ -286,10 +311,8 @@
                 }
                 
                 if (isLastLesson) {
-                    const allOthersCompleted = allLessons.filter(l => l.id !== userProgress.currentLessonId).every(l => userProgress.completedLessons.includes(l.id));
-                    dom.mainActionBtn.disabled = !allOthersCompleted && !isCompleted;
-                } else {
-                    dom.mainActionBtn.disabled = false;
+                    const allOthersCompleted = allLessons.filter(l => l.id !== lesson.id).every(l => userProgress.completedLessons.includes(l.id));
+                    if (!allOthersCompleted && !isCompleted) dom.mainActionBtn.disabled = true;
                 }
             }
 
@@ -305,14 +328,8 @@
             }
 
             function showToast(message, type = 'generic') {
-                let toastEl, msgEl;
-                if (type === 'badge') {
-                    toastEl = dom.badgeToast;
-                    msgEl = dom.badgeMessage;
-                } else {
-                    toastEl = dom.toast;
-                    msgEl = dom.toastMessage;
-                }
+                const toastEl = type === 'badge' ? dom.badgeToast : dom.toast;
+                const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage;
                 msgEl.textContent = message;
                 toastEl.classList.add('show');
                 setTimeout(() => toastEl.classList.remove('show'), 4000);
@@ -321,13 +338,22 @@
             function checkForBadgeUnlock(completedLessonId) {
                 const module = courseData.modules.find(m => m.lessons.some(l => l.id === completedLessonId));
                 if (!module || !module.badge) return;
-
-                const moduleLessons = module.lessons.map(l => l.id);
-                const allModuleLessonsCompleted = moduleLessons.every(id => userProgress.completedLessons.includes(id));
-                
-                if (allModuleLessonsCompleted) {
+                const lastLessonOfModule = module.lessons[module.lessons.length - 1].id;
+                if (completedLessonId !== lastLessonOfModule) return;
+                const moduleLessonsIds = module.lessons.map(l => l.id);
+                if (moduleLessonsIds.every(id => userProgress.completedLessons.includes(id))) {
                     showToast(`Has ganado la insignia: "${module.badge}"`, 'badge');
                 }
+            }
+            
+            function showCompletionModal() {
+                dom.modalUserName.textContent = currentDisplayName;
+                dom.completionModalOverlay.classList.remove('hidden');
+                dom.completionModal.classList.remove('hidden');
+                setTimeout(() => {
+                    dom.completionModalOverlay.classList.add('opacity-100');
+                    dom.completionModal.classList.add('show');
+                }, 10);
             }
 
             dom.mainActionBtn.addEventListener('click', () => {
@@ -347,7 +373,7 @@
                     if (currentIndex < allLessons.length - 1) {
                         navigateToLesson(allLessons[currentIndex + 1].id);
                     } else {
-                        showToast('¡Felicidades, has completado el curso!');
+                        showCompletionModal();
                     }
                 }
             });
@@ -361,8 +387,11 @@
                 dom.tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 Object.values(dom.tabs).forEach(content => content.classList.add('hidden'));
-                dom.tabs[button.dataset.tab.slice(0, 5)].classList.remove('hidden');
+                dom.tabs[button.dataset.tab].classList.remove('hidden');
             }));
+
+            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'campus.html');
+            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'campus.html');
         });
     </script>
 </body>
