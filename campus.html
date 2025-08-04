@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v2.2 (Completion State)
+  CAMPUS DASHBOARD · AULA GENIA v2.3 (Completion State Fixed)
   -------------------------------------------------------------------
-  Esta versión añade lógica para cambiar dinámicamente el estado de
-  la tarjeta del curso una vez que el progreso llega al 100%.
+  Esta versión corrige y aplica la lógica para cambiar dinámicamente 
+  el estado de la tarjeta del curso cuando el progreso llega al 100%.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -142,6 +142,13 @@
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
       const db = firebase.firestore();
+      
+      // Estructura de datos del curso para calcular el total de lecciones
+      const courseStructure = {
+          geniaweek: {
+              totalLessons: 8 // 2 módulos de 4 lecciones cada uno
+          }
+      };
 
       auth.onAuthStateChanged(user => {
         if (user) {
@@ -170,9 +177,7 @@
             const courseId = card.dataset.courseId;
             const courseProgressData = progressData[courseId] || { completedLessons: [] };
             
-            // El número total de lecciones del curso. Este valor debe ser consistente
-            // con la estructura de datos en la página de la lección.
-            const totalLessons = 8; 
+            const totalLessons = courseStructure[courseId]?.totalLessons || 0;
             const completedCount = courseProgressData.completedLessons.length;
             const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
@@ -180,7 +185,6 @@
           });
         } catch (error) {
           console.error("Error al obtener progreso desde Firestore:", error);
-          // **MEJORA:** Si falla Firestore, renderiza todas las tarjetas en su estado por defecto.
           document.querySelectorAll('[data-course-id]').forEach(card => {
             updateCardUI(card, 0);
           });
@@ -204,7 +208,7 @@
           
           footerEl.innerHTML = `
             <div class="space-y-3">
-              <a href="#" class="flex items-center justify-center gap-2 w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+              <a href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=GenIA%20Week:%20Acceso%20Total&organizationId=94349991&issueYear=${new Date().getFullYear()}&issueMonth=${new Date().getMonth() + 1}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
                 <i data-lucide="linkedin" class="h-5 w-5"></i>
                 <span>Añadir a LinkedIn</span>
               </a>
