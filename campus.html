@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v2.1 (Firestore Edition)
+  CAMPUS DASHBOARD · AULA GENIA v2.2 (Completion State)
   -------------------------------------------------------------------
-  Esta versión reemplaza el sistema de progreso `localStorage` por
-  Firebase Firestore para una sincronización persistente y en tiempo
-  real del progreso del usuario a través de diferentes dispositivos.
+  Esta versión añade lógica para cambiar dinámicamente el estado de
+  la tarjeta del curso una vez que el progreso llega al 100%.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -44,10 +43,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
 
   <style>
     :root {
       --brand-teal: #14b8a6;
+      --brand-green: #22c55e;
       --brand-blue: #3b82f6;
       --brand-yellow: #facc15;
     }
@@ -83,9 +84,9 @@
       <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden" data-course-id="geniaweek">
-          <div class="p-6">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="geniaweek">
+          <div class="p-6 flex-grow">
+            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
             <h3 class="text-xl font-bold mt-4 mb-1">GenIA Week: Acceso Total</h3>
             <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
             <div class="mb-2">
@@ -98,9 +99,8 @@
               </div>
             </div>
           </div>
-          <div class="bg-gray-50 px-6 py-4">
-            <!-- ENLACE ACTUALIZADO PARA APUNTAR A LA PÁGINA DE LECCIONES -->
-            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Continuar aprendiendo</a>
+          <div class="card-footer bg-gray-50 px-6 py-4">
+            <!-- El contenido del footer se generará dinámicamente -->
           </div>
         </article>
 
@@ -131,77 +131,92 @@
     © 2025 Aula GenIA · Todos los derechos reservados.
   </footer>
 
-  <!-- Firebase SDKs (Auth y Firestore) -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
 
-  <script defer>
+  <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
-      /* ---------- 1. Firebase config & inicialización ---------- */
-      const firebaseConfig = {
-        apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
-        authDomain: "aulagenia.firebaseapp.com",
-        projectId: "aulagenia",
-        storageBucket: "aulagenia.appspot.com",
-        messagingSenderId: "173328075630",
-        appId: "1:173328075630:web:825606db4271ea1e66cf7f",
-        measurementId: "G-X500LE6Z8X"
-      };
+      const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
-      const db = firebase.firestore(); // Inicializar Firestore
-
-      const userNameEls = [document.getElementById('user-name'), document.getElementById('welcome-name')];
-      const avatarEl = document.getElementById('user-avatar');
-      const profileBox = document.getElementById('user-profile');
-      const logoutBtn = document.getElementById('logout-btn');
+      const db = firebase.firestore();
 
       auth.onAuthStateChanged(user => {
         if (user) {
-          // Cargar perfil de usuario
           const name = user.displayName || 'Alumno';
-          const photo = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
-          userNameEls.forEach(el => el && (el.textContent = name));
-          avatarEl.src = photo;
-          avatarEl.alt = `Avatar de ${name}`;
-          profileBox.classList.remove('hidden');
-
-          // Cargar progreso desde Firestore
+          document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
+          document.getElementById('user-avatar').src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
+          document.getElementById('user-profile').classList.remove('hidden');
           loadCourseProgressFromFirestore(user.uid);
-
         } else {
           window.location.href = 'acceso.html';
         }
       });
 
-      logoutBtn.addEventListener('click', e => {
+      document.getElementById('logout-btn').addEventListener('click', e => {
         e.preventDefault();
         auth.signOut().then(() => window.location.href = 'index.html');
       });
 
-      /* ---------- 2. Lógica de progreso con Firestore ---------- */
       async function loadCourseProgressFromFirestore(userId) {
         const progressRef = db.collection('userProgress').doc(userId);
         try {
           const doc = await progressRef.get();
-          if (doc.exists) {
-            const progressData = doc.data();
-            // Recorrer todas las tarjetas de curso y actualizar su progreso
-            document.querySelectorAll('[data-course-id]').forEach(card => {
-              const courseId = card.dataset.courseId; // "geniaweek"
-              // El campo en Firestore debe llamarse 'geniaweekProgress'
-              const progressValue = progressData[`${courseId}Progress`] || 0;
-              
-              card.querySelector('.fill').style.width = `${progressValue}%`;
-              card.querySelector('.percent').textContent = `${progressValue}%`;
-            });
-          } else {
-            console.log("No existe documento de progreso para este usuario. Se mostrará 0%.");
-          }
+          const progressData = doc.exists ? doc.data() : {};
+          
+          document.querySelectorAll('[data-course-id]').forEach(card => {
+            const courseId = card.dataset.courseId;
+            const courseProgressData = progressData[courseId] || { completedLessons: [] };
+            
+            // El número total de lecciones del curso. Este valor debe ser consistente
+            // con la estructura de datos en la página de la lección.
+            const totalLessons = 8; 
+            const completedCount = courseProgressData.completedLessons.length;
+            const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
+            updateCardUI(card, progressValue);
+          });
         } catch (error) {
           console.error("Error al obtener progreso desde Firestore:", error);
         }
+      }
+
+      function updateCardUI(card, progress) {
+        const tagEl = card.querySelector('.tag');
+        const percentEl = card.querySelector('.percent');
+        const fillEl = card.querySelector('.fill');
+        const footerEl = card.querySelector('.card-footer');
+
+        percentEl.textContent = `${progress}%`;
+        fillEl.style.width = `${progress}%`;
+
+        if (progress >= 100) {
+          tagEl.textContent = 'Completado';
+          tagEl.classList.remove('bg-teal-100', 'text-teal-600');
+          tagEl.classList.add('bg-green-100', 'text-green-600');
+          fillEl.style.backgroundColor = 'var(--brand-green)';
+          
+          footerEl.innerHTML = `
+            <div class="space-y-3">
+              <a href="#" class="flex items-center justify-center gap-2 w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                <i data-lucide="linkedin" class="h-5 w-5"></i>
+                <span>Añadir a LinkedIn</span>
+              </a>
+              <div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">
+                ¡Cupón del 20% DESBLOQUEADO!
+              </div>
+            </div>
+          `;
+        } else {
+          footerEl.innerHTML = `
+            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+              Continuar aprendiendo
+            </a>
+          `;
+        }
+        lucide.createIcons();
       }
     });
   </script>
