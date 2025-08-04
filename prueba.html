@@ -1,266 +1,205 @@
-<!DOCTYPE html>
-<html lang="es-CL">
+ (estilos cohesionados, variables de marca, animaciones y un
+  sistema de progreso persistente por curso usando localStorage).
+  -------------------------------------------------------------------
+  👉  Estructura general
+      /campus.html           → Dashboard del estudiante (este archivo)
+      /campus/genia-week.html → Página interna del curso (versión previa)
+  -------------------------------------------------------------------
+-->
+<html lang="es-CL" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8" />
-    <title>Lección del Curso - Aula GenIA</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex, nofollow"> <!-- Evita que esta página sea indexada -->
-    <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
+  <meta charset="UTF-8" />
+  <title>Campus Virtual – Aula GenIA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Mantener el campus fuera del índice público -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
+  <link rel="canonical" href="https://aulagenia.cl/campus.html">
+  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
 
-    <!-- Metadatos y Favicon -->
-    <link rel="canonical" href="https://aulagenia.cl/curso-leccion.html">
-    <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
+  <!-- Open Graph / Twitter Cards (consistentes) -->
+  <meta property="og:title" content="Campus Virtual – Aula GenIA" />
+  <meta property="og:description" content="Accede a tus cursos, recursos y comunidad." />
+  <meta property="og:image" content="https://aulagenia.cl/og-image.jpg" />
+  <meta property="og:url" content="https://aulagenia.cl/campus.html" />
+  <meta property="og:type" content="website" />
 
-    <!-- Google Fonts: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Campus Virtual – Aula GenIA" />
+  <meta name="twitter:description" content="Accede a tus cursos, recursos y comunidad." />
+  <meta name="twitter:image" content="https://aulagenia.cl/og-image.jpg" />
 
-    <style>
-        :root {
-            --brand-teal: #14b8a6;
-            --brand-teal-dark: #0f766e;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc; /* bg-slate-50 */
-        }
-        /* Estilo para la barra de scroll */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-        
-        /* Transición suave para el acordeón */
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-        }
-        .accordion-content.open {
-            max-height: 500px;
-        }
+  <!-- Datos estructurados básicos -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Campus Virtual – Aula GenIA",
+      "url": "https://aulagenia.cl/campus.html",
+      "isPartOf": { "@id": "https://aulagenia.cl/#website" },
+      "about": { "@type": "Thing", "name": "Inteligencia Artificial" }
+    }
+  </script>
 
-        /* Estilos para pestañas activas usando el color de la marca */
-        .tab-button.active {
-            color: var(--brand-teal);
-            border-bottom-color: var(--brand-teal);
-        }
-    </style>
+  <!-- Fonts + Tailwind CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Estilos globales adicionales -->
+  <style>
+    :root {
+      /* Paleta consistente con la marca */
+      --brand-teal: #14b8a6;
+      --brand-blue: #3b82f6;
+      --brand-yellow: #facc15;
+    }
+    html { font-family: 'Poppins', sans-serif; }
+    body { background-color: #f8fafc; } /* slate‑50 */
+    /* Tarjetas flotan sutilmente al pasar el ratón */
+    .card-hover {
+      @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
+    }
+    /* Ocultar scroll en contenedores si se usa horizontales más adelante */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
 <body class="text-gray-800">
 
-    <div id="app" class="flex flex-col h-screen">
+  <!-- ============   HEADER   ============ -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2" aria-label="Ir al inicio de Aula GenIA">
+        <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-10 w-auto" />
+      </a>
+      <div id="user-profile" class="hidden sm:flex items-center gap-3">
+        <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[10ch]"></span>
+        <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500" />
+        <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar sesión</button>
+      </div>
+    </nav>
+  </header>
 
-        <!-- Header del Campus (Consistente con tu diseño) -->
-        <header class="bg-white shadow-sm z-20">
-            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <a href="campus.html" aria-label="Volver al Campus de Aula GenIA">
-                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-10 w-auto">
-                </a>
-                <div id="user-profile-container" class="flex items-center gap-4" style="display: none;">
-                    <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
-                    <img id="user-avatar" src="" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500">
-                    <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
-                </div>
-            </nav>
-        </header>
+  <!-- ============   MAIN   ============ -->
+  <main class="container mx-auto px-6 py-12 max-w-7xl">
+    <!-- Saludo -->
+    <section class="mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Aprendiz</span>!</h1>
+      <p class="text-lg text-gray-600 mt-2">Sigamos creando cosas increíbles con&nbsp;IA ✨</p>
+    </section>
 
-        <!-- Contenido Principal del Curso -->
-        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+    <!-- Tarjetas de curso / recursos -->
+    <section aria-labelledby="courses-heading">
+      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
 
-            <!-- Columna Izquierda: Navegación y Progreso (Scrollable) -->
-            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
-                <div class="p-6">
-                    <a href="campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4">
-                        <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
-                        Volver a Mis Cursos
-                    </a>
-                    <h1 class="text-2xl font-bold text-gray-900">GenIA Week: Acceso Total</h1>
-                    <div class="mt-4">
-                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
-                            <span>Progreso</span>
-                            <span>25%</span>
-                        </div>
-                        <div class="w-full bg-slate-200 rounded-full h-2.5">
-                            <div class="bg-teal-500 h-2.5 rounded-full" style="width: 25%"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <nav class="space-y-1 px-2 pb-6">
-                    <!-- Módulo 1 -->
-                    <div class="accordion-item">
-                        <button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left">
-                            <span class="font-semibold text-gray-800">Módulo 1: Fundamentos de la IA</span>
-                            <i data-lucide="chevron-down" class="h-5 w-5 transition-transform text-gray-500"></i>
-                        </button>
-                        <div class="accordion-content open pl-4">
-                            <ul class="border-l border-slate-200 py-2 space-y-1">
-                                <li class="lesson-item active">
-                                    <a href="#" class="flex items-center p-2 ml-2 rounded-md bg-teal-50 text-teal-700 font-semibold">
-                                        <i data-lucide="play-circle" class="h-5 w-5 mr-3"></i>
-                                        <span class="flex-1 text-sm">1.1 ¿Qué es la IA?</span>
-                                        <i data-lucide="video" class="h-4 w-4 ml-2"></i>
-                                    </a>
-                                </li>
-                                <li class="lesson-item">
-                                    <a href="#" class="flex items-center p-2 ml-2 rounded-md text-gray-600 hover:bg-slate-100">
-                                        <i data-lucide="circle" class="h-5 w-5 mr-3 text-slate-300"></i>
-                                        <span class="flex-1 text-sm">1.2 Historia y Evolución</span>
-                                        <i data-lucide="video" class="h-4 w-4 ml-2"></i>
-                                    </a>
-                                </li>
-                                <!-- más lecciones -->
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Otros Módulos -->
-                </nav>
-            </aside>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-            <!-- Columna Derecha: Contenido de la Lección (Scrollable) -->
-            <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
-                <div class="p-6 md:p-8 lg:p-10">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">1.1 ¿Qué es la Inteligencia Artificial?</h2>
-                    
-                    <div class="aspect-w-16 aspect-h-9 mb-6">
-                        <div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white">
-                            <!-- Aquí iría el iframe de Vimeo/Wistia -->
-                            <i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i>
-                        </div>
-                    </div>
+        <!-- === Curso en progreso === -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden" data-course-id="geniaweek">
+          <div class="p-6">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">GenIA Week: Acceso Total</h3>
+            <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
 
-                    <div id="tabs-container">
-                        <div class="border-b border-slate-200">
-                            <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                                <button class="tab-button active" data-tab="descripcion">Descripción</button>
-                                <button class="tab-button" data-tab="recursos">Recursos</button>
-                                <button class="tab-button" data-tab="notas">Mis Notas</button>
-                                <button class="tab-button" data-tab="discusion">Discusión</button>
-                            </nav>
-                        </div>
-                        <div class="py-6">
-                            <div id="descripcion" class="tab-content prose max-w-none text-gray-600">
-                                <p>Bienvenido a la primera lección. Aquí sentaremos las bases de lo que es (y lo que no es) la Inteligencia Artificial. Prepárate para un viaje fascinante que cambiará tu forma de ver la tecnología.</p>
-                            </div>
-                            <div id="recursos" class="tab-content hidden"><!-- Contenido de Recursos --></div>
-                            <div id="notas" class="tab-content hidden">
-                                <textarea class="w-full h-40 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Escribe tus notas privadas para esta lección..."></textarea>
-                            </div>
-                            <div id="discusion" class="tab-content hidden"><!-- Contenido de Discusión --></div>
-                        </div>
-                    </div>
+            <div class="mb-2">
+              <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
+                <span>Progreso</span>
+                <span class="percent">0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="fill h-2.5 rounded-full" style="background-color: var(--brand-teal); width: 0%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gray-50 px-6 py-4">
+            <a href="/campus/genia-week.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Continuar aprendiendo</a>
+          </div>
+        </article>
 
-                    <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
-                        <button class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100" disabled>
-                            Lección Anterior
-                        </button>
-                        <button class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                            Marcar como completada y continuar
-                        </button>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+        <!-- === Curso próximo === -->
+        <article class="bg-white rounded-2xl shadow overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center p-8 text-center">
+          <div>
+            <h3 class="text-xl font-bold text-gray-500 mb-2">IA para Marketing Digital</h3>
+            <p class="text-gray-400 text-sm mb-4">Aprende a crear campañas y contenido que convierten usando IA.</p>
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-100 px-3 py-1.5 rounded-full">Próximamente</span>
+          </div>
+        </article>
 
-    <!-- Scripts de Firebase (compatibles con tu implementación) -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+        <!-- === Recursos / comunidad === -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden">
+          <div class="p-6">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">Recursos</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">Comunidad &amp; Plantillas</h3>
+            <p class="text-gray-600 text-sm mb-6">Únete a nuestro Discord exclusivo y descarga más de 20 plantillas de prompts.</p>
+          </div>
+          <div class="bg-gray-50 px-6 py-4">
+            <a href="#" class="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Acceder a recursos</a>
+          </div>
+        </article>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- CONFIGURACIÓN DE FIREBASE ---
-            const firebaseConfig = {
-                apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
-                authDomain: "aulagenia.firebaseapp.com",
-                projectId: "aulagenia",
-                storageBucket: "aulagenia.appspot.com",
-                messagingSenderId: "173328075630",
-                appId: "1:173328075630:web:825606db4271ea1e66cf7f",
-                measurementId: "G-X500LE6Z8X"
-            };
-            firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
+      </div>
+    </section>
+  </main>
 
-            // --- MANEJO DE AUTENTICACIÓN ---
-            const userProfileContainer = document.getElementById('user-profile-container');
-            const userNameEl = document.getElementById('user-name');
-            const userAvatar = document.getElementById('user-avatar');
-            const logoutButton = document.getElementById('logout-button');
+  <!-- ============   FOOTER   ============ -->
+  <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
+    © 2025 Aula GenIA · Todos los derechos reservados.
+  </footer>
 
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    const displayName = user.displayName || 'Alumno';
-                    const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${displayName.charAt(0).toUpperCase()}`;
-                    
-                    userNameEl.textContent = displayName;
-                    userAvatar.src = photoURL;
-                    userAvatar.alt = `Avatar de ${displayName}`;
-                    userProfileContainer.style.display = 'flex';
-                } else {
-                    window.location.href = 'acceso.html'; // Redirigir si no está logueado
-                }
-            });
+  <!-- Firebase (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
 
-            if(logoutButton) {
-                logoutButton.addEventListener('click', () => {
-                    auth.signOut().then(() => {
-                        window.location.href = 'index.html';
-                    });
-                });
-            }
+  <!-- =================  APP SCRIPT  ================= -->
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      /* ---------- 1. Firebase config & auth ---------- */
+      const firebaseConfig = {
+        apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
+        authDomain: "aulagenia.firebaseapp.com",
+        projectId: "aulagenia",
+        storageBucket: "aulagenia.appspot.com",
+        messagingSenderId: "173328075630",
+        appId: "1:173328075630:web:825606db4271ea1e66cf7f",
+        measurementId: "G-X500LE6Z8X"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
 
-            // --- LÓGICA DE LA PÁGINA ---
-            lucide.createIcons();
+      const userNameEls = [document.getElementById('user-name'), document.getElementById('welcome-name')];
+      const avatarEl = document.getElementById('user-avatar');
+      const profileBox = document.getElementById('user-profile');
+      const logoutBtn = document.getElementById('logout-btn');
 
-            // Acordeón
-            document.querySelectorAll('.accordion-header').forEach(header => {
-                header.addEventListener('click', () => {
-                    const content = header.nextElementSibling;
-                    content.classList.toggle('open');
-                    header.querySelector('i').style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-                });
-            });
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          const name = user.displayName || 'Alumno';
+          const photo = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
+          userNameEls.forEach(el => el && (el.textContent = name));
+          avatarEl.src = photo;
+          avatarEl.alt = `Avatar de ${name}`;
+          profileBox.classList.remove('hidden');
+        } else {
+          window.location.href = 'acceso.html';
+        }
+      });
 
-            // Pestañas
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.add('hidden'));
-                    button.classList.add('active');
-                    document.getElementById(button.dataset.tab).classList.remove('hidden');
-                });
-            });
-            
-            // Estilo para los botones de las pestañas (inyectado para usar variables CSS)
-            const style = document.createElement('style');
-            style.textContent = `
-                .tab-button {
-                    border-bottom: 2px solid transparent;
-                    padding: 0.75rem 0.25rem;
-                    font-weight: 600;
-                    color: #475569; /* slate-600 */
-                    cursor: pointer;
-                    transition: all 0.2s ease-in-out;
-                }
-                .tab-button:hover {
-                    color: var(--brand-teal);
-                }
-            `;
-            document.head.appendChild(style);
-        });
-    </script>
+      logoutBtn.addEventListener('click', e => {
+        e.preventDefault();
+        auth.signOut().then(() => window.location.href = 'index.html');
+      });
 
+      /* ---------- 2. Progreso por curso (localStorage) ---------- */
+      document.querySelectorAll('[data-course-id]').forEach(card => {
+        const id = card.dataset.courseId;
+        const percent = parseInt(localStorage.getItem(`${id}_progress`) || '0', 10);
+        card.querySelector('.fill').style.width = percent + '%';
+        card.querySelector('.percent').textContent = percent + '%';
+      });
+    });
+  </script>
 </body>
 </html>
