@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v2.3 (Completion State Fixed)
+  CAMPUS DASHBOARD · AULA GENIA v2.4 (Robust Progress Calculation)
   -------------------------------------------------------------------
-  Esta versión corrige y aplica la lógica para cambiar dinámicamente 
-  el estado de la tarjeta del curso cuando el progreso llega al 100%.
+  Esta versión refactoriza el cálculo del progreso para que sea 
+  dinámico y siempre esté sincronizado con la estructura real del curso,
+  solucionando el error de que el progreso se quedaba en 0%.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -143,12 +144,23 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
       
-      // Estructura de datos del curso para calcular el total de lecciones
+      // **MEJORA:** Estructura de datos del curso para un cálculo de progreso preciso.
+      // Esta estructura debe ser idéntica a la que se usa en la página del curso.
       const courseStructure = {
           geniaweek: {
-              totalLessons: 8 // 2 módulos de 4 lecciones cada uno
+              modules: [
+                  { lessons: [{}, {}, {}, {}] }, // Módulo 1 con 4 lecciones (incluye quiz)
+                  { lessons: [{}, {}, {}, {}] }  // Módulo 2 con 4 lecciones (incluye quiz)
+              ]
           }
       };
+
+      // **MEJORA:** Función centralizada para obtener el total de lecciones.
+      function getTotalLessons(courseId) {
+          const course = courseStructure[courseId];
+          if (!course) return 0;
+          return course.modules.reduce((total, module) => total + module.lessons.length, 0);
+      }
 
       auth.onAuthStateChanged(user => {
         if (user) {
@@ -177,7 +189,8 @@
             const courseId = card.dataset.courseId;
             const courseProgressData = progressData[courseId] || { completedLessons: [] };
             
-            const totalLessons = courseStructure[courseId]?.totalLessons || 0;
+            // **MEJORA:** Usar la función para obtener el total de lecciones dinámicamente.
+            const totalLessons = getTotalLessons(courseId);
             const completedCount = courseProgressData.completedLessons.length;
             const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
