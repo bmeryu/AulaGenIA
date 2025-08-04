@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v11):
+    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v12):
     -----------------------------------------------------------------------
-    1.  **Lógica de Vinculación Robusta:** Se ha corregido el flujo de autenticación para usar siempre las instancias de proveedor definidas en el objeto `providerInfo`. Esto garantiza que la configuración (como `addScope('email')` para Facebook) se aplique consistentemente, solucionando el error `auth/account-exists-with-different-credential` al obtener siempre el email del usuario.
-    2.  **Manejo de Errores Mejorado:** Se han añadido mensajes de alerta más claros y registros en consola para guiar al usuario y facilitar la depuración durante el proceso de vinculación de cuentas.
-    3.  **Código Centralizado:** Se mantiene la función genérica `trySignIn` para evitar duplicación y facilitar el mantenimiento futuro.
+    1.  **Manejo de Inconsistencia de Firebase:** Se ha mejorado el bloque `catch` para manejar el caso límite donde `fetchSignInMethodsForEmail` retorna un arreglo vacío a pesar de que el error `auth/account-exists-with-different-credential` fue lanzado.
+    2.  **Guía de Usuario Mejorada:** En caso de la inconsistencia anterior, se muestra un mensaje de alerta más claro que guía al usuario a intentar iniciar sesión con su método original, proporcionando una solución práctica en lugar de un error sin salida.
+    3.  **Depuración Avanzada:** Se han añadido registros de consola detallados para facilitar el diagnóstico de errores de autenticación y vinculación.
 -->
 <html lang="es-CL">
 <head>
@@ -320,20 +320,29 @@
 
             // ----- MANEJO DE COLISIÓN DE CUENTAS -----
             const pendingCred = error.credential;
-            const email = (error.email || (error.customData && error.customData.email) || '').toLowerCase();
+            // Robustez: se añade .trim() para eliminar posibles espacios en blanco.
+            const email = ((error.email || (error.customData && error.customData.email)) || '').toLowerCase().trim();
             
+            // Logs de depuración mejorados
+            console.log("--- Account Collision Detected ---");
+            console.log("Error Code:", error.code);
+            console.log("Extracted Email:", email);
+            console.log("Full Error Object:", error);
+
             if (!email) {
               console.error("No se pudo obtener el email del proveedor tras el error de colisión.", error);
               alert('No pudimos obtener tu correo del proveedor para vincular las cuentas. Intenta iniciar sesión con tu método original.');
               return;
             }
 
-            console.log(`[Colisión] Email detectado: ${email}`);
+            console.log(`[Colisión] Buscando métodos de inicio de sesión para: ${email}`);
             const methods = await auth.fetchSignInMethodsForEmail(email);
-            console.log(`[Colisión] Métodos encontrados para ${email}:`, methods);
+            console.log(`[Colisión] Métodos encontrados:`, methods);
 
+            // --- MANEJO MEJORADO DE INCONSISTENCIA ---
             if (!methods || methods.length === 0) {
-              alert('Error inesperado: el correo indica que ya existe, pero no encontramos un método de inicio de sesión asociado.');
+              console.error("Inconsistencia de Firebase: 'auth/account-exists-with-different-credential' fue lanzado, pero fetchSignInMethodsForEmail retornó un arreglo vacío.", {email: email});
+              alert('Ya existe una cuenta con este correo, pero no pudimos identificar el método original. Por favor, intenta iniciar sesión directamente con tu otro método (Google, o correo y contraseña).');
               return;
             }
 
@@ -343,7 +352,6 @@
             // Si el método original es email/contraseña
             if (originalProviderId === 'password') {
               alert(`Ya tienes una cuenta con ${originalProviderInfo.name}. Por favor, inicia sesión con tu correo y contraseña para continuar.`);
-              // Opcional: podrías enfocar el formulario de login aquí.
               return;
             }
 
@@ -368,10 +376,8 @@
           }
         }
 
-        // --- CORRECCIÓN APLICADA AQUÍ ---
         // Usamos el objeto providerInfo para crear las instancias de los proveedores,
         // asegurando que la configuración (como addScope) se aplique.
-
         googleSignInBtn.addEventListener('click', () => {
             const provider = providerInfo['google.com'].instance();
             trySignIn(provider);
@@ -398,7 +404,6 @@
                 })
                 .then(() => {
                     console.log("Usuario registrado y perfil actualizado:", auth.currentUser);
-                    // onAuthStateChanged se encargará de la redirección
                 })
                 .catch((error) => {
                     console.error("Error en el registro:", error);
@@ -415,7 +420,6 @@
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     console.log("Usuario ha iniciado sesión:", userCredential.user);
-                    // onAuthStateChanged se encargará de la redirección
                 })
                 .catch((error) => {
                     console.error("Error en inicio de sesión:", error);
