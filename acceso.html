@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v12):
+    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v14):
     -----------------------------------------------------------------------
-    1.  **Manejo de Inconsistencia de Firebase:** Se ha mejorado el bloque `catch` para manejar el caso límite donde `fetchSignInMethodsForEmail` retorna un arreglo vacío a pesar de que el error `auth/account-exists-with-different-credential` fue lanzado.
-    2.  **Guía de Usuario Mejorada:** En caso de la inconsistencia anterior, se muestra un mensaje de alerta más claro que guía al usuario a intentar iniciar sesión con su método original, proporcionando una solución práctica en lugar de un error sin salida.
-    3.  **Depuración Avanzada:** Se han añadido registros de consola detallados para facilitar el diagnóstico de errores de autenticación y vinculación.
+    1.  **Implementación de "Olvidé mi Contraseña":** Se ha añadido la funcionalidad completa para el restablecimiento de contraseña utilizando `sendPasswordResetEmail` de Firebase.
+    2.  **Flujo de Usuario Mejorado:** Al hacer clic en el enlace, el sistema ahora utiliza el correo electrónico del campo de inicio de sesión para enviar el enlace de restablecimiento, mostrando confirmaciones y errores de manera clara.
+    3.  **Código Limpio:** Se ha añadido un nuevo event listener de forma limpia y mantenible, sin afectar la lógica de autenticación existente.
 -->
 <html lang="es-CL">
 <head>
@@ -172,7 +172,8 @@
                                     <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="lock" class="h-5 w-5 text-gray-400"></i></span>
                                     <input type="password" id="login-password" placeholder="••••••••" required aria-required="true" autocomplete="current-password" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
                                 </div>
-                                <a href="#" class="float-right mt-2 text-sm text-teal-400 hover:text-teal-300">¿Olvidaste tu contraseña?</a>
+                                <!-- CAMBIO: Añadido ID al enlace -->
+                                <a href="#" id="forgot-password-link" class="float-right mt-2 text-sm text-teal-400 hover:text-teal-300">¿Olvidaste tu contraseña?</a>
                             </div>
                         </div>
                         <button type="submit" class="gradient-button mt-10 w-full rounded-lg py-3 text-lg font-bold">Iniciar Sesión</button>
@@ -264,6 +265,7 @@
         const registerForm = document.getElementById('register-form');
         const googleSignInBtn = document.getElementById('google-signin-btn');
         const facebookSignInBtn = document.getElementById('facebook-signin-btn');
+        const forgotPasswordLink = document.getElementById('forgot-password-link'); // <-- NUEVA REFERENCIA
         
         // --- LÓGICA DE PESTAÑAS ---
         loginTab.addEventListener('click', () => {
@@ -292,7 +294,7 @@
             name: 'Facebook',
             instance: () => {
               const p = new firebase.auth.FacebookAuthProvider();
-              p.addScope('email'); // <-- Clave: Pedimos el email explícitamente
+              p.addScope('email');
               p.setCustomParameters({
                 'display': 'popup'
               });
@@ -309,7 +311,6 @@
         async function trySignIn(provider) {
           try {
             await auth.signInWithPopup(provider);
-            // onAuthStateChanged se encargará de la redirección
           } catch (error) {
 
             if (error.code !== 'auth/account-exists-with-different-credential') {
@@ -318,12 +319,9 @@
               return;
             }
 
-            // ----- MANEJO DE COLISIÓN DE CUENTAS -----
             const pendingCred = error.credential;
-            // Robustez: se añade .trim() para eliminar posibles espacios en blanco.
             const email = ((error.email || (error.customData && error.customData.email)) || '').toLowerCase().trim();
             
-            // Logs de depuración mejorados
             console.log("--- Account Collision Detected ---");
             console.log("Error Code:", error.code);
             console.log("Extracted Email:", email);
@@ -339,23 +337,20 @@
             const methods = await auth.fetchSignInMethodsForEmail(email);
             console.log(`[Colisión] Métodos encontrados:`, methods);
 
-            // --- MANEJO MEJORADO DE INCONSISTENCIA ---
             if (!methods || methods.length === 0) {
               console.error("Inconsistencia de Firebase: 'auth/account-exists-with-different-credential' fue lanzado, pero fetchSignInMethodsForEmail retornó un arreglo vacío.", {email: email});
-              alert('Ya existe una cuenta con este correo, pero el método fue Google. Por favor, intenta iniciar sesión directamente con tu método original (Google) o con tu correo y contraseña).');
+              alert('Ya existe una cuenta con este correo, pero el método fue Google. Por favor, intenta iniciar sesión directamente con tu método original (Google) o con tu correo y contraseña.');
               return;
             }
 
             const originalProviderId = methods[0];
             const originalProviderInfo = providerInfo[originalProviderId] || { name: originalProviderId, instance: () => null };
 
-            // Si el método original es email/contraseña
             if (originalProviderId === 'password') {
               alert(`Ya tienes una cuenta con ${originalProviderInfo.name}. Por favor, inicia sesión con tu correo y contraseña para continuar.`);
               return;
             }
 
-            // Si el método original es otro proveedor social (Google, etc.)
             const originalProviderInstance = originalProviderInfo.instance();
             if (!originalProviderInstance) {
                 alert(`No se pudo reconstruir el proveedor original (${originalProviderId}). Por favor, inicia sesión manualmente.`);
@@ -368,7 +363,6 @@
                 const { user } = await auth.signInWithPopup(originalProviderInstance);
                 await user.linkWithCredential(pendingCred);
                 console.log('¡Cuentas vinculadas con éxito!');
-                // onAuthStateChanged se activará y redirigirá.
             } catch (linkError) {
                 console.error("Error al vincular las cuentas:", linkError);
                 alert(`No se pudieron vincular las cuentas: ${linkError.message}`);
@@ -376,8 +370,6 @@
           }
         }
 
-        // Usamos el objeto providerInfo para crear las instancias de los proveedores,
-        // asegurando que la configuración (como addScope) se aplique.
         googleSignInBtn.addEventListener('click', () => {
             const provider = providerInfo['google.com'].instance();
             trySignIn(provider);
@@ -424,6 +416,32 @@
                 .catch((error) => {
                     console.error("Error en inicio de sesión:", error);
                     alert(`Error: Credenciales incorrectas. Por favor, inténtalo de nuevo.`);
+                });
+        });
+
+        // --- NUEVA LÓGICA: RESTABLECIMIENTO DE CONTRASEÑA ---
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-email');
+            const email = emailInput.value;
+
+            if (!email) {
+                alert('Por favor, ingresa tu correo electrónico en el campo correspondiente para restablecer tu contraseña.');
+                emailInput.focus();
+                return;
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    alert('Se ha enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada (y la carpeta de spam).');
+                })
+                .catch((error) => {
+                    console.error('Error al enviar correo de restablecimiento:', error);
+                    if (error.code === 'auth/user-not-found') {
+                        alert('No se encontró ninguna cuenta con ese correo electrónico.');
+                    } else {
+                        alert(`Ocurrió un error: ${error.message}`);
+                    }
                 });
         });
 
