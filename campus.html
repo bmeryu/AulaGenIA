@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v2.4 (Robust Progress Calculation)
+  CAMPUS DASHBOARD · AULA GENIA v2.5 (Robust Auth Flow)
   -------------------------------------------------------------------
-  Esta versión refactoriza el cálculo del progreso para que sea 
-  dinámico y siempre esté sincronizado con la estructura real del curso,
-  solucionando el error de que el progreso se quedaba en 0%.
+  Esta versión refactoriza el script para usar onAuthStateChanged como
+  punto de entrada principal, garantizando que la base de datos y la
+  autenticación estén listas antes de cualquier operación.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -17,28 +17,6 @@
   <link rel="canonical" href="https://aulagenia.cl/campus.html">
   <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
-
-  <meta property="og:title" content="Campus Virtual – Aula GenIA" />
-  <meta property="og:description" content="Accede a tus cursos, recursos y comunidad." />
-  <meta property="og:image" content="https://aulagenia.cl/og-image.jpg" />
-  <meta property="og:url" content="https://aulagenia.cl/campus.html" />
-  <meta property="og:type" content="website" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Campus Virtual – Aula GenIA" />
-  <meta name="twitter:description" content="Accede a tus cursos, recursos y comunidad." />
-  <meta name="twitter:image" content="https://aulagenia.cl/og-image.jpg" />
-
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Campus Virtual – Aula GenIA",
-      "url": "https://aulagenia.cl/campus.html",
-      "isPartOf": { "@id": "https://aulagenia.cl/#website" },
-      "about": { "@type": "Thing", "name": "Inteligencia Artificial" }
-    }
-  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,7 +79,9 @@
             </div>
           </div>
           <div class="card-footer bg-gray-50 px-6 py-4">
-            <!-- El contenido del footer se generará dinámicamente -->
+            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+              Continuar aprendiendo
+            </a>
           </div>
         </article>
 
@@ -137,71 +117,32 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
 
-  <script type="module">
+  <script defer>
     document.addEventListener('DOMContentLoaded', () => {
       const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
-      firebase.initializeApp(firebaseConfig);
+      
+      try {
+        firebase.initializeApp(firebaseConfig);
+      } catch(e) {
+        console.error("Firebase ya fue inicializado.");
+      }
+      
       const auth = firebase.auth();
       const db = firebase.firestore();
       
-      // **CORRECCIÓN:** Estructura de datos del curso para un cálculo de progreso preciso.
-      // Esta estructura debe ser idéntica a la que se usa en la página del curso.
       const courseStructure = {
           geniaweek: {
               modules: [
-                  { lessons: [{}, {}, {}, {}] }, // Módulo 1 con 4 lecciones (incluye quiz)
-                  { lessons: [{}, {}, {}, {}] }  // Módulo 2 con 4 lecciones (incluye quiz)
+                  { lessons: [{}, {}, {}, {}] },
+                  { lessons: [{}, {}, {}, {}] }
               ]
           }
       };
 
-      // **CORRECCIÓN:** Función centralizada para obtener el total de lecciones.
       function getTotalLessons(courseId) {
           const course = courseStructure[courseId];
           if (!course) return 0;
           return course.modules.reduce((total, module) => total + module.lessons.length, 0);
-      }
-
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          const name = user.displayName || 'Alumno';
-          document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
-          document.getElementById('user-avatar').src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
-          document.getElementById('user-profile').classList.remove('hidden');
-          loadCourseProgressFromFirestore(user.uid);
-        } else {
-          window.location.href = 'acceso.html';
-        }
-      });
-
-      document.getElementById('logout-btn').addEventListener('click', e => {
-        e.preventDefault();
-        auth.signOut().then(() => window.location.href = 'index.html');
-      });
-
-      async function loadCourseProgressFromFirestore(userId) {
-        const progressRef = db.collection('userProgress').doc(userId);
-        try {
-          const doc = await progressRef.get();
-          const progressData = doc.exists ? doc.data() : {};
-          
-          document.querySelectorAll('[data-course-id]').forEach(card => {
-            const courseId = card.dataset.courseId;
-            const courseProgressData = progressData[courseId] || { completedLessons: [] };
-            
-            // **CORRECCIÓN:** Usar la función para obtener el total de lecciones dinámicamente.
-            const totalLessons = getTotalLessons(courseId);
-            const completedCount = courseProgressData.completedLessons.length;
-            const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-
-            updateCardUI(card, progressValue);
-          });
-        } catch (error) {
-          console.error("Error al obtener progreso desde Firestore:", error);
-          document.querySelectorAll('[data-course-id]').forEach(card => {
-            updateCardUI(card, 0);
-          });
-        }
       }
 
       function updateCardUI(card, progress) {
@@ -221,9 +162,9 @@
           
           footerEl.innerHTML = `
             <div class="space-y-3">
-              <a href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=GenIA%20Week:%20Acceso%20Total&organizationId=94349991&issueYear=${new Date().getFullYear()}&issueMonth=${new Date().getMonth() + 1}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
-                <i data-lucide="linkedin" class="h-5 w-5"></i>
-                <span>Añadir a LinkedIn</span>
+              <a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                <i data-lucide="award" class="h-5 w-5"></i>
+                <span>Ver Certificado</span>
               </a>
               <div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">
                 ¡Cupón del 20% DESBLOQUEADO!
@@ -239,6 +180,48 @@
         }
         lucide.createIcons();
       }
+
+      async function loadCourseProgressFromFirestore(userId) {
+        const progressRef = db.collection('userProgress').doc(userId);
+        try {
+          const doc = await progressRef.get();
+          const progressData = doc.exists ? doc.data() : {};
+          
+          document.querySelectorAll('[data-course-id]').forEach(card => {
+            const courseId = card.dataset.courseId;
+            const courseProgressData = progressData[courseId] || { completedLessons: [] };
+            
+            const totalLessons = getTotalLessons(courseId);
+            const completedCount = courseProgressData.completedLessons.length;
+            const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
+            updateCardUI(card, progressValue);
+          });
+        } catch (error) {
+          console.error("Error al obtener progreso desde Firestore:", error);
+          document.querySelectorAll('[data-course-id]').forEach(card => {
+            updateCardUI(card, 0);
+          });
+        }
+      }
+
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          const name = user.displayName || 'Alumno';
+          document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
+          document.getElementById('user-avatar').src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
+          document.getElementById('user-profile').classList.remove('hidden');
+          
+          document.getElementById('logout-btn').addEventListener('click', e => {
+            e.preventDefault();
+            auth.signOut().then(() => window.location.href = 'index.html');
+          });
+
+          loadCourseProgressFromFirestore(user.uid);
+        } else {
+          window.location.href = 'acceso.html';
+        }
+      });
     });
   </script>
 </body>
