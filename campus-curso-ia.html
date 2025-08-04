@@ -151,12 +151,6 @@
             };
 
             // --- FUNCIONES DE RENDERIZADO Y LÓGICA DE UI ---
-
-            /**
-             * Función centralizada para actualizar toda la interfaz de usuario.
-             * Dibuja todo basado en el estado actual de `userProgress`.
-             * Es la única función que debe llamar a lucide.createIcons().
-             */
             function refreshUI() {
                 renderSidebar();
                 const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
@@ -167,7 +161,7 @@
                     dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lesson.id) === 0;
                 }
                 updateOverallProgress();
-                lucide.createIcons(); // Dibuja/actualiza todos los íconos del DOM de una vez.
+                lucide.createIcons();
             }
 
             function renderSidebar() {
@@ -201,14 +195,14 @@
                 dom.lessonMaterialContainer.innerHTML = materialHtml;
                 if (lesson.type === 'quiz') {
                     dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => {
-                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                        dom.
+                    lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
                         opt.classList.add('selected');
                     }));
                     document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson));
                 }
                 dom.tabs.descripcion.innerHTML = lesson.desc || 'No hay descripción.';
                 dom.tabs.recursos.innerHTML = lesson.res ? `<ul>${lesson.res}</ul>` : 'No hay recursos.';
-                // Se elimina la llamada a lucide.createIcons() de aquí.
             }
             
             function updateMainActionButton() {
@@ -255,7 +249,6 @@
             }
 
             // --- MANEJO DE ESTADO Y DATOS ---
-
             async function navigateToLesson(lessonId) {
                 const lesson = allLessons.find(l => l.id === lessonId);
                 if (!lesson) {
@@ -287,10 +280,15 @@
                             // VALIDACIÓN: Asegurarse de que el ID de la lección guardada exista.
                             const savedLessonIdIsValid = courseProgress.currentLessonId && allLessons.some(l => l.id === courseProgress.currentLessonId);
                             
+                            // Fusión segura del progreso para evitar errores con propiedades indefinidas.
                             userProgress = {
-                                ...userProgress,
+                                // Se usa el progreso guardado como base.
                                 ...courseProgress,
-                                // Si el ID guardado no es válido, volver a la primera lección.
+                                // Se asegura que 'completedLessons' sea siempre un array.
+                                // Si no existe en Firestore, se inicializa como un array vacío.
+                                completedLessons: courseProgress.completedLessons || [],
+                                // Se asegura que 'currentLessonId' sea válido.
+                                // Si no es válido, se vuelve a la primera lección del curso.
                                 currentLessonId: savedLessonIdIsValid ? courseProgress.currentLessonId : allLessons[0].id
                             };
                         }
@@ -299,7 +297,6 @@
                     console.error("Error crítico al cargar progreso. Se usará el progreso por defecto.", error);
                 }
                 
-                // Una vez cargado y validado el progreso, se dibuja la UI.
                 refreshUI();
             }
 
@@ -318,7 +315,7 @@
                     await saveProgress();
                     checkForBadgeUnlock(lessonId);
                     showToast('¡Lección completada!');
-                    refreshUI(); // Actualizar UI para reflejar el cambio
+                    refreshUI();
                 } else {
                     const currentIndex = allLessons.findIndex(l => l.id === lessonId);
                     if (currentIndex < allLessons.length - 1) {
