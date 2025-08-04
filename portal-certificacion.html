@@ -177,8 +177,8 @@
                 if (!currentUser) return;
                 dom.studentNameDisplay.textContent = currentUser.name;
 
-                const userProgressRef = doc(db, 'userProgress', currentUser.uid);
-                const docSnap = await getDoc(userProgressRef);
+                const userProgressRef = db.collection('userProgress').doc(currentUser.uid);
+                const docSnap = await userProgressRef.get();
 
                 let completedPrograms = [];
                 if (docSnap.exists()) {
@@ -222,10 +222,10 @@
 
                     showStatus("Buscando certificado existente...", '#3b82f6');
                     
-                    const certificatesRef = collection(db, `artifacts/${appId}/public/data/certificates`);
-                    const q = query(certificatesRef, where("userId", "==", currentUser.uid), where("programId", "==", programId));
+                    const certificatesRef = db.collection(`artifacts/${appId}/public/data/certificates`);
+                    const q = certificatesRef.where("userId", "==", currentUser.uid).where("programId", "==", programId);
                     
-                    const querySnapshot = await getDocs(q);
+                    const querySnapshot = await q.get();
                     let certificateData;
 
                     if (!querySnapshot.empty) {
@@ -267,8 +267,8 @@
             async function saveCertificate(data) {
                  showStatus("Guardando nuevo certificado...", '#3b82f6');
                  try {
-                     const docRef = doc(db, `artifacts/${appId}/public/data/certificates`, data.certificateId);
-                     await setDoc(docRef, data);
+                     const docRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(data.certificateId);
+                     await docRef.set(data);
                      showStatus("¡Guardado con éxito!", '#16a34a', 3000);
                  } catch (error) {
                      console.error("Error guardando: ", error);
@@ -326,8 +326,8 @@
                 }
                 displayVerificationResult("Buscando...", "blue");
                 try {
-                    const docRef = doc(db, `artifacts/${appId}/public/data/certificates`, codeToVerify);
-                    const docSnap = await getDoc(docRef);
+                    const docRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(codeToVerify);
+                    const docSnap = await docRef.get();
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         const resultHtml = `<h4 class="font-bold text-green-700">✅ Certificado Válido</h4><p class="mt-2"><strong>Alumno:</strong> ${data.studentName}</p><p><strong>Programa:</strong> ${data.programName}</p><p><strong>Fecha:</strong> ${data.completionDate}</p>`;
