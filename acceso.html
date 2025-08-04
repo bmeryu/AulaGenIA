@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v10):
+    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v11):
     -----------------------------------------------------------------------
-    1.  **Corrección de `storageBucket`:** Se ha corregido el valor en el objeto `firebaseConfig` para evitar advertencias en la consola y asegurar la correcta inicialización de todos los servicios de Firebase.
-    2.  **Lógica de Vinculación Mejorada (Implementación del Usuario):** Se ha adoptado la sugerencia del usuario de usar un objeto `providerInfo` y una función `trySignIn` genérica. Este enfoque es más limpio, escalable y elimina la lógica duplicada, resultando en un código de calidad de producción.
+    1.  **Lógica de Vinculación Robusta:** Se ha corregido el flujo de autenticación para usar siempre las instancias de proveedor definidas en el objeto `providerInfo`. Esto garantiza que la configuración (como `addScope('email')` para Facebook) se aplique consistentemente, solucionando el error `auth/account-exists-with-different-credential` al obtener siempre el email del usuario.
+    2.  **Manejo de Errores Mejorado:** Se han añadido mensajes de alerta más claros y registros en consola para guiar al usuario y facilitar la depuración durante el proceso de vinculación de cuentas.
+    3.  **Código Centralizado:** Se mantiene la función genérica `trySignIn` para evitar duplicación y facilitar el mantenimiento futuro.
 -->
 <html lang="es-CL">
 <head>
@@ -135,14 +136,14 @@
                     </svg>
                     Continuar con Google
                 </button>
-<!-- Botón Facebook -->
-<button id="facebook-signin-btn"
-        class="mt-4 flex w-full items-center justify-center rounded-lg bg-[#1877F2] py-3 px-4 font-semibold text-white shadow-md transition-all duration-300 ease-in-out hover:bg-[#166FE0]">
-  <svg class="mr-3 h-6 w-6" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
-    <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.785 4.659-4.785 1.325 0 2.464.099 2.796.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.403 24 24 23.403 24 22.674V1.326C24 .597 23.403 0 22.675 0z"/>
-  </svg>
-  Continuar con Facebook
-</button>
+                <!-- Botón Facebook -->
+                <button id="facebook-signin-btn"
+                        class="mt-4 flex w-full items-center justify-center rounded-lg bg-[#1877F2] py-3 px-4 font-semibold text-white shadow-md transition-all duration-300 ease-in-out hover:bg-[#166FE0]">
+                  <svg class="mr-3 h-6 w-6" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                    <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.785 4.659-4.785 1.325 0 2.464.099 2.796.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.403 24 24 23.403 24 22.674V1.326C24 .597 23.403 0 22.675 0z"/>
+                  </svg>
+                  Continuar con Facebook
+                </button>
 
                 <div class="my-6 flex items-center">
                     <div class="flex-grow border-t border-gray-600"></div>
@@ -243,10 +244,10 @@
     document.addEventListener('DOMContentLoaded', () => {
         // --- CONFIGURACIÓN DE FIREBASE ---
         const firebaseConfig = {
-            apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
+            apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", // Reemplaza con tu API Key
             authDomain: "aulagenia.firebaseapp.com",
             projectId: "aulagenia",
-            storageBucket: "aulagenia.appspot.com", // <-- CORRECCIÓN APLICADA AQUÍ
+            storageBucket: "aulagenia.appspot.com",
             messagingSenderId: "173328075630",
             appId: "1:173328075630:web:825606db4271ea1e66cf7f",
             measurementId: "G-X500LE6Z8X"
@@ -280,71 +281,107 @@
         });
 
         
-// --- LÓGICA DE AUTENTICACIÓN REFACTORIZADA ---
+        // --- LÓGICA DE AUTENTICACIÓN REFACTORIZADA ---
 
-const providerInfo = {
-  'google.com'  : { name: 'Google',   instance: () => new firebase.auth.GoogleAuthProvider() },
-  'facebook.com': {                    // ← EDITADO
-    name: 'Facebook',
-    instance: () => {
-      const p = new firebase.auth.FacebookAuthProvider();
-      p.addScope('email');             // <-- PEDIMOS EL EMAIL
-      return p;
-    }
-  },
-  'password'    : { name: 'correo y contraseña', instance: () => null }
-};
-
-
-async function trySignIn(provider) {
-  try {
-    await auth.signInWithPopup(provider);            // login normal
-    // onAuthStateChanged hará la redirección
-  } catch (error) {
-
-    if (error.code !== 'auth/account-exists-with-different-credential') {
-      console.error(error);
-      alert(error.message);
-      return;
-    }
-
- /* ----- colisión: el correo ya existe con otro método ----- */
-const pendingCred = error.credential;
-const email = (error.email || error.customData?.email || '').toLowerCase();
-console.log('[collision] email recibido:', email);   // ✔️ ahora SÍ se puede loguear
-
-if (!email) {
-  alert('No pudimos obtener tu correo del proveedor.');
-  return;
-}
-
-const methods = await auth.fetchSignInMethodsForEmail(email);
-console.log('[collision] métodos encontrados:', methods);  // ✔️ ya existe “methods”
-
-if (!methods || methods.length === 0) {
-  alert('No encontramos otro método de inicio de sesión para este correo.');
-  return;
-}
-     
+        const providerInfo = {
+          'google.com': { 
+            name: 'Google', 
+            instance: () => new firebase.auth.GoogleAuthProvider() 
+          },
+          'facebook.com': {
+            name: 'Facebook',
+            instance: () => {
+              const p = new firebase.auth.FacebookAuthProvider();
+              p.addScope('email'); // <-- Clave: Pedimos el email explícitamente
+              p.setCustomParameters({
+                'display': 'popup'
+              });
+              return p;
+            }
+          },
+          'password': { 
+            name: 'correo y contraseña', 
+            instance: () => null 
+          }
+        };
 
 
-    const originalId   = methods[0];
-    const info         = providerInfo[originalId] || { name: originalId, instance: () => null };
-    const originalPvdr = info.instance();            // crea el AuthProvider
+        async function trySignIn(provider) {
+          try {
+            await auth.signInWithPopup(provider);
+            // onAuthStateChanged se encargará de la redirección
+          } catch (error) {
 
-    if (!originalPvdr) {                             // caso contraseña
-      alert(`Ya tienes una cuenta con ${info.name}. Inicia sesión con ese método y, una vez dentro, vincula el nuevo proveedor desde tu perfil.`);
-      return;
-    }
+            if (error.code !== 'auth/account-exists-with-different-credential') {
+              console.error("Error de autenticación:", error);
+              alert(`Ocurrió un error: ${error.message}`);
+              return;
+            }
 
-    alert(`Ya tienes una cuenta con ${info.name}. Por favor, inicia sesión con ${info.name} para vincular tu cuenta.`);
-    const { user } = await auth.signInWithPopup(originalPvdr); // popup del método original
-    await user.linkWithCredential(pendingCred);                // vínculo único
-    console.log('Cuentas vinculadas con éxito');
-  }
-}
-        googleSignInBtn.addEventListener('click', () => trySignIn(new firebase.auth.GoogleAuthProvider()));
-        facebookSignInBtn.addEventListener('click', () => trySignIn(new firebase.auth.FacebookAuthProvider()));
+            // ----- MANEJO DE COLISIÓN DE CUENTAS -----
+            const pendingCred = error.credential;
+            const email = (error.email || (error.customData && error.customData.email) || '').toLowerCase();
+            
+            if (!email) {
+              console.error("No se pudo obtener el email del proveedor tras el error de colisión.", error);
+              alert('No pudimos obtener tu correo del proveedor para vincular las cuentas. Intenta iniciar sesión con tu método original.');
+              return;
+            }
+
+            console.log(`[Colisión] Email detectado: ${email}`);
+            const methods = await auth.fetchSignInMethodsForEmail(email);
+            console.log(`[Colisión] Métodos encontrados para ${email}:`, methods);
+
+            if (!methods || methods.length === 0) {
+              alert('Error inesperado: el correo indica que ya existe, pero no encontramos un método de inicio de sesión asociado.');
+              return;
+            }
+
+            const originalProviderId = methods[0];
+            const originalProviderInfo = providerInfo[originalProviderId] || { name: originalProviderId, instance: () => null };
+
+            // Si el método original es email/contraseña
+            if (originalProviderId === 'password') {
+              alert(`Ya tienes una cuenta con ${originalProviderInfo.name}. Por favor, inicia sesión con tu correo y contraseña para continuar.`);
+              // Opcional: podrías enfocar el formulario de login aquí.
+              return;
+            }
+
+            // Si el método original es otro proveedor social (Google, etc.)
+            const originalProviderInstance = originalProviderInfo.instance();
+            if (!originalProviderInstance) {
+                alert(`No se pudo reconstruir el proveedor original (${originalProviderId}). Por favor, inicia sesión manualmente.`);
+                return;
+            }
+            
+            alert(`Ya tienes una cuenta con ${originalProviderInfo.name}. Inicia sesión con ${originalProviderInfo.name} para vincular tu nueva cuenta.`);
+            
+            try {
+                const { user } = await auth.signInWithPopup(originalProviderInstance);
+                await user.linkWithCredential(pendingCred);
+                console.log('¡Cuentas vinculadas con éxito!');
+                // onAuthStateChanged se activará y redirigirá.
+            } catch (linkError) {
+                console.error("Error al vincular las cuentas:", linkError);
+                alert(`No se pudieron vincular las cuentas: ${linkError.message}`);
+            }
+          }
+        }
+
+        // --- CORRECCIÓN APLICADA AQUÍ ---
+        // Usamos el objeto providerInfo para crear las instancias de los proveedores,
+        // asegurando que la configuración (como addScope) se aplique.
+
+        googleSignInBtn.addEventListener('click', () => {
+            const provider = providerInfo['google.com'].instance();
+            trySignIn(provider);
+        });
+        
+        facebookSignInBtn.addEventListener('click', () => {
+            const provider = providerInfo['facebook.com'].instance();
+            trySignIn(provider);
+        });
+
 
         // Registro con Email y Contraseña
         registerForm.addEventListener('submit', (e) => {
@@ -361,6 +398,7 @@ if (!methods || methods.length === 0) {
                 })
                 .then(() => {
                     console.log("Usuario registrado y perfil actualizado:", auth.currentUser);
+                    // onAuthStateChanged se encargará de la redirección
                 })
                 .catch((error) => {
                     console.error("Error en el registro:", error);
@@ -377,6 +415,7 @@ if (!methods || methods.length === 0) {
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     console.log("Usuario ha iniciado sesión:", userCredential.user);
+                    // onAuthStateChanged se encargará de la redirección
                 })
                 .catch((error) => {
                     console.error("Error en inicio de sesión:", error);
