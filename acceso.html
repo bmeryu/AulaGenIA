@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v14):
+    ANÁLISIS Y CORRECCIONES POR DESARROLLADOR SENIOR (PÁGINA DE ACCESO v15):
     -----------------------------------------------------------------------
-    1.  **Implementación de "Olvidé mi Contraseña":** Se ha añadido la funcionalidad completa para el restablecimiento de contraseña utilizando `sendPasswordResetEmail` de Firebase.
-    2.  **Flujo de Usuario Mejorado:** Al hacer clic en el enlace, el sistema ahora utiliza el correo electrónico del campo de inicio de sesión para enviar el enlace de restablecimiento, mostrando confirmaciones y errores de manera clara.
-    3.  **Código Limpio:** Se ha añadido un nuevo event listener de forma limpia y mantenible, sin afectar la lógica de autenticación existente.
+    1.  **Manejo de Error en Registro:** Se ha mejorado el formulario de "Crear Cuenta" para manejar específicamente el caso en que un usuario intenta registrar un correo que ya existe (p. ej., a través de un proveedor social como Google).
+    2.  **Experiencia de Usuario Mejorada:** Al detectar el error `auth/email-already-in-use`, ahora se muestra una alerta clara y útil que guía al usuario a iniciar sesión en lugar de mostrar un error genérico.
 -->
 <html lang="es-CL">
 <head>
@@ -172,7 +171,6 @@
                                     <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true"><i data-lucide="lock" class="h-5 w-5 text-gray-400"></i></span>
                                     <input type="password" id="login-password" placeholder="••••••••" required aria-required="true" autocomplete="current-password" class="w-full rounded-lg border-gray-600 bg-gray-700 p-3 pl-10 focus:border-teal-400 focus:ring-teal-400">
                                 </div>
-                                <!-- CAMBIO: Añadido ID al enlace -->
                                 <a href="#" id="forgot-password-link" class="float-right mt-2 text-sm text-teal-400 hover:text-teal-300">¿Olvidaste tu contraseña?</a>
                             </div>
                         </div>
@@ -265,7 +263,7 @@
         const registerForm = document.getElementById('register-form');
         const googleSignInBtn = document.getElementById('google-signin-btn');
         const facebookSignInBtn = document.getElementById('facebook-signin-btn');
-        const forgotPasswordLink = document.getElementById('forgot-password-link'); // <-- NUEVA REFERENCIA
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
         
         // --- LÓGICA DE PESTAÑAS ---
         loginTab.addEventListener('click', () => {
@@ -399,7 +397,13 @@
                 })
                 .catch((error) => {
                     console.error("Error en el registro:", error);
-                    alert(`Error en el registro: ${error.message}`);
+                    // CAMBIO APLICADO AQUÍ: Manejo de error específico
+                    if (error.code === 'auth/email-already-in-use') {
+                        alert('Ya existe una cuenta con este correo electrónico. Por favor, intenta iniciar sesión o utiliza otro correo.');
+                    } else {
+                        // Error genérico para otros problemas
+                        alert(`Error en el registro: ${error.message}`);
+                    }
                 });
         });
 
@@ -419,7 +423,7 @@
                 });
         });
 
-        // --- NUEVA LÓGICA: RESTABLECIMIENTO DE CONTRASEÑA ---
+        // Lógica de Restablecimiento de Contraseña
         forgotPasswordLink.addEventListener('click', (e) => {
             e.preventDefault();
             const emailInput = document.getElementById('login-email');
