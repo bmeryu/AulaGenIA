@@ -252,16 +252,16 @@
                 }
             }
 
-            function navigateToLesson(lessonId) {
+            async function navigateToLesson(lessonId) {
                 const lesson = allLessons.find(l => l.id === lessonId);
                 if (!lesson) return;
                 userProgress.currentLessonId = lessonId;
+                await saveProgress(); // **CORRECCIÓN:** Guardar la lección actual al navegar
                 dom.lessonTitle.textContent = lesson.title;
                 renderLessonContent(lesson);
                 updateMainActionButton();
                 dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonId) === 0;
                 renderSidebar();
-                saveProgress();
             }
 
             function updateMainActionButton() {
@@ -324,38 +324,52 @@
                 }, 10);
             }
             
-            async function initializeApp() {
-                auth.onAuthStateChanged(user => {
-                    if (user) {
-                        currentUser = {
-                            uid: user.uid,
-                            name: user.displayName || 'Alumno',
-                        };
-                        
-                        const name = currentUser.name;
-                        const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name.charAt(0).toUpperCase()}`;
-                        dom.userName.textContent = name;
-                        dom.userAvatar.src = photoURL;
-                        dom.userProfile.style.display = 'flex';
-                        dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
-
-                        loadProgressAndInitialize();
-                    } else {
-                        window.location.href = 'acceso.html';
+            async function loadProgressAndInitialize() {
+                const docRef = db.collection('userProgress').doc(currentUser.uid);
+                try {
+                    const doc = await docRef.get();
+                    if (doc.exists) {
+                        const courseProgress = doc.data()[courseId];
+                        if (courseProgress) userProgress = { ...userProgress, ...courseProgress };
                     }
-                });
+                } catch (error) { console.error("Error al cargar progreso:", error); }
+                
+                renderSidebar();
+                navigateToLesson(userProgress.currentLessonId);
+                updateOverallProgress();
+                lucide.createIcons();
             }
 
-            dom.mainActionBtn.addEventListener('click', () => {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    currentUser = {
+                        uid: user.uid,
+                        name: user.displayName || 'Alumno',
+                    };
+                    
+                    const name = currentUser.name;
+                    const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name.charAt(0).toUpperCase()}`;
+                    dom.userName.textContent = name;
+                    dom.userAvatar.src = photoURL;
+                    dom.userProfile.style.display = 'flex';
+                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
+
+                    loadProgressAndInitialize();
+                } else {
+                    window.location.href = 'acceso.html';
+                }
+            });
+
+            dom.mainActionBtn.addEventListener('click', async () => {
                 const lessonId = userProgress.currentLessonId;
                 const isCompleted = userProgress.completedLessons.includes(lessonId);
                 
                 if (!isCompleted) {
                     userProgress.completedLessons.push(lessonId);
+                    await saveProgress(); // **CORRECCIÓN:** Esperar a que se guarde el progreso
                     updateOverallProgress();
                     checkForBadgeUnlock(lessonId);
                     updateMainActionButton();
-                    saveProgress();
                     showToast('¡Lección completada!');
                     renderSidebar();
                 } else {
@@ -382,8 +396,6 @@
             
             dom.closeModalBtn.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
             dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
-
-            initializeApp();
         });
     </script>
 </body>
