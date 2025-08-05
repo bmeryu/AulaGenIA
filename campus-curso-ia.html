@@ -17,13 +17,12 @@
     <style>
         :root { --brand-teal: #14b8a6; }
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
-        #profile-modal { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+        #profile-modal, .toast-notification, #completion-modal { transition: all 0.3s ease-in-out; }
         label span.required { color: #ef4444; }
         .tab-button.active { color: var(--brand-teal); border-bottom-color: var(--brand-teal); }
-        .quiz-option { transition: all 0.2s ease-in-out; }
-        .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
-        .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
-        .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
+        .toast-notification { position: fixed; top: 20px; right: 20px; transform: translateX(120%); z-index: 1000; }
+        .toast-notification.show { transform: translateX(0); }
+        #completion-modal.show > div { transform: scale(1); opacity: 1; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -61,18 +60,6 @@
                 <div class="p-6 md:p-8 lg:p-10">
                     <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-4">Cargando...</h2>
                     <div id="lesson-material-container" class="mb-6"></div>
-                    <div id="tabs-container">
-                        <div class="border-b border-slate-200">
-                            <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                                <button class="tab-button active" data-tab="descripcion">Descripción</button>
-                                <button class="tab-button" data-tab="recursos">Recursos</button>
-                            </nav>
-                        </div>
-                        <div class="py-6">
-                            <div id="descripcion" class="tab-content prose max-w-none text-gray-600"></div>
-                            <div id="recursos" class="tab-content hidden prose max-w-none text-gray-600"></div>
-                        </div>
-                    </div>
                     <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
                         <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
                         <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
@@ -132,6 +119,13 @@
         </form>
     </div>
     <!-- FIN: MODAL DE EDICIÓN DE PERFIL -->
+    
+    <!-- INICIO: NOTIFICACIONES Y MODAL DE FINALIZACIÓN -->
+    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div>
+    <div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
+    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
+    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "Domina la IA Aplicada".</p><div class="text-left bg-slate-100 p-4 rounded-lg mt-6"><h3 class="font-semibold flex items-center gap-2"><i data-lucide="award"></i>Tu Certificado</h3><p class="text-sm text-gray-600 mt-1">Ya puedes generar tu certificado desde el Campus. ¡Felicidades por tu logro!</p></div><div class="text-left bg-teal-50 border border-teal-200 p-4 rounded-lg mt-4"><h3 class="font-semibold flex items-center gap-2 text-teal-800"><i data-lucide="gift"></i>Tu Recompensa Exclusiva</h3><p class="text-sm text-teal-700 mt-1">Como premio a tu dedicación, hemos desbloqueado un <strong>cupón del 20% de descuento</strong> para tu próximo curso.</p></div><button id="close-modal-btn" class="mt-8 w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button></div></div>
+    <!-- FIN: NOTIFICACIONES Y MODAL DE FINALIZACIÓN -->
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
@@ -147,38 +141,12 @@
             const auth = firebase.auth();
             const db = firebase.firestore();
             
-            // ===================================================================
-            // INICIO: CORRECCIÓN CLAVE - MALLA SIMPLIFICADA PARA PRUEBAS
-            // ===================================================================
-            const ALL_COURSES_DATA = {
-                'geniaweek': {
-                    title: 'Domina la IA Aplicada',
-                    modules: [
-                        {
-                            title: 'Módulo 0: Onboarding',
-                            lessons: [
-                                { id: '0-1', title: 'Tu primer día con IA', type: 'video', desc: 'Accede al campus, activa herramientas y haz tus primeros prompts.', res: '<li>Checklist de Activación</li>' }
-                            ]
-                        },
-                        {
-                            title: 'Módulo 1: ¿Qué es la IA?',
-                            lessons: [
-                                { id: '1-1', title: 'Casos de éxito reales', type: 'video', desc: 'Entiende la IA con casos reales que te inspiran.', res: '<li>PDF con Casos de Éxito</li>' },
-                                { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Evalúa tu comprensión con 5 preguntas clave.', questions: [{ text: '¿Cuál es un ejemplo de IA aplicada en la vida real?', options: ['Recomendaciones de Netflix', 'Una calculadora de bolsillo', 'Un libro de papel'], correctAnswer: 0 }] }
-                            ]
-                        }
-                    ]
-                }
-            };
-            // ===================================================================
-            // FIN: CORRECCIÓN CLAVE
-            // ===================================================================
-
+            const ALL_COURSES_DATA = { 'geniaweek': { title: 'Domina la IA Aplicada', modules: [ { title: 'Módulo 0: Onboarding', badge: 'Iniciado en IA', lessons: [ { id: '0-1', title: 'Tu primer día con IA', type: 'video' } ] }, { title: 'Módulo 1: ¿Qué es la IA?', badge: 'Explorador Conceptual', lessons: [ { id: '1-1', title: 'Casos de éxito reales', type: 'video' }, { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }] } ] } ] } };
             const courseId = 'geniaweek';
             const courseData = ALL_COURSES_DATA[courseId];
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
-            let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id };
+            let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id, unlockedBadges: [] };
 
             const dom = {
                 userName: document.getElementById('user-name'),
@@ -191,10 +159,16 @@
                 modulesContainer: document.getElementById('modules-container'),
                 lessonTitle: document.getElementById('lesson-title'),
                 lessonMaterialContainer: document.getElementById('lesson-material-container'),
-                tabs: { descripcion: document.getElementById('descripcion'), recursos: document.getElementById('recursos') },
-                tabButtons: document.querySelectorAll('.tab-button'),
                 prevBtn: document.getElementById('prev-lesson-btn'),
-                mainActionBtn: document.getElementById('main-action-btn')
+                mainActionBtn: document.getElementById('main-action-btn'),
+                toast: document.getElementById('toast-notification'),
+                toastMessage: document.getElementById('toast-message'),
+                badgeToast: document.getElementById('badge-toast'),
+                badgeMessage: document.getElementById('badge-message'),
+                completionModalOverlay: document.getElementById('completion-modal-overlay'),
+                completionModal: document.getElementById('completion-modal'),
+                modalUserName: document.getElementById('modal-user-name'),
+                closeModalBtn: document.getElementById('close-modal-btn')
             };
 
             function getLessonInfo(lessonId) {
@@ -281,8 +255,6 @@
                     }));
                     document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson));
                 }
-                dom.tabs.descripcion.innerHTML = lesson.desc || 'No hay descripción para esta lección.';
-                dom.tabs.recursos.innerHTML = lesson.res ? `<ul>${lesson.res}</ul>` : 'No hay recursos para esta lección.';
             }
             
             function checkQuizAnswer(lesson) {
@@ -385,7 +357,8 @@
                         if (courseProgress) {
                             userProgress = {
                                 completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [],
-                                currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id
+                                currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id,
+                                unlockedBadges: Array.isArray(courseProgress.unlockedBadges) ? courseProgress.unlockedBadges : []
                             };
                         }
                     }
@@ -415,11 +388,12 @@
                     if (currentIndex < allLessons.length - 1) {
                         navigateToLesson(allLessons[currentIndex + 1].id);
                     } else {
-                        window.location.href = 'portal-certificacion.html';
+                        showCompletionModal();
                     }
                 } else {
                     userProgress = { ...userProgress, completedLessons: [...userProgress.completedLessons, lessonId] };
                     await saveProgress();
+                    checkForBadgeUnlock(lessonId);
                     refreshUI();
                 }
             });
@@ -502,6 +476,44 @@
                     window.location.href = 'acceso.html';
                 }
             });
+
+            function showToast(message, type = 'generic') {
+                const toastEl = type === 'badge' ? dom.badgeToast : dom.toast;
+                const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage;
+                msgEl.textContent = message;
+                toastEl.classList.add('show');
+                setTimeout(() => toastEl.classList.remove('show'), 4000);
+            }
+
+            function checkForBadgeUnlock(completedLessonId) {
+                const lessonInfo = getLessonInfo(completedLessonId);
+                if (!lessonInfo || !lessonInfo.module.badge) return;
+
+                const lastLessonOfModule = lessonInfo.module.lessons[lessonInfo.module.lessons.length - 1].id;
+                if (completedLessonId !== lastLessonOfModule) return;
+
+                const moduleLessonIds = lessonInfo.module.lessons.map(l => l.id);
+                if (moduleLessonIds.every(id => userProgress.completedLessons.includes(id))) {
+                    if (!userProgress.unlockedBadges.includes(lessonInfo.module.badge)) {
+                        userProgress.unlockedBadges.push(lessonInfo.module.badge);
+                        saveProgress();
+                        showToast(`Has ganado la insignia: "${lessonInfo.module.badge}"`, 'badge');
+                    }
+                }
+            }
+            
+            function showCompletionModal() {
+                dom.modalUserName.textContent = currentUser.name;
+                dom.completionModalOverlay.classList.remove('hidden');
+                dom.completionModal.classList.remove('hidden');
+                setTimeout(() => {
+                    dom.completionModalOverlay.classList.add('opacity-100');
+                    dom.completionModal.classList.add('show');
+                }, 10);
+            }
+
+            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'campus.html');
+            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'campus.html');
         });
     </script>
 </body>
