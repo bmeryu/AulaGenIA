@@ -145,11 +145,6 @@
             
             let currentUser = null;
 
-            // ===================================================================
-            // INICIO: CORRECCIÓN CLAVE 1 - FUENTE DE DATOS ÚNICA
-            // Se añade la misma estructura de datos que en las otras páginas
-            // para asegurar consistencia.
-            // ===================================================================
             const ALL_COURSES_DATA = {
                 'geniaweek': {
                     title: 'Inteligencia Artificial Aplicada',
@@ -158,11 +153,7 @@
                         { lessons: [{}, {}, {}, {}] }
                     ]
                 }
-                // Aquí se podrían añadir más cursos en el futuro.
             };
-            // ===================================================================
-            // FIN: CORRECCIÓN CLAVE 1
-            // ===================================================================
 
             const dom = {
                 studentNameDisplay: document.getElementById('studentNameDisplay'),
@@ -202,14 +193,13 @@
                 const docSnap = await userProgressRef.get();
 
                 let completedPrograms = [];
-                if (docSnap.exists()) {
+                // ===================================================================
+                // INICIO: CORRECCIÓN CLAVE - USAR .exists EN LUGAR DE .exists()
+                // Este cambio soluciona el error "is not a function".
+                // ===================================================================
+                if (docSnap.exists) {
                     const progressData = docSnap.data();
 
-                    // ===================================================================
-                    // INICIO: CORRECCIÓN CLAVE 2 - LÓGICA DE VERIFICACIÓN DINÁMICA
-                    // Se reemplaza el chequeo hardcodeado por uno dinámico que usa
-                    // la fuente de datos única.
-                    // ===================================================================
                     for (const courseId in ALL_COURSES_DATA) {
                         const courseInfo = ALL_COURSES_DATA[courseId];
                         const courseProgress = progressData[courseId];
@@ -225,10 +215,10 @@
                             }
                         }
                     }
-                    // ===================================================================
-                    // FIN: CORRECCIÓN CLAVE 2
-                    // ===================================================================
                 }
+                // ===================================================================
+                // FIN: CORRECCIÓN CLAVE
+                // ===================================================================
 
                 if (completedPrograms.length > 0) {
                     dom.programsListContainer.innerHTML = ''; 
@@ -369,7 +359,7 @@
                 try {
                     const docRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(codeToVerify);
                     const docSnap = await docRef.get();
-                    if (docSnap.exists()) {
+                    if (docSnap.exists) {
                         const data = docSnap.data();
                         const resultHtml = `<h4 class="font-bold text-green-700">✅ Certificado Válido</h4><p class="mt-2"><strong>Alumno:</strong> ${data.studentName}</p><p><strong>Programa:</strong> ${data.programName}</p><p><strong>Fecha:</strong> ${data.completionDate}</p>`;
                         displayVerificationResult(resultHtml, "green");
