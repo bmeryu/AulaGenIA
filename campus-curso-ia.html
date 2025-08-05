@@ -310,15 +310,25 @@
             }
 
             dom.mainActionBtn.addEventListener('click', async () => {
-                console.log('Botón de acción principal presionado.');
-                const lessonId = userProgress.currentLessonId;
-                const isCompleted = userProgress.completedLessons.includes(lessonId);
+    const lessonId   = userProgress.currentLessonId;
+    const isCompleted = userProgress.completedLessons.includes(lessonId);
+    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
 
-                if (isCompleted) {
-                    // ACCIÓN 1: La lección YA ESTÁ COMPLETA, así que navegamos.
-                    console.log("Acción: Navegar a la siguiente lección.");
-                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
-                    const isLastLesson = currentIndex === allLessons.length - 1;
+    if (!isCompleted) {
+        // 1. Guardamos la lección como completada
+        userProgress.completedLessons.push(lessonId);
+        await saveProgress();
+        checkForBadgeUnlock(lessonId);
+        showToast('¡Lección completada!');
+    }
+
+    // 2. Avanzamos de inmediato (o mostramos modal si era la última)
+    if (currentIndex < allLessons.length - 1) {
+        navigateToLesson(allLessons[currentIndex + 1].id);
+    } else {
+        showCompletionModal();
+    }
+});
 
                     if (!isLastLesson) {
                         navigateToLesson(allLessons[currentIndex + 1].id);
