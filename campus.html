@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v2.7 (Profile Edit)
+  CAMPUS DASHBOARD · AULA GENIA v3.0 (Synced Course Structure)
   -------------------------------------------------------------------
-  Esta versión añade un modal para que los usuarios puedan editar
-  su nombre, que se reflejará en toda la plataforma y certificados.
+  Esta versión sincroniza la estructura de la malla curricular con
+  la página del curso para asegurar un cálculo de progreso consistente.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -27,8 +27,6 @@
     :root {
       --brand-teal: #14b8a6;
       --brand-green: #22c55e;
-      --brand-blue: #3b82f6;
-      --brand-yellow: #facc15;
     }
     html { font-family: 'Poppins', sans-serif; }
     body { background-color: #f8fafc; }
@@ -69,7 +67,7 @@
         <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="geniaweek">
           <div class="p-6 flex-grow">
             <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">Inteligencia Artificial Aplicada</h3>
+            <h3 class="text-xl font-bold mt-4 mb-1">Domina la IA Aplicada</h3>
             <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
             <div class="mb-2">
               <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
@@ -184,15 +182,21 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
       
+      // ===================================================================
+      // INICIO: CORRECCIÓN CLAVE - ESTRUCTURA DE CURSO SINCRONIZADA
+      // ===================================================================
       const ALL_COURSES_DATA = {
           'geniaweek': {
-              title: 'Inteligencia Artificial Aplicada',
+              title: 'Domina la IA Aplicada',
               modules: [
-                  { lessons: [{}, {}, {}, {}] },
-                  { lessons: [{}, {}, {}, {}] }
+                  { title: 'Módulo 0: Onboarding', lessons: [{ id: '0-1' }] },
+                  { title: 'Módulo 1: ¿Qué es la IA?', lessons: [{ id: '1-1' }, { id: 'q-1' }] }
               ]
           }
       };
+      // ===================================================================
+      // FIN: CORRECCIÓN CLAVE
+      // ===================================================================
 
       function getTotalLessons(courseId) {
           const course = ALL_COURSES_DATA[courseId];
@@ -218,14 +222,17 @@
           fillEl.style.backgroundColor = 'var(--brand-green)';
           
           footerEl.innerHTML = `
-            <div class="space-y-2 text-center">
+            <div class="space-y-3">
               <a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
                 <i data-lucide="award" class="h-5 w-5"></i>
                 <span>Ver Certificado</span>
               </a>
-              <a href="campus-curso-ia.html" class="text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors">
+              <a href="campus-curso-ia.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">
                 Repasar Curso
               </a>
+              <div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">
+                ¡Cupón del 20% DESBLOQUEADO! <br> Usa el código: <strong>NUEVOCURSO20</strong>
+              </div>
             </div>
           `;
         } else if (progress > 0) {
@@ -263,7 +270,7 @@
         }
       }
 
-      // INICIO: LÓGICA DEL MODAL DE PERFIL
+      // LÓGICA DEL MODAL DE PERFIL (sin cambios)
       const profileModalOverlay = document.getElementById('profile-modal-overlay');
       const profileModal = document.getElementById('profile-modal');
       const avatarButton = document.getElementById('avatar-button');
@@ -278,8 +285,6 @@
       async function openProfileModal() {
           profileNameInput.value = auth.currentUser.displayName || '';
           profileEmailInput.value = auth.currentUser.email || '';
-
-          // Cargar datos adicionales desde Firestore
           const userDocRef = db.collection('users').doc(auth.currentUser.uid);
           try {
               const doc = await userDocRef.get();
@@ -289,10 +294,7 @@
                   profileGenderSelect.value = data.gender || '';
                   profileCountrySelect.value = data.country || '';
               }
-          } catch (error) {
-              console.error("Error al cargar datos del perfil:", error);
-          }
-
+          } catch (error) { console.error("Error al cargar datos del perfil:", error); }
           profileModalOverlay.classList.remove('hidden');
           profileModal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
       }
@@ -310,16 +312,10 @@
           e.preventDefault();
           const newName = profileNameInput.value.trim();
           const userDocRef = db.collection('users').doc(auth.currentUser.uid);
-
           try {
-              // Actualizar nombre en Firebase Auth
               if (newName && newName !== auth.currentUser.displayName) {
-                  await auth.currentUser.updateProfile({
-                      displayName: newName
-                  });
+                  await auth.currentUser.updateProfile({ displayName: newName });
               }
-
-              // Guardar datos adicionales en Firestore
               await userDocRef.set({
                   displayName: newName,
                   email: auth.currentUser.email,
@@ -327,18 +323,13 @@
                   gender: profileGenderSelect.value,
                   country: profileCountrySelect.value
               }, { merge: true });
-              
-              // Actualizar UI inmediatamente
               document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
               alert('¡Tu perfil ha sido actualizado!');
               closeProfileModal();
-
           } catch (error) {
-              console.error("Error al actualizar el perfil:", error);
               alert('Hubo un error al guardar tu perfil. Inténtalo de nuevo.');
           }
       });
-      // FIN: LÓGICA DEL MODAL DE PERFIL
 
       auth.onAuthStateChanged(user => {
         if (user) {
