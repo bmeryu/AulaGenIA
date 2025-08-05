@@ -19,6 +19,7 @@
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
         #profile-modal { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
         label span.required { color: #ef4444; }
+        .tab-button.active { color: var(--brand-teal); border-bottom-color: var(--brand-teal); }
     </style>
 </head>
 <body class="text-gray-800">
@@ -56,6 +57,18 @@
                 <div class="p-6 md:p-8 lg:p-10">
                     <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-4">Cargando...</h2>
                     <div id="lesson-material-container" class="mb-6"></div>
+                    <div id="tabs-container">
+                        <div class="border-b border-slate-200">
+                            <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                                <button class="tab-button active" data-tab="descripcion">Descripción</button>
+                                <button class="tab-button" data-tab="recursos">Recursos</button>
+                            </nav>
+                        </div>
+                        <div class="py-6">
+                            <div id="descripcion" class="tab-content prose max-w-none text-gray-600"></div>
+                            <div id="recursos" class="tab-content hidden prose max-w-none text-gray-600"></div>
+                        </div>
+                    </div>
                     <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
                         <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
                         <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
@@ -130,7 +143,86 @@
             const auth = firebase.auth();
             const db = firebase.firestore();
             
-            const ALL_COURSES_DATA = { 'geniaweek': { title: 'Inteligencia Artificial Aplicada', modules: [ { title: 'Módulo 1: Fundamentos', lessons: [ { id: '1-1' }, { id: '1-2' }, { id: '1-3' }, { id: 'q-1' } ] }, { title: 'Módulo 2: IA Generativa', lessons: [ { id: '2-1' }, { id: '2-2' }, { id: '2-3' }, { id: 'q-2' } ] } ] } };
+            // ===================================================================
+            // INICIO: CORRECCIÓN CLAVE - NUEVA MALLA CURRICULAR
+            // ===================================================================
+            const ALL_COURSES_DATA = {
+                'geniaweek': {
+                    title: 'Domina la IA Aplicada',
+                    modules: [
+                        {
+                            title: 'Módulo 0: Onboarding',
+                            lessons: [
+                                { id: '0-1', title: 'Tu primer día con IA', type: 'video', desc: 'Accede al campus, activa herramientas y haz tus primeros prompts para obtener resultados sin bloqueos técnicos.', res: '<li>Checklist de Activación</li>' }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 1: ¿Qué es la IA?',
+                            lessons: [
+                                { id: '1-1', title: 'Casos de éxito reales', type: 'video', desc: 'Entiende la IA con casos reales que te inspiran y te ayudan a comprender el potencial real de la IA.', res: '<li>PDF con Casos de Éxito</li>' },
+                                { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Evalúa tu comprensión con 5 preguntas clave.', questions: [{ text: '¿Cuál es un ejemplo de IA aplicada en la vida real?', options: ['Netflix', 'Una calculadora', 'Un libro'], correctAnswer: 0 }] }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 2: Prompts Efectivos',
+                            lessons: [
+                                { id: '2-1', title: '¿Cómo hago que la IA haga lo que necesito?', type: 'video', desc: 'Aprende y practica estructuras de prompts efectivos para dominar la base y las adaptaciones.', res: '<li>PDF con Estructuras de Prompts</li>' },
+                                { id: 'q-2', title: 'Mini Reto: Módulo 2', type: 'resource', desc: 'Sube un archivo con tu solución al reto práctico.', res: '<li>Campo para subir archivo</li>' }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 3: Creación de Contenido',
+                            lessons: [
+                                { id: '3-1', title: 'Crea contenido de impacto con IA', type: 'video', desc: 'Genera contenido completo (redes, mails, web) con IA en minutos.', res: '<li>Plantillas de contenido</li>' },
+                                { id: 'q-3', title: 'Entrega: Módulo 3', type: 'resource', desc: 'Entrega un ejemplo de contenido generado (PDF o link).', res: '<li>Campo para subir archivo o link</li>' }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 4: Marketing y Ventas',
+                            lessons: [
+                                { id: '4-1', title: 'Marketing y ventas persuasivas con IA', type: 'video', desc: 'Usa IA para crear campañas, discursos de venta, y landings para una campaña enfocada en resultados.', res: '<li>PDF de la campaña</li>' },
+                                { id: 'q-4', title: 'Entrega Opcional: Módulo 4', type: 'resource', desc: 'Opcionalmente, entrega tu campaña para recibir feedback.', res: '<li>Campo para subir archivo</li>' }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 5: Productividad',
+                            lessons: [
+                                { id: '5-1', title: 'Multiplica tu productividad con IA', type: 'video', desc: 'Automatiza tareas diarias, agendas, mails y resúmenes para un ahorro real de tiempo y esfuerzo.', res: '<li>Links a herramientas útiles</li>' },
+                                { id: 'q-5', title: 'Quiz: Módulo 5', type: 'quiz', desc: 'Prueba de aplicaciones para validar tu aprendizaje.', questions: [{ text: '¿Qué herramienta ayuda a resumir textos?', options: ['Una app de notas', 'Una IA especializada', 'Un calendario'], correctAnswer: 1 }] }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 6: IA Responsable',
+                            lessons: [
+                                { id: '6-1', title: 'Uso inteligente y seguro de la IA', type: 'video', desc: 'Anticípate a errores, límites éticos y sesgos para un uso ético, seguro y consciente.', res: '<li>PDF descargable sobre IA Responsable</li>' },
+                                { id: 'q-6', title: 'Quiz Reflexivo: Módulo 6', type: 'quiz', desc: 'Un quiz para reflexionar sobre el uso ético de la IA.', questions: [{ text: '¿Es importante considerar los sesgos en la IA?', options: ['Sí', 'No'], correctAnswer: 0 }] }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 7: Inspiración',
+                            lessons: [
+                                { id: '7-1', title: '10 casos reales de IA aplicada', type: 'resource', desc: 'Estudia aplicaciones reales de IA de personas comunes para obtener ideas para tu propio uso o negocio.', res: '<li>PDF descargable</li><li>Video resumen</li>' }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 8: Proyecto Final',
+                            lessons: [
+                                { id: '8-1', title: 'Aplica lo aprendido', type: 'resource', desc: 'Aplica todo lo aprendido para tener un producto real y útil hecho con IA.', res: '<li>PDF con la guía del proyecto</li><li>Espacio para subir archivo o link</li>' }
+                            ]
+                        },
+                        {
+                            title: 'Bonus: Actualizaciones 2025',
+                            lessons: [
+                                { id: 'b-1', title: 'Nuevos módulos y herramientas', type: 'video', desc: 'Accede a nuevos módulos y herramientas para mantenerte siempre vigente.', res: '<li>PDFs</li><li>Mail de novedades</li>' }
+                            ]
+                        }
+                    ]
+                }
+            };
+            // ===================================================================
+            // FIN: CORRECCIÓN CLAVE
+            // ===================================================================
+
             const courseId = 'geniaweek';
             const courseData = ALL_COURSES_DATA[courseId];
             const allLessons = courseData.modules.flatMap(m => m.lessons);
@@ -147,17 +239,32 @@
                 progressText: document.getElementById('progress-text'),
                 modulesContainer: document.getElementById('modules-container'),
                 lessonTitle: document.getElementById('lesson-title'),
+                lessonMaterialContainer: document.getElementById('lesson-material-container'),
+                tabs: { descripcion: document.getElementById('descripcion'), recursos: document.getElementById('recursos') },
+                tabButtons: document.querySelectorAll('.tab-button'),
                 prevBtn: document.getElementById('prev-lesson-btn'),
                 mainActionBtn: document.getElementById('main-action-btn')
             };
 
+            function getLessonInfo(lessonId) {
+                for (let i = 0; i < courseData.modules.length; i++) {
+                    const module = courseData.modules[i];
+                    const lessonIndex = module.lessons.findIndex(l => l.id === lessonId);
+                    if (lessonIndex !== -1) {
+                        return { lesson: module.lessons[lessonIndex], moduleIndex: i, module: module };
+                    }
+                }
+                return null;
+            }
+
             function refreshUI() {
                 dom.courseTitle.textContent = courseData.title;
                 renderSidebar();
-                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
-                if (lesson) {
-                    dom.lessonTitle.textContent = lesson.title;
-                    dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lesson.id) === 0;
+                const lessonInfo = getLessonInfo(userProgress.currentLessonId);
+                if (lessonInfo) {
+                    dom.lessonTitle.textContent = lessonInfo.lesson.title;
+                    renderLessonContent(lessonInfo.lesson);
+                    dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.lesson.id) === 0;
                 }
                 updateOverallProgress();
                 updateMainActionButton();
@@ -174,7 +281,7 @@
                         const isCompleted = userProgress.completedLessons.includes(lesson.id);
                         const isActive = userProgress.currentLessonId === lesson.id;
                         let linkClasses = 'text-gray-600 hover:bg-slate-100';
-                        let statusIcon = isCompleted ? 'check-circle-2' : 'circle';
+                        let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
                         let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
                         
                         if (isModuleLocked) {
@@ -187,7 +294,7 @@
                             iconColor = '';
                         }
                         
-                        const typeIcon = 'file-text';
+                        const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
                         return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`;
                     }).join('');
                     
@@ -202,6 +309,22 @@
                     return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
                 }).join('');
                 addSidebarListeners();
+            }
+
+            function renderLessonContent(lesson) {
+                let materialHtml = '';
+                switch(lesson.type) {
+                    case 'video': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`; break;
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break;
+                    case 'quiz':
+                        const question = lesson.questions[0];
+                        const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
+                        materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-900">Verificar Respuesta</button></div>`;
+                        break;
+                }
+                dom.lessonMaterialContainer.innerHTML = materialHtml;
+                dom.tabs.descripcion.innerHTML = lesson.desc || 'No hay descripción para esta lección.';
+                dom.tabs.recursos.innerHTML = lesson.res ? `<ul>${lesson.res}</ul>` : 'No hay recursos para esta lección.';
             }
             
             function updateMainActionButton() {
