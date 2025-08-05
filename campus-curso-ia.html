@@ -160,19 +160,56 @@
                     dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lesson.id) === 0;
                 }
                 updateOverallProgress();
-                updateMainActionButton(); // Mover aquí para que se actualice con el progreso
+                updateMainActionButton();
                 lucide.createIcons();
             }
 
+            // ===================================================================
+            // INICIO: CORRECCIÓN CLAVE 1 - MODO REPASO EN BARRA LATERAL
+            // ===================================================================
             function renderSidebar() {
-                // El contenido de esta función no necesita cambios
+                const isCourseComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length;
+                let isPreviousModuleComplete = true; 
+
+                dom.modulesContainer.innerHTML = courseData.modules.map((module) => {
+                    const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete;
+                    const lessonsHtml = module.lessons.map(lesson => {
+                        const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const isActive = userProgress.currentLessonId === lesson.id;
+                        let linkClasses = 'text-gray-600 hover:bg-slate-100';
+                        let statusIcon = isCompleted ? 'check-circle-2' : 'circle';
+                        let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        
+                        if (isModuleLocked) {
+                            linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
+                            statusIcon = 'lock';
+                            iconColor = 'text-slate-400';
+                        } else if (isActive) {
+                            linkClasses = 'bg-teal-50 text-teal-700 font-semibold';
+                            statusIcon = 'play-circle';
+                            iconColor = '';
+                        }
+                        
+                        const typeIcon = 'file-text';
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                    }).join('');
+                    
+                    const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
+                    const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down';
+                    
+                    if (!isCourseComplete) {
+                        const moduleLessonIds = module.lessons.map(l => l.id);
+                        isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                    }
+
+                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
+                }).join('');
+                addSidebarListeners();
             }
+            // ===================================================================
+            // FIN: CORRECCIÓN CLAVE 1
+            // ===================================================================
             
-            // ===================================================================
-            // INICIO: CORRECCIÓN CLAVE 1 - DESACTIVAR BOTÓN AL 100%
-            // Esta función ahora deshabilita el botón de acción si el curso
-            // ya está completado.
-            // ===================================================================
             function updateMainActionButton() {
                 const completedCount = Array.isArray(userProgress.completedLessons) ? userProgress.completedLessons.length : 0;
                 const totalLessons = allLessons.length;
@@ -192,10 +229,6 @@
                 
                 dom.mainActionBtn.disabled = false;
                 
-                if (lesson.type === 'quiz' && !isCompleted) {
-                    dom.mainActionBtn.disabled = true;
-                }
-                
                 dom.mainActionBtn.textContent = isCompleted ? (isLastLesson ? 'Finalizar Curso' : 'Siguiente Lección') : 'Marcar como completada';
                 
                 if (isLastLesson && !isCompleted) {
@@ -203,9 +236,6 @@
                     if (!allOthersCompleted) dom.mainActionBtn.disabled = true;
                 }
             }
-            // ===================================================================
-            // FIN: CORRECCIÓN CLAVE 1
-            // ===================================================================
 
             function updateOverallProgress() {
                 const completedCount = Array.isArray(userProgress.completedLessons) ? userProgress.completedLessons.length : 0;
@@ -214,9 +244,33 @@
                 dom.progressText.textContent = `${percentage}%`;
             }
 
+            // ===================================================================
+            // INICIO: CORRECCIÓN CLAVE 2 - MODO REPASO EN NAVEGACIÓN
+            // ===================================================================
             async function navigateToLesson(lessonId) {
-                // El contenido de esta función no necesita cambios
+                const isCourseComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length;
+                
+                if (!isCourseComplete) {
+                    const targetLessonInfo = getLessonInfo(lessonId);
+                    if (!targetLessonInfo) return;
+                    const targetModuleIndex = targetLessonInfo.moduleIndex;
+                    if (targetModuleIndex > 0) {
+                        const previousModule = courseData.modules[targetModuleIndex - 1];
+                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
+                        const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                        if (!isPreviousModuleCompleted) {
+                            alert(`Debes completar el "${previousModule.title}" para acceder a este módulo.`);
+                            return;
+                        }
+                    }
+                }
+                userProgress = { ...userProgress, currentLessonId: lessonId };
+                await saveProgress();
+                refreshUI();
             }
+            // ===================================================================
+            // FIN: CORRECCIÓN CLAVE 2
+            // ===================================================================
 
             async function saveProgress() {
                 if (!currentUser) return;
@@ -244,7 +298,17 @@
             }
 
             function addSidebarListeners() {
-                // El contenido de esta función no necesita cambios
+                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); }));
+                dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => {
+                    const icon = header.querySelector('i');
+                    if (icon && icon.getAttribute('data-lucide') !== 'lock') {
+                        header.addEventListener('click', () => { 
+                            const content = header.nextElementSibling;
+                            content.classList.toggle('open'); 
+                            icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; 
+                        });
+                    }
+                });
             }
 
             dom.mainActionBtn.addEventListener('click', async () => {
