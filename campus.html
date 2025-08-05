@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v2.5 (Robust Auth Flow)
+  CAMPUS DASHBOARD · AULA GENIA v2.6 (Synced Data Source)
   -------------------------------------------------------------------
-  Esta versión refactoriza el script para usar onAuthStateChanged como
-  punto de entrada principal, garantizando que la base de datos y la
-  autenticación estén listas antes de cualquier operación.
+  Esta versión utiliza una fuente de datos de curso centralizada para
+  garantizar que el progreso se calcule de manera consistente con la
+  página del curso.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <title>Campus Virtual – Aula GenIA</title>
+  <title>Campus Virtual – Aula GenIA (Corregido)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
@@ -124,23 +124,38 @@
       try {
         firebase.initializeApp(firebaseConfig);
       } catch(e) {
-        console.error("Firebase ya fue inicializado.");
+        console.warn("Firebase ya fue inicializado.");
       }
       
       const auth = firebase.auth();
       const db = firebase.firestore();
       
-      const courseStructure = {
-          geniaweek: {
+      // ===================================================================
+      // INICIO: CORRECCIÓN CLAVE - USAR LA MISMA FUENTE DE DATOS
+      // Esta estructura es IDÉNTICA a la del archivo campus-curso-ia.html.
+      // Esto asegura que el cálculo del total de lecciones sea siempre correcto.
+      // ===================================================================
+      const ALL_COURSES_DATA = {
+          'geniaweek': {
+              title: 'Inteligencia Artificial Aplicada',
               modules: [
-                  { lessons: [{}, {}, {}, {}] },
-                  { lessons: [{}, {}, {}, {}] }
+                  {
+                      title: 'Módulo 1: Fundamentos',
+                      lessons: [ { id: '1-1' }, { id: '1-2' }, { id: '1-3' }, { id: 'q-1' } ]
+                  },
+                  {
+                      title: 'Módulo 2: IA Generativa',
+                      lessons: [ { id: '2-1' }, { id: '2-2' }, { id: '2-3' }, { id: 'q-2' } ]
+                  }
               ]
           }
       };
+      // ===================================================================
+      // FIN: CORRECCIÓN CLAVE
+      // ===================================================================
 
       function getTotalLessons(courseId) {
-          const course = courseStructure[courseId];
+          const course = ALL_COURSES_DATA[courseId];
           if (!course) return 0;
           return course.modules.reduce((total, module) => total + module.lessons.length, 0);
       }
@@ -150,6 +165,8 @@
         const percentEl = card.querySelector('.percent');
         const fillEl = card.querySelector('.fill');
         const footerEl = card.querySelector('.card-footer');
+
+        if (!percentEl || !fillEl || !tagEl) return;
 
         percentEl.textContent = `${progress}%`;
         fillEl.style.width = `${progress}%`;
@@ -171,12 +188,16 @@
               </div>
             </div>
           `;
-        } else {
-          footerEl.innerHTML = `
-            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
-              Continuar aprendiendo
-            </a>
-          `;
+        } else if (progress > 0) {
+            tagEl.textContent = 'En progreso';
+            tagEl.classList.remove('bg-green-100', 'text-green-600');
+            tagEl.classList.add('bg-teal-100', 'text-teal-600');
+            fillEl.style.backgroundColor = 'var(--brand-teal)';
+            footerEl.innerHTML = `
+                <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                Continuar aprendiendo
+                </a>
+            `;
         }
         lucide.createIcons();
       }
@@ -187,13 +208,17 @@
           const doc = await progressRef.get();
           const progressData = doc.exists ? doc.data() : {};
           
+          console.log("Progreso cargado desde Firestore:", progressData);
+
           document.querySelectorAll('[data-course-id]').forEach(card => {
             const courseId = card.dataset.courseId;
             const courseProgressData = progressData[courseId] || { completedLessons: [] };
             
             const totalLessons = getTotalLessons(courseId);
-            const completedCount = courseProgressData.completedLessons.length;
+            const completedCount = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons.length : 0;
             const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+            
+            console.log(`Curso: ${courseId} - Progreso: ${progressValue}% (${completedCount}/${totalLessons})`);
 
             updateCardUI(card, progressValue);
           });
