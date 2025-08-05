@@ -82,11 +82,10 @@
                              <p id="certProgramName" class="text-2xl md:text-3xl my-4 font-semibold cert-title"></p>
                              <p class="text-base md:text-lg" style="font-family: 'Poppins', sans-serif;">Finalizado el <span id="certCompletionDate"></span>.</p>
                          </main>
-                         <!-- INICIO: CORRECCIÓN DE PIE DE PÁGINA Y SELLOS -->
-                         <footer class="mt-auto pt-8">
-                             <div class="flex justify-between items-end w-full">
+                         <footer class="absolute bottom-8 inset-x-8">
+                             <div class="flex justify-between items-end">
                                  <div class="text-left">
-                                     <div class="mb-4">
+                                     <div class="mb-8">
                                          <p class="border-t-2 border-gray-500 pt-2 w-48 text-center text-sm font-semibold" style="font-family: 'Poppins', sans-serif;">Director Académico</p>
                                          <p class="text-center text-xs text-gray-500">Aulagenia.cl</p>
                                      </div>
@@ -101,7 +100,6 @@
                                  </div>
                              </div>
                          </footer>
-                         <!-- FIN: CORRECCIÓN DE PIE DE PÁGINA Y SELLOS -->
                      </div>
                 </div>
             </div>
@@ -133,27 +131,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
             
-            try {
-                firebase.initializeApp(firebaseConfig);
-            } catch(e) {
-                console.warn("Firebase ya fue inicializado.");
-            }
+            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
 
             const auth = firebase.auth();
             const db = firebase.firestore();
-            const appId = 'default-app-id'; // Reemplazar si es necesario
+            const appId = 'default-app-id';
             
             let currentUser = null;
 
-            const ALL_COURSES_DATA = {
-                'geniaweek': {
-                    title: 'Inteligencia Artificial Aplicada',
-                    modules: [
-                        { lessons: [{}, {}, {}, {}] },
-                        { lessons: [{}, {}, {}, {}] }
-                    ]
-                }
-            };
+            const ALL_COURSES_DATA = { 'geniaweek': { title: 'Inteligencia Artificial Aplicada', modules: [ { lessons: [{}, {}, {}, {}] }, { lessons: [{}, {}, {}, {}] } ] } };
 
             const dom = {
                 studentNameDisplay: document.getElementById('studentNameDisplay'),
@@ -178,6 +164,7 @@
                     currentUser = {
                         uid: user.uid,
                         name: user.displayName || "Estudiante de AulaGenIA",
+                        email: user.email
                     };
                     loadUserDashboard();
                 } else {
@@ -195,17 +182,12 @@
                 let completedPrograms = [];
                 if (docSnap.exists) {
                     const progressData = docSnap.data();
-
                     for (const courseId in ALL_COURSES_DATA) {
                         const courseInfo = ALL_COURSES_DATA[courseId];
                         const courseProgress = progressData[courseId];
-
                         if (courseInfo && courseProgress) {
                             const totalLessons = courseInfo.modules.reduce((acc, module) => acc + module.lessons.length, 0);
                             const completedLessonsCount = Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons.length : 0;
-
-                            console.log(`Verificando curso '${courseInfo.title}': ${completedLessonsCount} / ${totalLessons} lecciones completadas.`);
-
                             if (totalLessons > 0 && completedLessonsCount >= totalLessons) {
                                 completedPrograms.push({ id: courseId, name: courseInfo.title });
                             }
@@ -218,12 +200,7 @@
                     completedPrograms.forEach(program => {
                         const programElement = document.createElement('div');
                         programElement.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg border';
-                        programElement.innerHTML = `
-                            <p class="font-semibold">${program.name}</p>
-                            <button data-program-id="${program.id}" data-program-name="${program.name}" class="generate-cert-btn bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow">
-                                Generar Certificado
-                            </button>
-                        `;
+                        programElement.innerHTML = `<p class="font-semibold">${program.name}</p><button data-program-id="${program.id}" data-program-name="${program.name}" class="generate-cert-btn bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow">Generar Certificado</button>`;
                         dom.programsListContainer.appendChild(programElement);
                     });
                 } else {
@@ -244,6 +221,21 @@
                     const programId = button.dataset.programId;
                     const programName = button.dataset.programName;
 
+                    // ===================================================================
+                    // INICIO: CORRECCIÓN CLAVE - OBTENER NOMBRE ACTUALIZADO
+                    // Se busca el nombre más reciente desde la base de datos 'users'
+                    // antes de generar el certificado.
+                    // ===================================================================
+                    let studentNameForCert = auth.currentUser.displayName; // Nombre por defecto
+                    const userDocRef = db.collection('users').doc(auth.currentUser.uid);
+                    const userDoc = await userDocRef.get();
+                    if (userDoc.exists && userDoc.data().displayName) {
+                        studentNameForCert = userDoc.data().displayName; // Usar el nombre de la base de datos si existe
+                    }
+                    // ===================================================================
+                    // FIN: CORRECCIÓN CLAVE
+                    // ===================================================================
+
                     showStatus("Buscando certificado existente...", '#3b82f6');
                     
                     const certificatesRef = db.collection(`artifacts/${appId}/public/data/certificates`);
@@ -254,10 +246,12 @@
 
                     if (!querySnapshot.empty) {
                         certificateData = querySnapshot.docs[0].data();
+                        // Asegurarse de que el nombre esté actualizado incluso en certificados existentes
+                        certificateData.studentName = studentNameForCert;
                         showStatus("Certificado recuperado.", '#059669');
                     } else {
                         certificateData = {
-                            studentName: currentUser.name,
+                            studentName: studentNameForCert, // Usar el nombre actualizado
                             programName: programName,
                             completionDate: formatSpanishDate(new Date()),
                             issuedAt: new Date().toISOString(),
@@ -284,11 +278,7 @@
                 dom.certProgramName.textContent = data.programName;
                 dom.certCompletionDate.textContent = data.completionDate;
                 dom.certificateIdElem.textContent = data.certificateId;
-                
-                // INICIO: CÓDIGO PRECARGADO
                 dom.verifyCodeInput.value = data.certificateId;
-                // FIN: CÓDIGO PRECARGADO
-                
                 dom.certificateSection.classList.remove('hidden');
                 window.scrollTo({ top: dom.certificateSection.offsetTop - 20, behavior: 'smooth' });
             }
