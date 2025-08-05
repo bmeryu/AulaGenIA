@@ -23,6 +23,10 @@
         .toast-notification { position: fixed; top: 20px; right: 20px; transform: translateX(120%); z-index: 1000; }
         .toast-notification.show { transform: translateX(0); }
         #completion-modal.show > div { transform: scale(1); opacity: 1; }
+        .quiz-option { transition: all 0.2s ease-in-out; }
+        .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
+        .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
+        .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -259,18 +263,18 @@
             
             function checkQuizAnswer(lesson) {
                 const selectedOption = dom.lessonMaterialContainer.querySelector('.quiz-option.selected');
-                if (!selectedOption) { alert('Por favor, selecciona una respuesta.'); return; }
+                if (!selectedOption) { showToast('Por favor, selecciona una respuesta.'); return; }
                 const selectedIndex = parseInt(selectedOption.dataset.index);
                 const correctIndex = lesson.questions[0].correctAnswer;
                 dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
                 if (selectedIndex === correctIndex) {
                     selectedOption.classList.add('correct');
-                    alert('¡Respuesta Correcta!');
+                    showToast('¡Respuesta Correcta!');
                     dom.mainActionBtn.disabled = false;
                 } else {
                     selectedOption.classList.add('incorrect');
                     dom.lessonMaterialContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
-                    alert('Respuesta incorrecta. ¡Sigue intentando!');
+                    showToast('Respuesta incorrecta. ¡Sigue intentando!');
                     setTimeout(() => {
                         dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
                             opt.classList.remove('incorrect', 'correct', 'selected');
@@ -394,6 +398,12 @@
                     userProgress = { ...userProgress, completedLessons: [...userProgress.completedLessons, lessonId] };
                     await saveProgress();
                     checkForBadgeUnlock(lessonId);
+                    
+                    const isCourseNowComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length;
+                    if (isCourseNowComplete) {
+                        showCompletionModal();
+                    }
+                    
                     refreshUI();
                 }
             });
