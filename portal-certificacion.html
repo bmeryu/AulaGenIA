@@ -1,128 +1,122 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-CL">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Certificación - AulaGenia</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <meta charset="UTF-8" />
+    <title>Lección del Curso - Aula GenIA (Corregido)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
+    <link rel="canonical" href="https://aulagenia.cl/campus-curso-ia.html">
+    <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        .certificate {
-            border: 10px solid #14b8a6; 
-            background-color: #ffffff;
-            position: relative;
-            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM11 68c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z" fill="%2314b8a6" fill-opacity="0.05" fill-rule="evenodd"/></svg>');
-        }
-        .cert-title { font-family: 'Playfair Display', serif; }
-        .student-name {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-weight: 600;
-            color: #14b8a6;
-        }
+        :root { --brand-teal: #14b8a6; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        #profile-modal { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+        label span.required { color: #ef4444; }
     </style>
 </head>
-<body class="bg-slate-50 text-gray-800 p-4 sm:p-8">
+<body class="text-gray-800">
 
-    <div class="max-w-5xl mx-auto">
-        <!-- SECCIÓN DEL PANEL DE ALUMNO -->
-        <section id="student-dashboard">
-            <header class="text-center mb-10">
-                <a href="campus.html"><img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aulagenia" class="mx-auto mb-4 h-16 w-auto"></a>
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Portal de Certificación</h1>
-                <p class="text-gray-600 mt-2">¡Felicitaciones <span id="studentNameDisplay" class="font-semibold text-teal-600"></span>! Aquí puedes generar los certificados de tus programas finalizados.</p>
-            </header>
-
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h2 class="text-xl font-bold mb-4 text-gray-800">Programas Finalizados</h2>
-                <div id="completed-programs-list" class="space-y-4">
-                    <p class="text-gray-500">Verificando tus cursos completados...</p>
+    <div id="app" class="flex flex-col h-screen">
+        <header class="bg-white shadow-sm z-20">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="campus.html" aria-label="Volver al Campus de Aula GenIA">
+                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-10 w-auto">
+                </a>
+                <div id="user-profile-container" class="flex items-center gap-4 relative" style="display: none;">
+                    <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
+                    <button id="avatar-button" aria-label="Abrir menú de perfil">
+                        <img id="user-avatar" src="" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer hover:opacity-90 transition-opacity">
+                    </button>
+                    <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
                 </div>
-            </div>
-        </section>
+            </nav>
+        </header>
 
-        <!-- SECCIÓN DEL CERTIFICADO (Inicialmente oculta) -->
-        <section id="certificate-section" class="hidden">
-             <div class="bg-white p-6 rounded-xl shadow-lg mb-6">
-                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                     <div>
-                         <h2 class="text-2xl font-bold text-gray-800">Tu Certificado está Listo</h2>
-                         <p id="statusMessage" class="text-sm font-semibold text-green-600"></p>
-                     </div>
-                     <div class="flex items-center space-x-2">
-                         <button id="linkedinButton" class="bg-[#0077B5] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#005582] transition-colors shadow flex items-center gap-2">
-                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.75c0-1.4-1.1-2.5-2.5-2.5S11 12.85 11 14.25V19h-3v-9h2.9v1.3a3.11 3.11 0 012.6-1.4c2.5 0 4.5 2 4.5 5.75V19z"></path></svg>
-                             <span>LinkedIn</span>
-                         </button>
-                         <button id="downloadButton" class="bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow flex items-center gap-2">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                             <span>Descargar PDF</span>
-                         </button>
-                     </div>
-                 </div>
-             </div>
-            <div id="certificateContainer" class="bg-white rounded-lg shadow-2xl overflow-hidden">
-                <div id="certificate" class="certificate p-8 md:p-12 w-full aspect-[1.414]">
-                     <div class="flex flex-col h-full text-center text-gray-800">
-                         <header class="mb-4">
-                             <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aulagenia" class="mx-auto mb-4 h-16 w-auto" onerror="this.onerror=null;this.src='https://placehold.co/200x60/cccccc/FFFFFF?text=Logo+Error';">
-                             <h2 class="text-4xl md:text-5xl font-bold tracking-wider cert-title">Certificado de Finalización</h2>
-                         </header>
-                         <main class="flex-grow flex flex-col justify-center items-center">
-                             <p class="text-lg md:text-xl mt-4" style="font-family: 'Poppins', sans-serif;">Se otorga a:</p>
-                             <p id="certStudentName" class="student-name text-4xl md:text-5xl my-4"></p>
-                             <p class="text-base md:text-lg max-w-2xl mx-auto" style="font-family: 'Poppins', sans-serif;">Por haber completado satisfactoriamente todos los requisitos del programa:</p>
-                             <p id="certProgramName" class="text-2xl md:text-3xl my-4 font-semibold cert-title"></p>
-                             <p class="text-base md:text-lg" style="font-family: 'Poppins', sans-serif;">Finalizado el <span id="certCompletionDate"></span>.</p>
-                         </main>
-                         <footer class="absolute bottom-8 inset-x-8">
-                             <div class="flex justify-between items-end">
-                                 <div class="text-left">
-                                     <div class="mb-8">
-                                         <p class="border-t-2 border-gray-500 pt-2 w-48 text-center text-sm font-semibold" style="font-family: 'Poppins', sans-serif;">Director Académico</p>
-                                         <p class="text-center text-xs text-gray-500">Aulagenia.cl</p>
-                                     </div>
-                                     <div>
-                                         <p class="text-xs text-gray-500">Código de validación:</p>
-                                         <p id="certificateId" class="text-sm font-mono"></p>
-                                     </div>
-                                 </div>
-                                 <div class="flex items-center gap-4">
-                                     <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%233b82f6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eACADEMIA%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAIAA%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='4.5' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eI.A. APLICADA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de AIAA" class="w-24 h-24" />
-                                     <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%2314b8a6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eCERTIFICADO%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAG%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eAULA GENIA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de Aulagenia" class="w-24 h-24" />
-                                 </div>
-                             </div>
-                         </footer>
-                     </div>
+        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
+                <div class="p-6">
+                    <a href="campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
+                    <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                    </div>
                 </div>
-            </div>
-        </section>
+                <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
+            </aside>
 
-        <hr class="my-12 border-gray-300">
-
-        <!-- SECCIÓN DE VERIFICACIÓN PÚBLICA -->
-        <section id="verifier-section" class="pb-12">
-            <header class="text-center mb-8">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Verificador de Certificados</h2>
-                <p class="text-gray-600 mt-2">Ingresa un código para confirmar la validez de un certificado.</p>
-            </header>
-            <div class="bg-white p-6 rounded-xl shadow-lg max-w-xl mx-auto">
-                <div class="flex items-center space-x-4">
-                    <input type="text" id="verifyCodeInput" class="flex-grow block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ingresa el código AG-...">
-                    <button id="verifyButton" class="bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-800 transition-colors">Verificar</button>
+            <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
+                <div class="p-6 md:p-8 lg:p-10">
+                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-4">Cargando...</h2>
+                    <div id="lesson-material-container" class="mb-6"></div>
+                    <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
+                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
+                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
+                    </div>
                 </div>
-                <div id="verificationResult" class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 hidden"></div>
-            </div>
-        </section>
+            </section>
+        </main>
     </div>
 
+    <!-- INICIO: MODAL DE EDICIÓN DE PERFIL -->
+    <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-40"></div>
+    <div id="profile-modal" class="fixed top-20 right-6 bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full z-50 opacity-0 transform scale-95 pointer-events-none">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Editar Perfil</h3>
+        <form id="profile-form" class="max-h-[70vh] overflow-y-auto pr-2">
+            <div class="space-y-4">
+                <div>
+                    <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
+                    <input type="text" id="profile-name-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Tu nombre y apellido" required>
+                    <p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p>
+                </div>
+                <div>
+                    <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                    <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
+                </div>
+                <div>
+                    <label for="profile-dob-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
+                    <input type="date" id="profile-dob-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                </div>
+                <div>
+                    <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
+                    <select id="profile-gender-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                        <option value="">Prefiero no decir</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
+                    <select id="profile-country-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" required>
+                        <option value="">Selecciona tu país</option>
+                        <option value="CL">Chile</option>
+                        <option value="AR">Argentina</option>
+                        <option value="PE">Perú</option>
+                        <option value="CO">Colombia</option>
+                        <option value="MX">México</option>
+                        <option value="ES">España</option>
+                        <option value="US">Estados Unidos</option>
+                        <option value="OT">Otro</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-3">
+                <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
+                <button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <!-- FIN: MODAL DE EDICIÓN DE PERFIL -->
+
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
@@ -135,233 +129,271 @@
 
             const auth = firebase.auth();
             const db = firebase.firestore();
-            const appId = 'default-app-id';
             
+            const ALL_COURSES_DATA = { 'geniaweek': { title: 'Domina la IA Aplicada', modules: [ { title: 'Módulo 0: Onboarding', lessons: [ { id: '0-1' } ] }, { title: 'Módulo 1: ¿Qué es la IA?', lessons: [ { id: '1-1' }, { id: 'q-1' } ] } ] } };
+            const courseId = 'geniaweek';
+            const courseData = ALL_COURSES_DATA[courseId];
+            const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
-
-            const ALL_COURSES_DATA = { 'geniaweek': { title: 'Inteligencia Artificial Aplicada', modules: [ { lessons: [{}, {}, {}, {}] }, { lessons: [{}, {}, {}, {}] } ] } };
+            let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id };
 
             const dom = {
-                studentNameDisplay: document.getElementById('studentNameDisplay'),
-                programsListContainer: document.getElementById('completed-programs-list'),
-                certificateSection: document.getElementById('certificate-section'),
-                downloadButton: document.getElementById('downloadButton'),
-                linkedinButton: document.getElementById('linkedinButton'),
-                statusMessage: document.getElementById('statusMessage'),
-                certStudentName: document.getElementById('certStudentName'),
-                certProgramName: document.getElementById('certProgramName'),
-                certCompletionDate: document.getElementById('certCompletionDate'),
-                certificateIdElem: document.getElementById('certificateId'),
-                verifyCodeInput: document.getElementById('verifyCodeInput'),
-                verifyButton: document.getElementById('verifyButton'),
-                verificationResult: document.getElementById('verificationResult'),
+                userName: document.getElementById('user-name'),
+                userAvatar: document.getElementById('user-avatar'),
+                userProfile: document.getElementById('user-profile-container'),
+                logoutButton: document.getElementById('logout-button'),
+                courseTitle: document.getElementById('course-title'),
+                progressBar: document.getElementById('progress-bar'),
+                progressText: document.getElementById('progress-text'),
+                modulesContainer: document.getElementById('modules-container'),
+                lessonTitle: document.getElementById('lesson-title'),
+                prevBtn: document.getElementById('prev-lesson-btn'),
+                mainActionBtn: document.getElementById('main-action-btn')
             };
 
-            const { jsPDF } = window.jspdf;
+            function refreshUI() {
+                dom.courseTitle.textContent = courseData.title;
+                renderSidebar();
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                if (lesson) {
+                    dom.lessonTitle.textContent = lesson.title;
+                    dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lesson.id) === 0;
+                }
+                updateOverallProgress();
+                updateMainActionButton();
+                lucide.createIcons();
+            }
+
+            function renderSidebar() {
+                const isCourseComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length;
+                let isPreviousModuleComplete = true; 
+
+                dom.modulesContainer.innerHTML = courseData.modules.map((module) => {
+                    const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete;
+                    const lessonsHtml = module.lessons.map(lesson => {
+                        const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const isActive = userProgress.currentLessonId === lesson.id;
+                        let linkClasses = 'text-gray-600 hover:bg-slate-100';
+                        let statusIcon = isCompleted ? 'check-circle-2' : 'circle';
+                        let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        
+                        if (isModuleLocked) {
+                            linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
+                            statusIcon = 'lock';
+                            iconColor = 'text-slate-400';
+                        } else if (isActive) {
+                            linkClasses = 'bg-teal-50 text-teal-700 font-semibold';
+                            statusIcon = 'play-circle';
+                            iconColor = '';
+                        }
+                        
+                        const typeIcon = 'file-text';
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                    }).join('');
+                    
+                    const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
+                    const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down';
+                    
+                    if (!isCourseComplete) {
+                        const moduleLessonIds = module.lessons.map(l => l.id);
+                        isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                    }
+
+                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
+                }).join('');
+                addSidebarListeners();
+            }
             
+            function updateMainActionButton() {
+                const completedCount = Array.isArray(userProgress.completedLessons) ? userProgress.completedLessons.length : 0;
+                const totalLessons = allLessons.length;
+                const isCourseComplete = totalLessons > 0 && completedCount >= totalLessons;
+
+                if (isCourseComplete) {
+                    dom.mainActionBtn.textContent = "Curso Completado";
+                    dom.mainActionBtn.disabled = true;
+                    dom.mainActionBtn.classList.add('bg-green-500', 'cursor-not-allowed');
+                    dom.mainActionBtn.classList.remove('bg-teal-500', 'hover:bg-teal-600');
+                    return;
+                }
+
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1;
+                
+                dom.mainActionBtn.disabled = false;
+                
+                dom.mainActionBtn.textContent = isCompleted ? (isLastLesson ? 'Finalizar Curso' : 'Siguiente Lección') : 'Marcar como completada';
+                
+                if (isLastLesson && !isCompleted) {
+                    const allOthersCompleted = allLessons.filter(l => l.id !== lesson.id).every(l => userProgress.completedLessons.includes(l.id));
+                    if (!allOthersCompleted) dom.mainActionBtn.disabled = true;
+                }
+            }
+
+            function updateOverallProgress() {
+                const completedCount = Array.isArray(userProgress.completedLessons) ? userProgress.completedLessons.length : 0;
+                const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0;
+                dom.progressBar.style.width = `${percentage}%`;
+                dom.progressText.textContent = `${percentage}%`;
+            }
+
+            async function navigateToLesson(lessonId) {
+                const isCourseComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length;
+                
+                if (!isCourseComplete) {
+                    const targetLessonInfo = getLessonInfo(lessonId);
+                    if (!targetLessonInfo) return;
+                    const targetModuleIndex = targetLessonInfo.moduleIndex;
+                    if (targetModuleIndex > 0) {
+                        const previousModule = courseData.modules[targetModuleIndex - 1];
+                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
+                        const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                        if (!isPreviousModuleCompleted) {
+                            alert(`Debes completar el "${previousModule.title}" para acceder a este módulo.`);
+                            return;
+                        }
+                    }
+                }
+                userProgress = { ...userProgress, currentLessonId: lessonId };
+                await saveProgress();
+                refreshUI();
+            }
+
+            async function saveProgress() {
+                if (!currentUser) return;
+                try {
+                    const progressRef = db.collection('userProgress').doc(currentUser.uid);
+                    await progressRef.set({ [courseId]: userProgress }, { merge: true });
+                } catch (error) { console.error("Error al guardar el progreso:", error); }
+            }
+
+            async function loadProgressAndInitialize() {
+                const docRef = db.collection('userProgress').doc(currentUser.uid);
+                try {
+                    const doc = await docRef.get();
+                    if (doc.exists) {
+                        const courseProgress = doc.data()[courseId];
+                        if (courseProgress) {
+                            userProgress = {
+                                completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [],
+                                currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id
+                            };
+                        }
+                    }
+                } catch (error) { console.error("Error al cargar el progreso.", error); }
+                refreshUI();
+            }
+
+            function addSidebarListeners() {
+                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); }));
+                dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => {
+                    const icon = header.querySelector('i');
+                    if (icon && icon.getAttribute('data-lucide') !== 'lock') {
+                        header.addEventListener('click', () => { 
+                            const content = header.nextElementSibling;
+                            content.classList.toggle('open'); 
+                            icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; 
+                        });
+                    }
+                });
+            }
+
+            dom.mainActionBtn.addEventListener('click', async () => {
+                const lessonId = userProgress.currentLessonId;
+                const isCompleted = userProgress.completedLessons.includes(lessonId);
+                if (isCompleted) {
+                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                    if (currentIndex < allLessons.length - 1) {
+                        navigateToLesson(allLessons[currentIndex + 1].id);
+                    } else {
+                        window.location.href = 'portal-certificacion.html';
+                    }
+                } else {
+                    userProgress = { ...userProgress, completedLessons: [...userProgress.completedLessons, lessonId] };
+                    await saveProgress();
+                    refreshUI();
+                }
+            });
+
+            dom.prevBtn.addEventListener('click', () => {
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
+                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id);
+            });
+
+            // LÓGICA DEL MODAL DE PERFIL (sin cambios)
+            const profileModalOverlay = document.getElementById('profile-modal-overlay');
+            const profileModal = document.getElementById('profile-modal');
+            const avatarButton = document.getElementById('avatar-button');
+            const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+            const profileForm = document.getElementById('profile-form');
+            const profileNameInput = document.getElementById('profile-name-input');
+            const profileEmailInput = document.getElementById('profile-email-input');
+            const profileDobInput = document.getElementById('profile-dob-input');
+            const profileGenderSelect = document.getElementById('profile-gender-select');
+            const profileCountrySelect = document.getElementById('profile-country-select');
+
+            async function openProfileModal() {
+                profileNameInput.value = auth.currentUser.displayName || '';
+                profileEmailInput.value = auth.currentUser.email || '';
+                const userDocRef = db.collection('users').doc(auth.currentUser.uid);
+                try {
+                    const doc = await userDocRef.get();
+                    if (doc.exists) {
+                        const data = doc.data();
+                        profileDobInput.value = data.dob || '';
+                        profileGenderSelect.value = data.gender || '';
+                        profileCountrySelect.value = data.country || '';
+                    }
+                } catch (error) { console.error("Error al cargar datos del perfil:", error); }
+                profileModalOverlay.classList.remove('hidden');
+                profileModal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+            }
+
+            function closeProfileModal() {
+                profileModalOverlay.classList.add('hidden');
+                profileModal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+            }
+
+            avatarButton.addEventListener('click', openProfileModal);
+            cancelProfileBtn.addEventListener('click', closeProfileModal);
+            profileModalOverlay.addEventListener('click', closeProfileModal);
+
+            profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const newName = profileNameInput.value.trim();
+                const userDocRef = db.collection('users').doc(auth.currentUser.uid);
+                try {
+                    if (newName && newName !== auth.currentUser.displayName) {
+                        await auth.currentUser.updateProfile({ displayName: newName });
+                    }
+                    await userDocRef.set({
+                        displayName: newName,
+                        email: auth.currentUser.email,
+                        dob: profileDobInput.value,
+                        gender: profileGenderSelect.value,
+                        country: profileCountrySelect.value
+                    }, { merge: true });
+                    dom.userName.textContent = newName;
+                    alert('¡Tu perfil ha sido actualizado!');
+                    closeProfileModal();
+                } catch (error) {
+                    alert('Hubo un error al guardar tu perfil.');
+                }
+            });
+
             auth.onAuthStateChanged(user => {
                 if (user) {
-                    currentUser = {
-                        uid: user.uid,
-                        name: user.displayName || "Estudiante de AulaGenIA",
-                        email: user.email
-                    };
-                    loadUserDashboard();
+                    currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
+                    dom.userName.textContent = currentUser.name;
+                    dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
+                    dom.userProfile.style.display = 'flex';
+                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
+                    loadProgressAndInitialize();
                 } else {
                     window.location.href = 'acceso.html';
                 }
             });
-
-            async function loadUserDashboard() {
-                if (!currentUser) return;
-                dom.studentNameDisplay.textContent = currentUser.name;
-
-                const userProgressRef = db.collection('userProgress').doc(currentUser.uid);
-                const docSnap = await userProgressRef.get();
-
-                let completedPrograms = [];
-                if (docSnap.exists) {
-                    const progressData = docSnap.data();
-                    for (const courseId in ALL_COURSES_DATA) {
-                        const courseInfo = ALL_COURSES_DATA[courseId];
-                        const courseProgress = progressData[courseId];
-                        if (courseInfo && courseProgress) {
-                            const totalLessons = courseInfo.modules.reduce((acc, module) => acc + module.lessons.length, 0);
-                            const completedLessonsCount = Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons.length : 0;
-                            if (totalLessons > 0 && completedLessonsCount >= totalLessons) {
-                                completedPrograms.push({ id: courseId, name: courseInfo.title });
-                            }
-                        }
-                    }
-                }
-
-                if (completedPrograms.length > 0) {
-                    dom.programsListContainer.innerHTML = ''; 
-                    completedPrograms.forEach(program => {
-                        const programElement = document.createElement('div');
-                        programElement.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg border';
-                        programElement.innerHTML = `<p class="font-semibold">${program.name}</p><button data-program-id="${program.id}" data-program-name="${program.name}" class="generate-cert-btn bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow">Generar Certificado</button>`;
-                        dom.programsListContainer.appendChild(programElement);
-                    });
-                } else {
-                    dom.programsListContainer.innerHTML = '<p class="text-gray-500 text-center">Aún no has finalizado ningún programa. ¡Sigue adelante!</p>';
-                }
-
-                document.querySelectorAll('.generate-cert-btn').forEach(button => {
-                    button.addEventListener('click', handleGenerateCertificate);
-                });
-            }
-
-            async function handleGenerateCertificate(event) {
-                const button = event.currentTarget;
-                button.disabled = true;
-                button.textContent = "Generando...";
-
-                try {
-                    const programId = button.dataset.programId;
-                    const programName = button.dataset.programName;
-
-                    let studentNameForCert = auth.currentUser.displayName;
-                    const userDocRef = db.collection('users').doc(auth.currentUser.uid);
-                    const userDoc = await userDocRef.get();
-                    if (userDoc.exists && userDoc.data().displayName) {
-                        studentNameForCert = userDoc.data().displayName;
-                    }
-
-                    showStatus("Buscando certificado existente...", '#3b82f6');
-                    
-                    const certificatesRef = db.collection(`artifacts/${appId}/public/data/certificates`);
-                    const q = certificatesRef.where("userId", "==", currentUser.uid).where("programId", "==", programId);
-                    
-                    const querySnapshot = await q.get();
-                    let certificateData;
-
-                    if (!querySnapshot.empty) {
-                        certificateData = querySnapshot.docs[0].data();
-                        certificateData.studentName = studentNameForCert;
-                        showStatus("Certificado recuperado.", '#059669');
-                    } else {
-                        certificateData = {
-                            studentName: studentNameForCert,
-                            programName: programName,
-                            completionDate: formatSpanishDate(new Date()),
-                            issuedAt: new Date().toISOString(),
-                            certificateId: generateUniqueCode(),
-                            userId: currentUser.uid,
-                            programId: programId
-                        };
-                        await saveCertificate(certificateData);
-                    }
-                    
-                    displayCertificate(certificateData);
-                    button.textContent = "Ver Certificado";
-                    button.classList.replace('bg-teal-500', 'bg-gray-400');
-                } catch (error) {
-                    console.error("Error al generar certificado:", error);
-                    showStatus("Error al generar. Inténtalo de nuevo.", '#ef4444', 3000);
-                    button.disabled = false;
-                    button.textContent = "Generar Certificado";
-                }
-            }
-
-            function displayCertificate(data) {
-                dom.certStudentName.textContent = data.studentName;
-                dom.certProgramName.textContent = data.programName;
-                dom.certCompletionDate.textContent = data.completionDate;
-                dom.certificateIdElem.textContent = data.certificateId;
-                dom.verifyCodeInput.value = data.certificateId;
-                dom.certificateSection.classList.remove('hidden');
-                window.scrollTo({ top: dom.certificateSection.offsetTop - 20, behavior: 'smooth' });
-            }
-            
-            async function saveCertificate(data) {
-                 showStatus("Guardando nuevo certificado...", '#3b82f6');
-                 try {
-                     const docRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(data.certificateId);
-                     await docRef.set(data);
-                     showStatus("¡Guardado con éxito!", '#16a34a', 3000);
-                 } catch (error) {
-                     console.error("Error guardando: ", error);
-                     showStatus("Error al guardar.", '#ef4444', 3000);
-                 }
-            }
-
-            function handleAddToLinkedIn() {
-                const certName = dom.certProgramName.textContent;
-                const certId = dom.certificateIdElem.textContent;
-                const issueDate = new Date();
-                const certUrl = `https://aulagenia.cl/certificados?id=${certId}`;
-                const linkedInUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(certName)}&organizationId=94349991&issueYear=${issueDate.getFullYear()}&issueMonth=${issueDate.getMonth() + 1}&certUrl=${encodeURIComponent(certUrl)}&certId=${encodeURIComponent(certId)}`;
-                window.open(linkedInUrl, '_blank');
-            }
-
-            async function downloadCertificate() {
-                const certificateElement = document.getElementById('certificate');
-                const studentName = dom.certStudentName.textContent.trim().replace(/ /g, '_');
-                try {
-                    const canvas = await html2canvas(certificateElement, { scale: 3, useCORS: true });
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width, canvas.height] });
-                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-                    pdf.save(`Certificado_Aulagenia_${studentName}.pdf`);
-                } catch (error) {
-                    console.error("Error al generar PDF:", error);
-                    showStatus("Error al descargar PDF.", '#ef4444');
-                }
-            }
-
-            function generateUniqueCode() {
-                const timestamp = Date.now().toString().slice(-8);
-                const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
-                return `AG-${timestamp}-${randomPart}`;
-            }
-
-            function formatSpanishDate(date) {
-                return date.toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' });
-            }
-
-            function showStatus(message, color, duration = 0) {
-                dom.statusMessage.textContent = message;
-                dom.statusMessage.style.color = color;
-                if(duration > 0) {
-                    setTimeout(() => { dom.statusMessage.textContent = ''; }, duration);
-                }
-            }
-
-            async function handleVerifyClick() {
-                const codeToVerify = dom.verifyCodeInput.value.trim();
-                if (!codeToVerify) {
-                    displayVerificationResult("Por favor, ingresa un código.", "orange");
-                    return;
-                }
-                displayVerificationResult("Buscando...", "blue");
-                try {
-                    const docRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(codeToVerify);
-                    const docSnap = await docRef.get();
-                    if (docSnap.exists) {
-                        const data = docSnap.data();
-                        const resultHtml = `<h4 class="font-bold text-green-700">✅ Certificado Válido</h4><p class="mt-2"><strong>Alumno:</strong> ${data.studentName}</p><p><strong>Programa:</strong> ${data.programName}</p><p><strong>Fecha:</strong> ${data.completionDate}</p>`;
-                        displayVerificationResult(resultHtml, "green");
-                    } else {
-                        displayVerificationResult(`<h4 class="font-bold text-red-700">❌ Certificado No Encontrado</h4><p>El código no es válido o no ha sido guardado.</p>`, "red");
-                    }
-                } catch (error) {
-                    displayVerificationResult("Ocurrió un error durante la verificación.", "red");
-                }
-            }
-
-            function displayVerificationResult(htmlContent, state) {
-                dom.verificationResult.innerHTML = htmlContent;
-                dom.verificationResult.classList.remove('hidden');
-                const colors = { green: '#16a34a', red: '#ef4444', orange: '#f59e0b', blue: '#3b82f6' };
-                const bgColors = { green: '#f0fdf4', red: '#fef2f2', orange: '#fffbeb', blue: '#eff6ff' };
-                dom.verificationResult.style.borderColor = colors[state] || '#d1d5db';
-                dom.verificationResult.style.backgroundColor = bgColors[state] || '#f9fafb';
-            }
-
-            dom.downloadButton.addEventListener('click', downloadCertificate);
-            dom.linkedinButton.addEventListener('click', handleAddToLinkedIn);
-            dom.verifyButton.addEventListener('click', handleVerifyClick);
         });
     </script>
 </body>
