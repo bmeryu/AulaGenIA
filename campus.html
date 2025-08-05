@@ -1,377 +1,369 @@
 <!DOCTYPE html>
-<html lang="es">
+<!-- 
+  CAMPUS DASHBOARD · AULA GENIA v2.8 (Review Completed Courses)
+  -------------------------------------------------------------------
+  Esta versión permite a los usuarios re-ingresar a los cursos
+  incluso después de haberlos completado al 100%.
+  -------------------------------------------------------------------
+-->
+<html lang="es-CL" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Certificación - AulaGenia</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        .certificate {
-            border: 10px solid #14b8a6; 
-            background-color: #ffffff;
-            position: relative;
-            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM11 68c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z" fill="%2314b8a6" fill-opacity="0.05" fill-rule="evenodd"/></svg>');
-        }
-        .cert-title { font-family: 'Playfair Display', serif; }
-        .student-name {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-weight: 600;
-            color: #14b8a6;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Campus Virtual – Aula GenIA (Corregido)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
+  <link rel="canonical" href="https://aulagenia.cl/campus.html">
+  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    :root {
+      --brand-teal: #14b8a6;
+      --brand-green: #22c55e;
+    }
+    html { font-family: 'Poppins', sans-serif; }
+    body { background-color: #f8fafc; }
+    .card-hover {
+      @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
+    }
+    #profile-modal { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+    label span.required { color: #ef4444; }
+  </style>
 </head>
-<body class="bg-slate-50 text-gray-800 p-4 sm:p-8">
+<body class="text-gray-800">
 
-    <div class="max-w-5xl mx-auto">
-        <!-- SECCIÓN DEL PANEL DE ALUMNO -->
-        <section id="student-dashboard">
-            <header class="text-center mb-10">
-                <a href="campus.html"><img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aulagenia" class="mx-auto mb-4 h-16 w-auto"></a>
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Portal de Certificación</h1>
-                <p class="text-gray-600 mt-2">¡Felicitaciones <span id="studentNameDisplay" class="font-semibold text-teal-600"></span>! Aquí puedes generar los certificados de tus programas finalizados.</p>
-            </header>
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2" aria-label="Ir al inicio de Aula GenIA">
+        <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-10 w-auto" />
+      </a>
+      <div id="user-profile" class="hidden sm:flex items-center gap-3 relative">
+        <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[10ch]"></span>
+        <button id="avatar-button" aria-label="Abrir menú de perfil">
+            <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer hover:opacity-90 transition-opacity" />
+        </button>
+        <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar sesión</button>
+      </div>
+    </nav>
+  </header>
 
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h2 class="text-xl font-bold mb-4 text-gray-800">Programas Finalizados</h2>
-                <div id="completed-programs-list" class="space-y-4">
-                    <p class="text-gray-500">Verificando tus cursos completados...</p>
-                </div>
+  <main class="container mx-auto px-6 py-12 max-w-7xl">
+    <section class="mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Aprendiz</span>!</h1>
+      <p class="text-lg text-gray-600 mt-2">Sigamos creando cosas increíbles con&nbsp;IA ✨</p>
+    </section>
+
+    <section aria-labelledby="courses-heading">
+      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="geniaweek">
+          <div class="p-6 flex-grow">
+            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">Inteligencia Artificial Aplicada</h3>
+            <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
+            <div class="mb-2">
+              <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
+                <span>Progreso</span>
+                <span class="percent">0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="fill h-2.5 rounded-full transition-all duration-500" style="background-color: var(--brand-teal); width: 0%"></div>
+              </div>
             </div>
-        </section>
+          </div>
+          <div class="card-footer bg-gray-50 px-6 py-4">
+            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+              Continuar aprendiendo
+            </a>
+          </div>
+        </article>
 
-        <!-- SECCIÓN DEL CERTIFICADO (Inicialmente oculta) -->
-        <section id="certificate-section" class="hidden">
-             <div class="bg-white p-6 rounded-xl shadow-lg mb-6">
-                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                     <div>
-                         <h2 class="text-2xl font-bold text-gray-800">Tu Certificado está Listo</h2>
-                         <p id="statusMessage" class="text-sm font-semibold text-green-600"></p>
-                     </div>
-                     <div class="flex items-center space-x-2">
-                         <button id="linkedinButton" class="bg-[#0077B5] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#005582] transition-colors shadow flex items-center gap-2">
-                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.75c0-1.4-1.1-2.5-2.5-2.5S11 12.85 11 14.25V19h-3v-9h2.9v1.3a3.11 3.11 0 012.6-1.4c2.5 0 4.5 2 4.5 5.75V19z"></path></svg>
-                             <span>LinkedIn</span>
-                         </button>
-                         <button id="downloadButton" class="bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow flex items-center gap-2">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                             <span>Descargar PDF</span>
-                         </button>
-                     </div>
-                 </div>
-             </div>
-            <div id="certificateContainer" class="bg-white rounded-lg shadow-2xl overflow-hidden">
-                <div id="certificate" class="certificate p-8 md:p-12 w-full aspect-[1.414]">
-                     <div class="flex flex-col h-full text-center text-gray-800">
-                         <header class="mb-4">
-                             <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aulagenia" class="mx-auto mb-4 h-16 w-auto" onerror="this.onerror=null;this.src='https://placehold.co/200x60/cccccc/FFFFFF?text=Logo+Error';">
-                             <h2 class="text-4xl md:text-5xl font-bold tracking-wider cert-title">Certificado de Finalización</h2>
-                         </header>
-                         <main class="flex-grow flex flex-col justify-center items-center">
-                             <p class="text-lg md:text-xl mt-4" style="font-family: 'Poppins', sans-serif;">Se otorga a:</p>
-                             <p id="certStudentName" class="student-name text-4xl md:text-5xl my-4"></p>
-                             <p class="text-base md:text-lg max-w-2xl mx-auto" style="font-family: 'Poppins', sans-serif;">Por haber completado satisfactoriamente todos los requisitos del programa:</p>
-                             <p id="certProgramName" class="text-2xl md:text-3xl my-4 font-semibold cert-title"></p>
-                             <p class="text-base md:text-lg" style="font-family: 'Poppins', sans-serif;">Finalizado el <span id="certCompletionDate"></span>.</p>
-                         </main>
-                         <footer class="absolute bottom-8 inset-x-8">
-                             <div class="flex justify-between items-end">
-                                 <div class="text-left">
-                                     <div class="mb-8">
-                                         <p class="border-t-2 border-gray-500 pt-2 w-48 text-center text-sm font-semibold" style="font-family: 'Poppins', sans-serif;">Director Académico</p>
-                                         <p class="text-center text-xs text-gray-500">Aulagenia.cl</p>
-                                     </div>
-                                     <div>
-                                         <p class="text-xs text-gray-500">Código de validación:</p>
-                                         <p id="certificateId" class="text-sm font-mono"></p>
-                                     </div>
-                                 </div>
-                                 <div class="flex items-center gap-4">
-                                     <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%233b82f6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eACADEMIA%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAIAA%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='4.5' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eI.A. APLICADA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de AIAA" class="w-24 h-24" />
-                                     <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%2314b8a6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eCERTIFICADO%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAG%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eAULA GENIA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de Aulagenia" class="w-24 h-24" />
-                                 </div>
-                             </div>
-                         </footer>
-                     </div>
-                </div>
+        <article class="bg-white rounded-2xl shadow overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center p-8 text-center">
+          <div>
+            <h3 class="text-xl font-bold text-gray-500 mb-2">IA para Marketing Digital</h3>
+            <p class="text-gray-400 text-sm mb-4">Aprende a crear campañas y contenido que convierten usando IA.</p>
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-100 px-3 py-1.5 rounded-full">Próximamente</span>
+          </div>
+        </article>
+
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden">
+          <div class="p-6">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">Recursos</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">Comunidad &amp; Plantillas</h3>
+            <p class="text-gray-600 text-sm mb-6">Únete a nuestro Discord exclusivo y descarga más de 20 plantillas de prompts.</p>
+          </div>
+          <div class="bg-gray-50 px-6 py-4">
+            <a href="#" class="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Acceder a recursos</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
+    © 2025 Aula GenIA · Todos los derechos reservados.
+  </footer>
+
+  <!-- INICIO: MODAL DE EDICIÓN DE PERFIL -->
+  <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-40"></div>
+  <div id="profile-modal" class="fixed top-20 right-6 bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full z-50 opacity-0 transform scale-95 pointer-events-none">
+      <h3 class="text-lg font-bold text-gray-900 mb-4">Editar Perfil</h3>
+      <form id="profile-form" class="max-h-[70vh] overflow-y-auto pr-2">
+          <div class="space-y-4">
+              <div>
+                  <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
+                  <input type="text" id="profile-name-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Tu nombre y apellido" required>
+                  <p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p>
+              </div>
+              <div>
+                  <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                  <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
+              </div>
+              <div>
+                  <label for="profile-dob-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
+                  <input type="date" id="profile-dob-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+              </div>
+              <div>
+                  <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
+                  <select id="profile-gender-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                      <option value="">Prefiero no decir</option>
+                      <option value="masculino">Masculino</option>
+                      <option value="femenino">Femenino</option>
+                      <option value="otro">Otro</option>
+                  </select>
+              </div>
+              <div>
+                  <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
+                  <select id="profile-country-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" required>
+                      <option value="">Selecciona tu país</option>
+                      <option value="CL">Chile</option>
+                      <option value="AR">Argentina</option>
+                      <option value="PE">Perú</option>
+                      <option value="CO">Colombia</option>
+                      <option value="MX">México</option>
+                      <option value="ES">España</option>
+                      <option value="US">Estados Unidos</option>
+                      <option value="OT">Otro</option>
+                  </select>
+              </div>
+          </div>
+          <div class="mt-6 flex justify-end gap-3">
+              <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
+              <button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600">Guardar</button>
+          </div>
+      </form>
+  </div>
+  <!-- FIN: MODAL DE EDICIÓN DE PERFIL -->
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+      
+      try {
+        firebase.initializeApp(firebaseConfig);
+      } catch(e) {
+        console.warn("Firebase ya fue inicializado.");
+      }
+      
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      
+      const ALL_COURSES_DATA = {
+          'geniaweek': {
+              title: 'Inteligencia Artificial Aplicada',
+              modules: [
+                  { lessons: [{}, {}, {}, {}] },
+                  { lessons: [{}, {}, {}, {}] }
+              ]
+          }
+      };
+
+      function getTotalLessons(courseId) {
+          const course = ALL_COURSES_DATA[courseId];
+          if (!course) return 0;
+          return course.modules.reduce((total, module) => total + module.lessons.length, 0);
+      }
+
+      function updateCardUI(card, progress) {
+        const tagEl = card.querySelector('.tag');
+        const percentEl = card.querySelector('.percent');
+        const fillEl = card.querySelector('.fill');
+        const footerEl = card.querySelector('.card-footer');
+
+        if (!percentEl || !fillEl || !tagEl) return;
+
+        percentEl.textContent = `${progress}%`;
+        fillEl.style.width = `${progress}%`;
+
+        if (progress >= 100) {
+          tagEl.textContent = 'Completado';
+          tagEl.classList.remove('bg-teal-100', 'text-teal-600');
+          tagEl.classList.add('bg-green-100', 'text-green-600');
+          fillEl.style.backgroundColor = 'var(--brand-green)';
+          
+          // ===================================================================
+          // INICIO: CORRECCIÓN CLAVE - AÑADIR ENLACE PARA REPASAR CURSO
+          // Se añade un enlace "Repasar Curso" debajo del botón de certificado.
+          // ===================================================================
+          footerEl.innerHTML = `
+            <div class="space-y-2 text-center">
+              <a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                <i data-lucide="award" class="h-5 w-5"></i>
+                <span>Ver Certificado</span>
+              </a>
+              <a href="campus-curso-ia.html" class="text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors">
+                Repasar Curso
+              </a>
             </div>
-        </section>
+          `;
+          // ===================================================================
+          // FIN: CORRECCIÓN CLAVE
+          // ===================================================================
 
-        <hr class="my-12 border-gray-300">
+        } else if (progress > 0) {
+            tagEl.textContent = 'En progreso';
+            tagEl.classList.remove('bg-green-100', 'text-green-600');
+            tagEl.classList.add('bg-teal-100', 'text-teal-600');
+            fillEl.style.backgroundColor = 'var(--brand-teal)';
+            footerEl.innerHTML = `
+                <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                Continuar aprendiendo
+                </a>
+            `;
+        }
+        lucide.createIcons();
+      }
 
-        <!-- SECCIÓN DE VERIFICACIÓN PÚBLICA -->
-        <section id="verifier-section" class="pb-12">
-            <header class="text-center mb-8">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Verificador de Certificados</h2>
-                <p class="text-gray-600 mt-2">Ingresa un código para confirmar la validez de un certificado.</p>
-            </header>
-            <div class="bg-white p-6 rounded-xl shadow-lg max-w-xl mx-auto">
-                <div class="flex items-center space-x-4">
-                    <input type="text" id="verifyCodeInput" class="flex-grow block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ingresa el código AG-...">
-                    <button id="verifyButton" class="bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-800 transition-colors">Verificar</button>
-                </div>
-                <div id="verificationResult" class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 hidden"></div>
-            </div>
-        </section>
-    </div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
-
-    <script defer>
-        document.addEventListener('DOMContentLoaded', () => {
-            const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+      async function loadCourseProgressFromFirestore(userId) {
+        const progressRef = db.collection('userProgress').doc(userId);
+        try {
+          const doc = await progressRef.get();
+          const progressData = doc.exists ? doc.data() : {};
+          
+          document.querySelectorAll('[data-course-id]').forEach(card => {
+            const courseId = card.dataset.courseId;
+            const courseProgressData = progressData[courseId] || { completedLessons: [] };
             
-            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
+            const totalLessons = getTotalLessons(courseId);
+            const completedCount = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons.length : 0;
+            const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
-            const auth = firebase.auth();
-            const db = firebase.firestore();
-            const appId = 'default-app-id';
-            
-            let currentUser = null;
+            updateCardUI(card, progressValue);
+          });
+        } catch (error) {
+          console.error("Error al obtener progreso desde Firestore:", error);
+        }
+      }
 
-            const ALL_COURSES_DATA = { 'geniaweek': { title: 'Inteligencia Artificial Aplicada', modules: [ { lessons: [{}, {}, {}, {}] }, { lessons: [{}, {}, {}, {}] } ] } };
+      // INICIO: LÓGICA DEL MODAL DE PERFIL
+      const profileModalOverlay = document.getElementById('profile-modal-overlay');
+      const profileModal = document.getElementById('profile-modal');
+      const avatarButton = document.getElementById('avatar-button');
+      const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+      const profileForm = document.getElementById('profile-form');
+      const profileNameInput = document.getElementById('profile-name-input');
+      const profileEmailInput = document.getElementById('profile-email-input');
+      const profileDobInput = document.getElementById('profile-dob-input');
+      const profileGenderSelect = document.getElementById('profile-gender-select');
+      const profileCountrySelect = document.getElementById('profile-country-select');
 
-            const dom = {
-                studentNameDisplay: document.getElementById('studentNameDisplay'),
-                programsListContainer: document.getElementById('completed-programs-list'),
-                certificateSection: document.getElementById('certificate-section'),
-                downloadButton: document.getElementById('downloadButton'),
-                linkedinButton: document.getElementById('linkedinButton'),
-                statusMessage: document.getElementById('statusMessage'),
-                certStudentName: document.getElementById('certStudentName'),
-                certProgramName: document.getElementById('certProgramName'),
-                certCompletionDate: document.getElementById('certCompletionDate'),
-                certificateIdElem: document.getElementById('certificateId'),
-                verifyCodeInput: document.getElementById('verifyCodeInput'),
-                verifyButton: document.getElementById('verifyButton'),
-                verificationResult: document.getElementById('verificationResult'),
-            };
+      async function openProfileModal() {
+          profileNameInput.value = auth.currentUser.displayName || '';
+          profileEmailInput.value = auth.currentUser.email || '';
 
-            const { jsPDF } = window.jspdf;
-            
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    currentUser = {
-                        uid: user.uid,
-                        name: user.displayName || "Estudiante de AulaGenIA",
-                        email: user.email
-                    };
-                    loadUserDashboard();
-                } else {
-                    window.location.href = 'acceso.html';
-                }
-            });
+          // Cargar datos adicionales desde Firestore
+          const userDocRef = db.collection('users').doc(auth.currentUser.uid);
+          try {
+              const doc = await userDocRef.get();
+              if (doc.exists) {
+                  const data = doc.data();
+                  profileDobInput.value = data.dob || '';
+                  profileGenderSelect.value = data.gender || '';
+                  profileCountrySelect.value = data.country || '';
+              }
+          } catch (error) {
+              console.error("Error al cargar datos del perfil:", error);
+          }
 
-            async function loadUserDashboard() {
-                if (!currentUser) return;
-                dom.studentNameDisplay.textContent = currentUser.name;
+          profileModalOverlay.classList.remove('hidden');
+          profileModal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+      }
 
-                const userProgressRef = db.collection('userProgress').doc(currentUser.uid);
-                const docSnap = await userProgressRef.get();
+      function closeProfileModal() {
+          profileModalOverlay.classList.add('hidden');
+          profileModal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+      }
 
-                let completedPrograms = [];
-                if (docSnap.exists) {
-                    const progressData = docSnap.data();
-                    for (const courseId in ALL_COURSES_DATA) {
-                        const courseInfo = ALL_COURSES_DATA[courseId];
-                        const courseProgress = progressData[courseId];
-                        if (courseInfo && courseProgress) {
-                            const totalLessons = courseInfo.modules.reduce((acc, module) => acc + module.lessons.length, 0);
-                            const completedLessonsCount = Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons.length : 0;
-                            if (totalLessons > 0 && completedLessonsCount >= totalLessons) {
-                                completedPrograms.push({ id: courseId, name: courseInfo.title });
-                            }
-                        }
-                    }
-                }
+      avatarButton.addEventListener('click', openProfileModal);
+      cancelProfileBtn.addEventListener('click', closeProfileModal);
+      profileModalOverlay.addEventListener('click', closeProfileModal);
 
-                if (completedPrograms.length > 0) {
-                    dom.programsListContainer.innerHTML = ''; 
-                    completedPrograms.forEach(program => {
-                        const programElement = document.createElement('div');
-                        programElement.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg border';
-                        programElement.innerHTML = `<p class="font-semibold">${program.name}</p><button data-program-id="${program.id}" data-program-name="${program.name}" class="generate-cert-btn bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow">Generar Certificado</button>`;
-                        dom.programsListContainer.appendChild(programElement);
-                    });
-                } else {
-                    dom.programsListContainer.innerHTML = '<p class="text-gray-500 text-center">Aún no has finalizado ningún programa. ¡Sigue adelante!</p>';
-                }
+      profileForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const newName = profileNameInput.value.trim();
+          const userDocRef = db.collection('users').doc(auth.currentUser.uid);
 
-                document.querySelectorAll('.generate-cert-btn').forEach(button => {
-                    button.addEventListener('click', handleGenerateCertificate);
-                });
-            }
+          try {
+              // Actualizar nombre en Firebase Auth
+              if (newName && newName !== auth.currentUser.displayName) {
+                  await auth.currentUser.updateProfile({
+                      displayName: newName
+                  });
+              }
 
-            async function handleGenerateCertificate(event) {
-                const button = event.currentTarget;
-                button.disabled = true;
-                button.textContent = "Generando...";
+              // Guardar datos adicionales en Firestore
+              await userDocRef.set({
+                  displayName: newName,
+                  email: auth.currentUser.email,
+                  dob: profileDobInput.value,
+                  gender: profileGenderSelect.value,
+                  country: profileCountrySelect.value
+              }, { merge: true });
+              
+              // Actualizar UI inmediatamente
+              document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
+              alert('¡Tu perfil ha sido actualizado!');
+              closeProfileModal();
 
-                try {
-                    const programId = button.dataset.programId;
-                    const programName = button.dataset.programName;
+          } catch (error) {
+              console.error("Error al actualizar el perfil:", error);
+              alert('Hubo un error al guardar tu perfil. Inténtalo de nuevo.');
+          }
+      });
+      // FIN: LÓGICA DEL MODAL DE PERFIL
 
-                    // ===================================================================
-                    // INICIO: CORRECCIÓN CLAVE - OBTENER NOMBRE ACTUALIZADO
-                    // Se busca el nombre más reciente desde la base de datos 'users'
-                    // antes de generar el certificado.
-                    // ===================================================================
-                    let studentNameForCert = auth.currentUser.displayName; // Nombre por defecto
-                    const userDocRef = db.collection('users').doc(auth.currentUser.uid);
-                    const userDoc = await userDocRef.get();
-                    if (userDoc.exists && userDoc.data().displayName) {
-                        studentNameForCert = userDoc.data().displayName; // Usar el nombre de la base de datos si existe
-                    }
-                    // ===================================================================
-                    // FIN: CORRECCIÓN CLAVE
-                    // ===================================================================
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          const name = user.displayName || 'Alumno';
+          document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
+          document.getElementById('user-avatar').src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
+          document.getElementById('user-profile').classList.remove('hidden');
+          
+          document.getElementById('logout-btn').addEventListener('click', e => {
+            e.preventDefault();
+            auth.signOut().then(() => window.location.href = 'index.html');
+          });
 
-                    showStatus("Buscando certificado existente...", '#3b82f6');
-                    
-                    const certificatesRef = db.collection(`artifacts/${appId}/public/data/certificates`);
-                    const q = certificatesRef.where("userId", "==", currentUser.uid).where("programId", "==", programId);
-                    
-                    const querySnapshot = await q.get();
-                    let certificateData;
-
-                    if (!querySnapshot.empty) {
-                        certificateData = querySnapshot.docs[0].data();
-                        // Asegurarse de que el nombre esté actualizado incluso en certificados existentes
-                        certificateData.studentName = studentNameForCert;
-                        showStatus("Certificado recuperado.", '#059669');
-                    } else {
-                        certificateData = {
-                            studentName: studentNameForCert, // Usar el nombre actualizado
-                            programName: programName,
-                            completionDate: formatSpanishDate(new Date()),
-                            issuedAt: new Date().toISOString(),
-                            certificateId: generateUniqueCode(),
-                            userId: currentUser.uid,
-                            programId: programId
-                        };
-                        await saveCertificate(certificateData);
-                    }
-                    
-                    displayCertificate(certificateData);
-                    button.textContent = "Ver Certificado";
-                    button.classList.replace('bg-teal-500', 'bg-gray-400');
-                } catch (error) {
-                    console.error("Error al generar certificado:", error);
-                    showStatus("Error al generar. Inténtalo de nuevo.", '#ef4444', 3000);
-                    button.disabled = false;
-                    button.textContent = "Generar Certificado";
-                }
-            }
-
-            function displayCertificate(data) {
-                dom.certStudentName.textContent = data.studentName;
-                dom.certProgramName.textContent = data.programName;
-                dom.certCompletionDate.textContent = data.completionDate;
-                dom.certificateIdElem.textContent = data.certificateId;
-                dom.verifyCodeInput.value = data.certificateId;
-                dom.certificateSection.classList.remove('hidden');
-                window.scrollTo({ top: dom.certificateSection.offsetTop - 20, behavior: 'smooth' });
-            }
-            
-            async function saveCertificate(data) {
-                 showStatus("Guardando nuevo certificado...", '#3b82f6');
-                 try {
-                     const docRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(data.certificateId);
-                     await docRef.set(data);
-                     showStatus("¡Guardado con éxito!", '#16a34a', 3000);
-                 } catch (error) {
-                     console.error("Error guardando: ", error);
-                     showStatus("Error al guardar.", '#ef4444', 3000);
-                 }
-            }
-
-            function handleAddToLinkedIn() {
-                const certName = dom.certProgramName.textContent;
-                const certId = dom.certificateIdElem.textContent;
-                const issueDate = new Date();
-                const certUrl = `https://aulagenia.cl/certificados?id=${certId}`;
-                const linkedInUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(certName)}&organizationId=94349991&issueYear=${issueDate.getFullYear()}&issueMonth=${issueDate.getMonth() + 1}&certUrl=${encodeURIComponent(certUrl)}&certId=${encodeURIComponent(certId)}`;
-                window.open(linkedInUrl, '_blank');
-            }
-
-            async function downloadCertificate() {
-                const certificateElement = document.getElementById('certificate');
-                const studentName = dom.certStudentName.textContent.trim().replace(/ /g, '_');
-                try {
-                    const canvas = await html2canvas(certificateElement, { scale: 3, useCORS: true });
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width, canvas.height] });
-                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-                    pdf.save(`Certificado_Aulagenia_${studentName}.pdf`);
-                } catch (error) {
-                    console.error("Error al generar PDF:", error);
-                    showStatus("Error al descargar PDF.", '#ef4444');
-                }
-            }
-
-            function generateUniqueCode() {
-                const timestamp = Date.now().toString().slice(-8);
-                const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
-                return `AG-${timestamp}-${randomPart}`;
-            }
-
-            function formatSpanishDate(date) {
-                return date.toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' });
-            }
-
-            function showStatus(message, color, duration = 0) {
-                dom.statusMessage.textContent = message;
-                dom.statusMessage.style.color = color;
-                if(duration > 0) {
-                    setTimeout(() => { dom.statusMessage.textContent = ''; }, duration);
-                }
-            }
-
-            async function handleVerifyClick() {
-                const codeToVerify = dom.verifyCodeInput.value.trim();
-                if (!codeToVerify) {
-                    displayVerificationResult("Por favor, ingresa un código.", "orange");
-                    return;
-                }
-                displayVerificationResult("Buscando...", "blue");
-                try {
-                    const docRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(codeToVerify);
-                    const docSnap = await docRef.get();
-                    if (docSnap.exists) {
-                        const data = docSnap.data();
-                        const resultHtml = `<h4 class="font-bold text-green-700">✅ Certificado Válido</h4><p class="mt-2"><strong>Alumno:</strong> ${data.studentName}</p><p><strong>Programa:</strong> ${data.programName}</p><p><strong>Fecha:</strong> ${data.completionDate}</p>`;
-                        displayVerificationResult(resultHtml, "green");
-                    } else {
-                        displayVerificationResult(`<h4 class="font-bold text-red-700">❌ Certificado No Encontrado</h4><p>El código no es válido o no ha sido guardado.</p>`, "red");
-                    }
-                } catch (error) {
-                    displayVerificationResult("Ocurrió un error durante la verificación.", "red");
-                }
-            }
-
-            function displayVerificationResult(htmlContent, state) {
-                dom.verificationResult.innerHTML = htmlContent;
-                dom.verificationResult.classList.remove('hidden');
-                const colors = { green: '#16a34a', red: '#ef4444', orange: '#f59e0b', blue: '#3b82f6' };
-                const bgColors = { green: '#f0fdf4', red: '#fef2f2', orange: '#fffbeb', blue: '#eff6ff' };
-                dom.verificationResult.style.borderColor = colors[state] || '#d1d5db';
-                dom.verificationResult.style.backgroundColor = bgColors[state] || '#f9fafb';
-            }
-
-            dom.downloadButton.addEventListener('click', downloadCertificate);
-            dom.linkedinButton.addEventListener('click', handleAddToLinkedIn);
-            dom.verifyButton.addEventListener('click', handleVerifyClick);
-        });
-    </script>
+          loadCourseProgressFromFirestore(user.uid);
+        } else {
+          window.location.href = 'acceso.html';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
