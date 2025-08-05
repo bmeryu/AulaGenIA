@@ -1,354 +1,520 @@
 <!DOCTYPE html>
-<!-- 
-  CAMPUS DASHBOARD · AULA GENIA v3.0 (Synced Course Structure)
-  -------------------------------------------------------------------
-  Esta versión sincroniza la estructura de la malla curricular con
-  la página del curso para asegurar un cálculo de progreso consistente.
-  -------------------------------------------------------------------
--->
-<html lang="es-CL" class="scroll-smooth">
+<html lang="es-CL">
 <head>
-  <meta charset="UTF-8" />
-  <title>Campus Virtual – Aula GenIA (Corregido)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
-  <link rel="canonical" href="https://aulagenia.cl/campus.html">
-  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
-
-  <style>
-    :root {
-      --brand-teal: #14b8a6;
-      --brand-green: #22c55e;
-    }
-    html { font-family: 'Poppins', sans-serif; }
-    body { background-color: #f8fafc; }
-    .card-hover {
-      @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
-    }
-    #profile-modal { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
-    label span.required { color: #ef4444; }
-  </style>
+    <meta charset="UTF-8" />
+    <title>Lección del Curso - Aula GenIA (Corregido)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
+    <link rel="canonical" href="https://aulagenia.cl/campus-curso-ia.html">
+    <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
+    <style>
+        :root { --brand-teal: #14b8a6; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        #profile-modal, .toast-notification, #completion-modal { transition: all 0.3s ease-in-out; }
+        label span.required { color: #ef4444; }
+        .tab-button.active { color: var(--brand-teal); border-bottom-color: var(--brand-teal); }
+        .toast-notification { position: fixed; top: 20px; right: 20px; transform: translateX(120%); z-index: 1000; }
+        .toast-notification.show { transform: translateX(0); }
+        #completion-modal.show > div { transform: scale(1); opacity: 1; }
+    </style>
 </head>
 <body class="text-gray-800">
 
-  <header class="bg-white shadow-sm sticky top-0 z-30">
-    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" class="flex items-center gap-2" aria-label="Ir al inicio de Aula GenIA">
-        <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-10 w-auto" />
-      </a>
-      <div id="user-profile" class="hidden sm:flex items-center gap-3 relative">
-        <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[10ch]"></span>
-        <button id="avatar-button" aria-label="Abrir menú de perfil">
-            <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer hover:opacity-90 transition-opacity" />
-        </button>
-        <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition-colors">Cerrar sesión</button>
-      </div>
-    </nav>
-  </header>
-
-  <main class="container mx-auto px-6 py-12 max-w-7xl">
-    <section class="mb-12">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Aprendiz</span>!</h1>
-      <p class="text-lg text-gray-600 mt-2">Sigamos creando cosas increíbles con&nbsp;IA ✨</p>
-    </section>
-
-    <section aria-labelledby="courses-heading">
-      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
-      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="geniaweek">
-          <div class="p-6 flex-grow">
-            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">Domina la IA Aplicada</h3>
-            <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
-            <div class="mb-2">
-              <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
-                <span>Progreso</span>
-                <span class="percent">0%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="fill h-2.5 rounded-full transition-all duration-500" style="background-color: var(--brand-teal); width: 0%"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer bg-gray-50 px-6 py-4">
-            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
-              Continuar aprendiendo
-            </a>
-          </div>
-        </article>
-
-        <article class="bg-white rounded-2xl shadow overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center p-8 text-center">
-          <div>
-            <h3 class="text-xl font-bold text-gray-500 mb-2">IA para Marketing Digital</h3>
-            <p class="text-gray-400 text-sm mb-4">Aprende a crear campañas y contenido que convierten usando IA.</p>
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-100 px-3 py-1.5 rounded-full">Próximamente</span>
-          </div>
-        </article>
-
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden">
-          <div class="p-6">
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">Recursos</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">Comunidad &amp; Plantillas</h3>
-            <p class="text-gray-600 text-sm mb-6">Únete a nuestro Discord exclusivo y descarga más de 20 plantillas de prompts.</p>
-          </div>
-          <div class="bg-gray-50 px-6 py-4">
-            <a href="#" class="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Acceder a recursos</a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-  </main>
-
-  <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
-    © 2025 Aula GenIA · Todos los derechos reservados.
-  </footer>
-
-  <!-- INICIO: MODAL DE EDICIÓN DE PERFIL -->
-  <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-40"></div>
-  <div id="profile-modal" class="fixed top-20 right-6 bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full z-50 opacity-0 transform scale-95 pointer-events-none">
-      <h3 class="text-lg font-bold text-gray-900 mb-4">Editar Perfil</h3>
-      <form id="profile-form" class="max-h-[70vh] overflow-y-auto pr-2">
-          <div class="space-y-4">
-              <div>
-                  <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
-                  <input type="text" id="profile-name-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Tu nombre y apellido" required>
-                  <p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p>
-              </div>
-              <div>
-                  <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
-                  <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
-              </div>
-              <div>
-                  <label for="profile-dob-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
-                  <input type="date" id="profile-dob-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
-              </div>
-              <div>
-                  <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
-                  <select id="profile-gender-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
-                      <option value="">Prefiero no decir</option>
-                      <option value="masculino">Masculino</option>
-                      <option value="femenino">Femenino</option>
-                      <option value="otro">Otro</option>
-                  </select>
-              </div>
-              <div>
-                  <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
-                  <select id="profile-country-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" required>
-                      <option value="">Selecciona tu país</option>
-                      <option value="CL">Chile</option>
-                      <option value="AR">Argentina</option>
-                      <option value="PE">Perú</option>
-                      <option value="CO">Colombia</option>
-                      <option value="MX">México</option>
-                      <option value="ES">España</option>
-                      <option value="US">Estados Unidos</option>
-                      <option value="OT">Otro</option>
-                  </select>
-              </div>
-          </div>
-          <div class="mt-6 flex justify-end gap-3">
-              <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
-              <button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600">Guardar</button>
-          </div>
-      </form>
-  </div>
-  <!-- FIN: MODAL DE EDICIÓN DE PERFIL -->
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
-
-  <script defer>
-    document.addEventListener('DOMContentLoaded', () => {
-      const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
-      
-      try {
-        firebase.initializeApp(firebaseConfig);
-      } catch(e) {
-        console.warn("Firebase ya fue inicializado.");
-      }
-      
-      const auth = firebase.auth();
-      const db = firebase.firestore();
-      
-      // ===================================================================
-      // INICIO: CORRECCIÓN CLAVE - ESTRUCTURA DE CURSO SINCRONIZADA
-      // ===================================================================
-      const ALL_COURSES_DATA = {
-          'geniaweek': {
-              title: 'Domina la IA Aplicada',
-              modules: [
-                  { title: 'Módulo 0: Onboarding', lessons: [{ id: '0-1' }] },
-                  { title: 'Módulo 1: ¿Qué es la IA?', lessons: [{ id: '1-1' }, { id: 'q-1' }] }
-              ]
-          }
-      };
-      // ===================================================================
-      // FIN: CORRECCIÓN CLAVE
-      // ===================================================================
-
-      function getTotalLessons(courseId) {
-          const course = ALL_COURSES_DATA[courseId];
-          if (!course) return 0;
-          return course.modules.reduce((total, module) => total + module.lessons.length, 0);
-      }
-
-      function updateCardUI(card, progress) {
-        const tagEl = card.querySelector('.tag');
-        const percentEl = card.querySelector('.percent');
-        const fillEl = card.querySelector('.fill');
-        const footerEl = card.querySelector('.card-footer');
-
-        if (!percentEl || !fillEl || !tagEl) return;
-
-        percentEl.textContent = `${progress}%`;
-        fillEl.style.width = `${progress}%`;
-
-        if (progress >= 100) {
-          tagEl.textContent = 'Completado';
-          tagEl.classList.remove('bg-teal-100', 'text-teal-600');
-          tagEl.classList.add('bg-green-100', 'text-green-600');
-          fillEl.style.backgroundColor = 'var(--brand-green)';
-          
-          footerEl.innerHTML = `
-            <div class="space-y-3">
-              <a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
-                <i data-lucide="award" class="h-5 w-5"></i>
-                <span>Ver Certificado</span>
-              </a>
-              <a href="campus-curso-ia.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">
-                Repasar Curso
-              </a>
-              <div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">
-                ¡Cupón del 20% DESBLOQUEADO! <br> Usa el código: <strong>NUEVOCURSO20</strong>
-              </div>
-            </div>
-          `;
-        } else if (progress > 0) {
-            tagEl.textContent = 'En progreso';
-            tagEl.classList.remove('bg-green-100', 'text-green-600');
-            tagEl.classList.add('bg-teal-100', 'text-teal-600');
-            fillEl.style.backgroundColor = 'var(--brand-teal)';
-            footerEl.innerHTML = `
-                <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
-                Continuar aprendiendo
+    <div id="app" class="flex flex-col h-screen">
+        <header class="bg-white shadow-sm z-20">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="campus.html" aria-label="Volver al Campus de Aula GenIA">
+                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-10 w-auto">
                 </a>
-            `;
-        }
-        lucide.createIcons();
-      }
+                <div id="user-profile-container" class="flex items-center gap-4 relative" style="display: none;">
+                    <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
+                    <button id="avatar-button" aria-label="Abrir menú de perfil">
+                        <img id="user-avatar" src="" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer hover:opacity-90 transition-opacity">
+                    </button>
+                    <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
+                </div>
+            </nav>
+        </header>
 
-      async function loadCourseProgressFromFirestore(userId) {
-        const progressRef = db.collection('userProgress').doc(userId);
-        try {
-          const doc = await progressRef.get();
-          const progressData = doc.exists ? doc.data() : {};
-          
-          document.querySelectorAll('[data-course-id]').forEach(card => {
-            const courseId = card.dataset.courseId;
-            const courseProgressData = progressData[courseId] || { completedLessons: [] };
+        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
+                <div class="p-6">
+                    <a href="campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
+                    <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                    </div>
+                </div>
+                <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
+            </aside>
+
+            <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
+                <div class="p-6 md:p-8 lg:p-10">
+                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-4">Cargando...</h2>
+                    <div id="lesson-material-container" class="mb-6"></div>
+                    <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
+                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
+                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- INICIO: MODAL DE EDICIÓN DE PERFIL -->
+    <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-40"></div>
+    <div id="profile-modal" class="fixed top-20 right-6 bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full z-50 opacity-0 transform scale-95 pointer-events-none">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Editar Perfil</h3>
+        <form id="profile-form" class="max-h-[70vh] overflow-y-auto pr-2">
+            <div class="space-y-4">
+                <div>
+                    <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
+                    <input type="text" id="profile-name-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Tu nombre y apellido" required>
+                    <p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p>
+                </div>
+                <div>
+                    <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                    <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
+                </div>
+                <div>
+                    <label for="profile-dob-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
+                    <input type="date" id="profile-dob-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                </div>
+                <div>
+                    <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
+                    <select id="profile-gender-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                        <option value="">Prefiero no decir</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
+                    <select id="profile-country-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" required>
+                        <option value="">Selecciona tu país</option>
+                        <option value="CL">Chile</option>
+                        <option value="AR">Argentina</option>
+                        <option value="PE">Perú</option>
+                        <option value="CO">Colombia</option>
+                        <option value="MX">México</option>
+                        <option value="ES">España</option>
+                        <option value="US">Estados Unidos</option>
+                        <option value="OT">Otro</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-3">
+                <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
+                <button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <!-- FIN: MODAL DE EDICIÓN DE PERFIL -->
+    
+    <!-- INICIO: NOTIFICACIONES Y MODAL DE FINALIZACIÓN -->
+    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div>
+    <div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
+    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
+    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "Domina la IA Aplicada".</p><div class="text-left bg-slate-100 p-4 rounded-lg mt-6"><h3 class="font-semibold flex items-center gap-2"><i data-lucide="award"></i>Tu Certificado</h3><p class="text-sm text-gray-600 mt-1">Ya puedes generar tu certificado desde el Campus. ¡Felicidades por tu logro!</p></div><div class="text-left bg-teal-50 border border-teal-200 p-4 rounded-lg mt-4"><h3 class="font-semibold flex items-center gap-2 text-teal-800"><i data-lucide="gift"></i>Tu Recompensa Exclusiva</h3><p class="text-sm text-teal-700 mt-1">Como premio a tu dedicación, hemos desbloqueado un <strong>cupón del 20% de descuento</strong> para tu próximo curso.</p></div><button id="close-modal-btn" class="mt-8 w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button></div></div>
+    <!-- FIN: NOTIFICACIONES Y MODAL DE FINALIZACIÓN -->
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
             
-            const totalLessons = getTotalLessons(courseId);
-            const completedCount = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons.length : 0;
-            const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
 
-            updateCardUI(card, progressValue);
-          });
-        } catch (error) {
-          console.error("Error al obtener progreso desde Firestore:", error);
-        }
-      }
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            
+            const ALL_COURSES_DATA = { 'geniaweek': { title: 'Domina la IA Aplicada', modules: [ { title: 'Módulo 0: Onboarding', badge: 'Iniciado en IA', lessons: [ { id: '0-1', title: 'Tu primer día con IA', type: 'video' } ] }, { title: 'Módulo 1: ¿Qué es la IA?', badge: 'Explorador Conceptual', lessons: [ { id: '1-1', title: 'Casos de éxito reales', type: 'video' }, { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }] } ] } ] } };
+            const courseId = 'geniaweek';
+            const courseData = ALL_COURSES_DATA[courseId];
+            const allLessons = courseData.modules.flatMap(m => m.lessons);
+            let currentUser = null;
+            let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id, unlockedBadges: [] };
 
-      // LÓGICA DEL MODAL DE PERFIL (sin cambios)
-      const profileModalOverlay = document.getElementById('profile-modal-overlay');
-      const profileModal = document.getElementById('profile-modal');
-      const avatarButton = document.getElementById('avatar-button');
-      const cancelProfileBtn = document.getElementById('cancel-profile-btn');
-      const profileForm = document.getElementById('profile-form');
-      const profileNameInput = document.getElementById('profile-name-input');
-      const profileEmailInput = document.getElementById('profile-email-input');
-      const profileDobInput = document.getElementById('profile-dob-input');
-      const profileGenderSelect = document.getElementById('profile-gender-select');
-      const profileCountrySelect = document.getElementById('profile-country-select');
+            const dom = {
+                userName: document.getElementById('user-name'),
+                userAvatar: document.getElementById('user-avatar'),
+                userProfile: document.getElementById('user-profile-container'),
+                logoutButton: document.getElementById('logout-button'),
+                courseTitle: document.getElementById('course-title'),
+                progressBar: document.getElementById('progress-bar'),
+                progressText: document.getElementById('progress-text'),
+                modulesContainer: document.getElementById('modules-container'),
+                lessonTitle: document.getElementById('lesson-title'),
+                lessonMaterialContainer: document.getElementById('lesson-material-container'),
+                prevBtn: document.getElementById('prev-lesson-btn'),
+                mainActionBtn: document.getElementById('main-action-btn'),
+                toast: document.getElementById('toast-notification'),
+                toastMessage: document.getElementById('toast-message'),
+                badgeToast: document.getElementById('badge-toast'),
+                badgeMessage: document.getElementById('badge-message'),
+                completionModalOverlay: document.getElementById('completion-modal-overlay'),
+                completionModal: document.getElementById('completion-modal'),
+                modalUserName: document.getElementById('modal-user-name'),
+                closeModalBtn: document.getElementById('close-modal-btn')
+            };
 
-      async function openProfileModal() {
-          profileNameInput.value = auth.currentUser.displayName || '';
-          profileEmailInput.value = auth.currentUser.email || '';
-          const userDocRef = db.collection('users').doc(auth.currentUser.uid);
-          try {
-              const doc = await userDocRef.get();
-              if (doc.exists) {
-                  const data = doc.data();
-                  profileDobInput.value = data.dob || '';
-                  profileGenderSelect.value = data.gender || '';
-                  profileCountrySelect.value = data.country || '';
-              }
-          } catch (error) { console.error("Error al cargar datos del perfil:", error); }
-          profileModalOverlay.classList.remove('hidden');
-          profileModal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-      }
+            function getLessonInfo(lessonId) {
+                for (let i = 0; i < courseData.modules.length; i++) {
+                    const module = courseData.modules[i];
+                    const lessonIndex = module.lessons.findIndex(l => l.id === lessonId);
+                    if (lessonIndex !== -1) {
+                        return { lesson: module.lessons[lessonIndex], moduleIndex: i, module: module };
+                    }
+                }
+                return null;
+            }
 
-      function closeProfileModal() {
-          profileModalOverlay.classList.add('hidden');
-          profileModal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-      }
+            function refreshUI() {
+                dom.courseTitle.textContent = courseData.title;
+                renderSidebar();
+                const lessonInfo = getLessonInfo(userProgress.currentLessonId);
+                if (lessonInfo) {
+                    dom.lessonTitle.textContent = lessonInfo.lesson.title;
+                    renderLessonContent(lessonInfo.lesson);
+                    dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.lesson.id) === 0;
+                }
+                updateOverallProgress();
+                updateMainActionButton();
+                lucide.createIcons();
+            }
 
-      avatarButton.addEventListener('click', openProfileModal);
-      cancelProfileBtn.addEventListener('click', closeProfileModal);
-      profileModalOverlay.addEventListener('click', closeProfileModal);
+            function renderSidebar() {
+                const isCourseComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length;
+                let isPreviousModuleComplete = true; 
 
-      profileForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const newName = profileNameInput.value.trim();
-          const userDocRef = db.collection('users').doc(auth.currentUser.uid);
-          try {
-              if (newName && newName !== auth.currentUser.displayName) {
-                  await auth.currentUser.updateProfile({ displayName: newName });
-              }
-              await userDocRef.set({
-                  displayName: newName,
-                  email: auth.currentUser.email,
-                  dob: profileDobInput.value,
-                  gender: profileGenderSelect.value,
-                  country: profileCountrySelect.value
-              }, { merge: true });
-              document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
-              alert('¡Tu perfil ha sido actualizado!');
-              closeProfileModal();
-          } catch (error) {
-              alert('Hubo un error al guardar tu perfil. Inténtalo de nuevo.');
-          }
-      });
+                dom.modulesContainer.innerHTML = courseData.modules.map((module) => {
+                    const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete;
+                    const lessonsHtml = module.lessons.map(lesson => {
+                        const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const isActive = userProgress.currentLessonId === lesson.id;
+                        let linkClasses = 'text-gray-600 hover:bg-slate-100';
+                        let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
+                        let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        
+                        if (isModuleLocked) {
+                            linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
+                            statusIcon = 'lock';
+                            iconColor = 'text-slate-400';
+                        } else if (isActive) {
+                            linkClasses = 'bg-teal-50 text-teal-700 font-semibold';
+                            statusIcon = 'play-circle';
+                            iconColor = '';
+                        }
+                        
+                        const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                    }).join('');
+                    
+                    const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
+                    const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down';
+                    
+                    if (!isCourseComplete) {
+                        const moduleLessonIds = module.lessons.map(l => l.id);
+                        isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                    }
 
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          const name = user.displayName || 'Alumno';
-          document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
-          document.getElementById('user-avatar').src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
-          document.getElementById('user-profile').classList.remove('hidden');
-          
-          document.getElementById('logout-btn').addEventListener('click', e => {
-            e.preventDefault();
-            auth.signOut().then(() => window.location.href = 'index.html');
-          });
+                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
+                }).join('');
+                addSidebarListeners();
+            }
 
-          loadCourseProgressFromFirestore(user.uid);
-        } else {
-          window.location.href = 'acceso.html';
-        }
-      });
-    });
-  </script>
+            function renderLessonContent(lesson) {
+                let materialHtml = '';
+                switch(lesson.type) {
+                    case 'video': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`; break;
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break;
+                    case 'quiz':
+                        const question = lesson.questions[0];
+                        const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
+                        materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-900">Verificar Respuesta</button></div>`;
+                        break;
+                }
+                dom.lessonMaterialContainer.innerHTML = materialHtml;
+                if (lesson.type === 'quiz') {
+                    dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => {
+                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                        opt.classList.add('selected');
+                    }));
+                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson));
+                }
+            }
+            
+            function checkQuizAnswer(lesson) {
+                const selectedOption = dom.lessonMaterialContainer.querySelector('.quiz-option.selected');
+                if (!selectedOption) { alert('Por favor, selecciona una respuesta.'); return; }
+                const selectedIndex = parseInt(selectedOption.dataset.index);
+                const correctIndex = lesson.questions[0].correctAnswer;
+                dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+                if (selectedIndex === correctIndex) {
+                    selectedOption.classList.add('correct');
+                    alert('¡Respuesta Correcta!');
+                    dom.mainActionBtn.disabled = false;
+                } else {
+                    selectedOption.classList.add('incorrect');
+                    dom.lessonMaterialContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
+                    alert('Respuesta incorrecta. ¡Sigue intentando!');
+                    setTimeout(() => {
+                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('incorrect', 'correct', 'selected');
+                            opt.style.pointerEvents = 'auto';
+                        });
+                    }, 2000);
+                }
+            }
+
+            function updateMainActionButton() {
+                const completedCount = Array.isArray(userProgress.completedLessons) ? userProgress.completedLessons.length : 0;
+                const totalLessons = allLessons.length;
+                const isCourseComplete = totalLessons > 0 && completedCount >= totalLessons;
+
+                if (isCourseComplete) {
+                    dom.mainActionBtn.textContent = "Curso Completado";
+                    dom.mainActionBtn.disabled = true;
+                    dom.mainActionBtn.classList.add('bg-green-500', 'cursor-not-allowed');
+                    dom.mainActionBtn.classList.remove('bg-teal-500', 'hover:bg-teal-600');
+                    return;
+                }
+
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1;
+                
+                dom.mainActionBtn.disabled = false;
+                
+                if (lesson.type === 'quiz' && !isCompleted) {
+                    dom.mainActionBtn.disabled = true;
+                }
+                
+                dom.mainActionBtn.textContent = isCompleted ? (isLastLesson ? 'Finalizar Curso' : 'Siguiente Lección') : 'Marcar como completada';
+                
+                if (isLastLesson && !isCompleted) {
+                    const allOthersCompleted = allLessons.filter(l => l.id !== lesson.id).every(l => userProgress.completedLessons.includes(l.id));
+                    if (!allOthersCompleted) dom.mainActionBtn.disabled = true;
+                }
+            }
+
+            function updateOverallProgress() {
+                const completedCount = Array.isArray(userProgress.completedLessons) ? userProgress.completedLessons.length : 0;
+                const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0;
+                dom.progressBar.style.width = `${percentage}%`;
+                dom.progressText.textContent = `${percentage}%`;
+            }
+
+            async function navigateToLesson(lessonId) {
+                const isCourseComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length;
+                
+                if (!isCourseComplete) {
+                    const targetLessonInfo = getLessonInfo(lessonId);
+                    if (!targetLessonInfo) return;
+                    const targetModuleIndex = targetLessonInfo.moduleIndex;
+                    if (targetModuleIndex > 0) {
+                        const previousModule = courseData.modules[targetModuleIndex - 1];
+                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
+                        const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                        if (!isPreviousModuleCompleted) {
+                            alert(`Debes completar el "${previousModule.title}" para acceder a este módulo.`);
+                            return;
+                        }
+                    }
+                }
+                userProgress = { ...userProgress, currentLessonId: lessonId };
+                await saveProgress();
+                refreshUI();
+            }
+
+            async function saveProgress() {
+                if (!currentUser) return;
+                try {
+                    const progressRef = db.collection('userProgress').doc(currentUser.uid);
+                    await progressRef.set({ [courseId]: userProgress }, { merge: true });
+                } catch (error) { console.error("Error al guardar el progreso:", error); }
+            }
+
+            async function loadProgressAndInitialize() {
+                const docRef = db.collection('userProgress').doc(currentUser.uid);
+                try {
+                    const doc = await docRef.get();
+                    if (doc.exists) {
+                        const courseProgress = doc.data()[courseId];
+                        if (courseProgress) {
+                            userProgress = {
+                                completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [],
+                                currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id,
+                                unlockedBadges: Array.isArray(courseProgress.unlockedBadges) ? courseProgress.unlockedBadges : []
+                            };
+                        }
+                    }
+                } catch (error) { console.error("Error al cargar el progreso.", error); }
+                refreshUI();
+            }
+
+            function addSidebarListeners() {
+                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); }));
+                dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => {
+                    const icon = header.querySelector('i');
+                    if (icon && icon.getAttribute('data-lucide') !== 'lock') {
+                        header.addEventListener('click', () => { 
+                            const content = header.nextElementSibling;
+                            content.classList.toggle('open'); 
+                            icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; 
+                        });
+                    }
+                });
+            }
+
+            dom.mainActionBtn.addEventListener('click', async () => {
+                const lessonId = userProgress.currentLessonId;
+                const isCompleted = userProgress.completedLessons.includes(lessonId);
+                if (isCompleted) {
+                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                    if (currentIndex < allLessons.length - 1) {
+                        navigateToLesson(allLessons[currentIndex + 1].id);
+                    } else {
+                        showCompletionModal();
+                    }
+                } else {
+                    userProgress = { ...userProgress, completedLessons: [...userProgress.completedLessons, lessonId] };
+                    await saveProgress();
+                    checkForBadgeUnlock(lessonId);
+                    refreshUI();
+                }
+            });
+
+            dom.prevBtn.addEventListener('click', () => {
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
+                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id);
+            });
+
+            // LÓGICA DEL MODAL DE PERFIL (sin cambios)
+            const profileModalOverlay = document.getElementById('profile-modal-overlay');
+            const profileModal = document.getElementById('profile-modal');
+            const avatarButton = document.getElementById('avatar-button');
+            const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+            const profileForm = document.getElementById('profile-form');
+            const profileNameInput = document.getElementById('profile-name-input');
+            const profileEmailInput = document.getElementById('profile-email-input');
+            const profileDobInput = document.getElementById('profile-dob-input');
+            const profileGenderSelect = document.getElementById('profile-gender-select');
+            const profileCountrySelect = document.getElementById('profile-country-select');
+
+            async function openProfileModal() {
+                profileNameInput.value = auth.currentUser.displayName || '';
+                profileEmailInput.value = auth.currentUser.email || '';
+                const userDocRef = db.collection('users').doc(auth.currentUser.uid);
+                try {
+                    const doc = await userDocRef.get();
+                    if (doc.exists) {
+                        const data = doc.data();
+                        profileDobInput.value = data.dob || '';
+                        profileGenderSelect.value = data.gender || '';
+                        profileCountrySelect.value = data.country || '';
+                    }
+                } catch (error) { console.error("Error al cargar datos del perfil:", error); }
+                profileModalOverlay.classList.remove('hidden');
+                profileModal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+            }
+
+            function closeProfileModal() {
+                profileModalOverlay.classList.add('hidden');
+                profileModal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+            }
+
+            avatarButton.addEventListener('click', openProfileModal);
+            cancelProfileBtn.addEventListener('click', closeProfileModal);
+            profileModalOverlay.addEventListener('click', closeProfileModal);
+
+            profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const newName = profileNameInput.value.trim();
+                const userDocRef = db.collection('users').doc(auth.currentUser.uid);
+                try {
+                    if (newName && newName !== auth.currentUser.displayName) {
+                        await auth.currentUser.updateProfile({ displayName: newName });
+                    }
+                    await userDocRef.set({
+                        displayName: newName,
+                        email: auth.currentUser.email,
+                        dob: profileDobInput.value,
+                        gender: profileGenderSelect.value,
+                        country: profileCountrySelect.value
+                    }, { merge: true });
+                    dom.userName.textContent = newName;
+                    alert('¡Tu perfil ha sido actualizado!');
+                    closeProfileModal();
+                } catch (error) {
+                    alert('Hubo un error al guardar tu perfil.');
+                }
+            });
+
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
+                    dom.userName.textContent = currentUser.name;
+                    dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
+                    dom.userProfile.style.display = 'flex';
+                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
+                    loadProgressAndInitialize();
+                } else {
+                    window.location.href = 'acceso.html';
+                }
+            });
+
+            function showToast(message, type = 'generic') {
+                const toastEl = type === 'badge' ? dom.badgeToast : dom.toast;
+                const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage;
+                msgEl.textContent = message;
+                toastEl.classList.add('show');
+                setTimeout(() => toastEl.classList.remove('show'), 4000);
+            }
+
+            function checkForBadgeUnlock(completedLessonId) {
+                const lessonInfo = getLessonInfo(completedLessonId);
+                if (!lessonInfo || !lessonInfo.module.badge) return;
+
+                const lastLessonOfModule = lessonInfo.module.lessons[lessonInfo.module.lessons.length - 1].id;
+                if (completedLessonId !== lastLessonOfModule) return;
+
+                const moduleLessonIds = lessonInfo.module.lessons.map(l => l.id);
+                if (moduleLessonIds.every(id => userProgress.completedLessons.includes(id))) {
+                    if (!userProgress.unlockedBadges.includes(lessonInfo.module.badge)) {
+                        userProgress.unlockedBadges.push(lessonInfo.module.badge);
+                        saveProgress();
+                        showToast(`Has ganado la insignia: "${lessonInfo.module.badge}"`, 'badge');
+                    }
+                }
+            }
+            
+            function showCompletionModal() {
+                dom.modalUserName.textContent = currentUser.name;
+                dom.completionModalOverlay.classList.remove('hidden');
+                dom.completionModal.classList.remove('hidden');
+                setTimeout(() => {
+                    dom.completionModalOverlay.classList.add('opacity-100');
+                    dom.completionModal.classList.add('show');
+                }, 10);
+            }
+
+            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'campus.html');
+            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'campus.html');
+        });
+    </script>
 </body>
 </html>
