@@ -309,11 +309,6 @@
                 dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => header.addEventListener('click', () => { const content = header.nextElementSibling; content.classList.toggle('open'); header.querySelector('i').style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; }));
             }
 
-            // ===================================================================
-            // INICIO: CORRECCIÓN CLAVE - LÓGICA DEL BOTÓN SEPARADA
-            // Se reestructura el evento con un if/else para separar las dos
-            // acciones: 1. Marcar como completado. 2. Navegar.
-            // ===================================================================
             dom.mainActionBtn.addEventListener('click', async () => {
                 console.log('Botón de acción principal presionado.');
                 const lessonId = userProgress.currentLessonId;
@@ -336,20 +331,30 @@
                         }
                     }
                 } else {
-                    // ACCIÓN 2: La lección NO ESTÁ COMPLETA, así que la marcamos.
+                    // ===================================================================
+                    // INICIO: CORRECCIÓN CLAVE - ACTUALIZACIÓN DE ESTADO INMUTABLE
+                    // En lugar de mutar el array con .push(), creamos uno nuevo.
+                    // Esto asegura que la UI reaccione al cambio de estado.
+                    // ===================================================================
                     console.log("Acción: Marcar lección como completada.");
-                    userProgress.completedLessons.push(lessonId);
+                    
+                    const newCompletedLessons = [...userProgress.completedLessons, lessonId];
+                    userProgress = {
+                        ...userProgress,
+                        completedLessons: newCompletedLessons
+                    };
+
                     await saveProgress();
                     checkForBadgeUnlock(lessonId);
                     showToast('¡Lección completada!');
                     
                     // Simplemente actualizamos la UI. El usuario deberá hacer clic de nuevo para navegar.
                     refreshUI();
+                    // ===================================================================
+                    // FIN: CORRECCIÓN CLAVE
+                    // ===================================================================
                 }
             });
-            // ===================================================================
-            // FIN: CORRECCIÓN CLAVE
-            // ===================================================================
 
             dom.prevBtn.addEventListener('click', () => {
                 const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
