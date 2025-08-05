@@ -17,13 +17,16 @@
     <style>
         :root { --brand-teal: #14b8a6; }
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
-        #profile-modal { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+        #profile-modal, .toast-notification, #completion-modal { transition: all 0.3s ease-in-out; }
         label span.required { color: #ef4444; }
         .tab-button.active { color: var(--brand-teal); border-bottom-color: var(--brand-teal); }
         .quiz-option { transition: all 0.2s ease-in-out; }
         .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
         .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
         .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
+        .toast-notification { position: fixed; top: 20px; right: 20px; transform: translateX(120%); z-index: 1000; }
+        .toast-notification.show { transform: translateX(0); }
+        #completion-modal.show > div { transform: scale(1); opacity: 1; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -133,6 +136,14 @@
     </div>
     <!-- FIN: MODAL DE EDICIÓN DE PERFIL -->
 
+    <!-- INICIO: NOTIFICACIONES Y MODAL DE FINALIZACIÓN -->
+    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div>
+    <div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
+    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
+    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "Domina la IA Aplicada".</p><div class="text-left bg-slate-100 p-4 rounded-lg mt-6"><h3 class="font-semibold flex items-center gap-2"><i data-lucide="award"></i>Tu Certificado</h3><p class="text-sm text-gray-600 mt-1">Ya puedes generar tu certificado desde el Campus. ¡Felicidades por tu logro!</p></div><div class="text-left bg-teal-50 border border-teal-200 p-4 rounded-lg mt-4"><h3 class="font-semibold flex items-center gap-2 text-teal-800"><i data-lucide="gift"></i>Tu Recompensa Exclusiva</h3><p class="text-sm text-teal-700 mt-1">Como premio a tu dedicación, hemos desbloqueado un <strong>cupón del 20% de descuento</strong> para tu próximo curso.</p></div><button id="close-modal-btn" class="mt-8 w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button></div></div>
+    <!-- FIN: NOTIFICACIONES Y MODAL DE FINALIZACIÓN -->
+
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
@@ -147,85 +158,23 @@
             const auth = firebase.auth();
             const db = firebase.firestore();
             
-            // ===================================================================
-            // INICIO: CORRECCIÓN CLAVE - DATOS DE QUIZ RESTAURADOS
-            // ===================================================================
             const ALL_COURSES_DATA = {
                 'geniaweek': {
                     title: 'Domina la IA Aplicada',
                     modules: [
-                        {
-                            title: 'Módulo 0: Onboarding',
-                            lessons: [
-                                { id: '0-1', title: 'Tu primer día con IA', type: 'video', desc: 'Accede al campus, activa herramientas y haz tus primeros prompts para obtener resultados sin bloqueos técnicos.', res: '<li>Checklist de Activación</li>' }
-                            ]
-                        },
-                        {
-                            title: 'Módulo 1: ¿Qué es la IA?',
-                            lessons: [
-                                { id: '1-1', title: 'Casos de éxito reales', type: 'video', desc: 'Entiende la IA con casos reales que te inspiran y te ayudan a comprender el potencial real de la IA.', res: '<li>PDF con Casos de Éxito</li>' },
-                                { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Evalúa tu comprensión con 5 preguntas clave.', questions: [{ text: '¿Cuál es un ejemplo de IA aplicada en la vida real?', options: ['Recomendaciones de Netflix', 'Una calculadora de bolsillo', 'Un libro de papel'], correctAnswer: 0 }] }
-                            ]
-                        },
-                        {
-                            title: 'Módulo 2: Prompts Efectivos',
-                            lessons: [
-                                { id: '2-1', title: '¿Cómo hago que la IA haga lo que necesito?', type: 'video', desc: 'Aprende y practica estructuras de prompts efectivos para dominar la base y las adaptaciones.', res: '<li>PDF con Estructuras de Prompts</li>' },
-                                { id: 'q-2', title: 'Mini Reto: Módulo 2', type: 'resource', desc: 'Sube un archivo con tu solución al reto práctico.', res: '<li>Campo para subir archivo</li>' }
-                            ]
-                        },
-                        {
-                            title: 'Módulo 3: Creación de Contenido',
-                            lessons: [
-                                { id: '3-1', title: 'Crea contenido de impacto con IA', type: 'video', desc: 'Genera contenido completo (redes, mails, web) con IA en minutos.', res: '<li>Plantillas de contenido</li>' },
-                                { id: 'q-3', title: 'Entrega: Módulo 3', type: 'resource', desc: 'Entrega un ejemplo de contenido generado (PDF o link).', res: '<li>Campo para subir archivo o link</li>' }
-                            ]
-                        },
-                        {
-                            title: 'Módulo 4: Marketing y Ventas',
-                            lessons: [
-                                { id: '4-1', title: 'Marketing y ventas persuasivas con IA', type: 'video', desc: 'Usa IA para crear campañas, discursos de venta, y landings para una campaña enfocada en resultados.', res: '<li>PDF de la campaña</li>' },
-                                { id: 'q-4', title: 'Entrega Opcional: Módulo 4', type: 'resource', desc: 'Opcionalmente, entrega tu campaña para recibir feedback.', res: '<li>Campo para subir archivo</li>' }
-                            ]
-                        },
-                        {
-                            title: 'Módulo 5: Productividad',
-                            lessons: [
-                                { id: '5-1', title: 'Multiplica tu productividad con IA', type: 'video', desc: 'Automatiza tareas diarias, agendas, mails y resúmenes para un ahorro real de tiempo y esfuerzo.', res: '<li>Links a herramientas útiles</li>' },
-                                { id: 'q-5', title: 'Quiz: Módulo 5', type: 'quiz', desc: 'Prueba de aplicaciones para validar tu aprendizaje.', questions: [{ text: '¿Qué herramienta de IA ayuda a automatizar agendas?', options: ['Una app de calendario', 'Una IA de gestión de tiempo', 'Un procesador de texto'], correctAnswer: 1 }] }
-                            ]
-                        },
-                        {
-                            title: 'Módulo 6: IA Responsable',
-                            lessons: [
-                                { id: '6-1', title: 'Uso inteligente y seguro de la IA', type: 'video', desc: 'Anticípate a errores, límites éticos y sesgos para un uso ético, seguro y consciente.', res: '<li>PDF descargable sobre IA Responsable</li>' },
-                                { id: 'q-6', title: 'Quiz Reflexivo: Módulo 6', type: 'quiz', desc: 'Un quiz para reflexionar sobre el uso ético de la IA.', questions: [{ text: '¿Es importante considerar los sesgos al usar IA?', options: ['Sí, siempre', 'No, la IA es objetiva'], correctAnswer: 0 }] }
-                            ]
-                        },
-                        {
-                            title: 'Módulo 7: Inspiración',
-                            lessons: [
-                                { id: '7-1', title: '10 casos reales de IA aplicada', type: 'resource', desc: 'Estudia aplicaciones reales de IA de personas comunes para obtener ideas para tu propio uso o negocio.', res: '<li>PDF descargable</li><li>Video resumen</li>' }
-                            ]
-                        },
-                        {
-                            title: 'Módulo 8: Proyecto Final',
-                            lessons: [
-                                { id: '8-1', title: 'Aplica lo aprendido', type: 'resource', desc: 'Aplica todo lo aprendido para tener un producto real y útil hecho con IA.', res: '<li>PDF con la guía del proyecto</li><li>Espacio para subir archivo o link</li>' }
-                            ]
-                        },
-                        {
-                            title: 'Bonus: Actualizaciones 2025',
-                            lessons: [
-                                { id: 'b-1', title: 'Nuevos módulos y herramientas', type: 'video', desc: 'Accede a nuevos módulos y herramientas para mantenerte siempre vigente.', res: '<li>PDFs</li><li>Mail de novedades</li>' }
-                            ]
-                        }
+                        { title: 'Módulo 0: Onboarding', badge: 'Iniciado en IA', lessons: [ { id: '0-1', title: 'Tu primer día con IA', type: 'video', desc: 'Accede al campus, activa herramientas y haz tus primeros prompts.', res: '<li>Checklist</li>' } ] },
+                        { title: 'Módulo 1: ¿Qué es la IA?', badge: 'Explorador Conceptual', lessons: [ { id: '1-1', title: 'Casos de éxito reales', type: 'video', desc: 'Entiende la IA con casos reales que te inspiran.', res: '<li>PDF</li>' }, { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Evalúa tu comprensión.', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }] } ] },
+                        { title: 'Módulo 2: Prompts Efectivos', badge: 'Maestro de Prompts', lessons: [ { id: '2-1', title: '¿Cómo hago que la IA haga lo que necesito?', type: 'video', desc: 'Aprende y practica estructuras de prompts efectivos.', res: '<li>PDF</li>' }, { id: 'q-2', title: 'Mini Reto: Módulo 2', type: 'resource', desc: 'Sube tu solución al reto.', res: '<li>Subir archivo</li>' } ] },
+                        { title: 'Módulo 3: Creación de Contenido', badge: 'Creador de Contenido', lessons: [ { id: '3-1', title: 'Crea contenido de impacto con IA', type: 'video', desc: 'Genera contenido completo (redes, mails, web).', res: '<li>Plantillas</li>' }, { id: 'q-3', title: 'Entrega: Módulo 3', type: 'resource', desc: 'Entrega un ejemplo de contenido.', res: '<li>Subir archivo</li>' } ] },
+                        { title: 'Módulo 4: Marketing y Ventas', badge: 'Estratega de Ventas', lessons: [ { id: '4-1', title: 'Marketing y ventas persuasivas con IA', type: 'video', desc: 'Usa IA para crear campañas, discursos de venta, y landings.', res: '<li>PDF</li>' }, { id: 'q-4', title: 'Entrega Opcional: Módulo 4', type: 'resource', desc: 'Entrega tu campaña para feedback.', res: '<li>Subir archivo</li>' } ] },
+                        { title: 'Módulo 5: Productividad', badge: 'Ninja de la Productividad', lessons: [ { id: '5-1', title: 'Multiplica tu productividad con IA', type: 'video', desc: 'Automatiza tareas diarias, agendas, y resúmenes.', res: '<li>Links</li>' }, { id: 'q-5', title: 'Quiz: Módulo 5', type: 'quiz', desc: 'Prueba de aplicaciones.', questions: [{ text: '¿Qué herramienta ayuda a resumir?', options: ['IA especializada', 'Calendario'], correctAnswer: 0 }] } ] },
+                        { title: 'Módulo 6: IA Responsable', badge: 'Guardián Ético', lessons: [ { id: '6-1', title: 'Uso inteligente y seguro de la IA', type: 'video', desc: 'Anticípate a errores, límites éticos y sesgos.', res: '<li>PDF</li>' }, { id: 'q-6', title: 'Quiz Reflexivo: Módulo 6', type: 'quiz', desc: 'Reflexiona sobre el uso ético.', questions: [{ text: '¿Es importante considerar los sesgos?', options: ['Sí', 'No'], correctAnswer: 0 }] } ] },
+                        { title: 'Módulo 7: Inspiración', badge: 'Visionario Aplicado', lessons: [ { id: '7-1', title: '10 casos reales de IA aplicada', type: 'resource', desc: 'Estudia aplicaciones reales de IA.', res: '<li>PDF</li>' } ] },
+                        { title: 'Módulo 8: Proyecto Final', badge: 'Graduado GenIA', lessons: [ { id: '8-1', title: 'Aplica lo aprendido', type: 'resource', desc: 'Aplica todo para tener un producto real y útil.', res: '<li>PDF</li>' } ] },
+                        { title: 'Bonus: Actualizaciones 2025', badge: 'Siempre Vigente', lessons: [ { id: 'b-1', title: 'Nuevos módulos y herramientas', type: 'video', desc: 'Accede a nuevos módulos y herramientas.', res: '<li>PDFs</li>' } ] }
                     ]
                 }
             };
-            // ===================================================================
-            // FIN: CORRECCIÓN CLAVE
-            // ===================================================================
 
             const courseId = 'geniaweek';
             const courseData = ALL_COURSES_DATA[courseId];
@@ -247,7 +196,15 @@
                 tabs: { descripcion: document.getElementById('descripcion'), recursos: document.getElementById('recursos') },
                 tabButtons: document.querySelectorAll('.tab-button'),
                 prevBtn: document.getElementById('prev-lesson-btn'),
-                mainActionBtn: document.getElementById('main-action-btn')
+                mainActionBtn: document.getElementById('main-action-btn'),
+                toast: document.getElementById('toast-notification'),
+                toastMessage: document.getElementById('toast-message'),
+                badgeToast: document.getElementById('badge-toast'),
+                badgeMessage: document.getElementById('badge-message'),
+                completionModalOverlay: document.getElementById('completion-modal-overlay'),
+                completionModal: document.getElementById('completion-modal'),
+                modalUserName: document.getElementById('modal-user-name'),
+                closeModalBtn: document.getElementById('close-modal-btn')
             };
 
             function getLessonInfo(lessonId) {
@@ -468,11 +425,12 @@
                     if (currentIndex < allLessons.length - 1) {
                         navigateToLesson(allLessons[currentIndex + 1].id);
                     } else {
-                        window.location.href = 'portal-certificacion.html';
+                        showCompletionModal();
                     }
                 } else {
                     userProgress = { ...userProgress, completedLessons: [...userProgress.completedLessons, lessonId] };
                     await saveProgress();
+                    checkForBadgeUnlock(lessonId);
                     refreshUI();
                 }
             });
@@ -555,6 +513,40 @@
                     window.location.href = 'acceso.html';
                 }
             });
+
+            function showToast(message, type = 'generic') {
+                const toastEl = type === 'badge' ? dom.badgeToast : dom.toast;
+                const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage;
+                msgEl.textContent = message;
+                toastEl.classList.add('show');
+                setTimeout(() => toastEl.classList.remove('show'), 4000);
+            }
+
+            function checkForBadgeUnlock(completedLessonId) {
+                const lessonInfo = getLessonInfo(completedLessonId);
+                if (!lessonInfo || !lessonInfo.module.badge) return;
+
+                const lastLessonOfModule = lessonInfo.module.lessons[lessonInfo.module.lessons.length - 1].id;
+                if (completedLessonId !== lastLessonOfModule) return;
+
+                const moduleLessonIds = lessonInfo.module.lessons.map(l => l.id);
+                if (moduleLessonIds.every(id => userProgress.completedLessons.includes(id))) {
+                    showToast(`Has ganado la insignia: "${lessonInfo.module.badge}"`, 'badge');
+                }
+            }
+            
+            function showCompletionModal() {
+                dom.modalUserName.textContent = currentUser.name;
+                dom.completionModalOverlay.classList.remove('hidden');
+                dom.completionModal.classList.remove('hidden');
+                setTimeout(() => {
+                    dom.completionModalOverlay.classList.add('opacity-100');
+                    dom.completionModal.classList.add('show');
+                }, 10);
+            }
+
+            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'campus.html');
+            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'campus.html');
         });
     </script>
 </body>
