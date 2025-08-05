@@ -36,6 +36,7 @@
       @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
     }
     #profile-modal { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+    label span.required { color: #ef4444; }
   </style>
 </head>
 <body class="text-gray-800">
@@ -118,12 +119,43 @@
   <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-40"></div>
   <div id="profile-modal" class="fixed top-20 right-6 bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full z-50 opacity-0 transform scale-95 pointer-events-none">
       <h3 class="text-lg font-bold text-gray-900 mb-4">Editar Perfil</h3>
-      <form id="profile-form">
+      <form id="profile-form" class="max-h-[70vh] overflow-y-auto pr-2">
           <div class="space-y-4">
               <div>
-                  <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
+                  <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
                   <input type="text" id="profile-name-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Tu nombre y apellido" required>
                   <p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p>
+              </div>
+              <div>
+                  <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                  <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
+              </div>
+              <div>
+                  <label for="profile-dob-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
+                  <input type="date" id="profile-dob-input" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+              </div>
+              <div>
+                  <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
+                  <select id="profile-gender-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                      <option value="">Prefiero no decir</option>
+                      <option value="masculino">Masculino</option>
+                      <option value="femenino">Femenino</option>
+                      <option value="otro">Otro</option>
+                  </select>
+              </div>
+              <div>
+                  <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
+                  <select id="profile-country-select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" required>
+                      <option value="">Selecciona tu país</option>
+                      <option value="CL">Chile</option>
+                      <option value="AR">Argentina</option>
+                      <option value="PE">Perú</option>
+                      <option value="CO">Colombia</option>
+                      <option value="MX">México</option>
+                      <option value="ES">España</option>
+                      <option value="US">Estados Unidos</option>
+                      <option value="OT">Otro</option>
+                  </select>
               </div>
           </div>
           <div class="mt-6 flex justify-end gap-3">
@@ -238,16 +270,36 @@
       const cancelProfileBtn = document.getElementById('cancel-profile-btn');
       const profileForm = document.getElementById('profile-form');
       const profileNameInput = document.getElementById('profile-name-input');
+      const profileEmailInput = document.getElementById('profile-email-input');
+      const profileDobInput = document.getElementById('profile-dob-input');
+      const profileGenderSelect = document.getElementById('profile-gender-select');
+      const profileCountrySelect = document.getElementById('profile-country-select');
 
-      function openProfileModal() {
-        profileNameInput.value = auth.currentUser.displayName || '';
-        profileModalOverlay.classList.remove('hidden');
-        profileModal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+      async function openProfileModal() {
+          profileNameInput.value = auth.currentUser.displayName || '';
+          profileEmailInput.value = auth.currentUser.email || '';
+
+          // Cargar datos adicionales desde Firestore
+          const userDocRef = db.collection('users').doc(auth.currentUser.uid);
+          try {
+              const doc = await userDocRef.get();
+              if (doc.exists) {
+                  const data = doc.data();
+                  profileDobInput.value = data.dob || '';
+                  profileGenderSelect.value = data.gender || '';
+                  profileCountrySelect.value = data.country || '';
+              }
+          } catch (error) {
+              console.error("Error al cargar datos del perfil:", error);
+          }
+
+          profileModalOverlay.classList.remove('hidden');
+          profileModal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
       }
 
       function closeProfileModal() {
-        profileModalOverlay.classList.add('hidden');
-        profileModal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+          profileModalOverlay.classList.add('hidden');
+          profileModal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
       }
 
       avatarButton.addEventListener('click', openProfileModal);
@@ -255,24 +307,36 @@
       profileModalOverlay.addEventListener('click', closeProfileModal);
 
       profileForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const newName = profileNameInput.value.trim();
-        if (newName && newName !== auth.currentUser.displayName) {
-            try {
-                await auth.currentUser.updateProfile({
-                    displayName: newName
-                });
-                // Actualizar UI inmediatamente
-                document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
-                alert('¡Tu nombre ha sido actualizado!');
-                closeProfileModal();
-            } catch (error) {
-                console.error("Error al actualizar el perfil:", error);
-                alert('Hubo un error al guardar tu nombre. Inténtalo de nuevo.');
-            }
-        } else {
-            closeProfileModal();
-        }
+          e.preventDefault();
+          const newName = profileNameInput.value.trim();
+          const userDocRef = db.collection('users').doc(auth.currentUser.uid);
+
+          try {
+              // Actualizar nombre en Firebase Auth
+              if (newName && newName !== auth.currentUser.displayName) {
+                  await auth.currentUser.updateProfile({
+                      displayName: newName
+                  });
+              }
+
+              // Guardar datos adicionales en Firestore
+              await userDocRef.set({
+                  displayName: newName,
+                  email: auth.currentUser.email,
+                  dob: profileDobInput.value,
+                  gender: profileGenderSelect.value,
+                  country: profileCountrySelect.value
+              }, { merge: true });
+              
+              // Actualizar UI inmediatamente
+              document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
+              alert('¡Tu perfil ha sido actualizado!');
+              closeProfileModal();
+
+          } catch (error) {
+              console.error("Error al actualizar el perfil:", error);
+              alert('Hubo un error al guardar tu perfil. Inténtalo de nuevo.');
+          }
       });
       // FIN: LÓGICA DEL MODAL DE PERFIL
 
