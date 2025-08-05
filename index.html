@@ -2,8 +2,8 @@
 <!-- 
     ANÁLISIS Y MEJORAS SEO/UX POR DESARROLLADOR SENIOR:
     ----------------------------------------------------
-    21. **Protección Anti-copia para Certificado (v21):** Se ha añadido una marca de agua "EJEMPLO" y una capa CSS protectora al modal del certificado en la página de inicio para disuadir la replicación, alineando la seguridad con la página de cursos. Se ha ajustado el diseño para que sea idéntico al de la página de certificación.
-    20. **Modal de Certificado Interactivo (v20):** Se ha añadido una mención al certificado en la caja de precios con un modal interactivo.
+    22. **Restauración y Protección (v22):** Se ha restaurado el contenido completo de la página que se había omitido, incluyendo testimonios, perfiles y el carrusel. Se ha implementado la versión final del modal de certificado con marca de agua "EJEMPLO" y capa de protección anti-copia para máxima seguridad y consistencia en el sitio.
+    21. **Protección Anti-copia para Certificado (v21):** Se ha añadido una marca de agua "EJEMPLO" y una capa CSS protectora al modal del certificado.
 -->
 <html lang="es-CL">
 <head>
@@ -151,6 +151,11 @@
                 <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-12 w-auto">
             </a>
             <div class="flex items-center gap-2 sm:gap-4">
+                <button id="notification-bell" class="text-gray-500 hover:text-teal-600 transition-colors" aria-label="Activar notificaciones">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                </button>
                 <a href="cursos.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-teal-500 hover:text-white transition-colors duration-300">
                     Ver Cursos
                 </a>
@@ -211,6 +216,21 @@
                         <div class="text-4xl mb-4" role="img" aria-label="Apretón de manos">🤝</div>
                         <h3 class="text-xl font-bold mb-2">Quien Lidera Equipos</h3>
                         <p class="text-gray-600">"Busco que mi equipo sea más innovador y productivo, y sé que la IA es la clave."</p>
+                    </article>
+                    <article class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+                        <div class="text-4xl mb-4" role="img" aria-label="Maletín">💼</div>
+                        <h3 class="text-xl font-bold mb-2">Profesional Independiente</h3>
+                        <p class="text-gray-600">"Mis clientes esperan soluciones diferenciales; quiero usar IA para entregar más valor sin trabajar 24/7."</p>
+                    </article>
+                    <article class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+                        <div class="text-4xl mb-4" role="img" aria-label="Gráfico de crecimiento">📈</div>
+                        <h3 class="text-xl font-bold mb-2">Marketero Digital</h3>
+                        <p class="text-gray-600">"Necesito crear campañas, copys y contenido que convierta, pero me quedo sin ideas y tiempo."</p>
+                    </article>
+                    <article class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
+                        <div class="text-4xl mb-4" role="img" aria-label="Libro abierto">📚</div>
+                        <h3 class="text-xl font-bold mb-2">Estudiante Ambicioso</h3>
+                        <p class="text-gray-600">"Quiero diferenciarme en el mercado laboral y adquirir la habilidad más demandada del futuro."</p>
                     </article>
                 </div>
             </div>
@@ -417,20 +437,61 @@
         </div>
     </footer>
 
+    <div id="notification-toast" class="fixed bottom-5 right-5 bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg opacity-0 transform translate-y-10 pointer-events-none z-[100]">
+        <p id="notification-toast-text"></p>
+    </div>
+
+    <div id="notification-prompt-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-[100] opacity-0 pointer-events-none">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center">
+            <h3 class="text-xl font-bold mb-2">¡No te pierdas de nada!</h3>
+            <p class="text-gray-600 mb-6">¿Quieres recibir notificaciones sobre nuevos cursos y ofertas exclusivas?</p>
+            <div class="flex justify-center gap-4">
+                <button id="notification-prompt-no" class="px-6 py-2 rounded-full text-gray-700 bg-gray-200 hover:bg-gray-300">Ahora no</button>
+                <button id="notification-prompt-yes" class="px-6 py-2 rounded-full text-white" style="background-color: var(--brand-teal);">Sí, quiero</button>
+            </div>
+        </div>
+    </div>
+
     <div id="certificate-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden">
-        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative">
-            <button id="close-cert-modal" aria-label="Cerrar modal" class="absolute top-2 right-2 bg-gray-100 rounded-full p-1 text-gray-700 hover:bg-gray-200 z-10">
+        <div class="bg-white rounded-lg shadow-xl max-w-5xl w-full relative">
+            <button id="close-cert-modal" aria-label="Cerrar modal" class="absolute -top-4 -right-4 bg-white rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10 shadow-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <div class="p-6 sm:p-8 border-8 border-teal-600 bg-gray-50 rounded-lg">
-                <div class="text-center">
-                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-12 sm:h-16 mx-auto mb-4">
-                    <h3 class="text-2xl sm:text-3xl font-bold text-gray-800" style="font-family: 'Times New Roman', serif;">Certificado de Finalización</h3>
-                    <p class="text-gray-600 mt-4">se otorga a</p>
-                    <p class="text-3xl sm:text-4xl font-semibold text-teal-700 my-4 sm:my-6" style="font-family: 'Dancing Script', cursive;">[Nombre del Alumno]</p>
-                    <p class="text-gray-600">por haber completado exitosamente el curso</p>
-                    <h4 class="text-xl sm:text-2xl font-bold text-gray-800 mt-2">Inteligencia Artificial Aplicada</h4>
-                </div>
+            <div id="certificate" class="certificate-modal-content p-8 md:p-12 w-full aspect-[1.414]">
+                 <div class="protection-overlay">
+                    <span class="watermark">EJEMPLO</span>
+                 </div>
+                 <div class="flex flex-col h-full text-center text-gray-800">
+                     <header class="mb-4">
+                         <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aulagenia" class="mx-auto mb-4 h-16 w-auto" onerror="this.onerror=null;this.src='https://placehold.co/200x60/cccccc/FFFFFF?text=Logo+Error';">
+                         <h2 class="text-4xl md:text-5xl font-bold tracking-wider cert-title">Certificado de Finalización</h2>
+                     </header>
+                     <main class="flex-grow flex flex-col justify-center items-center">
+                         <p class="text-lg md:text-xl mt-4">Se otorga a:</p>
+                         <p class="student-name text-4xl md:text-5xl my-4">[Nombre del Alumno]</p>
+                         <p class="text-base md:text-lg max-w-2xl mx-auto">Por haber completado satisfactoriamente todos los requisitos del programa:</p>
+                         <p class="text-2xl md:text-3xl my-4 font-semibold cert-title">Inteligencia Artificial Aplicada</p>
+                         <p class="text-base md:text-lg">Finalizado el 04 de agosto de 2025.</p>
+                     </main>
+                     <footer class="absolute bottom-8 inset-x-8">
+                         <div class="flex justify-between items-end">
+                             <div class="text-left">
+                                 <div class="mb-8">
+                                     <p class="border-t-2 border-gray-500 pt-2 w-48 text-center text-sm font-semibold">Director Académico</p>
+                                     <p class="text-center text-xs text-gray-500">Aulagenia.cl</p>
+                                 </div>
+                                 <div>
+                                     <p class="text-xs text-gray-500">Código de validación:</p>
+                                     <p class="text-sm font-mono">AG-CERT-12345-XYZ</p>
+                                 </div>
+                             </div>
+                             <div class="flex items-center gap-4">
+                                 <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%233b82f6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eACADEMIA%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAIAA%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='4.5' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eI.A. APLICADA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de AIAA" class="w-24 h-24" />
+                                 <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%2314b8a6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eCERTIFICADO%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAG%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eAULA GENIA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de Aulagenia" class="w-24 h-24" />
+                             </div>
+                         </div>
+                     </footer>
+                 </div>
             </div>
         </div>
     </div>
@@ -449,52 +510,4 @@
                     spaceBetween: 20,
                     breakpoints: {
                         768: { slidesPerView: 2, spaceBetween: 30 },
-                        1024: { slidesPerView: 3, spaceBetween: 30 }
-                    },
-                });
-            }
-
-            if (window.cookieconsent) {
-                window.cookieconsent.initialise({
-                    palette: { popup: { background: '#1f2937' }, button: { background: '#14b8a6' } },
-                    theme: 'classic',
-                    position: 'bottom',
-                    type: 'opt-in',
-                    content: { message: 'Usamos cookies para mejorar tu experiencia.', dismiss: 'Aceptar', deny: 'Rechazar', link: 'Más info', href: 'politica-cookies.html' },
-                });
-            }
-
-            const openCertModalBtn = document.getElementById('open-cert-modal');
-            const closeCertModalBtn = document.getElementById('close-cert-modal');
-            const certificateModal = document.getElementById('certificate-modal');
-
-            if (openCertModalBtn && certificateModal) {
-                openCertModalBtn.addEventListener('click', () => {
-                    certificateModal.classList.remove('hidden');
-                });
-            }
-
-            if (closeCertModalBtn && certificateModal) {
-                closeCertModalBtn.addEventListener('click', () => {
-                    certificateModal.classList.add('hidden');
-                });
-            }
-
-            if (certificateModal) {
-                certificateModal.addEventListener('click', (e) => {
-                    if (e.target === certificateModal) {
-                        certificateModal.classList.add('hidden');
-                    }
-                });
-                
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === "Escape" && !certificateModal.classList.contains('hidden')) {
-                        certificateModal.classList.add('hidden');
-                    }
-                });
-            }
-        });
-    </script>
-
-</body>
-</ht
+                        1024: { slidesPerView: 3, spaceBetween: 3
