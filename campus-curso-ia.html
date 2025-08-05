@@ -113,11 +113,6 @@
             const auth = firebase.auth();
             const db = firebase.firestore();
             
-            // ===================================================================
-            // INICIO: CORRECCIÓN CLAVE 1 - FUENTE DE DATOS ÚNICA
-            // Esta estructura de datos ahora define TODOS los cursos. Es la "única fuente de verdad".
-            // Debe ser idéntica en todos los archivos que la necesiten (ej. campus.html).
-            // ===================================================================
             const ALL_COURSES_DATA = {
                 'geniaweek': {
                     title: 'Inteligencia Artificial Aplicada',
@@ -144,26 +139,18 @@
                         }
                     ]
                 }
-                // Aquí se podrían añadir más cursos en el futuro.
             };
-            // ===================================================================
-            // FIN: CORRECCIÓN CLAVE 1
-            // ===================================================================
 
-            const courseId = 'geniaweek'; // ID del curso actual
+            const courseId = 'geniaweek';
             const courseData = ALL_COURSES_DATA[courseId];
             
-            // --- ESTADO DE LA APLICACIÓN ---
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
             let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id };
 
-            // --- REFERENCIAS AL DOM ---
             const dom = {
                 userProfile: document.getElementById('user-profile-container'), userName: document.getElementById('user-name'), userAvatar: document.getElementById('user-avatar'), logoutButton: document.getElementById('logout-button'), courseTitle: document.getElementById('course-title'), progressBar: document.getElementById('progress-bar'), progressText: document.getElementById('progress-text'), modulesContainer: document.getElementById('modules-container'), lessonTitle: document.getElementById('lesson-title'), prevBtn: document.getElementById('prev-lesson-btn'), mainActionBtn: document.getElementById('main-action-btn'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), badgeToast: document.getElementById('badge-toast'), badgeMessage: document.getElementById('badge-message'), lessonMaterialContainer: document.getElementById('lesson-material-container'), tabs: { descripcion: document.getElementById('descripcion'), recursos: document.getElementById('recursos'), notas: document.getElementById('notas') }, tabButtons: document.querySelectorAll('.tab-button'), completionModalOverlay: document.getElementById('completion-modal-overlay'), completionModal: document.getElementById('completion-modal'), modalUserName: document.getElementById('modal-user-name'), closeModalBtn: document.getElementById('close-modal-btn')
             };
-
-            // --- FUNCIONES DE RENDERIZADO Y LÓGICA DE UI ---
 
             function refreshUI() {
                 dom.courseTitle.textContent = courseData.title;
@@ -224,7 +211,7 @@
                 const isCompleted = userProgress.completedLessons.includes(lesson.id);
                 const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1;
                 
-                dom.mainActionBtn.disabled = false; // Habilitar por defecto
+                dom.mainActionBtn.disabled = false;
                 
                 if (lesson.type === 'quiz' && !isCompleted) {
                     dom.mainActionBtn.disabled = true;
@@ -268,8 +255,6 @@
                 }
             }
 
-            // --- MANEJO DE ESTADO Y DATOS ---
-
             async function navigateToLesson(lessonId) {
                 const lesson = allLessons.find(l => l.id === lessonId);
                 if (!lesson) {
@@ -281,11 +266,6 @@
                 refreshUI();
             }
 
-            // ===================================================================
-            // INICIO: CORRECCIÓN CLAVE 2 - FUNCIÓN DE GUARDADO ROBUSTA
-            // Se añaden logs para depuración. Ahora podemos ver en la consola si el
-            // guardado fue exitoso o si falló.
-            // ===================================================================
             async function saveProgress() {
                 if (!currentUser) {
                     console.warn("Intento de guardar progreso sin un usuario autenticado.");
@@ -293,7 +273,6 @@
                 }
                 try {
                     const progressRef = db.collection('userProgress').doc(currentUser.uid);
-                    // Aseguramos que completedLessons sea siempre un array para evitar errores
                     if (!Array.isArray(userProgress.completedLessons)) {
                         userProgress.completedLessons = [];
                     }
@@ -304,9 +283,6 @@
                     alert("No se pudo guardar tu progreso. Por favor, revisa tu conexión a internet y la consola para más detalles.");
                 }
             }
-            // ===================================================================
-            // FIN: CORRECCIÓN CLAVE 2
-            // ===================================================================
 
             async function loadProgressAndInitialize() {
                 const docRef = db.collection('userProgress').doc(currentUser.uid);
@@ -328,39 +304,52 @@
                 refreshUI();
             }
 
-            // --- MANEJADORES DE EVENTOS ---
             function addSidebarListeners() {
                 dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); }));
                 dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => header.addEventListener('click', () => { const content = header.nextElementSibling; content.classList.toggle('open'); header.querySelector('i').style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; }));
             }
 
+            // ===================================================================
+            // INICIO: CORRECCIÓN CLAVE - LÓGICA DEL BOTÓN SEPARADA
+            // Se reestructura el evento con un if/else para separar las dos
+            // acciones: 1. Marcar como completado. 2. Navegar.
+            // ===================================================================
             dom.mainActionBtn.addEventListener('click', async () => {
-                console.log('Botón de acción principal presionado.'); // Log para depuración
+                console.log('Botón de acción principal presionado.');
                 const lessonId = userProgress.currentLessonId;
                 const isCompleted = userProgress.completedLessons.includes(lessonId);
-                
-                if (!isCompleted) {
-                    // Solo añade la lección si no está ya en la lista
+
+                if (isCompleted) {
+                    // ACCIÓN 1: La lección YA ESTÁ COMPLETA, así que navegamos.
+                    console.log("Acción: Navegar a la siguiente lección.");
+                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                    const isLastLesson = currentIndex === allLessons.length - 1;
+
+                    if (!isLastLesson) {
+                        navigateToLesson(allLessons[currentIndex + 1].id);
+                    } else {
+                        // Es la última lección, verificamos si todo el curso está completo.
+                        if (userProgress.completedLessons.length === allLessons.length) {
+                            showCompletionModal();
+                        } else {
+                            showToast('¡Felicidades! Terminaste la última lección.');
+                        }
+                    }
+                } else {
+                    // ACCIÓN 2: La lección NO ESTÁ COMPLETA, así que la marcamos.
+                    console.log("Acción: Marcar lección como completada.");
                     userProgress.completedLessons.push(lessonId);
-                    await saveProgress(); // Guardamos el progreso
+                    await saveProgress();
                     checkForBadgeUnlock(lessonId);
                     showToast('¡Lección completada!');
-                    refreshUI(); // Actualizamos la UI para reflejar el estado "completado"
-                }
-                
-                // Lógica para avanzar a la siguiente lección o finalizar
-                const currentIndex = allLessons.findIndex(l => l.id === lessonId);
-                if (currentIndex < allLessons.length - 1) {
-                    navigateToLesson(allLessons[currentIndex + 1].id);
-                } else {
-                    // Solo mostramos el modal de finalización si TODAS las lecciones están completas
-                    if(userProgress.completedLessons.length === allLessons.length) {
-                       showCompletionModal();
-                    } else {
-                       showToast('¡Felicidades! Has terminado la última lección.');
-                    }
+                    
+                    // Simplemente actualizamos la UI. El usuario deberá hacer clic de nuevo para navegar.
+                    refreshUI();
                 }
             });
+            // ===================================================================
+            // FIN: CORRECCIÓN CLAVE
+            // ===================================================================
 
             dom.prevBtn.addEventListener('click', () => {
                 const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
@@ -377,7 +366,6 @@
             dom.closeModalBtn.addEventListener('click', () => window.location.href = 'campus.html');
             dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'campus.html');
 
-            // --- AUTENTICACIÓN Y PUNTO DE ENTRADA ---
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
@@ -395,7 +383,6 @@
                 }
             });
 
-            // --- FUNCIONES UTILITARIAS ---
             function showToast(message, type = 'generic') {
                 const toastEl = type === 'badge' ? dom.badgeToast : dom.toast;
                 const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage;
