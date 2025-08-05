@@ -310,25 +310,15 @@
             }
 
             dom.mainActionBtn.addEventListener('click', async () => {
-    const lessonId   = userProgress.currentLessonId;
-    const isCompleted = userProgress.completedLessons.includes(lessonId);
-    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                console.log('Botón de acción principal presionado.');
+                const lessonId = userProgress.currentLessonId;
+                const isCompleted = userProgress.completedLessons.includes(lessonId);
 
-    if (!isCompleted) {
-        // 1. Guardamos la lección como completada
-        userProgress.completedLessons.push(lessonId);
-        await saveProgress();
-        checkForBadgeUnlock(lessonId);
-        showToast('¡Lección completada!');
-    }
-
-    // 2. Avanzamos de inmediato (o mostramos modal si era la última)
-    if (currentIndex < allLessons.length - 1) {
-        navigateToLesson(allLessons[currentIndex + 1].id);
-    } else {
-        showCompletionModal();
-    }
-});
+                if (isCompleted) {
+                    // ACCIÓN 1: La lección YA ESTÁ COMPLETA, así que navegamos.
+                    console.log("Acción: Navegar a la siguiente lección.");
+                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+                    const isLastLesson = currentIndex === allLessons.length - 1;
 
                     if (!isLastLesson) {
                         navigateToLesson(allLessons[currentIndex + 1].id);
@@ -341,11 +331,7 @@
                         }
                     }
                 } else {
-                    // ===================================================================
-                    // INICIO: CORRECCIÓN CLAVE - ACTUALIZACIÓN DE ESTADO INMUTABLE
-                    // En lugar de mutar el array con .push(), creamos uno nuevo.
-                    // Esto asegura que la UI reaccione al cambio de estado.
-                    // ===================================================================
+                    // ACCIÓN 2: La lección NO ESTÁ COMPLETA, así que la marcamos.
                     console.log("Acción: Marcar lección como completada.");
                     
                     const newCompletedLessons = [...userProgress.completedLessons, lessonId];
@@ -360,9 +346,6 @@
                     
                     // Simplemente actualizamos la UI. El usuario deberá hacer clic de nuevo para navegar.
                     refreshUI();
-                    // ===================================================================
-                    // FIN: CORRECCIÓN CLAVE
-                    // ===================================================================
                 }
             });
 
