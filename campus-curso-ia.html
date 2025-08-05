@@ -20,6 +20,10 @@
         #profile-modal { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
         label span.required { color: #ef4444; }
         .tab-button.active { color: var(--brand-teal); border-bottom-color: var(--brand-teal); }
+        .quiz-option { transition: all 0.2s ease-in-out; }
+        .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
+        .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
+        .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -144,7 +148,7 @@
             const db = firebase.firestore();
             
             // ===================================================================
-            // INICIO: CORRECCIÓN CLAVE - NUEVA MALLA CURRICULAR
+            // INICIO: CORRECCIÓN CLAVE - DATOS DE QUIZ RESTAURADOS
             // ===================================================================
             const ALL_COURSES_DATA = {
                 'geniaweek': {
@@ -160,7 +164,7 @@
                             title: 'Módulo 1: ¿Qué es la IA?',
                             lessons: [
                                 { id: '1-1', title: 'Casos de éxito reales', type: 'video', desc: 'Entiende la IA con casos reales que te inspiran y te ayudan a comprender el potencial real de la IA.', res: '<li>PDF con Casos de Éxito</li>' },
-                                { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Evalúa tu comprensión con 5 preguntas clave.', questions: [{ text: '¿Cuál es un ejemplo de IA aplicada en la vida real?', options: ['Netflix', 'Una calculadora', 'Un libro'], correctAnswer: 0 }] }
+                                { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Evalúa tu comprensión con 5 preguntas clave.', questions: [{ text: '¿Cuál es un ejemplo de IA aplicada en la vida real?', options: ['Recomendaciones de Netflix', 'Una calculadora de bolsillo', 'Un libro de papel'], correctAnswer: 0 }] }
                             ]
                         },
                         {
@@ -188,14 +192,14 @@
                             title: 'Módulo 5: Productividad',
                             lessons: [
                                 { id: '5-1', title: 'Multiplica tu productividad con IA', type: 'video', desc: 'Automatiza tareas diarias, agendas, mails y resúmenes para un ahorro real de tiempo y esfuerzo.', res: '<li>Links a herramientas útiles</li>' },
-                                { id: 'q-5', title: 'Quiz: Módulo 5', type: 'quiz', desc: 'Prueba de aplicaciones para validar tu aprendizaje.', questions: [{ text: '¿Qué herramienta ayuda a resumir textos?', options: ['Una app de notas', 'Una IA especializada', 'Un calendario'], correctAnswer: 1 }] }
+                                { id: 'q-5', title: 'Quiz: Módulo 5', type: 'quiz', desc: 'Prueba de aplicaciones para validar tu aprendizaje.', questions: [{ text: '¿Qué herramienta de IA ayuda a automatizar agendas?', options: ['Una app de calendario', 'Una IA de gestión de tiempo', 'Un procesador de texto'], correctAnswer: 1 }] }
                             ]
                         },
                         {
                             title: 'Módulo 6: IA Responsable',
                             lessons: [
                                 { id: '6-1', title: 'Uso inteligente y seguro de la IA', type: 'video', desc: 'Anticípate a errores, límites éticos y sesgos para un uso ético, seguro y consciente.', res: '<li>PDF descargable sobre IA Responsable</li>' },
-                                { id: 'q-6', title: 'Quiz Reflexivo: Módulo 6', type: 'quiz', desc: 'Un quiz para reflexionar sobre el uso ético de la IA.', questions: [{ text: '¿Es importante considerar los sesgos en la IA?', options: ['Sí', 'No'], correctAnswer: 0 }] }
+                                { id: 'q-6', title: 'Quiz Reflexivo: Módulo 6', type: 'quiz', desc: 'Un quiz para reflexionar sobre el uso ético de la IA.', questions: [{ text: '¿Es importante considerar los sesgos al usar IA?', options: ['Sí, siempre', 'No, la IA es objetiva'], correctAnswer: 0 }] }
                             ]
                         },
                         {
@@ -323,10 +327,40 @@
                         break;
                 }
                 dom.lessonMaterialContainer.innerHTML = materialHtml;
+                if (lesson.type === 'quiz') {
+                    dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => {
+                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                        opt.classList.add('selected');
+                    }));
+                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson));
+                }
                 dom.tabs.descripcion.innerHTML = lesson.desc || 'No hay descripción para esta lección.';
                 dom.tabs.recursos.innerHTML = lesson.res ? `<ul>${lesson.res}</ul>` : 'No hay recursos para esta lección.';
             }
             
+            function checkQuizAnswer(lesson) {
+                const selectedOption = dom.lessonMaterialContainer.querySelector('.quiz-option.selected');
+                if (!selectedOption) { alert('Por favor, selecciona una respuesta.'); return; }
+                const selectedIndex = parseInt(selectedOption.dataset.index);
+                const correctIndex = lesson.questions[0].correctAnswer;
+                dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+                if (selectedIndex === correctIndex) {
+                    selectedOption.classList.add('correct');
+                    alert('¡Respuesta Correcta!');
+                    dom.mainActionBtn.disabled = false;
+                } else {
+                    selectedOption.classList.add('incorrect');
+                    dom.lessonMaterialContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
+                    alert('Respuesta incorrecta. ¡Sigue intentando!');
+                    setTimeout(() => {
+                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('incorrect', 'correct', 'selected');
+                            opt.style.pointerEvents = 'auto';
+                        });
+                    }, 2000);
+                }
+            }
+
             function updateMainActionButton() {
                 const completedCount = Array.isArray(userProgress.completedLessons) ? userProgress.completedLessons.length : 0;
                 const totalLessons = allLessons.length;
@@ -345,6 +379,10 @@
                 const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1;
                 
                 dom.mainActionBtn.disabled = false;
+                
+                if (lesson.type === 'quiz' && !isCompleted) {
+                    dom.mainActionBtn.disabled = true;
+                }
                 
                 dom.mainActionBtn.textContent = isCompleted ? (isLastLesson ? 'Finalizar Curso' : 'Siguiente Lección') : 'Marcar como completada';
                 
