@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <!-- 
-    ANÁLISIS Y MEJORAS SEO/UX POR DESARROLLADOR SENIOR (PÁGINA DE CURSOS v6):
+    ANÁLISIS Y MEJORAS SEO/UX POR DESARROLLADOR SENIOR (PÁGINA DE CURSOS v9):
     ----------------------------------------------------------------------
-    6.  **Modal de Certificado Idéntico (v6):** Se ha actualizado el diseño del modal del certificado para que sea una réplica exacta del proporcionado en `portal-certificacion.html`. Se han ajustado las fuentes (reemplazando 'Dancing Script' por 'Playfair Display') y la estructura HTML/CSS para una correspondencia perfecta.
-    5.  **Implementación de Modal de Certificado (v5):** Se ha añadido la funcionalidad de modal interactivo para mostrar un ejemplo del certificado de finalización.
-    4.  **Reestructuración Completa del Temario:** Se ha reemplazado el temario antiguo por uno nuevo que refleja la malla curricular actualizada.
-    3.  **Optimización de Títulos y Beneficios (Hero Section):** Se han actualizado el título principal y la lista de beneficios.
-    2.  **Añadido de Mención al Certificado:** Se ha incluido una sección visual destacando que el curso incluye un certificado.
+    9.  **Protección Anti-copia para Certificado (v9):** Se ha añadido una marca de agua "EJEMPLO" y una capa CSS protectora (`user-select: none`) al modal del certificado para disuadir la replicación y copia directa de la imagen. Se ha restaurado el contenido completo de la página que se había omitido.
+    8.  **Ajuste Fino de Diseño en Modal de Certificado (v8):** Se ha realizado una revisión final del modal del certificado para asegurar una correspondencia 1 a 1 con la imagen de diseño proporcionada.
 -->
 <html lang="es-CL">
 <head>
@@ -101,6 +98,7 @@
             border: 10px solid var(--brand-teal); 
             background-color: #ffffff;
             position: relative;
+            overflow: hidden; /* Clave para contener la marca de agua */
             background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM11 68c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z" fill="%2314b8a6" fill-opacity="0.05" fill-rule="evenodd"/></svg>');
         }
         .cert-title { font-family: 'Playfair Display', serif; }
@@ -109,6 +107,26 @@
             font-style: italic;
             font-weight: 600;
             color: var(--brand-teal);
+        }
+        /* Capa de protección y marca de agua */
+        .protection-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            user-select: none; /* Evita la selección de texto */
+            pointer-events: none; /* Permite clics "a través" de la capa */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .watermark {
+            font-size: 10vw; /* Tamaño adaptable */
+            font-weight: 900;
+            color: rgba(0, 0, 0, 0.08);
+            transform: rotate(-30deg);
+            letter-spacing: 0.5em;
         }
     </style>
 </head>
@@ -258,7 +276,6 @@
                         </ul>
                     </details>
                 </div>
-                <!-- ===== SECCIÓN CERTIFICADO ACTUALIZADA (v6) ===== -->
                 <div class="mt-12 bg-teal-50 border-l-4 border-teal-500 p-6 rounded-r-lg text-left">
                     <div class="flex items-center">
                         <svg class="h-12 w-12 text-teal-600 flex-shrink-0 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -277,31 +294,126 @@
             </div>
         </section>
 
-        <!-- El resto de las secciones (testimonios, faq, cta final) se mantienen igual -->
         <section id="testimonios" class="bg-white py-16 md:py-24">
-            <!-- Contenido de testimonios -->
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Lo que dicen nuestros alumnos</h2>
+                    <p class="text-gray-600 text-lg mb-8">
+                        No lo decimos nosotros; lo dicen quienes ya pasaron por el campus.
+                    </p>
+                </div>
+                <div class="swiper testimonial-swiper">
+                    <div class="swiper-wrapper pb-8">
+                        <article class="swiper-slide h-full">
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-full flex flex-col text-left">
+                                <div class="flex items-center mb-4">
+                                    <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/2DD4BF/FFFFFF?text=LJ" alt="Avatar de Lau Jiménez">
+                                    <div>
+                                        <p class="font-bold">Lau Jiménez</p>
+                                        <p class="text-sm text-gray-500">hace 2 días</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 flex-grow text-sm">
+                                    ¡Esto es una locura! Pasé de tardar horas en una propuesta de logo a generar 3 conceptos brutales en 15 minutos. Mis clientes (y mi bolsillo) están felices. Mil gracias al equipo de Aula GenIA. <span class="text-teal-500 font-semibold">#DiseñoConIA</span>
+                                </p>
+                            </div>
+                        </article>
+                        <article class="swiper-slide h-full">
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-full flex flex-col text-left">
+                                <div class="flex items-center mb-4">
+                                    <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/3B82F6/FFFFFF?text=CM" alt="Avatar de Carlos Morales G.">
+                                    <div>
+                                        <p class="font-bold">Carlos Morales G.</p>
+                                        <p class="text-sm text-gray-500">hace 5 días</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 flex-grow text-sm">
+                                    No doy más de la felicidad. Con lo que aprendí, automaticé la creación de todas las descripciones de producto. Me ahorré una fortuna en un copywriter y las ventas subieron un 15%. ¡Posta, recuperé los findes!
+                                </p>
+                            </div>
+                        </article>
+                        <article class="swiper-slide h-full">
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 h-full flex flex-col text-left">
+                                <div class="flex items-center mb-4">
+                                    <img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/F59E0B/FFFFFF?text=AG" alt="Avatar de Ana Gómez Soto">
+                                    <div>
+                                        <p class="font-bold">Ana Gómez Soto</p>
+                                        <p class="text-sm text-gray-500">hace 1 semana</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 flex-grow text-sm">
+                                    El módulo de automatización cambió las reglas del juego para nuestra ONG. Ahora podemos procesar solicitudes de ayuda y responder a donantes al instante. El impacto se siente. Gracias por hacer la IA accesible.
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="swiper-pagination mt-8"></div>
+                </div>
+            </div>
         </section>
+
         <section id="faq" class="py-16 md:py-24 bg-gray-50">
-            <!-- Contenido de FAQ -->
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Lo que necesitas saber</h2>
+                </div>
+                <div class="space-y-4">
+                    <details class="bg-white p-4 rounded-lg border border-gray-200 cursor-pointer">
+                        <summary class="font-bold text-lg flex justify-between items-center">
+                            <span class="flex-grow">¿Necesito ser un experto en tecnología?</span>
+                            <svg class="w-5 h-5 arrow flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                        </summary>
+                        <p class="mt-2 text-gray-700">¡Absolutamente no! Este curso está diseñado para llevarte desde cero. Empezamos con lo más básico y te llevamos de la mano hasta los conceptos más avanzados.</p>
+                    </details>
+                    <details class="bg-white p-4 rounded-lg border border-gray-200 cursor-pointer">
+                        <summary class="font-bold text-lg flex justify-between items-center">
+                            <span class="flex-grow">¿Qué consigo con el pago de $5?</span>
+                            <svg class="w-5 h-5 arrow flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                        </summary>
+                        <p class="mt-2 text-gray-700">Con este pago único, tendrás acceso completo a todo el contenido, recursos y futuras actualizaciones durante 12 meses. Sin cargos ocultos ni suscripciones.</p>
+                    </details>
+                    <details class="bg-white p-4 rounded-lg border border-gray-200 cursor-pointer">
+                        <summary class="font-bold text-lg flex justify-between items-center">
+                            <span class="flex-grow">¿Obtendré un certificado al finalizar?</span>
+                            <svg class="w-5 h-5 arrow flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                        </summary>
+                        <p class="mt-2 text-gray-700">¡Sí! Al completar todas las clases del curso, recibirás un certificado de finalización que podrás añadir a tu currículum o perfil de LinkedIn para demostrar tus nuevas habilidades.</p>
+                    </details>
+                </div>
+            </div>
         </section>
+
         <section class="bg-gray-900 text-white">
-            <!-- Contenido de CTA Final -->
+            <div class="container mx-auto px-6 py-16 text-center">
+                <h2 class="text-3xl md:text-4xl font-black mb-4">Tu Futuro Productivo Comienza Hoy</h2>
+                <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">Deja de perder tiempo en tareas repetitivas y empieza a multiplicar tu impacto. La oportunidad es ahora.</p>
+                <a href="acceso.html" class="gradient-button inline-block font-bold text-lg py-4 px-10 rounded-full">
+                    ¡Quiero mi acceso por solo $5!
+                </a>
+            </div>
         </section>
     </main>
 
     <footer class="bg-gray-100 border-t border-gray-200">
-        <!-- Contenido del footer -->
+        <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+            <div class="flex justify-center items-center gap-2 mb-2">
+                <a href="index.html" class="flex items-center" aria-label="Volver a la página de inicio de Aula GenIA">
+                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA al pie de página" class="h-12 w-auto">
+                </a>
+            </div>
+            <p class="text-sm">&copy; 2024 - Todos los derechos reservados. Creado con 💙 y un poquito de IA.</p>
+        </div>
     </footer>
-
-    <!-- =================================================================== -->
-    <!-- ===================== MODAL DE CERTIFICADO (v6) ==================== -->
-    <!-- =================================================================== -->
+    
     <div id="certificate-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white rounded-lg shadow-xl max-w-5xl w-full relative">
             <button id="close-cert-modal" aria-label="Cerrar modal" class="absolute -top-4 -right-4 bg-white rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10 shadow-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <div id="certificate" class="certificate-modal-content p-8 md:p-12 w-full aspect-[1.414]">
+                 <div class="protection-overlay">
+                    <span class="watermark">EJEMPLO</span>
+                 </div>
                  <div class="flex flex-col h-full text-center text-gray-800">
                      <header class="mb-4">
                          <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aulagenia" class="mx-auto mb-4 h-16 w-auto" onerror="this.onerror=null;this.src='https://placehold.co/200x60/cccccc/FFFFFF?text=Logo+Error';">
@@ -312,7 +424,7 @@
                          <p class="student-name text-4xl md:text-5xl my-4">[Nombre del Alumno]</p>
                          <p class="text-base md:text-lg max-w-2xl mx-auto">Por haber completado satisfactoriamente todos los requisitos del programa:</p>
                          <p class="text-2xl md:text-3xl my-4 font-semibold cert-title">Inteligencia Artificial Aplicada</p>
-                         <p class="text-base md:text-lg">Finalizado el 05 de agosto de 2025.</p>
+                         <p class="text-base md:text-lg">Finalizado el 04 de agosto de 2025.</p>
                      </main>
                      <footer class="absolute bottom-8 inset-x-8">
                          <div class="flex justify-between items-end">
@@ -365,7 +477,7 @@
                 });
             }
 
-            // --- LÓGICA DEL MODAL DE CERTIFICADO (v6) ---
+            // --- LÓGICA DEL MODAL DE CERTIFICADO ---
             const openCertModalBtn = document.getElementById('open-cert-modal');
             const closeCertModalBtn = document.getElementById('close-cert-modal');
             const certificateModal = document.getElementById('certificate-modal');
