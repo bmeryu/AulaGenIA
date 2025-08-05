@@ -2,7 +2,7 @@
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8" />
-    <title>Lección del Curso - Aula GenIA</title>
+    <title>Lección del Curso - Aula GenIA (Corregido)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
@@ -52,7 +52,7 @@
             <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
                 <div class="p-6">
                     <a href="campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
-                    <h1 class="text-2xl font-bold text-gray-900">Inteligencia Artificial Aplicada</h1>
+                    <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
                     <div class="mt-4">
                         <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
                         <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
@@ -113,32 +113,45 @@
             const auth = firebase.auth();
             const db = firebase.firestore();
             
-            // --- DATOS DEL CURSO (Fuente de verdad) ---
-            const courseId = 'geniaweek';
-            const courseData = {
-                modules: [
-                    {
-                        title: 'Módulo 1: Fundamentos',
-                        badge: 'Maestro de Fundamentos',
-                        lessons: [
-                            { id: '1-1', title: '¿Qué es la IA?', type: 'video', desc: 'Introducción conceptual al mundo de la IA.', res: '<li><a href="#">Paper de Alan Turing</a></li>' },
-                            { id: '1-2', title: 'Historia y Evolución', type: 'video', desc: 'Un recorrido histórico desde los inicios hasta hoy.', res: '' },
-                            { id: '1-3', title: 'IA, ML y Deep Learning', type: 'text', desc: 'Aclarando las diferencias clave entre estos términos.', res: '<li><a href="#">Artículo de Forbes</a></li>' },
-                            { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Pon a prueba tus conocimientos sobre los fundamentos.', questions: [{ text: '¿Cuál de estos es un ejemplo de IA "estrecha"?', options: ['Un robot con conciencia', 'Siri o Alexa', 'Terminator'], correctAnswer: 1 }] }
-                        ]
-                    },
-                    {
-                        title: 'Módulo 2: IA Generativa',
-                        badge: 'Domador de Prompts',
-                        lessons: [
-                            { id: '2-1', title: 'Introducción a los LLMs', type: 'video', desc: 'Descubre cómo funcionan los modelos de lenguaje.', res: '' },
-                            { id: '2-2', title: 'El Arte del Prompt Engineering', type: 'video', desc: 'Aprende a comunicarte efectivamente con la IA.', res: '' },
-                            { id: '2-3', title: 'Taller Práctico: Creando Prompts', type: 'resource', desc: 'Descarga nuestra guía y pon a prueba tus habilidades.', res: '<li><a href="#">Guía de Prompts (PDF)</a></li>' },
-                            { id: 'q-2', title: 'Quiz: Módulo 2', type: 'quiz', desc: 'Valida tu entendimiento sobre IA Generativa.', questions: [{ text: '¿Qué es un "LLM"?', options: ['Un tipo de hardware', 'Un modelo de lenguaje grande', 'Una criptomoneda'], correctAnswer: 1 }] }
-                        ]
-                    }
-                ]
+            // ===================================================================
+            // INICIO: CORRECCIÓN CLAVE 1 - FUENTE DE DATOS ÚNICA
+            // Esta estructura de datos ahora define TODOS los cursos. Es la "única fuente de verdad".
+            // Debe ser idéntica en todos los archivos que la necesiten (ej. campus.html).
+            // ===================================================================
+            const ALL_COURSES_DATA = {
+                'geniaweek': {
+                    title: 'Inteligencia Artificial Aplicada',
+                    modules: [
+                        {
+                            title: 'Módulo 1: Fundamentos',
+                            badge: 'Maestro de Fundamentos',
+                            lessons: [
+                                { id: '1-1', title: '¿Qué es la IA?', type: 'video', desc: 'Introducción conceptual al mundo de la IA.', res: '<li><a href="#">Paper de Alan Turing</a></li>' },
+                                { id: '1-2', title: 'Historia y Evolución', type: 'video', desc: 'Un recorrido histórico desde los inicios hasta hoy.', res: '' },
+                                { id: '1-3', title: 'IA, ML y Deep Learning', type: 'text', desc: 'Aclarando las diferencias clave entre estos términos.', res: '<li><a href="#">Artículo de Forbes</a></li>' },
+                                { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', desc: 'Pon a prueba tus conocimientos sobre los fundamentos.', questions: [{ text: '¿Cuál de estos es un ejemplo de IA "estrecha"?', options: ['Un robot con conciencia', 'Siri o Alexa', 'Terminator'], correctAnswer: 1 }] }
+                            ]
+                        },
+                        {
+                            title: 'Módulo 2: IA Generativa',
+                            badge: 'Domador de Prompts',
+                            lessons: [
+                                { id: '2-1', title: 'Introducción a los LLMs', type: 'video', desc: 'Descubre cómo funcionan los modelos de lenguaje.', res: '' },
+                                { id: '2-2', title: 'El Arte del Prompt Engineering', type: 'video', desc: 'Aprende a comunicarte efectivamente con la IA.', res: '' },
+                                { id: '2-3', title: 'Taller Práctico: Creando Prompts', type: 'resource', desc: 'Descarga nuestra guía y pon a prueba tus habilidades.', res: '<li><a href="#">Guía de Prompts (PDF)</a></li>' },
+                                { id: 'q-2', title: 'Quiz: Módulo 2', type: 'quiz', desc: 'Valida tu entendimiento sobre IA Generativa.', questions: [{ text: '¿Qué es un "LLM"?', options: ['Un tipo de hardware', 'Un modelo de lenguaje grande', 'Una criptomoneda'], correctAnswer: 1 }] }
+                            ]
+                        }
+                    ]
+                }
+                // Aquí se podrían añadir más cursos en el futuro.
             };
+            // ===================================================================
+            // FIN: CORRECCIÓN CLAVE 1
+            // ===================================================================
+
+            const courseId = 'geniaweek'; // ID del curso actual
+            const courseData = ALL_COURSES_DATA[courseId];
             
             // --- ESTADO DE LA APLICACIÓN ---
             const allLessons = courseData.modules.flatMap(m => m.lessons);
@@ -147,11 +160,13 @@
 
             // --- REFERENCIAS AL DOM ---
             const dom = {
-                userProfile: document.getElementById('user-profile-container'), userName: document.getElementById('user-name'), userAvatar: document.getElementById('user-avatar'), logoutButton: document.getElementById('logout-button'), progressBar: document.getElementById('progress-bar'), progressText: document.getElementById('progress-text'), modulesContainer: document.getElementById('modules-container'), lessonTitle: document.getElementById('lesson-title'), prevBtn: document.getElementById('prev-lesson-btn'), mainActionBtn: document.getElementById('main-action-btn'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), badgeToast: document.getElementById('badge-toast'), badgeMessage: document.getElementById('badge-message'), lessonMaterialContainer: document.getElementById('lesson-material-container'), tabs: { descripcion: document.getElementById('descripcion'), recursos: document.getElementById('recursos'), notas: document.getElementById('notas') }, tabButtons: document.querySelectorAll('.tab-button'), completionModalOverlay: document.getElementById('completion-modal-overlay'), completionModal: document.getElementById('completion-modal'), modalUserName: document.getElementById('modal-user-name'), closeModalBtn: document.getElementById('close-modal-btn')
+                userProfile: document.getElementById('user-profile-container'), userName: document.getElementById('user-name'), userAvatar: document.getElementById('user-avatar'), logoutButton: document.getElementById('logout-button'), courseTitle: document.getElementById('course-title'), progressBar: document.getElementById('progress-bar'), progressText: document.getElementById('progress-text'), modulesContainer: document.getElementById('modules-container'), lessonTitle: document.getElementById('lesson-title'), prevBtn: document.getElementById('prev-lesson-btn'), mainActionBtn: document.getElementById('main-action-btn'), toast: document.getElementById('toast-notification'), toastMessage: document.getElementById('toast-message'), badgeToast: document.getElementById('badge-toast'), badgeMessage: document.getElementById('badge-message'), lessonMaterialContainer: document.getElementById('lesson-material-container'), tabs: { descripcion: document.getElementById('descripcion'), recursos: document.getElementById('recursos'), notas: document.getElementById('notas') }, tabButtons: document.querySelectorAll('.tab-button'), completionModalOverlay: document.getElementById('completion-modal-overlay'), completionModal: document.getElementById('completion-modal'), modalUserName: document.getElementById('modal-user-name'), closeModalBtn: document.getElementById('close-modal-btn')
             };
 
             // --- FUNCIONES DE RENDERIZADO Y LÓGICA DE UI ---
+
             function refreshUI() {
+                dom.courseTitle.textContent = courseData.title;
                 renderSidebar();
                 const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
                 if (lesson) {
@@ -185,206 +200,4 @@
                 switch(lesson.type) {
                     case 'video': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i></div></div>`; break;
                     case 'text': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="file-text" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center">Material de lectura en la pestaña 'Descripción'.</p></div></div>`; break;
-                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos descargables en la pestaña 'Recursos'.</p><a href="#" class="bg-teal-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-teal-600 flex items-center gap-2"><i data-lucide="download"></i>Descargar</a></div></div>`; break;
-                    case 'quiz':
-                        const question = lesson.questions[0];
-                        const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join('');
-                        materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-900">Verificar Respuesta</button></div>`;
-                        break;
-                }
-                dom.lessonMaterialContainer.innerHTML = materialHtml;
-                if (lesson.type === 'quiz') {
-                    dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => {
-                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
-                        opt.classList.add('selected');
-                    }));
-                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson));
-                }
-                dom.tabs.descripcion.innerHTML = lesson.desc || 'No hay descripción.';
-                dom.tabs.recursos.innerHTML = lesson.res ? `<ul>${lesson.res}</ul>` : 'No hay recursos.';
-            }
-            
-            function updateMainActionButton() {
-                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
-                if (!lesson) {
-                    console.error("No se pudo actualizar el botón de acción: Lección no encontrada.");
-                    dom.mainActionBtn.disabled = true;
-                    return;
-                }
-                const isCompleted = userProgress.completedLessons.includes(lesson.id);
-                const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1;
-                
-                dom.mainActionBtn.disabled = lesson.type === 'quiz' && !isCompleted;
-                dom.mainActionBtn.textContent = isCompleted ? (isLastLesson ? 'Finalizar Curso' : 'Continuar') : 'Marcar como completada';
-                
-                if (isLastLesson && !isCompleted) {
-                    const allOthersCompleted = allLessons.filter(l => l.id !== lesson.id).every(l => userProgress.completedLessons.includes(l.id));
-                    if (!allOthersCompleted) dom.mainActionBtn.disabled = true;
-                }
-            }
-
-            function updateOverallProgress() {
-                const percentage = allLessons.length > 0 ? Math.round((userProgress.completedLessons.length / allLessons.length) * 100) : 0;
-                dom.progressBar.style.width = `${percentage}%`;
-                dom.progressText.textContent = `${percentage}%`;
-            }
-
-            function checkQuizAnswer(lesson) {
-                const selectedOption = dom.lessonMaterialContainer.querySelector('.quiz-option.selected');
-                if (!selectedOption) { showToast('Por favor, selecciona una respuesta.'); return; }
-                const selectedIndex = parseInt(selectedOption.dataset.index);
-                const correctIndex = lesson.questions[0].correctAnswer;
-                dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
-                if (selectedIndex === correctIndex) {
-                    selectedOption.classList.add('correct');
-                    showToast('¡Respuesta Correcta!');
-                    dom.mainActionBtn.disabled = false;
-                } else {
-                    selectedOption.classList.add('incorrect');
-                    dom.lessonMaterialContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
-                    showToast('Respuesta incorrecta. ¡Sigue intentando!');
-                    setTimeout(() => {
-                        dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
-                            opt.classList.remove('incorrect', 'correct', 'selected');
-                            opt.style.pointerEvents = 'auto';
-                        });
-                    }, 2000);
-                }
-            }
-
-            // --- MANEJO DE ESTADO Y DATOS ---
-            async function navigateToLesson(lessonId) {
-                const lesson = allLessons.find(l => l.id === lessonId);
-                if (!lesson) {
-                    console.error(`Error: Se intentó navegar a una lección inexistente con ID: ${lessonId}`);
-                    return;
-                }
-                userProgress.currentLessonId = lessonId;
-                await saveProgress();
-                refreshUI();
-            }
-
-            async function saveProgress() {
-                if (!currentUser) return;
-                try {
-                    const progressRef = db.collection('userProgress').doc(currentUser.uid);
-                    await progressRef.set({ [courseId]: userProgress }, { merge: true });
-                } catch (error) {
-                    console.error("Error al guardar el progreso:", error);
-                }
-            }
-
-            async function loadProgressAndInitialize() {
-                const docRef = db.collection('userProgress').doc(currentUser.uid);
-                try {
-                    const doc = await docRef.get();
-                    if (doc.exists) {
-                        const courseProgress = doc.data()[courseId];
-                        if (courseProgress) {
-                            const savedLessonIdIsValid = courseProgress.currentLessonId && allLessons.some(l => l.id === courseProgress.currentLessonId);
-                            // Construcción explícita y segura del objeto de progreso del usuario
-                            userProgress = {
-                                completedLessons: courseProgress.completedLessons || [],
-                                currentLessonId: savedLessonIdIsValid ? courseProgress.currentLessonId : allLessons[0].id
-                            };
-                        }
-                    }
-                } catch (error) { 
-                    console.error("Error crítico al cargar progreso. Se usará el progreso por defecto.", error);
-                }
-                
-                refreshUI();
-            }
-
-            // --- MANEJADORES DE EVENTOS ---
-            function addSidebarListeners() {
-                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); }));
-                dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => header.addEventListener('click', () => { const content = header.nextElementSibling; content.classList.toggle('open'); header.querySelector('i').style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; }));
-            }
-
-            dom.mainActionBtn.addEventListener('click', async () => {
-                const lessonId = userProgress.currentLessonId;
-                const isCompleted = userProgress.completedLessons.includes(lessonId);
-                
-                if (!isCompleted) {
-                    userProgress.completedLessons.push(lessonId);
-                    await saveProgress();
-                    checkForBadgeUnlock(lessonId);
-                    showToast('¡Lección completada!');
-                    refreshUI();
-                } else {
-                    const currentIndex = allLessons.findIndex(l => l.id === lessonId);
-                    if (currentIndex < allLessons.length - 1) {
-                        navigateToLesson(allLessons[currentIndex + 1].id);
-                    } else {
-                        showCompletionModal();
-                    }
-                }
-            });
-
-            dom.prevBtn.addEventListener('click', () => {
-                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
-                if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id);
-            });
-
-            dom.tabButtons.forEach(button => button.addEventListener('click', () => {
-                dom.tabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                Object.values(dom.tabs).forEach(content => content.classList.add('hidden'));
-                dom.tabs[button.dataset.tab].classList.remove('hidden');
-            }));
-            
-            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
-            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'portal-certificacion.html');
-
-            // --- AUTENTICACIÓN Y PUNTO DE ENTRADA ---
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
-                    
-                    const name = currentUser.name;
-                    const photoURL = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name.charAt(0).toUpperCase()}`;
-                    dom.userName.textContent = name;
-                    dom.userAvatar.src = photoURL;
-                    dom.userProfile.style.display = 'flex';
-                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
-
-                    loadProgressAndInitialize();
-                } else {
-                    window.location.href = 'acceso.html';
-                }
-            });
-
-            // --- FUNCIONES UTILITARIAS ---
-            function showToast(message, type = 'generic') {
-                const toastEl = type === 'badge' ? dom.badgeToast : dom.toast;
-                const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage;
-                msgEl.textContent = message;
-                toastEl.classList.add('show');
-                setTimeout(() => toastEl.classList.remove('show'), 4000);
-            }
-
-            function checkForBadgeUnlock(completedLessonId) {
-                const module = courseData.modules.find(m => m.lessons.some(l => l.id === completedLessonId));
-                if (!module || !module.badge) return;
-                const lastLessonOfModule = module.lessons[module.lessons.length - 1].id;
-                if (completedLessonId !== lastLessonOfModule) return;
-                const moduleLessonsIds = module.lessons.map(l => l.id);
-                if (moduleLessonsIds.every(id => userProgress.completedLessons.includes(id))) {
-                    showToast(`Has ganado la insignia: "${module.badge}"`, 'badge');
-                }
-            }
-            
-            function showCompletionModal() {
-                dom.modalUserName.textContent = currentUser.name;
-                dom.completionModalOverlay.classList.remove('hidden');
-                dom.completionModal.classList.remove('hidden');
-                setTimeout(() => {
-                    dom.completionModalOverlay.classList.add('opacity-100');
-                    dom.completionModal.classList.add('show');
-                }, 10);
-            }
-        });
-    </script>
-</body>
-</html>
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos descargables en la pestaña 'Recursos'.</p><a href="#" class="bg-teal-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-teal-600 flex items-center 
