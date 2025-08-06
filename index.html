@@ -697,19 +697,70 @@
     <script defer>
         document.addEventListener('DOMContentLoaded', () => {
             
+            // --- INICIO: LÓGICA DE SUSCRIPCIÓN CORREGIDA ---
             const form = document.getElementById('suscripcion-form');
-            if(form) {
+            const emailInput = document.getElementById('suscripcion-email');
+            const optinCheckbox = document.getElementById('suscripcion-optin');
+            const messageDiv = document.getElementById('suscripcion-mensaje');
+            const submitButton = document.getElementById('suscripcion-btn');
+            
+            // URL de tu webhook de n8n
+            const webhookUrl = 'https://muna.auto.hostybee.com/webhook/suscripcion';
+
+            if (form && emailInput && optinCheckbox && submitButton && messageDiv) {
                 form.addEventListener('submit', async (event) => {
-                    event.preventDefault();
-                    const mensajeDiv = document.getElementById('suscripcion-mensaje');
-                    mensajeDiv.textContent = '¡Gracias por suscribirte!';
-                    mensajeDiv.style.color = '#14b8a6';
-                    form.reset();
-                    setTimeout(() => {
-                        mensajeDiv.textContent = '';
-                    }, 4000);
+                    event.preventDefault(); // Prevenir el envío tradicional del formulario
+                    
+                    // Validar que el formulario sea correcto antes de enviar
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return;
+                    }
+
+                    // Deshabilitar botón y mostrar estado de carga
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Enviando...';
+                    messageDiv.textContent = ''; // Limpiar mensajes previos
+
+                    const email = emailInput.value;
+                    const optin = optinCheckbox.checked;
+
+                    const dataToSend = { email, optin };
+                    console.log("Datos que se enviarán al webhook:", dataToSend);
+
+                    try {
+                        const response = await fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(dataToSend),
+                        });
+
+                        if (response.ok) {
+                            // Éxito en la conexión con el webhook
+                            messageDiv.textContent = '¡Gracias por suscribirte! Revisa tu correo.';
+                            messageDiv.className = 'mt-4 text-md font-semibold text-green-600 text-center';
+                            form.reset(); // Limpiar el formulario
+                        } else {
+                            // El servidor respondió con un error (ej. 404, 500)
+                            const errorText = await response.text();
+                            throw new Error(`El servidor respondió con un error: ${response.status}. Detalles: ${errorText}`);
+                        }
+                    } catch (error) {
+                        // Error de red o en la lógica de la petición
+                        messageDiv.textContent = 'Hubo un error al conectar. Por favor, intenta de nuevo.';
+                        messageDiv.className = 'mt-4 text-md font-semibold text-red-600 text-center';
+                        console.error('Error detallado al enviar el webhook:', error);
+                    } finally {
+                        // Reactivar el botón sin importar el resultado
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Suscribirme ahora';
+                    }
                 });
+            } else {
+                console.error("Error crítico: No se encontró uno o más elementos del formulario de suscripción.");
             }
+            // --- FIN: LÓGICA DE SUSCRIPCIÓN CORREGIDA ---
+
 
             if (typeof Swiper !== 'undefined') {
                 new Swiper('.testimonial-swiper', {
