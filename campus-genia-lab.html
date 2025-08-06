@@ -40,11 +40,18 @@
         .comment-form.active {
             max-height: 500px; /* Suficiente para el form */
         }
-        /* Estilo para el filtro de categoría activo */
         .category-link.active {
             background-color: #f0fdfa; /* teal-50 */
             color: #0d9488; /* teal-600 */
             font-weight: 600;
+        }
+        .delete-button {
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        .delete-button:hover {
+            opacity: 1;
+            color: #ef4444; /* red-500 */
         }
     </style>
 </head>
@@ -136,9 +143,9 @@
                         <h3 class="text-lg font-bold mb-4 border-b pb-2">Categorías</h3>
                         <ul id="category-list" class="space-y-1">
                             <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="all"><i data-lucide="layout-grid" class="h-4 w-4 mr-2"></i>Ver Todas</a></li>
-                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Tutoriales"><i data-lucide="book-open" class="h-4 w-4 mr-2"></i>Tutoriales</a></li>
-                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Discusiones"><i data-lucide="message-square" class="h-4 w-4 mr-2"></i>Discusiones</a></li>
-                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Proyectos"><i data-lucide="lightbulb" class="h-4 w-4 mr-2"></i>Proyectos</a></li>
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Tutoriales"><i data-lucide="book-open" class="h-4 w-4 mr-2 text-blue-500"></i>Tutoriales</a></li>
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Discusiones"><i data-lucide="message-square" class="h-4 w-4 mr-2 text-green-500"></i>Discusiones</a></li>
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Proyectos"><i data-lucide="lightbulb" class="h-4 w-4 mr-2 text-purple-500"></i>Proyectos</a></li>
                         </ul>
                         <div id="sidebar-cta-container" class="mt-6">
                              <a href="acceso.html" class="block w-full bg-teal-500 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-teal-600 transition-colors">
@@ -202,9 +209,9 @@
             let currentCategoryFilter = 'all';
 
             const categoryDetails = {
-                'Tutoriales': { icon: 'book-open', color: 'text-blue-600', bg: 'bg-blue-100' },
-                'Discusiones': { icon: 'message-square', color: 'text-green-600', bg: 'bg-green-100' },
-                'Proyectos': { icon: 'lightbulb', color: 'text-purple-600', bg: 'bg-purple-100' }
+                'Tutoriales': { icon: 'book-open', color: 'text-blue-600' },
+                'Discusiones': { icon: 'message-square', color: 'text-green-600' },
+                'Proyectos': { icon: 'lightbulb', color: 'text-purple-600' }
             };
 
             function getRelativeTime(date) {
@@ -225,7 +232,6 @@
                 dom.postFeed.innerHTML = '';
                 dom.feedLoader.classList.remove('hidden');
 
-                // **FIX:** Remove orderBy from the initial query to avoid needing a composite index.
                 let query = db.collection('labPosts');
                 if (category && category !== 'all') {
                     query = query.where('category', '==', category);
@@ -241,13 +247,8 @@
                         return;
                     }
                     
-                    // **FIX:** Sort the posts on the client-side.
                     const posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    posts.sort((a, b) => {
-                        const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
-                        const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
-                        return timeB - timeA; // Sort descending
-                    });
+                    posts.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
 
                     dom.postFeed.innerHTML = '';
                     posts.forEach(renderPost);
@@ -260,11 +261,11 @@
             }
 
             function renderPost(postData) {
-                // **FIX:** The function now receives the post data object directly.
                 const post = postData;
                 const postId = post.id;
                 const postDate = post.createdAt ? getRelativeTime(post.createdAt.toDate()) : 'Ahora mismo';
                 const catInfo = categoryDetails[post.category] || categoryDetails['Discusiones'];
+                const isAuthor = currentUser && currentUser.uid === post.authorId;
 
                 const postElement = document.createElement('article');
                 postElement.className = 'bg-white p-6 rounded-xl shadow-md';
@@ -277,7 +278,10 @@
                                     <p class="font-semibold text-sm">${post.authorName}</p>
                                     <span class="text-xs font-medium text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">${post.authorRole || 'Alumno'}</span>
                                 </div>
-                                <span class="text-xs text-gray-500">${postDate}</span>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xs text-gray-500">${postDate}</span>
+                                    ${isAuthor ? `<button class="delete-button" data-type="post" data-post-id="${postId}"><i data-lucide="trash-2" class="h-4 w-4"></i></button>` : ''}
+                                </div>
                             </div>
                             <div class="flex items-center gap-2 mb-2">
                                 <i data-lucide="${catInfo.icon}" class="h-4 w-4 ${catInfo.color}"></i>
@@ -308,21 +312,28 @@
                       commentsContainer.innerHTML = '';
                       snapshot.forEach(doc => {
                           const comment = doc.data();
+                          const commentId = doc.id;
                           const commentDate = comment.createdAt ? getRelativeTime(comment.createdAt.toDate()) : '';
+                          const isAuthor = currentUser && currentUser.uid === comment.authorId;
+                          
                           const commentElement = document.createElement('div');
                           commentElement.className = 'flex items-start gap-3 mt-4';
                           commentElement.innerHTML = `
                             <img src="${comment.authorAvatar}" alt="Avatar de ${comment.authorName}" class="w-8 h-8 rounded-full">
                             <div class="bg-gray-100 rounded-lg p-3 text-sm w-full">
-                                <div class="flex justify-between">
+                                <div class="flex justify-between items-center">
                                     <p class="font-semibold text-gray-800">${comment.authorName}</p>
-                                    <p class="text-xs text-gray-500">${commentDate}</p>
+                                    <div class="flex items-center gap-3">
+                                        <p class="text-xs text-gray-500">${commentDate}</p>
+                                        ${isAuthor ? `<button class="delete-button" data-type="comment" data-post-id="${postId}" data-comment-id="${commentId}"><i data-lucide="trash-2" class="h-3 w-3"></i></button>` : ''}
+                                    </div>
                                 </div>
                                 <p class="text-gray-700 mt-1">${comment.content}</p>
                             </div>
                           `;
                           commentsContainer.appendChild(commentElement);
                       });
+                      lucide.createIcons();
                   });
             }
             
@@ -371,6 +382,45 @@
                 } catch (error) { console.error("Error al publicar comentario: ", error); alert("No se pudo publicar el comentario."); }
             }
 
+            async function handleDelete(e) {
+                const button = e.target.closest('.delete-button');
+                if (!button) return;
+
+                const type = button.dataset.type;
+                const postId = button.dataset.postId;
+                const commentId = button.dataset.commentId;
+
+                if (type === 'post') {
+                    if (confirm('¿Estás seguro de que quieres borrar esta publicación? Se eliminarán todos sus comentarios.')) {
+                        const postRef = db.collection('labPosts').doc(postId);
+                        // Primero borrar subcolección de comentarios
+                        const commentsSnapshot = await postRef.collection('comments').get();
+                        const batch = db.batch();
+                        commentsSnapshot.forEach(doc => batch.delete(doc.ref));
+                        await batch.commit();
+                        // Luego borrar el post
+                        await postRef.delete();
+                    }
+                } else if (type === 'comment') {
+                    if (confirm('¿Estás seguro de que quieres borrar este comentario?')) {
+                        const postRef = db.collection('labPosts').doc(postId);
+                        const commentRef = postRef.collection('comments').doc(commentId);
+                        try {
+                            await db.runTransaction(async (transaction) => {
+                                const postDoc = await transaction.get(postRef);
+                                if (!postDoc.exists) throw "El post no existe";
+                                const newCount = (postDoc.data().commentsCount || 1) - 1;
+                                transaction.update(postRef, { commentsCount: newCount < 0 ? 0 : newCount });
+                                transaction.delete(commentRef);
+                            });
+                        } catch (error) {
+                            console.error("Error al borrar comentario: ", error);
+                            alert("No se pudo borrar el comentario.");
+                        }
+                    }
+                }
+            }
+
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUser = { uid: user.uid, displayName: user.displayName || 'Alumno', photoURL: user.photoURL || `https://placehold.co/48x48/14b8a6/FFFFFF?text=${(user.displayName || 'A').charAt(0).toUpperCase()}` };
@@ -409,6 +459,8 @@
                 const commentButton = e.target.closest('.comment-button');
                 if (commentButton && currentUser) { handleCommentForm(commentButton.dataset.postId, currentUser); } 
                 else if (commentButton && !currentUser) { alert('Debes iniciar sesión para comentar.'); }
+                
+                handleDelete(e);
             });
 
             dom.categoryList.addEventListener('click', e => {
