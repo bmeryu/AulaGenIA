@@ -29,6 +29,10 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        /* Estilo para el placeholder del textarea */
+        textarea::placeholder {
+            color: #9ca3af;
+        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -46,10 +50,13 @@
                 <a href="cursos.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">
                     Ver Cursos
                 </a>
-                <a href="acceso.html" class="cta-button bg-gray-900 text-white font-bold rounded-full hover:bg-gray-700 px-4 py-1.5 sm:px-6 sm:py-2 flex flex-col items-center justify-center">
-                    <span class="text-sm sm:text-base leading-tight">🔓 Acceso</span>
-                    <span class="text-[9px] sm:text-[10px] font-normal opacity-75 leading-tight">Inicia tu viaje</span>
-                </a>
+                <!-- El botón de acceso se actualizará con JS si el usuario está logueado -->
+                <div id="auth-container">
+                    <a href="acceso.html" class="cta-button bg-gray-900 text-white font-bold rounded-full hover:bg-gray-700 px-4 py-1.5 sm:px-6 sm:py-2 flex flex-col items-center justify-center">
+                        <span class="text-sm sm:text-base leading-tight">🔓 Acceso</span>
+                        <span class="text-[9px] sm:text-[10px] font-normal opacity-75 leading-tight">Inicia tu viaje</span>
+                    </a>
+                </div>
             </div>
         </nav>
     </header>
@@ -73,24 +80,9 @@
             <div class="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
                 <p class="text-center text-gray-600 mb-8">Nuestra filosofía de "aprender haciendo" cobra vida aquí. Es nuestro entorno de aprendizaje exclusivo donde la teoría se encuentra con la práctica.</p>
                 <div class="grid md:grid-cols-3 gap-8 text-center">
-                    <!-- Característica 1: Experimentación -->
-                    <div class="flex flex-col items-center">
-                        <i data-lucide="flask-conical" class="h-12 w-12 text-teal-500 mb-3"></i>
-                        <h3 class="font-bold text-lg">Experimentación</h3>
-                        <p class="text-sm text-gray-600">Un espacio seguro para probar, equivocarse y descubrir el potencial de la herramienta sin miedo.</p>
-                    </div>
-                    <!-- Característica 2: Aplicación -->
-                    <div class="flex flex-col items-center">
-                        <i data-lucide="target" class="h-12 w-12 text-blue-500 mb-3"></i>
-                        <h3 class="font-bold text-lg">Aplicación</h3>
-                        <p class="text-sm text-gray-600">Enfocamos el aprendizaje en desafíos y proyectos del mundo real para un impacto inmediato.</p>
-                    </div>
-                    <!-- Característica 3: Construcción -->
-                    <div class="flex flex-col items-center">
-                        <i data-lucide="blocks" class="h-12 w-12 text-gray-600 mb-3"></i>
-                        <h3 class="font-bold text-lg">Construcción</h3>
-                        <p class="text-sm text-gray-600">El objetivo final es que construyas tu propio proyecto, aplicando todo lo aprendido de forma tangible.</p>
-                    </div>
+                    <div class="flex flex-col items-center"><i data-lucide="flask-conical" class="h-12 w-12 text-teal-500 mb-3"></i><h3 class="font-bold text-lg">Experimentación</h3><p class="text-sm text-gray-600">Un espacio seguro para probar, equivocarse y descubrir el potencial de la herramienta sin miedo.</p></div>
+                    <div class="flex flex-col items-center"><i data-lucide="target" class="h-12 w-12 text-blue-500 mb-3"></i><h3 class="font-bold text-lg">Aplicación</h3><p class="text-sm text-gray-600">Enfocamos el aprendizaje en desafíos y proyectos del mundo real para un impacto inmediato.</p></div>
+                    <div class="flex flex-col items-center"><i data-lucide="blocks" class="h-12 w-12 text-gray-600 mb-3"></i><h3 class="font-bold text-lg">Construcción</h3><p class="text-sm text-gray-600">El objetivo final es que construyas tu propio proyecto, aplicando todo lo aprendido de forma tangible.</p></div>
                 </div>
             </div>
         </section>
@@ -101,39 +93,44 @@
                 <!-- Columna Principal: Posts -->
                 <div class="lg:col-span-2">
                     <h2 class="text-2xl font-bold mb-6 border-b pb-3">Actividad Reciente en el Lab</h2>
-                    <div class="space-y-8">
-                        <!-- Post 1 -->
-                        <article class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                            <div class="flex items-center mb-3">
-                                <span class="text-sm font-semibold text-teal-600 bg-teal-100 px-3 py-1 rounded-full">Tutorial</span>
-                                <span class="text-sm text-gray-500 ml-4">Hace 2 días</span>
-                            </div>
-                            <h3 class="text-xl font-bold mb-2"><a href="#" class="hover:text-teal-600">Cómo usar el prompt de "5 puntos clave" para resumir reuniones</a></h3>
-                            <p class="text-gray-600 text-sm mb-4">Descubre cómo transformar actas de reunión de 3 páginas en un resumen accionable que tu equipo realmente leerá. Te mostramos el paso a paso...</p>
-                            <div class="flex items-center">
-                                <img src="https://placehold.co/40x40/2DD4BF/FFFFFF?text=A" alt="Avatar del autor" class="w-10 h-10 rounded-full mr-3">
-                                <div>
-                                    <p class="font-semibold text-sm">Admin GenIA</p>
-                                    <p class="text-xs text-gray-500">2 comentarios</p>
+
+                    <!-- INICIO: SECCIÓN PARA CREAR PUBLICACIÓN (SOLO PARA USUARIOS LOGUEADOS) -->
+                    <div id="create-post-container" class="hidden mb-8">
+                        <div class="bg-white p-5 rounded-xl shadow-md">
+                            <div class="flex items-start gap-4">
+                                <img id="user-avatar" src="" alt="Tu avatar" class="w-12 h-12 rounded-full">
+                                <div class="w-full">
+                                    <form id="create-post-form">
+                                        <textarea id="post-content" class="w-full p-3 border-gray-200 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow" rows="3" placeholder="¿Qué estás pensando, [Nombre de Usuario]?"></textarea>
+                                        <div class="flex justify-end mt-3">
+                                            <button type="submit" class="bg-teal-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-teal-600 transition-colors">Publicar</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </article>
-                        <!-- Post 2 -->
-                        <article class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                            <div class="flex items-center mb-3">
-                                <span class="text-sm font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">Discusión</span>
-                                <span class="text-sm text-gray-500 ml-4">Hace 5 días</span>
-                            </div>
-                            <h3 class="text-xl font-bold mb-2"><a href="#" class="hover:text-blue-600">¿Qué herramienta de generación de imágenes prefieren: Midjourney o DALL-E 3?</a></h3>
-                            <p class="text-gray-600 text-sm mb-4">Abro debate: para logos y gráficos de marketing, ¿cuál les ha dado mejores resultados y por qué? Compartan sus ejemplos y prompts...</p>
-                            <div class="flex items-center">
-                                <img src="https://placehold.co/40x40/3B82F6/FFFFFF?text=C" alt="Avatar del autor" class="w-10 h-10 rounded-full mr-3">
+                        </div>
+                    </div>
+                    <!-- FIN: SECCIÓN PARA CREAR PUBLICACIÓN -->
+
+                    <!-- INICIO: LLAMADA A LA ACCIÓN PARA INICIAR SESIÓN (SOLO PARA VISITANTES) -->
+                    <div id="login-prompt" class="hidden mb-8">
+                         <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                            <div class="flex">
+                                <div class="py-1"><i data-lucide="log-in" class="h-6 w-6 text-teal-500 mr-4"></i></div>
                                 <div>
-                                    <p class="font-semibold text-sm">Carla Morales</p>
-                                    <p class="text-xs text-gray-500">12 comentarios</p>
+                                    <p class="font-bold text-teal-800">Únete a la conversación</p>
+                                    <p class="text-sm text-teal-700"><a href="acceso.html" class="underline font-semibold">Inicia sesión</a> o <a href="acceso.html" class="underline font-semibold">regístrate</a> para publicar en el Lab.</p>
                                 </div>
                             </div>
-                        </article>
+                        </div>
+                    </div>
+                    <!-- FIN: LLAMADA A LA ACCIÓN -->
+                    
+                    <div id="post-feed" class="space-y-8">
+                        <!-- Las publicaciones de Firestore se cargarán aquí -->
+                        <div id="feed-loader" class="text-center py-8">
+                           <p class="text-gray-500">Cargando actividad...</p>
+                        </div>
                     </div>
                 </div>
 
@@ -147,9 +144,11 @@
                             <li><a href="#" class="flex items-center text-gray-600 hover:text-teal-600"><i data-lucide="lightbulb" class="h-4 w-4 mr-2"></i>Proyectos</a></li>
                         </ul>
 
-                        <a href="acceso.html" class="mt-8 block w-full bg-teal-500 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-teal-600 transition-colors">
-                            Únete para Publicar
-                        </a>
+                        <div id="sidebar-cta-container">
+                             <a href="acceso.html" class="mt-8 block w-full bg-teal-500 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-teal-600 transition-colors">
+                                Únete para Publicar
+                            </a>
+                        </div>
                     </div>
                 </aside>
             </div>
@@ -166,8 +165,144 @@
         </div>
     </footer>
     
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+
     <script>
         lucide.createIcons();
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Configuración de Firebase ---
+            const firebaseConfig = {
+                 apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
+                 authDomain: "aulagenia.firebaseapp.com", 
+                 projectId: "aulagenia", 
+                 storageBucket: "aulagenia.appspot.com", 
+                 messagingSenderId: "173328075630", 
+                 appId: "1:173328075630:web:825606db4271ea1e66cf7f"
+            };
+            
+            // --- Inicialización de Firebase ---
+            try {
+                firebase.initializeApp(firebaseConfig);
+            } catch(e) {
+                console.warn("Firebase ya ha sido inicializado.");
+            }
+
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+
+            // --- Referencias a elementos del DOM ---
+            const createPostContainer = document.getElementById('create-post-container');
+            const loginPrompt = document.getElementById('login-prompt');
+            const userAvatar = document.getElementById('user-avatar');
+            const postContentTextarea = document.getElementById('post-content');
+            const createPostForm = document.getElementById('create-post-form');
+            const postFeed = document.getElementById('post-feed');
+            const feedLoader = document.getElementById('feed-loader');
+            const authContainer = document.getElementById('auth-container');
+            const sidebarCtaContainer = document.getElementById('sidebar-cta-container');
+            
+            let postsListener = null; // Variable para mantener la referencia al listener
+
+            // --- Lógica de Autenticación ---
+            auth.onAuthStateChanged(user => {
+                if (postsListener) {
+                    postsListener(); // Detener el listener anterior para evitar duplicados
+                    postsListener = null;
+                }
+
+                if (user) {
+                    // --- Usuario Autenticado ---
+                    loginPrompt.classList.add('hidden');
+                    createPostContainer.classList.remove('hidden');
+
+                    const userName = user.displayName || 'Alumno';
+                    const userPhoto = user.photoURL || `https://placehold.co/48x48/14b8a6/FFFFFF?text=${userName.charAt(0).toUpperCase()}`;
+                    
+                    userAvatar.src = userPhoto;
+                    postContentTextarea.placeholder = `¿Qué estás pensando, ${userName}?`;
+                    
+                    authContainer.innerHTML = `<a href="campus-curso-ia.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-5 text-sm py-2 hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">Mi Campus</a>`;
+                    sidebarCtaContainer.innerHTML = `<a href="campus-curso-ia.html" class="mt-8 block w-full bg-gray-800 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors">Ir a mi Curso</a>`;
+                    
+                    // --- Lógica para Cargar el Feed de Publicaciones (AHORA DENTRO DEL IF) ---
+                    postsListener = db.collection('labPosts').orderBy('createdAt', 'desc')
+                      .onSnapshot(snapshot => {
+                          feedLoader.classList.add('hidden');
+                          postFeed.innerHTML = ''; // Limpiar el feed para evitar duplicados
+                          if (snapshot.empty) {
+                              postFeed.innerHTML = '<p class="text-center text-gray-500">Aún no hay publicaciones. ¡Sé el primero en compartir algo!</p>';
+                              return;
+                          }
+                          snapshot.forEach(doc => {
+                              const post = doc.data();
+                              const postDate = post.createdAt ? post.createdAt.toDate().toLocaleDateString('es-CL', { day: 'numeric', month: 'long' }) : 'Ahora mismo';
+
+                              const postElement = document.createElement('article');
+                              postElement.className = 'bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300';
+                              postElement.innerHTML = `
+                                    <div class="flex items-start gap-4">
+                                        <img src="${post.authorAvatar}" alt="Avatar de ${post.authorName}" class="w-10 h-10 rounded-full">
+                                        <div class="w-full">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <p class="font-semibold text-sm">${post.authorName}</p>
+                                                <span class="text-xs text-gray-500">${postDate}</span>
+                                            </div>
+                                            <p class="text-gray-700 whitespace-pre-wrap">${post.content}</p>
+                                             <div class="flex items-center text-gray-500 mt-4 text-sm">
+                                                <i data-lucide="message-square" class="h-4 w-4 mr-2"></i>
+                                                <span>${post.commentsCount} comentarios</span>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                              postFeed.appendChild(postElement);
+                          });
+                          lucide.createIcons();
+                      }, err => {
+                        console.error("Error al obtener las publicaciones: ", err);
+                        feedLoader.classList.add('hidden');
+                        postFeed.innerHTML = '<p class="text-center text-red-500">No se pudo cargar la actividad. Intenta recargar la página.</p>';
+                      });
+
+                } else {
+                    // --- Usuario No Autenticado ---
+                    createPostContainer.classList.add('hidden');
+                    loginPrompt.classList.remove('hidden');
+                    authContainer.innerHTML = `<a href="acceso.html" class="cta-button bg-gray-900 text-white font-bold rounded-full hover:bg-gray-700 px-4 py-1.5 sm:px-6 sm:py-2 flex flex-col items-center justify-center"><span class="text-sm sm:text-base leading-tight">🔓 Acceso</span><span class="text-[9px] sm:text-[10px] font-normal opacity-75 leading-tight">Inicia tu viaje</span></a>`;
+                    sidebarCtaContainer.innerHTML = `<a href="acceso.html" class="mt-8 block w-full bg-teal-500 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-teal-600 transition-colors">Únete para Publicar</a>`;
+                    
+                    feedLoader.classList.add('hidden');
+                    postFeed.innerHTML = '<p class="text-center text-gray-500 py-8">Inicia sesión para ver y crear publicaciones.</p>';
+                }
+                 lucide.createIcons();
+            });
+
+            // --- Lógica para Crear Publicaciones ---
+            createPostForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const content = postContentTextarea.value.trim();
+                const user = auth.currentUser;
+
+                if (content && user) {
+                    db.collection('labPosts').add({
+                        content: content,
+                        authorName: user.displayName || 'Alumno',
+                        authorId: user.uid,
+                        authorAvatar: user.photoURL || `https://placehold.co/40x40/14b8a6/FFFFFF?text=${(user.displayName || 'A').charAt(0).toUpperCase()}`,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        commentsCount: 0
+                    }).then(() => {
+                        postContentTextarea.value = '';
+                    }).catch(err => {
+                        console.error("Error al añadir la publicación: ", err);
+                        alert("Hubo un error al publicar. Por favor, inténtalo de nuevo.");
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
