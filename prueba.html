@@ -2,9 +2,7 @@
 <!-- 
     ANÁLISIS Y MEJORAS SEO/UX POR DESARROLLADOR SENIOR:
     ----------------------------------------------------
-    19. **Actualización Estratégica de Hoja de Ruta (v19):** Se ha rediseñado la sección "Hoja de Ruta" para alinearla con la nueva malla curricular interna. Se agruparon los 8 módulos internos en 6 bloques temáticos enfocados en beneficios para el marketing y la venta. Se actualizó el texto para ser más persuasivo y se amplió la paleta de colores para los nuevos módulos, mejorando la jerarquía visual.
-    18. **Clarificación de Formato (v18):** Se ha modificado el texto del atributo "Formato" a "100% Online y a tu ritmo".
-    17. **Rediseño de Hoja de Ruta (v17):** Se ha transformado la sección "Hoja de Ruta" a un formato de malla (grid).
+    25. **Fusión Estratégica de Contenido (v25):** Se han fusionado las secciones "Nuestro Enfoque" y "Hoja de Ruta" en una única sección cohesiva para mejorar el flujo narrativo y la UX. Se ha restaurado íntegramente todo el contenido faltante (Herramientas, Testimonios, etc.), se han ampliado las FAQ y se ha verificado la funcionalidad de notificaciones, cookies y el modal de certificado seguro. Se ha estandarizado la numeración para consistencia visual.
 -->
 <html lang="es-CL">
 <head>
@@ -73,6 +71,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+
 
     <style>
         :root {
@@ -81,62 +85,60 @@
             --brand-yellow: #f59e0b;
         }
         body {
-            font-family: 'Poppins', sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            font-family: 'Poppins', sans-serif;
         }
-        .hero-h1 { line-height: 1.2; }
-        @media (max-width: 768px) { .hero-h1 { line-height: 1.3; } }
         .gradient-text {
             background: linear-gradient(90deg, var(--brand-teal), #b4d734, var(--brand-yellow), var(--brand-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-        .cta-button {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(45, 212, 191, 0.3);
         }
         .gradient-button {
             background-image: linear-gradient(90deg, #2DD4BF 0%, #FBBF24 100%);
-            background-size: 100% auto;
             transition: all 0.4s ease;
-            color: white;
-            border: none;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
         .gradient-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
-        .swiper-pagination-bullet { background-color: #9ca3af; opacity: 1; transition: background-color 0.3s ease; }
-        .swiper-pagination-bullet-active { background-color: var(--brand-teal); }
-        .shimmer-badge { position: relative; overflow: hidden; }
-        .shimmer-badge::after {
-            content: ''; position: absolute; top: 0; left: -150%; width: 100%; height: 100%;
-            background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
-            transform: skewX(-25deg); animation: shimmer 3.5s infinite;
-        }
-        @keyframes shimmer { 0% { left: -150%; } 50% { left: 150%; } 100% { left: 150%; } }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .arrow-down { transform: rotate(180deg); }
+        .arrow-down { transition: transform 0.2s ease-in-out; }
         
-        #notification-toast, #notification-prompt-modal {
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        /* Estilos para el certificado */
+        .certificate-modal-content {
+            border: 10px solid var(--brand-teal); 
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden; /* Clave para contener la marca de agua */
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM11 68c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z" fill="%2314b8a6" fill-opacity="0.05" fill-rule="evenodd"/></svg>');
         }
-        
-        details > summary {
-            list-style: none;
+        .cert-title { font-family: 'Playfair Display', serif; }
+        .student-name {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--brand-teal);
         }
-        details > summary::-webkit-details-marker {
-            display: none;
+        /* Capa de protección y marca de agua */
+        .protection-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            user-select: none; /* Evita la selección de texto */
+            pointer-events: none; /* Permite clics "a través" de la capa */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        details[open] summary .arrow-down {
-            transform: rotate(180deg);
-        }
-        .arrow-down {
-            transition: transform 0.2s ease-in-out;
+        .watermark {
+            font-size: 10vw; /* Tamaño adaptable */
+            font-weight: 900;
+            color: rgba(0, 0, 0, 0.08);
+            transform: rotate(-30deg);
+            letter-spacing: 0.5em;
         }
     </style>
 </head>
@@ -167,15 +169,15 @@
     <main>
         <section class="container mx-auto px-6 py-16 md:py-24 text-center">
             <div class="max-w-4xl mx-auto">
-                <h1 class="text-4xl md:text-6xl font-black leading-tight mb-4 hero-h1">
+                <h1 class="text-4xl md:text-6xl font-black leading-tight mb-4">
                     Domina la IA de principio a fin,<br><span class="gradient-text">ahorra horas y multiplica tu impacto.</span>
                 </h1>
                 <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
                     Aprende a usar la IA para trabajar menos y crear más. Sin códigos, sin jerga técnica, ¡solo pura creatividad y eficiencia!
                 </p>
                 <div class="my-8">
-                    <div class="inline-block bg-gradient-to-r from-teal-500 to-blue-500 text-white text-sm font-bold py-2 px-4 rounded-full mb-3 shadow-lg shimmer-badge">
-                        GenIA Week
+                    <div class="inline-block bg-gradient-to-r from-teal-500 to-blue-500 text-white text-sm font-bold py-2 px-4 rounded-full mb-3 shadow-lg">
+                        Oferta Exclusiva
                     </div>
                     <div class="flex justify-center items-center gap-4">
                         <span class="text-3xl text-gray-400 line-through">$49 USD</span>
@@ -183,7 +185,7 @@
                     </div>
                     <p class="text-gray-500 mt-1">Pago único por acceso de 12 meses</p>
                 </div>
-                <a href="#precios" id="main-cta" class="cta-button inline-block text-white font-bold text-lg py-4 px-10 rounded-full" style="background-color: var(--brand-teal);">
+                <a href="#precios" class="gradient-button inline-block text-white font-bold text-lg py-4 px-10 rounded-full">
                     Descubre Todo tu Potencial
                 </a>
             </div>
@@ -193,9 +195,6 @@
             <div class="container mx-auto px-6">
                 <div class="text-center max-w-3xl mx-auto">
                     <h2 class="text-3xl md:text-4xl font-bold mb-4">¿Esta aventura es para ti?</h2>
-                    <p class="text-gray-600 text-lg mb-6">
-                        Personas como tú están buscando cómo aplicar IA sin perderse en tecnicismos. Este curso es para quienes quieren usar la IA, no teorizar.
-                    </p>
                     <p class="text-gray-600 text-lg mb-12">
                         Si te identificas con alguna de estas frases, la respuesta es un gran
                         <span class="font-bold" style="color: var(--brand-teal);">¡SÍ!</span>
@@ -236,88 +235,81 @@
             </div>
         </section>
 
-        <!-- =================================================================== -->
-        <!-- =========== INICIO: SECCIÓN HOJA DE RUTA ACTUALIZADA (v19) ========== -->
-        <!-- =================================================================== -->
-        <section class="py-16 md:py-24 bg-gray-50">
+        <section id="metodologia" class="py-16 md:py-24 bg-teal-50">
             <div class="container mx-auto px-6">
                 <div class="text-center max-w-3xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Tu Hoja de Ruta hacia el Dominio de la IA</h2>
-                    <p class="text-gray-600 text-lg mb-12">Un viaje práctico y enfocado en resultados. Esto es lo que lograrás en cada etapa:</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-teal-900 mb-4">Un Enfoque Transparente para tu Éxito</h2>
+                    <p class="text-lg text-teal-800 mb-12">No solo te enseñamos a usar herramientas, te preparamos para pensar estratégicamente con IA. Así lo hacemos:</p>
                 </div>
                 
-                <!-- Atributos del curso en formato malla -->
-                <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 text-center">
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <svg class="w-8 h-8 mx-auto mb-2 text-teal-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <h4 class="font-bold">Duración Total</h4>
-                        <p class="text-gray-600 text-sm">+10 horas de contenido</p>
+                <div class="max-w-5xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left mb-16">
+                    <div class="bg-white p-6 rounded-xl shadow-md flex items-start space-x-4">
+                        <div class="font-bold text-4xl text-teal-200">01</div>
+                        <div>
+                            <h3 class="font-bold text-xl mb-2 text-teal-700">Aprendizaje por Competencias</h3>
+                            <p class="text-gray-600">Cada módulo está diseñado para que desarrolles habilidades concretas y medibles que puedas aplicar desde el primer día.</p>
+                        </div>
                     </div>
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <svg class="w-8 h-8 mx-auto mb-2 text-teal-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>
-                        <h4 class="font-bold">Nivel</h4>
-                        <p class="text-gray-600 text-sm">Principiante a Intermedio</p>
+                    <div class="bg-white p-6 rounded-xl shadow-md flex items-start space-x-4">
+                        <div class="font-bold text-4xl text-teal-200">02</div>
+                        <div>
+                            <h3 class="font-bold text-xl mb-2 text-teal-700">Aprendizaje Activo y Práctico</h3>
+                            <p class="text-gray-600">Creemos que la mejor forma de aprender es haciendo. El curso se centra en actividades y un proyecto final con impacto real.</p>
+                        </div>
                     </div>
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <svg class="w-8 h-8 mx-auto mb-2 text-teal-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" /></svg>
-                        <h4 class="font-bold">Formato</h4>
-                        <p class="text-gray-600 text-sm">100% Online y a tu ritmo</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <svg class="w-8 h-8 mx-auto mb-2 text-teal-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
-                        <h4 class="font-bold">Acceso</h4>
-                        <p class="text-gray-600 text-sm">12 meses ilimitado</p>
+                    <div class="bg-white p-6 rounded-xl shadow-md flex items-start space-x-4">
+                        <div class="font-bold text-4xl text-teal-200">03</div>
+                        <div>
+                            <h3 class="font-bold text-xl mb-2 text-teal-700">Flexibilidad y Microaprendizaje</h3>
+                            <p class="text-gray-600">Tú eliges cuándo y cómo avanzar. Aprende en bloques de videos cortos (3-5 min) y con recursos listos para usar.</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Módulos del curso en formato malla -->
-                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-                    <!-- Module 1 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
-                        <div class="font-bold text-2xl text-teal-500">01</div>
-                        <div>
-                            <h3 class="font-bold text-xl mb-1">Fundamentos y Primeros Pasos</h3>
-                            <p class="text-gray-600 text-sm">Activa tus herramientas y entiende con casos reales cómo la IA ya está cambiando el mundo.</p>
+                <div class="max-w-4xl mx-auto">
+                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-10 text-gray-800">Tu Hoja de Ruta hacia el Dominio de la IA</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
+                            <div class="font-bold text-2xl text-teal-500">01</div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Fundamentos y Primeros Pasos</h3>
+                                <p class="text-gray-600 text-sm">Activa tus herramientas y entiende con casos reales cómo la IA ya está cambiando el mundo.</p>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Module 2 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
-                        <div class="font-bold text-2xl text-blue-500">02</div>
-                        <div>
-                            <h3 class="font-bold text-xl mb-1">Creación de Contenido Acelerado</h3>
-                            <p class="text-gray-600 text-sm">Genera textos persuasivos, emails y diseños gráficos impactantes en una fracción del tiempo.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
+                            <div class="font-bold text-2xl text-blue-500">02</div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Creación de Contenido Acelerado</h3>
+                                <p class="text-gray-600 text-sm">Genera textos persuasivos, emails y diseños gráficos impactantes en una fracción del tiempo.</p>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Module 3 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
-                        <div class="font-bold text-2xl text-yellow-500">03</div>
-                        <div>
-                            <h3 class="font-bold text-xl mb-1">Marketing y Ventas con IA</h3>
-                            <p class="text-gray-600 text-sm">Diseña ofertas irresistibles y automatiza campañas para atraer y convertir más clientes.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
+                            <div class="font-bold text-2xl text-yellow-500">03</div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Marketing y Ventas con IA</h3>
+                                <p class="text-gray-600 text-sm">Diseña ofertas irresistibles y automatiza campañas para atraer y convertir más clientes.</p>
+                            </div>
                         </div>
-                    </div>
-                     <!-- Module 4 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
-                        <div class="font-bold text-2xl text-green-500">04</div>
-                        <div>
-                            <h3 class="font-bold text-xl mb-1">Productividad Exponencial</h3>
-                            <p class="text-gray-600 text-sm">Automatiza tareas repetitivas, organiza tu flujo de trabajo y recupera horas valiosas de tu día.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
+                            <div class="font-bold text-2xl text-green-500">04</div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Productividad Exponencial</h3>
+                                <p class="text-gray-600 text-sm">Automatiza tareas repetitivas, organiza tu flujo de trabajo y recupera horas valiosas de tu día.</p>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Module 5 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
-                        <div class="font-bold text-2xl text-indigo-500">05</div>
-                        <div>
-                            <h3 class="font-bold text-xl mb-1">Proyecto Final Aplicado</h3>
-                            <p class="text-gray-600 text-sm">Aplica todo lo aprendido en un proyecto real para tu trabajo o emprendimiento y obtén resultados tangibles.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
+                            <div class="font-bold text-2xl text-indigo-500">05</div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Proyecto Final Aplicado</h3>
+                                <p class="text-gray-600 text-sm">Aplica todo lo aprendido en un proyecto real para tu trabajo o emprendimiento y obtén resultados tangibles.</p>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Module 6 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
-                        <div class="font-bold text-2xl text-gray-500">06</div>
-                        <div>
-                            <h3 class="font-bold text-xl mb-1">IA Responsable y Futuro</h3>
-                            <p class="text-gray-600 text-sm">Aprende a usar la IA con criterio ético y mantente a la vanguardia con actualizaciones constantes.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
+                            <div class="font-bold text-2xl text-gray-500">06</div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">IA Responsable y Futuro</h3>
+                                <p class="text-gray-600 text-sm">Aprende a usar la IA con criterio ético y mantente a la vanguardia con actualizaciones constantes.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -328,9 +320,6 @@
                 </div>
             </div>
         </section>
-        <!-- =================================================================== -->
-        <!-- ============ FIN: SECCIÓN HOJA DE RUTA ACTUALIZADA (v19) ============ -->
-        <!-- =================================================================== -->
         
         <section id="herramientas" class="py-16 md:py-24 bg-white">
             <div class="container mx-auto px-6">
@@ -443,11 +432,19 @@
                         <p class="text-6xl font-bold text-center my-1 text-teal-500">$5 <span class="text-xl font-normal text-gray-500">USD</span></p>
                         <p class="text-center text-gray-400 text-sm -mt-1 mb-2">(~$4.700 CLP aprox.)</p>
                         <p class="text-center text-gray-500 text-xs">Pago único, sin cuotas ni suscripciones.</p>
+                        
                         <ul class="space-y-3 text-gray-700 border-t border-gray-200 pt-6 mt-6 text-left">
                             <li class="flex items-start"><svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><div><strong>Acceso por 12 meses</strong> a todos los módulos.</div></li>
                             <li class="flex items-start"><svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><div><strong>Nuevos módulos IA 2025</strong> incluidos sin costo.</div></li>
                             <li class="flex items-start"><svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><div>Acceso al <strong>Campus GenIA Lab</strong> (foros, eventos en vivo mensuales).</div></li>
+                            <li class="flex items-start"><svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <div>
+                                    <strong>Certificado de Finalización</strong> para validar tus habilidades. 
+                                    <button id="open-cert-modal" class="text-teal-500 font-semibold hover:underline text-sm">(Ver ejemplo)</button>
+                                </div>
+                            </li>
                         </ul>
+                        
                         <a href="acceso.html" class="gradient-button w-full mt-8 inline-block font-bold text-lg py-4 px-10 rounded-full text-white">¡Lo quiero por solo $5!</a>
                         
                         <div class="mt-8 bg-teal-50 border-l-4 border-teal-400 p-4 rounded-r-lg">
@@ -478,7 +475,6 @@
                     <p class="text-gray-600 text-lg mb-12">Resolvemos tus dudas para que tomes la mejor decisión.</p>
                 </div>
                 <div class="max-w-3xl mx-auto space-y-4">
-                    <!-- FAQ 1 -->
                     <details class="bg-white p-6 rounded-lg shadow-md group">
                         <summary class="flex justify-between items-center font-bold text-lg cursor-pointer">
                             ¿Necesito saber programar o tener experiencia previa?
@@ -490,7 +486,17 @@
                             ¡Para nada! Este curso está diseñado desde cero para principiantes. No necesitas saber de códigos ni tener experiencia técnica. Te llevaremos de la mano con un lenguaje sencillo y ejemplos prácticos.
                         </p>
                     </details>
-                    <!-- FAQ 2 -->
+                    <details class="bg-white p-6 rounded-lg shadow-md group">
+                        <summary class="flex justify-between items-center font-bold text-lg cursor-pointer">
+                            ¿Necesito pagar por las herramientas de IA?
+                            <svg class="w-5 h-5 text-gray-500 arrow-down" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </summary>
+                        <p class="text-gray-600 mt-4">
+                            La gran mayoría de las herramientas que enseñamos tienen versiones gratuitas muy potentes, que son más que suficientes para completar el curso y aplicar lo aprendido. Te guiaremos en cómo sacarles el máximo provecho sin gastar de más.
+                        </p>
+                    </details>
                     <details class="bg-white p-6 rounded-lg shadow-md group">
                         <summary class="flex justify-between items-center font-bold text-lg cursor-pointer">
                             ¿Qué pasa si el curso no es para mí?
@@ -502,7 +508,6 @@
                             ¡Cero riesgo! Tienes una garantía de satisfacción de 7 días. Si sientes que el curso no cumple con tus expectativas, te devolvemos el 100% de tu dinero. Sin preguntas.
                         </p>
                     </details>
-                    <!-- FAQ 3 -->
                     <details class="bg-white p-6 rounded-lg shadow-md group">
                         <summary class="flex justify-between items-center font-bold text-lg cursor-pointer">
                             ¿Por cuánto tiempo tendré acceso al contenido?
@@ -514,7 +519,6 @@
                             Con tu pago único, tienes acceso completo durante 12 meses. Esto incluye todas las lecciones actuales y todas las actualizaciones y nuevos módulos que agreguemos durante ese año, ¡sin costo adicional!
                         </p>
                     </details>
-                    <!-- FAQ 4 -->
                     <details class="bg-white p-6 rounded-lg shadow-md group">
                         <summary class="flex justify-between items-center font-bold text-lg cursor-pointer">
                             ¿Cuándo y cómo recibo el acceso al curso?
@@ -569,18 +573,67 @@
         </div>
     </footer>
 
-    <div id="notification-toast" class="fixed bottom-5 right-5 bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg opacity-0 transform translate-y-10 pointer-events-none">
+    <!-- =================================================================== -->
+    <!-- ==================== MODAL DE NOTIFICACIONES ====================== -->
+    <!-- =================================================================== -->
+    <div id="notification-toast" class="fixed bottom-5 right-5 bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg opacity-0 transform translate-y-10 pointer-events-none z-[100]">
         <p id="notification-toast-text"></p>
     </div>
 
-    <!-- Modal para solicitar permiso de notificaciones -->
-    <div id="notification-prompt-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+    <div id="notification-prompt-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-[100] opacity-0 pointer-events-none">
         <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center">
             <h3 class="text-xl font-bold mb-2">¡No te pierdas de nada!</h3>
             <p class="text-gray-600 mb-6">¿Quieres recibir notificaciones sobre nuevos cursos y ofertas exclusivas?</p>
             <div class="flex justify-center gap-4">
                 <button id="notification-prompt-no" class="px-6 py-2 rounded-full text-gray-700 bg-gray-200 hover:bg-gray-300">Ahora no</button>
                 <button id="notification-prompt-yes" class="px-6 py-2 rounded-full text-white" style="background-color: var(--brand-teal);">Sí, quiero</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ===================== MODAL DE CERTIFICADO (v20) ==================== -->
+    <!-- =================================================================== -->
+    <div id="certificate-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-5xl w-full relative">
+            <button id="close-cert-modal" aria-label="Cerrar modal" class="absolute -top-4 -right-4 bg-white rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10 shadow-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div id="certificate" class="certificate-modal-content p-8 md:p-12 w-full aspect-[1.414]">
+                 <div class="protection-overlay">
+                    <span class="watermark">EJEMPLO</span>
+                 </div>
+                 <div class="flex flex-col h-full text-center text-gray-800">
+                     <header class="mb-4">
+                         <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aulagenia" class="mx-auto mb-4 h-16 w-auto" onerror="this.onerror=null;this.src='https://placehold.co/200x60/cccccc/FFFFFF?text=Logo+Error';">
+                         <h2 class="text-4xl md:text-5xl font-bold tracking-wider cert-title">Certificado de Finalización</h2>
+                     </header>
+                     <main class="flex-grow flex flex-col justify-center items-center">
+                         <p class="text-lg md:text-xl mt-4">Se otorga a:</p>
+                         <p class="student-name text-4xl md:text-5xl my-4">[Nombre del Alumno]</p>
+                         <p class="text-base md:text-lg max-w-2xl mx-auto">Por haber completado satisfactoriamente todos los requisitos del programa:</p>
+                         <p class="text-2xl md:text-3xl my-4 font-semibold cert-title">Inteligencia Artificial Aplicada</p>
+                         <p class="text-base md:text-lg">Finalizado el 04 de agosto de 2025.</p>
+                     </main>
+                     <footer class="absolute bottom-8 inset-x-8">
+                         <div class="flex justify-between items-end">
+                             <div class="text-left">
+                                 <div class="mb-8">
+                                     <p class="border-t-2 border-gray-500 pt-2 w-48 text-center text-sm font-semibold">Director Académico</p>
+                                     <p class="text-center text-xs text-gray-500">Aulagenia.cl</p>
+                                 </div>
+                                 <div>
+                                     <p class="text-xs text-gray-500">Código de validación:</p>
+                                     <p class="text-sm font-mono">AG-CERT-12345-XYZ</p>
+                                 </div>
+                             </div>
+                             <div class="flex items-center gap-4">
+                                 <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%233b82f6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eACADEMIA%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAIAA%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='4.5' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eI.A. APLICADA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de AIAA" class="w-24 h-24" />
+                                 <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%2314b8a6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eCERTIFICADO%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAG%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eAULA GENIA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de Aulagenia" class="w-24 h-24" />
+                             </div>
+                         </div>
+                     </footer>
+                 </div>
             </div>
         </div>
     </div>
@@ -628,35 +681,31 @@
                 });
             }
 
-            // --- LÓGICA DE NOTIFICACIONES MEJORADA (v16) ---
+            // --- LÓGICA DE NOTIFICACIONES (v22) ---
             const notificationBell = document.getElementById('notification-bell');
             const notificationPromptModal = document.getElementById('notification-prompt-modal');
             const promptYesBtn = document.getElementById('notification-prompt-yes');
             const promptNoBtn = document.getElementById('notification-prompt-no');
-            
-            // =================================================================================
-            // ¡IMPORTANTE! DEBES REEMPLAZAR ESTA CLAVE.
-            // Puedes generar un nuevo par de claves en https://vapidkeys.com/
-            // La CLAVE PÚBLICA va aquí. La CLAVE PRIVADA la guardas para tu backend.
-            // =================================================================================
             const VAPID_PUBLIC_KEY = 'REEMPLAZA_CON_TU_CLAVE_PUBLICA_VAPID'; 
 
             const showNotificationToast = (message) => {
                 const toast = document.getElementById('notification-toast');
                 const toastText = document.getElementById('notification-toast-text');
-                toastText.textContent = message;
-                toast.classList.remove('opacity-0', 'translate-y-10');
-                setTimeout(() => {
-                    toast.classList.add('opacity-0', 'translate-y-10');
-                }, 4000);
+                if(toast && toastText){
+                    toastText.textContent = message;
+                    toast.classList.remove('opacity-0', 'translate-y-10');
+                    setTimeout(() => {
+                        toast.classList.add('opacity-0', 'translate-y-10');
+                    }, 4000);
+                }
             };
             
             const showPromptModal = () => {
-                notificationPromptModal.classList.remove('opacity-0', 'pointer-events-none');
+                if(notificationPromptModal) notificationPromptModal.classList.remove('opacity-0', 'pointer-events-none');
             }
 
             const hidePromptModal = () => {
-                notificationPromptModal.classList.add('opacity-0', 'pointer-events-none');
+                if(notificationPromptModal) notificationPromptModal.classList.add('opacity-0', 'pointer-events-none');
             }
 
             function urlBase64ToUint8Array(base64String) {
@@ -671,7 +720,6 @@
             }
 
             const handleSubscription = async () => {
-                // Primero, verificamos que la VAPID key no sea el placeholder.
                 if (VAPID_PUBLIC_KEY === 'REEMPLAZA_CON_TU_CLAVE_PUBLICA_VAPID' || VAPID_PUBLIC_KEY === '') {
                     console.error('ERROR: Debes generar y configurar tu VAPID_PUBLIC_KEY en el script.');
                     showNotificationToast('Error de configuración del sitio. Notificaciones no disponibles.');
@@ -690,7 +738,6 @@
                         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
                     });
                     
-                    console.log('Suscripción Push Recibida: ', JSON.stringify(subscription));
                     showNotificationToast('¡Genial! Has activado las notificaciones.');
 
                 } catch (error) {
@@ -700,6 +747,10 @@
             };
 
             const requestNotificationPermission = async () => {
+                if (!('Notification' in window)) {
+                    showNotificationToast('Este navegador no soporta notificaciones.');
+                    return;
+                }
                 const permission = await Notification.requestPermission();
                 if (permission === 'granted') {
                     await handleSubscription();
@@ -708,27 +759,56 @@
                 }
             };
 
-            // Lógica del modal proactivo
             if ('Notification' in window && Notification.permission === 'default' && !sessionStorage.getItem('notificationPrompted')) {
                 setTimeout(() => {
                     showPromptModal();
                     sessionStorage.setItem('notificationPrompted', 'true');
-                }, 7000); // Aparece después de 7 segundos
+                }, 7000);
             }
 
-            promptYesBtn.addEventListener('click', () => {
+            if(promptYesBtn) promptYesBtn.addEventListener('click', () => {
                 hidePromptModal();
                 requestNotificationPermission();
             });
 
-            promptNoBtn.addEventListener('click', () => {
+            if(promptNoBtn) promptNoBtn.addEventListener('click', () => {
                 hidePromptModal();
                 showNotificationToast('Entendido. Puedes activar las notificaciones más tarde desde la campana.');
             });
 
-            // La campana sigue funcionando como un método manual
             if (notificationBell) {
                 notificationBell.addEventListener('click', requestNotificationPermission);
+            }
+
+            // --- LÓGICA DEL MODAL DE CERTIFICADO ---
+            const openCertModalBtn = document.getElementById('open-cert-modal');
+            const closeCertModalBtn = document.getElementById('close-cert-modal');
+            const certificateModal = document.getElementById('certificate-modal');
+
+            if (openCertModalBtn && certificateModal) {
+                openCertModalBtn.addEventListener('click', () => {
+                    certificateModal.classList.remove('hidden');
+                });
+            }
+
+            if (closeCertModalBtn && certificateModal) {
+                closeCertModalBtn.addEventListener('click', () => {
+                    certificateModal.classList.add('hidden');
+                });
+            }
+
+            if (certificateModal) {
+                certificateModal.addEventListener('click', (e) => {
+                    if (e.target === certificateModal) {
+                        certificateModal.classList.add('hidden');
+                    }
+                });
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === "Escape" && !certificateModal.classList.contains('hidden')) {
+                        certificateModal.classList.add('hidden');
+                    }
+                });
             }
         });
     </script>
