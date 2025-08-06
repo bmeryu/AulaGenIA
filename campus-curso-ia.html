@@ -128,7 +128,24 @@
     <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div>
     <div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
     <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
-    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "Domina la IA Aplicada".</p><div class="text-left bg-slate-100 p-4 rounded-lg mt-6"><h3 class="font-semibold flex items-center gap-2"><i data-lucide="award"></i>Tu Certificado</h3><p class="text-sm text-gray-600 mt-1">Ya puedes generar tu certificado desde el Campus. ¡Felicidades por tu logro!</p></div><div class="text-left bg-teal-50 border border-teal-200 p-4 rounded-lg mt-4"><h3 class="font-semibold flex items-center gap-2 text-teal-800"><i data-lucide="gift"></i>Tu Recompensa Exclusiva</h3><p class="text-sm text-teal-700 mt-1">Como premio a tu dedicación, hemos desbloqueado un <strong>cupón del 20% de descuento</strong> para tu próximo curso.</p></div><button id="close-modal-btn" class="mt-8 w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button></div></div>
+    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "Domina la IA Aplicada".</p>
+    
+    <!-- ===== CÓDIGO RESTAURADO AQUÍ ===== -->
+    <div class="space-y-3 mt-6">
+        <a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+            <i data-lucide="award" class="h-5 w-5"></i>
+            <span>Ver Certificado</span>
+        </a>
+        <a href="campus-curso-ia.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">
+            Repasar Curso
+        </a>
+        <div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">
+            ¡Cupón del 20% DESBLOQUEADO! <br> Usa el código: <strong>NUEVOCURSO20</strong>
+        </div>
+    </div>
+    <!-- ================================== -->
+
+    <button id="close-modal-btn" class="mt-8 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button></div></div>
     <!-- FIN: NOTIFICACIONES Y MODAL DE FINALIZACIÓN -->
 
     <!-- Firebase SDKs -->
@@ -145,8 +162,23 @@
             const auth = firebase.auth();
             const db = firebase.firestore();
             
-            const ALL_COURSES_DATA = { 'geniaweek': { title: 'Domina la IA Aplicada', modules: [ { title: 'Módulo 0: Onboarding', badge: 'Iniciado en IA', lessons: [ { id: '0-1', title: 'Tu primer día con IA', type: 'video' } ] }, { title: 'Módulo 1: ¿Qué es la IA?', badge: 'Explorador Conceptual', lessons: [ { id: '1-1', title: 'Casos de éxito reales', type: 'video' }, { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }] } ] } ] } };
-            const courseId = 'geniaweek';
+            // ===================================================================
+            // INICIO: CORRECCIÓN CLAVE - ID DE CURSO UNIFICADO
+            // ===================================================================
+            const courseId = 'inteligencia-aplicada'; 
+            const ALL_COURSES_DATA = { 
+                [courseId]: { 
+                    title: 'Domina la IA Aplicada', 
+                    modules: [ 
+                        { title: 'Módulo 0: Onboarding', badge: 'Iniciado en IA', lessons: [ { id: '0-1', title: 'Tu primer día con IA', type: 'video' } ] }, 
+                        { title: 'Módulo 1: ¿Qué es la IA?', badge: 'Explorador Conceptual', lessons: [ { id: '1-1', title: 'Casos de éxito reales', type: 'video' }, { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }] } ] } 
+                    ] 
+                } 
+            };
+            // ===================================================================
+            // FIN: CORRECCIÓN CLAVE
+            // ===================================================================
+
             const courseData = ALL_COURSES_DATA[courseId];
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
