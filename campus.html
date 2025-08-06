@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v3.0 (Synced Course Structure)
+  CAMPUS DASHBOARD · AULA GENIA v4.1 (ID de Curso Mejorado)
   -------------------------------------------------------------------
-  Esta versión sincroniza la estructura de la malla curricular con
-  la página del curso para asegurar un cálculo de progreso consistente.
+  Esta versión cambia el ID del curso de 'geniaweek' a 
+  'inteligencia-aplicada' para mayor claridad y consistencia.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <title>Campus Virtual – Aula GenIA (Corregido)</title>
+  <title>Campus Virtual – Aula GenIA (Con Acceso)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
@@ -33,8 +33,18 @@
     .card-hover {
       @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
     }
-    #profile-modal { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+    #profile-modal, #enroll-modal { transition: all 0.3s ease-in-out; }
     label span.required { color: #ef4444; }
+    .disabled-course {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+    .disabled-course .bg-teal-500 {
+        background-color: #94a3b8; /* slate-400 */
+    }
+    .disabled-course .bg-teal-500:hover {
+        background-color: #64748b; /* slate-500 */
+    }
   </style>
 </head>
 <body class="text-gray-800">
@@ -64,12 +74,13 @@
       <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="geniaweek">
+        <!-- ===== INICIO DE LA TARJETA DE CURSO MODIFICADA ===== -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="inteligencia-aplicada">
           <div class="p-6 flex-grow">
-            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full">En progreso</span>
+            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Cargando...</span>
             <h3 class="text-xl font-bold mt-4 mb-1">Domina la IA Aplicada</h3>
             <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
-            <div class="mb-2">
+            <div class="mb-2 progress-container hidden">
               <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
                 <span>Progreso</span>
                 <span class="percent">0%</span>
@@ -80,11 +91,12 @@
             </div>
           </div>
           <div class="card-footer bg-gray-50 px-6 py-4">
-            <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
-              Continuar aprendiendo
+            <a href="#" class="course-action-btn block text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg transition-colors cursor-wait">
+              Verificando acceso...
             </a>
           </div>
         </article>
+        <!-- ===== FIN DE LA TARJETA DE CURSO MODIFICADA ===== -->
 
         <article class="bg-white rounded-2xl shadow overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center p-8 text-center">
           <div>
@@ -112,6 +124,21 @@
   <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
     © 2025 Aula GenIA · Todos los derechos reservados.
   </footer>
+
+  <!-- INICIO: MODAL DE INSCRIPCIÓN -->
+  <div id="enroll-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
+  <div id="enroll-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center transform transition-all scale-95 opacity-0">
+      <i data-lucide="lock" class="mx-auto h-16 w-16 text-yellow-500"></i>
+      <h2 class="text-2xl font-bold text-gray-900 mt-4">¡Acceso Exclusivo!</h2>
+      <p class="text-gray-600 mt-2 mb-6">Este curso es un tesoro de conocimiento. Para desbloquearlo, necesitas inscribirte primero.</p>
+      <a href="index.html#precios" class="w-full block bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+        ¡Inscribirme ahora!
+      </a>
+      <button id="close-enroll-modal-btn" class="mt-4 text-sm text-gray-500 hover:text-gray-700">Cerrar</button>
+    </div>
+  </div>
+  <!-- FIN: MODAL DE INSCRIPCIÓN -->
 
   <!-- INICIO: MODAL DE EDICIÓN DE PERFIL -->
   <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-40"></div>
@@ -182,11 +209,11 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
       
-      // ===================================================================
-      // INICIO: CORRECCIÓN CLAVE - ESTRUCTURA DE CURSO SINCRONIZADA
-      // ===================================================================
+      // ===== ID de curso actualizado =====
+      const COURSE_ID = 'inteligencia-aplicada';
+
       const ALL_COURSES_DATA = {
-          'geniaweek': {
+          [COURSE_ID]: {
               title: 'Domina la IA Aplicada',
               modules: [
                   { title: 'Módulo 0: Onboarding', lessons: [{ id: '0-1' }] },
@@ -194,9 +221,32 @@
               ]
           }
       };
-      // ===================================================================
-      // FIN: CORRECCIÓN CLAVE
-      // ===================================================================
+
+      // ===== Elementos del DOM para el modal de inscripción =====
+      const enrollModalOverlay = document.getElementById('enroll-modal-overlay');
+      const enrollModal = document.getElementById('enroll-modal');
+      const closeEnrollModalBtn = document.getElementById('close-enroll-modal-btn');
+      
+      function showEnrollModal() {
+        enrollModalOverlay.classList.remove('hidden');
+        enrollModal.classList.remove('hidden');
+        setTimeout(() => {
+            enrollModal.querySelector('div').classList.remove('scale-95', 'opacity-0');
+        }, 10);
+        lucide.createIcons();
+      }
+
+      function hideEnrollModal() {
+        enrollModal.querySelector('div').classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            enrollModalOverlay.classList.add('hidden');
+            enrollModal.classList.add('hidden');
+        }, 300);
+      }
+
+      closeEnrollModalBtn.addEventListener('click', hideEnrollModal);
+      enrollModalOverlay.addEventListener('click', hideEnrollModal);
+
 
       function getTotalLessons(courseId) {
           const course = ALL_COURSES_DATA[courseId];
@@ -204,16 +254,20 @@
           return course.modules.reduce((total, module) => total + module.lessons.length, 0);
       }
 
-      function updateCardUI(card, progress) {
+      function updateCardForEnrolledUser(card, progress) {
         const tagEl = card.querySelector('.tag');
         const percentEl = card.querySelector('.percent');
         const fillEl = card.querySelector('.fill');
         const footerEl = card.querySelector('.card-footer');
+        const progressContainer = card.querySelector('.progress-container');
+        const actionBtn = card.querySelector('.course-action-btn');
 
-        if (!percentEl || !fillEl || !tagEl) return;
-
+        progressContainer.classList.remove('hidden');
         percentEl.textContent = `${progress}%`;
         fillEl.style.width = `${progress}%`;
+        actionBtn.href = "campus-curso-ia.html";
+        actionBtn.classList.remove('cursor-wait', 'bg-gray-400');
+        actionBtn.classList.add('bg-teal-500', 'hover:bg-teal-600');
 
         if (progress >= 100) {
           tagEl.textContent = 'Completado';
@@ -230,43 +284,76 @@
               <a href="campus-curso-ia.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">
                 Repasar Curso
               </a>
-              <div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">
-                ¡Cupón del 20% DESBLOQUEADO! <br> Usa el código: <strong>NUEVOCURSO20</strong>
-              </div>
             </div>
           `;
-        } else if (progress > 0) {
+        } else {
             tagEl.textContent = 'En progreso';
             tagEl.classList.remove('bg-green-100', 'text-green-600');
             tagEl.classList.add('bg-teal-100', 'text-teal-600');
             fillEl.style.backgroundColor = 'var(--brand-teal)';
-            footerEl.innerHTML = `
-                <a href="campus-curso-ia.html" class="block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
-                Continuar aprendiendo
-                </a>
-            `;
+            actionBtn.textContent = 'Continuar aprendiendo';
         }
         lucide.createIcons();
       }
 
-      async function loadCourseProgressFromFirestore(userId) {
-        const progressRef = db.collection('userProgress').doc(userId);
-        try {
-          const doc = await progressRef.get();
-          const progressData = doc.exists ? doc.data() : {};
-          
-          document.querySelectorAll('[data-course-id]').forEach(card => {
-            const courseId = card.dataset.courseId;
-            const courseProgressData = progressData[courseId] || { completedLessons: [] };
-            
-            const totalLessons = getTotalLessons(courseId);
-            const completedCount = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons.length : 0;
-            const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+      function updateCardForUnenrolledUser(card) {
+          const tagEl = card.querySelector('.tag');
+          const actionBtn = card.querySelector('.course-action-btn');
+          const footerEl = card.querySelector('.card-footer');
 
-            updateCardUI(card, progressValue);
+          tagEl.textContent = 'Requiere Inscripción';
+          tagEl.classList.remove('bg-teal-100', 'text-teal-600');
+          tagEl.classList.add('bg-yellow-100', 'text-yellow-700');
+          
+          actionBtn.textContent = 'Inscríbete para Activar';
+          actionBtn.href = "#"; // Evita la navegación
+          actionBtn.classList.remove('cursor-wait', 'bg-gray-400');
+          actionBtn.classList.add('bg-slate-400', 'hover:bg-slate-500');
+
+          // Agregamos el evento click para mostrar el modal
+          actionBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              showEnrollModal();
           });
+      }
+
+      async function checkUserAccess(userId) {
+        const courseCard = document.querySelector(`[data-course-id="${COURSE_ID}"]`);
+        if (!courseCard) return;
+
+        try {
+            // 1. Verificar inscripción en la colección 'users'
+            const userDocRef = db.collection('users').doc(userId);
+            const userDoc = await userDocRef.get();
+            
+            let hasAccess = false;
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                if (userData.enrollments && userData.enrollments[COURSE_ID] === true) {
+                    hasAccess = true;
+                }
+            }
+
+            if (hasAccess) {
+                // 2. Si tiene acceso, cargar su progreso
+                const progressRef = db.collection('userProgress').doc(userId);
+                const progressDoc = await progressRef.get();
+                const progressData = progressDoc.exists ? progressDoc.data() : {};
+                
+                const courseProgressData = progressData[COURSE_ID] || { completedLessons: [] };
+                const totalLessons = getTotalLessons(COURSE_ID);
+                const completedCount = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons.length : 0;
+                const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
+                updateCardForEnrolledUser(courseCard, progressValue);
+            } else {
+                // 3. Si no tiene acceso, mostrar la tarjeta deshabilitada
+                updateCardForUnenrolledUser(courseCard);
+            }
+
         } catch (error) {
-          console.error("Error al obtener progreso desde Firestore:", error);
+            console.error("Error al verificar el acceso del usuario:", error);
+            updateCardForUnenrolledUser(courseCard); // Por seguridad, denegar acceso si hay error
         }
       }
 
@@ -342,8 +429,10 @@
             e.preventDefault();
             auth.signOut().then(() => window.location.href = 'index.html');
           });
+          
+          // ===== Llamada a la nueva función de verificación =====
+          checkUserAccess(user.uid);
 
-          loadCourseProgressFromFirestore(user.uid);
         } else {
           window.location.href = 'acceso.html';
         }
