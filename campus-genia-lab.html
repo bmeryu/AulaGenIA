@@ -40,6 +40,12 @@
         .comment-form.active {
             max-height: 500px; /* Suficiente para el form */
         }
+        /* Estilo para el filtro de categoría activo */
+        .category-link.active {
+            background-color: #f0fdfa; /* teal-50 */
+            color: #0d9488; /* teal-600 */
+            font-weight: 600;
+        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -83,7 +89,7 @@
         <section class="container mx-auto px-6 max-w-5xl pb-24">
             <div class="grid lg:grid-cols-3 gap-12">
                 <div class="lg:col-span-2">
-                    <h2 class="text-2xl font-bold mb-6 border-b pb-3">Actividad Reciente en el Lab</h2>
+                    <h2 id="feed-title" class="text-2xl font-bold mb-6 border-b pb-3">Actividad Reciente en el Lab</h2>
 
                     <div id="create-post-container" class="hidden mb-8">
                         <div class="bg-white p-5 rounded-xl shadow-md">
@@ -91,8 +97,13 @@
                                 <img id="user-avatar" src="" alt="Tu avatar" class="w-12 h-12 rounded-full">
                                 <div class="w-full">
                                     <form id="create-post-form">
-                                        <textarea id="post-content" class="w-full p-3 border-gray-200 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow" rows="3" placeholder="¿Qué estás pensando?"></textarea>
-                                        <div class="flex justify-end mt-3">
+                                        <textarea id="post-content" class="w-full p-3 border-gray-200 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow" rows="3" placeholder="¿Qué estás pensando?" required></textarea>
+                                        <div class="flex justify-between items-center mt-3">
+                                            <select id="post-category" class="text-sm border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" required>
+                                                <option value="Discusiones">Discusión</option>
+                                                <option value="Tutoriales">Tutorial</option>
+                                                <option value="Proyectos">Proyecto</option>
+                                            </select>
                                             <button type="submit" class="bg-teal-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-teal-600 transition-colors">Publicar</button>
                                         </div>
                                     </form>
@@ -123,13 +134,14 @@
                 <aside>
                     <div class="bg-white p-6 rounded-xl shadow-md sticky top-28">
                         <h3 class="text-lg font-bold mb-4 border-b pb-2">Categorías</h3>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="flex items-center text-gray-600 hover:text-teal-600"><i data-lucide="book-open" class="h-4 w-4 mr-2"></i>Tutoriales</a></li>
-                            <li><a href="#" class="flex items-center text-gray-600 hover:text-teal-600"><i data-lucide="message-square" class="h-4 w-4 mr-2"></i>Discusiones</a></li>
-                            <li><a href="#" class="flex items-center text-gray-600 hover:text-teal-600"><i data-lucide="lightbulb" class="h-4 w-4 mr-2"></i>Proyectos</a></li>
+                        <ul id="category-list" class="space-y-1">
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="all"><i data-lucide="layout-grid" class="h-4 w-4 mr-2"></i>Ver Todas</a></li>
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Tutoriales"><i data-lucide="book-open" class="h-4 w-4 mr-2"></i>Tutoriales</a></li>
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Discusiones"><i data-lucide="message-square" class="h-4 w-4 mr-2"></i>Discusiones</a></li>
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Proyectos"><i data-lucide="lightbulb" class="h-4 w-4 mr-2"></i>Proyectos</a></li>
                         </ul>
-                        <div id="sidebar-cta-container">
-                             <a href="acceso.html" class="mt-8 block w-full bg-teal-500 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-teal-600 transition-colors">
+                        <div id="sidebar-cta-container" class="mt-6">
+                             <a href="acceso.html" class="block w-full bg-teal-500 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-teal-600 transition-colors">
                                 Únete para Publicar
                             </a>
                         </div>
@@ -165,9 +177,7 @@
                  appId: "1:173328075630:web:825606db4271ea1e66cf7f"
             };
             
-            try {
-                firebase.initializeApp(firebaseConfig);
-            } catch(e) { console.warn("Firebase ya ha sido inicializado."); }
+            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya ha sido inicializado."); }
 
             const auth = firebase.auth();
             const db = firebase.firestore();
@@ -177,33 +187,84 @@
                 loginPrompt: document.getElementById('login-prompt'),
                 userAvatar: document.getElementById('user-avatar'),
                 postContentTextarea: document.getElementById('post-content'),
+                postCategorySelect: document.getElementById('post-category'),
                 createPostForm: document.getElementById('create-post-form'),
                 postFeed: document.getElementById('post-feed'),
                 feedLoader: document.getElementById('feed-loader'),
                 authContainer: document.getElementById('auth-container'),
-                sidebarCtaContainer: document.getElementById('sidebar-cta-container')
+                sidebarCtaContainer: document.getElementById('sidebar-cta-container'),
+                categoryList: document.getElementById('category-list'),
+                feedTitle: document.getElementById('feed-title')
             };
             
             let postsListener = null;
             let currentUser = null;
+            let currentCategoryFilter = 'all';
+
+            const categoryDetails = {
+                'Tutoriales': { icon: 'book-open', color: 'text-blue-600', bg: 'bg-blue-100' },
+                'Discusiones': { icon: 'message-square', color: 'text-green-600', bg: 'bg-green-100' },
+                'Proyectos': { icon: 'lightbulb', color: 'text-purple-600', bg: 'bg-purple-100' }
+            };
 
             function getRelativeTime(date) {
                 const now = new Date();
                 const seconds = Math.round((now - date) / 1000);
+                if (seconds < 60) return `hace instantes`;
                 const minutes = Math.round(seconds / 60);
+                if (minutes < 60) return `hace ${minutes} min`;
                 const hours = Math.round(minutes / 60);
+                if (hours < 24) return `hace ${hours} h`;
                 const days = Math.round(hours / 24);
+                return `hace ${days} d`;
+            }
+            
+            function loadPosts(category) {
+                if (postsListener) postsListener();
+                
+                dom.postFeed.innerHTML = '';
+                dom.feedLoader.classList.remove('hidden');
 
-                if (seconds < 60) return `hace ${seconds} segundos`;
-                if (minutes < 60) return `hace ${minutes} minutos`;
-                if (hours < 24) return `hace ${hours} horas`;
-                return `hace ${days} días`;
+                // **FIX:** Remove orderBy from the initial query to avoid needing a composite index.
+                let query = db.collection('labPosts');
+                if (category && category !== 'all') {
+                    query = query.where('category', '==', category);
+                    dom.feedTitle.textContent = `Mostrando: ${category}`;
+                } else {
+                    dom.feedTitle.textContent = 'Actividad Reciente en el Lab';
+                }
+
+                postsListener = query.onSnapshot(snapshot => {
+                    dom.feedLoader.classList.add('hidden');
+                    if (snapshot.empty) {
+                        dom.postFeed.innerHTML = `<p class="text-center text-gray-500">No hay publicaciones en esta categoría.</p>`;
+                        return;
+                    }
+                    
+                    // **FIX:** Sort the posts on the client-side.
+                    const posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    posts.sort((a, b) => {
+                        const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
+                        const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
+                        return timeB - timeA; // Sort descending
+                    });
+
+                    dom.postFeed.innerHTML = '';
+                    posts.forEach(renderPost);
+                    lucide.createIcons();
+                }, err => {
+                    console.error("Error al cargar posts:", err);
+                    dom.feedLoader.classList.add('hidden');
+                    dom.postFeed.innerHTML = `<p class="text-center text-red-500">Error al cargar la actividad.</p>`;
+                });
             }
 
-            function renderPost(doc) {
-                const post = doc.data();
-                const postId = doc.id;
+            function renderPost(postData) {
+                // **FIX:** The function now receives the post data object directly.
+                const post = postData;
+                const postId = post.id;
                 const postDate = post.createdAt ? getRelativeTime(post.createdAt.toDate()) : 'Ahora mismo';
+                const catInfo = categoryDetails[post.category] || categoryDetails['Discusiones'];
 
                 const postElement = document.createElement('article');
                 postElement.className = 'bg-white p-6 rounded-xl shadow-md';
@@ -211,17 +272,18 @@
                     <div class="flex items-start gap-4">
                         <img src="${post.authorAvatar}" alt="Avatar de ${post.authorName}" class="w-10 h-10 rounded-full">
                         <div class="w-full">
-                            <div class="flex items-center justify-between mb-1">
+                            <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center gap-2">
                                     <p class="font-semibold text-sm">${post.authorName}</p>
                                     <span class="text-xs font-medium text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">${post.authorRole || 'Alumno'}</span>
                                 </div>
                                 <span class="text-xs text-gray-500">${postDate}</span>
                             </div>
-                            <p class="text-gray-700 whitespace-pre-wrap py-2">${post.content}</p>
-                            <div class="flex gap-2 mt-2">
-                                ${(post.tags || ['discusión', 'ia']).map(tag => `<span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-md">#${tag}</span>`).join('')}
+                            <div class="flex items-center gap-2 mb-2">
+                                <i data-lucide="${catInfo.icon}" class="h-4 w-4 ${catInfo.color}"></i>
+                                <span class="text-sm font-semibold ${catInfo.color}">${post.category}</span>
                             </div>
+                            <p class="text-gray-700 whitespace-pre-wrap">${post.content}</p>
                             <div class="flex items-center text-gray-500 mt-4 text-sm gap-4">
                                 <button class="comment-button flex items-center hover:text-teal-600" data-post-id="${postId}">
                                     <i data-lucide="message-square" class="h-4 w-4 mr-2"></i>
@@ -253,10 +315,7 @@
                             <img src="${comment.authorAvatar}" alt="Avatar de ${comment.authorName}" class="w-8 h-8 rounded-full">
                             <div class="bg-gray-100 rounded-lg p-3 text-sm w-full">
                                 <div class="flex justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <p class="font-semibold text-gray-800">${comment.authorName}</p>
-                                        <span class="text-xs font-medium text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">${comment.authorRole || 'Alumno'}</span>
-                                    </div>
+                                    <p class="font-semibold text-gray-800">${comment.authorName}</p>
                                     <p class="text-xs text-gray-500">${commentDate}</p>
                                 </div>
                                 <p class="text-gray-700 mt-1">${comment.content}</p>
@@ -270,14 +329,13 @@
             function handleCommentForm(postId, user) {
                 const container = document.getElementById(`comment-form-container-${postId}`);
                 const isActive = container.classList.contains('active');
-
                 if (isActive) {
                     container.innerHTML = '';
                     container.classList.remove('active');
                 } else {
                     container.innerHTML = `
                         <form class="comment-submit-form flex items-start gap-3" data-post-id="${postId}">
-                            <img src="${user.photoURL || `https://placehold.co/40x40/3b82f6/FFFFFF?text=${user.displayName.charAt(0).toUpperCase()}`}" alt="Tu avatar" class="w-8 h-8 rounded-full">
+                            <img src="${user.photoURL}" alt="Tu avatar" class="w-8 h-8 rounded-full">
                             <div class="w-full">
                                 <textarea class="w-full p-2 border-gray-300 border rounded-lg text-sm" rows="2" placeholder="Escribe un comentario..." required></textarea>
                                 <button type="submit" class="text-xs bg-teal-500 text-white font-semibold py-1 px-3 rounded-md hover:bg-teal-600 mt-2">Publicar</button>
@@ -296,110 +354,76 @@
                 const postId = e.target.dataset.postId;
                 const textarea = e.target.querySelector('textarea');
                 const content = textarea.value.trim();
-                
                 if (!content || !currentUser) return;
-
-                const newComment = {
-                    content: content,
-                    authorId: currentUser.uid,
-                    authorName: currentUser.displayName,
-                    authorAvatar: currentUser.photoURL,
-                    authorRole: 'Alumno', // O un rol dinámico si lo implementas
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-
+                const newComment = { content, authorId: currentUser.uid, authorName: currentUser.displayName, authorAvatar: currentUser.photoURL, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
                 const postRef = db.collection('labPosts').doc(postId);
                 const commentRef = postRef.collection('comments').doc();
-
                 try {
                     await db.runTransaction(async (transaction) => {
                         const postDoc = await transaction.get(postRef);
                         if (!postDoc.exists) throw "El documento no existe!";
-                        
                         const newCount = (postDoc.data().commentsCount || 0) + 1;
                         transaction.update(postRef, { commentsCount: newCount });
                         transaction.set(commentRef, newComment);
                     });
                     textarea.value = '';
                     document.getElementById(`comment-form-container-${postId}`).classList.remove('active');
-                } catch (error) {
-                    console.error("Error al publicar comentario: ", error);
-                    alert("No se pudo publicar el comentario.");
-                }
+                } catch (error) { console.error("Error al publicar comentario: ", error); alert("No se pudo publicar el comentario."); }
             }
 
             auth.onAuthStateChanged(user => {
-                if (postsListener) postsListener();
-
                 if (user) {
-                    currentUser = {
-                        uid: user.uid,
-                        displayName: user.displayName || 'Alumno',
-                        photoURL: user.photoURL || `https://placehold.co/48x48/14b8a6/FFFFFF?text=${(user.displayName || 'A').charAt(0).toUpperCase()}`
-                    };
-                    
+                    currentUser = { uid: user.uid, displayName: user.displayName || 'Alumno', photoURL: user.photoURL || `https://placehold.co/48x48/14b8a6/FFFFFF?text=${(user.displayName || 'A').charAt(0).toUpperCase()}` };
                     dom.loginPrompt.classList.add('hidden');
                     dom.createPostContainer.classList.remove('hidden');
                     dom.userAvatar.src = currentUser.photoURL;
                     dom.postContentTextarea.placeholder = `¿Qué estás pensando, ${currentUser.displayName}?`;
                     dom.authContainer.innerHTML = `<a href="campus-curso-ia.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-5 text-sm py-2 hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">Mi Campus</a>`;
                     dom.sidebarCtaContainer.innerHTML = `<a href="campus-curso-ia.html" class="mt-8 block w-full bg-gray-800 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors">Ir a mi Curso</a>`;
-                    
-                    postsListener = db.collection('labPosts').orderBy('createdAt', 'desc')
-                      .onSnapshot(snapshot => {
-                          dom.feedLoader.classList.add('hidden');
-                          dom.postFeed.innerHTML = '';
-                          if (snapshot.empty) {
-                              dom.postFeed.innerHTML = '<p class="text-center text-gray-500">Aún no hay publicaciones. ¡Sé el primero!</p>';
-                              return;
-                          }
-                          snapshot.forEach(renderPost);
-                          lucide.createIcons();
-                      });
-
                 } else {
                     currentUser = null;
                     dom.createPostContainer.classList.add('hidden');
                     dom.loginPrompt.classList.remove('hidden');
                     dom.authContainer.innerHTML = `<a href="acceso.html" class="cta-button bg-gray-900 text-white font-bold rounded-full hover:bg-gray-700 px-4 py-1.5 sm:px-6 sm:py-2 flex flex-col items-center justify-center"><span class="text-sm sm:text-base leading-tight">🔓 Acceso</span><span class="text-[9px] sm:text-[10px] font-normal opacity-75 leading-tight">Inicia tu viaje</span></a>`;
                     dom.sidebarCtaContainer.innerHTML = `<a href="acceso.html" class="mt-8 block w-full bg-teal-500 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-teal-600 transition-colors">Únete para Publicar</a>`;
-                    dom.feedLoader.classList.add('hidden');
                     dom.postFeed.innerHTML = '<p class="text-center text-gray-500 py-8">Inicia sesión para ver y crear publicaciones.</p>';
                 }
-                 lucide.createIcons();
+                loadPosts(currentCategoryFilter);
+                lucide.createIcons();
             });
 
             dom.createPostForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const content = dom.postContentTextarea.value.trim();
-                if (content && currentUser) {
+                const category = dom.postCategorySelect.value;
+                if (content && category && currentUser) {
                     db.collection('labPosts').add({
-                        content: content,
-                        authorId: currentUser.uid,
-                        authorName: currentUser.displayName,
-                        authorAvatar: currentUser.photoURL,
-                        authorRole: 'Alumno', // O un rol dinámico si lo implementas
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        commentsCount: 0,
-                        tags: ['general', 'dudas'] // Ejemplo de tags
+                        content, category, authorId: currentUser.uid, authorName: currentUser.displayName, authorAvatar: currentUser.photoURL, authorRole: 'Alumno', createdAt: firebase.firestore.FieldValue.serverTimestamp(), commentsCount: 0
                     }).then(() => {
                         dom.postContentTextarea.value = '';
-                    }).catch(err => {
-                        console.error("Error al añadir la publicación: ", err);
-                        alert("Hubo un error al publicar.");
-                    });
+                    }).catch(err => { console.error("Error al añadir la publicación: ", err); alert("Hubo un error al publicar."); });
                 }
             });
             
             dom.postFeed.addEventListener('click', e => {
                 const commentButton = e.target.closest('.comment-button');
-                if (commentButton && currentUser) {
-                    const postId = commentButton.dataset.postId;
-                    handleCommentForm(postId, currentUser);
-                } else if (commentButton && !currentUser) {
-                    alert('Debes iniciar sesión para comentar.');
+                if (commentButton && currentUser) { handleCommentForm(commentButton.dataset.postId, currentUser); } 
+                else if (commentButton && !currentUser) { alert('Debes iniciar sesión para comentar.'); }
+            });
+
+            dom.categoryList.addEventListener('click', e => {
+                e.preventDefault();
+                const link = e.target.closest('.category-link');
+                if (link) {
+                    currentCategoryFilter = link.dataset.category;
+                    dom.categoryList.querySelectorAll('.category-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    loadPosts(currentCategoryFilter);
                 }
             });
+
+            // Activar el filtro inicial
+            dom.categoryList.querySelector('[data-category="all"]').classList.add('active');
         });
     </script>
 </body>
