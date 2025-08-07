@@ -2,453 +2,492 @@
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8" />
-    <title>Lección del Curso - Aula GenIA (Perfil Unificado)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
-    <link rel="canonical" href="https://aulagenia.cl/campus-curso-ia.html">
-    <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
+    
+    <title>Campus GenIA Lab - Aula GenIA</title>
+    <meta name="description" content="Explora el Campus GenIA Lab, el entorno de aprendizaje exclusivo de Aula GenIA para experimentar con herramientas de IA y construir tu propio proyecto." />
+    <meta name="keywords" content="campus virtual, aprendizaje IA, proyectos IA, certificados IA, Aula GenIA" />
+    <link rel="canonical" href="https://aulagenia.cl/comunidad.html" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
     <style>
-        :root { --brand-teal: #14b8a6; }
-        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
-        #profile-modal, .toast-notification, #completion-modal { transition: all 0.3s ease-in-out; }
-        label span.required { color: #ef4444; }
-        .form-input-error { @apply border-red-500 ring-red-500; }
-        .error-message { @apply text-red-600 text-xs mt-1; }
-        .tab-button.active { color: var(--brand-teal); border-bottom-color: var(--brand-teal); }
-        .toast-notification { position: fixed; top: 20px; right: 20px; transform: translateX(120%); z-index: 1000; }
-        .toast-notification.show { transform: translateX(0); }
-        #completion-modal.show > div { transform: scale(1); opacity: 1; }
-        .quiz-option { transition: all 0.2s ease-in-out; }
-        .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
-        .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
-        .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
+        :root {
+            --brand-teal: #14b8a6;
+            --brand-blue: #3b82f6;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        textarea::placeholder {
+            color: #9ca3af;
+        }
+        .comment-form {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .comment-form.active {
+            max-height: 500px; /* Suficiente para el form */
+        }
+        .category-link.active {
+            background-color: #f0fdfa; /* teal-50 */
+            color: #0d9488; /* teal-600 */
+            font-weight: 600;
+        }
+        .delete-button {
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        .delete-button:hover {
+            opacity: 1;
+            color: #ef4444; /* red-500 */
+        }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <div id="app" class="flex flex-col h-screen">
-        <header class="bg-white shadow-sm z-20">
-            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <a href="campus.html" aria-label="Volver al Campus de Aula GenIA">
-                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-10 w-auto">
+    <!-- =========== HEADER / NAVEGACIÓN =========== -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center" aria-label="Página de inicio de Aula GenIA">
+                <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="h-12 w-auto">
+            </a>
+            <div class="flex items-center gap-2 sm:gap-4">
+                <a href="quienes-somos.html" class="text-gray-700 font-semibold border-2 border-gray-300 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-gray-100 hover:border-gray-400 transition-colors duration-300 hidden md:flex items-center">
+                    Quiénes Somos
                 </a>
-                <div id="user-profile-container" class="hidden items-center gap-3 relative">
-                    <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
-                    
-                    <!-- ***** INICIO: BOTÓN DE AVATAR MEJORADO ***** -->
-                    <div class="relative group">
-                        <button id="avatar-button" aria-label="Abrir menú de perfil">
-                            <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer group-hover:opacity-90 transition-opacity" />
-                            <div class="absolute bottom-0 right-0 bg-gray-800 rounded-full p-1 border-2 border-white group-hover:bg-teal-500 transition-colors">
-                                <i data-lucide="pencil" class="w-3 h-3 text-white"></i>
-                            </div>
-                        </button>
-                    </div>
-                    <!-- ***** FIN: BOTÓN DE AVATAR MEJORADO ***** -->
-
-                    <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
+                <a href="cursos.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">
+                    Ver Cursos
+                </a>
+                <div id="auth-container">
+                    <a href="acceso.html" class="cta-button bg-gray-900 text-white font-bold rounded-full hover:bg-gray-700 px-4 py-1.5 sm:px-6 sm:py-2 flex flex-col items-center justify-center">
+                        <span class="text-sm sm:text-base leading-tight">🔓 Acceso</span>
+                        <span class="text-[9px] sm:text-[10px] font-normal opacity-75 leading-tight">Inicia tu viaje</span>
+                    </a>
                 </div>
-            </nav>
-        </header>
-
-        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
-                <div class="p-6">
-                    <a href="campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
-                    <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
-                    <div class="mt-4">
-                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
-                        <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
-                    </div>
-                </div>
-                <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
-            </aside>
-
-            <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
-                <div class="p-6 md:p-8 lg:p-10">
-                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-4">Cargando...</h2>
-                    <div id="lesson-material-container" class="mb-6"></div>
-                    <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
-                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
-                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- INICIO: MODAL DE EDICIÓN DE PERFIL (ACTUALIZADO) -->
-    <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
-    <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full transform transition-all scale-95 opacity-0">
-          <div class="flex justify-between items-start">
-            <div>
-                <h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3>
-                <p id="profile-modal-subtitle" class="text-gray-600 mt-1">Mantén tus datos actualizados.</p>
             </div>
-            <button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button>
-          </div>
-          
-          <form id="profile-form" class="mt-6 max-h-[60vh] overflow-y-auto pr-4 -mr-4 space-y-4">
-              <!-- Campo Nombre Completo -->
-              <div>
-                  <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
-                  <input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Ada Lovelace">
-                  <p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p>
-                  <div id="name-error" class="error-message"></div>
-              </div>
-              
-              <!-- Campo RUT -->
-              <div>
-                  <label for="profile-rut-input" class="block text-sm font-medium text-gray-700 mb-1">RUT (Chile) <span class="required">*</span></label>
-                  <input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: 12345678-9">
-                  <p class="text-xs text-gray-500 mt-1">Requerido para la validez de tu certificado en Chile.</p>
-                  <div id="rut-error" class="error-message"></div>
-              </div>
-    
-              <!-- Campos Género y Fecha de Nacimiento -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
-                    <select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
-                        <option value="">Seleccionar...</option>
-                        <option value="female">Femenino</option>
-                        <option value="male">Masculino</option>
-                        <option value="other">Otro</option>
-                        <option value="prefer_not_to_say">Prefiero no decir</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
-                    <input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
-                </div>
-              </div>
-    
-              <!-- Campo Correo Electrónico -->
-              <div>
-                  <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
-                  <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
-              </div>
-    
-              <!-- Campo Cargo o Profesión -->
-              <div>
-                  <label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label>
-                  <input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante, Desarrollador, etc.">
-              </div>
-    
-              <!-- Campo País -->
-              <div>
-                  <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
-                  <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
-                      <option value="">Selecciona tu país</option>
-                      <option value="CL">Chile</option>
-                      <option value="AR">Argentina</option>
-                      <option value="PE">Perú</option>
-                      <option value="CO">Colombia</option>
-                      <option value="MX">México</option>
-                      <option value="ES">España</option>
-                      <option value="US">Estados Unidos</option>
-                      <option value="OT">Otro</option>
-                  </select>
-                  <div id="country-error" class="error-message"></div>
-              </div>
-              
-              <!-- Mensajes de estado del formulario -->
-              <div id="form-status" class="text-center p-3 rounded-lg hidden"></div>
-    
-              <!-- Botones de acción -->
-              <div class="mt-8 flex justify-end gap-3 pt-4 border-t">
-                  <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
-                  <button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2">
-                    <span id="save-btn-text">Guardar Cambios</span>
-                    <i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
-                  </button>
-              </div>
-          </form>
-        </div>
-    </div>
-    <!-- FIN: MODAL DE EDICIÓN DE PERFIL -->
-    
-    <!-- INICIO: NOTIFICACIONES Y MODAL DE FINALIZACIÓN -->
-    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div>
-    <div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
-    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
-    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "Domina la IA Aplicada".</p>
-    <div class="space-y-3 mt-6">
-        <a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a>
-        <a href="campus-curso-ia.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a>
-        <div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">¡Cupón del 20% DESBLOQUEADO! <br> Usa el código: <strong>NUEVOCURSO20</strong></div>
-    </div>
-    <button id="close-modal-btn" class="mt-8 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button></div></div>
-    <!-- FIN: NOTIFICACIONES Y MODAL DE FINALIZACIÓN -->
+        </nav>
+    </header>
 
-    <!-- Firebase SDKs -->
+    <!-- =========== CONTENIDO PRINCIPAL =========== -->
+    <main>
+        <section class="container mx-auto px-6 py-16 md:py-24 text-center">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-6xl font-black leading-tight mb-4">
+                    Te damos la bienvenida al <span class="gradient-text">🧪 Campus GenIA Lab</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                    Es el entorno de aprendizaje exclusivo de Aula GenIA, donde cada estudiante puede experimentar, aplicar herramientas de inteligencia artificial y construir su propio proyecto final.
+                </p>
+            </div>
+        </section>
+
+        <section class="container mx-auto px-6 max-w-5xl pb-24">
+            <div class="grid lg:grid-cols-3 gap-12">
+                <div class="lg:col-span-2">
+                    <h2 id="feed-title" class="text-2xl font-bold mb-6 border-b pb-3">Actividad Reciente en el Lab</h2>
+
+                    <div id="create-post-container" class="hidden mb-8">
+                        <div class="bg-white p-5 rounded-xl shadow-md">
+                            <div class="flex items-start gap-4">
+                                <img id="user-avatar" src="" alt="Tu avatar" class="w-12 h-12 rounded-full">
+                                <div class="w-full">
+                                    <form id="create-post-form">
+                                        <textarea id="post-content" class="w-full p-3 border-gray-200 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow" rows="3" placeholder="¿Qué estás pensando?" required></textarea>
+                                        <div class="flex justify-between items-center mt-3">
+                                            <select id="post-category" class="text-sm border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" required>
+                                                <option value="Discusiones">Discusión</option>
+                                                <option value="Tutoriales">Tutorial</option>
+                                                <option value="Proyectos">Proyecto</option>
+                                            </select>
+                                            <button type="submit" class="bg-teal-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-teal-600 transition-colors">Publicar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="login-prompt" class="hidden mb-8">
+                         <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                            <div class="flex">
+                                <div class="py-1"><i data-lucide="log-in" class="h-6 w-6 text-teal-500 mr-4"></i></div>
+                                <div>
+                                    <p class="font-bold text-teal-800">Únete a la conversación</p>
+                                    <p class="text-sm text-teal-700"><a href="acceso.html" class="underline font-semibold">Inicia sesión</a> para publicar y comentar.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="post-feed" class="space-y-8">
+                        <div id="feed-loader" class="text-center py-8">
+                           <p class="text-gray-500">Cargando actividad...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <aside>
+                    <div class="bg-white p-6 rounded-xl shadow-md sticky top-28">
+                        <h3 class="text-lg font-bold mb-4 border-b pb-2">Categorías</h3>
+                        <ul id="category-list" class="space-y-1">
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="all"><i data-lucide="layout-grid" class="h-4 w-4 mr-2"></i>Ver Todas</a></li>
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Tutoriales"><i data-lucide="book-open" class="h-4 w-4 mr-2 text-blue-500"></i>Tutoriales</a></li>
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Discusiones"><i data-lucide="message-square" class="h-4 w-4 mr-2 text-green-500"></i>Discusiones</a></li>
+                            <li><a href="#" class="category-link flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md" data-category="Proyectos"><i data-lucide="lightbulb" class="h-4 w-4 mr-2 text-purple-500"></i>Proyectos</a></li>
+                        </ul>
+                        <div id="sidebar-cta-container" class="mt-6">
+                             <a href="acceso.html" class="block w-full bg-teal-500 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-teal-600 transition-colors">
+                                Únete para Publicar
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-white border-t border-gray-200">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+            <a href="index.html" class="flex items-center justify-center mb-2">
+                <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA al pie de página" class="h-12 w-auto">
+            </a>
+            <p class="text-sm">&copy; 2024 Aula GenIA - Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
-    <!-- ===== INICIO DE LA CORRECCIÓN ===== -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js" defer></script>
-    <!-- ===== FIN DE LA CORRECCIÓN ===== -->
 
-    <script defer>
+    <script>
+        lucide.createIcons();
+        
         document.addEventListener('DOMContentLoaded', () => {
-            const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+            const firebaseConfig = {
+                 apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
+                 authDomain: "aulagenia.firebaseapp.com", 
+                 projectId: "aulagenia", 
+                 storageBucket: "aulagenia.appspot.com", 
+                 messagingSenderId: "173328075630", 
+                 appId: "1:173328075630:web:825606db4271ea1e66cf7f"
+            };
             
-            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
+            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya ha sido inicializado."); }
 
             const auth = firebase.auth();
             const db = firebase.firestore();
-            
-            const courseId = 'inteligencia-aplicada'; 
-            const ALL_COURSES_DATA = { [courseId]: { title: 'Domina la IA Aplicada', modules: [ { title: 'Módulo 0: Onboarding', badge: 'Iniciado en IA', lessons: [ { id: '0-1', title: 'Tu primer día con IA', type: 'video' } ] }, { title: 'Módulo 1: ¿Qué es la IA?', badge: 'Explorador Conceptual', lessons: [ { id: '1-1', title: 'Casos de éxito reales', type: 'video' }, { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }] } ] } ] } };
-
-            const courseData = ALL_COURSES_DATA[courseId];
-            const allLessons = courseData.modules.flatMap(m => m.lessons);
-            let currentUser = null;
-            let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id, unlockedBadges: [] };
 
             const dom = {
-                userName: document.getElementById('user-name'),
+                createPostContainer: document.getElementById('create-post-container'),
+                loginPrompt: document.getElementById('login-prompt'),
                 userAvatar: document.getElementById('user-avatar'),
-                userProfile: document.getElementById('user-profile-container'),
-                logoutButton: document.getElementById('logout-button'),
-                courseTitle: document.getElementById('course-title'),
-                progressBar: document.getElementById('progress-bar'),
-                progressText: document.getElementById('progress-text'),
-                modulesContainer: document.getElementById('modules-container'),
-                lessonTitle: document.getElementById('lesson-title'),
-                lessonMaterialContainer: document.getElementById('lesson-material-container'),
-                prevBtn: document.getElementById('prev-lesson-btn'),
-                mainActionBtn: document.getElementById('main-action-btn'),
-                toast: document.getElementById('toast-notification'),
-                toastMessage: document.getElementById('toast-message'),
-                badgeToast: document.getElementById('badge-toast'),
-                badgeMessage: document.getElementById('badge-message'),
-                completionModalOverlay: document.getElementById('completion-modal-overlay'),
-                completionModal: document.getElementById('completion-modal'),
-                modalUserName: document.getElementById('modal-user-name'),
-                closeModalBtn: document.getElementById('close-modal-btn')
+                postContentTextarea: document.getElementById('post-content'),
+                postCategorySelect: document.getElementById('post-category'),
+                createPostForm: document.getElementById('create-post-form'),
+                postFeed: document.getElementById('post-feed'),
+                feedLoader: document.getElementById('feed-loader'),
+                authContainer: document.getElementById('auth-container'),
+                sidebarCtaContainer: document.getElementById('sidebar-cta-container'),
+                categoryList: document.getElementById('category-list'),
+                feedTitle: document.getElementById('feed-title')
+            };
+            
+            let postsListener = null;
+            let currentUser = null;
+            let currentCategoryFilter = 'all';
+
+            const categoryDetails = {
+                'Tutoriales': { icon: 'book-open', color: 'text-blue-600' },
+                'Discusiones': { icon: 'message-square', color: 'text-green-600' },
+                'Proyectos': { icon: 'lightbulb', color: 'text-purple-600' }
             };
 
-            // --- LÓGICA DEL CURSO (SIN CAMBIOS) ---
-            function getLessonInfo(lessonId) { for (let i = 0; i < courseData.modules.length; i++) { const module = courseData.modules[i]; const lessonIndex = module.lessons.findIndex(l => l.id === lessonId); if (lessonIndex !== -1) { return { lesson: module.lessons[lessonIndex], moduleIndex: i, module: module }; } } return null; }
-            function refreshUI() { dom.courseTitle.textContent = courseData.title; renderSidebar(); const lessonInfo = getLessonInfo(userProgress.currentLessonId); if (lessonInfo) { dom.lessonTitle.textContent = lessonInfo.lesson.title; renderLessonContent(lessonInfo.lesson); dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.lesson.id) === 0; } updateOverallProgress(); updateMainActionButton(); lucide.createIcons(); }
-            function renderSidebar() { const isCourseComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length; let isPreviousModuleComplete = true; dom.modulesContainer.innerHTML = courseData.modules.map((module) => { const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete; const lessonsHtml = module.lessons.map(lesson => { const isCompleted = userProgress.completedLessons.includes(lesson.id); const isActive = userProgress.currentLessonId === lesson.id; let linkClasses = 'text-gray-600 hover:bg-slate-100'; let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle'); let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300'; if (isModuleLocked) { linkClasses = 'text-gray-400 cursor-not-allowed opacity-70'; statusIcon = 'lock'; iconColor = 'text-slate-400'; } else if (isActive) { linkClasses = 'bg-teal-50 text-teal-700 font-semibold'; statusIcon = 'play-circle'; iconColor = ''; } const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file'; return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`; }).join(''); const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800'; const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down'; if (!isCourseComplete) { const moduleLessonIds = module.lessons.map(l => l.id); isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id)); } return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`; }).join(''); addSidebarListeners(); }
-            function renderLessonContent(lesson) { let materialHtml = ''; switch(lesson.type) { case 'video': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`; break; case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; case 'quiz': const question = lesson.questions[0]; const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join(''); materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-900">Verificar Respuesta</button></div>`; break; } dom.lessonMaterialContainer.innerHTML = materialHtml; if (lesson.type === 'quiz') { dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => { dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); })); document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson)); } }
-            function checkQuizAnswer(lesson) { const selectedOption = dom.lessonMaterialContainer.querySelector('.quiz-option.selected'); if (!selectedOption) { showToast('Por favor, selecciona una respuesta.'); return; } const selectedIndex = parseInt(selectedOption.dataset.index); const correctIndex = lesson.questions[0].correctAnswer; dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none'); if (selectedIndex === correctIndex) { selectedOption.classList.add('correct'); showToast('¡Respuesta Correcta!'); dom.mainActionBtn.disabled = false; } else { selectedOption.classList.add('incorrect'); dom.lessonMaterialContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct'); showToast('Respuesta incorrecta. ¡Sigue intentando!'); setTimeout(() => { dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => { opt.classList.remove('incorrect', 'correct', 'selected'); opt.style.pointerEvents = 'auto'; }); }, 2000); } }
-            function updateMainActionButton() { const completedCount = Array.isArray(userProgress.completedLessons) ? userProgress.completedLessons.length : 0; const totalLessons = allLessons.length; const isCourseComplete = totalLessons > 0 && completedCount >= totalLessons; if (isCourseComplete) { dom.mainActionBtn.textContent = "Curso Completado"; dom.mainActionBtn.disabled = true; dom.mainActionBtn.classList.add('bg-green-500', 'cursor-not-allowed'); dom.mainActionBtn.classList.remove('bg-teal-500', 'hover:bg-teal-600'); return; } const lesson = allLessons.find(l => l.id === userProgress.currentLessonId); const isCompleted = userProgress.completedLessons.includes(lesson.id); const isLastLesson = allLessons.findIndex(l => l.id === lesson.id) === allLessons.length - 1; dom.mainActionBtn.disabled = false; if (lesson.type === 'quiz' && !isCompleted) { dom.mainActionBtn.disabled = true; } dom.mainActionBtn.textContent = isCompleted ? (isLastLesson ? 'Finalizar Curso' : 'Siguiente Lección') : 'Marcar como completada'; if (isLastLesson && !isCompleted) { const allOthersCompleted = allLessons.filter(l => l.id !== lesson.id).every(l => userProgress.completedLessons.includes(l.id)); if (!allOthersCompleted) dom.mainActionBtn.disabled = true; } }
-            function updateOverallProgress() { const completedCount = Array.isArray(userProgress.completedLessons) ? userProgress.completedLessons.length : 0; const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0; dom.progressBar.style.width = `${percentage}%`; dom.progressText.textContent = `${percentage}%`; }
-            async function navigateToLesson(lessonId) { const isCourseComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length; if (!isCourseComplete) { const targetLessonInfo = getLessonInfo(lessonId); if (!targetLessonInfo) return; const targetModuleIndex = targetLessonInfo.moduleIndex; if (targetModuleIndex > 0) { const previousModule = courseData.modules[targetModuleIndex - 1]; const previousModuleLessonIds = previousModule.lessons.map(l => l.id); const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id)); if (!isPreviousModuleCompleted) { showToast(`Debes completar el "${previousModule.title}" para acceder.`); return; } } } userProgress = { ...userProgress, currentLessonId: lessonId }; await saveProgress(); refreshUI(); }
-            async function saveProgress() { if (!currentUser) return; try { const progressRef = db.collection('userProgress').doc(currentUser.uid); await progressRef.set({ [courseId]: userProgress }, { merge: true }); } catch (error) { console.error("Error al guardar el progreso:", error); } }
-            async function loadProgressAndInitialize() { const docRef = db.collection('userProgress').doc(currentUser.uid); try { const doc = await docRef.get(); if (doc.exists) { const courseProgress = doc.data()[courseId]; if (courseProgress) { userProgress = { completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [], currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id, unlockedBadges: Array.isArray(courseProgress.unlockedBadges) ? courseProgress.unlockedBadges : [] }; } } } catch (error) { console.error("Error al cargar el progreso.", error); } refreshUI(); }
-            function addSidebarListeners() { dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); })); dom.modulesContainer.querySelectorAll('.accordion-header').forEach(header => { const icon = header.querySelector('i'); if (icon && icon.getAttribute('data-lucide') !== 'lock') { header.addEventListener('click', () => { const content = header.nextElementSibling; content.classList.toggle('open'); icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)'; }); } }); }
-            dom.mainActionBtn.addEventListener('click', async () => { const lessonId = userProgress.currentLessonId; const isCompleted = userProgress.completedLessons.includes(lessonId); if (isCompleted) { const currentIndex = allLessons.findIndex(l => l.id === lessonId); if (currentIndex < allLessons.length - 1) { navigateToLesson(allLessons[currentIndex + 1].id); } else { showCompletionModal(); } } else { userProgress = { ...userProgress, completedLessons: [...userProgress.completedLessons, lessonId] }; await saveProgress(); checkForBadgeUnlock(lessonId); const isCourseNowComplete = allLessons.length > 0 && userProgress.completedLessons.length >= allLessons.length; if (isCourseNowComplete) { showCompletionModal(); } refreshUI(); } });
-            dom.prevBtn.addEventListener('click', () => { const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); });
-            function showToast(message, type = 'generic') { const toastEl = type === 'badge' ? dom.badgeToast : dom.toast; const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage; msgEl.textContent = message; toastEl.classList.add('show'); setTimeout(() => toastEl.classList.remove('show'), 4000); }
-            function checkForBadgeUnlock(completedLessonId) { const lessonInfo = getLessonInfo(completedLessonId); if (!lessonInfo || !lessonInfo.module.badge) return; const lastLessonOfModule = lessonInfo.module.lessons[lessonInfo.module.lessons.length - 1].id; if (completedLessonId !== lastLessonOfModule) return; const moduleLessonIds = lessonInfo.module.lessons.map(l => l.id); if (moduleLessonIds.every(id => userProgress.completedLessons.includes(id))) { if (!userProgress.unlockedBadges.includes(lessonInfo.module.badge)) { userProgress.unlockedBadges.push(lessonInfo.module.badge); saveProgress(); showToast(`Has ganado la insignia: "${lessonInfo.module.badge}"`, 'badge'); } } }
-            function showCompletionModal() { dom.modalUserName.textContent = currentUser.name; dom.completionModalOverlay.classList.remove('hidden'); dom.completionModal.classList.remove('hidden'); setTimeout(() => { dom.completionModalOverlay.classList.add('opacity-100'); dom.completionModal.classList.add('show'); }, 10); }
-            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'campus.html');
-            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'campus.html');
-            // --- FIN LÓGICA DEL CURSO ---
+            function getUserInitials(name) {
+                if (!name) return 'AG';
+                const nameParts = name.trim().split(' ');
+                if (nameParts.length > 1) {
+                    return (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
+                }
+                return name.substring(0, 2).toUpperCase();
+            }
 
-
-            // --- INICIO: LÓGICA DE PERFIL UNIFICADA (REEMPLAZADA) ---
-            const profileModalOverlay = document.getElementById('profile-modal-overlay');
-            const profileModal = document.getElementById('profile-modal');
-            const avatarButton = document.getElementById('avatar-button');
-            const cancelProfileBtn = document.getElementById('cancel-profile-btn');
-            const closeProfileBtn = document.getElementById('close-profile-modal-btn');
-            const profileForm = document.getElementById('profile-form');
+            function getRelativeTime(date) {
+                const now = new Date();
+                const seconds = Math.round((now - date) / 1000);
+                if (seconds < 60) return `hace instantes`;
+                const minutes = Math.round(seconds / 60);
+                if (minutes < 60) return `hace ${minutes} min`;
+                const hours = Math.round(minutes / 60);
+                if (hours < 24) return `hace ${hours} h`;
+                const days = Math.round(hours / 24);
+                return `hace ${days} d`;
+            }
             
-            const profileNameInput = document.getElementById('profile-name-input');
-            const profileRutInput = document.getElementById('profile-rut-input');
-            const profileEmailInput = document.getElementById('profile-email-input');
-            const profileJobInput = document.getElementById('profile-job-input');
-            const profileCountrySelect = document.getElementById('profile-country-select');
-            const profileGenderSelect = document.getElementById('profile-gender-select');
-            const profileBirthdateInput = document.getElementById('profile-birthdate-input');
-            
-            const formStatus = document.getElementById('form-status');
-            const saveBtn = document.getElementById('save-profile-btn');
-            const saveBtnText = document.getElementById('save-btn-text');
-            const saveSpinner = document.getElementById('save-spinner');
-
-            async function showProfileModal() {
-                profileForm.reset();
-                clearAllErrors();
-                if(formStatus) formStatus.classList.add('hidden');
+            function loadPosts(category) {
+                if (postsListener) postsListener();
                 
-                const user = auth.currentUser;
-                if (!user) return;
+                dom.postFeed.innerHTML = '';
+                dom.feedLoader.classList.remove('hidden');
 
-                profileEmailInput.value = user.email || '';
-                const userDocRef = db.collection('users').doc(user.uid);
-                try {
-                    const doc = await userDocRef.get();
-                    if (doc.exists) {
-                        const data = doc.data();
-                        profileNameInput.value = data.displayName || user.displayName || '';
-                        profileRutInput.value = data.rut || '';
-                        profileJobInput.value = data.jobTitle || '';
-                        profileCountrySelect.value = data.country || '';
-                        profileGenderSelect.value = data.gender || '';
-                        profileBirthdateInput.value = data.birthdate || '';
-                    } else {
-                        profileNameInput.value = user.displayName || '';
-                    }
-                } catch (error) { 
-                    console.error("Error al cargar datos del perfil:", error);
-                    if(formStatus) {
-                        formStatus.textContent = 'Error al cargar tus datos. Intenta de nuevo.';
-                        formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
-                        formStatus.classList.remove('hidden');
-                    }
+                let query = db.collection('labPosts');
+                if (category && category !== 'all') {
+                    query = query.where('category', '==', category);
+                    dom.feedTitle.textContent = `Mostrando: ${category}`;
+                } else {
+                    dom.feedTitle.textContent = 'Actividad Reciente en el Lab';
                 }
 
-                profileModalOverlay.classList.remove('hidden');
-                profileModal.classList.remove('hidden');
-                setTimeout(() => {
-                    profileModal.querySelector('div > div').classList.remove('scale-95', 'opacity-0');
-                }, 10);
+                postsListener = query.onSnapshot(snapshot => {
+                    dom.feedLoader.classList.add('hidden');
+                    if (snapshot.empty) {
+                        dom.postFeed.innerHTML = `<p class="text-center text-gray-500">No hay publicaciones en esta categoría.</p>`;
+                        return;
+                    }
+                    
+                    const posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    posts.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+
+                    dom.postFeed.innerHTML = '';
+                    posts.forEach(renderPost);
+                    lucide.createIcons();
+                }, err => {
+                    console.error("Error al cargar posts:", err);
+                    dom.feedLoader.classList.add('hidden');
+                    dom.postFeed.innerHTML = `<p class="text-center text-red-500">Error al cargar la actividad.</p>`;
+                });
             }
 
-            function hideProfileModal() {
-                profileModal.querySelector('div > div').classList.add('scale-95', 'opacity-0');
-                setTimeout(() => {
-                    profileModalOverlay.classList.add('hidden');
-                    profileModal.classList.add('hidden');
-                }, 300);
+            function renderPost(postData) {
+                const post = postData;
+                const postId = post.id;
+                const postDate = post.createdAt ? getRelativeTime(post.createdAt.toDate()) : 'Ahora mismo';
+                const catInfo = categoryDetails[post.category] || categoryDetails['Discusiones'];
+                const isAuthor = currentUser && currentUser.uid === post.authorId;
+
+                const postElement = document.createElement('article');
+                postElement.className = 'bg-white p-6 rounded-xl shadow-md';
+                postElement.innerHTML = `
+                    <div class="flex items-start gap-4">
+                        <img src="${post.authorAvatar}" alt="Avatar de ${post.authorName}" class="w-10 h-10 rounded-full">
+                        <div class="w-full">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center gap-2">
+                                    <p class="font-semibold text-sm">${post.authorName}</p>
+                                    <span class="text-xs font-medium text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">${post.authorRole || 'Alumno'}</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xs text-gray-500">${postDate}</span>
+                                    ${isAuthor ? `<button class="delete-button" data-type="post" data-post-id="${postId}"><i data-lucide="trash-2" class="h-4 w-4"></i></button>` : ''}
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <i data-lucide="${catInfo.icon}" class="h-4 w-4 ${catInfo.color}"></i>
+                                <span class="text-sm font-semibold ${catInfo.color}">${post.category}</span>
+                            </div>
+                            <p class="text-gray-700 whitespace-pre-wrap">${post.content}</p>
+                            <div class="flex items-center text-gray-500 mt-4 text-sm gap-4">
+                                <button class="comment-button flex items-center hover:text-teal-600" data-post-id="${postId}">
+                                    <i data-lucide="message-square" class="h-4 w-4 mr-2"></i>
+                                    <span>${post.commentsCount || 0} Comentarios</span>
+                                </button>
+                            </div>
+                            <div class="mt-4 border-t border-gray-100 pt-4 comments-section">
+                                <div id="comments-container-${postId}"></div>
+                                <div id="comment-form-container-${postId}" class="comment-form"></div>
+                            </div>
+                        </div>
+                    </div>`;
+                
+                dom.postFeed.appendChild(postElement);
+                loadComments(postId);
             }
 
-            avatarButton.addEventListener('click', () => showProfileModal());
-            cancelProfileBtn.addEventListener('click', hideProfileModal);
-            closeProfileBtn.addEventListener('click', hideProfileModal);
-            profileModalOverlay.addEventListener('click', hideProfileModal);
-
-            function validateRut(rut) {
-                rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase();
-                const rutBody = rut.slice(0, -1);
-                let dv = rut.slice(-1);
-                if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false;
-                let sum = 0, multiple = 2;
-                for (let i = rutBody.length - 1; i >= 0; i--) {
-                    sum += rutBody.charAt(i) * multiple;
-                    if (multiple < 7) multiple++; else multiple = 2;
-                }
-                const calculatedDv = 11 - (sum % 11);
-                const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString();
-                return dv === expectedDv;
-            }
-
-            function setError(field, message) {
-                const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
-                if (inputEl) inputEl.classList.add('form-input-error');
-                const errorEl = document.getElementById(`${field}-error`);
-                if(errorEl) errorEl.textContent = message;
-            }
-
-            function clearError(field) {
-                const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
-                if (inputEl) inputEl.classList.remove('form-input-error');
-                const errorEl = document.getElementById(`${field}-error`);
-                if(errorEl) errorEl.textContent = '';
+            function loadComments(postId) {
+                const commentsContainer = document.getElementById(`comments-container-${postId}`);
+                db.collection('labPosts').doc(postId).collection('comments').orderBy('createdAt', 'asc')
+                  .onSnapshot(snapshot => {
+                      commentsContainer.innerHTML = '';
+                      snapshot.forEach(doc => {
+                          const comment = doc.data();
+                          const commentId = doc.id;
+                          const commentDate = comment.createdAt ? getRelativeTime(comment.createdAt.toDate()) : '';
+                          const isAuthor = currentUser && currentUser.uid === comment.authorId;
+                          
+                          const commentElement = document.createElement('div');
+                          commentElement.className = 'flex items-start gap-3 mt-4';
+                          commentElement.innerHTML = `
+                            <img src="${comment.authorAvatar}" alt="Avatar de ${comment.authorName}" class="w-8 h-8 rounded-full">
+                            <div class="bg-gray-100 rounded-lg p-3 text-sm w-full">
+                                <div class="flex justify-between items-center">
+                                    <p class="font-semibold text-gray-800">${comment.authorName}</p>
+                                    <div class="flex items-center gap-3">
+                                        <p class="text-xs text-gray-500">${commentDate}</p>
+                                        ${isAuthor ? `<button class="delete-button" data-type="comment" data-post-id="${postId}" data-comment-id="${commentId}"><i data-lucide="trash-2" class="h-3 w-3"></i></button>` : ''}
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mt-1">${comment.content}</p>
+                            </div>
+                          `;
+                          commentsContainer.appendChild(commentElement);
+                      });
+                      lucide.createIcons();
+                  });
             }
             
-            function clearAllErrors() {
-                ['name', 'rut', 'country'].forEach(field => clearError(field));
+            function handleCommentForm(postId, user) {
+                const container = document.getElementById(`comment-form-container-${postId}`);
+                const isActive = container.classList.contains('active');
+                if (isActive) {
+                    container.innerHTML = '';
+                    container.classList.remove('active');
+                } else {
+                    container.innerHTML = `
+                        <form class="comment-submit-form flex items-start gap-3" data-post-id="${postId}">
+                            <img src="${user.photoURL}" alt="Tu avatar" class="w-8 h-8 rounded-full">
+                            <div class="w-full">
+                                <textarea class="w-full p-2 border-gray-300 border rounded-lg text-sm" rows="2" placeholder="Escribe un comentario..." required></textarea>
+                                <button type="submit" class="text-xs bg-teal-500 text-white font-semibold py-1 px-3 rounded-md hover:bg-teal-600 mt-2">Publicar</button>
+                            </div>
+                        </form>
+                    `;
+                    container.classList.add('active');
+                    const form = container.querySelector('form');
+                    form.addEventListener('submit', handleCommentSubmit);
+                    form.querySelector('textarea').focus();
+                }
             }
-
-            function validateForm() {
-                let isValid = true;
-                clearAllErrors();
-                if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) {
-                    setError('name', 'Ingresa tu nombre y apellido completo.');
-                    isValid = false;
-                }
-                if (profileCountrySelect.value === '') {
-                    setError('country', 'Selecciona tu país de residencia.');
-                    isValid = false;
-                }
-                if (profileCountrySelect.value === 'CL' && !validateRut(profileRutInput.value)) {
-                    setError('rut', 'El RUT ingresado no es válido.');
-                    isValid = false;
-                }
-                return isValid;
-            }
-
-            profileForm.addEventListener('submit', async (e) => {
+            
+            async function handleCommentSubmit(e) {
                 e.preventDefault();
-                if (!validateForm()) return;
-
-                saveBtn.disabled = true;
-                saveBtnText.textContent = 'Guardando...';
-                saveSpinner.classList.remove('hidden');
-                if(formStatus) formStatus.classList.add('hidden');
-
-                const user = auth.currentUser;
-                const newName = profileNameInput.value.trim();
-                const userDocRef = db.collection('users').doc(user.uid);
-
+                const postId = e.target.dataset.postId;
+                const textarea = e.target.querySelector('textarea');
+                const content = textarea.value.trim();
+                if (!content || !currentUser) return;
+                const newComment = { content, authorId: currentUser.uid, authorName: currentUser.displayName, authorAvatar: currentUser.photoURL, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+                const postRef = db.collection('labPosts').doc(postId);
+                const commentRef = postRef.collection('comments').doc();
                 try {
-                    if (newName !== user.displayName) {
-                        await user.updateProfile({ displayName: newName });
-                    }
-                    await userDocRef.set({
-                        displayName: newName,
-                        email: user.email,
-                        rut: profileRutInput.value.trim(),
-                        jobTitle: profileJobInput.value.trim(),
-                        country: profileCountrySelect.value,
-                        gender: profileGenderSelect.value,
-                        birthdate: profileBirthdateInput.value,
-                    }, { merge: true });
-                    
-                    dom.userName.textContent = newName;
-                    
-                    if(formStatus) {
-                        formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700';
-                        formStatus.textContent = '¡Perfil actualizado con éxito!';
-                        formStatus.classList.remove('hidden');
-                    }
-                    showToast('¡Perfil actualizado con éxito!');
+                    await db.runTransaction(async (transaction) => {
+                        const postDoc = await transaction.get(postRef);
+                        if (!postDoc.exists) throw "El documento no existe!";
+                        const newCount = (postDoc.data().commentsCount || 0) + 1;
+                        transaction.update(postRef, { commentsCount: newCount });
+                        transaction.set(commentRef, newComment);
+                    });
+                    textarea.value = '';
+                    document.getElementById(`comment-form-container-${postId}`).classList.remove('active');
+                } catch (error) { console.error("Error al publicar comentario: ", error); alert("No se pudo publicar el comentario."); }
+            }
 
-                    setTimeout(hideProfileModal, 1500);
+            async function handleDelete(e) {
+                const button = e.target.closest('.delete-button');
+                if (!button) return;
 
-                } catch (error) {
-                    console.error("Error al guardar perfil:", error);
-                    if(formStatus) {
-                        formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
-                        formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.';
-                        formStatus.classList.remove('hidden');
+                const type = button.dataset.type;
+                const postId = button.dataset.postId;
+                const commentId = button.dataset.commentId;
+
+                if (type === 'post') {
+                    if (confirm('¿Estás seguro de que quieres borrar esta publicación? Se eliminarán todos sus comentarios.')) {
+                        const postRef = db.collection('labPosts').doc(postId);
+                        const commentsSnapshot = await postRef.collection('comments').get();
+                        const batch = db.batch();
+                        commentsSnapshot.forEach(doc => batch.delete(doc.ref));
+                        await batch.commit();
+                        await postRef.delete();
                     }
-                } finally {
-                    saveBtn.disabled = false;
-                    saveBtnText.textContent = 'Guardar Cambios';
-                    saveSpinner.classList.add('hidden');
+                } else if (type === 'comment') {
+                    if (confirm('¿Estás seguro de que quieres borrar este comentario?')) {
+                        const postRef = db.collection('labPosts').doc(postId);
+                        const commentRef = postRef.collection('comments').doc(commentId);
+                        try {
+                            await db.runTransaction(async (transaction) => {
+                                const postDoc = await transaction.get(postRef);
+                                if (!postDoc.exists) throw "El post no existe";
+                                const newCount = (postDoc.data().commentsCount || 1) - 1;
+                                transaction.update(postRef, { commentsCount: newCount < 0 ? 0 : newCount });
+                                transaction.delete(commentRef);
+                            });
+                        } catch (error) {
+                            console.error("Error al borrar comentario: ", error);
+                            alert("No se pudo borrar el comentario.");
+                        }
+                    }
                 }
-            });
-            // --- FIN: LÓGICA DE PERFIL UNIFICADA ---
+            }
 
             auth.onAuthStateChanged(user => {
                 if (user) {
-                    currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
-                    dom.userName.textContent = currentUser.name;
-                    dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
-                    dom.userProfile.classList.remove('hidden');
-                    dom.userProfile.classList.add('flex');
-                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
-                    loadProgressAndInitialize();
+                    const initials = getUserInitials(user.displayName);
+                    currentUser = { 
+                        uid: user.uid, 
+                        displayName: user.displayName || 'Alumno', 
+                        photoURL: user.photoURL || `https://placehold.co/48x48/14b8a6/FFFFFF?text=${initials}` 
+                    };
+                    dom.loginPrompt.classList.add('hidden');
+                    dom.createPostContainer.classList.remove('hidden');
+                    dom.userAvatar.src = currentUser.photoURL;
+                    dom.postContentTextarea.placeholder = `¿Qué estás pensando, ${currentUser.displayName}?`;
+                    dom.authContainer.innerHTML = `<a href="campus-curso-ia.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-5 text-sm py-2 hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">Mi Campus</a>`;
+                    dom.sidebarCtaContainer.innerHTML = `<a href="campus-curso-ia.html" class="mt-8 block w-full bg-gray-800 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors">Ir a mi Curso</a>`;
                 } else {
-                    window.location.href = 'acceso.html';
+                    currentUser = null;
+                    dom.createPostContainer.classList.add('hidden');
+                    dom.loginPrompt.classList.remove('hidden');
+                    dom.authContainer.innerHTML = `<a href="acceso.html" class="cta-button bg-gray-900 text-white font-bold rounded-full hover:bg-gray-700 px-4 py-1.5 sm:px-6 sm:py-2 flex flex-col items-center justify-center"><span class="text-sm sm:text-base leading-tight">🔓 Acceso</span><span class="text-[9px] sm:text-[10px] font-normal opacity-75 leading-tight">Inicia tu viaje</span></a>`;
+                    dom.sidebarCtaContainer.innerHTML = `<a href="acceso.html" class="mt-8 block w-full bg-teal-500 text-white text-center font-bold py-3 px-4 rounded-lg hover:bg-teal-600 transition-colors">Únete para Publicar</a>`;
+                    dom.postFeed.innerHTML = '<p class="text-center text-gray-500 py-8">Inicia sesión para ver y crear publicaciones.</p>';
+                }
+                loadPosts(currentCategoryFilter);
+                lucide.createIcons();
+            });
+
+            dom.createPostForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const content = dom.postContentTextarea.value.trim();
+                const category = dom.postCategorySelect.value;
+                if (content && category && currentUser) {
+                    db.collection('labPosts').add({
+                        content, category, authorId: currentUser.uid, authorName: currentUser.displayName, authorAvatar: currentUser.photoURL, authorRole: 'Alumno', createdAt: firebase.firestore.FieldValue.serverTimestamp(), commentsCount: 0
+                    }).then(() => {
+                        dom.postContentTextarea.value = '';
+                    }).catch(err => { console.error("Error al añadir la publicación: ", err); alert("Hubo un error al publicar."); });
                 }
             });
+            
+            dom.postFeed.addEventListener('click', e => {
+                const commentButton = e.target.closest('.comment-button');
+                if (commentButton && currentUser) { handleCommentForm(commentButton.dataset.postId, currentUser); } 
+                else if (commentButton && !currentUser) { alert('Debes iniciar sesión para comentar.'); }
+                
+                handleDelete(e);
+            });
+
+            dom.categoryList.addEventListener('click', e => {
+                e.preventDefault();
+                const link = e.target.closest('.category-link');
+                if (link) {
+                    currentCategoryFilter = link.dataset.category;
+                    dom.categoryList.querySelectorAll('.category-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    loadPosts(currentCategoryFilter);
+                }
+            });
+
+            // Activar el filtro inicial
+            dom.categoryList.querySelector('[data-category="all"]').classList.add('active');
         });
     </script>
 </body>
