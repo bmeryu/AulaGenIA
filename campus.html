@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v5.0 (Mandatory Profile & UX Upgrade)
+  CAMPUS DASHBOARD · AULA GENIA v5.1 (Profile Fields Update)
   -------------------------------------------------------------------
-  Esta versión introduce un modal de configuración de perfil
-  obligatorio para nuevos usuarios o aquellos con perfiles incompletos.
-  Se ha mejorado la UX del formulario con validación en tiempo real,
-  campos más robustos (RUT chileno) y mensajes de error claros,
-  eliminando las alertas nativas del navegador.
+  Esta versión agrega los campos "Género" y "Fecha de Nacimiento"
+  al modal de perfil para enriquecer los datos del usuario.
+  Se mantiene la estructura y funcionalidad existente.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -187,6 +185,28 @@
               <div id="rut-error" class="error-message"></div>
           </div>
 
+          <!-- ***** INICIO: NUEVOS CAMPOS ***** -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Campo Género -->
+            <div>
+                <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
+                <select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                    <option value="">Seleccionar...</option>
+                    <option value="female">Femenino</option>
+                    <option value="male">Masculino</option>
+                    <option value="other">Otro</option>
+                    <option value="prefer_not_to_say">Prefiero no decir</option>
+                </select>
+            </div>
+
+            <!-- Campo Fecha de Nacimiento -->
+            <div>
+                <label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
+                <input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+            </div>
+          </div>
+          <!-- ***** FIN: NUEVOS CAMPOS ***** -->
+
           <!-- Campo Correo Electrónico -->
           <div>
               <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
@@ -298,6 +318,10 @@
       const profileEmailInput = document.getElementById('profile-email-input');
       const profileJobInput = document.getElementById('profile-job-input');
       const profileCountrySelect = document.getElementById('profile-country-select');
+      // *** NUEVOS INPUTS ***
+      const profileGenderSelect = document.getElementById('profile-gender-select');
+      const profileBirthdateInput = document.getElementById('profile-birthdate-input');
+
       
       // Elementos de UI del modal
       const modalTitle = document.getElementById('profile-modal-title');
@@ -330,6 +354,9 @@
                   profileRutInput.value = data.rut || '';
                   profileJobInput.value = data.jobTitle || '';
                   profileCountrySelect.value = data.country || '';
+                  // *** CARGAR DATOS DE NUEVOS CAMPOS ***
+                  profileGenderSelect.value = data.gender || '';
+                  profileBirthdateInput.value = data.birthdate || '';
               } else {
                   profileNameInput.value = user.displayName || '';
               }
@@ -396,13 +423,19 @@
       }
 
       function setError(field, message) {
-          document.getElementById(`${field}-input`).classList.add('form-input-error');
-          document.getElementById(`${field}-error`).textContent = message;
+          const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
+          if (inputEl) inputEl.classList.add('form-input-error');
+          
+          const errorEl = document.getElementById(`${field}-error`);
+          if(errorEl) errorEl.textContent = message;
       }
 
       function clearError(field) {
-          document.getElementById(`${field}-input`).classList.remove('form-input-error');
-          document.getElementById(`${field}-error`).textContent = '';
+          const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
+          if (inputEl) inputEl.classList.remove('form-input-error');
+
+          const errorEl = document.getElementById(`${field}-error`);
+          if(errorEl) errorEl.textContent = '';
       }
       
       const countrySelect = document.getElementById('profile-country-select');
@@ -474,6 +507,9 @@
                   rut: profileRutInput.value.trim(),
                   jobTitle: profileJobInput.value.trim(),
                   country: profileCountrySelect.value,
+                  // *** GUARDAR DATOS DE NUEVOS CAMPOS ***
+                  gender: profileGenderSelect.value,
+                  birthdate: profileBirthdateInput.value,
                   profileCompleted: true // Marcar perfil como completo
               }, { merge: true });
 
