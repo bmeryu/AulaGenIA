@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v5.0 (Profile Refinement)
+  CAMPUS DASHBOARD · AULA GENIA v5.1 (Fix Enrollment Check)
   -------------------------------------------------------------------
-  - Se implementa un modal de perfil obligatorio para nuevos usuarios.
-  - Se añaden validaciones en tiempo real al formulario de perfil.
-  - Se reemplazan alertas por notificaciones "toast".
-  - Se mejora la retroalimentación al usuario (botones deshabilitados, spinners).
+  - Se restaura la lógica completa para verificar el acceso a cursos.
+  - Se añade el SDK de Firebase Functions para evitar errores en consola.
+  - Se asegura que la tarjeta del curso se actualice correctamente.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -151,6 +150,9 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+  <!-- FIX: Added missing Firebase Functions SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js" defer></script>
+
 
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
@@ -345,7 +347,112 @@
           lucide.createIcons();
       }
       
-      async function checkUserAccess(userId) { /* ... (sin cambios) ... */ }
+      // FIX: Restored the full checkUserAccess function and its helpers
+      function getTotalLessons(courseId) {
+          const course = ALL_COURSES_DATA[courseId];
+          if (!course) return 0;
+          return course.modules.reduce((total, module) => total + module.lessons.length, 0);
+      }
+
+      function updateCardForEnrolledUser(card, progress) {
+        const tagEl = card.querySelector('.tag');
+        const percentEl = card.querySelector('.percent');
+        const fillEl = card.querySelector('.fill');
+        const footerEl = card.querySelector('.card-footer');
+        const progressContainer = card.querySelector('.progress-container');
+        const actionBtn = card.querySelector('.course-action-btn');
+
+        progressContainer.classList.remove('hidden');
+        percentEl.textContent = `${progress}%`;
+        fillEl.style.width = `${progress}%`;
+        actionBtn.href = "campus-curso-ia.html";
+        actionBtn.classList.remove('cursor-wait', 'bg-gray-400');
+        actionBtn.classList.add('bg-teal-500', 'hover:bg-teal-600');
+
+        if (progress >= 100) {
+          tagEl.textContent = 'Completado';
+          tagEl.classList.remove('bg-teal-100', 'text-teal-600');
+          tagEl.classList.add('bg-green-100', 'text-green-600');
+          fillEl.style.backgroundColor = 'var(--brand-green)';
+          
+          footerEl.innerHTML = `
+            <div class="space-y-3">
+              <a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                <i data-lucide="award" class="h-5 w-5"></i>
+                <span>Ver Certificado</span>
+              </a>
+              <a href="campus-curso-ia.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">
+                Repasar Curso
+              </a>
+            </div>
+          `;
+        } else {
+            tagEl.textContent = 'En progreso';
+            tagEl.classList.remove('bg-green-100', 'text-green-600');
+            tagEl.classList.add('bg-teal-100', 'text-teal-600');
+            fillEl.style.backgroundColor = 'var(--brand-teal)';
+            actionBtn.textContent = 'Continuar aprendiendo';
+        }
+        lucide.createIcons();
+      }
+
+      function updateCardForUnenrolledUser(card) {
+          const tagEl = card.querySelector('.tag');
+          const actionBtn = card.querySelector('.course-action-btn');
+          
+          tagEl.textContent = 'Requiere Inscripción';
+          tagEl.classList.remove('bg-teal-100', 'text-teal-600');
+          tagEl.classList.add('bg-yellow-100', 'text-yellow-700');
+          
+          actionBtn.textContent = 'Inscríbete para Activar';
+          actionBtn.href = "#"; 
+          actionBtn.classList.remove('cursor-wait', 'bg-gray-400');
+          actionBtn.classList.add('bg-slate-400', 'hover:bg-slate-500');
+
+          actionBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              // Here you could show an enrollment modal if you have one
+              alert('Necesitas inscribirte en este curso.');
+          });
+      }
+
+      async function checkUserAccess(userId) {
+        const courseCard = document.querySelector(`[data-course-id="${COURSE_ID}"]`);
+        if (!courseCard) return;
+
+        try {
+            const userDocRef = db.collection('users').doc(userId);
+            const userDoc = await userDocRef.get();
+            
+            let hasAccess = false;
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                // Check for enrollment status, expecting boolean `true`
+                if (userData.enrollments && userData.enrollments[COURSE_ID] === true) {
+                    hasAccess = true;
+                }
+            }
+
+            if (hasAccess) {
+                const progressRef = db.collection('userProgress').doc(userId);
+                const progressDoc = await progressRef.get();
+                const progressData = progressDoc.exists ? progressDoc.data() : {};
+                
+                const courseProgressData = progressData[COURSE_ID] || { completedLessons: [] };
+                const totalLessons = getTotalLessons(COURSE_ID);
+                const completedCount = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons.length : 0;
+                const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
+                updateCardForEnrolledUser(courseCard, progressValue);
+            } else {
+                updateCardForUnenrolledUser(courseCard);
+            }
+
+        } catch (error) {
+            console.error("Error al verificar el acceso del usuario:", error);
+            updateCardForUnenrolledUser(courseCard);
+        }
+      }
       
       auth.onAuthStateChanged(user => {
         if (user) {
