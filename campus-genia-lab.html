@@ -163,7 +163,7 @@
             <a href="index.html" class="flex items-center justify-center mb-2">
                 <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA al pie de página" class="h-12 w-auto">
             </a>
-            <p class="text-sm">&copy; 2024 - Todos los derechos reservados. Creado con 💙 y un poquito de IA.</p>
+            <p class="text-sm">&copy; 2024 Aula GenIA - Todos los derechos reservados.</p>
         </div>
     </footer>
     
@@ -213,6 +213,15 @@
                 'Discusiones': { icon: 'message-square', color: 'text-green-600' },
                 'Proyectos': { icon: 'lightbulb', color: 'text-purple-600' }
             };
+
+            function getUserInitials(name) {
+                if (!name) return 'AG';
+                const nameParts = name.split(' ');
+                if (nameParts.length > 1) {
+                    return (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
+                }
+                return name.substring(0, 2).toUpperCase();
+            }
 
             function getRelativeTime(date) {
                 const now = new Date();
@@ -393,12 +402,10 @@
                 if (type === 'post') {
                     if (confirm('¿Estás seguro de que quieres borrar esta publicación? Se eliminarán todos sus comentarios.')) {
                         const postRef = db.collection('labPosts').doc(postId);
-                        // Primero borrar subcolección de comentarios
                         const commentsSnapshot = await postRef.collection('comments').get();
                         const batch = db.batch();
                         commentsSnapshot.forEach(doc => batch.delete(doc.ref));
                         await batch.commit();
-                        // Luego borrar el post
                         await postRef.delete();
                     }
                 } else if (type === 'comment') {
@@ -423,7 +430,12 @@
 
             auth.onAuthStateChanged(user => {
                 if (user) {
-                    currentUser = { uid: user.uid, displayName: user.displayName || 'Alumno', photoURL: user.photoURL || `https://placehold.co/48x48/14b8a6/FFFFFF?text=${(user.displayName || 'A').charAt(0).toUpperCase()}` };
+                    const initials = getUserInitials(user.displayName);
+                    currentUser = { 
+                        uid: user.uid, 
+                        displayName: user.displayName || 'Alumno', 
+                        photoURL: user.photoURL || `https://placehold.co/48x48/14b8a6/FFFFFF?text=${initials}` 
+                    };
                     dom.loginPrompt.classList.add('hidden');
                     dom.createPostContainer.classList.remove('hidden');
                     dom.userAvatar.src = currentUser.photoURL;
