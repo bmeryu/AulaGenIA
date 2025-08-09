@@ -450,11 +450,11 @@
                  if (!currentUser) return;
                 dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
                 try {
+                    // ===== INICIO DE LA CORRECCIÓN DE ÍNDICE =====
                     const snap = await db.collection('userResources')
                         .where('uid', '==', currentUser.uid)
                         .where('courseId', '==', courseId)
                         .where('lessonId', '==', lessonId)
-                        .orderBy('createdAt', 'desc')
                         .get();
                     
                     if (snap.empty) {
@@ -462,12 +462,20 @@
                         return;
                     }
                     
+                    // Ordenar los resultados en el cliente en lugar de en la consulta
+                    const docs = snap.docs.sort((a, b) => {
+                        const timeA = a.data().createdAt?.toDate() || 0;
+                        const timeB = b.data().createdAt?.toDate() || 0;
+                        return timeB - timeA; // Descendente
+                    });
+
                     dom.userResourceList.innerHTML = '';
-                    snap.forEach(doc => renderUserResourceItem(doc));
+                    docs.forEach(doc => renderUserResourceItem(doc));
+                    // ===== FIN DE LA CORRECCIÓN DE ÍNDICE =====
 
                 } catch (err) {
                     console.error('Error listando recursos:', err);
-                    dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos.</p></li>';
+                    dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos. Revisa los permisos de Firestore.</p></li>';
                 }
             }
             
@@ -599,7 +607,7 @@
                 const itemIndex = items.findIndex(item => item.text === oldTask.text);
                 if (itemIndex > -1) {
                     items[itemIndex] = { ...items[itemIndex], ...updates };
-                    await docRef.set({ items: items });
+                    await docRef.set({ items: items }, { merge: true });
                 }
             }
 
@@ -607,7 +615,7 @@
                 const doc = await docRef.get();
                 const items = doc.exists ? doc.data().items || [] : [];
                 const newItems = items.filter(item => item.text !== taskToDelete.text);
-                await docRef.set({ items: newItems });
+                await docRef.set({ items: newItems }, { merge: true });
             }
 
             async function addTask() {
