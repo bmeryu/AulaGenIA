@@ -223,8 +223,8 @@
                             badge: 'Iniciado en IA', 
                             lessons: [ 
                                 { id: '0-1', title: 'Tu primer día con IA', type: 'video', resources: [
-                                    { name: 'Accede a ChatGPT.pdf', url: 'http://aulagenia.cl/Manual_Crear_Cuenta_ChatGPT_AulaGenIA_curso' },
-                                    { name: 'Accded a Gemini.pdf', url: 'http://aulagenia.cl/Manual_Crear_Cuenta_Gemini_AulaGenIA_curso.pdf' }
+                                    { name: 'Accede A ChatGPT.pdf', url: 'http://Manual_Crear_Cuenta_ChatGPT_AulaGenIA_curso.pdf?alt=media' },
+                                    { name: 'Accede a Gemini.pdf', url: 'http://Manual_Crear_Cuenta_Gemini_AulaGenIA_curso.pdf?alt=media' }
                                 ]} 
                             ] 
                         }, 
@@ -282,14 +282,12 @@
                 addTaskBtn: document.getElementById('add-task-btn'),
                 taskList: document.getElementById('task-list'),
                 tabMaterialPanel: document.getElementById('tab-material'),
-                // ===== INICIO: NUEVOS ELEMENTOS DEL DOM PARA MODAL PDF =====
                 pdfModalOverlay: document.getElementById('pdf-modal-overlay'),
                 pdfModal: document.getElementById('pdf-modal'),
                 pdfModalContent: document.getElementById('pdf-modal-content'),
                 pdfModalTitle: document.getElementById('pdf-modal-title'),
                 pdfModalCloseBtn: document.getElementById('pdf-modal-close-btn'),
                 pdfIframe: document.getElementById('pdf-iframe'),
-                // ===== FIN: NUEVOS ELEMENTOS DEL DOM PARA MODAL PDF =====
             };
 
             function getLessonInfo(lessonId) { for (let i = 0; i < courseData.modules.length; i++) { const module = courseData.modules[i]; const lessonIndex = module.lessons.findIndex(l => l.id === lessonId); if (lessonIndex !== -1) { return { lesson: module.lessons[lessonIndex], moduleIndex: i, module: module }; } } return null; }
@@ -480,7 +478,10 @@
 
             function openPdfModal(url, title) {
                 dom.pdfModalTitle.textContent = title;
-                dom.pdfIframe.src = url;
+                // ===== INICIO DE LA CORRECCIÓN =====
+                const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+                dom.pdfIframe.src = viewerUrl;
+                // ===== FIN DE LA CORRECCIÓN =====
                 dom.pdfModal.classList.remove('hidden');
                 dom.pdfModalOverlay.classList.remove('hidden');
                 setTimeout(() => {
