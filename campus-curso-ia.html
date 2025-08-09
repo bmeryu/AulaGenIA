@@ -30,6 +30,8 @@
         .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
         .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
     </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js" defer></script>
 </head>
 <body class="text-gray-800">
 
@@ -75,6 +77,66 @@
                 <div class="p-6 md:p-8 lg:p-10">
                     <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-4">Cargando...</h2>
                     <div id="lesson-material-container" class="mb-6"></div>
+                    <!-- ===== INICIO: PESTAÑAS DE APRENDIZAJE (NUEVO) ===== -->
+                    <div id="learning-tabs" class="mt-8">
+                        <div class="border-b border-slate-200 mb-4 flex gap-6 text-sm">
+                            <button class="ltab px-2 py-2 border-b-2 border-transparent hover:text-teal-700" data-tab="tab-notes">
+                                <span class="inline-flex items-center gap-2"><i data-lucide="notebook-pen" class="h-4 w-4"></i>Notas</span>
+                            </button>
+                            <button class="ltab px-2 py-2 border-b-2 border-transparent hover:text-teal-700" data-tab="tab-resources">
+                                <span class="inline-flex items-center gap-2"><i data-lucide="folder-down" class="h-4 w-4"></i>Recursos</span>
+                            </button>
+                            <button class="ltab px-2 py-2 border-b-2 border-transparent hover:text-teal-700" data-tab="tab-tasks">
+                                <span class="inline-flex items-center gap-2"><i data-lucide="check-square" class="h-4 w-4"></i>Tareas</span>
+                            </button>
+                        </div>
+
+                        <div id="tab-notes" class="ltab-panel hidden">
+                            <div class="grid gap-3">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-gray-900">Tus notas de esta lección</h3>
+                                    <span id="notes-save-status" class="text-xs text-slate-500">Sin cambios</span>
+                                </div>
+                                <textarea id="notes-textarea" class="w-full min-h-[160px] rounded-lg border border-slate-300 p-3 focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Escribe aquí tus ideas, resúmenes o preguntas..."></textarea>
+                                <div class="flex gap-3 text-xs text-slate-500">
+                                    <span class="inline-flex items-center gap-1"><i data-lucide="cloud" class="h-4 w-4"></i>Guardado automático</span>
+                                    <span class="inline-flex items-center gap-1"><i data-lucide="calendar" class="h-4 w-4"></i><span id="notes-updated-at">—</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-resources" class="ltab-panel hidden">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-gray-900">Sube materiales para esta lección</h3>
+                                    <span class="text-xs text-slate-500">PDF, DOCX, imágenes, etc.</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <input id="resource-file-input" type="file" class="block w-full text-sm text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100" multiple />
+                                    <button id="upload-resources-btn" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Subir</button>
+                                </div>
+                                <div id="upload-progress" class="hidden text-sm text-slate-600"></div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-slate-700 mb-2">Tus archivos</h4>
+                                    <ul id="resource-list" class="divide-y divide-slate-200 bg-white rounded-lg border border-slate-200"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-tasks" class="ltab-panel hidden">
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-semibold text-gray-900">Checklist de práctica</h3>
+                                <div class="flex gap-2">
+                                    <input id="task-input" type="text" class="flex-1 rounded-lg border border-slate-300 p-2 focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Ej: Probar un prompt en Gemini..." />
+                                    <button id="add-task-btn" class="px-3 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900">Agregar</button>
+                                </div>
+                                <ul id="task-list" class="space-y-2"></ul>
+                                <p class="text-xs text-slate-500">Tus tareas quedan guardadas por lección.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ===== FIN: PESTAÑAS DE APRENDIZAJE (NUEVO) ===== -->
+
                     <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
                         <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
                         <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
@@ -451,5 +513,307 @@
             });
         });
     </script>
+
+    <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+        // === Utilidades UI Tabs ===
+        const tabButtons = document.querySelectorAll('.ltab');
+        const tabPanels  = document.querySelectorAll('.ltab-panel');
+        function activateTab(id) {
+            tabButtons.forEach(b => {
+                const active = b.dataset.tab === id;
+                b.classList.toggle('border-teal-600', active);
+                b.classList.toggle('text-teal-700', active);
+                b.classList.toggle('border-b-2', true);
+            });
+            tabPanels.forEach(p => p.classList.toggle('hidden', p.id !== id));
+            if (window.lucide) lucide.createIcons();
+        }
+        if (tabButtons.length) activateTab('tab-notes');
+        tabButtons.forEach(btn => btn.addEventListener('click', () => activateTab(btn.dataset.tab)));
+
+        // === Firebase handles locales (re-usa la instancia existente de la página) ===
+        let auth, db, storage, currentUser = null;
+
+        try {
+            auth = firebase.auth();
+            db = firebase.firestore();
+            storage = firebase.storage();
+        } catch (e) {
+            console.warn('Firebase no disponible aún:', e);
+        }
+
+        // Helpers para identificar la lección actual desde el DOM (sin tocar lógica existente)
+        function getActiveLessonIdFromSidebar() {
+            const active = document.querySelector('#modules-container .lesson-item a.bg-teal-50');
+            if (!active) return null;
+            const li = active.closest('.lesson-item');
+            return li ? li.dataset.lessonId : null;
+        }
+
+        function getCourseKey() {
+            const t = (document.getElementById('course-title')?.textContent || 'curso').toLowerCase().trim();
+            return t.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'curso';
+        }
+
+        // === NOTAS ===
+        const notesArea       = document.getElementById('notes-textarea');
+        const notesStatus     = document.getElementById('notes-save-status');
+        const notesUpdatedAt  = document.getElementById('notes-updated-at');
+
+        let notesSaveTimer = null;
+        let lastNotesKey = null;
+
+        async function loadNotes() {
+            if (!db || !currentUser) return;
+            const lessonId = getActiveLessonIdFromSidebar();
+            if (!lessonId) return;
+            const key = `${currentUser.uid}_${getCourseKey()}_${lessonId}`;
+            lastNotesKey = key;
+            try {
+                const ref = db.collection('userNotes').doc(key);
+                const snap = await ref.get();
+                const data = snap.exists ? snap.data() : { content: '', updatedAt: null };
+                notesArea.value = data.content || '';
+                notesUpdatedAt.textContent = data.updatedAt ? new Date(data.updatedAt.toDate ? data.updatedAt.toDate() : data.updatedAt).toLocaleString() : '—';
+                notesStatus.textContent = 'Sin cambios';
+            } catch (err) {
+                console.error('Error cargando notas:', err);
+            }
+        }
+
+        async function saveNotes() {
+            if (!db || !currentUser) return;
+            const lessonId = getActiveLessonIdFromSidebar();
+            if (!lessonId) return;
+            const key = `${currentUser.uid}_${getCourseKey()}_${lessonId}`;
+            try {
+                notesStatus.textContent = 'Guardando...';
+                await db.collection('userNotes').doc(key).set({
+                    uid: currentUser.uid,
+                    courseKey: getCourseKey(),
+                    lessonId,
+                    content: notesArea.value,
+                    updatedAt: new Date()
+                }, { merge: true });
+                notesUpdatedAt.textContent = new Date().toLocaleString();
+                notesStatus.textContent = 'Guardado';
+                setTimeout(() => (notesStatus.textContent = 'Sin cambios'), 1500);
+            } catch (err) {
+                notesStatus.textContent = 'Error al guardar';
+                console.error('Error guardando notas:', err);
+            }
+        }
+
+        if (notesArea) {
+            notesArea.addEventListener('input', () => {
+                notesStatus.textContent = 'Editando...';
+                if (notesSaveTimer) clearTimeout(notesSaveTimer);
+                notesSaveTimer = setTimeout(saveNotes, 700);
+            });
+        }
+
+        // === RECURSOS (SUBIDAS) ===
+        const fileInput  = document.getElementById('resource-file-input');
+        const uploadBtn  = document.getElementById('upload-resources-btn');
+        const progressEl = document.getElementById('upload-progress');
+        const listEl     = document.getElementById('resource-list');
+
+        function renderResourceItem(doc) {
+            const d = doc.data();
+            const li = document.createElement('li');
+            li.className = 'px-4 py-3 flex items-center justify-between';
+            li.innerHTML = `
+                <div class="min-w-0">
+                    <p class="text-sm font-medium text-slate-900 truncate">${d.name}</p>
+                    <p class="text-xs text-slate-500 truncate">${d.contentType || ''} · ${(d.size || 0)} bytes</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="${d.downloadURL}" target="_blank" class="text-teal-700 text-sm font-semibold hover:underline">Abrir</a>
+                    <button class="text-red-600 text-sm font-semibold hover:underline">Eliminar</button>
+                </div>
+            `;
+            const del = li.querySelector('button');
+            del.addEventListener('click', async () => {
+                if (!confirm('¿Eliminar este archivo?')) return;
+                try {
+                    if (d.storagePath) {
+                        await storage.ref(d.storagePath).delete();
+                    }
+                    await doc.ref.delete();
+                    li.remove();
+                } catch (err) {
+                    console.error('Error eliminando recurso:', err);
+                    alert('No se pudo eliminar. Reintenta.');
+                }
+            });
+            listEl.appendChild(li);
+        }
+
+        async function loadResources() {
+            if (!db || !currentUser) return;
+            const lessonId = getActiveLessonIdFromSidebar();
+            if (!lessonId) return;
+            listEl.innerHTML = '';
+            try {
+                const snap = await db.collection('userResources')
+                    .where('uid', '==', currentUser.uid)
+                    .where('courseKey', '==', getCourseKey())
+                    .where('lessonId', '==', lessonId)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                snap.forEach(renderResourceItem);
+            } catch (err) {
+                console.error('Error listando recursos:', err);
+            }
+        }
+
+        async function uploadSelectedFiles() {
+            if (!storage || !db || !currentUser) return;
+            const files = fileInput?.files;
+            if (!files || !files.length) return;
+            const lessonId = getActiveLessonIdFromSidebar();
+            if (!lessonId) return;
+
+            progressEl.classList.remove('hidden');
+            progressEl.textContent = 'Subiendo...';
+
+            const uploads = Array.from(files).map(async (file) => {
+                const path = `user_uploads/${currentUser.uid}/${getCourseKey()}/${lessonId}/${Date.now()}_${file.name}`;
+                const ref  = storage.ref(path);
+                const snap = await ref.put(file);
+                const url  = await snap.ref.getDownloadURL();
+                await db.collection('userResources').add({
+                    uid: currentUser.uid,
+                    courseKey: getCourseKey(),
+                    lessonId,
+                    name: file.name,
+                    size: file.size,
+                    contentType: file.type,
+                    storagePath: path,
+                    downloadURL: url,
+                    createdAt: new Date()
+                });
+            });
+
+            try {
+                await Promise.all(uploads);
+                progressEl.textContent = '¡Subida completada!';
+                fileInput.value = '';
+                await loadResources();
+                setTimeout(() => progressEl.classList.add('hidden'), 1200);
+            } catch (err) {
+                console.error('Error en subida:', err);
+                progressEl.textContent = 'Error al subir.';
+            }
+        }
+
+        if (uploadBtn) uploadBtn.addEventListener('click', uploadSelectedFiles);
+
+        // === TAREAS (CHECKLIST) ===
+        const taskInput = document.getElementById('task-input');
+        const addTaskBtn = document.getElementById('add-task-btn');
+        const taskListEl = document.getElementById('task-list');
+
+        function renderTaskItem(task, idx, key) {
+            const li = document.createElement('li');
+            li.className = 'bg-white border border-slate-200 rounded-lg p-3 flex items-center justify-between';
+            li.innerHTML = \`
+                <label class="inline-flex items-center gap-2">
+                    <input type="checkbox" class="task-toggle" \${task.done ? 'checked' : ''}/>
+                    <span class="text-sm \${task.done ? 'line-through text-slate-400' : 'text-slate-800'}">\${task.text}</span>
+                </label>
+                <button class="task-delete text-xs text-red-600 font-semibold">Eliminar</button>
+            \`;
+            const toggle = li.querySelector('.task-toggle');
+            const del = li.querySelector('.task-delete');
+            toggle.addEventListener('change', async () => {
+                task.done = toggle.checked;
+                await db.collection('userTasks').doc(key).set({ items: firebase.firestore.FieldValue.arrayUnion(task) }, { merge: true });
+                await loadTasks(); // recarga para refrescar estilos
+            });
+            del.addEventListener('click', async () => {
+                // Para eliminar, recargamos y filter en memoria (simplificado)
+                const snap = await db.collection('userTasks').doc(key).get();
+                const data = snap.exists ? snap.data() : { items: [] };
+                const newItems = (data.items || []).filter((it, i) => notSame(it, task) || i != idx)
+                await db.collection('userTasks').doc(key).set({ items: newItems }, { merge: true });
+                await loadTasks();
+            });
+            taskListEl.appendChild(li);
+        }
+
+        // placeholder
+
+        function notSame(a, b) {
+            return !(a.text === b.text && !!a.done === !!b.done);
+        }
+
+        async function loadTasks() {
+            if (!db || !currentUser) return;
+            const lessonId = getActiveLessonIdFromSidebar();
+            if (!lessonId) return;
+            const key = `${currentUser.uid}_${getCourseKey()}_${lessonId}`;
+            taskListEl.innerHTML = '';
+            try {
+                const snap = await db.collection('userTasks').doc(key).get();
+                const items = snap.exists ? (snap.data().items || []) : [];
+                items.forEach((t, i) => renderTaskItem(t, i, key));
+            } catch (err) {
+                console.error('Error cargando tareas:', err);
+            }
+        }
+
+        async function addTask() {
+            if (!db || !currentUser) return;
+            const text = (taskInput?.value || '').trim();
+            if (!text) return;
+            const lessonId = getActiveLessonIdFromSidebar();
+            if (!lessonId) return;
+            const key = `${currentUser.uid}_${getCourseKey()}_${lessonId}`;
+            const task = { text, done: false, createdAt: new Date() };
+            try {
+                await db.collection('userTasks').doc(key).set({
+                    uid: currentUser?.uid,
+                    courseKey: getCourseKey(),
+                    lessonId,
+                    items: firebase.firestore.FieldValue.arrayUnion(task)
+                }, { merge: true });
+                taskInput.value = '';
+                await loadTasks();
+            } catch (err) {
+                console.error('Error agregando tarea:', err);
+            }
+        }
+
+        if (addTaskBtn) addTaskBtn.addEventListener('click', addTask);
+        if (taskInput) taskInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addTask(); } });
+
+        // === Sincronización cuando cambia la lección (observamos el sidebar) ===
+        const modulesContainer = document.getElementById('modules-container');
+        const observer = new MutationObserver(() => {
+            // retraso pequeño para permitir que el DOM se estabilice
+            setTimeout(() => {
+                loadNotes();
+                loadResources();
+                loadTasks();
+                if (window.lucide) lucide.createIcons();
+            }, 50);
+        });
+        if (modulesContainer) observer.observe(modulesContainer, { childList: true, subtree: true, attributes: true });
+
+        // === Arranque con sesión ===
+        if (auth) {
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) return;
+                currentUser = user;
+                await loadNotes();
+                await loadResources();
+                await loadTasks();
+            });
+        }
+    });
+    </script>
+
 </body>
 </html>
