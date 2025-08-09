@@ -406,6 +406,7 @@
                 const noteRef = db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${lessonId}`);
                 try {
                     await noteRef.set({
+                        uid: currentUser.uid, // CORRECCIÓN: Añadir UID al guardar
                         content: dom.notesTextarea.value,
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
@@ -629,7 +630,8 @@
                 
                 try {
                     const docRef = db.collection('userTasks').doc(key);
-                    await docRef.set({ 
+                    await docRef.set({
+                        uid: currentUser.uid, // CORRECCIÓN: Añadir UID al guardar
                         items: firebase.firestore.FieldValue.arrayUnion(task) 
                     }, { merge: true });
                     
