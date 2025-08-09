@@ -669,19 +669,20 @@
         }
 
         async function uploadSelectedFiles() {
-    const maxSizeMB = 10; // límite de 10 MB
-    const maxSizeBytes = maxSizeMB * 1024 * 1024;
-
             if (!storage || !db || !currentUser) return;
             const files = fileInput?.files;
-    // Validar tamaño máximo de cada archivo
-    for (let file of files) {
-        if (file.size > maxSizeBytes) {
-            alert(`El archivo "${file.name}" supera el límite de ${maxSizeMB} MB y no se subirá.`);
-            return;
-        }
-    }
-    if (!files || !files.length) return;
+            if (!files || !files.length) return;
+
+            const maxSizeMB = 10; // límite de 10 MB
+            const maxSizeBytes = maxSizeMB * 1024 * 1024;
+            // Validar tamaño máximo por archivo
+            for (let file of files) {
+                if (file.size > maxSizeBytes) {
+                    alert(`El archivo "${file.name}" supera el límite de ${maxSizeMB} MB y no se subirá.`);
+                    return;
+                }
+            }
+
             const lessonId = getActiveLessonIdFromSidebar();
             if (!lessonId) return;
 
