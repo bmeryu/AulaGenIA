@@ -2,12 +2,12 @@
 <!--  
     ANÁLISIS Y MEJORAS SEO/UX POR DESARROLLADOR SENIOR:
     ----------------------------------------------------
-    v51. **Sincronización de Contenido Global (Solicitado por Cliente):**
-        - Se actualiza la sección de precios (#precios) para reflejar la estructura de 4 planes (Esencial, Esencial Plus, Avanzado, Experto) de la página `cursos.html`, asegurando consistencia en la oferta.
-        - Se actualiza la sección de empresas (#empresas) con el contenido de la alianza OTEC y los beneficios SENCE, extraído de `quienes-somos.html`, para potenciar la propuesta de valor B2B.
-        - Se sincroniza la "Hoja de Ruta" con los módulos actualizados de la página de cursos.
-        - Se ajusta la oferta principal en el Hero Section para destacar el plan más popular ("Esencial Plus" a $12 USD).
-        - Se asegura que todas las funcionalidades JS preexistentes (modales, sliders, notificaciones, etc.) permanezcan intactas y funcionales.
+    v52. **Revisión y Mejora de UX/Contenido (Solicitado por Cliente):**
+        - Se corrige el nombre del campus a "Campus GenIA" en la sección de testimonios.
+        - Se añade un precio de referencia y CTA de consulta para los planes "Avanzado" y "Experto".
+        - Se implementa la Política de Cookies como un modal, replicando la funcionalidad de `cursos.html` para unificar la experiencia de usuario.
+        - Se reintroducen los 6 perfiles de la sección "¿Esta aventura es para ti?" y se implementan en un nuevo carrusel (Swiper.js) para mejorar la interactividad.
+        - Se recuperan todas las herramientas y se presentan en una cuadrícula con animación secuencial para dar dinamismo sin añadir un carrusel adicional, evitando la sobrecarga de sliders.
 -->
 <html lang="es-CL">
 <head>
@@ -168,6 +168,24 @@
             width: 32px;
             height: 32px;
         }
+        
+        /* Animación para herramientas */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.4);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+        }
+        .tool-card.animated {
+            animation: pulse 2s ease-in-out;
+        }
+        
+        .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2em; margin-bottom: 1em; }
+        .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5em; margin-bottom: 0.5em; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -231,22 +249,52 @@
                         <span class="font-bold" style="color: var(--brand-teal);">¡SÍ!</span>
                     </p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
-                    <article class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
-                        <div class="text-4xl mb-4" role="img" aria-label="Paleta de artista">🎨</div>
-                        <h3 class="text-xl font-bold mb-2">Mente Creativa y Curiosa</h3>
-                        <p class="text-gray-600">"Quiero crear imágenes, textos e ideas increíbles, pero no sé por dónde empezar."</p>
-                    </article>
-                    <article class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
-                        <div class="text-4xl mb-4" role="img" aria-label="Cohete despegando">🚀</div>
-                        <h3 class="text-xl font-bold mb-2">Persona Emprendedora y Ocupada</h3>
-                        <p class="text-gray-600">"Tengo mil tareas y necesito automatizar mi trabajo para enfocarme en crecer."</p>
-                    </article>
-                    <article class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all">
-                        <div class="text-4xl mb-4" role="img" aria-label="Apretón de manos">🤝</div>
-                        <h3 class="text-xl font-bold mb-2">Quien Lidera Equipos</h3>
-                        <p class="text-gray-600">"Busco que mi equipo sea más innovador y productivo, y sé que la IA es la clave."</p>
-                    </article>
+                <div class="swiper para-quien-swiper">
+                    <div class="swiper-wrapper pb-12">
+                        <article class="swiper-slide h-full">
+                            <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all h-full flex flex-col text-center">
+                                <div class="text-4xl mb-4" role="img" aria-label="Paleta de artista">🎨</div>
+                                <h3 class="text-xl font-bold mb-2">Mente Creativa y Curiosa</h3>
+                                <p class="text-gray-600">"Quiero crear imágenes, textos e ideas increíbles, pero no sé por dónde empezar."</p>
+                            </div>
+                        </article>
+                        <article class="swiper-slide h-full">
+                            <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all h-full flex flex-col text-center">
+                                <div class="text-4xl mb-4" role="img" aria-label="Cohete despegando">🚀</div>
+                                <h3 class="text-xl font-bold mb-2">Persona Emprendedora y Ocupada</h3>
+                                <p class="text-gray-600">"Tengo mil tareas y necesito automatizar mi trabajo para enfocarme en crecer."</p>
+                            </div>
+                        </article>
+                        <article class="swiper-slide h-full">
+                            <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all h-full flex flex-col text-center">
+                                <div class="text-4xl mb-4" role="img" aria-label="Apretón de manos">🤝</div>
+                                <h3 class="text-xl font-bold mb-2">Quien Lidera Equipos</h3>
+                                <p class="text-gray-600">"Busco que mi equipo sea más innovador y productivo, y sé que la IA es la clave."</p>
+                            </div>
+                        </article>
+                        <article class="swiper-slide h-full">
+                            <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all h-full flex flex-col text-center">
+                                <div class="text-4xl mb-4" role="img" aria-label="Maletín">💼</div>
+                                <h3 class="text-xl font-bold mb-2">Profesional Independiente</h3>
+                                <p class="text-gray-600">"Mis clientes esperan soluciones diferenciales; quiero usar IA para entregar más valor sin trabajar 24/7."</p>
+                            </div>
+                        </article>
+                        <article class="swiper-slide h-full">
+                             <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all h-full flex flex-col text-center">
+                                <div class="text-4xl mb-4" role="img" aria-label="Gráfico de crecimiento">📈</div>
+                                <h3 class="text-xl font-bold mb-2">Marketero Digital</h3>
+                                <p class="text-gray-600">"Necesito crear campañas, copys y contenido que convierta, pero me quedo sin ideas y tiempo."</p>
+                            </div>
+                        </article>
+                        <article class="swiper-slide h-full">
+                            <div class="bg-gray-50 p-8 rounded-xl border border-gray-200 hover:shadow-lg hover:border-teal-300 transition-all h-full flex flex-col text-center">
+                                <div class="text-4xl mb-4" role="img" aria-label="Libro abierto">📚</div>
+                                <h3 class="text-xl font-bold mb-2">Estudiante Ambicioso</h3>
+                                <p class="text-gray-600">"Quiero diferenciarme en el mercado laboral y adquirir la habilidad más demandada del futuro."</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="swiper-pagination"></div>
                 </div>
             </div>
         </section>
@@ -301,29 +349,39 @@
                     </p>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 text-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center">
+                    <div class="tool-card bg-gray-50 p-6 rounded-xl border border-gray-200 text-center flex flex-col items-center">
                         <img src="https://aulagenia.cl/CHATGPT-Logo.jpg" alt="Logo de ChatGPT" class="h-20 w-20 mx-auto mb-4 object-contain">
                         <h3 class="text-lg font-bold mb-2">ChatGPT 4o</h3>
-                        <p class="text-gray-600 text-sm flex-grow min-h-[2.5rem]">Crea textos, guiones, y resuelve problemas complejos en segundos.</p>
+                        <p class="text-gray-600 text-sm flex-grow min-h-[2.5rem]">Crea textos, guiones, y resuelve problemas complejos.</p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 text-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center">
+                    <div class="tool-card bg-gray-50 p-6 rounded-xl border border-gray-200 text-center flex flex-col items-center">
                         <img src="https://aulagenia.cl/Midjourney-Logo.png" alt="Logo de Midjourney" class="h-20 w-20 mx-auto mb-4 object-contain">
                         <h3 class="text-lg font-bold mb-2">Midjourney</h3>
                         <p class="text-gray-600 text-sm flex-grow min-h-[2.5rem]">Genera arte e imágenes fotorrealistas a partir de tus ideas.</p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 text-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center">
+                    <div class="tool-card bg-gray-50 p-6 rounded-xl border border-gray-200 text-center flex flex-col items-center">
                          <img src="https://aulagenia.cl/Gemini-Logo.png" alt="Logo de Google Gemini" class="h-20 w-20 mx-auto mb-4 object-contain">
                         <h3 class="text-lg font-bold mb-2">Gemini</h3>
-                        <p class="text-gray-600 text-sm flex-grow min-h-[2.5rem]">Tu asistente de IA para investigar, crear y potenciar tu productividad.</p>
+                        <p class="text-gray-600 text-sm flex-grow min-h-[2.5rem]">Tu asistente para investigar, crear y potenciar tu productividad.</p>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 text-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center">
+                    <div class="tool-card bg-gray-50 p-6 rounded-xl border border-gray-200 text-center flex flex-col items-center">
+                        <img src="https://aulagenia.cl/DALLE3-Logo.png" alt="Logo de DALL-E 3" class="h-20 w-20 mx-auto mb-4 object-contain">
+                        <h3 class="text-lg font-bold mb-2">DALL-E 3</h3>
+                        <p class="text-gray-600 text-sm flex-grow min-h-[2.5rem]">Crea logos, ilustraciones y recursos visuales únicos.</p>
+                    </div>
+                    <div class="tool-card bg-gray-50 p-6 rounded-xl border border-gray-200 text-center flex flex-col items-center">
                         <img src="https://aulagenia.cl/CANVA-Logo.png" alt="Logo de Canva" class="h-20 w-20 mx-auto mb-4 object-contain">
                         <h3 class="text-lg font-bold mb-2">Canva IA</h3>
-                        <p class="text-gray-600 text-sm flex-grow min-h-[2.5rem]">Diseña presentaciones y posts para redes sociales 10 veces más rápido.</p>
+                        <p class="text-gray-600 text-sm flex-grow min-h-[2.5rem]">Diseña presentaciones y posts 10 veces más rápido.</p>
                     </div>
-                    <div class="bg-gray-100 p-6 rounded-xl border-2 border-dashed border-gray-300 text-center hover:shadow-xl hover:border-teal-400 hover:-translate-y-2 transition-all duration-300 flex flex-col items-center justify-center">
+                    <div class="tool-card bg-gray-50 p-6 rounded-xl border border-gray-200 text-center flex flex-col items-center">
+                        <img src="https://aulagenia.cl/GAMMA-Logo.jpg" alt="Logo de Gamma" class="h-20 w-20 mx-auto mb-4 object-contain">
+                        <h3 class="text-lg font-bold mb-2">Gamma</h3>
+                        <p class="text-gray-600 text-sm flex-grow min-h-[2.5rem]">Crea presentaciones y webs impactantes en minutos.</p>
+                    </div>
+                    <div class="tool-card bg-gray-100 p-6 rounded-xl border-2 border-dashed border-gray-300 text-center flex flex-col items-center justify-center">
                         <h3 class="text-2xl font-bold text-gray-500">+ y más</h3>
-                        <p class="text-gray-500 text-sm mt-1">El mundo de la IA se actualiza constantemente. ¡Nosotros también!</p>
+                        <p class="text-gray-500 text-sm mt-1">El mundo de la IA se actualiza. ¡Nosotros también!</p>
                     </div>
                 </div>
             </div>
@@ -332,7 +390,7 @@
         <section id="testimonios" class="bg-white py-16 md:py-24">
             <div class="container mx-auto px-6">
                 <div class="text-center max-w-3xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Campus GenIA Lab</h2>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Campus GenIA</h2>
                     <p class="text-gray-600 text-lg mb-8">No lo decimos nosotros; lo dicen quienes ya pasaron por el campus.</p>
                 </div>
                 <div class="swiper testimonial-swiper">
@@ -410,24 +468,24 @@
                     
                     <!-- Programa Avanzado -->
                     <div class="bg-white text-gray-900 p-8 rounded-xl shadow-lg border border-gray-200 h-full flex flex-col relative">
-                         <div class="absolute -top-4 -right-4 bg-blue-500 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg transform rotate-12">Próximamente</div>
                         <h3 class="text-2xl font-bold text-center h-24 flex items-center justify-center">Programa <strong class="text-blue-600 ml-2">Avanzado</strong></h3>
                         <p class="text-center text-gray-500 text-sm mt-1">Especialización y Proyectos</p>
+                        <p class="text-5xl font-bold text-center my-4 text-blue-500">$47 <span class="text-xl font-normal text-gray-500">USD</span></p>
                         <div class="flex-grow flex flex-col justify-center items-center my-6">
                             <p class="text-gray-600 text-center">Nuevos módulos para llevar tus habilidades al siguiente nivel.</p>
                         </div>
-                        <a href="acceso.html?plan=avanzado-espera" class="bg-blue-600 text-white w-full mt-8 inline-block font-bold text-lg py-4 px-10 rounded-full hover:bg-blue-700">Unirme a la lista de espera</a>
+                        <a href="https://wa.me/56998956864?text=Hola%2C%20me%20interesa%20el%20Programa%20Avanzado." target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white w-full mt-8 inline-block font-bold text-lg py-4 px-10 rounded-full hover:bg-blue-700">Consultar Plan</a>
                     </div>
 
                     <!-- Programa Laboratorio Experto -->
                     <div class="bg-white text-gray-900 p-8 rounded-xl shadow-lg border border-gray-200 h-full flex flex-col relative">
-                        <div class="absolute -top-4 -right-4 bg-blue-500 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg transform rotate-12">Próximamente</div>
                         <h3 class="text-2xl font-bold text-center h-24 flex items-center justify-center">Laboratorio <strong class="text-blue-600 ml-2">Experto</strong></h3>
                         <p class="text-center text-gray-500 text-sm mt-1">Mentoría Personalizada</p>
+                        <p class="text-5xl font-bold text-center my-4 text-blue-500">$97 <span class="text-xl font-normal text-gray-500">USD</span></p>
                         <div class="flex-grow flex flex-col justify-center items-center my-6">
                             <p class="text-gray-600 text-center">Acompañamiento 1 a 1 para tus proyectos más ambiciosos.</p>
                         </div>
-                        <a href="acceso.html?plan=experto-espera" class="bg-blue-600 text-white w-full mt-8 inline-block font-bold text-lg py-4 px-10 rounded-full hover:bg-blue-700">Reservar cupo preferente</a>
+                        <a href="https://wa.me/56998956864?text=Hola%2C%20me%20interesa%20el%20plan%20Laboratorio%20Experto." target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white w-full mt-8 inline-block font-bold text-lg py-4 px-10 rounded-full hover:bg-blue-700">Consultar Plan</a>
                     </div>
                 </div>
                 
@@ -539,7 +597,7 @@
             <div class="text-sm space-x-4">
                 <button id="open-faq-modal" class="hover:underline">Preguntas Frecuentes</button>
                 <span>&bull;</span>
-                <a href="politica-cookies.html" class="hover:underline">Política de Cookies</a>
+                <button id="open-cookies-modal" class="hover:underline">Política de Cookies</button>
             </div>
             <p class="text-sm mt-4">&copy; 2024 Aula GenIA - Todos los derechos reservados.</p>
         </div>
@@ -649,6 +707,37 @@
             </div>
         </div>
     </div>
+    
+    <div id="cookies-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative p-6 md:p-8">
+            <button id="close-cookies-modal" aria-label="Cerrar modal" class="absolute top-4 right-4 bg-gray-100 rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="prose lg:prose-xl max-h-[80vh] overflow-y-auto pr-4">
+                <h1>Política de Cookies</h1>
+                <p class="text-sm text-gray-500">Última actualización: 23 de Agosto de 2025</p>
+
+                <p>En Aula GenIA, utilizamos cookies y tecnologías similares para asegurar que te ofrecemos la mejor experiencia posible en nuestro sitio web. Esta política explica qué son las cookies, cómo las usamos, tus opciones con respecto a su uso y dónde puedes encontrar más información.</p>
+
+                <h2>¿Qué son las Cookies?</h2>
+                <p>Las cookies son pequeños archivos de texto que se almacenan en tu computadora o dispositivo móvil cuando visitas un sitio web. Se utilizan ampliamente para que los sitios web funcionen, o funcionen de manera más eficiente, así como para proporcionar información a los propietarios del sitio.</p>
+
+                <h2>¿Cómo utilizamos las Cookies?</h2>
+                <p>Utilizamos cookies para varios propósitos:</p>
+                <ul>
+                    <li><strong>Cookies Esenciales:</strong> Son estrictamente necesarias para proporcionarte los servicios disponibles a través de nuestro sitio web y para usar algunas de sus funciones, como el acceso a áreas seguras.</li>
+                    <li><strong>Cookies de Rendimiento y Análisis:</strong> Estas cookies nos ayudan a recopilar información sobre cómo los visitantes usan nuestro sitio, como qué páginas visitan con más frecuencia. Utilizamos esta información para mejorar nuestro sitio web y nuestros servicios. Por ejemplo, usamos Google Analytics.</li>
+                    <li><strong>Cookies de Funcionalidad:</strong> Se utilizan para reconocerte cuando regresas a nuestro sitio web. Esto nos permite personalizar nuestro contenido para ti y recordar tus preferencias (por ejemplo, tu elección de idioma o región).</li>
+                </ul>
+
+                <h2>Tus Opciones sobre las Cookies</h2>
+                <p>Tienes derecho a decidir si aceptas o rechazas las cookies. Puedes ejercer tus preferencias de cookies a través de nuestro banner de consentimiento de cookies la primera vez que visitas nuestro sitio.</p>
+                
+                <h2>¿Dónde puedo obtener más información?</h2>
+                <p>Si tienes alguna pregunta sobre nuestro uso de cookies u otras tecnologías, por favor envíanos un correo electrónico a <a href="mailto:contacto@aulagenia.cl">contacto@aulagenia.cl</a>.</p>
+            </div>
+        </div>
+    </div>
 
     <a 
         href="https://wa.me/56998956864?text=Hola%2C%20vengo%20del%20sitio%20web%20de%20Aula%20GenIA%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n." 
@@ -714,6 +803,15 @@
                     spaceBetween: 20,
                     breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } },
                 });
+                
+                new Swiper('.para-quien-swiper', {
+                    loop: true,
+                    autoplay: { delay: 4000, disableOnInteraction: false },
+                    pagination: { el: '.swiper-pagination', clickable: true },
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } },
+                });
             }
 
             if (window.cookieconsent) {
@@ -722,7 +820,10 @@
                     theme: 'classic',
                     position: 'bottom',
                     type: 'opt-in',
-                    content: { message: 'Usamos cookies para mejorar tu experiencia.', dismiss: 'Aceptar', deny: 'Rechazar', link: 'Más info', href: 'politica-cookies.html' },
+                    content: { message: 'Usamos cookies para mejorar tu experiencia.', dismiss: 'Aceptar', deny: 'Rechazar', link: 'Más info', href: '#' },
+                    "elements": {
+                        "link": '<a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="#" id="open-cookies-modal-banner" style="display: inline-block; text-decoration: underline;">Más info</a>'
+                    }
                 });
             }
 
@@ -771,32 +872,52 @@
             promptNoBtn?.addEventListener('click', hidePromptModal);
             notificationBell?.addEventListener('click', requestNotificationPermission);
 
-            const openCertModalBtn = document.getElementById('open-cert-modal');
-            const closeCertModalBtn = document.getElementById('close-cert-modal');
+            const openModal = (modal) => modal?.classList.remove('hidden');
+            const closeModal = (modal) => modal?.classList.add('hidden');
+
             const certificateModal = document.getElementById('certificate-modal');
-            const openFaqModalBtn = document.getElementById('open-faq-modal');
-            const closeFaqModalBtn = document.getElementById('close-faq-modal');
             const faqModal = document.getElementById('faq-modal');
+            const cookiesModal = document.getElementById('cookies-modal');
 
-            const setupModal = (openBtn, closeBtn, modal) => {
-                if(openBtn && modal) openBtn.addEventListener('click', () => modal.classList.remove('hidden'));
-                if(closeBtn && modal) closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
-                if(modal) {
-                    modal.addEventListener('click', (e) => {
-                        if (e.target === modal) modal.classList.add('hidden');
-                    });
-                }
-            };
+            document.getElementById('open-cert-modal')?.addEventListener('click', () => openModal(certificateModal));
+            document.getElementById('close-cert-modal')?.addEventListener('click', () => closeModal(certificateModal));
+            certificateModal?.addEventListener('click', (e) => e.target === certificateModal && closeModal(certificateModal));
 
-            setupModal(openCertModalBtn, closeCertModalBtn, certificateModal);
-            setupModal(openFaqModalBtn, closeFaqModalBtn, faqModal);
-
-            document.addEventListener('keydown', (e) => {
-                if (e.key === "Escape") {
-                    certificateModal?.classList.add('hidden');
-                    faqModal?.classList.add('hidden');
+            document.getElementById('open-faq-modal')?.addEventListener('click', () => openModal(faqModal));
+            document.getElementById('close-faq-modal')?.addEventListener('click', () => closeModal(faqModal));
+            faqModal?.addEventListener('click', (e) => e.target === faqModal && closeModal(faqModal));
+            
+            document.getElementById('open-cookies-modal')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal(cookiesModal);
+            });
+            document.body.addEventListener('click', function(event) {
+                if (event.target.id === 'open-cookies-modal-banner') {
+                    event.preventDefault();
+                    openModal(cookiesModal);
                 }
             });
+            document.getElementById('close-cookies-modal')?.addEventListener('click', () => closeModal(cookiesModal));
+            cookiesModal?.addEventListener('click', (e) => e.target === cookiesModal && closeModal(cookiesModal));
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape") {
+                    closeModal(certificateModal);
+                    closeModal(faqModal);
+                    closeModal(cookiesModal);
+                }
+            });
+
+            // Animación secuencial para tarjetas de herramientas
+            const toolCards = document.querySelectorAll('.tool-card');
+            let currentIndex = 0;
+            setInterval(() => {
+                toolCards.forEach(card => card.classList.remove('animated'));
+                if (toolCards[currentIndex]) {
+                    toolCards[currentIndex].classList.add('animated');
+                }
+                currentIndex = (currentIndex + 1) % toolCards.length;
+            }, 2500);
         });
     </script>
 
