@@ -476,6 +476,45 @@
         </div>
     </div>
     
+    <div id="cookies-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative p-6 md:p-8">
+            <button id="close-cookies-modal" aria-label="Cerrar modal" class="absolute top-4 right-4 bg-gray-100 rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="prose lg:prose-xl max-h-[80vh] overflow-y-auto pr-4">
+                <h1>Política de Cookies</h1>
+                <p class="text-sm text-gray-500">Última actualización: 23 de Agosto de 2025</p>
+
+                <p>En Aula GenIA, utilizamos cookies y tecnologías similares para asegurar que te ofrecemos la mejor experiencia posible en nuestro sitio web. Esta política explica qué son las cookies, cómo las usamos, tus opciones con respecto a su uso y dónde puedes encontrar más información.</p>
+
+                <h2>¿Qué son las Cookies?</h2>
+                <p>Las cookies son pequeños archivos de texto que se almacenan en tu computadora o dispositivo móvil cuando visitas un sitio web. Se utilizan ampliamente para que los sitios web funcionen, o funcionen de manera más eficiente, así como para proporcionar información a los propietarios del sitio.</p>
+
+                <h2>¿Cómo utilizamos las Cookies?</h2>
+                <p>Utilizamos cookies para varios propósitos:</p>
+                <ul>
+                    <li><strong>Cookies Esenciales:</strong> Son estrictamente necesarias para proporcionarte los servicios disponibles a través de nuestro sitio web y para usar algunas de sus funciones, como el acceso a áreas seguras.</li>
+                    <li><strong>Cookies de Rendimiento y Análisis:</strong> Estas cookies nos ayudan a recopilar información sobre cómo los visitantes usan nuestro sitio, como qué páginas visitan con más frecuencia. Utilizamos esta información para mejorar nuestro sitio web y nuestros servicios. Por ejemplo, usamos Google Analytics.</li>
+                    <li><strong>Cookies de Funcionalidad:</strong> Se utilizan para reconocerte cuando regresas a nuestro sitio web. Esto nos permite personalizar nuestro contenido para ti y recordar tus preferencias (por ejemplo, tu elección de idioma o región).</li>
+                    <li><strong>Cookies de Publicidad o Marketing:</strong> Estas cookies se utilizan para hacer que los mensajes publicitarios sean más relevantes para ti. Realizan funciones como evitar que el mismo anuncio vuelva a aparecer continuamente y, en algunos casos, seleccionar anuncios que se basan en tus intereses.</li>
+                </ul>
+
+                <h2>Tus Opciones sobre las Cookies</h2>
+                <p>Tienes derecho a decidir si aceptas o rechazas las cookies. Puedes ejercer tus preferencias de cookies a través de nuestro banner de consentimiento de cookies la primera vez que visitas nuestro sitio.</p>
+                <p>Además, puedes configurar o modificar los controles de tu navegador web para aceptar o rechazar cookies. Si eliges rechazar las cookies, aún puedes usar nuestro sitio web, aunque tu acceso a algunas funcionalidades y áreas puede estar restringido.</p>
+
+                <h3>Cómo controlar las cookies en tu navegador</h3>
+                <p>La mayoría de los navegadores te permiten controlar las cookies a través de sus ajustes. Para saber más sobre cómo gestionar y eliminar cookies, visita <a href="https://www.allaboutcookies.org/" target="_blank" rel="noopener noreferrer">allaboutcookies.org</a>.</p>
+
+                <h2>Cambios en esta Política de Cookies</h2>
+                <p>Podemos actualizar esta Política de Cookies de vez en cuando para reflejar, por ejemplo, cambios en las cookies que usamos o por otras razones operativas, legales o regulatorias. Por lo tanto, te recomendamos que visites esta página regularmente para mantenerte informado sobre nuestro uso de cookies.</p>
+
+                <h2>¿Dónde puedo obtener más información?</h2>
+                <p>Si tienes alguna pregunta sobre nuestro uso de cookies u otras tecnologías, por favor envíanos un correo electrónico a <a href="mailto:contacto@aulagenia.cl">contacto@aulagenia.cl</a>.</p>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
     <script defer>
@@ -500,12 +539,22 @@
                     theme: 'classic',
                     position: 'bottom',
                     type: 'opt-in',
-                    content: { message: 'Usamos cookies para mejorar tu experiencia.', dismiss: 'Aceptar', deny: 'Rechazar', link: 'Más info', href: 'politica-cookies.html' },
+                    content: { message: 'Usamos cookies para mejorar tu experiencia.', dismiss: 'Aceptar', deny: 'Rechazar', link: 'Más info', href: '#' },
+                    onStatusChange: function(status) {
+                        if (this.hasConsented()) {
+                            // Lógica para cuando se aceptan las cookies
+                        }
+                    },
+                    "elements": {
+                        "link": '<a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="#" id="open-cookies-modal-banner" style="display: inline-block; text-decoration: underline;">Más info</a>'
+                    }
                 });
             }
-
+            
+            // Lógica de Modales
             const certificateModal = document.getElementById('certificate-modal');
             const faqModal = document.getElementById('faq-modal');
+            const cookiesModal = document.getElementById('cookies-modal');
 
             const openModal = (modal) => {
                 if (modal) modal.classList.remove('hidden');
@@ -516,7 +565,6 @@
             };
 
             document.getElementById('open-cert-modal')?.addEventListener('click', () => openModal(certificateModal));
-            document.getElementById('open-cert-modal-2')?.addEventListener('click', () => openModal(certificateModal));
             document.getElementById('close-cert-modal')?.addEventListener('click', () => closeModal(certificateModal));
             certificateModal?.addEventListener('click', (e) => {
                 if (e.target === certificateModal) closeModal(certificateModal);
@@ -528,10 +576,23 @@
                 if (e.target === faqModal) closeModal(faqModal);
             });
             
+            document.getElementById('open-cookies-modal')?.addEventListener('click', () => openModal(cookiesModal));
+            document.body.addEventListener('click', function(event) {
+                if (event.target.id === 'open-cookies-modal-banner') {
+                    event.preventDefault();
+                    openModal(cookiesModal);
+                }
+            });
+            document.getElementById('close-cookies-modal')?.addEventListener('click', () => closeModal(cookiesModal));
+            cookiesModal?.addEventListener('click', (e) => {
+                if (e.target === cookiesModal) closeModal(cookiesModal);
+            });
+            
             document.addEventListener('keydown', (e) => {
                 if (e.key === "Escape") {
                     closeModal(certificateModal);
                     closeModal(faqModal);
+                    closeModal(cookiesModal);
                 }
             });
         });
