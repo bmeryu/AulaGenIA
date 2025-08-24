@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!-- 
+  CAMPUS CURSO · AULA GENIA v2.1 (Conditional Certificate Fix)
+  -------------------------------------------------------------------
+  - Se modifica la lógica para que el botón "Ver Certificado" solo
+    aparezca si el curso tiene la propiedad 'hasCertificate' en true.
+  - Se mantiene el resto de la funcionalidad de la versión anterior.
+  -------------------------------------------------------------------
+-->
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8" />
@@ -37,14 +45,12 @@
             @apply py-4;
         }
 
-        /* ===== INICIO: ESTILOS PARA MODAL DE PDF ===== */
         #pdf-modal-overlay {
             transition: opacity 0.3s ease-in-out;
         }
         #pdf-modal-content {
             transition: all 0.3s ease-in-out;
         }
-        /* ===== FIN: ESTILOS PARA MODAL DE PDF ===== */
     </style>
 </head>
 <body class="text-gray-800">
@@ -52,7 +58,7 @@
     <div id="app" class="flex flex-col h-screen">
         <header class="bg-white shadow-sm z-20">
             <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <a href="campus.html" aria-label="Volver al Campus de Aula GenIA">
+                <a href="./campus.html" aria-label="Volver al Campus de Aula GenIA">
                     <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="max-h-16 w-auto">>
                 </a>
                 <div id="user-profile-container" class="hidden items-center gap-3 relative">
@@ -73,7 +79,7 @@
         <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
             <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
                 <div class="p-6">
-                    <a href="campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
+                    <a href="./campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
                     <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
                     <div class="mt-4">
                         <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
@@ -162,8 +168,27 @@
         </main>
     </div>
 
+    <!-- Modales y notificaciones -->
     <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div><div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full transform transition-all scale-95 opacity-0"><div class="flex justify-between items-start"><div><h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3><p id="profile-modal-subtitle" class="text-gray-600 mt-1">Mantén tus datos actualizados.</p></div><button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button></div><form id="profile-form" class="mt-6 max-h-[60vh] overflow-y-auto pr-4 -mr-4 space-y-4"><div><label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label><input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Ada Lovelace"><p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p><div id="name-error" class="error-message"></div></div><div><label for="profile-rut-input" class="block text-sm font-medium text-gray-700 mb-1">RUT (Chile) <span class="required">*</span></label><input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: 12345678-9"><p class="text-xs text-gray-500 mt-1">Requerido para la validez de tu certificado en Chile.</p><div id="rut-error" class="error-message"></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label><select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Seleccionar...</option><option value="female">Femenino</option><option value="male">Masculino</option><option value="other">Otro</option><option value="prefer_not_to_say">Prefiero no decir</option></select></div><div><label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label><input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"></div></div><div><label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label><input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled></div><div><label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label><input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante, Desarrollador, etc."></div><div><label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label><select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Selecciona tu país</option><option value="CL">Chile</option><option value="AR">Argentina</option><option value="PE">Perú</option><option value="CO">Colombia</option><option value="MX">México</option><option value="ES">España</option><option value="US">Estados Unidos</option><option value="OT">Otro</option></select><div id="country-error" class="error-message"></div></div><div id="form-status" class="text-center p-3 rounded-lg hidden"></div><div class="mt-8 flex justify-end gap-3 pt-4 border-t"><button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button><button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2"><span id="save-btn-text">Guardar Cambios</span><i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i></button></div></form></div></div>
-    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div><div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div><div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div><div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300"><i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i><h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2><p class="text-gray-600 mt-2">Has completado exitosamente el curso "<span id="modal-course-name"></span>".</p><div class="space-y-3 mt-6"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="campus.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a><div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">¡Cupón del 20% DESBLOQUEADO! <br> Usa el código: <strong>NUEVOCURSO20</strong></div></div><button id="close-modal-btn" class="mt-8 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button></div></div>
+    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div><div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
+    
+    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
+    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300">
+            <i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i>
+            <h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2>
+            <p class="text-gray-600 mt-2">Has completado exitosamente el curso "<span id="modal-course-name"></span>".</p>
+            <div class="space-y-3 mt-6">
+                <a id="certificate-link" href="./portal-certificacion.html" class="hidden items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                    <i data-lucide="award" class="h-5 w-5"></i>
+                    <span>Ver Certificado</span>
+                </a>
+                <a href="campus.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a>
+                <div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">¡Cupón del 20% DESBLOQUEADO! <br> Usa el código: <strong>NUEVOCURSO20</strong></div>
+            </div>
+            <button id="close-modal-btn" class="mt-8 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button>
+        </div>
+    </div>
 
     <div id="pdf-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
     <div id="pdf-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
@@ -207,18 +232,14 @@
             const db = firebase.firestore();
             const storage = firebase.storage();
             
-            // =========================================================================
-            // INICIO DE CAMBIOS PRINCIPALES
-            // =========================================================================
-
-            // 1. Obtener el ID del curso desde la URL
+            const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('course');
 
-            // 2. Base de datos de TODOS los cursos (debe contener la data de los cursos que se pueden ver aquí)
             const ALL_COURSES_DATA = {
-                'ia-aplicada-esencial': { // ID actualizado para coincidir con campus.html
+                'ia-aplicada-esencial': {
                     title: 'IA Aplicada · Esencial',
+                    hasCertificate: false, // <-- AÑADIDO
                     modules: [
                         {
                             title: 'Módulo 0: Onboarding',
@@ -234,10 +255,7 @@
                             title: 'Módulo 1: ¿Qué es la IA?',
                             badge: 'Explorador Conceptual',
                             lessons: [
-                                { id: '1-1', title: 'Casos de éxito reales', type: 'video', resources: [
-                                    { name: 'Presentación de la lección.pdf', url: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/public%2Fguia_bienvenida.pdf?alt=media' },
-                                    { name: 'Enlace a artículo de interés', url: 'https://www.example.com', external: true }
-                                ]},
+                                { id: '1-1', title: 'Casos de éxito reales', type: 'video', resources: [] },
                                 { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }], resources: [] }
                             ]
                         }
@@ -245,6 +263,7 @@
                 },
                 'inteligencia-aplicada-plus': {
                     title: 'IA Aplicada · Esencial Plus',
+                    hasCertificate: true, // <-- AÑADIDO
                     modules: [
                         {
                             title: 'Módulo 1: Fundamentos de Marketing con IA',
@@ -266,24 +285,17 @@
                 }
             };
 
-            // 3. Validar el ID del curso y redirigir si no es válido
             if (!courseId || !ALL_COURSES_DATA[courseId]) {
                 console.error('ID de curso no válido o no proporcionado. Redirigiendo al campus.');
-                // Muestra un mensaje al usuario antes de redirigir (opcional)
                 document.body.innerHTML = '<div style="padding: 40px; text-align: center; font-family: sans-serif;"><h1>Curso no encontrado</h1><p>Serás redirigido al campus principal en 3 segundos...</p></div>';
                 setTimeout(() => {
-                    window.location.href = 'campus.html';
+                    window.location.href = `${baseUrl}/campus.html`;
                 }, 3000);
-                return; // Detiene la ejecución del resto del script
+                return;
             }
 
-            // El resto del script ahora usará el 'courseId' dinámico y 'courseData' correcto
             const courseData = ALL_COURSES_DATA[courseId];
             
-            // =========================================================================
-            // FIN DE CAMBIOS PRINCIPALES
-            // =========================================================================
-
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
             let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null, unlockedBadges: [] };
@@ -309,7 +321,8 @@
                 completionModalOverlay: document.getElementById('completion-modal-overlay'),
                 completionModal: document.getElementById('completion-modal'),
                 modalUserName: document.getElementById('modal-user-name'),
-                modalCourseName: document.getElementById('modal-course-name'), // Agregado para el nombre del curso
+                modalCourseName: document.getElementById('modal-course-name'),
+                certificateLink: document.getElementById('certificate-link'), // <-- AÑADIDO
                 closeModalBtn: document.getElementById('close-modal-btn'),
                 learningTabs: document.getElementById('learning-tabs'),
                 notesTextarea: document.getElementById('notes-textarea'),
@@ -401,9 +414,30 @@
             dom.prevBtn.addEventListener('click', () => { const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); });
             function showToast(message, type = 'generic') { const toastEl = type === 'badge' ? dom.badgeToast : dom.toast; const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage; msgEl.textContent = message; toastEl.classList.add('show'); setTimeout(() => toastEl.classList.remove('show'), 4000); }
             function checkForBadgeUnlock(completedLessonId) { const lessonInfo = getLessonInfo(completedLessonId); if (!lessonInfo || !lessonInfo.module.badge) return; const lastLessonOfModule = lessonInfo.module.lessons[lessonInfo.module.lessons.length - 1].id; if (completedLessonId !== lastLessonOfModule) return; const moduleLessonIds = lessonInfo.module.lessons.map(l => l.id); if (moduleLessonIds.every(id => userProgress.completedLessons.includes(id))) { if (!userProgress.unlockedBadges.includes(lessonInfo.module.badge)) { userProgress.unlockedBadges.push(lessonInfo.module.badge); saveProgress(); showToast(`Has ganado la insignia: "${lessonInfo.module.badge}"`, 'badge'); } } }
-            function showCompletionModal() { dom.modalUserName.textContent = currentUser.name; dom.modalCourseName.textContent = courseData.title; dom.completionModalOverlay.classList.remove('hidden'); dom.completionModal.classList.remove('hidden'); setTimeout(() => { dom.completionModalOverlay.classList.add('opacity-100'); dom.completionModal.classList.add('show'); }, 10); }
-            dom.closeModalBtn.addEventListener('click', () => window.location.href = 'campus.html');
-            dom.completionModalOverlay.addEventListener('click', () => window.location.href = 'campus.html');
+            
+            function showCompletionModal() {
+                dom.modalUserName.textContent = currentUser.name;
+                dom.modalCourseName.textContent = courseData.title;
+                
+                // LÓGICA CONDICIONAL PARA EL CERTIFICADO
+                if (courseData.hasCertificate) {
+                    dom.certificateLink.classList.remove('hidden');
+                    dom.certificateLink.classList.add('flex');
+                } else {
+                    dom.certificateLink.classList.add('hidden');
+                    dom.certificateLink.classList.remove('flex');
+                }
+
+                dom.completionModalOverlay.classList.remove('hidden');
+                dom.completionModal.classList.remove('hidden');
+                setTimeout(() => {
+                    dom.completionModalOverlay.classList.add('opacity-100');
+                    dom.completionModal.classList.add('show');
+                }, 10);
+            }
+
+            dom.closeModalBtn.addEventListener('click', () => window.location.href = `${baseUrl}/campus.html`);
+            dom.completionModalOverlay.addEventListener('click', () => window.location.href = `${baseUrl}/campus.html`);
             
             const profileModalOverlay = document.getElementById('profile-modal-overlay'); const profileModal = document.getElementById('profile-modal'); const avatarButton = document.getElementById('avatar-button'); const cancelProfileBtn = document.getElementById('cancel-profile-btn'); const closeProfileBtn = document.getElementById('close-profile-modal-btn'); const profileForm = document.getElementById('profile-form'); const profileNameInput = document.getElementById('profile-name-input'); const profileRutInput = document.getElementById('profile-rut-input'); const profileEmailInput = document.getElementById('profile-email-input'); const profileJobInput = document.getElementById('profile-job-input'); const profileCountrySelect = document.getElementById('profile-country-select'); const profileGenderSelect = document.getElementById('profile-gender-select'); const profileBirthdateInput = document.getElementById('profile-birthdate-input'); const formStatus = document.getElementById('form-status'); const saveBtn = document.getElementById('save-profile-btn'); const saveBtnText = document.getElementById('save-btn-text'); const saveSpinner = document.getElementById('save-spinner');
             async function showProfileModal() { profileForm.reset(); clearAllErrors(); if(formStatus) formStatus.classList.add('hidden'); const user = auth.currentUser; if (!user) return; profileEmailInput.value = user.email || ''; const userDocRef = db.collection('users').doc(user.uid); try { const doc = await userDocRef.get(); if (doc.exists) { const data = doc.data(); profileNameInput.value = data.displayName || user.displayName || ''; profileRutInput.value = data.rut || ''; profileJobInput.value = data.jobTitle || ''; profileCountrySelect.value = data.country || ''; profileGenderSelect.value = data.gender || ''; profileBirthdateInput.value = data.birthdate || ''; } else { profileNameInput.value = user.displayName || ''; } } catch (error) {  console.error("Error al cargar datos del perfil:", error); if(formStatus) { formStatus.textContent = 'Error al cargar tus datos. Intenta de nuevo.'; formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700'; formStatus.classList.remove('hidden'); } } profileModalOverlay.classList.remove('hidden'); profileModal.classList.remove('hidden'); setTimeout(() => { profileModal.querySelector('div > div').classList.remove('scale-95', 'opacity-0'); }, 10); }
@@ -523,10 +557,8 @@
 
             function openPdfModal(url, title) {
                 dom.pdfModalTitle.textContent = title;
-                // ===== INICIO DE LA CORRECCIÓN =====
                 const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
                 dom.pdfIframe.src = viewerUrl;
-                // ===== FIN DE LA CORRECCIÓN =====
                 dom.pdfModal.classList.remove('hidden');
                 dom.pdfModalOverlay.classList.remove('hidden');
                 setTimeout(() => {
@@ -758,10 +790,10 @@
                     dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
                     dom.userProfile.classList.remove('hidden');
                     dom.userProfile.classList.add('flex');
-                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'index.html'));
+                    dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
                     loadProgressAndInitialize();
                 } else {
-                    window.location.href = 'acceso.html';
+                    window.location.href = `${baseUrl}/acceso.html`;
                 }
             });
         });
