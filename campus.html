@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v5.9 (Final Spinner ID Bug Fix)
+  CAMPUS DASHBOARD · AULA GENIA v6.0 (Dynamic Course Links)
   -------------------------------------------------------------------
-  - Se corrigen los IDs de los 'spinner' en los botones de lista de
-    espera y reserva para que coincidan con la función de JS.
-  - Esto soluciona definitivamente el error 'Cannot read properties of null'.
+  - Se modifica el JavaScript para que los botones "Continuar aprendiendo"
+    apunten a una URL dinámica con el ID del curso.
+    Ej: campus-curso-ia.html?course=ia-aplicada-esencial
+  - Esto permite que la página de curso sea una plantilla reutilizable.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -143,7 +144,6 @@
             <div class="bg-gray-50 px-6 py-4 mt-auto">
               <button id="waitlist-btn" class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-lg transition-colors flex items-center justify-center gap-2">
                 <span id="waitlist-btn-text">Unirme a la lista de espera</span>
-                <!-- ID CORREGIDO -->
                 <i id="waitlist-btn-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
               </button>
             </div>
@@ -160,7 +160,6 @@
             <div class="bg-gray-50 px-6 py-4 mt-auto">
               <button id="reserve-btn" class="w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-5 rounded-lg transition-colors flex items-center justify-center gap-2">
                 <span id="reserve-btn-text">Reservar cupo preferente</span>
-                <!-- ID CORREGIDO -->
                 <i id="reserve-btn-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
               </button>
             </div>
@@ -485,14 +484,19 @@
           }
       });
 
-      // --- Lógica de Cursos (REFACTORIZADA, sin cambios) ---
+      // --- Lógica de Cursos (REFACTORIZADA) ---
       function getTotalLessons(courseId) {
         const course = ALL_COURSES_DATA[courseId];
         if (!course) return 0;
         return course.modules.reduce((total, module) => total + module.lessons.length, 0);
       }
 
-      function updateCardForEnrolledUser(card, progress) {
+      // =========================================================================
+      // INICIO DE CAMBIOS PARA ENLACES DINÁMICOS
+      // =========================================================================
+
+      // 1. La función ahora acepta 'courseId' para saber a qué curso enlazar
+      function updateCardForEnrolledUser(card, progress, courseId) {
           const tagEl = card.querySelector('.tag');
           const percentEl = card.querySelector('.percent');
           const fillEl = card.querySelector('.fill');
@@ -503,7 +507,11 @@
           progressContainer.classList.remove('hidden');
           percentEl.textContent = `${progress}%`;
           fillEl.style.width = `${progress}%`;
-          actionBtn.href = "campus-curso-ia.html"; // TODO: Debería ser dinámico por curso
+          
+          // 2. Se construye la URL dinámica con el parámetro del curso
+          const courseUrl = `campus-curso-ia.html?course=${courseId}`;
+          
+          actionBtn.href = courseUrl; // Se asigna la URL dinámica
           actionBtn.classList.remove('cursor-wait', 'bg-gray-400', 'bg-slate-400');
           actionBtn.classList.add('bg-teal-500', 'hover:bg-teal-600');
           
@@ -511,7 +519,8 @@
               tagEl.textContent = 'Completado';
               tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full';
               fillEl.style.backgroundColor = 'var(--brand-green)';
-              footerEl.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="campus-curso-ia.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
+              // Se actualiza el enlace de "Repasar Curso" también
+              footerEl.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${courseUrl}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
           } else {
               tagEl.textContent = 'En progreso';
               tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full';
@@ -569,7 +578,8 @@
                   const completedCount = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons.length : 0;
                   const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
                   
-                  updateCardForEnrolledUser(courseCard, progressValue);
+                  // 3. Se pasa el 'courseId' a la función que actualiza la tarjeta
+                  updateCardForEnrolledUser(courseCard, progressValue, courseId);
               } else {
                   updateCardForUnenrolledUser(courseCard);
               }
@@ -578,6 +588,10 @@
               updateCardForUnenrolledUser(courseCard);
           }
       }
+
+      // =========================================================================
+      // FIN DE CAMBIOS PARA ENLACES DINÁMICOS
+      // =========================================================================
 
       async function checkAndEnforceProfileCompletion(user) {
         try {
