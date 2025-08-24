@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v5.2 (Multi-Course Update)
+  CAMPUS DASHBOARD · AULA GENIA v5.3 (Backward Compatibility Fix)
   -------------------------------------------------------------------
-  Esta versión refactoriza la lógica para soportar múltiples cursos
-  independientes, cada uno con su propio estado de inscripción y
-  progreso.
-  - Se renombra "Essential Program" a "Esencial".
-  - Se convierte el curso "Próximamente" en "IA Aplicada · Avanzado",
-    un curso funcional con su propia lógica de acceso.
+  Esta versión introduce una corrección para asegurar que los
+  usuarios inscritos en el curso original ("inteligencia-aplicada")
+  mantengan su acceso después del cambio de ID a 
+  ("ia-aplicada-esencial").
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -451,7 +449,6 @@
 
               setTimeout(() => {
                   hideProfileModal();
-                  // Si el modal era obligatorio, ahora recargamos el contenido de los cursos
                   checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
                   checkUserAccess(user.uid, ADVANCED_COURSE_ID);
               }, 1500);
@@ -538,8 +535,15 @@
               let hasAccess = false;
               if (userDoc.exists) {
                   const userData = userDoc.data();
-                  if (userData.enrollments && userData.enrollments[courseId] === true) {
-                      hasAccess = true;
+                  const oldEssentialCourseId = 'inteligencia-aplicada'; // ID antiguo del curso Esencial
+
+                  if (userData.enrollments) {
+                      // **INICIO DE LA CORRECCIÓN**
+                      // Se verifica el ID nuevo, y si es el curso Esencial, también se verifica el ID antiguo por retrocompatibilidad.
+                      if (userData.enrollments[courseId] === true || (courseId === ESSENTIAL_COURSE_ID && userData.enrollments[oldEssentialCourseId] === true)) {
+                          hasAccess = true;
+                      }
+                      // **FIN DE LA CORRECCIÓN**
                   }
               }
 
@@ -599,8 +603,6 @@
             auth.signOut().then(() => window.location.href = 'index.html');
           });
           
-          // **PUNTO DE ENTRADA MODIFICADO**
-          // Ahora se verifica el perfil y desde ahí se cargan los cursos.
           checkAndEnforceProfileCompletion(user);
 
         } else {
