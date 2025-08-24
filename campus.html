@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v5.6 (Waitlist Bug Fix)
+  CAMPUS DASHBOARD · AULA GENIA v5.7 (Expert Lab & Reservations Update)
   -------------------------------------------------------------------
-  - Se corrige un error en la función de lista de espera que ocurría
-    cuando el 'displayName' del usuario era nulo.
-  - Se añade un valor por defecto para el nombre al escribir en 
-    la colección 'waitingList_avanzado' en Firestore.
+  - Se añade la tarjeta del "Laboratorio Experto".
+  - Se implementa la lógica de reserva de cupo preferente,
+    escribiendo en una nueva colección 'preferentialReservations'.
+  - Se actualizan las reglas de seguridad para permitir esta acción.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -84,7 +84,7 @@
 
     <section aria-labelledby="courses-heading">
       <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
-      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
 
         <!-- INICIO: Curso IA Aplicada · Esencial -->
         <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="ia-aplicada-esencial">
@@ -149,6 +149,22 @@
             </div>
         </article>
         <!-- FIN: Nuevo Curso Avanzado (Lista de Espera) -->
+        
+        <!-- INICIO: Laboratorio Experto (Reserva Preferente) -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="laboratorio-experto">
+            <div class="p-6 flex-grow">
+              <h3 class="text-xl font-bold mt-4 mb-2">Laboratorio <span class="text-indigo-600">Experto</span></h3>
+              <p class="font-semibold text-gray-500 text-sm mb-4">Mentoría Personalizada</p>
+              <p class="text-gray-600 text-sm mb-6">Acompañamiento 1 a 1 para tus proyectos más ambiciosos.</p>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 mt-auto">
+              <button id="reserve-btn" class="w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                <span id="reserve-btn-text">Reservar cupo preferente</span>
+                <i id="reserve-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
+              </button>
+            </div>
+        </article>
+        <!-- FIN: Laboratorio Experto (Reserva Preferente) -->
 
       </div>
     </section>
@@ -285,8 +301,8 @@
       // --- IDs de los Cursos ---
       const ESSENTIAL_COURSE_ID = 'ia-aplicada-esencial';
       const ESSENTIAL_PLUS_COURSE_ID = 'inteligencia-aplicada-plus';
-      // --- ID para la lista de espera ---
       const ADVANCED_COURSE_ID = 'programa-avanzado';
+      const EXPERT_LAB_ID = 'laboratorio-experto';
 
       // --- Base de datos de información de cursos ---
       const ALL_COURSES_DATA = {
@@ -299,7 +315,7 @@
         },
         [ESSENTIAL_PLUS_COURSE_ID]: {
           title: 'IA Aplicada · Esencial Plus',
-          modules: [ // Datos de ejemplo para el nuevo curso
+          modules: [
             { title: 'Módulo 1: Fundamentos de Marketing con IA', lessons: [{ id: 'mkt-1-1' }, { id: 'mkt-1-2' }] },
             { title: 'Módulo 2: Creación de Contenido Automatizado', lessons: [{ id: 'mkt-2-1' }] }
           ]
@@ -579,69 +595,62 @@
         }
       }
 
-      // --- INICIO: LÓGICA PARA LA LISTA DE ESPERA (CORREGIDA) ---
-      async function setupWaitlist(user) {
-          const waitlistBtn = document.getElementById('waitlist-btn');
-          const waitlistBtnText = document.getElementById('waitlist-btn-text');
-          const waitlistSpinner = document.getElementById('waitlist-spinner');
-          
-          if (!waitlistBtn) return;
+      // --- Lógica para Lista de Espera y Reservas ---
+      async function setupDynamicButton(user, buttonId, collectionName, buttonStates) {
+          const btn = document.getElementById(buttonId);
+          if (!btn) return;
 
-          // 1. Revisar si el usuario ya está en la lista de espera
-          const waitlistRef = db.collection('waitingList_avanzado').doc(user.uid);
+          const btnText = document.getElementById(`${buttonId}-text`);
+          const btnSpinner = document.getElementById(`${buttonId}-spinner`);
+          
+          const docRef = db.collection(collectionName).doc(user.uid);
           try {
-              const doc = await waitlistRef.get();
+              const doc = await docRef.get();
               if (doc.exists) {
-                  waitlistBtnText.textContent = '¡Ya estás en la lista!';
-                  waitlistBtn.disabled = true;
-                  waitlistBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-                  waitlistBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                  btnText.textContent = buttonStates.alreadyIn;
+                  btn.disabled = true;
+                  btn.classList.add('bg-gray-400', 'cursor-not-allowed');
+                  btn.classList.remove(buttonStates.defaultColor, buttonStates.hoverColor);
                   return;
               }
           } catch (e) {
-              console.error("Error al verificar estado de lista de espera: ", e);
+              console.error(`Error al verificar estado en ${collectionName}: `, e);
           }
 
-          // 2. Agregar el listener para la inscripción
-          waitlistBtn.addEventListener('click', async () => {
-              waitlistBtn.disabled = true;
-              waitlistBtnText.textContent = 'Agregando...';
-              waitlistSpinner.classList.remove('hidden');
+          btn.addEventListener('click', async () => {
+              btn.disabled = true;
+              btnText.textContent = buttonStates.adding;
+              btnSpinner.classList.remove('hidden');
 
               try {
-                  // **INICIO DE LA CORRECCIÓN**
-                  // Se asegura de que 'displayName' no sea nulo.
                   const userName = user.displayName || 'Alumno sin nombre';
-                  // **FIN DE LA CORRECCIÓN**
-
-                  await waitlistRef.set({
+                  await docRef.set({
                       email: user.email,
-                      displayName: userName, // Se usa la variable segura 'userName'
+                      displayName: userName,
                       uid: user.uid,
                       timestamp: firebase.firestore.FieldValue.serverTimestamp()
                   });
                   
-                  waitlistBtnText.textContent = '¡Inscrito con éxito!';
-                  waitlistBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                  waitlistBtn.classList.add('bg-green-500');
+                  btnText.textContent = buttonStates.success;
+                  btn.classList.remove(buttonStates.defaultColor, buttonStates.hoverColor);
+                  btn.classList.add(buttonStates.successColor);
 
               } catch (error) {
-                  console.error("Error al añadir a la lista de espera: ", error);
-                  waitlistBtnText.textContent = 'Error, intenta de nuevo';
-                  waitlistBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                  waitlistBtn.classList.add('bg-red-500');
-                  setTimeout(() => { // Revertir el botón de error después de un tiempo
-                    waitlistBtn.disabled = false;
-                    waitlistBtnText.textContent = 'Unirme a la lista de espera';
-                    waitlistBtn.classList.remove('bg-red-500');
-                    waitlistBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                  console.error(`Error al añadir a ${collectionName}: `, error);
+                  btnText.textContent = buttonStates.error;
+                  btn.classList.remove(buttonStates.defaultColor, buttonStates.hoverColor);
+                  btn.classList.add(buttonStates.errorColor);
+                  setTimeout(() => {
+                    btn.disabled = false;
+                    btnText.textContent = buttonStates.default;
+                    btn.classList.remove(buttonStates.errorColor);
+                    btn.classList.add(buttonStates.defaultColor, buttonStates.hoverColor);
                   }, 3000);
               } finally {
-                  waitlistSpinner.classList.add('hidden');
+                  btnSpinner.classList.add('hidden');
               }
           });
       }
-      // --- FIN: LÓGICA PARA LA LISTA DE ESPERA (CORREGIDA) ---
 
       // --- Lógica de Autenticación (Punto de Entrada) ---
       auth.onAuthStateChanged(user => {
@@ -658,8 +667,31 @@
           
           checkAndEnforceProfileCompletion(user);
 
-          // Inicializar la funcionalidad de la lista de espera
-          setupWaitlist(user);
+          // Inicializar botón de Lista de Espera
+          setupDynamicButton(user, 'waitlist-btn', 'waitingList_avanzado', {
+              default: 'Unirme a la lista de espera',
+              alreadyIn: '¡Ya estás en la lista!',
+              adding: 'Agregando...',
+              success: '¡Inscrito con éxito!',
+              error: 'Error, intenta de nuevo',
+              defaultColor: 'bg-blue-600',
+              hoverColor: 'hover:bg-blue-700',
+              successColor: 'bg-green-500',
+              errorColor: 'bg-red-500'
+          });
+
+          // Inicializar botón de Reserva Preferente
+          setupDynamicButton(user, 'reserve-btn', 'preferentialReservations', {
+              default: 'Reservar cupo preferente',
+              alreadyIn: '¡Ya tienes tu cupo!',
+              adding: 'Reservando...',
+              success: '¡Cupo reservado!',
+              error: 'Error, intenta de nuevo',
+              defaultColor: 'bg-indigo-600',
+              hoverColor: 'hover:bg-indigo-700',
+              successColor: 'bg-green-500',
+              errorColor: 'bg-red-500'
+          });
 
         } else {
           window.location.href = 'acceso.html';
