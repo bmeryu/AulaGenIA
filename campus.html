@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v5.3 (Backward Compatibility Fix)
+  CAMPUS DASHBOARD · AULA GENIA v5.4 (Content & ID Update)
   -------------------------------------------------------------------
-  Esta versión introduce una corrección para asegurar que los
-  usuarios inscritos en el curso original ("inteligencia-aplicada")
-  mantengan su acceso después del cambio de ID a 
-  ("ia-aplicada-esencial").
+  - Se renombra el segundo curso a "IA Aplicada · Esencial Plus".
+  - Se actualiza su ID a "inteligencia-aplicada-plus".
+  - Se actualizan las descripciones de ambos cursos según las
+    especificaciones del cliente.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -91,7 +91,7 @@
           <div class="p-6 flex-grow">
             <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Cargando...</span>
             <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Esencial</h3>
-            <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
+            <p class="text-gray-600 text-sm mb-6">Acceso por 12 meses a los 6 módulos, con actualizaciones y certificado.</p>
             <div class="mb-2 progress-container hidden">
               <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
                 <span>Progreso</span>
@@ -110,12 +110,12 @@
         </article>
         <!-- FIN: Curso IA Aplicada · Esencial -->
 
-        <!-- INICIO: Curso IA Aplicada · Avanzado -->
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="ia-aplicada-avanzado">
+        <!-- INICIO: Curso IA Aplicada · Esencial Plus -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="inteligencia-aplicada-plus">
           <div class="p-6 flex-grow">
             <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Cargando...</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Avanzado</h3>
-            <p class="text-gray-600 text-sm mb-6">Aprende a crear campañas y contenido que convierten usando IA.</p>
+            <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Esencial Plus</h3>
+            <p class="text-gray-600 text-sm mb-6">Todo lo del programa Esencial, más comunidad, mentorías y plantillas premium.</p>
             <div class="mb-2 progress-container hidden">
               <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
                 <span>Progreso</span>
@@ -132,7 +132,7 @@
             </a>
           </div>
         </article>
-        <!-- FIN: Curso IA Aplicada · Avanzado -->
+        <!-- FIN: Curso IA Aplicada · Esencial Plus -->
 
         <!-- Tarjeta del Campus GenIA Lab -->
         <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col">
@@ -283,7 +283,7 @@
       
       // --- IDs de los Cursos ---
       const ESSENTIAL_COURSE_ID = 'ia-aplicada-esencial';
-      const ADVANCED_COURSE_ID = 'ia-aplicada-avanzado';
+      const ESSENTIAL_PLUS_COURSE_ID = 'inteligencia-aplicada-plus';
 
       // --- Base de datos de información de cursos ---
       const ALL_COURSES_DATA = {
@@ -294,8 +294,8 @@
             { title: 'Módulo 1: ¿Qué es la IA?', lessons: [{ id: '1-1' }, { id: 'q-1' }] }
           ]
         },
-        [ADVANCED_COURSE_ID]: {
-          title: 'IA Aplicada · Avanzado',
+        [ESSENTIAL_PLUS_COURSE_ID]: {
+          title: 'IA Aplicada · Esencial Plus',
           modules: [ // Datos de ejemplo para el nuevo curso
             { title: 'Módulo 1: Fundamentos de Marketing con IA', lessons: [{ id: 'mkt-1-1' }, { id: 'mkt-1-2' }] },
             { title: 'Módulo 2: Creación de Contenido Automatizado', lessons: [{ id: 'mkt-2-1' }] }
@@ -450,7 +450,7 @@
               setTimeout(() => {
                   hideProfileModal();
                   checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
-                  checkUserAccess(user.uid, ADVANCED_COURSE_ID);
+                  checkUserAccess(user.uid, ESSENTIAL_PLUS_COURSE_ID);
               }, 1500);
 
           } catch (error) {
@@ -538,12 +538,9 @@
                   const oldEssentialCourseId = 'inteligencia-aplicada'; // ID antiguo del curso Esencial
 
                   if (userData.enrollments) {
-                      // **INICIO DE LA CORRECCIÓN**
-                      // Se verifica el ID nuevo, y si es el curso Esencial, también se verifica el ID antiguo por retrocompatibilidad.
                       if (userData.enrollments[courseId] === true || (courseId === ESSENTIAL_COURSE_ID && userData.enrollments[oldEssentialCourseId] === true)) {
                           hasAccess = true;
                       }
-                      // **FIN DE LA CORRECCIÓN**
                   }
               }
 
@@ -582,7 +579,7 @@
             } else {
                 // El perfil está completo, cargar el contenido de todos los cursos
                 checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
-                checkUserAccess(user.uid, ADVANCED_COURSE_ID);
+                checkUserAccess(user.uid, ESSENTIAL_PLUS_COURSE_ID);
             }
         } catch (error) {
             console.error("Error verificando el estado del perfil:", error);
