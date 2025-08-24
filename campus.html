@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v5.1 (Profile Fields Update)
+  CAMPUS DASHBOARD · AULA GENIA v5.2 (Multi-Course Update)
   -------------------------------------------------------------------
-  Esta versión agrega los campos "Género" y "Fecha de Nacimiento"
-  al modal de perfil para enriquecer los datos del usuario.
-  Se mantiene la estructura y funcionalidad existente.
+  Esta versión refactoriza la lógica para soportar múltiples cursos
+  independientes, cada uno con su propio estado de inscripción y
+  progreso.
+  - Se renombra "Essential Program" a "Esencial".
+  - Se convierte el curso "Próximamente" en "IA Aplicada · Avanzado",
+    un curso funcional con su propia lógica de acceso.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -85,11 +88,11 @@
       <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-        <!-- Curso Principal -->
-        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="inteligencia-aplicada">
+        <!-- INICIO: Curso IA Aplicada · Esencial -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="ia-aplicada-esencial">
           <div class="p-6 flex-grow">
             <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Cargando...</span>
-            <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Essential Program</h3>
+            <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Esencial</h3>
             <p class="text-gray-600 text-sm mb-6">Domina la IA generativa, desde los fundamentos hasta la automatización avanzada.</p>
             <div class="mb-2 progress-container hidden">
               <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
@@ -107,15 +110,31 @@
             </a>
           </div>
         </article>
+        <!-- FIN: Curso IA Aplicada · Esencial -->
 
-        <!-- Curso Próximamente -->
-        <article class="bg-white rounded-2xl shadow overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center p-8 text-center">
-          <div>
-            <h3 class="text-xl font-bold text-gray-500 mb-2">IA para Marketing Digital</h3>
-            <p class="text-gray-400 text-sm mb-4">Aprende a crear campañas y contenido que convierten usando IA.</p>
-            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-100 px-3 py-1.5 rounded-full">Próximamente</span>
+        <!-- INICIO: Curso IA Aplicada · Avanzado -->
+        <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="ia-aplicada-avanzado">
+          <div class="p-6 flex-grow">
+            <span class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Cargando...</span>
+            <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Avanzado</h3>
+            <p class="text-gray-600 text-sm mb-6">Aprende a crear campañas y contenido que convierten usando IA.</p>
+            <div class="mb-2 progress-container hidden">
+              <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
+                <span>Progreso</span>
+                <span class="percent">0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="fill h-2.5 rounded-full transition-all duration-500" style="background-color: var(--brand-teal); width: 0%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-gray-50 px-6 py-4">
+            <a href="#" class="course-action-btn block text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg transition-colors cursor-wait">
+              Verificando acceso...
+            </a>
           </div>
         </article>
+        <!-- FIN: Curso IA Aplicada · Avanzado -->
 
         <!-- Tarjeta del Campus GenIA Lab -->
         <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col">
@@ -149,14 +168,14 @@
       <h2 class="text-2xl font-bold text-gray-900 mt-4">¡Acceso Exclusivo!</h2>
       <p class="text-gray-600 mt-2 mb-6">Este curso es un tesoro de conocimiento. Para desbloquearlo, necesitas inscribirte primero.</p>
       <a href="index.html#precios" class="w-full block bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">
-        ¡Inscribirme ahora!
+        ¡Quiero inscribirme!
       </a>
       <button id="close-enroll-modal-btn" class="mt-4 text-sm text-gray-500 hover:text-gray-700">Cerrar</button>
     </div>
   </div>
   <!-- FIN: MODAL DE INSCRIPCIÓN -->
 
-  <!-- INICIO: MODAL DE EDICIÓN DE PERFIL (MEJORADO Y CENTRADO) -->
+  <!-- INICIO: MODAL DE EDICIÓN DE PERFIL -->
   <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
   <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full transform transition-all scale-95 opacity-0">
@@ -185,9 +204,8 @@
               <div id="rut-error" class="error-message"></div>
           </div>
 
-          <!-- ***** INICIO: NUEVOS CAMPOS ***** -->
+          <!-- Campos Género y Fecha de Nacimiento -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Campo Género -->
             <div>
                 <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
                 <select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
@@ -198,14 +216,11 @@
                     <option value="prefer_not_to_say">Prefiero no decir</option>
                 </select>
             </div>
-
-            <!-- Campo Fecha de Nacimiento -->
             <div>
                 <label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
                 <input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
             </div>
           </div>
-          <!-- ***** FIN: NUEVOS CAMPOS ***** -->
 
           <!-- Campo Correo Electrónico -->
           <div>
@@ -236,10 +251,8 @@
               <div id="country-error" class="error-message"></div>
           </div>
           
-          <!-- Mensajes de estado del formulario -->
           <div id="form-status" class="text-center p-3 rounded-lg hidden"></div>
 
-          <!-- Botones de acción -->
           <div class="mt-8 flex justify-end gap-3 pt-4 border-t">
               <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
               <button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2">
@@ -270,9 +283,29 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
       
-      const COURSE_ID = 'inteligencia-aplicada';
+      // --- IDs de los Cursos ---
+      const ESSENTIAL_COURSE_ID = 'ia-aplicada-esencial';
+      const ADVANCED_COURSE_ID = 'ia-aplicada-avanzado';
 
-      // --- Lógica de UI General ---
+      // --- Base de datos de información de cursos ---
+      const ALL_COURSES_DATA = {
+        [ESSENTIAL_COURSE_ID]: {
+          title: 'IA Aplicada · Esencial',
+          modules: [
+            { title: 'Módulo 0: Onboarding', lessons: [{ id: '0-1' }] },
+            { title: 'Módulo 1: ¿Qué es la IA?', lessons: [{ id: '1-1' }, { id: 'q-1' }] }
+          ]
+        },
+        [ADVANCED_COURSE_ID]: {
+          title: 'IA Aplicada · Avanzado',
+          modules: [ // Datos de ejemplo para el nuevo curso
+            { title: 'Módulo 1: Fundamentos de Marketing con IA', lessons: [{ id: 'mkt-1-1' }, { id: 'mkt-1-2' }] },
+            { title: 'Módulo 2: Creación de Contenido Automatizado', lessons: [{ id: 'mkt-2-1' }] }
+          ]
+        }
+      };
+
+      // --- Lógica de UI General (Modales) ---
       const enrollModalOverlay = document.getElementById('enroll-modal-overlay');
       const enrollModal = document.getElementById('enroll-modal');
       const closeEnrollModalBtn = document.getElementById('close-enroll-modal-btn');
@@ -297,33 +330,20 @@
       if(closeEnrollModalBtn) closeEnrollModalBtn.addEventListener('click', hideEnrollModal);
       if(enrollModalOverlay) enrollModalOverlay.addEventListener('click', hideEnrollModal);
 
-      // --- Lógica de Cursos ---
-      function updateCardForEnrolledUser(card, progress) { /* ... (sin cambios) ... */ }
-      function updateCardForUnenrolledUser(card) { /* ... (sin cambios) ... */ }
-      async function checkUserAccess(userId) { /* ... (sin cambios, solo se mantiene la lógica original) ... */ }
-      // --- Fin Lógica de Cursos ---
-
-
-      // --- NUEVA LÓGICA DE PERFIL MEJORADA ---
+      // --- Lógica de Perfil (Sin cambios funcionales) ---
       const profileModalOverlay = document.getElementById('profile-modal-overlay');
       const profileModal = document.getElementById('profile-modal');
       const avatarButton = document.getElementById('avatar-button');
       const cancelProfileBtn = document.getElementById('cancel-profile-btn');
       const closeProfileBtn = document.getElementById('close-profile-modal-btn');
       const profileForm = document.getElementById('profile-form');
-      
-      // Inputs del formulario
       const profileNameInput = document.getElementById('profile-name-input');
       const profileRutInput = document.getElementById('profile-rut-input');
       const profileEmailInput = document.getElementById('profile-email-input');
       const profileJobInput = document.getElementById('profile-job-input');
       const profileCountrySelect = document.getElementById('profile-country-select');
-      // *** NUEVOS INPUTS ***
       const profileGenderSelect = document.getElementById('profile-gender-select');
       const profileBirthdateInput = document.getElementById('profile-birthdate-input');
-
-      
-      // Elementos de UI del modal
       const modalTitle = document.getElementById('profile-modal-title');
       const modalSubtitle = document.getElementById('profile-modal-subtitle');
       const formStatus = document.getElementById('form-status');
@@ -331,19 +351,13 @@
       const saveBtnText = document.getElementById('save-btn-text');
       const saveSpinner = document.getElementById('save-spinner');
 
-      /**
-       * Muestra el modal de perfil con configuraciones específicas.
-       * @param {boolean} isMandatory - Si es true, el modal no se puede cerrar.
-       */
       async function showProfileModal(isMandatory = false) {
           profileForm.reset();
           clearAllErrors();
           formStatus.classList.add('hidden');
-          
           const user = auth.currentUser;
           if (!user) return;
 
-          // Cargar datos existentes de Firestore
           profileEmailInput.value = user.email || '';
           const userDocRef = db.collection('users').doc(user.uid);
           try {
@@ -354,7 +368,6 @@
                   profileRutInput.value = data.rut || '';
                   profileJobInput.value = data.jobTitle || '';
                   profileCountrySelect.value = data.country || '';
-                  // *** CARGAR DATOS DE NUEVOS CAMPOS ***
                   profileGenderSelect.value = data.gender || '';
                   profileBirthdateInput.value = data.birthdate || '';
               } else {
@@ -396,91 +409,20 @@
           }, 300);
       }
 
-      // Event Listeners para abrir/cerrar modal
       avatarButton.addEventListener('click', () => showProfileModal(false));
       cancelProfileBtn.addEventListener('click', hideProfileModal);
       closeProfileBtn.addEventListener('click', hideProfileModal);
 
-      // --- Lógica de Validación ---
-      
-      function validateRut(rut) {
-          rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase();
-          const rutBody = rut.slice(0, -1);
-          let dv = rut.slice(-1);
-          if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false;
-
-          let sum = 0;
-          let multiple = 2;
-          for (let i = rutBody.length - 1; i >= 0; i--) {
-              sum += rutBody.charAt(i) * multiple;
-              if (multiple < 7) multiple++;
-              else multiple = 2;
-          }
-          const calculatedDv = 11 - (sum % 11);
-          const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString();
-          
-          return dv === expectedDv;
-      }
-
-      function setError(field, message) {
-          const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
-          if (inputEl) inputEl.classList.add('form-input-error');
-          
-          const errorEl = document.getElementById(`${field}-error`);
-          if(errorEl) errorEl.textContent = message;
-      }
-
-      function clearError(field) {
-          const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
-          if (inputEl) inputEl.classList.remove('form-input-error');
-
-          const errorEl = document.getElementById(`${field}-error`);
-          if(errorEl) errorEl.textContent = '';
-      }
-      
+      // --- Lógica de Validación de Perfil (Sin cambios) ---
+      function validateRut(rut) { rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); const rutBody = rut.slice(0, -1); let dv = rut.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; let sum = 0; let multiple = 2; for (let i = rutBody.length - 1; i >= 0; i--) { sum += rutBody.charAt(i) * multiple; if (multiple < 7) multiple++; else multiple = 2; } const calculatedDv = 11 - (sum % 11); const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); return dv === expectedDv; }
+      function setError(field, message) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.add('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = message; }
+      function clearError(field) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = ''; }
       const countrySelect = document.getElementById('profile-country-select');
-      countrySelect.addEventListener('change', () => {
-          if (countrySelect.value !== 'CL') {
-              document.getElementById('rut-error').textContent = '';
-              document.getElementById('profile-rut-input').classList.remove('form-input-error');
-          }
-      });
-
-
-      function validateForm() {
-          let isValid = true;
-          clearAllErrors();
-
-          // Nombre
-          if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) {
-              setError('name', 'Ingresa tu nombre y apellido completo.');
-              isValid = false;
-          }
-          
-          // País
-          if (profileCountrySelect.value === '') {
-              setError('country', 'Selecciona tu país de residencia.');
-              isValid = false;
-          }
-
-          // RUT (solo si el país es Chile)
-          if (profileCountrySelect.value === 'CL' && !validateRut(profileRutInput.value)) {
-              setError('rut', 'El RUT ingresado no es válido.');
-              isValid = false;
-          }
-
-          return isValid;
-      }
+      countrySelect.addEventListener('change', () => { if (countrySelect.value !== 'CL') { document.getElementById('rut-error').textContent = ''; document.getElementById('profile-rut-input').classList.remove('form-input-error'); } });
+      function clearAllErrors() { ['name', 'rut', 'country'].forEach(field => { const input = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (input) input.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if (errorEl) errorEl.textContent = ''; }); }
+      function validateForm() { let isValid = true; clearAllErrors(); if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) { setError('name', 'Ingresa tu nombre y apellido completo.'); isValid = false; } if (profileCountrySelect.value === '') { setError('country', 'Selecciona tu país de residencia.'); isValid = false; } if (profileCountrySelect.value === 'CL' && !validateRut(profileRutInput.value)) { setError('rut', 'El RUT ingresado no es válido.'); isValid = false; } return isValid; }
       
-      function clearAllErrors() {
-        ['name', 'rut', 'country'].forEach(field => {
-            const input = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
-            if (input) input.classList.remove('form-input-error');
-            const errorEl = document.getElementById(`${field}-error`);
-            if (errorEl) errorEl.textContent = '';
-        });
-      }
-
+      // --- Lógica de Guardado de Perfil (Modificada para recargar cursos) ---
       profileForm.addEventListener('submit', async (e) => {
           e.preventDefault();
           if (!validateForm()) return;
@@ -495,35 +437,23 @@
           const userDocRef = db.collection('users').doc(user.uid);
 
           try {
-              // Actualizar perfil de Firebase Auth
               if (newName !== user.displayName) {
                   await user.updateProfile({ displayName: newName });
               }
-              
-              // Guardar datos en Firestore
               await userDocRef.set({
-                  displayName: newName,
-                  email: user.email,
-                  rut: profileRutInput.value.trim(),
-                  jobTitle: profileJobInput.value.trim(),
-                  country: profileCountrySelect.value,
-                  // *** GUARDAR DATOS DE NUEVOS CAMPOS ***
-                  gender: profileGenderSelect.value,
-                  birthdate: profileBirthdateInput.value,
-                  profileCompleted: true // Marcar perfil como completo
+                  displayName: newName, email: user.email, rut: profileRutInput.value.trim(), jobTitle: profileJobInput.value.trim(), country: profileCountrySelect.value, gender: profileGenderSelect.value, birthdate: profileBirthdateInput.value, profileCompleted: true
               }, { merge: true });
 
-              // Actualizar UI
               document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
-              
               formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700';
               formStatus.textContent = '¡Perfil actualizado con éxito!';
               formStatus.classList.remove('hidden');
 
               setTimeout(() => {
                   hideProfileModal();
-                  // Si el modal era obligatorio, ahora recargamos el contenido principal
-                  checkUserAccess(user.uid);
+                  // Si el modal era obligatorio, ahora recargamos el contenido de los cursos
+                  checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
+                  checkUserAccess(user.uid, ADVANCED_COURSE_ID);
               }, 1500);
 
           } catch (error) {
@@ -538,35 +468,121 @@
           }
       });
 
+      // --- Lógica de Cursos (REFACTORIZADA) ---
+      function getTotalLessons(courseId) {
+        const course = ALL_COURSES_DATA[courseId];
+        if (!course) return 0;
+        return course.modules.reduce((total, module) => total + module.lessons.length, 0);
+      }
+
+      function updateCardForEnrolledUser(card, progress) {
+          const tagEl = card.querySelector('.tag');
+          const percentEl = card.querySelector('.percent');
+          const fillEl = card.querySelector('.fill');
+          const footerEl = card.querySelector('.card-footer');
+          const progressContainer = card.querySelector('.progress-container');
+          const actionBtn = card.querySelector('.course-action-btn');
+          
+          progressContainer.classList.remove('hidden');
+          percentEl.textContent = `${progress}%`;
+          fillEl.style.width = `${progress}%`;
+          actionBtn.href = "campus-curso-ia.html"; // TODO: Debería ser dinámico por curso
+          actionBtn.classList.remove('cursor-wait', 'bg-gray-400', 'bg-slate-400');
+          actionBtn.classList.add('bg-teal-500', 'hover:bg-teal-600');
+          
+          if (progress >= 100) {
+              tagEl.textContent = 'Completado';
+              tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full';
+              fillEl.style.backgroundColor = 'var(--brand-green)';
+              footerEl.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="campus-curso-ia.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
+          } else {
+              tagEl.textContent = 'En progreso';
+              tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full';
+              fillEl.style.backgroundColor = 'var(--brand-teal)';
+              actionBtn.textContent = 'Continuar aprendiendo';
+          }
+          lucide.createIcons();
+      }
+
+      function updateCardForUnenrolledUser(card) {
+          const tagEl = card.querySelector('.tag');
+          const actionBtn = card.querySelector('.course-action-btn');
+          tagEl.textContent = 'Requiere Inscripción';
+          tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full';
+          actionBtn.textContent = 'Inscríbete para Activar';
+          actionBtn.href = "#";
+          actionBtn.classList.remove('cursor-wait', 'bg-gray-400');
+          actionBtn.classList.add('bg-slate-400', 'hover:bg-slate-500');
+          actionBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              showEnrollModal();
+          });
+      }
+
       /**
-       * Verifica si el perfil del usuario está completo.
-       * Si no lo está, muestra el modal obligatorio.
+       * Verifica el acceso de un usuario a un curso específico y actualiza la UI.
+       * @param {string} userId - ID del usuario de Firebase.
+       * @param {string} courseId - ID del curso a verificar (ej. 'ia-aplicada-esencial').
+       */
+      async function checkUserAccess(userId, courseId) {
+          const courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
+          if (!courseCard) {
+              console.warn(`No se encontró la tarjeta para el curso: ${courseId}`);
+              return;
+          }
+
+          try {
+              const userDocRef = db.collection('users').doc(userId);
+              const userDoc = await userDocRef.get();
+              
+              let hasAccess = false;
+              if (userDoc.exists) {
+                  const userData = userDoc.data();
+                  if (userData.enrollments && userData.enrollments[courseId] === true) {
+                      hasAccess = true;
+                  }
+              }
+
+              if (hasAccess) {
+                  const progressRef = db.collection('userProgress').doc(userId);
+                  const progressDoc = await progressRef.get();
+                  const progressData = progressDoc.exists ? progressDoc.data() : {};
+                  const courseProgressData = progressData[courseId] || { completedLessons: [] };
+                  
+                  const totalLessons = getTotalLessons(courseId);
+                  const completedCount = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons.length : 0;
+                  const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+                  
+                  updateCardForEnrolledUser(courseCard, progressValue);
+              } else {
+                  updateCardForUnenrolledUser(courseCard);
+              }
+          } catch (error) {
+              console.error(`Error al verificar el acceso para ${courseId}:`, error);
+              updateCardForUnenrolledUser(courseCard);
+          }
+      }
+
+      /**
+       * Verifica si el perfil del usuario está completo. Si no, muestra el modal obligatorio.
+       * Si está completo, procede a verificar el acceso a los cursos.
        * @param {object} user - El objeto de usuario de Firebase Auth.
        */
       async function checkAndEnforceProfileCompletion(user) {
         try {
-            const userDocRef = db.collection('users').doc(user.uid);
-            const userDoc = await userDocRef.get();
-
-            let isProfileComplete = false;
-            if (userDoc.exists) {
-                const data = userDoc.data();
-                // La validación clave es si el país y el nombre existen. El RUT es condicional.
-                if (data.profileCompleted === true && data.country && data.displayName) {
-                    isProfileComplete = true;
-                }
-            }
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            const isProfileComplete = userDoc.exists && userDoc.data().profileCompleted === true;
 
             if (!isProfileComplete) {
-                showProfileModal(true); // Mostrar modal obligatorio
+                showProfileModal(true);
             } else {
-                // El perfil está completo, cargar el contenido normal del curso
-                checkUserAccess(user.uid);
+                // El perfil está completo, cargar el contenido de todos los cursos
+                checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
+                checkUserAccess(user.uid, ADVANCED_COURSE_ID);
             }
         } catch (error) {
             console.error("Error verificando el estado del perfil:", error);
-            // En caso de error, es más seguro pedir que completen el perfil.
-            showProfileModal(true);
+            showProfileModal(true); // En caso de error, es más seguro pedir que completen el perfil.
         }
       }
 
@@ -584,7 +600,7 @@
           });
           
           // **PUNTO DE ENTRADA MODIFICADO**
-          // En lugar de llamar directamente a checkUserAccess, ahora verificamos el perfil primero.
+          // Ahora se verifica el perfil y desde ahí se cargan los cursos.
           checkAndEnforceProfileCompletion(user);
 
         } else {
@@ -594,14 +610,6 @@
 
       // Inicializar iconos
       lucide.createIcons();
-      
-      // --- Lógica de Cursos (Definiciones de funciones sin cambios) ---
-      const ALL_COURSES_DATA = { [COURSE_ID]: { title: 'IA Aplicada · Essential Program', modules: [ { title: 'Módulo 0: Onboarding', lessons: [{ id: '0-1' }] }, { title: 'Módulo 1: ¿Qué es la IA?', lessons: [{ id: '1-1' }, { id: 'q-1' }] } ] } };
-      function getTotalLessons(courseId) { const course = ALL_COURSES_DATA[courseId]; if (!course) return 0; return course.modules.reduce((total, module) => total + module.lessons.length, 0); }
-      function updateCardForEnrolledUser(card, progress) { const tagEl = card.querySelector('.tag'); const percentEl = card.querySelector('.percent'); const fillEl = card.querySelector('.fill'); const footerEl = card.querySelector('.card-footer'); const progressContainer = card.querySelector('.progress-container'); const actionBtn = card.querySelector('.course-action-btn'); progressContainer.classList.remove('hidden'); percentEl.textContent = `${progress}%`; fillEl.style.width = `${progress}%`; actionBtn.href = "campus-curso-ia.html"; actionBtn.classList.remove('cursor-wait', 'bg-gray-400'); actionBtn.classList.add('bg-teal-500', 'hover:bg-teal-600'); if (progress >= 100) { tagEl.textContent = 'Completado'; tagEl.classList.remove('bg-teal-100', 'text-teal-600'); tagEl.classList.add('bg-green-100', 'text-green-600'); fillEl.style.backgroundColor = 'var(--brand-green)'; footerEl.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="campus-curso-ia.html" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a><div class="text-center text-xs text-green-700 font-semibold bg-green-100 p-2 rounded-md">¡Cupón del 20% DESBLOQUEADO! <br> Usa el código: <strong>NUEVOCURSO20</strong></div></div>`; } else { tagEl.textContent = 'En progreso'; tagEl.classList.remove('bg-green-100', 'text-green-600'); tagEl.classList.add('bg-teal-100', 'text-teal-600'); fillEl.style.backgroundColor = 'var(--brand-teal)'; actionBtn.textContent = 'Continuar aprendiendo'; } lucide.createIcons(); }
-      function updateCardForUnenrolledUser(card) { const tagEl = card.querySelector('.tag'); const actionBtn = card.querySelector('.course-action-btn'); tagEl.textContent = 'Requiere Inscripción'; tagEl.classList.remove('bg-teal-100', 'text-teal-600'); tagEl.classList.add('bg-yellow-100', 'text-yellow-700'); actionBtn.textContent = 'Inscríbete para Activar'; actionBtn.href = "#"; actionBtn.classList.remove('cursor-wait', 'bg-gray-400'); actionBtn.classList.add('bg-slate-400', 'hover:bg-slate-500'); actionBtn.addEventListener('click', (e) => { e.preventDefault(); showEnrollModal(); }); }
-      async function checkUserAccess(userId) { const courseCard = document.querySelector(`[data-course-id="${COURSE_ID}"]`); if (!courseCard) return; try { const userDocRef = db.collection('users').doc(userId); const userDoc = await userDocRef.get(); let hasAccess = false; if (userDoc.exists) { const userData = userDoc.data(); if (userData.enrollments && userData.enrollments[COURSE_ID] === true) { hasAccess = true; } } if (hasAccess) { const progressRef = db.collection('userProgress').doc(userId); const progressDoc = await progressRef.get(); const progressData = progressDoc.exists ? progressDoc.data() : {}; const courseProgressData = progressData[COURSE_ID] || { completedLessons: [] }; const totalLessons = getTotalLessons(COURSE_ID); const completedCount = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons.length : 0; const progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0; updateCardForEnrolledUser(courseCard, progressValue); } else { updateCardForUnenrolledUser(courseCard); } } catch (error) { console.error("Error al verificar el acceso del usuario:", error); updateCardForUnenrolledUser(courseCard); } }
-
     });
   </script>
 </body>
