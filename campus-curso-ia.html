@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v2.8 (Integration Update)
+  CAMPUS CURSO · AULA GENIA v2.9 (UI Sync)
   -------------------------------------------------------------------
-  - Se reemplaza el endpoint de Formspree por un Webhook de n8n.
-  - Se ajusta el payload del formulario de soporte para enviar los
-    datos estructurados (email, curso, fecha, mensaje, etc.).
-  - Se añade un comentario guía para la URL del webhook.
+  - Se actualiza el <header> para que coincida con la versión de index.html,
+    incluyendo el logo grande y nuevos botones.
+  - Se añade el <footer> completo de index.html para consistencia,
+    incluyendo redes sociales y modales.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -52,27 +52,36 @@
         #pdf-modal-content {
             transition: all 0.3s ease-in-out;
         }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .arrow-down { transform: rotate(180deg); }
+        .arrow-down { transition: transform 0.2s ease-in-out; }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <div id="app" class="flex flex-col h-screen">
-        <header class="bg-white shadow-sm z-20">
-            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <a href="./campus.html" aria-label="Volver al Campus de Aula GenIA">
-                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo de Aula GenIA" class="max-h-16 w-auto">>
+    <div id="app" class="flex flex-col min-h-screen">
+        <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+            <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+                <a href="index.html" class="flex items-center" aria-label="Página de inicio de Aula GenIA">
+                    <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo de Aula GenIA" class="h-20 w-auto">
                 </a>
-                <div id="user-profile-container" class="hidden items-center gap-3 relative">
-                    <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
-                    <div class="relative group">
-                        <button id="avatar-button" aria-label="Abrir menú de perfil">
-                            <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer group-hover:opacity-90 transition-opacity" />
-                            <div class="absolute bottom-0 right-0 bg-gray-800 rounded-full p-1 border-2 border-white group-hover:bg-teal-500 transition-colors">
-                                <i data-lucide="pencil" class="w-3 h-3 text-white"></i>
-                            </div>
-                        </button>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <a href="quienes-somos.html" class="text-gray-700 font-semibold border-2 border-gray-300 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-gray-100 hover:border-gray-400 transition-colors duration-300 hidden md:flex items-center">
+                        Quiénes Somos
+                    </a>
+                    <a href="cursos.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">
+                        Ver Cursos
+                    </a>
+                    <div id="user-profile-container" class="hidden items-center gap-3 relative">
+                        <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
+                        <div class="relative group">
+                            <button id="avatar-button" aria-label="Abrir menú de perfil">
+                                <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer group-hover:opacity-90 transition-opacity" />
+                            </button>
+                        </div>
+                        <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
                     </div>
-                    <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
                 </div>
             </nav>
         </header>
@@ -198,6 +207,28 @@
                 </div>
             </section>
         </main>
+        
+        <footer class="bg-gray-100 border-t border-gray-200 mt-auto">
+            <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+                <a href="index.html" class="flex items-center justify-center mb-4">
+                    <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo de Aula GenIA al pie de página" class="h-12 w-auto">
+                </a>
+                <div class="flex justify-center items-center gap-6 mb-4">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Aula GenIA" class="text-gray-500 hover:text-gray-800 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.802c-3.116 0-3.483.01-4.71.068-2.69.123-3.996 1.428-4.12 4.12C3.12 9.483 3.11 9.85 3.11 12s.01 2.517.068 3.74c.124 2.692 1.43 3.996 4.12 4.12 1.227.058 1.594.068 4.71.068s3.483-.01 4.71-.068c2.69-.124 3.996-1.428 4.12-4.12.058-1.223.068-1.594.068-4.71s-.01-2.517-.068-3.74c-.124-2.692-1.43-3.996-4.12-4.12C15.483 3.973 15.116 3.965 12 3.965zM12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5zm0 5.698a1.948 1.948 0 110-3.896 1.948 1.948 0 010 3.896zM16.838 7.162a.96.96 0 100 1.92.96.96 0 000-1.92z"/></svg>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Aula GenIA" class="text-gray-500 hover:text-gray-800 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                </div>
+                <div class="text-sm space-x-4">
+                    <button id="open-faq-modal" class="hover:underline">Preguntas Frecuentes</button>
+                    <span>&bull;</span>
+                    <button id="open-cookies-modal" class="hover:underline">Política de Cookies</button>
+                </div>
+                <p class="text-sm mt-4">&copy; 2024 Aula GenIA - Todos los derechos reservados.</p>
+            </div>
+        </footer>
     </div>
 
     <!-- Modales y notificaciones -->
@@ -235,6 +266,85 @@
             </div>
         </div>
     </div>
+    
+    <div id="faq-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative p-6 md:p-8">
+            <button id="close-faq-modal" aria-label="Cerrar modal" class="absolute top-4 right-4 bg-gray-100 rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold">Preguntas Frecuentes</h2>
+                <p class="text-gray-600 text-lg mt-2">Resolvemos tus dudas para que tomes la mejor decisión.</p>
+            </div>
+            <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-4">
+                <details class="bg-gray-50 p-6 rounded-lg group">
+                    <summary class="flex justify-between items-center font-bold text-lg cursor-pointer">
+                        ¿Necesito saber programar o tener experiencia previa?
+                        <svg class="w-5 h-5 text-gray-500 arrow-down" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-600 mt-4">
+                        ¡Para nada! Este curso está diseñado desde cero para principiantes. No necesitas saber de códigos ni tener experiencia técnica. Te llevaremos de la mano con un lenguaje sencillo y ejemplos prácticos.
+                    </p>
+                </details>
+                <details class="bg-gray-50 p-6 rounded-lg group">
+                    <summary class="flex justify-between items-center font-bold text-lg cursor-pointer">
+                        ¿Necesito pagar por las herramientas de IA?
+                        <svg class="w-5 h-5 text-gray-500 arrow-down" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-600 mt-4">
+                        La gran mayoría de las herramientas que enseñamos tienen versiones gratuitas muy potentes, que son más que suficientes para completar el curso y aplicar lo aprendido. Te guiaremos en cómo sacarles el máximo provecho sin gastar de más.
+                    </p>
+                </details>
+                <details class="bg-gray-50 p-6 rounded-lg group">
+                    <summary class="flex justify-between items-center font-bold text-lg cursor-pointer">
+                        ¿Qué pasa si el curso no es para mí?
+                        <svg class="w-5 h-5 text-gray-500 arrow-down" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-600 mt-4">
+                        ¡Cero riesgo! Tienes una garantía de satisfacción de 7 días. Si sientes que el curso no cumple con tus expectativas, te devolvemos el 100% de tu dinero. Sin preguntas.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </div>
+    
+    <div id="cookies-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative p-6 md:p-8">
+            <button id="close-cookies-modal" aria-label="Cerrar modal" class="absolute top-4 right-4 bg-gray-100 rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="prose lg:prose-xl max-h-[80vh] overflow-y-auto pr-4">
+                <h1>Política de Cookies</h1>
+                <p class="text-sm text-gray-500">Última actualización: 23 de agosto de 2025</p>
+
+                <p>En Aula GenIA, utilizamos cookies y tecnologías similares para asegurar que te ofrecemos la mejor experiencia posible en nuestro sitio web. Esta política explica qué son las cookies, cómo las usamos, tus opciones con respecto a su uso y dónde puedes encontrar más información.</p>
+
+                <h2>¿Qué son las Cookies?</h2>
+                <p>Las cookies son pequeños archivos de texto que se almacenan en tu computadora o dispositivo móvil cuando visitas un sitio web. Se utilizan ampliamente para que los sitios web funcionen, o funcionen de manera más eficiente, así como para proporcionar información a los propietarios del sitio.</p>
+
+                <h2>¿Cómo utilizamos las Cookies?</h2>
+                <p>Utilizamos cookies para varios propósitos:</p>
+                <ul>
+                    <li><strong>Cookies Esenciales:</strong> Son estrictamente necesarias para proporcionarte los servicios disponibles a través de nuestro sitio web y para usar algunas de sus funciones, como el acceso a áreas seguras.</li>
+                    <li><strong>Cookies de Rendimiento y Análisis:</strong> Estas cookies nos ayudan a recopilar información sobre cómo los visitantes usan nuestro sitio, como qué páginas visitan con más frecuencia. Utilizamos esta información para mejorar nuestro sitio web y nuestros servicios. Por ejemplo, usamos Google Analytics.</li>
+                    <li><strong>Cookies de Funcionalidad:</strong> Se utilizan para reconocerte cuando regresas a nuestro sitio web. Esto nos permite personalizar nuestro contenido para ti y recordar tus preferencias (por ejemplo, tu elección de idioma o región).</li>
+                </ul>
+
+                <h2>Tus Opciones sobre las Cookies</h2>
+                <p>Tienes derecho a decidir si aceptas o rechazas las cookies. Puedes ejercer tus preferencias de cookies a través de nuestro banner de consentimiento de cookies la primera vez que visitas nuestro sitio.</p>
+                
+                <h2>¿Dónde puedo obtener más información?</h2>
+                <p>Si tienes alguna pregunta sobre nuestro uso de cookies u otras tecnologías, por favor envíanos un correo electrónico a <a href="mailto:contacto@aulagenia.cl">contacto@aulagenia.cl</a>.</p>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
@@ -897,4 +1007,4 @@
         });
     </script>
 </body>
-</html>
+</ht
