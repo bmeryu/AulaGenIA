@@ -102,6 +102,19 @@
         /* Asegurar que el video quede siempre arriba en su contexto */
         #course-video { z-index: 50 !important; }
 
+    
+        /* --- FIX v9: Capa de clic interna al reproductor --- */
+        #video-wrapper { position: relative !important; z-index: 999 !important; }
+        #video-click-layer {
+          position: absolute; inset: 0;
+          z-index: 1000;
+          background: transparent;
+          border: 0; padding: 0; margin: 0;
+          cursor: pointer;
+          pointer-events: auto;
+        }
+        #video-click-layer:focus { outline: none; }
+
     </style>
 </head>
 <body class="text-gray-800">
@@ -610,7 +623,7 @@
                             // Bloque de video con track sin src (se setea por JS) y source con data-src
                             materialHtml = `<div class="flex flex-col gap-4">
                                 <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden relative z-[1] relative z-0">
-                                    <video id="course-video" controls class="w-full h-full object-cover pointer-events-auto">
+                                    <video id="course-video" controls class="w-full h-full object-cover pointer-events-auto"></video><button id="video-click-layer" aria-label="Reproducir video"></button>
                                         <source id="course-video-source" data-src="${lesson.videoUrl || ''}" type="video/mp4">
                                         ${lesson.transcriptionUrl ? `<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>` : ''}
                                         Tu navegador no soporta el elemento de video.
@@ -653,6 +666,21 @@
                 const videoEl = document.getElementById('course-video');
                 if (videoEl) {
                     currentLessonVideo = videoEl;
+
+                const clickLayer = document.getElementById('video-click-layer');
+                if (clickLayer && currentLessonVideo) {
+                    const enable = () => { clickLayer.style.display = 'block'; };
+                    const disable = () => { clickLayer.style.display = 'none'; };
+                    enable();
+                    clickLayer.addEventListener('click', () => {
+                        try { currentLessonVideo.play(); } catch(e) {}
+                        disable();
+                    });
+                    currentLessonVideo.addEventListener('play', disable);
+                    currentLessonVideo.addEventListener('pause', enable);
+                    currentLessonVideo.addEventListener('ended', enable);
+                }
+
                 }
                 const transcriptionBtn = document.getElementById('transcription-button');
                 if (transcriptionBtn && lesson.transcriptionUrl) {
