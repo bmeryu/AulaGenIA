@@ -8,14 +8,12 @@
     una vez que el curso estaba completado, debido a un overlay del modal.
   - FIX subtítulos: carga SRT como WebVTT en el reproductor nativo
     y resuelve gs:// a URL de descarga con getDownloadURL().
-  - FIX video: Se corrige el problema de "botón de play" no funcional
-    debido a que la URL del video no se cargaba correctamente.
-  - FIX overlay: Se corrige un problema de CSS que hacía que los overlays de
-    modales ocultos impidieran interactuar con el video.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
 <head>
+    <meta charset="UTF-8" />
+    <title>Lección del Curso - Aula GenIA (Perfil Unificado)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
@@ -41,7 +39,7 @@
         .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
         .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
         .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
-
+        
         .ltab.active {
             color: var(--brand-teal);
             border-bottom-color: var(--brand-teal);
@@ -75,6 +73,9 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease-in-out;
         }
+    
+        /* Seguridad extra: cuando un overlay/moda es invisible, no interactúa ni ocupa espacio */
+        .invisible { visibility: hidden !important; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -251,11 +252,11 @@
     </div>
 
     <!-- Modales y notificaciones -->
-    <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0 pointer-events-none"></div><div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 pointer-events-none"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full transform transition-all scale-95 opacity-0"><div class="flex justify-between items-start"><div><h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3><p id="profile-modal-subtitle" class="text-gray-600 mt-1">Mantén tus datos actualizados.</p></div><button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button></div><form id="profile-form" class="mt-6 max-h-[60vh] overflow-y-auto pr-4 -mr-4 space-y-4"><div><label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label><input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Ada Lovelace"><p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p><div id="name-error" class="error-message"></div></div><div><label for="profile-rut-input" class="block text-sm font-medium text-gray-700 mb-1">RUT (Chile) <span class="required">*</span></label><input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: 12345678-9"><p class="text-xs text-gray-500 mt-1">Requerido para la validez de tu certificado en Chile.</p><div id="rut-error" class="error-message"></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label><select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Seleccionar...</option><option value="female">Femenino</option><option value="male">Masculino</option><option value="other">Otro</option><option value="prefer_not-to-say">Prefiero no decir</option></select></div><div><label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label><input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"></div></div><div><label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label><input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled></div><div><label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label><input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante, Desarrollador, etc."></div><div><label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label><select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Selecciona tu país</option><option value="CL">Chile</option><option value="AR">Argentina</option><option value="PE">Perú</option><option value="CO">Colombia</option><option value="MX">México</option><option value="ES">España</option><option value="US">Estados Unidos</option><option value="OT">Otro</option></select><div id="country-error" class="error-message"></div></div><div id="form-status" class="text-center p-3 rounded-lg hidden"></div><div class="mt-8 flex justify-end gap-3 pt-4 border-t"><button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button><button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2"><span id="save-btn-text">Guardar Cambios</span><i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i></button></div></form></div></div>
+    <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 pointer-events-none invisible"></div><div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 pointer-events-none invisible"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full transform transition-all scale-95 opacity-0"><div class="flex justify-between items-start"><div><h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3><p id="profile-modal-subtitle" class="text-gray-600 mt-1">Mantén tus datos actualizados.</p></div><button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button></div><form id="profile-form" class="mt-6 max-h-[60vh] overflow-y-auto pr-4 -mr-4 space-y-4"><div><label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label><input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Ada Lovelace"><p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p><div id="name-error" class="error-message"></div></div><div><label for="profile-rut-input" class="block text-sm font-medium text-gray-700 mb-1">RUT (Chile) <span class="required">*</span></label><input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: 12345678-9"><p class="text-xs text-gray-500 mt-1">Requerido para la validez de tu certificado en Chile.</p><div id="rut-error" class="error-message"></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label><select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Seleccionar...</option><option value="female">Femenino</option><option value="male">Masculino</option><option value="other">Otro</option><option value="prefer_not-to-say">Prefiero no decir</option></select></div><div><label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label><input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"></div></div><div><label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label><input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled></div><div><label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label><input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante, Desarrollador, etc."></div><div><label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label><select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Selecciona tu país</option><option value="CL">Chile</option><option value="AR">Argentina</option><option value="PE">Perú</option><option value="CO">Colombia</option><option value="MX">México</option><option value="ES">España</option><option value="US">Estados Unidos</option><option value="OT">Otro</option></select><div id="country-error" class="error-message"></div></div><div id="form-status" class="text-center p-3 rounded-lg hidden"></div><div class="mt-8 flex justify-end gap-3 pt-4 border-t"><button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button><button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2"><span id="save-btn-text">Guardar Cambios</span><i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i></button></div></form></div></div>
     <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div><div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
     
-    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0 pointer-events-none"></div>
-    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 pointer-events-none">
+    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0 pointer-events-none invisible"></div>
+    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 pointer-events-none invisible">
         <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300">
             <i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i>
             <h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2>
@@ -271,8 +272,8 @@
         </div>
     </div>
 
-    <div id="pdf-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0 pointer-events-none"></div>
-    <div id="pdf-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 pointer-events-none">
+    <div id="pdf-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0 pointer-events-none invisible"></div>
+    <div id="pdf-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 pointer-events-none invisible">
         <div id="pdf-modal-content" class="bg-white rounded-lg shadow-2xl w-full max-w-4xl h-full max-h-[90vh] flex flex-col transform transition-all scale-95 opacity-0">
             <header class="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
                 <h3 id="pdf-modal-title" class="text-lg font-semibold text-gray-800">Visor de Documentos</h3>
@@ -287,8 +288,8 @@
     </div>
 
     <!-- Modal de Transcripción -->
-    <div id="transcription-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0 pointer-events-none"></div>
-    <div id="transcription-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 pointer-events-none">
+    <div id="transcription-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0 pointer-events-none invisible"></div>
+    <div id="transcription-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 pointer-events-none invisible">
         <div id="transcription-modal-content" class="bg-white rounded-lg shadow-2xl w-full max-w-4xl h-full max-h-[90vh] flex flex-col transform scale-95 opacity-0">
             <header class="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
                 <h3 id="transcription-modal-title" class="text-lg font-semibold text-gray-800">Transcripción del Video</h3>
@@ -304,7 +305,7 @@
         </div>
     </div>
     
-    <div id="faq-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden pointer-events-none">
+    <div id="faq-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden pointer-events-none invisible">
         <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative p-6 md:p-8">
             <button id="close-faq-modal" aria-label="Cerrar modal" class="absolute top-4 right-4 bg-gray-100 rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -351,7 +352,7 @@
         </div>
     </div>
     
-    <div id="cookies-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden pointer-events-none">
+    <div id="cookies-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden pointer-events-none invisible">
         <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative p-6 md:p-8">
             <button id="close-cookies-modal" aria-label="Cerrar modal" class="absolute top-4 right-4 bg-gray-100 rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -569,124 +570,36 @@
 
             function renderSidebar() { const isCourseComplete = getIsCourseComplete(); let isPreviousModuleComplete = true; dom.modulesContainer.innerHTML = courseData.modules.map((module) => { const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete; const lessonsHtml = module.lessons.map(lesson => { const isCompleted = userProgress.completedLessons.includes(lesson.id); const isActive = userProgress.currentLessonId === lesson.id; let linkClasses = 'text-gray-600 hover:bg-slate-100'; let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle'); let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300'; if (isModuleLocked && !isCourseComplete) { linkClasses = 'text-gray-400 cursor-not-allowed opacity-70'; statusIcon = 'lock'; iconColor = 'text-slate-400'; } else if (isActive) { linkClasses = 'bg-teal-50 text-teal-700 font-semibold'; statusIcon = 'play-circle'; iconColor = ''; } const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file'; return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`; }).join(''); const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800'; const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down'; if (!isCourseComplete) { const moduleLessonIds = module.lessons.map(l => l.id); isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id)); } return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`; }).join(''); addSidebarListeners(); }
             
-            async function getPublicUrl(storagePath) {
-                try {
-                    // Extrae la ruta del archivo sin el prefijo "gs://bucket"
-                    const path = storagePath.replace(`gs://${firebaseConfig.storageBucket}/`, '');
-                    const storageRef = storage.ref(path);
-                    return await storageRef.getDownloadURL();
-                } catch (error) {
-                    console.error("Error obteniendo URL pública:", error);
-                    return null;
-                }
-            }
-
-            /*
-              >>> PARCHE PARA APLICAR SUBTÍTULOS NATIVOS A PARTIR DE SRT
-            */
-
-            // 1) Función para convertir formato SRT a VTT (necesario para <track> en navegadores)
-            function srtToVtt(srt) {
-              return 'WEBVTT\n\n' + srt.trim().replace(/(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})/g, (match, number, start, end) => {
-                const cleanedStart = start.replace(',', '.');
-                const cleanedEnd = end.replace(',', '.');
-                return `${number}\n${cleanedStart} --> ${cleanedEnd}`;
-              }).replace(/\r?\n/g, '\n');
-            }
-
-            // 2) Función principal para renderizar el contenido multimedia
-            async function renderLessonContent(lesson) {
+            function renderLessonContent(lesson) {
                 const isCourseComplete = getIsCourseComplete();
                 let materialHtml = ''; 
+                // Detener cualquier video que se esté reproduciendo
                 if (currentLessonVideo) {
                     currentLessonVideo.pause();
                     currentLessonVideo = null;
                 }
-
                 switch(lesson.type) { 
-                    case 'video': {
-                        // UI temporal mientras resolvemos URLs si vienen como gs://
-                        dom.tabMaterialPanel.innerHTML = `
-                          <div class="rounded-xl border border-slate-200 p-6 bg-white">
-                            <p class="text-slate-600">Cargando video…</p>
-                          </div>
-                        `;
-
-                        let finalVideoUrl = lesson.videoUrl || '';
-                        let finalTrackUrl = lesson.transcriptionUrl || '';
-
-                        try {
-                            if (finalVideoUrl && finalVideoUrl.startsWith('gs://')) {
-                                const vRef = storage.refFromURL(finalVideoUrl);
-                                finalVideoUrl = await vRef.getDownloadURL();
-                            }
-                            if (finalTrackUrl && finalTrackUrl.startsWith('gs://')) {
-                                const tRef = storage.refFromURL(finalTrackUrl);
-                                finalTrackUrl = await tRef.getDownloadURL();
-                            }
-                        } catch (e) {
-                            console.error('No se pudo resolver la URL del video o subtítulo:', e);
-                            dom.tabMaterialPanel.innerHTML = `
-                              <div class="aspect-video w-full rounded-xl flex items-center justify-center bg-red-100 p-4">
-                                <div class="text-center">
-                                  <p class="text-red-700 font-semibold mb-2">Error al cargar el video.</p>
-                                  <p class="text-red-600 text-sm">Por favor, revisa que las URL de los archivos en tu `ALL_COURSES_DATA` estén correctas y que las reglas de seguridad de Storage permitan la lectura.</p>
-                                </div>
-                              </div>
-                            `;
-                            return;
-                        }
-
-                        // Renderiza el video con un track vacío para los subtítulos
-                        materialHtml = `
-                            <div class="flex flex-col gap-4">
-                                <div class="aspect-video w-full rounded-xl overflow-hidden bg-black">
-                                    <video id="course-video" controls class="w-full h-full object-contain">
-                                        <source id="course-video-source" src="" type="video/mp4">
-                                        <track id="caption-track" kind="subtitles" srclang="es" label="Español">
+                    case 'video':
+                        if (lesson.videoUrl) {
+                            // Bloque de video con track sin src (se setea por JS) y source con data-src
+                            materialHtml = `<div class="flex flex-col gap-4">
+                                <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden relative z-[1] relative z-0">
+                                    <video id="course-video" controls class="w-full h-full object-cover pointer-events-auto">
+                                        <source id="course-video-source" data-src="${lesson.videoUrl || ''}" type="video/mp4">
+                                        ${lesson.transcriptionUrl ? `<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>` : ''}
                                         Tu navegador no soporta el elemento de video.
                                     </video>
                                 </div>
-                                <button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"><i data-lucide="align-left" class="h-5 w-5"></i>Ver Transcripción</button>
-                            </div>
-                        `;
-                        dom.tabMaterialPanel.innerHTML = materialHtml; 
-
-                        const videoEl = document.getElementById('course-video');
-                        if (videoEl) {
-                            currentLessonVideo = videoEl;
-                            
-                            // Adjunta el video y los subtítulos de forma asíncrona
-                            await attachMediaAndCaptions({
-                                videoEl,
-                                videoSrc: finalVideoUrl,
-                                srtOrVttSrc: finalTrackUrl
-                            });
+                                ${lesson.transcriptionUrl ? `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"><i data-lucide="align-left" class="h-5 w-5"></i>Ver Transcripción</button>` : `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled><i data-lucide="align-left" class="h-5 w-5"></i>Transcripción No Disponible</button>`}
+                            </div>`;
+                        } else {
+                            materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`;
                         }
-
-                        // Habilita el botón de transcripción si hay una URL
-                        const transcriptionBtn = document.getElementById('transcription-button');
-                        if (transcriptionBtn && finalTrackUrl) {
-                            transcriptionBtn.addEventListener('click', () => openTranscriptionModal(finalTrackUrl));
-                        } else if (transcriptionBtn) {
-                           transcriptionBtn.classList.add('cursor-not-allowed', 'text-slate-400');
-                           transcriptionBtn.disabled = true;
-                           transcriptionBtn.innerHTML = `<i data-lucide="align-left" class="h-5 w-5"></i>Transcripción No Disponible`;
-                        }
-
-                        lucide.createIcons();
-                        break;
-                    }
-                    case 'resource': 
-                        materialHtml = `<div class="aspect-video"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; 
-                        dom.tabMaterialPanel.innerHTML = materialHtml; 
-                        lucide.createIcons();
                         break; 
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; 
                     case 'quiz':
                         if (!lesson.questions || lesson.questions.length === 0) {
                             materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
-                            dom.tabMaterialPanel.innerHTML = materialHtml; 
-                            lucide.createIcons();
                             break;
                         }
                         const question = lesson.questions[0];
@@ -697,75 +610,45 @@
                                 return `<div class="${optionClasses} border-2 p-4 rounded-lg cursor-default">${opt}</div>`;
                             }).join('');
                             materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><p class="text-sm text-slate-500 mt-4">Curso completado. Solo puedes revisar las respuestas.</p></div>`;
-                            dom.tabMaterialPanel.innerHTML = materialHtml; 
                         } else {
                             const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join(''); 
                             materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-900">Verificar Respuesta</button></div>`; 
-                            dom.tabMaterialPanel.innerHTML = materialHtml; 
                         }
-                        if (!isCourseComplete && lesson.questions && lesson.questions.length > 0) { 
-                            dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); })); 
-                            document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson)); 
-                        } 
-                        lucide.createIcons();
                         break;
-                    default: 
-                        materialHtml = `<p>Tipo de lección no reconocido.</p>`;
-                        dom.tabMaterialPanel.innerHTML = materialHtml; 
-                        lucide.createIcons();
+                    default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
                 } 
-            }
+                dom.tabMaterialPanel.innerHTML = materialHtml; 
+                if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) { 
+                    dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); })); 
+                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson)); 
+                } 
 
-            // Nuevo: función para adjuntar medios y subtítulos
-            async function attachMediaAndCaptions({ videoEl, videoSrc, srtOrVttSrc }) {
-              const srcEl = videoEl.querySelector('#course-video-source');
-              const resolvedVideo = videoSrc; // Ya se resuelve antes
-              if (srcEl && resolvedVideo) srcEl.src = resolvedVideo;
-
-              const trackEl = videoEl.querySelector('#caption-track');
-              if (!trackEl || !srtOrVttSrc) {
-                // No hay transcripción, desactiva el track y el botón
-                if (trackEl) trackEl.track.mode = 'disabled';
-                return;
-              }
-
-              const isSrt = /(\.srt)(\?|$)/i.test(srtOrVttSrc);
-              if (isSrt) {
-                try {
-                  const resp = await fetch(srtOrVttSrc);
-                  const srtTxt = await resp.text();
-                  const vttTxt = srtToVtt(srtTxt);
-                  const blobUrl = URL.createObjectURL(new Blob([vttTxt], { type: 'text/vtt' }));
-                  trackEl.src = blobUrl;
-                } catch (e) {
-                  console.error('Error procesando SRT:', e);
-                  if (trackEl) trackEl.track.mode = 'disabled';
+                // Event listener para el video y botón de transcripción
+                const videoEl = document.getElementById('course-video');
+                if (videoEl) {
+                    currentLessonVideo = videoEl;
                 }
-              } else {
-                trackEl.src = srtOrVttSrc;
-              }
+                const transcriptionBtn = document.getElementById('transcription-button');
+                if (transcriptionBtn && lesson.transcriptionUrl) {
+                    transcriptionBtn.addEventListener('click', () => openTranscriptionModal(lesson.transcriptionUrl));
+                }
 
-              videoEl.load(); // Vuelve a cargar el video para aplicar el track
-              if (videoEl.textTracks.length > 0) videoEl.textTracks[0].mode = 'showing'; // Activa el subtítulo
+                // === FIX subtítulos y src del video: resolvemos gs:// y SRT->VTT ===
+                (async () => {
+                    if (!videoEl) return;
+                    try {
+                        await attachMediaAndCaptions({
+                            storage,
+                            videoEl,
+                            videoSrc: (lesson && lesson.videoUrl) || '',
+                            srtOrVttSrc: (lesson && lesson.transcriptionUrl) || ''
+                        });
+                    } catch (err) {
+                        console.error('No se pudieron adjuntar medios/subtítulos:', err);
+                    }
+                })();
+                
             }
-            
-            // Nuevo: Función para convertir SRT a VTT
-            function srtToVtt(srt) {
-                const parts = srt.split(/\r?\n\r?\n/).filter(p => p.trim() !== '');
-                const vttParts = parts.map(part => {
-                    const lines = part.split(/\r?\n/).filter(l => l.trim() !== '');
-                    const number = lines.shift();
-                    const times = lines.shift();
-                    const text = lines.join(' ');
-                    const [start, end] = times.split(' --> ');
-                    const cleanStart = start.replace(',', '.');
-                    const cleanEnd = end.replace(',', '.');
-                    return `${number}\n${cleanStart} --> ${cleanEnd}\n${text}`;
-                });
-                return 'WEBVTT\n\n' + vttParts.join('\n\n');
-            }
-            
-
             function checkQuizAnswer(lesson) { const selectedOption = dom.tabMaterialPanel.querySelector('.quiz-option.selected'); if (!selectedOption) { showToast('Por favor, selecciona una respuesta.'); return; } const selectedIndex = parseInt(selectedOption.dataset.index); const correctIndex = lesson.questions[0].correctAnswer; dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none'); if (selectedIndex === correctIndex) { selectedOption.classList.add('correct'); showToast('¡Respuesta Correcta!'); dom.mainActionBtn.disabled = false; } else { selectedOption.classList.add('incorrect'); dom.tabMaterialPanel.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct'); showToast('Respuesta incorrecta. ¡Sigue intentando!'); setTimeout(() => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => { opt.classList.remove('incorrect', 'correct', 'selected'); opt.style.pointerEvents = 'auto'; }); }, 2000); } }
             function updateMainActionButton() { 
                 const isCourseComplete = getIsCourseComplete();
@@ -824,8 +707,10 @@
                 }
 
                 dom.completionModalOverlay.classList.remove('hidden');
-                setInteractivity(dom.completionModalOverlay, true);
-                setInteractivity(dom.completionModal, true);
+                setInteractiveVisible(dom.completionModalOverlay, true);
+                setInteractiveVisible(dom.completionModal, true);
+                setInteractiveVisible(dom.completionModalOverlay, true);
+                setInteractiveVisible(dom.completionModal, true);
                 dom.completionModal.classList.remove('hidden');
                 setTimeout(() => {
                     dom.completionModalOverlay.classList.add('opacity-100');
@@ -834,8 +719,10 @@
             }
 
             function hideCompletionModal() {
-                setInteractivity(dom.completionModalOverlay, false);
-                setInteractivity(dom.completionModal, false);
+                setInteractiveVisible(dom.completionModalOverlay, false);
+                setInteractiveVisible(dom.completionModal, false);
+                setInteractiveVisible(dom.completionModalOverlay, false);
+                setInteractiveVisible(dom.completionModal, false);
                 dom.completionModalOverlay.classList.remove('opacity-100');
                 dom.completionModal.classList.remove('show');
                 dom.completionModal.querySelector('div').classList.add('scale-95', 'opacity-0');
@@ -851,10 +738,14 @@
             
             const profileModalOverlay = document.getElementById('profile-modal-overlay'); const profileModal = document.getElementById('profile-modal'); const avatarButton = document.getElementById('avatar-button'); const cancelProfileBtn = document.getElementById('cancel-profile-btn'); const closeProfileBtn = document.getElementById('close-profile-modal-btn'); const profileForm = document.getElementById('profile-form'); const profileNameInput = document.getElementById('profile-name-input'); const profileRutInput = document.getElementById('profile-rut-input'); const profileEmailInput = document.getElementById('profile-email-input'); const profileJobInput = document.getElementById('profile-job-input'); const profileCountrySelect = document.getElementById('profile-country-select'); const profileGenderSelect = document.getElementById('profile-gender-select'); const profileBirthdateInput = document.getElementById('profile-birthdate-input'); const formStatus = document.getElementById('form-status'); const saveBtn = document.getElementById('save-profile-btn'); const saveBtnText = document.getElementById('save-btn-text'); const saveSpinner = document.getElementById('save-spinner');
             async function showProfileModal() { profileForm.reset(); clearAllErrors(); if(formStatus) formStatus.classList.add('hidden'); const user = auth.currentUser; if (!user) return; profileEmailInput.value = user.email || ''; const userDocRef = db.collection('users').doc(user.uid); try { const doc = await userDocRef.get(); if (doc.exists) { const data = doc.data(); profileNameInput.value = data.displayName || user.displayName || ''; profileRutInput.value = data.rut || ''; profileJobInput.value = data.jobTitle || ''; profileCountrySelect.value = data.country || ''; profileGenderSelect.value = data.gender || ''; profileBirthdateInput.value = data.birthdate || ''; } else { profileNameInput.value = user.displayName || ''; } } catch (error) {  console.error("Error al cargar datos del perfil:", error); if(formStatus) { formStatus.textContent = 'Error al cargar tus datos. Intenta de nuevo.'; formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700'; formStatus.classList.remove('hidden'); } } profileModalOverlay.classList.remove('hidden');
-            setInteractivity(profileModalOverlay, true);
-            setInteractivity(profileModal, true); profileModal.classList.remove('hidden'); setTimeout(() => { profileModal.querySelector('div > div').classList.remove('scale-95', 'opacity-0'); }, 10); }
-            function hideProfileModal() { profileModal.querySelector('div > div').classList.add('scale-95', 'opacity-0'); setInteractivity(profileModalOverlay, false);
-            setInteractivity(profileModal, false);
+            setInteractiveVisible(profileModalOverlay, true);
+            setInteractiveVisible(profileModal, true);
+            setInteractiveVisible(profileModalOverlay, true);
+            setInteractiveVisible(profileModal, true); profileModal.classList.remove('hidden'); setTimeout(() => { profileModal.querySelector('div > div').classList.remove('scale-95', 'opacity-0'); }, 10); }
+            function hideProfileModal() { profileModal.querySelector('div > div').classList.add('scale-95', 'opacity-0'); setInteractiveVisible(profileModalOverlay, false);
+            setInteractiveVisible(profileModal, false);
+            setInteractiveVisible(profileModalOverlay, false);
+            setInteractiveVisible(profileModal, false);
             setTimeout(() => { profileModalOverlay.classList.add('hidden'); profileModal.classList.add('hidden'); }, 300); }
             avatarButton.addEventListener('click', () => showProfileModal()); cancelProfileBtn.addEventListener('click', hideProfileModal); closeProfileBtn.addEventListener('click', hideProfileModal); profileModalOverlay.addEventListener('click', hideProfileModal);
             function validateRut(rut) { rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); const rutBody = rut.slice(0, -1); let dv = rut.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; let sum = 0, multiple = 2; for (let i = rutBody.length - 1; i >= 0; i--) { sum += rutBody.charAt(i) * multiple; if (multiple < 7) multiple++; else multiple = 2; } const calculatedDv = 11 - (sum % 11); const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); return dv === expectedDv; }
@@ -942,7 +833,7 @@
 
             function renderCourseResources(lesson) {
                 const resources = lesson.resources || [];
-                if (resources.length > 0) {
+                 if (resources.length > 0) {
                     dom.resourcesList.innerHTML = resources.map(resource => {
                         const isPdf = !resource.external && resource.url.includes('.pdf');
                         const icon = resource.external ? 'link' : (isPdf ? 'file-text' : 'download-cloud');
@@ -970,9 +861,11 @@
                 const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
                 dom.pdfIframe.src = viewerUrl;
                 dom.pdfModal.classList.remove('hidden');
-                setInteractivity(dom.pdfModal, true);
+                setInteractiveVisible(dom.pdfModal, true);
+                setInteractiveVisible(dom.pdfModal, true);
                 dom.pdfModalOverlay.classList.remove('hidden');
-                setInteractivity(dom.pdfModalOverlay, true);
+                setInteractiveVisible(dom.pdfModalOverlay, true);
+                setInteractiveVisible(dom.pdfModalOverlay, true);
                 setTimeout(() => {
                     dom.pdfModalOverlay.classList.add('opacity-100');
                     dom.pdfModalContent.classList.remove('scale-95', 'opacity-0');
@@ -980,8 +873,10 @@
             }
 
             function closePdfModal() {
-                setInteractivity(dom.pdfModalOverlay, false);
-                setInteractivity(dom.pdfModal, false);
+                setInteractiveVisible(dom.pdfModalOverlay, false);
+                setInteractiveVisible(dom.pdfModal, false);
+                setInteractiveVisible(dom.pdfModalOverlay, false);
+                setInteractiveVisible(dom.pdfModal, false);
                 dom.pdfModalOverlay.classList.remove('opacity-100');
                 dom.pdfModalContent.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => {
@@ -1005,9 +900,11 @@
             async function openTranscriptionModal(transcriptionUrl) {
                 dom.transcriptionTextContainer.innerHTML = '<p class="text-center text-slate-500">Cargando transcripción...</p>';
                 dom.transcriptionModal.classList.remove('hidden');
-                setInteractivity(dom.transcriptionModal, true);
+                setInteractiveVisible(dom.transcriptionModal, true);
+                setInteractiveVisible(dom.transcriptionModal, true);
                 dom.transcriptionModalOverlay.classList.remove('hidden');
-                setInteractivity(dom.transcriptionModalOverlay, true);
+                setInteractiveVisible(dom.transcriptionModalOverlay, true);
+                setInteractiveVisible(dom.transcriptionModalOverlay, true);
                 setTimeout(() => {
                     dom.transcriptionModalOverlay.classList.add('opacity-100');
                     dom.transcriptionModalContent.classList.remove('scale-95', 'opacity-0');
@@ -1026,8 +923,10 @@
             }
 
             function closeTranscriptionModal() {
-                setInteractivity(dom.transcriptionModalOverlay, false);
-                setInteractivity(dom.transcriptionModal, false);
+                setInteractiveVisible(dom.transcriptionModalOverlay, false);
+                setInteractiveVisible(dom.transcriptionModal, false);
+                setInteractiveVisible(dom.transcriptionModalOverlay, false);
+                setInteractiveVisible(dom.transcriptionModal, false);
                 dom.transcriptionModalOverlay.classList.remove('opacity-100');
                 dom.transcriptionModalContent.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => {
@@ -1037,7 +936,7 @@
             }
 
             function formatSrtToHtml(srt) {
-                const cleanedText = srt.replace(/\d+\r?\n(\d{2}:\d{2}:\d{2},\d{3} --> \d{2}:\d{2}:\d{2},\d{3})\r?\n/g, '').replace(/\r?\n/g, '<br>');
+                const cleanedText = srt.replace(/\\d+\\r?\\n(\\d{2}:\\d{2}:\\d{2},\\d{3} --> \\d{2}:\\d{2}:\\d{2},\\d{3})\\r?\\n/g, '').replace(/\\r?\\n/g, '<br>');
                 return cleanedText;
             }
 
@@ -1046,7 +945,7 @@
 
 
             async function loadUserResources(lessonId) {
-                if (!currentUser) return;
+                 if (!currentUser) return;
                 dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
                 try {
                     const snap = await db.collection('userResources')
@@ -1291,7 +1190,7 @@
                     .replace(/\r+/g, '')
                     .replace(/^\s*\d+\s*$/gm, '')
                     .replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, '$1:$2:$3.$4');
-                return 'WEBVTT\n\n' + cleaned.trim();
+                return 'WEBVTT\\n\\n' + cleaned.trim();
             }
             async function resolveStorageDownloadURL(storage, maybeGsOrHttpsUrl) {
                 if (!maybeGsOrHttpsUrl) return null;
@@ -1330,12 +1229,27 @@
 
             
             // ===== Utilidades de interactividad para overlays/modales =====
-            function setInteractivity(el, on) {
+            function setInteractiveVisible(el, on) {
                 if (!el) return;
                 if (on) el.classList.remove('pointer-events-none');
                 else el.classList.add('pointer-events-none');
             }
+            
+            // ===== Utilidades de visibilidad/interactividad para overlays/modales =====
+            function setInteractiveVisible(el, on) {
+                if (!el) return;
+                if (on) {
+                    el.classList.remove('pointer-events-none');
+                    el.classList.remove('invisible');
+                    el.style.visibility = 'visible';
+                } else {
+                    el.classList.add('pointer-events-none');
+                    el.classList.add('invisible');
+                    el.style.visibility = 'hidden';
+                }
+            }
             // --- INICIALIZACIÓN DE LA APLICACIÓN ---
+
 
             auth.onAuthStateChanged(user => {
                 if (user) {
