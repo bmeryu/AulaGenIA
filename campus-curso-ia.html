@@ -6,6 +6,8 @@
     para hacerlo más cercano y proactivo, según lo solicitado.
   - Se corrige el bug que impedía interactuar con el reproductor de video
     una vez que el curso estaba completado, debido a un overlay del modal.
+  - Se corrige el problema de las URLs de Firebase Storage (gs://) 
+    para que los videos se carguen correctamente.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -433,8 +435,8 @@
                                     id: '1-1', 
                                     title: 'Casos de éxito reales', 
                                     type: 'video', 
-                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
-                                    videoUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.firebasestorage.app/o/Modulo-1-IA-Aplicada-Programa-Esencial.mp4?alt=media&token=dd6c36ee-d77d-4d0d-a9b5-33f56769c0f2',
+                                    // Utiliza la ruta del archivo en Firebase Storage
+                                    videoPath: 'Modulo-1-IA-Aplicada-Programa-Esencial.mp4',
                                     resources: [] 
                                 },
                                 { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }], resources: [] }
@@ -449,18 +451,18 @@
                                     id: '2-1', 
                                     title: 'IA en tu día a día', 
                                     type: 'video', 
-                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
-                                    videoUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.firebasestorage.app/o/Modulo-2-IA-Aplicada-Programa-Esencial.mp4?alt=media&token=cd3051f6-07af-4944-9567-458f5c63b5bc', 
-                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
-                                    transcriptionUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.firebasestorage.app/o/Modulo-2-IA-Aplicada-Programa-Esencial.srt?alt=media&token=e1d86d1d-d7f9-46d2-92ac-c4fdb47917c3', 
+                                    // Utiliza la ruta del archivo en Firebase Storage
+                                    videoPath: 'Modulo-2-IA-Aplicada-Programa-Esencial.mp4', 
+                                    // Utiliza la ruta del archivo en Firebase Storage
+                                    transcriptionPath: 'Modulo-2-IA-Aplicada-Programa-Esencial.srt', 
                                     resources: [] 
                                 },
                                 { 
                                     id: '2-2', 
                                     title: 'Casos de éxito de IA', 
                                     type: 'video', 
-                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
-                                    videoUrl: 'gs://aulagenia.firebasestorage.app/Modulo-1-IA-Aplicada-Programa-Esencial.mp4', 
+                                    // Utiliza la ruta del archivo en Firebase Storage
+                                    videoPath: 'Modulo-1-IA-Aplicada-Programa-Esencial.mp4', 
                                     resources: [] 
                                 }
                             ]
@@ -529,7 +531,6 @@
                 pdfModalContent: document.getElementById('pdf-modal-content'),
                 pdfModalTitle: document.getElementById('pdf-modal-title'),
                 pdfModalCloseBtn: document.getElementById('pdf-modal-close-btn'),
-                pdfIframe: document.getElementById('pdf-iframe'),
                 transcriptionModalOverlay: document.getElementById('transcription-modal-overlay'),
                 transcriptionModal: document.getElementById('transcription-modal'),
                 transcriptionModalContent: document.getElementById('transcription-modal-content'),
@@ -578,7 +579,7 @@
                 dom.profileModal.classList.add('hidden');
             }
 
-            function renderLessonContent(lesson) {
+            async function renderLessonContent(lesson) {
                 const isCourseComplete = getIsCourseComplete();
                 let materialHtml = ''; 
                 // Detener cualquier video que se esté reproduciendo
@@ -591,28 +592,58 @@
 
                 switch(lesson.type) { 
                     case 'video':
-                        // Check if the lesson has a video URL
-                        if (lesson.videoUrl) {
-                            // Render the video element
-                            materialHtml = `<div class="flex flex-col gap-4">
-                                <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden">
-                                    <video id="course-video" controls class="w-full h-full object-cover">
-                                        <source src="${lesson.videoUrl}" type="video/mp4">
-                                        ${lesson.transcriptionUrl ? `<track src="${lesson.transcriptionUrl}" kind="subtitles" srclang="es" label="Español">` : ''}
-                                        Tu navegador no soporta el elemento de video.
-                                    </video>
-                                </div>
-                                ${lesson.transcriptionUrl ? `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"><i data-lucide="align-left" class="h-5 w-5"></i>Ver Transcripción</button>` : `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled><i data-lucide="align-left" class="h-5 w-5"></i>Transcripción No Disponible</button>`}
+                        // Check if the lesson has a video path
+                        if (lesson.videoPath) {
+                            // Render a loading state first
+                            dom.tabMaterialPanel.innerHTML = `<div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden bg-slate-200 flex items-center justify-center">
+                                <span class="text-slate-600 font-semibold">Cargando video...</span>
                             </div>`;
+                            
+                            try {
+                                // Obtener la URL de descarga del video
+                                const videoRef = storage.ref(lesson.videoPath);
+                                const videoUrl = await videoRef.getDownloadURL();
+                                
+                                // Obtener la URL de descarga de la transcripción si existe
+                                let transcriptionUrl = null;
+                                if (lesson.transcriptionPath) {
+                                    const transcriptionRef = storage.ref(lesson.transcriptionPath);
+                                    transcriptionUrl = await transcriptionRef.getDownloadURL();
+                                }
+
+                                // Renderizar el video una vez que se tiene la URL
+                                materialHtml = `<div class="flex flex-col gap-4">
+                                    <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden">
+                                        <video id="course-video" controls class="w-full h-full object-cover">
+                                            <source src="${videoUrl}" type="video/mp4">
+                                            ${transcriptionUrl ? `<track src="${transcriptionUrl}" kind="subtitles" srclang="es" label="Español">` : ''}
+                                            Tu navegador no soporta el elemento de video.
+                                        </video>
+                                    </div>
+                                    ${transcriptionUrl ? `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"><i data-lucide="align-left" class="h-5 w-5"></i>Ver Transcripción</button>` : `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled><i data-lucide="align-left" class="h-5 w-5"></i>Transcripción No Disponible</button>`}
+                                </div>`;
+                                dom.tabMaterialPanel.innerHTML = materialHtml;
+                                
+                            } catch (error) {
+                                console.error('Error al obtener la URL de descarga del video:', error);
+                                materialHtml = `<div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden bg-red-100 flex items-center justify-center">
+                                    <span class="text-red-700 font-semibold">Error al cargar el video. Por favor, revisa la configuración de Firebase Storage.</span>
+                                </div>`;
+                                dom.tabMaterialPanel.innerHTML = materialHtml;
+                            }
                         } else {
-                            // Render the placeholder if there's no video URL
+                            // Render the placeholder if there's no video path
                             materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`;
+                            dom.tabMaterialPanel.innerHTML = materialHtml;
                         }
                         break; 
-                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; 
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; 
+                    dom.tabMaterialPanel.innerHTML = materialHtml;
+                    break;
                     case 'quiz':
                         if (!lesson.questions || lesson.questions.length === 0) {
                             materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
+                            dom.tabMaterialPanel.innerHTML = materialHtml;
                             break;
                         }
                         const question = lesson.questions[0];
@@ -627,26 +658,30 @@
                             const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join(''); 
                             materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-900">Verificar Respuesta</button></div>`; 
                         }
+                        dom.tabMaterialPanel.innerHTML = materialHtml;
+
+                        if (!isCourseComplete && lesson.questions && lesson.questions.length > 0) { 
+                            dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); })); 
+                            document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson)); 
+                        } 
                         break;
                     default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
                 } 
-                dom.tabMaterialPanel.innerHTML = materialHtml; 
-                if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) { 
-                    dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); })); 
-                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson)); 
-                } 
-
+                
+                lucide.createIcons();
                 // Event listener para el video y botón de transcripción
                 const videoEl = document.getElementById('course-video');
                 if (videoEl) {
                     currentLessonVideo = videoEl;
                 }
                 const transcriptionBtn = document.getElementById('transcription-button');
-                if (transcriptionBtn && lesson.transcriptionUrl) {
-                    transcriptionBtn.addEventListener('click', () => openTranscriptionModal(lesson.transcriptionUrl));
+                if (transcriptionBtn && lesson.transcriptionPath) {
+                    transcriptionBtn.addEventListener('click', () => openTranscriptionModal(transcriptionUrl));
                 }
-                
             }
+
+            function renderSidebar() { const isCourseComplete = getIsCourseComplete(); let isPreviousModuleComplete = true; dom.modulesContainer.innerHTML = courseData.modules.map((module) => { const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete; const lessonsHtml = module.lessons.map(lesson => { const isCompleted = userProgress.completedLessons.includes(lesson.id); const isActive = userProgress.currentLessonId === lesson.id; let linkClasses = 'text-gray-600 hover:bg-slate-100'; let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle'); let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300'; if (isModuleLocked && !isCourseComplete) { linkClasses = 'text-gray-400 cursor-not-allowed opacity-70'; statusIcon = 'lock'; iconColor = 'text-slate-400'; } else if (isActive) { linkClasses = 'bg-teal-50 text-teal-700 font-semibold'; statusIcon = 'play-circle'; iconColor = ''; } const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file'; return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`; }).join(''); const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800'; const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down'; if (!isCourseComplete) { const moduleLessonIds = module.lessons.map(l => l.id); isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id)); } return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`; }).join(''); addSidebarListeners(); }
+            
             function checkQuizAnswer(lesson) { const selectedOption = dom.tabMaterialPanel.querySelector('.quiz-option.selected'); if (!selectedOption) { showToast('Por favor, selecciona una respuesta.'); return; } const selectedIndex = parseInt(selectedOption.dataset.index); const correctIndex = lesson.questions[0].correctAnswer; dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none'); if (selectedIndex === correctIndex) { selectedOption.classList.add('correct'); showToast('¡Respuesta Correcta!'); dom.mainActionBtn.disabled = false; } else { selectedOption.classList.add('incorrect'); dom.tabMaterialPanel.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct'); showToast('Respuesta incorrecta. ¡Sigue intentando!'); setTimeout(() => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => { opt.classList.remove('incorrect', 'correct', 'selected'); opt.style.pointerEvents = 'auto'; }); }, 2000); } }
             function updateMainActionButton() { 
                 const isCourseComplete = getIsCourseComplete();
