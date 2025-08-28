@@ -569,7 +569,9 @@
             
             async function getPublicUrl(storagePath) {
                 try {
-                    const storageRef = storage.refFromURL(storagePath);
+                    // Extrae la ruta del archivo sin el prefijo "gs://bucket"
+                    const path = storagePath.replace(`gs://${firebaseConfig.storageBucket}/`, '');
+                    const storageRef = storage.ref(path);
                     return await storageRef.getDownloadURL();
                 } catch (error) {
                     console.error("Error obteniendo URL pública:", error);
