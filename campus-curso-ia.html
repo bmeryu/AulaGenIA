@@ -372,7 +372,7 @@
                 </ul>
 
                 <h2>Tus Opciones sobre las Cookies</h2>
-                <p>Tienes derecho a decidir si aceptas o rechazas las cookies. Puedes ejercer tus preferencias de cookies a través de nuestro banner de consentimiento de cookies la primera vez que visitas nuestro sitio.</p>
+                <p>PTienes derecho a decidir si aceptas o rechazas las cookies. Puedes ejercer tus preferencias de cookies a través de nuestro banner de consentimiento de cookies la primera vez que visitas nuestro sitio.</p>
                 
                 <h2>¿Dónde puedo obtener más información?</h2>
                 <p>Si tienes alguna pregunta sobre nuestro uso de cookies u otras tecnologías, por favor envíanos un correo electrónico a <a href="mailto:contacto@aulagenia.cl">contacto@aulagenia.cl</a>.</p>
@@ -435,8 +435,8 @@
                                     id: '1-1', 
                                     title: 'Casos de éxito reales', 
                                     type: 'video', 
-                                    // Utiliza la ruta del archivo en Firebase Storage
-                                    videoPath: 'Modulo-1-IA-Aplicada-Programa-Esencial.mp4',
+                                    // Utiliza la URL de descarga directa de Firebase Storage
+                                    videoUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/Modulo-1-IA-Aplicada-Programa-Esencial.mp4?alt=media',
                                     resources: [] 
                                 },
                                 { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }], resources: [] }
@@ -451,18 +451,18 @@
                                     id: '2-1', 
                                     title: 'IA en tu día a día', 
                                     type: 'video', 
-                                    // Utiliza la ruta del archivo en Firebase Storage
-                                    videoPath: 'Modulo-2-IA-Aplicada-Programa-Esencial.mp4', 
-                                    // Utiliza la ruta del archivo en Firebase Storage
-                                    transcriptionPath: 'Modulo-2-IA-Aplicada-Programa-Esencial.srt', 
+                                    // Utiliza la URL de descarga directa de Firebase Storage
+                                    videoUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/Modulo-2-IA-Aplicada-Programa-Esencial.mp4?alt=media', 
+                                    // Utiliza la URL de descarga directa de Firebase Storage
+                                    transcriptionUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/Modulo-2-IA-Aplicada-Programa-Esencial.srt?alt=media', 
                                     resources: [] 
                                 },
                                 { 
                                     id: '2-2', 
                                     title: 'Casos de éxito de IA', 
                                     type: 'video', 
-                                    // Utiliza la ruta del archivo en Firebase Storage
-                                    videoPath: 'Modulo-1-IA-Aplicada-Programa-Esencial.mp4', 
+                                    // Utiliza la URL de descarga directa de Firebase Storage
+                                    videoUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/Modulo-1-IA-Aplicada-Programa-Esencial.mp4?alt=media', 
                                     resources: [] 
                                 }
                             ]
@@ -569,14 +569,14 @@
             }
 
             function closeAllModals() {
-                dom.completionModalOverlay.classList.add('hidden');
-                dom.completionModal.classList.add('hidden');
-                dom.pdfModalOverlay.classList.add('hidden');
-                dom.pdfModal.classList.add('hidden');
-                dom.transcriptionModalOverlay.classList.add('hidden');
-                dom.transcriptionModal.classList.add('hidden');
-                dom.profileModalOverlay.classList.add('hidden');
-                dom.profileModal.classList.add('hidden');
+                if(dom.completionModalOverlay) dom.completionModalOverlay.classList.add('hidden');
+                if(dom.completionModal) dom.completionModal.classList.add('hidden');
+                if(dom.pdfModalOverlay) dom.pdfModalOverlay.classList.add('hidden');
+                if(dom.pdfModal) dom.pdfModal.classList.add('hidden');
+                if(dom.transcriptionModalOverlay) dom.transcriptionModalOverlay.classList.add('hidden');
+                if(dom.transcriptionModal) dom.transcriptionModal.classList.add('hidden');
+                if(dom.profileModalOverlay) dom.profileModalOverlay.classList.add('hidden');
+                if(dom.profileModal) dom.profileModal.classList.add('hidden');
             }
 
             async function renderLessonContent(lesson) {
@@ -593,7 +593,7 @@
                 switch(lesson.type) { 
                     case 'video':
                         // Check if the lesson has a video path
-                        if (lesson.videoPath) {
+                        if (lesson.videoUrl) {
                             // Render a loading state first
                             dom.tabMaterialPanel.innerHTML = `<div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden bg-slate-200 flex items-center justify-center">
                                 <span class="text-slate-600 font-semibold">Cargando video...</span>
@@ -601,13 +601,13 @@
                             
                             try {
                                 // Obtener la URL de descarga del video
-                                const videoRef = storage.refFromURL(lesson.videoPath);
-                                const videoUrl = await videoRef.getDownloadURL();
+                                //const videoRef = storage.refFromURL(lesson.videoPath);
+                                //const videoUrl = await videoRef.getDownloadURL();
                                 
                                 // Obtener la URL de descarga de la transcripción si existe
                                 let transcriptionUrl = null;
-                                if (lesson.transcriptionPath) {
-                                    const transcriptionRef = storage.refFromURL(lesson.transcriptionPath);
+                                if (lesson.transcriptionUrl) {
+                                    const transcriptionRef = storage.refFromURL(lesson.transcriptionUrl);
                                     transcriptionUrl = await transcriptionRef.getDownloadURL();
                                 }
 
@@ -615,7 +615,7 @@
                                 materialHtml = `<div class="flex flex-col gap-4">
                                     <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden">
                                         <video id="course-video" controls class="w-full h-full object-cover">
-                                            <source src="${videoUrl}" type="video/mp4">
+                                            <source src="${lesson.videoUrl}" type="video/mp4">
                                             ${transcriptionUrl ? `<track src="${transcriptionUrl}" kind="subtitles" srclang="es" label="Español">` : ''}
                                             Tu navegador no soporta el elemento de video.
                                         </video>
@@ -675,7 +675,7 @@
                     currentLessonVideo = videoEl;
                 }
                 const transcriptionBtn = document.getElementById('transcription-button');
-                if (transcriptionBtn && lesson.transcriptionPath) {
+                if (transcriptionBtn && lesson.transcriptionUrl) {
                     transcriptionBtn.addEventListener('click', () => openTranscriptionModal(transcriptionUrl));
                 }
             }
@@ -715,7 +715,7 @@
                 loadLessonTabData();
             }
             async function saveProgress() { if (!currentUser) return; try { const progressRef = db.collection('userProgress').doc(currentUser.uid); await progressRef.set({ [courseId]: userProgress }, { merge: true }); } catch (error) { console.error("Error al guardar el progreso:", error); } }
-            async function loadProgressAndInitialize() { const docRef = db.collection('userProgress').doc(currentUser.uid); try { const doc = await docRef.get(); if (doc.exists) { const courseProgress = doc.data()[courseId]; if (courseProgress) { userProgress = { completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [], currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id, unlockedBadges: Array.isArray(courseProgress.unlockedBadges) ? courseProgress.unlockedBadges : [] }; } } } catch (error) { console.error("Error al cargar el progreso.", error); } refreshUI(); loadLessonTabData(); }
+            async function loadProgressAndInitialize() { const docRef = db.collection('userProgress').doc(currentUser.uid); try { const doc = await docRef.get(); if (doc.exists) { const courseProgress = doc.data()[courseId]; if (courseProgress) { userProgress = { completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [], currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id, unlockedBadges: Array.isArray(courseProgress.unlockedBadges) ? courseProgress.unlockedBadges : [] }; } } catch (error) { console.error("Error al cargar el progreso.", error); } refreshUI(); loadLessonTabData(); }
             function addSidebarListeners() { dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); })); dom.modulesContainer.querySelectorAll('.accordion-item').forEach(item => { const header = item.querySelector('.accordion-header'); const icon = header.querySelector('i'); if (icon && icon.getAttribute('data-lucide') !== 'lock') { header.addEventListener('click', () => { const content = header.nextElementSibling; const isOpen = content.classList.toggle('open'); icon.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)'; }); } }); }
             dom.mainActionBtn.addEventListener('click', async () => { const lessonId = userProgress.currentLessonId; const isCompleted = userProgress.completedLessons.includes(lessonId); if (isCompleted) { const currentIndex = allLessons.findIndex(l => l.id === lessonId); if (currentIndex < allLessons.length - 1) { navigateToLesson(allLessons[currentIndex + 1].id); } else { 
                 // Fix: Solo mostrar el modal de finalización una vez por sesión
