@@ -102,19 +102,6 @@
         /* Asegurar que el video quede siempre arriba en su contexto */
         #course-video { z-index: 50 !important; }
 
-    
-        /* --- FIX v10: Capa de clic correcta (sin romper <source>/<track>) --- */
-        #video-wrapper { position: relative !important; z-index: 999 !important; }
-        #video-click-layer {
-          position: absolute; inset: 0;
-          z-index: 1000;
-          background: transparent;
-          border: 0; padding: 0; margin: 0;
-          cursor: pointer;
-          pointer-events: auto;
-        }
-        #video-click-layer:focus { outline: none; }
-
     </style>
 </head>
 <body class="text-gray-800">
@@ -625,9 +612,9 @@
                                 <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden relative z-[1] relative z-0">
                                     <video id="course-video" controls class="w-full h-full object-cover pointer-events-auto">
                                         <source id="course-video-source" data-src="${lesson.videoUrl || ''}" type="video/mp4">
-                                        ${lesson.transcriptionUrl ? `<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>` : ''}
+                                        ${lesson.transcriptionUrl ? `` : ''}
                                         Tu navegador no soporta el elemento de video.
-                                    </video><button id="video-click-layer" aria-label="Reproducir video"></button>
+                                    </video>
                                 </div>
                                 ${lesson.transcriptionUrl ? `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"><i data-lucide="align-left" class="h-5 w-5"></i>Ver Transcripción</button>` : `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled><i data-lucide="align-left" class="h-5 w-5"></i>Transcripción No Disponible</button>`}
                             </div>`;
@@ -667,18 +654,18 @@
                 if (videoEl) {
                     currentLessonVideo = videoEl;
 
-                const clickLayer = document.getElementById('video-click-layer');
-                if (clickLayer && currentLessonVideo) {
-                    const showLayer = () => { clickLayer.style.display = 'block'; };
-                    const hideLayer = () => { clickLayer.style.display = 'none'; };
-                    showLayer();
-                    clickLayer.addEventListener('click', () => {
-                        try { currentLessonVideo.play(); } catch(e) {}
-                        hideLayer();
-                    });
-                    currentLessonVideo.addEventListener('play', hideLayer);
-                    currentLessonVideo.addEventListener('pause', showLayer);
-                    currentLessonVideo.addEventListener('ended', showLayer);
+                // Resolver gs:// a URL pública de descarga si aplica
+                if (currentLessonVideo) {
+                    const sourceEl = currentLessonVideo.querySelector('source');
+                    if (sourceEl && sourceEl.src && sourceEl.src.startsWith('gs://')) {
+                        try {
+                            const ref = storage.refFromURL(sourceEl.src);
+                            ref.getDownloadURL().then(url => {
+                                sourceEl.src = url;
+                                currentLessonVideo.load();
+                            }).catch(() => {});
+                        } catch (e) {}
+                    }
                 }
 
                 }
