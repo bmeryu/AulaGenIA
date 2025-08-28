@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<!-- 
-  CAMPUS CURSO · AULA GENIA v3.0 (Copywriting Update)
-  -------------------------------------------------------------------
-  - Se mejora el texto (copy) de la sección de Soporte y Tutoría
-    para hacerlo más cercano y proactivo, según lo solicitado.
-  - Se corrige el bug que impedía interactuar con el reproductor de video
-    una vez que el curso estaba completado, debido a un overlay del modal.
-  -------------------------------------------------------------------
+<!--
+ CAMPUS CURSO · AULA GENIA v3.0 (Copywriting Update)
+ -------------------------------------------------------------------
+ - Se mejora el texto (copy) de la sección de Soporte y Tutoría
+   para hacerlo más cercano y proactivo, según lo solicitado.
+ - Se corrige el bug que impedía interactuar con el reproductor de video
+   una vez que el curso estaba completado, debido a un overlay del modal.
+ -------------------------------------------------------------------
 -->
 <html lang="es-CL">
 <head>
-    <meta charset="UTF-8" />
-    <title>Lección del Curso - Aula GenIA (Perfil Unificado)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
@@ -37,7 +35,7 @@
         .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
         .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
         .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
-        
+
         .ltab.active {
             color: var(--brand-teal);
             border-bottom-color: var(--brand-teal);
@@ -71,9 +69,6 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease-in-out;
         }
-
-        /* >>> Añadido: asegurar relación de aspecto del contenedor del video */
-        .aspect-video { aspect-ratio: 16 / 9; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -143,7 +138,7 @@
                         </div>
 
                         <div id="tab-material" class="ltab-panel">
-                             <div id="lesson-material-container" class="mb-6"></div>
+                            <div id="lesson-material-container" class="mb-6"></div>
                         </div>
 
                         <div id="tab-notes" class="ltab-panel hidden">
@@ -436,8 +431,8 @@
                                     id: '1-1', 
                                     title: 'Casos de éxito reales', 
                                     type: 'video', 
-                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
-                                    videoUrl: 'gs://aulagenia.firebasestorage.app/Modulo-1-IA-Aplicada-Programa-Esencial.mp4',
+                                    // Corregida la URL de Firebase Storage
+                                    videoUrl: 'gs://aulagenia.appspot.com/Modulo-1-IA-Aplicada-Programa-Esencial.mp4',
                                     resources: [] 
                                 },
                                 { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }], resources: [] }
@@ -452,18 +447,18 @@
                                     id: '2-1', 
                                     title: 'IA en tu día a día', 
                                     type: 'video', 
-                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
-                                    videoUrl: 'gs://aulagenia.firebasestorage.app/Modulo-2-IA-Aplicada-Programa-Esencial.mp4', 
-                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
-                                    transcriptionUrl: 'gs://aulagenia.firebasestorage.app/Modulo-2-IA-Aplicada-Programa-Esencial.srt', 
+                                    // Corregida la URL de Firebase Storage
+                                    videoUrl: 'gs://aulagenia.appspot.com/Modulo-2-IA-Aplicada-Programa-Esencial.mp4', 
+                                    // Corregida la URL de Firebase Storage
+                                    transcriptionUrl: 'gs://aulagenia.appspot.com/Modulo-2-IA-Aplicada-Programa-Esencial.srt', 
                                     resources: [] 
                                 },
                                 { 
                                     id: '2-2', 
                                     title: 'Casos de éxito de IA', 
                                     type: 'video', 
-                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
-                                    videoUrl: 'gs://aulagenia.firebasestorage.app/Modulo-1-IA-Aplicada-Programa-Esencial.mp4', 
+                                    // Corregida la URL de Firebase Storage
+                                    videoUrl: 'gs://aulagenia.appspot.com/Modulo-1-IA-Aplicada-Programa-Esencial.mp4', 
                                     resources: [] 
                                 }
                             ]
@@ -474,7 +469,7 @@
 
             if (!courseId || !ALL_COURSES_DATA[courseId]) {
                 console.error('ID de curso no válido o no proporcionado. Redirigiendo al campus.');
-                document.body.innerHTML = '<div style="padding: 40px; text-align: center; font-family: sans-serif;"><h1>Curso no encontrado</h1><p>Serás redirigido al campus principal en 3 segundos...</p></div>';
+                document.body.innerHTML = '<div style="padding: 40px; text-align: center; font-family: sans-serif;"><h1>Curso no encontrado</div>';
                 setTimeout(() => {
                     window.location.href = `${baseUrl}/campus.html`;
                 }, 3000);
@@ -572,11 +567,35 @@
 
             function renderSidebar() { const isCourseComplete = getIsCourseComplete(); let isPreviousModuleComplete = true; dom.modulesContainer.innerHTML = courseData.modules.map((module) => { const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete; const lessonsHtml = module.lessons.map(lesson => { const isCompleted = userProgress.completedLessons.includes(lesson.id); const isActive = userProgress.currentLessonId === lesson.id; let linkClasses = 'text-gray-600 hover:bg-slate-100'; let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle'); let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300'; if (isModuleLocked && !isCourseComplete) { linkClasses = 'text-gray-400 cursor-not-allowed opacity-70'; statusIcon = 'lock'; iconColor = 'text-slate-400'; } else if (isActive) { linkClasses = 'bg-teal-50 text-teal-700 font-semibold'; statusIcon = 'play-circle'; iconColor = ''; } const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file'; return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`; }).join(''); const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800'; const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down'; if (!isCourseComplete) { const moduleLessonIds = module.lessons.map(l => l.id); isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id)); } return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`; }).join(''); addSidebarListeners(); }
             
-            /* >>> Modificado: hacer asíncrona la rama 'video', resolver gs:// y manejar VTT */
+            async function getPublicUrl(storagePath) {
+                try {
+                    // Extrae la ruta del archivo sin el prefijo "gs://bucket"
+                    const path = storagePath.replace(`gs://${firebaseConfig.storageBucket}/`, '');
+                    const storageRef = storage.ref(path);
+                    return await storageRef.getDownloadURL();
+                } catch (error) {
+                    console.error("Error obteniendo URL pública:", error);
+                    return null;
+                }
+            }
+
+            /*
+              >>> PARCHE PARA APLICAR SUBTÍTULOS NATIVOS A PARTIR DE SRT
+            */
+
+            // 1) Función para convertir formato SRT a VTT (necesario para <track> en navegadores)
+            function srtToVtt(srt) {
+              return 'WEBVTT\n\n' + srt.trim().replace(/(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})/g, (match, number, start, end) => {
+                const cleanedStart = start.replace(',', '.');
+                const cleanedEnd = end.replace(',', '.');
+                return `${number}\n${cleanedStart} --> ${cleanedEnd}`;
+              }).replace(/\r?\n/g, '\n');
+            }
+
+            // 2) Función principal para renderizar el contenido multimedia
             async function renderLessonContent(lesson) {
                 const isCourseComplete = getIsCourseComplete();
                 let materialHtml = ''; 
-                // Detener cualquier video que se esté reproduciendo
                 if (currentLessonVideo) {
                     currentLessonVideo.pause();
                     currentLessonVideo = null;
@@ -606,36 +625,51 @@
                         } catch (e) {
                             console.error('No se pudo resolver la URL del video o subtítulo:', e);
                             dom.tabMaterialPanel.innerHTML = `
-                              <div class="rounded-xl border border-red-200 p-6 bg-red-50">
-                                <p class="text-red-700 font-semibold">No se pudo cargar el video.</p>
-                                <p class="text-red-600 text-sm">Revisa permisos de Firebase Storage y que el archivo exista.</p>
+                              <div class="aspect-video w-full rounded-xl flex items-center justify-center bg-red-100 p-4">
+                                <div class="text-center">
+                                  <p class="text-red-700 font-semibold mb-2">Error al cargar el video.</p>
+                                  <p class="text-red-600 text-sm">Por favor, revisa que las URL de los archivos en tu `ALL_COURSES_DATA` estén correctas y que las reglas de seguridad de Storage permitan la lectura.</p>
+                                </div>
                               </div>
                             `;
                             return;
                         }
 
-                        // Si la transcripción es SRT, intenta usar VTT equivalente
-                        const vttUrl = finalTrackUrl ? finalTrackUrl.replace(/\.srt(\?.*)?$/i, '.vtt$1') : '';
-
-                        materialHtml = `<div class="flex flex-col gap-4">
-                                <div class="aspect-video w-full rounded-xl overflow-hidden">
-                                    <video id="course-video" controls class="w-full h-full object-cover">
-                                        <source src="${finalVideoUrl}" type="video/mp4">
-                                        ${vttUrl ? `<track src="${vttUrl}" kind="subtitles" srclang="es" label="Español">` : ''}
+                        // Renderiza el video con un track vacío para los subtítulos
+                        materialHtml = `
+                            <div class="flex flex-col gap-4">
+                                <div class="aspect-video w-full rounded-xl overflow-hidden bg-black">
+                                    <video id="course-video" controls class="w-full h-full object-contain">
+                                        <source id="course-video-source" src="" type="video/mp4">
+                                        <track id="caption-track" kind="subtitles" srclang="es" label="Español">
                                         Tu navegador no soporta el elemento de video.
                                     </video>
                                 </div>
-                                ${finalTrackUrl ? `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"><i data-lucide="align-left" class="h-5 w-5"></i>Ver Transcripción</button>` : `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled><i data-lucide="align-left" class="h-5 w-5"></i>Transcripción No Disponible</button>`}
-                            </div>`;
+                                <button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"><i data-lucide="align-left" class="h-5 w-5"></i>Ver Transcripción</button>
+                            </div>
+                        `;
                         dom.tabMaterialPanel.innerHTML = materialHtml; 
 
-                        // Guardar referencia del video y botón
                         const videoEl = document.getElementById('course-video');
-                        if (videoEl) currentLessonVideo = videoEl;
+                        if (videoEl) {
+                            currentLessonVideo = videoEl;
+                            
+                            // Adjunta el video y los subtítulos de forma asíncrona
+                            await attachMediaAndCaptions({
+                                videoEl,
+                                videoSrc: finalVideoUrl,
+                                srtOrVttSrc: finalTrackUrl
+                            });
+                        }
 
+                        // Habilita el botón de transcripción si hay una URL
                         const transcriptionBtn = document.getElementById('transcription-button');
                         if (transcriptionBtn && finalTrackUrl) {
                             transcriptionBtn.addEventListener('click', () => openTranscriptionModal(finalTrackUrl));
+                        } else if (transcriptionBtn) {
+                           transcriptionBtn.classList.add('cursor-not-allowed', 'text-slate-400');
+                           transcriptionBtn.disabled = true;
+                           transcriptionBtn.innerHTML = `<i data-lucide="align-left" class="h-5 w-5"></i>Transcripción No Disponible`;
                         }
 
                         lucide.createIcons();
@@ -644,11 +678,13 @@
                     case 'resource': 
                         materialHtml = `<div class="aspect-video"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; 
                         dom.tabMaterialPanel.innerHTML = materialHtml; 
+                        lucide.createIcons();
                         break; 
                     case 'quiz':
                         if (!lesson.questions || lesson.questions.length === 0) {
                             materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
                             dom.tabMaterialPanel.innerHTML = materialHtml; 
+                            lucide.createIcons();
                             break;
                         }
                         const question = lesson.questions[0];
@@ -669,12 +705,64 @@
                             dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); })); 
                             document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson)); 
                         } 
+                        lucide.createIcons();
                         break;
                     default: 
                         materialHtml = `<p>Tipo de lección no reconocido.</p>`;
                         dom.tabMaterialPanel.innerHTML = materialHtml; 
+                        lucide.createIcons();
                 } 
             }
+
+            // Nuevo: función para adjuntar medios y subtítulos
+            async function attachMediaAndCaptions({ videoEl, videoSrc, srtOrVttSrc }) {
+              const srcEl = videoEl.querySelector('#course-video-source');
+              const resolvedVideo = videoSrc; // Ya se resuelve antes
+              if (srcEl && resolvedVideo) srcEl.src = resolvedVideo;
+
+              const trackEl = videoEl.querySelector('#caption-track');
+              if (!trackEl || !srtOrVttSrc) {
+                // No hay transcripción, desactiva el track y el botón
+                trackEl.track.mode = 'disabled';
+                return;
+              }
+
+              const isSrt = /(\.srt)(\?|$)/i.test(srtOrVttSrc);
+              if (isSrt) {
+                try {
+                  const resp = await fetch(srtOrVttSrc);
+                  const srtTxt = await resp.text();
+                  const vttTxt = srtToVtt(srtTxt);
+                  const blobUrl = URL.createObjectURL(new Blob([vttTxt], { type: 'text/vtt' }));
+                  trackEl.src = blobUrl;
+                } catch (e) {
+                  console.error('Error procesando SRT:', e);
+                  trackEl.track.mode = 'disabled';
+                }
+              } else {
+                trackEl.src = srtOrVttSrc;
+              }
+
+              videoEl.load(); // Vuelve a cargar el video para aplicar el track
+              videoEl.textTracks[0].mode = 'showing'; // Activa el subtítulo
+            }
+            
+            // Nuevo: Función para convertir SRT a VTT
+            function srtToVtt(srt) {
+                const parts = srt.split(/\r?\n\r?\n/).filter(p => p.trim() !== '');
+                const vttParts = parts.map(part => {
+                    const lines = part.split(/\r?\n/).filter(l => l.trim() !== '');
+                    const number = lines.shift();
+                    const times = lines.shift();
+                    const text = lines.join(' ');
+                    const [start, end] = times.split(' --> ');
+                    const cleanStart = start.replace(',', '.');
+                    const cleanEnd = end.replace(',', '.');
+                    return `${number}\n${cleanStart} --> ${cleanEnd}\n${text}`;
+                });
+                return 'WEBVTT\n\n' + vttParts.join('\n\n');
+            }
+            
 
             function checkQuizAnswer(lesson) { const selectedOption = dom.tabMaterialPanel.querySelector('.quiz-option.selected'); if (!selectedOption) { showToast('Por favor, selecciona una respuesta.'); return; } const selectedIndex = parseInt(selectedOption.dataset.index); const correctIndex = lesson.questions[0].correctAnswer; dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none'); if (selectedIndex === correctIndex) { selectedOption.classList.add('correct'); showToast('¡Respuesta Correcta!'); dom.mainActionBtn.disabled = false; } else { selectedOption.classList.add('incorrect'); dom.tabMaterialPanel.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct'); showToast('Respuesta incorrecta. ¡Sigue intentando!'); setTimeout(() => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => { opt.classList.remove('incorrect', 'correct', 'selected'); opt.style.pointerEvents = 'auto'; }); }, 2000); } }
             function updateMainActionButton() { 
@@ -849,7 +937,7 @@
 
             function renderCourseResources(lesson) {
                 const resources = lesson.resources || [];
-                 if (resources.length > 0) {
+                if (resources.length > 0) {
                     dom.resourcesList.innerHTML = resources.map(resource => {
                         const isPdf = !resource.external && resource.url.includes('.pdf');
                         const icon = resource.external ? 'link' : (isPdf ? 'file-text' : 'download-cloud');
@@ -946,7 +1034,7 @@
 
 
             async function loadUserResources(lessonId) {
-                 if (!currentUser) return;
+                if (!currentUser) return;
                 dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
                 try {
                     const snap = await db.collection('userResources')
