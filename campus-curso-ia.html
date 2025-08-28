@@ -392,6 +392,47 @@
 
     <script defer>
         document.addEventListener('DOMContentLoaded', () => {
+
+            // ===== Unblocker de clics para el reproductor =====
+            (function setupVideoUnblocker(){
+                function getVideoEl(){ return document.getElementById('course-video'); }
+                function insideRect(x,y, r){ return x>=r.left && x<=r.right && y>=r.top && y<=r.bottom; }
+                function tryPlay(video){
+                    try { 
+                        const p = video.play();
+                        if (p && typeof p.catch === 'function') { p.catch(()=>{}); }
+                    } catch(e){}
+                }
+                function nukeIfOverlay(el){
+                    if (!el) return;
+                    const suspects = ['overlay','modal','backdrop'];
+                    const id = (el.id||'').toLowerCase();
+                    const cls = (el.className||'').toString().toLowerCase();
+                    if (suspects.some(s => id.includes(s) || cls.includes(s))) {
+                        el.style.pointerEvents = 'none';
+                    }
+                }
+                // Captura clicks/taps antes que otros listeners
+                ['click','mousedown','touchstart'].forEach(evt => {
+                    document.addEventListener(evt, function(e){
+                        const v = getVideoEl();
+                        if (!v) return;
+                        const r = v.getBoundingClientRect();
+                        const x = (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX);
+                        const y = (e.touches && e.touches[0] ? e.touches[0].clientY : e.clientY);
+                        if (!insideRect(x,y,r)) return;
+                        // Si el elemento bajo el cursor NO es el video, intente reproducir de todas formas
+                        const el = document.elementFromPoint(x,y);
+                        if (el !== v) {
+                            nukeIfOverlay(el);
+                            tryPlay(v);
+                            e.stopPropagation();
+                            // don't preventDefault for accessibility on desktop
+                        }
+                    }, true); // capture
+                });
+            })();
+
             const firebaseConfig = { 
                 apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
                 authDomain: "aulagenia.firebaseapp.com", 
