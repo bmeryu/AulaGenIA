@@ -393,44 +393,62 @@
     <script defer>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // ===== Unblocker de clics para el reproductor =====
-            (function setupVideoUnblocker(){
-                function getVideoEl(){ return document.getElementById('course-video'); }
-                function insideRect(x,y, r){ return x>=r.left && x<=r.right && y>=r.top && y<=r.bottom; }
-                function tryPlay(video){
-                    try { 
-                        const p = video.play();
-                        if (p && typeof p.catch === 'function') { p.catch(()=>{}); }
-                    } catch(e){}
+            // ===== Panel de diagnóstico para desbloquear el Play =====
+            (function addPlayFixPanel(){
+                const panel = document.createElement('div');
+                panel.id = 'play-fix-panel';
+                panel.style.position = 'fixed';
+                panel.style.bottom = '14px';
+                panel.style.right = '14px';
+                panel.style.zIndex = '9999';
+                panel.style.fontFamily = 'sans-serif';
+                panel.style.background = 'rgba(20,184,166,0.95)';
+                panel.style.color = 'white';
+                panel.style.padding = '10px 12px';
+                panel.style.borderRadius = '10px';
+                panel.style.boxShadow = '0 10px 20px rgba(0,0,0,0.25)';
+                panel.style.cursor = 'default';
+                panel.style.userSelect = 'none';
+                panel.style.display = 'flex';
+                panel.style.alignItems = 'center';
+                panel.style.gap = '8px';
+                panel.innerHTML = '<strong>¿No te deja dar Play?</strong> <button id="btn-fix-play" style="background:#0f766e;color:#fff;border:0;border-radius:8px;padding:6px 10px;cursor:pointer">Reparar</button><button id="btn-hide-fix" style="background:transparent;color:#fff;border:1px solid #fff;border-radius:8px;padding:6px 10px;cursor:pointer">Ocultar</button>';
+                
+                function getVideo(){ return document.getElementById('course-video'); }
+                function elementOverVideo(){
+                    const v = getVideo();
+                    if (!v) return null;
+                    const r = v.getBoundingClientRect();
+                    const cx = (r.left + r.right)/2;
+                    const cy = (r.top + r.bottom)/2;
+                    return document.elementFromPoint(cx, cy);
                 }
-                function nukeIfOverlay(el){
-                    if (!el) return;
-                    const suspects = ['overlay','modal','backdrop'];
-                    const id = (el.id||'').toLowerCase();
-                    const cls = (el.className||'').toString().toLowerCase();
-                    if (suspects.some(s => id.includes(s) || cls.includes(s))) {
+                function describe(el){
+                    if (!el) return '(nada)';
+                    const id = el.id ? '#'+el.id : '';
+                    const cls = el.className ? '.'+el.className.toString().trim().replace(/\s+/g,'.') : '';
+                    return el.tagName.toLowerCase()+id+cls;
+                }
+                function fix(){
+                    const el = elementOverVideo();
+                    const v = getVideo();
+                    if (!el || !v) return;
+                    if (el !== v) {
+                        // Desactivar la capa bloqueadora
                         el.style.pointerEvents = 'none';
-                    }
-                }
-                // Captura clicks/taps antes que otros listeners
-                ['click','mousedown','touchstart'].forEach(evt => {
-                    document.addEventListener(evt, function(e){
-                        const v = getVideoEl();
-                        if (!v) return;
-                        const r = v.getBoundingClientRect();
-                        const x = (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX);
-                        const y = (e.touches && e.touches[0] ? e.touches[0].clientY : e.clientY);
-                        if (!insideRect(x,y,r)) return;
-                        // Si el elemento bajo el cursor NO es el video, intente reproducir de todas formas
-                        const el = document.elementFromPoint(x,y);
-                        if (el !== v) {
-                            nukeIfOverlay(el);
-                            tryPlay(v);
-                            e.stopPropagation();
-                            // don't preventDefault for accessibility on desktop
+                        // Si es un overlay modal conocido, también ocultarlo por si acaso
+                        if (/(overlay|modal|backdrop)/i.test(el.id + ' ' + el.className)) {
+                            el.style.visibility = 'hidden';
+                            el.style.opacity = '0';
                         }
-                    }, true); // capture
-                });
+                    }
+                    // Reproducir
+                    try { v.play(); } catch(e){}
+                }
+                panel.querySelector('#btn-fix-play').addEventListener('click', fix);
+                panel.querySelector('#btn-hide-fix').addEventListener('click', ()=> panel.remove());
+                document.body.appendChild(panel);
+                console.log('[PlayFix] Elemento sobre el video:', describe(elementOverVideo()));
             })();
 
             const firebaseConfig = { 
