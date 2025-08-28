@@ -4,10 +4,6 @@
   -------------------------------------------------------------------
   - Se mejora el texto (copy) de la sección de Soporte y Tutoría
     para hacerlo más cercano y proactivo, según lo solicitado.
-  - Se corrige el bug que impedía interactuar con el reproductor de video
-    una vez que el curso estaba completado, debido a un overlay del modal.
-  - Se corrige el problema de las URLs de Firebase Storage (gs://) 
-    para que los videos se carguen correctamente.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -249,7 +245,7 @@
     </div>
 
     <!-- Modales y notificaciones -->
-    <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div><div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full transform transition-all scale-95 opacity-0"><div class="flex justify-between items-start"><div><h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3><p id="profile-modal-subtitle" class="text-gray-600 mt-1">Mantén tus datos actualizados.</p></div><button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button></div><form id="profile-form" class="mt-6 max-h-[60vh] overflow-y-auto pr-4 -mr-4 space-y-4"><div><label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label><input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Ada Lovelace"><p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p><div id="name-error" class="error-message"></div></div><div><label for="profile-rut-input" class="block text-sm font-medium text-gray-700 mb-1">RUT (Chile) <span class="required">*</span></label><input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: 12345678-9"><p class="text-xs text-gray-500 mt-1">Requerido para la validez de tu certificado en Chile.</p><div id="rut-error" class="error-message"></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label><select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Seleccionar...</option><option value="female">Femenino</option><option value="male">Masculino</option><option value="other">Otro</option><option value="prefer_not-to-say">Prefiero no decir</option></select></div><div><label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label><input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"></div></div><div><label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label><input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled></div><div><label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label><input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante, Desarrollador, etc."></div><div><label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label><select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Selecciona tu país</option><option value="CL">Chile</option><option value="AR">Argentina</option><option value="PE">Perú</option><option value="CO">Colombia</option><option value="MX">México</option><option value="ES">España</option><option value="US">Estados Unidos</option><option value="OT">Otro</option></select><div id="country-error" class="error-message"></div></div><div id="form-status" class="text-center p-3 rounded-lg hidden"></div><div class="mt-8 flex justify-end gap-3 pt-4 border-t"><button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button><button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2"><span id="save-btn-text">Guardar Cambios</span><i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i></button></div></form></div></div>
+    <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div><div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full transform transition-all scale-95 opacity-0"><div class="flex justify-between items-start"><div><h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3><p id="profile-modal-subtitle" class="text-gray-600 mt-1">Mantén tus datos actualizados.</p></div><button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button></div><form id="profile-form" class="mt-6 max-h-[60vh] overflow-y-auto pr-4 -mr-4 space-y-4"><div><label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label><input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Ada Lovelace"><p class="text-xs text-gray-500 mt-1">Este nombre aparecerá en tus certificados.</p><div id="name-error" class="error-message"></div></div><div><label for="profile-rut-input" class="block text-sm font-medium text-gray-700 mb-1">RUT (Chile) <span class="required">*</span></label><input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: 12345678-9"><p class="text-xs text-gray-500 mt-1">Requerido para la validez de tu certificado en Chile.</p><div id="rut-error" class="error-message"></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label><select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Seleccionar...</option><option value="female">Femenino</option><option value="male">Masculino</option><option value="other">Otro</option><option value="prefer_not_to_say">Prefiero no decir</option></select></div><div><label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label><input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"></div></div><div><label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label><input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled></div><div><label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label><input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante, Desarrollador, etc."></div><div><label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label><select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"><option value="">Selecciona tu país</option><option value="CL">Chile</option><option value="AR">Argentina</option><option value="PE">Perú</option><option value="CO">Colombia</option><option value="MX">México</option><option value="ES">España</option><option value="US">Estados Unidos</option><option value="OT">Otro</option></select><div id="country-error" class="error-message"></div></div><div id="form-status" class="text-center p-3 rounded-lg hidden"></div><div class="mt-8 flex justify-end gap-3 pt-4 border-t"><button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button><button type="submit" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2"><span id="save-btn-text">Guardar Cambios</span><i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i></button></div></form></div></div>
     <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div><div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
     
     <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
@@ -372,7 +368,7 @@
                 </ul>
 
                 <h2>Tus Opciones sobre las Cookies</h2>
-                <p>PTienes derecho a decidir si aceptas o rechazas las cookies. Puedes ejercer tus preferencias de cookies a través de nuestro banner de consentimiento de cookies la primera vez que visitas nuestro sitio.</p>
+                <p>Tienes derecho a decidir si aceptas o rechazas las cookies. Puedes ejercer tus preferencias de cookies a través de nuestro banner de consentimiento de cookies la primera vez que visitas nuestro sitio.</p>
                 
                 <h2>¿Dónde puedo obtener más información?</h2>
                 <p>Si tienes alguna pregunta sobre nuestro uso de cookies u otras tecnologías, por favor envíanos un correo electrónico a <a href="mailto:contacto@aulagenia.cl">contacto@aulagenia.cl</a>.</p>
@@ -435,8 +431,8 @@
                                     id: '1-1', 
                                     title: 'Casos de éxito reales', 
                                     type: 'video', 
-                                    // Utiliza la URL de descarga directa de Firebase Storage
-                                    videoUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/Modulo-1-IA-Aplicada-Programa-Esencial.mp4?alt=media',
+                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
+                                    videoUrl: 'gs://aulagenia.firebasestorage.app/Modulo-1-IA-Aplicada-Programa-Esencial.mp4',
                                     resources: [] 
                                 },
                                 { id: 'q-1', title: 'Quiz: Módulo 1', type: 'quiz', questions: [{ text: '¿Cuál es un ejemplo de IA?', options: ['Netflix', 'Calculadora'], correctAnswer: 0 }], resources: [] }
@@ -451,18 +447,18 @@
                                     id: '2-1', 
                                     title: 'IA en tu día a día', 
                                     type: 'video', 
-                                    // Utiliza la URL de descarga directa de Firebase Storage
-                                    videoUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/Modulo-2-IA-Aplicada-Programa-Esencial.mp4?alt=media', 
-                                    // Utiliza la URL de descarga directa de Firebase Storage
-                                    transcriptionUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/Modulo-2-IA-Aplicada-Programa-Esencial.srt?alt=media', 
+                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
+                                    videoUrl: 'gs://aulagenia.firebasestorage.app/Modulo-2-IA-Aplicada-Programa-Esencial.mp4', 
+                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
+                                    transcriptionUrl: 'gs://aulagenia.firebasestorage.app/Modulo-2-IA-Aplicada-Programa-Esencial.srt', 
                                     resources: [] 
                                 },
                                 { 
                                     id: '2-2', 
                                     title: 'Casos de éxito de IA', 
                                     type: 'video', 
-                                    // Utiliza la URL de descarga directa de Firebase Storage
-                                    videoUrl: 'https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/Modulo-1-IA-Aplicada-Programa-Esencial.mp4?alt=media', 
+                                    // REEMPLAZAR CON TU URL DE FIREBASE STORAGE
+                                    videoUrl: 'gs://aulagenia.firebasestorage.app/Modulo-1-IA-Aplicada-Programa-Esencial.mp4', 
                                     resources: [] 
                                 }
                             ]
@@ -487,7 +483,6 @@
             let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null, unlockedBadges: [] };
             let notesSaveTimer = null;
             let currentLessonVideo = null; // Variable para la instancia del video
-            let hasShownCompletionModal = false; // Variable para controlar si el modal ya se mostró
 
             const dom = {
                 userName: document.getElementById('user-name'),
@@ -531,6 +526,7 @@
                 pdfModalContent: document.getElementById('pdf-modal-content'),
                 pdfModalTitle: document.getElementById('pdf-modal-title'),
                 pdfModalCloseBtn: document.getElementById('pdf-modal-close-btn'),
+                pdfIframe: document.getElementById('pdf-iframe'),
                 transcriptionModalOverlay: document.getElementById('transcription-modal-overlay'),
                 transcriptionModal: document.getElementById('transcription-modal'),
                 transcriptionModalContent: document.getElementById('transcription-modal-content'),
@@ -568,18 +564,9 @@
                 lucide.createIcons(); 
             }
 
-            function closeAllModals() {
-                if(dom.completionModalOverlay) dom.completionModalOverlay.classList.add('hidden');
-                if(dom.completionModal) dom.completionModal.classList.add('hidden');
-                if(dom.pdfModalOverlay) dom.pdfModalOverlay.classList.add('hidden');
-                if(dom.pdfModal) dom.pdfModal.classList.add('hidden');
-                if(dom.transcriptionModalOverlay) dom.transcriptionModalOverlay.classList.add('hidden');
-                if(dom.transcriptionModal) dom.transcriptionModal.classList.add('hidden');
-                if(dom.profileModalOverlay) dom.profileModalOverlay.classList.add('hidden');
-                if(dom.profileModal) dom.profileModal.classList.add('hidden');
-            }
-
-            async function renderLessonContent(lesson) {
+            function renderSidebar() { const isCourseComplete = getIsCourseComplete(); let isPreviousModuleComplete = true; dom.modulesContainer.innerHTML = courseData.modules.map((module) => { const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete; const lessonsHtml = module.lessons.map(lesson => { const isCompleted = userProgress.completedLessons.includes(lesson.id); const isActive = userProgress.currentLessonId === lesson.id; let linkClasses = 'text-gray-600 hover:bg-slate-100'; let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle'); let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300'; if (isModuleLocked && !isCourseComplete) { linkClasses = 'text-gray-400 cursor-not-allowed opacity-70'; statusIcon = 'lock'; iconColor = 'text-slate-400'; } else if (isActive) { linkClasses = 'bg-teal-50 text-teal-700 font-semibold'; statusIcon = 'play-circle'; iconColor = ''; } const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file'; return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`; }).join(''); const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800'; const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down'; if (!isCourseComplete) { const moduleLessonIds = module.lessons.map(l => l.id); isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id)); } return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`; }).join(''); addSidebarListeners(); }
+            
+            function renderLessonContent(lesson) {
                 const isCourseComplete = getIsCourseComplete();
                 let materialHtml = ''; 
                 // Detener cualquier video que se esté reproduciendo
@@ -587,63 +574,30 @@
                     currentLessonVideo.pause();
                     currentLessonVideo = null;
                 }
-                // Asegurarse de que todos los modals y sus overlays estén ocultos
-                closeAllModals();
-
                 switch(lesson.type) { 
                     case 'video':
-                        // Check if the lesson has a video path
+                        // Check if the lesson has a video URL
                         if (lesson.videoUrl) {
-                            // Render a loading state first
-                            dom.tabMaterialPanel.innerHTML = `<div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden bg-slate-200 flex items-center justify-center">
-                                <span class="text-slate-600 font-semibold">Cargando video...</span>
+                            // Render the video element
+                            materialHtml = `<div class="flex flex-col gap-4">
+                                <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden">
+                                    <video id="course-video" controls class="w-full h-full object-cover">
+                                        <source src="${lesson.videoUrl}" type="video/mp4">
+                                        ${lesson.transcriptionUrl ? `<track src="${lesson.transcriptionUrl}" kind="subtitles" srclang="es" label="Español">` : ''}
+                                        Tu navegador no soporta el elemento de video.
+                                    </video>
+                                </div>
+                                ${lesson.transcriptionUrl ? `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"><i data-lucide="align-left" class="h-5 w-5"></i>Ver Transcripción</button>` : `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled><i data-lucide="align-left" class="h-5 w-5"></i>Transcripción No Disponible</button>`}
                             </div>`;
-                            
-                            try {
-                                // Obtener la URL de descarga del video
-                                //const videoRef = storage.refFromURL(lesson.videoPath);
-                                //const videoUrl = await videoRef.getDownloadURL();
-                                
-                                // Obtener la URL de descarga de la transcripción si existe
-                                let transcriptionUrl = null;
-                                if (lesson.transcriptionUrl) {
-                                    const transcriptionRef = storage.refFromURL(lesson.transcriptionUrl);
-                                    transcriptionUrl = await transcriptionRef.getDownloadURL();
-                                }
-
-                                // Renderizar el video una vez que se tiene la URL
-                                materialHtml = `<div class="flex flex-col gap-4">
-                                    <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden">
-                                        <video id="course-video" controls class="w-full h-full object-cover">
-                                            <source src="${lesson.videoUrl}" type="video/mp4">
-                                            ${transcriptionUrl ? `<track src="${transcriptionUrl}" kind="subtitles" srclang="es" label="Español">` : ''}
-                                            Tu navegador no soporta el elemento de video.
-                                        </video>
-                                    </div>
-                                    ${transcriptionUrl ? `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"><i data-lucide="align-left" class="h-5 w-5"></i>Ver Transcripción</button>` : `<button id="transcription-button" class="mt-2 w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled><i data-lucide="align-left" class="h-5 w-5"></i>Transcripción No Disponible</button>`}
-                                </div>`;
-                                dom.tabMaterialPanel.innerHTML = materialHtml;
-                                
-                            } catch (error) {
-                                console.error('Error al obtener la URL de descarga del video:', error);
-                                materialHtml = `<div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden bg-red-100 flex items-center justify-center">
-                                    <span class="text-red-700 font-semibold">Error al cargar el video. Por favor, revisa la configuración de Firebase Storage.</span>
-                                </div>`;
-                                dom.tabMaterialPanel.innerHTML = materialHtml;
-                            }
                         } else {
-                            // Render the placeholder if there's no video path
+                            // Render the placeholder if there's no video URL
                             materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`;
-                            dom.tabMaterialPanel.innerHTML = materialHtml;
                         }
                         break; 
-                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; 
-                    dom.tabMaterialPanel.innerHTML = materialHtml;
-                    break;
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; 
                     case 'quiz':
                         if (!lesson.questions || lesson.questions.length === 0) {
                             materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
-                            dom.tabMaterialPanel.innerHTML = materialHtml;
                             break;
                         }
                         const question = lesson.questions[0];
@@ -658,17 +612,15 @@
                             const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}">${opt}</div>`).join(''); 
                             materialHtml = `<div class="space-y-4"><h3 class="text-xl font-semibold">${question.text}</h3><div class="space-y-3">${optionsHtml}</div><button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-900">Verificar Respuesta</button></div>`; 
                         }
-                        dom.tabMaterialPanel.innerHTML = materialHtml;
-
-                        if (!isCourseComplete && lesson.questions && lesson.questions.length > 0) { 
-                            dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); })); 
-                            document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson)); 
-                        } 
                         break;
                     default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
                 } 
-                
-                lucide.createIcons();
+                dom.tabMaterialPanel.innerHTML = materialHtml; 
+                if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) { 
+                    dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.addEventListener('click', () => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); })); 
+                    document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswer(lesson)); 
+                } 
+
                 // Event listener para el video y botón de transcripción
                 const videoEl = document.getElementById('course-video');
                 if (videoEl) {
@@ -676,12 +628,10 @@
                 }
                 const transcriptionBtn = document.getElementById('transcription-button');
                 if (transcriptionBtn && lesson.transcriptionUrl) {
-                    transcriptionBtn.addEventListener('click', () => openTranscriptionModal(transcriptionUrl));
+                    transcriptionBtn.addEventListener('click', () => openTranscriptionModal(lesson.transcriptionUrl));
                 }
+                
             }
-
-            function renderSidebar() { const isCourseComplete = getIsCourseComplete(); let isPreviousModuleComplete = true; dom.modulesContainer.innerHTML = courseData.modules.map((module) => { const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete; const lessonsHtml = module.lessons.map(lesson => { const isCompleted = userProgress.completedLessons.includes(lesson.id); const isActive = userProgress.currentLessonId === lesson.id; let linkClasses = 'text-gray-600 hover:bg-slate-100'; let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle'); let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300'; if (isModuleLocked && !isCourseComplete) { linkClasses = 'text-gray-400 cursor-not-allowed opacity-70'; statusIcon = 'lock'; iconColor = 'text-slate-400'; } else if (isActive) { linkClasses = 'bg-teal-50 text-teal-700 font-semibold'; statusIcon = 'play-circle'; iconColor = ''; } const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file'; return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`; }).join(''); const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800'; const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down'; if (!isCourseComplete) { const moduleLessonIds = module.lessons.map(l => l.id); isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id)); } return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`; }).join(''); addSidebarListeners(); }
-            
             function checkQuizAnswer(lesson) { const selectedOption = dom.tabMaterialPanel.querySelector('.quiz-option.selected'); if (!selectedOption) { showToast('Por favor, selecciona una respuesta.'); return; } const selectedIndex = parseInt(selectedOption.dataset.index); const correctIndex = lesson.questions[0].correctAnswer; dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none'); if (selectedIndex === correctIndex) { selectedOption.classList.add('correct'); showToast('¡Respuesta Correcta!'); dom.mainActionBtn.disabled = false; } else { selectedOption.classList.add('incorrect'); dom.tabMaterialPanel.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct'); showToast('Respuesta incorrecta. ¡Sigue intentando!'); setTimeout(() => { dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => { opt.classList.remove('incorrect', 'correct', 'selected'); opt.style.pointerEvents = 'auto'; }); }, 2000); } }
             function updateMainActionButton() { 
                 const isCourseComplete = getIsCourseComplete();
@@ -715,15 +665,9 @@
                 loadLessonTabData();
             }
             async function saveProgress() { if (!currentUser) return; try { const progressRef = db.collection('userProgress').doc(currentUser.uid); await progressRef.set({ [courseId]: userProgress }, { merge: true }); } catch (error) { console.error("Error al guardar el progreso:", error); } }
-            async function loadProgressAndInitialize() { const docRef = db.collection('userProgress').doc(currentUser.uid); try { const doc = await docRef.get(); if (doc.exists) { const courseProgress = doc.data()[courseId]; if (courseProgress) { userProgress = { completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [], currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id, unlockedBadges: Array.isArray(courseProgress.unlockedBadges) ? courseProgress.unlockedBadges : [] }; } } catch (error) { console.error("Error al cargar el progreso.", error); } refreshUI(); loadLessonTabData(); }
+            async function loadProgressAndInitialize() { const docRef = db.collection('userProgress').doc(currentUser.uid); try { const doc = await docRef.get(); if (doc.exists) { const courseProgress = doc.data()[courseId]; if (courseProgress) { userProgress = { completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [], currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id, unlockedBadges: Array.isArray(courseProgress.unlockedBadges) ? courseProgress.unlockedBadges : [] }; } } } catch (error) { console.error("Error al cargar el progreso.", error); } refreshUI(); loadLessonTabData(); }
             function addSidebarListeners() { dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); navigateToLesson(e.currentTarget.closest('.lesson-item').dataset.lessonId); })); dom.modulesContainer.querySelectorAll('.accordion-item').forEach(item => { const header = item.querySelector('.accordion-header'); const icon = header.querySelector('i'); if (icon && icon.getAttribute('data-lucide') !== 'lock') { header.addEventListener('click', () => { const content = header.nextElementSibling; const isOpen = content.classList.toggle('open'); icon.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)'; }); } }); }
-            dom.mainActionBtn.addEventListener('click', async () => { const lessonId = userProgress.currentLessonId; const isCompleted = userProgress.completedLessons.includes(lessonId); if (isCompleted) { const currentIndex = allLessons.findIndex(l => l.id === lessonId); if (currentIndex < allLessons.length - 1) { navigateToLesson(allLessons[currentIndex + 1].id); } else { 
-                // Fix: Solo mostrar el modal de finalización una vez por sesión
-                if (!hasShownCompletionModal) {
-                    showCompletionModal();
-                    hasShownCompletionModal = true;
-                }
-             } } else { userProgress = { ...userProgress, completedLessons: [...new Set([...userProgress.completedLessons, lessonId])] }; await saveProgress(); checkForBadgeUnlock(lessonId); if (getIsCourseComplete()) { showCompletionModal(); hasShownCompletionModal = true; } refreshUI(); } });
+            dom.mainActionBtn.addEventListener('click', async () => { const lessonId = userProgress.currentLessonId; const isCompleted = userProgress.completedLessons.includes(lessonId); if (isCompleted) { const currentIndex = allLessons.findIndex(l => l.id === lessonId); if (currentIndex < allLessons.length - 1) { navigateToLesson(allLessons[currentIndex + 1].id); } else { showCompletionModal(); } } else { userProgress = { ...userProgress, completedLessons: [...new Set([...userProgress.completedLessons, lessonId])] }; await saveProgress(); checkForBadgeUnlock(lessonId); if (getIsCourseComplete()) { showCompletionModal(); } refreshUI(); } });
             dom.prevBtn.addEventListener('click', () => { const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); });
             function showToast(message, type = 'generic') { const toastEl = type === 'badge' ? dom.badgeToast : dom.toast; const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage; msgEl.textContent = message; toastEl.classList.add('show'); setTimeout(() => toastEl.classList.remove('show'), 4000); }
             function checkForBadgeUnlock(completedLessonId) { const lessonInfo = getLessonInfo(completedLessonId); if (!lessonInfo || !lessonInfo.module.badge) return; const lastLessonOfModule = lessonInfo.module.lessons[lessonInfo.module.lessons.length - 1].id; if (completedLessonId !== lastLessonOfModule) return; const moduleLessonIds = lessonInfo.module.lessons.map(l => l.id); if (moduleLessonIds.every(id => userProgress.completedLessons.includes(id))) { if (!userProgress.unlockedBadges.includes(lessonInfo.module.badge)) { userProgress.unlockedBadges.push(lessonInfo.module.badge); saveProgress(); showToast(`Has ganado la insignia: "${lessonInfo.module.badge}"`, 'badge'); } } }
@@ -749,9 +693,7 @@
             }
 
             function hideCompletionModal() {
-                // Se oculta el modal principal y se elimina el overlay para que no bloquee los clics.
                 dom.completionModalOverlay.classList.remove('opacity-100');
-                dom.completionModal.classList.remove('show');
                 dom.completionModal.querySelector('div').classList.add('scale-95', 'opacity-0');
                 setTimeout(() => {
                     dom.completionModal.classList.add('hidden');
