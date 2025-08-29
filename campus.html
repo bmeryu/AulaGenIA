@@ -308,8 +308,11 @@
         [ESSENTIAL_COURSE_ID]: {
           title: 'IA Aplicada · Esencial',
           modules: [
-            { title: 'Módulo 0: Onboarding', lessons: [{ id: '0-1' }] },
-            { title: 'Módulo 1: ¿Qué es la IA?', lessons: [{ id: '1-1' }, { id: 'q-1' }] }
+            { title: 'Módulo 0: Onboarding', lessons: [{ id: '0-1' }, { id: '0-2' }, { id: '0-3' }] }, // Agregué 2 lecciones de ejemplo
+            { title: 'Módulo 1: ¿Qué es la IA?', lessons: [{ id: '1-1' }, { id: 'q-1' }] },
+            { title: 'Módulo 2: La IA para ti', lessons: [{ id: '2-1' }, { id: '2-2' }] },
+            { title: 'Módulo 3: Casos de uso de IA', lessons: [{ id: '3-1' }, { id: '3-2' }] },
+            { title: 'Módulo 4: Prompts avanzados', lessons: [{ id: '4-1' }, { id: '4-2' }] }
           ]
         },
         [ESSENTIAL_PLUS_COURSE_ID]: {
@@ -413,12 +416,12 @@
           profileModalOverlay.classList.remove('hidden');
           profileModal.classList.remove('hidden');
           setTimeout(() => {
-              profileModal.querySelector('div > div').classList.remove('scale-95', 'opacity-0');
+              profileModal.querySelector('div').classList.remove('scale-95', 'opacity-0');
           }, 10);
       }
 
       function hideProfileModal() {
-          profileModal.querySelector('div > div').classList.add('scale-95', 'opacity-0');
+          profileModal.querySelector('div').classList.add('scale-95', 'opacity-0');
           setTimeout(() => {
               profileModalOverlay.classList.add('hidden');
               profileModal.classList.add('hidden');
@@ -585,6 +588,8 @@
                       progressValue = 100; // Limita el progreso al 100% como máximo
                   }
                   
+                  console.log(`Course: ${courseId}, Completed: ${completedCount}, Total: ${totalLessons}, Progress: ${progressValue}%`);
+
                   // =========================================================================
                   // FIN DE LA CORRECCIÓN DEL BUG DE PROGRESO
                   // =========================================================================
@@ -607,6 +612,9 @@
             if (!isProfileComplete) {
                 showProfileModal(true);
             } else {
+                // Aquí se cargan los cursos, ya que el perfil está completo.
+                // Es importante que el objeto ALL_COURSES_DATA tenga la estructura
+                // de lecciones completa para cada curso que se liste.
                 checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
                 checkUserAccess(user.uid, ESSENTIAL_PLUS_COURSE_ID);
             }
@@ -724,4 +732,4 @@
     });
   </script>
 </body>
-</ht
+</html>
