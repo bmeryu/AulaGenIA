@@ -903,28 +903,42 @@
             }
             async function attachMediaAndCaptions({ storage, videoEl, videoSrc, srtOrVttSrc }) {
                 const srcEl = videoEl.querySelector('#course-video-source');
-                const resolvedVideo = await resolveStorageDownloadURL(storage, videoSrc);
-                if (srcEl && resolvedVideo) srcEl.src = resolvedVideo;
+                // Use a direct approach to avoid CORS issues
+                if (srcEl && videoSrc) {
+                  srcEl.src = videoSrc;
+                }
 
                 const trackEl = videoEl.querySelector('#caption-track');
-                if (!trackEl || !srtOrVttSrc) { videoEl.load(); return; }
-
-                const resolvedTrack = await resolveStorageDownloadURL(storage, srtOrVttSrc);
-                if (!resolvedTrack) { videoEl.load(); return; }
-
-                const isSrt = /(\.srt)(\?|$)/i.test(resolvedTrack);
-                if (isSrt) {
-                    const resp = await fetch(resolvedTrack);
-                    const srtTxt = await resp.text();
-                    const vttTxt = srtToVtt(srtTxt);
-                    const blobUrl = URL.createObjectURL(new Blob([vttTxt], { type: 'text/vtt' }));
-                    trackEl.src = blobUrl;
-                } else {
-                    trackEl.src = resolvedTrack;
+                if (!trackEl || !srtOrVttSrc) { 
+                    videoEl.load();
+                    return;
                 }
-                trackEl.default = true;
-                const [t] = videoEl.textTracks; if (t) t.mode = 'showing';
-                videoEl.load();
+
+                try {
+                  const resolvedTrack = await resolveStorageDownloadURL(storage, srtOrVttSrc);
+                  if (!resolvedTrack) {
+                    videoEl.load();
+                    return;
+                  }
+    
+                  const isSrt = /(\.srt)(\?|$)/i.test(resolvedTrack);
+                  if (isSrt) {
+                      const resp = await fetch(resolvedTrack);
+                      const srtTxt = await resp.text();
+                      const vttTxt = srtToVtt(srtTxt);
+                      const blobUrl = URL.createObjectURL(new Blob([vttTxt], { type: 'text/vtt' }));
+                      trackEl.src = blobUrl;
+                  } else {
+                      trackEl.src = resolvedTrack;
+                  }
+                  trackEl.default = true;
+                  const [t] = videoEl.textTracks; if (t) t.mode = 'showing';
+                  videoEl.load();
+
+                } catch (err) {
+                  console.error('Error loading captions:', err);
+                  videoEl.load(); // Continue even if captions fail
+                }
             }
 
             // --- Código del parche aquí ---
