@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.3 (Profile Modal UX Final)
+  CAMPUS CURSO · AULA GENIA v3.6.4 (Profile Modal UX Final Fix)
   -------------------------------------------------------------------
   - UX: Rediseñado el modal de perfil para evitar el scroll de página.
     El formulario ahora se desplaza internamente si es necesario.
@@ -959,9 +959,10 @@
                 try {
                     const doc = await userDocRef.get();
                     const dbData = doc.exists ? doc.data() : {};
-                    
-                    // Priority: 1. Name from DB. If not present, leave empty.
-                    if (profileNameInput) profileNameInput.value = dbData.displayName || '';
+                    const isProfileCompleted = dbData.profileCompleted === true;
+
+                    // Load name from DB ONLY if the profile has been completed before.
+                    if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : '';
                     
                     // Other fields only come from DB
                     if (profileRutInput) profileRutInput.value = dbData.rut || '';
@@ -1473,3 +1474,4 @@
 
 </body>
 </html>
+"
