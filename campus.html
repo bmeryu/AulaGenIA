@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v6.4 (Progress Sync Fix)
+  CAMPUS DASHBOARD · AULA GENIA v6.5 (Real-time Sync)
   -------------------------------------------------------------------
-  - FIX: Alineado totalLessons con campus-curso-ia.html (13 lecciones).
-  - FIX: Consolidada la lectura de progreso a una única fuente (userProgress)
-    para eliminar inconsistencias.
-  - Funciones centralizadas para leer progreso desde múltiples fuentes
-  - Debug integrado para monitoreo
+  - FIX: Implementado listener onSnapshot para progreso en tiempo real.
+    Esto elimina discrepancias de caché entre esta página y la del curso.
+  - REFACTOR: Centralizada la lógica de carga post-login para verificar
+    perfil y luego iniciar el listener de progreso.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -23,11 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com">
-      // Flags para evitar spam de permisos y desactivar lecturas remotas si fallan una vez
-      window.__DISABLE_REMOTE_COURSE_READS__ = false;
-      window.__DISABLE_REMOTE_USER_READS__ = false;
-</script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
 
   <style>
@@ -280,128 +275,25 @@
       const db = firebase.firestore();
       
       // =================================================================
-      // FUNCIONES CENTRALIZADAS PARA SINCRONIZAR PROGRESO
+      // CONFIGURACIÓN Y FUNCIONES DE CURSO
       // =================================================================
 
-      /**
-       * Configuración centralizada de cursos
-       */
       const COURSE_CONFIG = {
         'ia-aplicada-esencial': {
           title: 'IA Aplicada · Esencial',
-          // SOLUCIÓN 1: Se actualiza el total de lecciones de 11 a 13 para que coincida con `campus-curso-ia.html`.
           totalLessons: 13, 
           modules: [
-            {
-              title: 'Módulo 0: Onboarding',
-              lessons: [ { id: '0-1' }, { id: 'q-0' } ]
-            },
-            {
-              title: 'Módulo 1: La IA en el día a día',
-              lessons: [ { id: '1-1' }, { id: 'q-1' } ]
-            },
-            {
-              title: 'Módulo 2: Tu asistente con IA',
-              lessons: [ { id: '2-1' }, { id: 'q-2' } ]
-            },
-            {
-              title: 'Módulo 3: Creando contenido con IA',
-              lessons: [ { id: '3-1' }, { id: 'q-3' } ]
-            },
-            {
-              title: 'Módulo 4: Automatización de tareas',
-              lessons: [ { id: '4-1' }, { id: '4-2' }, { id: 'q-4' } ]
-            },
-            {
-              title: 'Módulo 5: Casos de uso avanzados',
-              lessons: [ { id: '5-1' }, { id: 'q-5' } ]
-            }
+            { title: 'Módulo 0: Onboarding', lessons: [ { id: '0-1' }, { id: 'q-0' } ] },
+            { title: 'Módulo 1: La IA en el día a día', lessons: [ { id: '1-1' }, { id: 'q-1' } ] },
+            { title: 'Módulo 2: Tu asistente con IA', lessons: [ { id: '2-1' }, { id: 'q-2' } ] },
+            { title: 'Módulo 3: Creando contenido con IA', lessons: [ { id: '3-1' }, { id: 'q-3' } ] },
+            { title: 'Módulo 4: Automatización de tareas', lessons: [ { id: '4-1' }, { id: '4-2' }, { id: 'q-4' } ] },
+            { title: 'Módulo 5: Casos de uso avanzados', lessons: [ { id: '5-1' }, { id: 'q-5' } ] }
           ]
         }
       };
-
-      /**
-       * Función centralizada para obtener el progreso del usuario
-       */
-      async function getUserProgress(userId, courseId) {
-        const completedLessons = new Set();
-        let currentLessonId = null;
-        let unlockedBadges = [];
-
-        try {
-          // Fuente de verdad única: Leer desde userProgress/{userId}
-          // Esta es la ubicación donde `campus-curso-ia.html` escribe el progreso.
-          const userProgressDoc = await db.collection('userProgress').doc(userId).get();
-          if (userProgressDoc.exists) {
-            const data = userProgressDoc.data();
-            const courseProgress = data[courseId];
-            
-            if (courseProgress) {
-              if (Array.isArray(courseProgress.completedLessons)) {
-                courseProgress.completedLessons.forEach(lessonId => completedLessons.add(lessonId));
-              }
-              if (courseProgress.currentLessonId) {
-                currentLessonId = courseProgress.currentLessonId;
-              }
-              if (Array.isArray(courseProgress.unlockedBadges)) {
-                unlockedBadges = courseProgress.unlockedBadges;
-              }
-            }
-          }
-        } catch (error) {
-          console.warn('Error leyendo userProgress:', error);
-        }
-
-        // SOLUCIÓN 2: Se elimina la segunda lectura desde `users/{uid}/progress` para evitar conflictos de datos.
-        /*
-        try {
-          // ESTA SECCIÓN HA SIDO ELIMINADA PARA MANTENER UNA ÚNICA FUENTE DE VERDAD
-        } catch (error) {
-          // ...
-        }
-        */
-
-        return {
-          completedLessons: Array.from(completedLessons),
-          currentLessonId,
-          unlockedBadges
-        };
-      }
-
-      /**
-       * Función centralizada para calcular estadísticas de progreso
-       */
-      async function getCourseProgressStats(userId, courseId) {
-        const progress = await getUserProgress(userId, courseId);
-        const course = COURSE_CONFIG[courseId];
-        // El total de lecciones ahora es consistente (13)
-        const totalLessons = course ? course.totalLessons : 0;
-        const completedCount = new Set(progress.completedLessons).size;
-        const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
-        const isComplete = completedCount >= totalLessons;
-        
-        return {
-          totalLessons,
-          completedCount,
-          percentage,
-          isComplete,
-          completedLessons: progress.completedLessons,
-          currentLessonId: progress.currentLessonId,
-          unlockedBadges: progress.unlockedBadges
-        };
-      }
-
-      // Hacer funciones disponibles globalmente
-      window.CourseProgressUtils = {
-        COURSE_CONFIG,
-        getUserProgress,
-        getCourseProgressStats
-      };
       
-      // --- IDs de los Cursos ---
       const ESSENTIAL_COURSE_ID = 'ia-aplicada-esencial';
-      const ADVANCED_COURSE_ID = 'programa-avanzado';
-      const EXPERT_LAB_ID = 'laboratorio-experto';
 
       // --- Lógica de UI General (Modales) ---
       const enrollModalOverlay = document.getElementById('enroll-modal-overlay');
@@ -614,7 +506,8 @@
 
               setTimeout(() => {
                   hideProfileModal();
-                  checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
+                  // Iniciar el listener de progreso después de completar el perfil
+                  listenForCourseProgress(user.uid);
               }, 1500);
 
           } catch (error) {
@@ -629,7 +522,7 @@
           }
       });
 
-      // --- Lógica de Cursos (ACTUALIZADA) ---
+      // --- Lógica de Cursos ---
       function updateCardForEnrolledUser(card, progress, courseId) {
           const tagEl = card.querySelector('.tag');
           const percentEl = card.querySelector('.percent');
@@ -677,104 +570,64 @@
           });
       }
 
-      // FUNCIÓN ACTUALIZADA CON PROGRESO CENTRALIZADO
-      async function checkUserAccess(userId, courseId) {
+      // SOLUCIÓN: Nueva función con listener en tiempo real (onSnapshot)
+      function listenForCourseProgress(userId) {
+          const courseId = ESSENTIAL_COURSE_ID;
           let courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
           if (!courseCard) {
               console.warn(`No se encontró tarjeta para curso: ${courseId}`);
               return;
           }
 
-          try {
-              const userDocRef = db.collection('users').doc(userId);
-              const userDoc = await userDocRef.get();
-              
+          // Primero, verificar el estado de la inscripción (solo se hace una vez)
+          db.collection('users').doc(userId).get().then(userDoc => {
               let hasAccess = false;
               if (userDoc.exists) {
                   const userData = userDoc.data();
                   const oldEssentialCourseId = 'inteligencia-aplicada';
-
-                  if (userData.enrollments) {
-                      if (userData.enrollments[courseId] === true || 
-                          (courseId === ESSENTIAL_COURSE_ID && userData.enrollments[oldEssentialCourseId] === true)) {
-                          hasAccess = true;
-                      }
+                  if (userData.enrollments && (userData.enrollments[courseId] === true || userData.enrollments[oldEssentialCourseId] === true)) {
+                      hasAccess = true;
                   }
               }
 
               if (hasAccess) {
-                  // Usar la función centralizada para obtener progreso
-                  const progressStats = await getCourseProgressStats(userId, courseId);
+                  // Si el usuario tiene acceso, establece un listener en tiempo real para su progreso
+                  const progressRef = db.collection('userProgress').doc(userId);
                   
-                  console.log(`[CAMPUS] Progreso para ${courseId}:`, progressStats);
-                  
-                  updateCardForEnrolledUser(courseCard, progressStats.percentage, courseId);
+                  progressRef.onSnapshot(doc => {
+                      let completedCount = 0;
+                      
+                      if (doc.exists) {
+                          const data = doc.data();
+                          const courseProgress = data[courseId];
+                          if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
+                              completedCount = new Set(courseProgress.completedLessons).size;
+                          }
+                      }
+                      
+                      const courseConfig = COURSE_CONFIG[courseId];
+                      const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
+                      const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
+
+                      console.log(`[CAMPUS EN TIEMPO REAL] Progreso para ${courseId}: ${percentage}% (${completedCount}/${totalLessons})`);
+                      updateCardForEnrolledUser(courseCard, percentage, courseId);
+
+                  }, error => {
+                      console.error(`Error al escuchar el progreso para ${courseId}:`, error);
+                      updateCardForUnenrolledUser(courseCard); // Fallback en caso de error del listener
+                  });
+
               } else {
+                  // El usuario no tiene acceso al curso
                   updateCardForUnenrolledUser(courseCard);
               }
-          } catch (error) {
+
+          }).catch(error => {
               console.error(`Error al verificar el acceso para ${courseId}:`, error);
               updateCardForUnenrolledUser(courseCard);
-          }
+          });
       }
-
-      // Función de debugging para verificar progreso manualmente
-      async function debugCourseProgress(userId, courseId) {
-          console.log('=== DEBUG PROGRESO CURSO (CAMPUS) ===');
-          console.log('Usuario:', userId);
-          console.log('Curso:', courseId);
-          
-          const stats = await getCourseProgressStats(userId, courseId);
-          console.log('Estadísticas centralizadas:', stats);
-          
-          // Verificar datos en userProgress
-          try {
-              const userProgressDoc = await db.collection('userProgress').doc(userId).get();
-              if (userProgressDoc.exists) {
-                  console.log('userProgress data:', userProgressDoc.data()[courseId]);
-              } else {
-                  console.log('No existe documento userProgress');
-              }
-          } catch (e) {
-              console.log('Error leyendo userProgress:', e);
-          }
-          
-          // Verificar datos en users/progress
-          try {
-              const userProgressSubDoc = await db.collection('users').doc(userId)
-                  .collection('progress').doc(courseId).get();
-              if (userProgressSubDoc.exists) {
-                  console.log('users/progress data:', userProgressSubDoc.data());
-              } else {
-                  console.log('No existe documento users/progress');
-              }
-          } catch (e) {
-              console.log('Error leyendo users/progress:', e);
-          }
-          
-          console.log('=== FIN DEBUG ===');
-      }
-
-      // Hacer debugCourseProgress disponible globalmente para testing
-      window.debugCourseProgress = debugCourseProgress;
-
-      async function checkAndEnforceProfileCompletion(user) {
-        try {
-            const userDoc = await db.collection('users').doc(user.uid).get();
-            const isProfileComplete = userDoc.exists && userDoc.data().profileCompleted === true;
-
-            if (!isProfileComplete) {
-                showProfileModal(true);
-            } else {
-                // Perfil completo, cargar curso principal
-                checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
-            }
-        } catch (error) {
-            console.error("Error verificando el estado del perfil:", error);
-            showProfileModal(true);
-        }
-      }
-
+      
       // --- Lógica para Lista de Espera y Reservas ---
       async function setupDynamicButton(user, buttonId, collectionName, buttonStates) {
           const btn = document.getElementById(buttonId);
@@ -845,7 +698,25 @@
             auth.signOut().then(() => window.location.href = 'index.html');
           });
           
-          checkAndEnforceProfileCompletion(user);
+          // REFACTOR: Nueva función para inicializar la sesión del usuario
+          async function initializeUserSession(user) {
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                const isProfileComplete = userDoc.exists && userDoc.data().profileCompleted === true;
+
+                if (!isProfileComplete) {
+                    showProfileModal(true);
+                } else {
+                    // El perfil está completo, establece el listener de progreso en tiempo real
+                    listenForCourseProgress(user.uid); 
+                }
+            } catch (error) {
+                console.error("Error verificando el estado del perfil:", error);
+                showProfileModal(true); // Forzar completar perfil en caso de error
+            }
+          }
+        
+          initializeUserSession(user);
 
           // Inicializar botón de Lista de Espera
           setupDynamicButton(user, 'waitlist-btn', 'waitingList_avanzado', {
@@ -884,3 +755,4 @@
   </script>
 </body>
 </html>
+
