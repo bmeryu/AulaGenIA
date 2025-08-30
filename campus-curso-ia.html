@@ -338,7 +338,7 @@
                 apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
                 authDomain: "aulagenia.firebaseapp.com", 
                 projectId: "aulagenia", 
-                storageBucket: "aulagenia.appspot.com",
+                storageBucket: "aulagenia.firebasestorage.app",
                 messagingSenderId: "173328075630", 
                 appId: "1:173328075630:web:825606db4271ea1e66cf7f" 
             };
@@ -1011,38 +1011,7 @@
         });
     </script>
 
-<script type="module">
-import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-import { getApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 
-const storage = getStorage(getApp());
-
-async function resolveMediaUrls() {
-  const videos = document.querySelectorAll("video[data-path]");
-  for (const video of videos) {
-    try {
-      const path = video.getAttribute("data-path");
-      const url = await getDownloadURL(ref(storage, path));
-      video.src = url;
-    } catch (err) {
-      console.error("Error loading video", video, err);
-    }
-  }
-
-  const tracks = document.querySelectorAll("track[data-path]");
-  for (const track of tracks) {
-    try {
-      const path = track.getAttribute("data-path");
-      const url = await getDownloadURL(ref(storage, path));
-      track.src = url;
-    } catch (err) {
-      console.error("Error loading track", track, err);
-    }
-  }
-}
-
-document.addEventListener("DOMContentLoaded", resolveMediaUrls);
-</script>
 
 
 <script>
@@ -1083,6 +1052,63 @@ document.addEventListener("DOMContentLoaded", resolveMediaUrls);
   }
   // run on ready + after DOM ready
   whenFirebaseReady(syncTotal);
+  document.addEventListener('DOMContentLoaded', syncTotal);
+})();
+</script>
+
+
+<script>
+(function(){
+  try {
+    if (window.firebase && (!firebase.apps || firebase.apps.length === 0) && window.firebaseConfig) {
+      firebase.initializeApp(window.firebaseConfig || firebaseConfig);
+    }
+    // expose compat refs if not already set
+    if (window.firebase && firebase.apps && firebase.apps.length > 0) {
+      window.app = firebase.app();
+      if (!window.auth) window.auth = firebase.auth();
+      if (!window.db) window.db = firebase.firestore();
+      if (!window.storage) window.storage = firebase.storage("gs://aulagenia.firebasestorage.app");
+    }
+  } catch(e) { console.warn('Init guard warning:', e); }
+})();
+</script>
+
+
+<script>
+(function(){
+  function getCourseId() {
+    try {
+      const p = new URLSearchParams(location.search);
+      return p.get('course') || (window.COURSE_ID || 'ia-aplicada-esencial');
+    } catch(e) { return 'ia-aplicada-esencial'; }
+  }
+  function countLessons() {
+    try {
+      const nodes = document.querySelectorAll('[data-lesson-id]');
+      if (nodes && nodes.length) return nodes.length;
+      return document.querySelectorAll('section[id^="lesson-"], section[data-lesson]').length;
+    } catch(e){ return 0; }
+  }
+  function whenReady(fn, tries){
+    tries = tries || 0;
+    if (window.firebase && firebase.apps && firebase.apps.length > 0) return fn();
+    if (tries > 100) return;
+    setTimeout(function(){ whenReady(fn, tries+1); }, 100);
+  }
+  function syncTotal(){
+    try {
+      const total = countLessons();
+      if (!total || !(total > 0)) return;
+      const courseId = getCourseId();
+      const db = firebase.firestore();
+      db.collection('courses').doc(courseId)
+        .set({ totalLessons: total }, { merge: true })
+        .then(() => console.log('[sync] totalLessons ->', courseId, total))
+        .catch(err => console.warn('[sync] totalLessons failed', err));
+    } catch(e){ console.warn('[sync] totalLessons exception', e); }
+  }
+  whenReady(syncTotal);
   document.addEventListener('DOMContentLoaded', syncTotal);
 })();
 </script>
