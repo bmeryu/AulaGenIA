@@ -1113,5 +1113,85 @@
 })();
 </script>
 
+
+<!-- === START: Campus media/titles mapping (Aug 30, 2025) === -->
+<script>
+const STORAGE_DIR = "";
+const LESSONS = [
+  { id: "onboarding", title: "ONBOARDING · IA Aplicada · Programa Esencial",
+    videoFile: "ONBOARDING-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "ONBOARDING-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo1", title: "MÓDULO 1 · ¿Qué es la IA y cómo usarla hoy?",
+    videoFile: "MÓDULO1-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MÓDULO1-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo2", title: "MÓDULO 2 · IA en tu vida y trabajo",
+    videoFile: "MÓDULO2-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MÓDULO2-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo3", title: "MÓDULO 3 · Preparando tus herramientas",
+    videoFile: "MÓDULO3-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MÓDULO3-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo4A", title: "MÓDULO 4A · Domina los prompts (parte A)",
+    videoFile: "Modulo4A-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "Modulo4A-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo4B", title: "MÓDULO 4B · Domina los prompts (parte B)",
+    videoFile: "MÓDULO4B-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MÓDULO4B-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo5", title: "MÓDULO 5 · Crea y publica tu primer proyecto",
+    videoFile: "MÓDULO5-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MÓDULO5-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo6", title: "MÓDULO 6 · Repaso y próximos pasos",
+    videoFile: "MÓDULO6-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MÓDULO6-IA-Aplicada-Programa-Esencial.srt" },
+];
+function storageRef() { return firebase.storage("gs://aulagenia.firebasestorage.app").ref(); }
+function pathJoin(dir, file) { if (!dir) return file; return dir.replace(/\/+$/,"") + "/" + String(file).replace(/^\/+/, ""); }
+function removeDiacritics(str) { try { return str.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch(e){ return str; } }
+async function getURLWithFallback(fileName) {
+  const base = storageRef(); const exact = pathJoin(STORAGE_DIR, fileName);
+  try { return await base.child(exact).getDownloadURL(); }
+  catch (e1) { const fb = pathJoin(STORAGE_DIR, removeDiacritics(fileName)); console.warn("[media] fallback sin acentos:", fb); return await base.child(fb).getDownloadURL(); }
+}
+function applyLessonTitles() {
+  LESSONS.forEach(l => {
+    const el = document.querySelector(`[data-lesson-id="${l.id}"] .lesson-title, [data-lesson-id="${l.id}"] h2, [data-lesson-id="${l.id}"] .title`);
+    if (el) el.textContent = l.title;
+  });
+}
+async function attachMediaAndCaptionsForLesson(lesson) {
+  try {
+    const videoURL = await getURLWithFallback(lesson.videoFile);
+    const srtURL   = await getURLWithFallback(lesson.srtFile);
+    const container = document.querySelector(`[data-lesson-id="${lesson.id}"]`);
+    if (!container) return;
+    const video = container.querySelector('video');
+    if (video) {
+      video.src = videoURL;
+      [...video.querySelectorAll('track')].forEach(t=>t.remove());
+      const track = document.createElement('track');
+      track.kind = 'subtitles'; track.label = 'ES'; track.srclang = 'es'; track.default = true; track.src = srtURL;
+      video.appendChild(track);
+    }
+  } catch (err) { console.warn("[media] no se pudo adjuntar", lesson.id, err); }
+}
+async function attachAllMedia() { for (const l of LESSONS) { await attachMediaAndCaptionsForLesson(l); } }
+function getTotalLessonsFromConfig() { return LESSONS.length; }
+function canSyncTotalLessons(user){ const ADMIN_EMAIL = ""; return !!user && !!ADMIN_EMAIL && user.email === ADMIN_EMAIL; }
+function trySyncTotalLessons() {
+  if (!window.firebase || !firebase.apps || firebase.apps.length === 0) return;
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!canSyncTotalLessons(user)) { console.log("[sync] skip totalLessons (no permission)"); return; }
+    const params = new URLSearchParams(location.search);
+    const courseId = params.get('course') || 'ia-aplicada-esencial';
+    const total = getTotalLessonsFromConfig();
+    firebase.firestore().collection('courses').doc(courseId)
+      .set({ totalLessons: total }, { merge: true })
+      .then(()=>console.log("[sync] totalLessons ->", courseId, total))
+      .catch(err=>console.warn("[sync] totalLessons failed", err));
+  });
+}
+document.addEventListener('DOMContentLoaded', () => { applyLessonTitles(); attachAllMedia(); trySyncTotalLessons(); });
+</script>
+<!-- === END: Campus media/titles mapping (Aug 30, 2025) === -->
+
 </body>
 </html>
