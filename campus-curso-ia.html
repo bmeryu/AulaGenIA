@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.3.0 (Certificate & Script Fix)
+  CAMPUS CURSO · AULA GENIA v3.4.0 (Transcription Download)
   -------------------------------------------------------------------
-  - FIX: Corregidos errores de 'ReferenceError: TRUE is not defined' y 
-    'FIRESTORE_SYNC is not defined' al final del archivo.
-  - FIX: El botón "Ver Certificado" ahora genera un registro en Firestore y
-    crea un enlace dinámico al certificado único del alumno.
-  - REFACTOR: Eliminados scripts duplicados y limpiado el código.
+  - FEATURE: El botón "Ver Transcripción" ahora descarga un archivo .txt limpio.
+  - UI: Se actualizó el ícono y texto del botón de transcripción.
+  - REFACTOR: Eliminado el código HTML y JS del modal de transcripción.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -47,10 +45,10 @@
             @apply py-4;
         }
 
-        #pdf-modal-overlay, #transcription-modal-overlay {
+        #pdf-modal-overlay {
             transition: opacity 0.3s ease-in-out;
         }
-        #pdf-modal-content, #transcription-modal-content {
+        #pdf-modal-content {
             transition: all 0.3s ease-in-out;
         }
         details > summary { list-style: none; }
@@ -269,24 +267,6 @@
         </div>
     </div>
 
-    <!-- Modal de Transcripción -->
-    <div id="transcription-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
-    <div id="transcription-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
-        <div id="transcription-modal-content" class="bg-white rounded-lg shadow-2xl w-full max-w-4xl h-full max-h-[90vh] flex flex-col transform scale-95 opacity-0">
-            <header class="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
-                <h3 id="transcription-modal-title" class="text-lg font-semibold text-gray-800">Transcripción del Video</h3>
-                <button id="transcription-modal-close-btn" class="text-gray-400 hover:text-gray-600">
-                    <i data-lucide="x" class="h-6 w-6"></i>
-                </button>
-            </header>
-            <div class="flex-grow p-6 overflow-y-auto">
-                <div id="transcription-text-container" class="prose max-w-none text-gray-800">
-                    <p>Cargando transcripción...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <div id="faq-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden">
         <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative p-6 md:p-8">
             <button id="close-faq-modal" aria-label="Cerrar modal" class="absolute top-4 right-4 bg-gray-100 rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10">
@@ -526,11 +506,6 @@
                 pdfModalTitle: document.getElementById('pdf-modal-title'),
                 pdfModalCloseBtn: document.getElementById('pdf-modal-close-btn'),
                 pdfIframe: document.getElementById('pdf-iframe'),
-                transcriptionModalOverlay: document.getElementById('transcription-modal-overlay'),
-                transcriptionModal: document.getElementById('transcription-modal'),
-                transcriptionModalContent: document.getElementById('transcription-modal-content'),
-                transcriptionModalCloseBtn: document.getElementById('transcription-modal-close-btn'),
-                transcriptionTextContainer: document.getElementById('transcription-text-container'),
                 supportForm: document.getElementById('support-form'),
                 supportSubmitBtn: document.getElementById('support-submit-btn'),
                 supportBtnText: document.getElementById('support-btn-text'),
@@ -589,8 +564,8 @@
                                         <span>Desactivar Subtítulos</span>
                                     </button>
                                     <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">
-                                        <i data-lucide="align-left" class="h-5 w-5"></i>
-                                        <span>Ver Transcripción</span>
+                                        <i data-lucide="download" class="h-5 w-5"></i>
+                                        <span>Descargar Transcripción</span>
                                     </button>
                                 ` : `
                                     <div class="sm:col-span-2">
@@ -652,7 +627,9 @@
                 }
 
                 const transcriptionBtn = document.getElementById('transcription-button');
-                if (transcriptionBtn && lesson.transcriptionUrl) { transcriptionBtn.addEventListener('click', () => openTranscriptionModal(lesson.transcriptionUrl)); }
+                if (transcriptionBtn && lesson.transcriptionUrl) { 
+                    transcriptionBtn.addEventListener('click', () => downloadTranscription(lesson.transcriptionUrl, lesson.title));
+                }
 
                 (async () => {
                     if (!videoEl) return;
@@ -927,33 +904,58 @@
             if (dom.pdfModalCloseBtn) dom.pdfModalCloseBtn.addEventListener('click', closePdfModal);
             if (dom.pdfModalOverlay) dom.pdfModalOverlay.addEventListener('click', closePdfModal);
 
-            async function openTranscriptionModal(transcriptionUrl) {
-                if (!dom.transcriptionTextContainer || !dom.transcriptionModal || !dom.transcriptionModalOverlay || !dom.transcriptionModalContent) return;
-                dom.transcriptionTextContainer.innerHTML = '<p class="text-center text-slate-500">Cargando transcripción...</p>';
-                dom.transcriptionModal.classList.remove('hidden');
-                dom.transcriptionModalOverlay.classList.remove('hidden');
-                setTimeout(() => { dom.transcriptionModalOverlay.classList.add('opacity-100'); dom.transcriptionModalContent.classList.remove('scale-95', 'opacity-0'); }, 10);
+            async function downloadTranscription(transcriptionUrl, lessonTitle) {
+                if (!transcriptionUrl) {
+                    showToast('No hay transcripción disponible para descargar.');
+                    return;
+                }
+                
+                const btn = document.getElementById('transcription-button');
+                if (!btn) return;
+                
+                const btnSpan = btn.querySelector('span');
+                const originalText = btnSpan ? btnSpan.textContent : 'Descargar Transcripción';
+                
+                if (btnSpan) btnSpan.textContent = 'Preparando...';
+                btn.disabled = true;
 
                 try {
-                    const response = await fetch(transcriptionUrl);
-                    if (!response.ok) throw new Error('Network response was not ok');
+                    const resolvedUrl = await resolveStorageDownloadURL(storage, transcriptionUrl);
+                    const response = await fetch(resolvedUrl);
+                    if (!response.ok) throw new Error('Respuesta de red no fue OK');
+                    
                     const srtText = await response.text();
-                    const formattedText = formatSrtToHtml(srtText);
-                    dom.transcriptionTextContainer.innerHTML = `<p>${formattedText}</p>`;
+                    
+                    const plainText = srtText
+                        .split(/\r?\n/)
+                        .filter(line => !/^\d+$/.test(line.trim()) && !line.includes('-->'))
+                        .join('\n')
+                        .replace(/(\n\s*){2,}/g, '\n\n')
+                        .trim();
+
+                    const blob = new Blob([plainText], { type: 'text/plain;charset=utf-8' });
+                    
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    
+                    const sanitizedTitle = lessonTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                    link.download = `transcripcion_${sanitizedTitle}.txt`;
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    URL.revokeObjectURL(link.href);
+                    showToast('Descarga iniciada.');
+
                 } catch (error) {
-                    console.error('Error al cargar la transcripción:', error);
-                    dom.transcriptionTextContainer.innerHTML = `<p class="text-red-500 text-center">Error al cargar la transcripción. Inténtalo más tarde.</p>`;
+                    console.error('Error al descargar la transcripción:', error);
+                    showToast('No se pudo descargar la transcripción.');
+                } finally {
+                    if (btnSpan) btnSpan.textContent = originalText;
+                    btn.disabled = false;
                 }
             }
-            function closeTranscriptionModal() {
-                if (!dom.transcriptionModal || !dom.transcriptionModalOverlay || !dom.transcriptionModalContent) return;
-                dom.transcriptionModalOverlay.classList.remove('opacity-100');
-                dom.transcriptionModalContent.classList.add('scale-95', 'opacity-0');
-                setTimeout(() => { dom.transcriptionModal.classList.add('hidden'); dom.transcriptionModalOverlay.classList.add('hidden'); }, 300);
-            }
-            function formatSrtToHtml(srt) { const cleanedText = srt.replace(/\d+\r?\n(\d{2}:\d{2}:\d{2},\d{3} --> \d{2}:\d{2}:\d{2},\d{3})\r?\n/g, '').replace(/\r?\n/g, '<br>'); return cleanedText; }
-            if (dom.transcriptionModalCloseBtn) dom.transcriptionModalCloseBtn.addEventListener('click', closeTranscriptionModal);
-            if (dom.transcriptionModalOverlay) dom.transcriptionModalOverlay.addEventListener('click', closeTranscriptionModal);
 
             async function loadUserResources(lessonId) {
                 if (!currentUser || !dom.userResourceList) return;
@@ -1232,4 +1234,5 @@
 
 </body>
 </html>
+" because the user wants to implement download functionality and is selecting the whole document to indicate that the changes should be applied to the whole document. Also, the user wants me to fix the "view transcription" button, which is not working. I should implement functionality to download the transcription as a plain text file. So I should edit the canvas with the provided code and make the necessary changes.
 
