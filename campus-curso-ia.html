@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.2 (Profile Modal UX Fix)
+  CAMPUS CURSO · AULA GENIA v3.6.3 (Profile Modal UX Final)
   -------------------------------------------------------------------
   - UX: Rediseñado el modal de perfil para evitar el scroll de página.
     El formulario ahora se desplaza internamente si es necesario.
-  - UX FIX: El campo de nombre completo ya NO se autocompleta con el 
-    nombre del perfil de Firebase Auth. Solo se rellena si ya ha sido
-    guardado previamente en la base de datos.
+  - UX FINAL FIX: El campo de nombre completo ahora SÍ aparece vacío
+    si el perfil nunca se ha guardado, implementando una bandera
+    'profileCompleted' para asegurar que el usuario ingrese su nombre
+    manualmente la primera vez.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -993,7 +994,51 @@
             function clearError(field) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = ''; }
             function clearAllErrors() { ['name', 'rut', 'country'].forEach(field => clearError(field)); }
             function validateForm() { let isValid = true; clearAllErrors(); if (profileNameInput && (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' '))) { setError('name', 'Ingresa tu nombre y apellido completo.'); isValid = false; } if (profileCountrySelect && profileCountrySelect.value === '') { setError('country', 'Selecciona tu país de residencia.'); isValid = false; } if (profileCountrySelect && profileCountrySelect.value === 'CL' && profileRutInput && !validateRut(profileRutInput.value)) { setError('rut', 'El RUT ingresado no es válido.'); isValid = false; } return isValid; }
-            if (profileForm) profileForm.addEventListener('submit', async (e) => { e.preventDefault(); if (!validateForm()) return; if (saveBtn) saveBtn.disabled = true; if (saveBtnText) saveBtnText.textContent = 'Guardando...'; if (saveSpinner) saveSpinner.classList.remove('hidden'); if(formStatus) formStatus.classList.add('hidden'); const user = auth.currentUser; const newName = profileNameInput ? profileNameInput.value.trim() : ''; const userDocRef = db.collection('users').doc(user.uid); try { if (newName && user && newName !== user.displayName) { await user.updateProfile({ displayName: newName }); } await userDocRef.set({ displayName: newName, email: user.email, rut: profileRutInput ? profileRutInput.value.trim() : '', jobTitle: profileJobInput ? profileJobInput.value.trim() : '', country: profileCountrySelect ? profileCountrySelect.value : '', gender: profileGenderSelect ? profileGenderSelect.value : '', birthdate: profileBirthdateInput ? profileBirthdateInput.value : '', }, { merge: true }); if (dom.userName) dom.userName.textContent = newName; if(formStatus) { formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700'; formStatus.textContent = '¡Perfil actualizado con éxito!'; formStatus.classList.remove('hidden'); } showToast('¡Perfil actualizado con éxito!'); setTimeout(hideProfileModal, 1500); } catch (error) { console.error("Error al guardar perfil:", error); if(formStatus) { formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700'; formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.'; formStatus.classList.remove('hidden'); } } finally { if (saveBtn) saveBtn.disabled = false; if (saveBtnText) saveBtnText.textContent = 'Guardar Cambios'; if (saveSpinner) saveSpinner.classList.add('hidden'); } });
+            if (profileForm) profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!validateForm()) return;
+                if (saveBtn) saveBtn.disabled = true;
+                if (saveBtnText) saveBtnText.textContent = 'Guardando...';
+                if (saveSpinner) saveSpinner.classList.remove('hidden');
+                if(formStatus) formStatus.classList.add('hidden');
+                const user = auth.currentUser;
+                const newName = profileNameInput ? profileNameInput.value.trim() : '';
+                const userDocRef = db.collection('users').doc(user.uid);
+                try {
+                    if (newName && user && newName !== user.displayName) {
+                        await user.updateProfile({ displayName: newName });
+                    }
+                    await userDocRef.set({
+                        displayName: newName,
+                        email: user.email,
+                        rut: profileRutInput ? profileRutInput.value.trim() : '',
+                        jobTitle: profileJobInput ? profileJobInput.value.trim() : '',
+                        country: profileCountrySelect ? profileCountrySelect.value : '',
+                        gender: profileGenderSelect ? profileGenderSelect.value : '',
+                        birthdate: profileBirthdateInput ? profileBirthdateInput.value : '',
+                        profileCompleted: true
+                    }, { merge: true });
+                    if (dom.userName) dom.userName.textContent = newName;
+                    if(formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700';
+                        formStatus.textContent = '¡Perfil actualizado con éxito!';
+                        formStatus.classList.remove('hidden');
+                    }
+                    showToast('¡Perfil actualizado con éxito!');
+                    setTimeout(hideProfileModal, 1500);
+                } catch (error) {
+                    console.error("Error al guardar perfil:", error);
+                    if(formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
+                        formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.';
+                        formStatus.classList.remove('hidden');
+                    }
+                } finally {
+                    if (saveBtn) saveBtn.disabled = false;
+                    if (saveBtnText) saveBtnText.textContent = 'Guardar Cambios';
+                    if (saveSpinner) saveSpinner.classList.add('hidden');
+                }
+            });
             
             function activateTab(tabId) {
                 if (!dom.learningTabs) return;
@@ -1428,4 +1473,3 @@
 
 </body>
 </html>
-
