@@ -20,7 +20,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">
+      // Flags para evitar spam de permisos y desactivar lecturas remotas si fallan una vez
+      window.__DISABLE_REMOTE_COURSE_READS__ = false;
+      window.__DISABLE_REMOTE_USER_READS__ = false;
+</script>
   <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
 
   <style>
@@ -374,7 +378,10 @@ async function getCourseProgress(courseId, userId) {
 
   // B) por-doc en subcolección users/{uid}/progress/{courseId}
   try {
-    const pathSnap = await db.collection('users').doc(userId).collection('progress').doc(courseId).get();
+    let pathSnap = null;
+  if (!window.__DISABLE_REMOTE_USER_READS__) {
+    pathSnap = await db.collection('users').doc(userId).collection('progress').doc(courseId).get();
+  }
     if (pathSnap.exists) {
       const d = pathSnap.data() || {};
       if (Array.isArray(d.completedLessons)) {
@@ -384,7 +391,8 @@ async function getCourseProgress(courseId, userId) {
       }
     }
   } catch (e) {
-    console.warn('getCourseProgress: lectura por-doc users/{uid}/progress falló:', e);
+    if (e && (e.code === 'permission-denied' || (''+e).includes('insufficient permissions'))) { window.__DISABLE_REMOTE_USER_READS__ = true; }
+    else { console.warn('getCourseProgress: lectura por-doc users/{uid}/progress falló:', e); }
   }
 
   const done = completed.size;
@@ -604,9 +612,9 @@ async function getCourseProgress(courseId, userId) {
       }
 
       async function checkUserAccess(userId, courseId) {
-          const courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
+          let courseCard = document.querySelector(`[data-course-id="${courseId}"]`) || document.querySelector(`[data-course-id="${(courseId||'').trim()}"]`) || document.querySelector(`[data-course-id="${(courseId||'').toLowerCase()}"]`);
           if (!courseCard) {
-              console.warn(`No se encontró la tarjeta para el curso: ${courseId}`);
+              // Si no existe la tarjeta, salimos silenciosamente para no ensuciar la consola.
               return;
           }
 
