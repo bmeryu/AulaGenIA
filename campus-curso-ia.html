@@ -58,13 +58,6 @@
         details[open] summary .arrow-down { transform: rotate(180deg); }
         .arrow-down { transition: transform 0.2s ease-in-out; }
     </style>
-
-<!-- === VERSION: campus-curso-ia FULL aug30 v3 === -->
-<script>
-  console.log('%c[Campus] campus-curso-ia FULL aug30 v3', 'color:#10b981;font-weight:bold;');
-  // Kill switch: nunca intentes escribir totalLessons desde cliente
-  window.__DISABLE_TOTAL_SYNC__ = true;
-</script>
 </head>
 <body class="text-gray-800">
 
@@ -1047,6 +1040,7 @@
     setTimeout(function(){ whenFirebaseReady(fn, tries+1); }, 100);
   }
   function syncTotal(){
+  if (typeof FIRESTORE_SYNC !== 'undefined' && !FIRESTORE_SYNC) { console.log('[sync] deshabilitado por kill switch'); return; }
     try {
       const total = countLessons();
       if (!total || !(total > 0)) return;
@@ -1075,7 +1069,7 @@
       window.app = firebase.app();
       if (!window.auth) window.auth = firebase.auth();
       if (!window.db) window.db = firebase.firestore();
-      if (!window.storage) window.storage = firebase.storage("gs://aulagenia.firebasestorage.app");
+      if (!window.storage) window.storage = firebase.storage();
     }
   } catch(e) { console.warn('Init guard warning:', e); }
 })();
@@ -1104,6 +1098,7 @@
     setTimeout(function(){ whenReady(fn, tries+1); }, 100);
   }
   function syncTotal(){
+  if (typeof FIRESTORE_SYNC !== 'undefined' && !FIRESTORE_SYNC) { console.log('[sync] deshabilitado por kill switch'); return; }
     try {
       const total = countLessons();
       if (!total || !(total > 0)) return;
@@ -1121,127 +1116,97 @@
 </script>
 
 
+<!-- === START: Campus media/titles mapping (Aug 30, 2025) === -->
 <script>
-  // Segunda pasada para asegurar que los <video> queden con los archivos nuevos
-  window.addEventListener('load', () => {
-    if (typeof attachAllMedia === 'function') {
-      setTimeout(() => {
-        console.log('[media] second pass attachAllMedia()');
-        attachAllMedia();
-      }, 1800);
+const STORAGE_DIR = "";
+// Kill switch para evitar errores si Firestore no permite escritura
+const FIRESTORE_SYNC = false;
+const LESSONS = [
+  { id: "onboarding", title: "ONBOARDING · IA Aplicada · Programa Esencial",
+    videoFile: "ONBOARDING-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "ONBOARDING-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo1", title: "MODULO 1 · ¿Qué es la IA y cómo usarla hoy?",
+    videoFile: "MODULO1-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MODULO1-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo2", title: "MODULO 2 · IA en tu vida y trabajo",
+    videoFile: "MODULO2-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MODULO2-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo3", title: "MODULO 3 · Preparando tus herramientas",
+    videoFile: "MODULO3-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MODULO3-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo4A", title: "MODULO 4A · Domina los prompts (parte A)",
+    videoFile: "MODULO4A-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MODULO4A-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo4B", title: "MODULO 4B · Domina los prompts (parte B)",
+    videoFile: "MODULO4B-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MODULO4B-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo5", title: "MODULO 5 · Crea y publica tu primer proyecto",
+    videoFile: "MODULO5-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MODULO5-IA-Aplicada-Programa-Esencial.srt" },
+  { id: "modulo6", title: "MODULO 6 · Repaso y próximos pasos",
+    videoFile: "MODULO6-IA-Aplicada-Programa-Esencial.mp4",
+    srtFile:   "MODULO6-IA-Aplicada-Programa-Esencial.srt" },
+];
+function storageRef() {
+  try {
+    const app = firebase.app();
+    const bucketId = (app && app.options && app.options.storageBucket) || '';
+    const gsBucket = bucketId ? (bucketId.startsWith('gs://') ? bucketId : `gs://${bucketId}`) : '';
+    const storage = firebase.storage(app);
+    return gsBucket ? storage.refFromURL(gsBucket) : storage.ref();
+  } catch (e) {
+    console.warn('[storageRef] fallback to default bucket', e);
+    return firebase.storage().ref();
+  }
+}
+function pathJoin(dir, file) { if (!dir) return file; return dir.replace(/\/+$/,"") + "/" + String(file).replace(/^\/+/, ""); }
+function removeDiacritics(str) { try { return str.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch(e){ return str; } }
+async function getURLWithFallback(fileName) {
+  const base = storageRef(); const exact = pathJoin(STORAGE_DIR, fileName);
+  try { return await base.child(exact).getDownloadURL(); }
+  catch (e1) { const fb = pathJoin(STORAGE_DIR, removeDiacritics(fileName)); console.warn("[media] fallback sin acentos:", fb); return await base.child(fb).getDownloadURL(); }
+}
+function applyLessonTitles() {
+  LESSONS.forEach(l => {
+    const el = document.querySelector(`[data-lesson-id="${l.id}"] .lesson-title, [data-lesson-id="${l.id}"] h2, [data-lesson-id="${l.id}"] .title`);
+    if (el) el.textContent = l.title;
+  });
+}
+async function attachMediaAndCaptionsForLesson(lesson) {
+  try {
+    const videoURL = await getURLWithFallback(lesson.videoFile);
+    const srtURL   = await getURLWithFallback(lesson.srtFile);
+    const container = document.querySelector(`[data-lesson-id="${lesson.id}"]`);
+    if (!container) return;
+    const video = container.querySelector('video');
+    if (video) {
+      video.src = videoURL;
+      [...video.querySelectorAll('track')].forEach(t=>t.remove());
+      const track = document.createElement('track');
+      track.kind = 'subtitles'; track.label = 'ES'; track.srclang = 'es'; track.default = true; track.src = srtURL;
+      video.appendChild(track);
     }
+  } catch (err) { console.warn("[media] no se pudo adjuntar", lesson.id, err); }
+}
+async function attachAllMedia() { for (const l of LESSONS) { await attachMediaAndCaptionsForLesson(l); } }
+function getTotalLessonsFromConfig() { return LESSONS.length; }
+function canSyncTotalLessons(user){ const ADMIN_EMAIL = ""; return !!user && !!ADMIN_EMAIL && user.email === ADMIN_EMAIL; }
+function trySyncTotalLessons() {
+  if (!window.firebase || !firebase.apps || firebase.apps.length === 0) return;
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!canSyncTotalLessons(user)) { console.log("[sync] skip totalLessons (no permission)"); return; }
+    const params = new URLSearchParams(location.search);
+    const courseId = params.get('course') || 'ia-aplicada-esencial';
+    const total = getTotalLessonsFromConfig();
+    firebase.firestore().collection('courses').doc(courseId)
+      .set({ totalLessons: total }, { merge: true })
+      .then(()=>console.log("[sync] totalLessons ->", courseId, total))
+      .catch(err=>console.warn("[sync] totalLessons failed", err));
   });
+}
+document.addEventListener('DOMContentLoaded', () => { applyLessonTitles(); attachAllMedia(); trySyncTotalLessons(); });
 </script>
-
-
-<!-- === START: Campus media/titles mapping (UPPERCASE, no accents) === -->
-<script>
-  // Visible banner for version check
-  console.log('%c[Campus] media map UPPERCASE v1', 'color:#10b981;font-weight:bold;');
-
-  // Kill switch: NEVER try to write totalLessons from client
-  window.__DISABLE_TOTAL_SYNC__ = true;
-
-  const STORAGE_DIR = ""; // change if you put files in a folder
-
-  const LESSONS = [
-    { id: "onboarding", title: "ONBOARDING · IA Aplicada · Programa Esencial",
-      videoFile: "ONBOARDING-IA-Aplicada-Programa-Esencial.mp4",
-      srtFile:   "ONBOARDING-IA-Aplicada-Programa-Esencial.srt" },
-
-    { id: "modulo1", title: "MÓDULO 1 · ¿Qué es la IA y cómo usarla hoy?",
-      videoFile: "MODULO1-IA-Aplicada-Programa-Esencial.mp4",
-      srtFile:   "MODULO1-IA-Aplicada-Programa-Esencial.srt" },
-
-    { id: "modulo2", title: "MÓDULO 2 · IA en tu vida y trabajo",
-      videoFile: "MODULO2-IA-Aplicada-Programa-Esencial.mp4",
-      srtFile:   "MODULO2-IA-Aplicada-Programa-Esencial.srt" },
-
-    { id: "modulo3", title: "MÓDULO 3 · Preparando tus herramientas",
-      videoFile: "MODULO3-IA-Aplicada-Programa-Esencial.mp4",
-      srtFile:   "MODULO3-IA-Aplicada-Programa-Esencial.srt" },
-
-    { id: "modulo4A", title: "MÓDULO 4A · Domina los prompts (parte A)",
-      videoFile: "MODULO4A-IA-Aplicada-Programa-Esencial.mp4",
-      srtFile:   "MODULO4A-IA-Aplicada-Programa-Esencial.srt" },
-
-    { id: "modulo4B", title: "MÓDULO 4B · Domina los prompts (parte B)",
-      videoFile: "MODULO4B-IA-Aplicada-Programa-Esencial.mp4",
-      srtFile:   "MODULO4B-IA-Aplicada-Programa-Esencial.srt" },
-
-    { id: "modulo5", title: "MÓDULO 5 · Crea y publica tu primer proyecto",
-      videoFile: "MODULO5-IA-Aplicada-Programa-Esencial.mp4",
-      srtFile:   "MODULO5-IA-Aplicada-Programa-Esencial.srt" },
-
-    { id: "modulo6", title: "MÓDULO 6 · Repaso y próximos pasos",
-      videoFile: "MODULO6-IA-Aplicada-Programa-Esencial.mp4",
-      srtFile:   "MODULO6-IA-Aplicada-Programa-Esencial.srt" },
-  ];
-
-  function storageRef() {
-    return firebase.storage("gs://aulagenia.firebasestorage.app").ref();
-  }
-  function pathJoin(dir, file) {
-    if (!dir) return file;
-    return dir.replace(/\/+$/,"") + "/" + String(file).replace(/^\/+/, "");
-  }
-  async function getURL(fileName) {
-    const base = storageRef();
-    const path = pathJoin(STORAGE_DIR, fileName);
-    return await base.child(path).getDownloadURL();
-  }
-
-  function applyLessonTitles() {
-    LESSONS.forEach(l => {
-      const el = document.querySelector(`[data-lesson-id="${l.id}"] .lesson-title, [data-lesson-id="${l.id}"] h2, [data-lesson-id="${l.id}"] .title`);
-      if (el) el.textContent = l.title;
-    });
-  }
-
-  async function attachMediaAndCaptionsForLesson(lesson) {
-    try {
-      const videoURL = await getURL(lesson.videoFile);
-      const srtURL   = await getURL(lesson.srtFile);
-      const container = document.querySelector(`[data-lesson-id="${lesson.id}"]`);
-      if (!container) return;
-      const video = container.querySelector('video');
-      if (video) {
-        video.src = videoURL;
-        [...video.querySelectorAll('track')].forEach(t=>t.remove());
-        const track = document.createElement('track');
-        track.kind = 'subtitles'; track.label='ES'; track.srclang='es'; track.default=true; track.src=srtURL;
-        video.appendChild(track);
-      }
-    } catch (err) {
-      console.warn("[media] no se pudo adjuntar", lesson.id, err);
-    }
-  }
-
-  async function attachAllMedia() { for (const l of LESSONS) { await attachMediaAndCaptionsForLesson(l); } }
-
-  function trySyncTotalLessons() {
-    if (window.__DISABLE_TOTAL_SYNC__) { console.log("[sync] disabled by kill switch"); return; }
-    if (!window.firebase || !firebase.apps || firebase.apps.length === 0) return;
-    // left here in case you enable it later
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    applyLessonTitles();
-    attachAllMedia();
-    trySyncTotalLessons();
-  });
-
-  // Second pass to override any earlier src set by other scripts
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      if (typeof attachAllMedia === 'function') {
-        console.log('[media] second pass attachAllMedia()');
-        attachAllMedia();
-      }
-    }, 1500);
-  });
-</script>
-<!-- === END: Campus media/titles mapping (UPPERCASE, no accents) === -->
+<!-- === END: Campus media/titles mapping (Aug 30, 2025) === -->
 
 </body>
 </html>
