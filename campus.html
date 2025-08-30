@@ -62,7 +62,7 @@
   <header class="bg-white shadow-sm sticky top-0 z-30">
     <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2" aria-label="Ir al inicio de Aula GenIA">
-        <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-16 w-auto"" />
+        <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aula GenIA" class="h-16 w-auto" />
       </a>
       <div id="user-profile" class="hidden sm:flex items-center gap-3 relative">
         <span id="user-name" class="font-semibold text-gray-700 truncate max-w-[15ch]"></span>
@@ -345,6 +345,54 @@ async function getTotalLessons(courseId) {
   }
 }
 
+async function getCourseProgress(courseId, userId) {
+  // Total de lecciones (prefiere Firestore courses/{id}.totalLessons; fallback a ALL_COURSES_DATA)
+  const totalLessons = await getTotalLessons(courseId);
+
+  // Recolectar completadas desde ambos esquemas posibles:
+  // A) userProgress/{uid}.{courseId}.completedLessons
+  // B) users/{uid}/progress/{courseId}.completedLessons
+  const completed = new Set();
+
+  // A) userProgress agregada
+  try {
+    const aggSnap = await db.collection('userProgress').doc(userId).get();
+    if (aggSnap.exists) {
+      const pData = aggSnap.data() || {};
+      const courseP = pData[courseId];
+      if (courseP) {
+        if (Array.isArray(courseP.completedLessons)) {
+          courseP.completedLessons.forEach(id => completed.add(id));
+        } else if (courseP.completedLessons && typeof courseP.completedLessons === 'object') {
+          Object.keys(courseP.completedLessons).forEach(k => { if (courseP.completedLessons[k]) completed.add(k); });
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('getCourseProgress: lectura agregada userProgress falló:', e);
+  }
+
+  // B) por-doc en subcolección users/{uid}/progress/{courseId}
+  try {
+    const pathSnap = await db.collection('users').doc(userId).collection('progress').doc(courseId).get();
+    if (pathSnap.exists) {
+      const d = pathSnap.data() || {};
+      if (Array.isArray(d.completedLessons)) {
+        d.completedLessons.forEach(id => completed.add(id));
+      } else if (d.completedLessons && typeof d.completedLessons === 'object') {
+        Object.keys(d.completedLessons).forEach(k => { if (d.completedLessons[k]) completed.add(k); });
+      }
+    }
+  } catch (e) {
+    console.warn('getCourseProgress: lectura por-doc users/{uid}/progress falló:', e);
+  }
+
+  const done = completed.size;
+  let percent = totalLessons > 0 ? Math.round((done / totalLessons) * 100) : 0;
+  if (percent > 100) percent = 100;
+  return { done, total: totalLessons, percent };
+}
+
 
       // --- Lógica de UI General (Modales) (sin cambios) ---
       const enrollModalOverlay = document.getElementById('enroll-modal-overlay');
@@ -457,7 +505,7 @@ async function getTotalLessons(courseId) {
       // --- Lógica de Validación de Perfil (Sin cambios) ---
       function validateRut(rut) { rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); const rutBody = rut.slice(0, -1); let dv = rut.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; let sum = 0; let multiple = 2; for (let i = rutBody.length - 1; i >= 0; i--) { sum += rutBody.charAt(i) * multiple; if (multiple < 7) multiple++; else multiple = 2; } const calculatedDv = 11 - (sum % 11); const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); return dv === expectedDv; }
       function setError(field, message) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.add('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = message; }
-      function clearError(field) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) input.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = ''; }
+      function clearError(field) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = ''; }
       const countrySelect = document.getElementById('profile-country-select');
       countrySelect.addEventListener('change', () => { if (countrySelect.value !== 'CL') { document.getElementById('rut-error').textContent = ''; document.getElementById('profile-rut-input').classList.remove('form-input-error'); } });
       function clearAllErrors() { ['name', 'rut', 'country'].forEach(field => { const input = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (input) input.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if (errorEl) errorEl.textContent = ''; }); }
@@ -507,9 +555,8 @@ async function getTotalLessons(courseId) {
               saveSpinner.classList.add('hidden');
           }
       });
-
       // --- Lógica de Cursos (REFACTORIZADA) ---
-function updateCardForEnrolledUser(card, progress, courseId) {
+      function updateCardForEnrolledUser(card, progress, courseId) {
           const tagEl = card.querySelector('.tag');
           const percentEl = card.querySelector('.percent');
           const fillEl = card.querySelector('.fill');
@@ -580,38 +627,9 @@ function updateCardForEnrolledUser(card, progress, courseId) {
               }
 
               if (hasAccess) {
-                  const progressRef = db.collection('userProgress').doc(userId);
-                  const progressDoc = await progressRef.get();
-                  const progressData = progressDoc.exists ? progressDoc.data() : {};
-                  const courseProgressData = progressData[courseId] || { completedLessons: [] };
-                  
-                  const totalLessons = await getTotalLessons(courseId);
-                  
-                  // =========================================================================
-                  // INICIO DE LA CORRECCIÓN DEL BUG DE PROGRESO
-                  // =========================================================================
-                  
-                  // 1. Asegurarse de que 'completedLessons' sea un array
-                  const completedLessons = Array.isArray(courseProgressData.completedLessons) ? courseProgressData.completedLessons : [];
-                  
-                  // 2. Usar un Set para obtener solo los IDs únicos de lecciones completadas
-                  const uniqueCompletedLessons = new Set(completedLessons);
-                  const completedCount = uniqueCompletedLessons.size;
-                  
-                  // 3. Calcular el progreso y asegurarse de que no exceda el 100%
-                  let progressValue = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-                  if (progressValue > 100) {
-                      progressValue = 100; // Limita el progreso al 100% como máximo
-                  }
-                  
-                  console.log(`Course: ${courseId}, Completed: ${completedCount}, Total: ${totalLessons}, Progress: ${progressValue}%`);
-
-                  // =========================================================================
-                  // FIN DE LA CORRECCIÓN DEL BUG DE PROGRESO
-                  // =========================================================================
-
-                  updateCardForEnrolledUser(courseCard, progressValue, courseId);
-              } else {
+                  const { percent } = await getCourseProgress(courseId, userId);
+                  updateCardForEnrolledUser(courseCard, percent, courseId);
+                  } else {
                   updateCardForUnenrolledUser(courseCard);
               }
           } catch (error) {
