@@ -331,6 +331,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <!-- Global kill switch for Firestore writes -->
+    <script>
+      const FIRESTORE_SYNC = true;
+    </script>
 
     <script defer>
         document.addEventListener('DOMContentLoaded', () => {
@@ -472,8 +476,10 @@
         ]
       }
     ]
-  }
+  } 
 };
+
+            window.ALL_COURSES_DATA = ALL_COURSES_DATA;
 
             const courseData = ALL_COURSES_DATA[courseId];
             const allLessons = courseData.modules.flatMap(m => m.lessons);
@@ -701,7 +707,49 @@
             if (dom.reviewCourseBtn) dom.reviewCourseBtn.addEventListener('click', hideCompletionModal);
             
             const profileModalOverlay = document.getElementById('profile-modal-overlay'); const profileModal = document.getElementById('profile-modal'); const avatarButton = document.getElementById('avatar-button'); const cancelProfileBtn = document.getElementById('cancel-profile-btn'); const closeProfileBtn = document.getElementById('close-profile-modal-btn'); const profileForm = document.getElementById('profile-form'); const profileNameInput = document.getElementById('profile-name-input'); const profileRutInput = document.getElementById('profile-rut-input'); const profileEmailInput = document.getElementById('profile-email-input'); const profileJobInput = document.getElementById('profile-job-input'); const profileCountrySelect = document.getElementById('profile-country-select'); const profileGenderSelect = document.getElementById('profile-gender-select'); const profileBirthdateInput = document.getElementById('profile-birthdate-input'); const formStatus = document.getElementById('form-status'); const saveBtn = document.getElementById('save-profile-btn'); const saveBtnText = document.getElementById('save-btn-text'); const saveSpinner = document.getElementById('save-spinner');
-            async function showProfileModal() { if (!profileForm || !profileEmailInput || !profileModalOverlay || !profileModal) return; profileForm.reset(); clearAllErrors(); if(formStatus) formStatus.classList.add('hidden'); const user = auth.currentUser; if (!user) return; profileEmailInput.value = user.email || ''; const userDocRef = db.collection('users').doc(user.uid); try { const doc = await userDocRef.get(); if (doc.exists) { const data = doc.data(); if (profileNameInput) profileNameInput.value = data.displayName || user.displayName || ''; if (profileRutInput) profileRutInput.value = data.rut || ''; if (profileJobInput) profileJobInput.value = data.jobTitle || ''; if (profileCountrySelect) profileCountrySelect.value = data.country || ''; if (profileGenderSelect) profileGenderSelect.value = data.gender || ''; if (profileBirthdateInput) profileBirthdateInput.value = data.birthdate || ''; } else { if (profileNameInput) profileNameInput.value = user.displayName || ''; } } catch (error) {  console.error("Error al cargar datos del perfil:", error); if(formStatus) { formStatus.textContent = 'Error al cargar tus datos. Intenta de nuevo.'; formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700'; formStatus.classList.remove('hidden'); } } profileModalOverlay.classList.remove('hidden'); profileModal.classList.remove('hidden'); setTimeout(() => { const inner = profileModal.querySelector('div > div'); if (inner) inner.classList.remove('scale-95', 'opacity-0'); }, 10); }
+            async function showProfileModal() {
+                if (!profileForm || !profileEmailInput || !profileModalOverlay || !profileModal) return;
+                profileForm.reset();
+                clearAllErrors();
+                if (formStatus) formStatus.classList.add('hidden');
+                const user = auth.currentUser;
+                if (!user) return;
+                profileEmailInput.value = user.email || '';
+                const userDocRef = db.collection('users').doc(user.uid);
+                try {
+                    const doc = await userDocRef.get();
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (profileNameInput) {
+                            profileNameInput.value = data.displayName || '';
+                            if (!data.displayName) profileNameInput.placeholder = user.displayName || '';
+                        }
+                        if (profileRutInput) profileRutInput.value = data.rut || '';
+                        if (profileJobInput) profileJobInput.value = data.jobTitle || '';
+                        if (profileCountrySelect) profileCountrySelect.value = data.country || '';
+                        if (profileGenderSelect) profileGenderSelect.value = data.gender || '';
+                        if (profileBirthdateInput) profileBirthdateInput.value = data.birthdate || '';
+                    } else {
+                        if (profileNameInput) {
+                            profileNameInput.value = '';
+                            profileNameInput.placeholder = user.displayName || '';
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error al cargar datos del perfil:", error);
+                    if (formStatus) {
+                        formStatus.textContent = 'Error al cargar tus datos. Intenta de nuevo.';
+                        formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
+                        formStatus.classList.remove('hidden');
+                    }
+                }
+                profileModalOverlay.classList.remove('hidden');
+                profileModal.classList.remove('hidden');
+                setTimeout(() => {
+                    const inner = profileModal.querySelector('div > div');
+                    if (inner) inner.classList.remove('scale-95', 'opacity-0');
+                }, 10);
+            }
             function hideProfileModal() { if (!profileModalOverlay || !profileModal) return; const inner = profileModal.querySelector('div > div'); if (inner) inner.classList.add('scale-95', 'opacity-0'); setTimeout(() => { profileModalOverlay.classList.add('hidden'); profileModal.classList.add('hidden'); if (inner) inner.classList.remove('scale-95', 'opacity-0'); }, 300); }
             if (avatarButton) avatarButton.addEventListener('click', () => showProfileModal()); if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', hideProfileModal); if (closeProfileBtn) closeProfileBtn.addEventListener('click', hideProfileModal); if (profileModalOverlay) profileModalOverlay.addEventListener('click', hideProfileModal);
             function validateRut(rut) { rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); const rutBody = rut.slice(0, -1); let dv = rut.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; let sum = 0, multiple = 2; for (let i = rutBody.length - 1; i >= 0; i--) { sum += rutBody.charAt(i) * multiple; if (multiple < 7) multiple++; else multiple = 2; } const calculatedDv = 11 - (sum % 11); const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); return dv === expectedDv; }
@@ -709,7 +757,52 @@
             function clearError(field) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = ''; }
             function clearAllErrors() { ['name', 'rut', 'country'].forEach(field => clearError(field)); }
             function validateForm() { let isValid = true; clearAllErrors(); if (profileNameInput && (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' '))) { setError('name', 'Ingresa tu nombre y apellido completo.'); isValid = false; } if (profileCountrySelect && profileCountrySelect.value === '') { setError('country', 'Selecciona tu país de residencia.'); isValid = false; } if (profileCountrySelect && profileCountrySelect.value === 'CL' && profileRutInput && !validateRut(profileRutInput.value)) { setError('rut', 'El RUT ingresado no es válido.'); isValid = false; } return isValid; }
-            if (profileForm) profileForm.addEventListener('submit', async (e) => { e.preventDefault(); if (!validateForm()) return; if (saveBtn) saveBtn.disabled = true; if (saveBtnText) saveBtnText.textContent = 'Guardando...'; if (saveSpinner) saveSpinner.classList.remove('hidden'); if(formStatus) formStatus.classList.add('hidden'); const user = auth.currentUser; const newName = profileNameInput ? profileNameInput.value.trim() : ''; const userDocRef = db.collection('users').doc(user.uid); try { if (newName && user && newName !== user.displayName) { await user.updateProfile({ displayName: newName }); } await userDocRef.set({ displayName: newName, email: user.email, rut: profileRutInput ? profileRutInput.value.trim() : '', jobTitle: profileJobInput ? profileJobInput.value.trim() : '', country: profileCountrySelect ? profileCountrySelect.value : '', gender: profileGenderSelect ? profileGenderSelect.value : '', birthdate: profileBirthdateInput ? profileBirthdateInput.value : '', }, { merge: true }); if (dom.userName) dom.userName.textContent = newName; if(formStatus) { formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700'; formStatus.textContent = '¡Perfil actualizado con éxito!'; formStatus.classList.remove('hidden'); } showToast('¡Perfil actualizado con éxito!'); setTimeout(hideProfileModal, 1500); } catch (error) { console.error("Error al guardar perfil:", error); if(formStatus) { formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700'; formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.'; formStatus.classList.remove('hidden'); } } finally { if (saveBtn) saveBtn.disabled = false; if (saveBtnText) saveBtnText.textContent = 'Guardar Cambios'; if (saveSpinner) saveSpinner.classList.add('hidden'); } });
+            if (profileForm) profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!validateForm()) return;
+                if (saveBtn) saveBtn.disabled = true;
+                if (saveBtnText) saveBtnText.textContent = 'Guardando...';
+                if (saveSpinner) saveSpinner.classList.remove('hidden');
+                if (formStatus) formStatus.classList.add('hidden');
+                const user = auth.currentUser;
+                const newName = profileNameInput ? profileNameInput.value.trim() : '';
+                const userDocRef = db.collection('users').doc(user.uid);
+                try {
+                    if (newName && user && newName !== user.displayName) {
+                        await user.updateProfile({ displayName: newName });
+                    }
+                    await userDocRef.set({
+                        displayName: newName,
+                        email: user.email,
+                        rut: profileRutInput ? profileRutInput.value.trim() : '',
+                        jobTitle: profileJobInput ? profileJobInput.value.trim() : '',
+                        country: profileCountrySelect ? profileCountrySelect.value : '',
+                        gender: profileGenderSelect ? profileGenderSelect.value : '',
+                        birthdate: profileBirthdateInput ? profileBirthdateInput.value : '',
+                    }, { merge: true });
+                    if (currentUser) currentUser.name = newName;
+                    if (dom.userName) dom.userName.textContent = newName;
+                    if (dom.userAvatar && !user.photoURL) dom.userAvatar.src = `https://placehold.co/100x100/14b8a6/FFFFFF?text=${newName.charAt(0).toUpperCase()}`;
+                    if (formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700';
+                        formStatus.textContent = '¡Perfil actualizado con éxito!';
+                        formStatus.classList.remove('hidden');
+                    }
+                    showToast('¡Perfil actualizado con éxito!');
+                    setTimeout(hideProfileModal, 1500);
+                } catch (error) {
+                    console.error("Error al guardar perfil:", error);
+                    if (formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
+                        formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.';
+                        formStatus.classList.remove('hidden');
+                    }
+                } finally {
+                    if (saveBtn) saveBtn.disabled = false;
+                    if (saveBtnText) saveBtnText.textContent = 'Guardar Cambios';
+                    if (saveSpinner) saveSpinner.classList.add('hidden');
+                }
+            });
             
             function activateTab(tabId) {
                 if (!dom.learningTabs) return;
@@ -1052,11 +1145,20 @@
 
             if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
 
-            auth.onAuthStateChanged(user => {
+            auth.onAuthStateChanged(async user => {
                 if (user) {
-                    currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
-                    if (dom.userName) dom.userName.textContent = currentUser.name;
-                    if (dom.userAvatar) dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
+                    let displayName = '';
+                    try {
+                        const doc = await db.collection('users').doc(user.uid).get();
+                        if (doc.exists) displayName = doc.data().displayName || '';
+                    } catch (e) {
+                        console.error("Error obteniendo perfil:", e);
+                    }
+                    currentUser = { uid: user.uid, name: displayName };
+                    if (!displayName) showProfileModal();
+                    if (dom.userName) dom.userName.textContent = displayName;
+                    const avatarLetter = (displayName || 'A').charAt(0).toUpperCase();
+                    if (dom.userAvatar) dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${avatarLetter}`;
                     if (dom.userProfile) { dom.userProfile.classList.remove('hidden'); dom.userProfile.classList.add('flex'); }
                     loadProgressAndInitialize();
                 } else {
@@ -1069,113 +1171,9 @@
 
 
 
-<script>
-// ==== Sync totalLessons from campus-curso-ia to Firestore ====
-(function(){
-  function getCourseId() {
-    try {
-      const p = new URLSearchParams(location.search);
-      const cid = p.get('course');
-      return cid || (window.COURSE_ID || 'ia-aplicada-esencial');
-    } catch(e) { return 'ia-aplicada-esencial'; }
-  }
-  function countLessons() {
-    try {
-      // Count any element that represents a lesson
-      const nodes = document.querySelectorAll('[data-lesson-id]');
-      if (nodes && nodes.length) return nodes.length;
-      // Fallback: sections with lesson markers
-      return document.querySelectorAll('section[id^="lesson-"], section[data-lesson]').length;
-    } catch(e){ return 0; }
-  }
-  function whenFirebaseReady(fn, tries){
-    tries = tries || 0;
-    if (window.firebase && firebase.apps && firebase.apps.length > 0) return fn();
-    if (tries > 100) return console.warn('Firebase not ready for totalLessons sync');
-    setTimeout(function(){ whenFirebaseReady(fn, tries+1); }, 100);
-  }
-  function syncTotal(){
-  if (typeof FIRESTORE_SYNC !== 'undefined' && !FIRESTORE_SYNC) { console.log('[sync] deshabilitado por kill switch'); return; }
-    try {
-      const total = countLessons();
-      if (!total || !(total > 0)) return;
-      const courseId = getCourseId();
-      const db = firebase.firestore();
-      db.collection('courses').doc(courseId).set({ totalLessons: total }, { merge: true })
-        .then(() => console.log('[sync] totalLessons ->', courseId, total))
-        .catch(err => console.warn('[sync] totalLessons failed', err));
-    } catch(e){ console.warn('[sync] totalLessons exception', e); }
-  }
-  // run on ready + after DOM ready
-  whenFirebaseReady(syncTotal);
-  document.addEventListener('DOMContentLoaded', syncTotal);
-})();
-</script>
-
-
-<script>
-(function(){
-  try {
-    if (window.firebase && (!firebase.apps || firebase.apps.length === 0) && window.firebaseConfig) {
-      firebase.initializeApp(window.firebaseConfig || firebaseConfig);
-    }
-    // expose compat refs if not already set
-    if (window.firebase && firebase.apps && firebase.apps.length > 0) {
-      window.app = firebase.app();
-      if (!window.auth) window.auth = firebase.auth();
-      if (!window.db) window.db = firebase.firestore();
-      if (!window.storage) window.storage = firebase.storage();
-    }
-  } catch(e) { console.warn('Init guard warning:', e); }
-})();
-</script>
-
-
-<script>
-(function(){
-  function getCourseId() {
-    try {
-      const p = new URLSearchParams(location.search);
-      return p.get('course') || (window.COURSE_ID || 'ia-aplicada-esencial');
-    } catch(e) { return 'ia-aplicada-esencial'; }
-  }
-  function countLessons() {
-    try {
-      const nodes = document.querySelectorAll('[data-lesson-id]');
-      if (nodes && nodes.length) return nodes.length;
-      return document.querySelectorAll('section[id^="lesson-"], section[data-lesson]').length;
-    } catch(e){ return 0; }
-  }
-  function whenReady(fn, tries){
-    tries = tries || 0;
-    if (window.firebase && firebase.apps && firebase.apps.length > 0) return fn();
-    if (tries > 100) return;
-    setTimeout(function(){ whenReady(fn, tries+1); }, 100);
-  }
-  function syncTotal(){
-  if (typeof FIRESTORE_SYNC !== 'undefined' && !FIRESTORE_SYNC) { console.log('[sync] deshabilitado por kill switch'); return; }
-    try {
-      const total = countLessons();
-      if (!total || !(total > 0)) return;
-      const courseId = getCourseId();
-      const db = firebase.firestore();
-      db.collection('courses').doc(courseId)
-        .set({ totalLessons: total }, { merge: true })
-        .then(() => console.log('[sync] totalLessons ->', courseId, total))
-        .catch(err => console.warn('[sync] totalLessons failed', err));
-    } catch(e){ console.warn('[sync] totalLessons exception', e); }
-  }
-  whenReady(syncTotal);
-  document.addEventListener('DOMContentLoaded', syncTotal);
-})();
-</script>
-
-
 <!-- === START: Campus media/titles mapping (Aug 30, 2025) === -->
 <script>
 const STORAGE_DIR = "";
-// Kill switch para evitar errores si Firestore no permite escritura
-const FIRESTORE_SYNC = TRUE;
 const LESSONS = [
   { id: "onboarding", title: "ONBOARDING · IA Aplicada · Programa Esencial",
     videoFile: "ONBOARDING-IA-Aplicada-Programa-Esencial.mp4",
@@ -1244,20 +1242,22 @@ async function attachMediaAndCaptionsForLesson(lesson) {
   } catch (err) { console.warn("[media] no se pudo adjuntar", lesson.id, err); }
 }
 async function attachAllMedia() { for (const l of LESSONS) { await attachMediaAndCaptionsForLesson(l); } }
-function getTotalLessonsFromConfig() { return LESSONS.length; }
-function canSyncTotalLessons(user){ const ADMIN_EMAIL = ""; return !!user && !!ADMIN_EMAIL && user.email === ADMIN_EMAIL; }
+function getTotalLessonsFromConfig(courseId) {
+  const courses = window.ALL_COURSES_DATA || {};
+  const course = courses[courseId];
+  if (!course || !Array.isArray(course.modules)) return 0;
+  return course.modules.reduce((sum, m) => sum + (m.lessons ? m.lessons.length : 0), 0);
+}
 function trySyncTotalLessons() {
+  if (typeof FIRESTORE_SYNC !== 'undefined' && !FIRESTORE_SYNC) { console.log('[sync] deshabilitado por kill switch'); return; }
   if (!window.firebase || !firebase.apps || firebase.apps.length === 0) return;
-  firebase.auth().onAuthStateChanged((user) => {
-    if (!canSyncTotalLessons(user)) { console.log("[sync] skip totalLessons (no permission)"); return; }
-    const params = new URLSearchParams(location.search);
-    const courseId = params.get('course') || 'ia-aplicada-esencial';
-    const total = getTotalLessonsFromConfig();
-    firebase.firestore().collection('courses').doc(courseId)
-      .set({ totalLessons: total }, { merge: true })
-      .then(()=>console.log("[sync] totalLessons ->", courseId, total))
-      .catch(err=>console.warn("[sync] totalLessons failed", err));
-  });
+  const params = new URLSearchParams(location.search);
+  const courseId = params.get('course') || 'ia-aplicada-esencial';
+  const total = getTotalLessonsFromConfig(courseId);
+  firebase.firestore().collection('courses').doc(courseId)
+    .set({ totalLessons: total }, { merge: true })
+    .then(()=>console.log('[sync] totalLessons ->', courseId, total))
+    .catch(err=>console.warn('[sync] totalLessons failed', err));
 }
 document.addEventListener('DOMContentLoaded', () => { applyLessonTitles(); attachAllMedia(); trySyncTotalLessons(); });
 </script>

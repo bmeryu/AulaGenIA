@@ -287,7 +287,6 @@
       const COURSE_CONFIG = {
         'ia-aplicada-esencial': {
           title: 'IA Aplicada · Esencial',
-          totalLessons: 11, // Número fijo basado en tu estructura
           modules: [
             {
               title: 'Módulo 0: Onboarding',
@@ -335,6 +334,11 @@
           ]
         }
       };
+
+      // Calcular automáticamente el total de lecciones para cada curso
+      Object.values(COURSE_CONFIG).forEach(course => {
+        course.totalLessons = course.modules.reduce((sum, m) => sum + (m.lessons ? m.lessons.length : 0), 0);
+      });
 
       /**
        * Función centralizada para obtener el progreso del usuario
@@ -503,16 +507,18 @@
               const doc = await userDocRef.get();
               if (doc.exists) {
                   const data = doc.data();
-                  profileNameInput.value = data.displayName || user.displayName || '';
+                  profileNameInput.value = data.displayName || '';
+                  if (!data.displayName) profileNameInput.placeholder = user.displayName || '';
                   profileRutInput.value = data.rut || '';
                   profileJobInput.value = data.jobTitle || '';
                   profileCountrySelect.value = data.country || '';
                   profileGenderSelect.value = data.gender || '';
                   profileBirthdateInput.value = data.birthdate || '';
               } else {
-                  profileNameInput.value = user.displayName || '';
+                  profileNameInput.value = '';
+                  profileNameInput.placeholder = user.displayName || '';
               }
-          } catch (error) { 
+          } catch (error) {
               console.error("Error al cargar datos del perfil:", error);
               formStatus.textContent = 'Error al cargar tus datos. Intenta de nuevo.';
               formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
@@ -638,17 +644,20 @@
                   await user.updateProfile({ displayName: newName });
               }
               await userDocRef.set({
-                  displayName: newName, 
-                  email: user.email, 
-                  rut: profileRutInput.value.trim(), 
-                  jobTitle: profileJobInput.value.trim(), 
-                  country: profileCountrySelect.value, 
-                  gender: profileGenderSelect.value, 
-                  birthdate: profileBirthdateInput.value, 
+                  displayName: newName,
+                  email: user.email,
+                  rut: profileRutInput.value.trim(),
+                  jobTitle: profileJobInput.value.trim(),
+                  country: profileCountrySelect.value,
+                  gender: profileGenderSelect.value,
+                  birthdate: profileBirthdateInput.value,
                   profileCompleted: true
               }, { merge: true });
 
+              window.userDisplayName = newName;
               document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
+              const avatar = document.getElementById('user-avatar');
+              if (avatar && !user.photoURL) avatar.src = `https://placehold.co/100x100/14b8a6/FFFFFF?text=${newName.charAt(0).toUpperCase()}`;
               formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700';
               formStatus.textContent = '¡Perfil actualizado con éxito!';
               formStatus.classList.remove('hidden');
@@ -844,7 +853,7 @@
               btnSpinner.classList.remove('hidden');
 
               try {
-                  const userName = user.displayName || 'Alumno sin nombre';
+                  const userName = window.userDisplayName || user.displayName || 'Alumno sin nombre';
                   await docRef.set({
                       email: user.email,
                       displayName: userName,
@@ -874,18 +883,26 @@
       }
 
       // --- Lógica de Autenticación (Punto de Entrada) ---
-      auth.onAuthStateChanged(user => {
+      auth.onAuthStateChanged(async user => {
         if (user) {
-          const name = user.displayName || 'Alumno';
+          let name = '';
+          try {
+            const doc = await db.collection('users').doc(user.uid).get();
+            if (doc.exists) name = doc.data().displayName || '';
+          } catch (e) {
+            console.error('Error obteniendo perfil:', e);
+          }
+          window.userDisplayName = name;
           document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = name));
-          document.getElementById('user-avatar').src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${name[0].toUpperCase()}`;
+          const avatarSrc = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${(name || 'A')[0].toUpperCase()}`;
+          document.getElementById('user-avatar').src = avatarSrc;
           document.getElementById('user-profile').classList.remove('hidden');
-          
+
           document.getElementById('logout-btn').addEventListener('click', e => {
             e.preventDefault();
             auth.signOut().then(() => window.location.href = 'index.html');
           });
-          
+
           checkAndEnforceProfileCompletion(user);
 
           // Inicializar botón de Lista de Espera
