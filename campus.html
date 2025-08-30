@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v6.2 (Content Update)
+  CAMPUS DASHBOARD · AULA GENIA v6.3 (Progress Sync Fix)
   -------------------------------------------------------------------
-  - Se oculta el programa 'Esencial Plus' del dashboard principal
-    comentando su bloque de código HTML.
+  - Corregida sincronización de progreso con campus-curso-ia.html
+  - Funciones centralizadas para leer progreso desde múltiples fuentes
+  - Debug integrado para monitoreo
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -112,10 +113,6 @@
         </article>
         <!-- FIN: Curso IA Aplicada · Esencial -->
 
-        <!-- INICIO: Curso IA Aplicada · Esencial Plus (Oculto)
-        -->
-        <!-- FIN: Curso IA Aplicada · Esencial Plus -->
-
         <!-- INICIO: Nuevo Curso Avanzado (Lista de Espera) -->
         <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="programa-avanzado">
             <div class="p-6 flex-grow">
@@ -153,7 +150,7 @@
   </main>
 
   <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
-    © 2025 Aula GenIA · Todos los derechos reservados.
+    © 2025 Aula GenIA · Todos los derechos reservados.
   </footer>
 
   <!-- MODALES (sin cambios) -->
@@ -280,107 +277,174 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
       
-      // --- IDs de los Cursos ---
-      const ESSENTIAL_COURSE_ID = 'ia-aplicada-esencial';
-const ADVANCED_COURSE_ID = 'programa-avanzado';
-      const EXPERT_LAB_ID = 'laboratorio-experto';
+      // =================================================================
+      // FUNCIONES CENTRALIZADAS PARA SINCRONIZAR PROGRESO
+      // =================================================================
 
-      // --- Base de datos de información de cursos ---
-      const ALL_COURSES_DATA = {
-        [ESSENTIAL_COURSE_ID]: {
+      /**
+       * Configuración centralizada de cursos
+       */
+      const COURSE_CONFIG = {
+        'ia-aplicada-esencial': {
           title: 'IA Aplicada · Esencial',
+          totalLessons: 11, // Número fijo basado en tu estructura
           modules: [
-            { title: 'Módulo 0: Onboarding', lessons: [{ id: '0-1' }, { id: '0-2' }, { id: '0-3' }] }, 
-            { title: 'Módulo 1: ¿Qué es la IA?', lessons: [{ id: '1-1' }, { id: 'q-1' }] }
-          ]
-        },
-        [/*REMOVED_ESSENTIAL_PLUS_COURSE_ID*/]: {
-          title: 'IA Aplicada · Esencial Plus',
-          modules: [
-            { title: 'Módulo 1: Fundamentos de Marketing con IA', lessons: [{ id: 'mkt-1-1' }, { id: 'mkt-1-2' }] },
-            { title: 'Módulo 2: Creación de Contenido Automatizado', lessons: [{ id: 'mkt-2-1' }] }
+            {
+              title: 'Módulo 0: Onboarding',
+              lessons: [
+                { id: '0-1', title: 'Tu primer día con IA' },
+                { id: 'q-0', title: 'Quiz: Módulo 0' }
+              ]
+            },
+            {
+              title: 'Módulo 1: La IA en el día a día',
+              lessons: [
+                { id: '1-1', title: 'Casos de éxito reales' },
+                { id: 'q-1', title: 'Quiz: Módulo 1' }
+              ]
+            },
+            {
+              title: 'Módulo 2: Tu asistente con IA',
+              lessons: [
+                { id: '2-1', title: 'Crear tu objetivo SMART con IA' },
+                { id: 'q-2', title: 'Encuesta: Módulo 2' }
+              ]
+            },
+            {
+              title: 'Módulo 3: Creando contenido con IA',
+              lessons: [
+                { id: '3-1', title: 'Crear imágenes con DALL-E' },
+                { id: 'q-3', title: 'Quiz: Módulo 3' }
+              ]
+            },
+            {
+              title: 'Módulo 4: Automatización de tareas',
+              lessons: [
+                { id: '4-1', title: 'Automatizar correos con IA' },
+                { id: '4-2', title: 'Automatización práctica extra' },
+                { id: 'q-4', title: 'Quiz: Módulo 4' }
+              ]
+            },
+            {
+              title: 'Módulo 5: Casos de uso avanzados',
+              lessons: [
+                { id: '5-1', title: 'Integrar IA en tu negocio' },
+                { id: 'q-5', title: 'Encuesta: Módulo 5' }
+              ]
+            }
           ]
         }
       };
 
-// === Option B patch: read totalLessons from Firestore if present, else fallback ===
-async function getTotalLessons(courseId) {
-  try {
-    const docRef = db.collection('courses').doc(courseId);
-    const snap = await docRef.get();
-    if (snap.exists) {
-      const data = snap.data() || {};
-      if (typeof data.totalLessons === 'number' && data.totalLessons > 0) {
-        return data.totalLessons;
-      }
-    }
-  } catch (e) {
-    console.warn('getTotalLessons remote read failed:', e);
-  }
-  try {
-    const course = ALL_COURSES_DATA && ALL_COURSES_DATA[courseId];
-    if (!course) return 0;
-    return (course.modules || []).reduce((t, m) => t + (m.lessons ? m.lessons.length : 0), 0);
-  } catch (e) {
-    console.warn('getTotalLessons local fallback failed:', e);
-    return 0;
-  }
-}
+      /**
+       * Función centralizada para obtener el progreso del usuario
+       */
+      async function getUserProgress(userId, courseId) {
+        const completedLessons = new Set();
+        let currentLessonId = null;
+        let unlockedBadges = [];
 
-async function getCourseProgress(courseId, userId) {
-  // Total de lecciones (prefiere Firestore courses/{id}.totalLessons; fallback a ALL_COURSES_DATA)
-  const totalLessons = await getTotalLessons(courseId);
-
-  // Recolectar completadas desde ambos esquemas posibles:
-  // A) userProgress/{uid}.{courseId}.completedLessons
-  // B) users/{uid}/progress/{courseId}.completedLessons
-  const completed = new Set();
-
-  // A) userProgress agregada
-  try {
-    const aggSnap = await db.collection('userProgress').doc(userId).get();
-    if (aggSnap.exists) {
-      const pData = aggSnap.data() || {};
-      const courseP = pData[courseId];
-      if (courseP) {
-        if (Array.isArray(courseP.completedLessons)) {
-          courseP.completedLessons.forEach(id => completed.add(id));
-        } else if (courseP.completedLessons && typeof courseP.completedLessons === 'object') {
-          Object.keys(courseP.completedLessons).forEach(k => { if (courseP.completedLessons[k]) completed.add(k); });
+        try {
+          // Método 1: Leer desde userProgress/{userId}
+          const userProgressDoc = await db.collection('userProgress').doc(userId).get();
+          if (userProgressDoc.exists) {
+            const data = userProgressDoc.data();
+            const courseProgress = data[courseId];
+            
+            if (courseProgress) {
+              // Agregar lecciones completadas
+              if (Array.isArray(courseProgress.completedLessons)) {
+                courseProgress.completedLessons.forEach(lessonId => completedLessons.add(lessonId));
+              }
+              
+              // Obtener lección actual y badges
+              if (courseProgress.currentLessonId) {
+                currentLessonId = courseProgress.currentLessonId;
+              }
+              if (Array.isArray(courseProgress.unlockedBadges)) {
+                unlockedBadges = courseProgress.unlockedBadges;
+              }
+            }
+          }
+        } catch (error) {
+          console.warn('Error leyendo userProgress:', error);
         }
+
+        try {
+          // Método 2: Leer desde users/{userId}/progress/{courseId}
+          if (!window.__DISABLE_REMOTE_USER_READS__) {
+            const userProgressSubDoc = await db.collection('users').doc(userId)
+              .collection('progress').doc(courseId).get();
+            
+            if (userProgressSubDoc.exists) {
+              const data = userProgressSubDoc.data();
+              
+              // Agregar lecciones completadas adicionales
+              if (Array.isArray(data.completedLessons)) {
+                data.completedLessons.forEach(lessonId => completedLessons.add(lessonId));
+              }
+              
+              // Actualizar lección actual si no se había obtenido antes
+              if (!currentLessonId && data.currentLessonId) {
+                currentLessonId = data.currentLessonId;
+              }
+              
+              // Combinar badges
+              if (Array.isArray(data.unlockedBadges)) {
+                unlockedBadges = [...new Set([...unlockedBadges, ...data.unlockedBadges])];
+              }
+            }
+          }
+        } catch (error) {
+          if (error && (error.code === 'permission-denied' || (''+error).includes('insufficient permissions'))) {
+            window.__DISABLE_REMOTE_USER_READS__ = true;
+          } else {
+            console.warn('Error leyendo users/progress:', error);
+          }
+        }
+
+        return {
+          completedLessons: Array.from(completedLessons),
+          currentLessonId,
+          unlockedBadges
+        };
       }
-    }
-  } catch (e) {
-    console.warn('getCourseProgress: lectura agregada userProgress falló:', e);
-  }
 
-  // B) por-doc en subcolección users/{uid}/progress/{courseId}
-  try {
-    let pathSnap = null;
-  if (!window.__DISABLE_REMOTE_USER_READS__) {
-    pathSnap = await db.collection('users').doc(userId).collection('progress').doc(courseId).get();
-  }
-    if (pathSnap.exists) {
-      const d = pathSnap.data() || {};
-      if (Array.isArray(d.completedLessons)) {
-        d.completedLessons.forEach(id => completed.add(id));
-      } else if (d.completedLessons && typeof d.completedLessons === 'object') {
-        Object.keys(d.completedLessons).forEach(k => { if (d.completedLessons[k]) completed.add(k); });
+      /**
+       * Función centralizada para calcular estadísticas de progreso
+       */
+      async function getCourseProgressStats(userId, courseId) {
+        const progress = await getUserProgress(userId, courseId);
+        const course = COURSE_CONFIG[courseId];
+        const totalLessons = course ? course.totalLessons : 0;
+        const completedCount = new Set(progress.completedLessons).size;
+        const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
+        const isComplete = completedCount >= totalLessons;
+        
+        return {
+          totalLessons,
+          completedCount,
+          percentage,
+          isComplete,
+          completedLessons: progress.completedLessons,
+          currentLessonId: progress.currentLessonId,
+          unlockedBadges: progress.unlockedBadges
+        };
       }
-    }
-  } catch (e) {
-    if (e && (e.code === 'permission-denied' || (''+e).includes('insufficient permissions'))) { window.__DISABLE_REMOTE_USER_READS__ = true; }
-    else { console.warn('getCourseProgress: lectura por-doc users/{uid}/progress falló:', e); }
-  }
 
-  const done = completed.size;
-  let percent = totalLessons > 0 ? Math.round((done / totalLessons) * 100) : 0;
-  if (percent > 100) percent = 100;
-  return { done, total: totalLessons, percent };
-}
+      // Hacer funciones disponibles globalmente
+      window.CourseProgressUtils = {
+        COURSE_CONFIG,
+        getUserProgress,
+        getCourseProgressStats
+      };
+      
+      // --- IDs de los Cursos ---
+      const ESSENTIAL_COURSE_ID = 'ia-aplicada-esencial';
+      const ADVANCED_COURSE_ID = 'programa-avanzado';
+      const EXPERT_LAB_ID = 'laboratorio-experto';
 
-
-      // --- Lógica de UI General (Modales) (sin cambios) ---
+      // --- Lógica de UI General (Modales) ---
       const enrollModalOverlay = document.getElementById('enroll-modal-overlay');
       const enrollModal = document.getElementById('enroll-modal');
       const closeEnrollModalBtn = document.getElementById('close-enroll-modal-btn');
@@ -405,7 +469,7 @@ async function getCourseProgress(courseId, userId) {
       if(closeEnrollModalBtn) closeEnrollModalBtn.addEventListener('click', hideEnrollModal);
       if(enrollModalOverlay) enrollModalOverlay.addEventListener('click', hideEnrollModal);
 
-      // --- Lógica de Perfil (Sin cambios funcionales) ---
+      // --- Lógica de Perfil ---
       const profileModalOverlay = document.getElementById('profile-modal-overlay');
       const profileModal = document.getElementById('profile-modal');
       const avatarButton = document.getElementById('avatar-button');
@@ -488,16 +552,74 @@ async function getCourseProgress(courseId, userId) {
       cancelProfileBtn.addEventListener('click', hideProfileModal);
       closeProfileBtn.addEventListener('click', hideProfileModal);
 
-      // --- Lógica de Validación de Perfil (Sin cambios) ---
-      function validateRut(rut) { rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); const rutBody = rut.slice(0, -1); let dv = rut.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; let sum = 0; let multiple = 2; for (let i = rutBody.length - 1; i >= 0; i--) { sum += rutBody.charAt(i) * multiple; if (multiple < 7) multiple++; else multiple = 2; } const calculatedDv = 11 - (sum % 11); const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); return dv === expectedDv; }
-      function setError(field, message) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.add('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = message; }
-      function clearError(field) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = ''; }
+      // --- Lógica de Validación de Perfil ---
+      function validateRut(rut) { 
+        rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); 
+        const rutBody = rut.slice(0, -1); 
+        let dv = rut.slice(-1); 
+        if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; 
+        let sum = 0; 
+        let multiple = 2; 
+        for (let i = rutBody.length - 1; i >= 0; i--) { 
+          sum += rutBody.charAt(i) * multiple; 
+          if (multiple < 7) multiple++; 
+          else multiple = 2; 
+        } 
+        const calculatedDv = 11 - (sum % 11); 
+        const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); 
+        return dv === expectedDv; 
+      }
+
+      function setError(field, message) { 
+        const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); 
+        if (inputEl) inputEl.classList.add('form-input-error'); 
+        const errorEl = document.getElementById(`${field}-error`); 
+        if(errorEl) errorEl.textContent = message; 
+      }
+
+      function clearError(field) { 
+        const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); 
+        if (inputEl) inputEl.classList.remove('form-input-error'); 
+        const errorEl = document.getElementById(`${field}-error`); 
+        if(errorEl) errorEl.textContent = ''; 
+      }
+
       const countrySelect = document.getElementById('profile-country-select');
-      countrySelect.addEventListener('change', () => { if (countrySelect.value !== 'CL') { document.getElementById('rut-error').textContent = ''; document.getElementById('profile-rut-input').classList.remove('form-input-error'); } });
-      function clearAllErrors() { ['name', 'rut', 'country'].forEach(field => { const input = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (input) input.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if (errorEl) errorEl.textContent = ''; }); }
-      function validateForm() { let isValid = true; clearAllErrors(); if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) { setError('name', 'Ingresa tu nombre y apellido completo.'); isValid = false; } if (profileCountrySelect.value === '') { setError('country', 'Selecciona tu país de residencia.'); isValid = false; } if (profileCountrySelect.value === 'CL' && !validateRut(profileRutInput.value)) { setError('rut', 'El RUT ingresado no es válido.'); isValid = false; } return isValid; }
+      countrySelect.addEventListener('change', () => { 
+        if (countrySelect.value !== 'CL') { 
+          document.getElementById('rut-error').textContent = ''; 
+          document.getElementById('profile-rut-input').classList.remove('form-input-error'); 
+        } 
+      });
+
+      function clearAllErrors() { 
+        ['name', 'rut', 'country'].forEach(field => { 
+          const input = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); 
+          if (input) input.classList.remove('form-input-error'); 
+          const errorEl = document.getElementById(`${field}-error`); 
+          if (errorEl) errorEl.textContent = ''; 
+        }); 
+      }
+
+      function validateForm() { 
+        let isValid = true; 
+        clearAllErrors(); 
+        if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) { 
+          setError('name', 'Ingresa tu nombre y apellido completo.'); 
+          isValid = false; 
+        } 
+        if (profileCountrySelect.value === '') { 
+          setError('country', 'Selecciona tu país de residencia.'); 
+          isValid = false; 
+        } 
+        if (profileCountrySelect.value === 'CL' && !validateRut(profileRutInput.value)) { 
+          setError('rut', 'El RUT ingresado no es válido.'); 
+          isValid = false; 
+        } 
+        return isValid; 
+      }
       
-      // --- Lógica de Guardado de Perfil (Modificada para recargar cursos) ---
+      // --- Lógica de Guardado de Perfil ---
       profileForm.addEventListener('submit', async (e) => {
           e.preventDefault();
           if (!validateForm()) return;
@@ -516,7 +638,14 @@ async function getCourseProgress(courseId, userId) {
                   await user.updateProfile({ displayName: newName });
               }
               await userDocRef.set({
-                  displayName: newName, email: user.email, rut: profileRutInput.value.trim(), jobTitle: profileJobInput.value.trim(), country: profileCountrySelect.value, gender: profileGenderSelect.value, birthdate: profileBirthdateInput.value, profileCompleted: true
+                  displayName: newName, 
+                  email: user.email, 
+                  rut: profileRutInput.value.trim(), 
+                  jobTitle: profileJobInput.value.trim(), 
+                  country: profileCountrySelect.value, 
+                  gender: profileGenderSelect.value, 
+                  birthdate: profileBirthdateInput.value, 
+                  profileCompleted: true
               }, { merge: true });
 
               document.querySelectorAll('#user-name, #welcome-name').forEach(el => el && (el.textContent = newName));
@@ -527,7 +656,7 @@ async function getCourseProgress(courseId, userId) {
               setTimeout(() => {
                   hideProfileModal();
                   checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
-}, 1500);
+              }, 1500);
 
           } catch (error) {
               console.error("Error al guardar perfil:", error);
@@ -540,7 +669,8 @@ async function getCourseProgress(courseId, userId) {
               saveSpinner.classList.add('hidden');
           }
       });
-      // --- Lógica de Cursos (REFACTORIZADA) ---
+
+      // --- Lógica de Cursos (ACTUALIZADA) ---
       function updateCardForEnrolledUser(card, progress, courseId) {
           const tagEl = card.querySelector('.tag');
           const percentEl = card.querySelector('.percent');
@@ -588,10 +718,11 @@ async function getCourseProgress(courseId, userId) {
           });
       }
 
+      // FUNCIÓN ACTUALIZADA CON PROGRESO CENTRALIZADO
       async function checkUserAccess(userId, courseId) {
-          let courseCard = document.querySelector(`[data-course-id="${courseId}"]`) || document.querySelector(`[data-course-id="${(courseId||'').trim()}"]`) || document.querySelector(`[data-course-id="${(courseId||'').toLowerCase()}"]`);
+          let courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
           if (!courseCard) {
-              // Si no existe la tarjeta, salimos silenciosamente para no ensuciar la consola.
+              console.warn(`No se encontró tarjeta para curso: ${courseId}`);
               return;
           }
 
@@ -602,19 +733,24 @@ async function getCourseProgress(courseId, userId) {
               let hasAccess = false;
               if (userDoc.exists) {
                   const userData = userDoc.data();
-                  const oldEssentialCourseId = 'inteligencia-aplicada'; // ID antiguo del curso Esencial
+                  const oldEssentialCourseId = 'inteligencia-aplicada';
 
                   if (userData.enrollments) {
-                      if (userData.enrollments[courseId] === true || (courseId === ESSENTIAL_COURSE_ID && userData.enrollments[oldEssentialCourseId] === true)) {
+                      if (userData.enrollments[courseId] === true || 
+                          (courseId === ESSENTIAL_COURSE_ID && userData.enrollments[oldEssentialCourseId] === true)) {
                           hasAccess = true;
                       }
                   }
               }
 
               if (hasAccess) {
-                  const { percent } = await getCourseProgress(courseId, userId);
-                  updateCardForEnrolledUser(courseCard, percent, courseId);
-                  } else {
+                  // Usar la función centralizada para obtener progreso
+                  const progressStats = await getCourseProgressStats(userId, courseId);
+                  
+                  console.log(`[CAMPUS] Progreso para ${courseId}:`, progressStats);
+                  
+                  updateCardForEnrolledUser(courseCard, progressStats.percentage, courseId);
+              } else {
                   updateCardForUnenrolledUser(courseCard);
               }
           } catch (error) {
@@ -622,6 +758,46 @@ async function getCourseProgress(courseId, userId) {
               updateCardForUnenrolledUser(courseCard);
           }
       }
+
+      // Función de debugging para verificar progreso manualmente
+      async function debugCourseProgress(userId, courseId) {
+          console.log('=== DEBUG PROGRESO CURSO (CAMPUS) ===');
+          console.log('Usuario:', userId);
+          console.log('Curso:', courseId);
+          
+          const stats = await getCourseProgressStats(userId, courseId);
+          console.log('Estadísticas centralizadas:', stats);
+          
+          // Verificar datos en userProgress
+          try {
+              const userProgressDoc = await db.collection('userProgress').doc(userId).get();
+              if (userProgressDoc.exists) {
+                  console.log('userProgress data:', userProgressDoc.data()[courseId]);
+              } else {
+                  console.log('No existe documento userProgress');
+              }
+          } catch (e) {
+              console.log('Error leyendo userProgress:', e);
+          }
+          
+          // Verificar datos en users/progress
+          try {
+              const userProgressSubDoc = await db.collection('users').doc(userId)
+                  .collection('progress').doc(courseId).get();
+              if (userProgressSubDoc.exists) {
+                  console.log('users/progress data:', userProgressSubDoc.data());
+              } else {
+                  console.log('No existe documento users/progress');
+              }
+          } catch (e) {
+              console.log('Error leyendo users/progress:', e);
+          }
+          
+          console.log('=== FIN DEBUG ===');
+      }
+
+      // Hacer debugCourseProgress disponible globalmente para testing
+      window.debugCourseProgress = debugCourseProgress;
 
       async function checkAndEnforceProfileCompletion(user) {
         try {
@@ -631,11 +807,9 @@ async function getCourseProgress(courseId, userId) {
             if (!isProfileComplete) {
                 showProfileModal(true);
             } else {
-                // Aquí se cargan los cursos, ya que el perfil está completo.
-                // Es importante que el objeto ALL_COURSES_DATA tenga la estructura
-                // de lecciones completa para cada curso que se liste.
+                // Perfil completo, cargar curso principal
                 checkUserAccess(user.uid, ESSENTIAL_COURSE_ID);
-}
+            }
         } catch (error) {
             console.error("Error verificando el estado del perfil:", error);
             showProfileModal(true);
