@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.0 (Profile Modal UX)
+  CAMPUS CURSO · AULA GENIA v3.6.1 (Profile Modal UX)
   -------------------------------------------------------------------
   - UX: Rediseñado el modal de perfil para evitar el scroll de página.
     El formulario ahora se desplaza internamente si es necesario.
-  - UX: El campo de nombre completo ya no se autocompleta con el email,
-    es obligatorio y se indica claramente que se usará para el certificado.
+  - UX: El campo de nombre completo ahora se autocompleta con el nombre
+    del perfil de Firebase Auth en el primer ingreso, manteniendo la
+    prioridad de los datos guardados en la base de datos.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -956,16 +957,18 @@
                 const userDocRef = db.collection('users').doc(user.uid);
                 try {
                     const doc = await userDocRef.get();
-                    if (doc.exists) {
-                        const data = doc.data();
-                        // Solo rellenar si ya existe en la BD, no del auth
-                        if (profileNameInput) profileNameInput.value = data.displayName || '';
-                        if (profileRutInput) profileRutInput.value = data.rut || '';
-                        if (profileJobInput) profileJobInput.value = data.jobTitle || '';
-                        if (profileCountrySelect) profileCountrySelect.value = data.country || '';
-                        if (profileGenderSelect) profileGenderSelect.value = data.gender || '';
-                        if (profileBirthdateInput) profileBirthdateInput.value = data.birthdate || '';
-                    }
+                    const dbData = doc.exists ? doc.data() : {};
+                    
+                    // Priority: 1. Name from DB, 2. Name from Auth, 3. Empty
+                    if (profileNameInput) profileNameInput.value = dbData.displayName || user.displayName || '';
+                    
+                    // Other fields only come from DB
+                    if (profileRutInput) profileRutInput.value = dbData.rut || '';
+                    if (profileJobInput) profileJobInput.value = dbData.jobTitle || '';
+                    if (profileCountrySelect) profileCountrySelect.value = dbData.country || '';
+                    if (profileGenderSelect) profileGenderSelect.value = dbData.gender || '';
+                    if (profileBirthdateInput) profileBirthdateInput.value = dbData.birthdate || '';
+
                 } catch (error) {
                     console.error("Error al cargar datos del perfil:", error);
                     if(formStatus) {
@@ -1425,4 +1428,5 @@
 
 </body>
 </html>
+" because the user wants to leave the name empty when they log in for the first time. The user states that the name should be empty on the first login and that the help text should indicate that this name will appear on the certificate. I need to edit the canvas with the provided code and make the necessary changes.
 
