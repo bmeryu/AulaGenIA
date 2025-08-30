@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v6.3 (Progress Sync Fix)
+  CAMPUS DASHBOARD · AULA GENIA v6.4 (Progress Sync Fix)
   -------------------------------------------------------------------
-  - Corregida sincronización de progreso con campus-curso-ia.html
+  - FIX: Alineado totalLessons con campus-curso-ia.html (13 lecciones).
+  - FIX: Consolidada la lectura de progreso a una única fuente (userProgress)
+    para eliminar inconsistencias.
   - Funciones centralizadas para leer progreso desde múltiples fuentes
   - Debug integrado para monitoreo
   -------------------------------------------------------------------
@@ -287,50 +289,32 @@
       const COURSE_CONFIG = {
         'ia-aplicada-esencial': {
           title: 'IA Aplicada · Esencial',
-          totalLessons: 11, // Número fijo basado en tu estructura
+          // SOLUCIÓN 1: Se actualiza el total de lecciones de 11 a 13 para que coincida con `campus-curso-ia.html`.
+          totalLessons: 13, 
           modules: [
             {
               title: 'Módulo 0: Onboarding',
-              lessons: [
-                { id: '0-1', title: 'Tu primer día con IA' },
-                { id: 'q-0', title: 'Quiz: Módulo 0' }
-              ]
+              lessons: [ { id: '0-1' }, { id: 'q-0' } ]
             },
             {
               title: 'Módulo 1: La IA en el día a día',
-              lessons: [
-                { id: '1-1', title: 'Casos de éxito reales' },
-                { id: 'q-1', title: 'Quiz: Módulo 1' }
-              ]
+              lessons: [ { id: '1-1' }, { id: 'q-1' } ]
             },
             {
               title: 'Módulo 2: Tu asistente con IA',
-              lessons: [
-                { id: '2-1', title: 'Crear tu objetivo SMART con IA' },
-                { id: 'q-2', title: 'Encuesta: Módulo 2' }
-              ]
+              lessons: [ { id: '2-1' }, { id: 'q-2' } ]
             },
             {
               title: 'Módulo 3: Creando contenido con IA',
-              lessons: [
-                { id: '3-1', title: 'Crear imágenes con DALL-E' },
-                { id: 'q-3', title: 'Quiz: Módulo 3' }
-              ]
+              lessons: [ { id: '3-1' }, { id: 'q-3' } ]
             },
             {
               title: 'Módulo 4: Automatización de tareas',
-              lessons: [
-                { id: '4-1', title: 'Automatizar correos con IA' },
-                { id: '4-2', title: 'Automatización práctica extra' },
-                { id: 'q-4', title: 'Quiz: Módulo 4' }
-              ]
+              lessons: [ { id: '4-1' }, { id: '4-2' }, { id: 'q-4' } ]
             },
             {
               title: 'Módulo 5: Casos de uso avanzados',
-              lessons: [
-                { id: '5-1', title: 'Integrar IA en tu negocio' },
-                { id: 'q-5', title: 'Encuesta: Módulo 5' }
-              ]
+              lessons: [ { id: '5-1' }, { id: 'q-5' } ]
             }
           ]
         }
@@ -345,19 +329,17 @@
         let unlockedBadges = [];
 
         try {
-          // Método 1: Leer desde userProgress/{userId}
+          // Fuente de verdad única: Leer desde userProgress/{userId}
+          // Esta es la ubicación donde `campus-curso-ia.html` escribe el progreso.
           const userProgressDoc = await db.collection('userProgress').doc(userId).get();
           if (userProgressDoc.exists) {
             const data = userProgressDoc.data();
             const courseProgress = data[courseId];
             
             if (courseProgress) {
-              // Agregar lecciones completadas
               if (Array.isArray(courseProgress.completedLessons)) {
                 courseProgress.completedLessons.forEach(lessonId => completedLessons.add(lessonId));
               }
-              
-              // Obtener lección actual y badges
               if (courseProgress.currentLessonId) {
                 currentLessonId = courseProgress.currentLessonId;
               }
@@ -370,38 +352,14 @@
           console.warn('Error leyendo userProgress:', error);
         }
 
+        // SOLUCIÓN 2: Se elimina la segunda lectura desde `users/{uid}/progress` para evitar conflictos de datos.
+        /*
         try {
-          // Método 2: Leer desde users/{userId}/progress/{courseId}
-          if (!window.__DISABLE_REMOTE_USER_READS__) {
-            const userProgressSubDoc = await db.collection('users').doc(userId)
-              .collection('progress').doc(courseId).get();
-            
-            if (userProgressSubDoc.exists) {
-              const data = userProgressSubDoc.data();
-              
-              // Agregar lecciones completadas adicionales
-              if (Array.isArray(data.completedLessons)) {
-                data.completedLessons.forEach(lessonId => completedLessons.add(lessonId));
-              }
-              
-              // Actualizar lección actual si no se había obtenido antes
-              if (!currentLessonId && data.currentLessonId) {
-                currentLessonId = data.currentLessonId;
-              }
-              
-              // Combinar badges
-              if (Array.isArray(data.unlockedBadges)) {
-                unlockedBadges = [...new Set([...unlockedBadges, ...data.unlockedBadges])];
-              }
-            }
-          }
+          // ESTA SECCIÓN HA SIDO ELIMINADA PARA MANTENER UNA ÚNICA FUENTE DE VERDAD
         } catch (error) {
-          if (error && (error.code === 'permission-denied' || (''+error).includes('insufficient permissions'))) {
-            window.__DISABLE_REMOTE_USER_READS__ = true;
-          } else {
-            console.warn('Error leyendo users/progress:', error);
-          }
+          // ...
         }
+        */
 
         return {
           completedLessons: Array.from(completedLessons),
@@ -416,6 +374,7 @@
       async function getCourseProgressStats(userId, courseId) {
         const progress = await getUserProgress(userId, courseId);
         const course = COURSE_CONFIG[courseId];
+        // El total de lecciones ahora es consistente (13)
         const totalLessons = course ? course.totalLessons : 0;
         const completedCount = new Set(progress.completedLessons).size;
         const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
