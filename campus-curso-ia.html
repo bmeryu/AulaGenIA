@@ -504,7 +504,7 @@ if (dom.uploadResourcesBtn) {
       const uploads = Array.from(files).map((file) => new Promise((resolve, reject) => {
         const safeName = file.name.replace(/\s+/g, '-');
         const path = `user_uploads/${user.uid}/${safeName}`; // coincide con tus rules
-        const ref = storage.ref().child(path);
+        const ref = firebase.storage("gs://aulagenia.firebasestorage.app").ref().child(\1);
         const metadata = { contentType: file.type || 'application/octet-stream' };
         const task = ref.put(file, metadata);
 
@@ -1072,37 +1072,46 @@ if (dom.uploadResourcesBtn) {
         });
     </script>
 
-<script type="module">
-import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-import { getApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 
-const storage = getStorage(getApp());
 
-async function resolveMediaUrls() {
-  const videos = document.querySelectorAll("video[data-path]");
-  for (const video of videos) {
-    try {
-      const path = video.getAttribute("data-path");
-      const url = await getDownloadURL(ref(storage, path));
-      video.src = url;
-    } catch (err) {
-      console.error("Error loading video", video, err);
-    }
+
+<script>
+// Helper que espera a que Firebase esté inicializado y usa el SDK compat (v8 style)
+(function(){
+  function whenReady(fn, tries){ 
+    tries = tries || 0;
+    if (window.firebase && window.firebase.apps && window.firebase.apps.length > 0) return fn();
+    if (tries > 100) return console.warn('Firebase no se inicializó a tiempo para media URLs');
+    setTimeout(function(){ whenReady(fn, tries+1); }, 100);
   }
-
-  const tracks = document.querySelectorAll("track[data-path]");
-  for (const track of tracks) {
+  whenReady(function(){
     try {
-      const path = track.getAttribute("data-path");
-      const url = await getDownloadURL(ref(storage, path));
-      track.src = url;
-    } catch (err) {
-      console.error("Error loading track", track, err);
-    }
-  }
-}
-
-document.addEventListener("DOMContentLoaded", resolveMediaUrls);
+      // fuerza bucket correcto
+      var storage = firebase.storage('gs://aulagenia.firebasestorage.app');
+      // Resuelve <video data-path> y <track data-path> -> URLs reproducibles
+      async function resolveMediaUrls(){
+        const videos = document.querySelectorAll('video[data-path]');
+        for (const v of videos){
+          try {
+            const p = v.getAttribute('data-path');
+            const url = await storage.ref(p).getDownloadURL();
+            v.src = url;
+          } catch(e){ console.error('Video URL error', e); }
+        }
+        const tracks = document.querySelectorAll('track[data-path]');
+        for (const t of tracks){
+          try {
+            const p = t.getAttribute('data-path');
+            const url = await storage.ref(p).getDownloadURL();
+            t.src = url;
+          } catch(e){ console.error('Track URL error', e); }
+        }
+      }
+      resolveMediaUrls();
+      document.addEventListener('DOMContentLoaded', resolveMediaUrls);
+    } catch(err){ console.error('Compat helper error', err); }
+  });
+})();
 </script>
 
 </body>
