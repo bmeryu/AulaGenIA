@@ -321,6 +321,31 @@
         }
       };
 
+// === Option B patch: read totalLessons from Firestore if present, else fallback ===
+async function getTotalLessons(courseId) {
+  try {
+    const docRef = db.collection('courses').doc(courseId);
+    const snap = await docRef.get();
+    if (snap.exists) {
+      const data = snap.data() || {};
+      if (typeof data.totalLessons === 'number' && data.totalLessons > 0) {
+        return data.totalLessons;
+      }
+    }
+  } catch (e) {
+    console.warn('getTotalLessons remote read failed:', e);
+  }
+  try {
+    const course = ALL_COURSES_DATA && ALL_COURSES_DATA[courseId];
+    if (!course) return 0;
+    return (course.modules || []).reduce((t, m) => t + (m.lessons ? m.lessons.length : 0), 0);
+  } catch (e) {
+    console.warn('getTotalLessons local fallback failed:', e);
+    return 0;
+  }
+}
+
+
       // --- Lógica de UI General (Modales) (sin cambios) ---
       const enrollModalOverlay = document.getElementById('enroll-modal-overlay');
       const enrollModal = document.getElementById('enroll-modal');
@@ -566,7 +591,7 @@
                   const progressData = progressDoc.exists ? progressDoc.data() : {};
                   const courseProgressData = progressData[courseId] || { completedLessons: [] };
                   
-                  const totalLessons = getTotalLessons(courseId);
+                  const totalLessons = await getTotalLessons(courseId);
                   
                   // =========================================================================
                   // INICIO DE LA CORRECCIÓN DEL BUG DE PROGRESO
