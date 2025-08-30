@@ -338,7 +338,7 @@
                 apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
                 authDomain: "aulagenia.firebaseapp.com", 
                 projectId: "aulagenia", 
-                storageBucket: "aulagenia.appspot.com",
+                storageBucket: "aulagenia.firebasestorage.app",
                 messagingSenderId: "173328075630", 
                 appId: "1:173328075630:web:825606db4271ea1e66cf7f" 
             };
@@ -482,6 +482,67 @@
                 supportSpinner: document.getElementById('support-spinner'),
                 supportFormStatus: document.getElementById('support-form-status'),
             };
+
+// === Recursos: subida de archivos del alumno (compat SDK) ===
+if (dom.resourceFileInput) {
+  dom.resourceFileInput.addEventListener('change', () => {
+    if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.disabled = dom.resourceFileInput.files.length === 0;
+  });
+}
+
+if (dom.uploadResourcesBtn) {
+  dom.uploadResourcesBtn.addEventListener('click', async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) { showToast('Debes iniciar sesión para subir archivos.'); return; }
+      const files = dom.resourceFileInput?.files;
+      if (!files || files.length === 0) { showToast('Elige uno o más archivos.'); return; }
+
+      dom.uploadResourcesBtn.disabled = true;
+      if (dom.uploadProgress) { dom.uploadProgress.classList.remove('hidden'); dom.uploadProgress.textContent = 'Subiendo...'; }
+
+      const uploads = Array.from(files).map((file) => new Promise((resolve, reject) => {
+        const safeName = file.name.replace(/\s+/g, '-');
+        const path = `user_uploads/${user.uid}/${safeName}`; // coincide con tus rules
+        const ref = storage.ref().child(path);
+        const metadata = { contentType: file.type || 'application/octet-stream' };
+        const task = ref.put(file, metadata);
+
+        task.on('state_changed',
+          (snap) => {
+            const p = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
+            if (dom.uploadProgress) dom.uploadProgress.textContent = `Subiendo ${safeName}: ${p}%`;
+          },
+          (err) => reject(err),
+          async () => {
+            try {
+              const url = await ref.getDownloadURL();
+              // Actualiza la UI: agrega item a la lista del usuario
+              if (dom.userResourceList) {
+                const li = document.createElement('li');
+                li.className = 'px-3 py-2 flex items-center justify-between';
+                li.innerHTML = `<a class="text-teal-700 hover:underline break-all" href="${url}" target="_blank" rel="noopener">${safeName}</a><span class="text-xs text-slate-500">OK</span>`;
+                dom.userResourceList.prepend(li);
+              }
+              resolve(url);
+            } catch (e) { reject(e); }
+          }
+        );
+      }));
+
+      await Promise.all(uploads);
+      showToast('Archivo(s) subido(s) correctamente.');
+    } catch (e) {
+      console.error('Error subiendo recursos:', e);
+      showToast('Error al subir archivo(s). Revisa la consola.');
+    } finally {
+      if (dom.uploadProgress) dom.uploadProgress.textContent = '';
+      if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.disabled = false;
+      if (dom.resourceFileInput) dom.resourceFileInput.value = '';
+    }
+  });
+}
+
 
             function getIsCourseComplete() {
                 if (allLessons.length === 0) return false;
