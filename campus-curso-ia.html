@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.1 (Profile Modal UX)
+  CAMPUS CURSO · AULA GENIA v3.6.2 (Profile Modal UX Fix)
   -------------------------------------------------------------------
   - UX: Rediseñado el modal de perfil para evitar el scroll de página.
     El formulario ahora se desplaza internamente si es necesario.
-  - UX: El campo de nombre completo ahora se autocompleta con el nombre
-    del perfil de Firebase Auth en el primer ingreso, manteniendo la
-    prioridad de los datos guardados en la base de datos.
+  - UX FIX: El campo de nombre completo ya NO se autocompleta con el 
+    nombre del perfil de Firebase Auth. Solo se rellena si ya ha sido
+    guardado previamente en la base de datos.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -959,8 +959,8 @@
                     const doc = await userDocRef.get();
                     const dbData = doc.exists ? doc.data() : {};
                     
-                    // Priority: 1. Name from DB, 2. Name from Auth, 3. Empty
-                    if (profileNameInput) profileNameInput.value = dbData.displayName || user.displayName || '';
+                    // Priority: 1. Name from DB. If not present, leave empty.
+                    if (profileNameInput) profileNameInput.value = dbData.displayName || '';
                     
                     // Other fields only come from DB
                     if (profileRutInput) profileRutInput.value = dbData.rut || '';
@@ -1428,5 +1428,4 @@
 
 </body>
 </html>
-" because the user wants to leave the name empty when they log in for the first time. The user states that the name should be empty on the first login and that the help text should indicate that this name will appear on the certificate. I need to edit the canvas with the provided code and make the necessary changes.
 
