@@ -19,13 +19,30 @@
             background-color: #ffffff;
             position: relative;
             background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM11 68c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z" fill="%2314b8a6" fill-opacity="0.05" fill-rule="evenodd"/></svg>');
+            display: flex;
+            flex-direction: column;
         }
-        .cert-title { font-family: 'Playfair Display', serif; }
+        .cert-title { 
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 3rem); /* Responsive Font Size */
+        }
         .student-name {
             font-family: 'Playfair Display', serif;
             font-style: italic;
             font-weight: 600;
             color: #14b8a6;
+            font-size: clamp(2rem, 5vw, 3.75rem); /* Responsive Font Size */
+        }
+        
+        /* Responsive text sizes for certificate content */
+        .cert-text-base {
+            font-size: clamp(0.75rem, 1.5vw, 1rem);
+        }
+         .cert-text-lg {
+            font-size: clamp(0.875rem, 2vw, 1.125rem);
+        }
+        .cert-program-name {
+            font-size: clamp(1.25rem, 3vw, 1.875rem);
         }
     </style>
 </head>
@@ -69,38 +86,36 @@
                  </div>
              </div>
             <div id="certificateContainer" class="bg-white rounded-lg shadow-2xl overflow-hidden">
-                <div id="certificate" class="certificate p-8 md:p-12 w-full aspect-[1.414]">
-                     <div class="flex flex-col h-full text-center text-gray-800">
-                         <header class="mb-4">
-                             <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aulagenia" class="mx-auto mb-4 h-16 w-auto" onerror="this.onerror=null;this.src='https://placehold.co/200x60/cccccc/FFFFFF?text=Logo+Error';">
-                             <h2 class="text-4xl md:text-5xl font-bold tracking-wider cert-title">Certificado de Finalización</h2>
-                         </header>
-                         <main class="flex-grow flex flex-col justify-center items-center">
-                             <p class="text-lg md:text-xl mt-4" style="font-family: 'Poppins', sans-serif;">Se otorga a:</p>
-                             <p id="certStudentName" class="student-name text-4xl md:text-5xl my-4"></p>
-                             <p class="text-base md:text-lg max-w-2xl mx-auto" style="font-family: 'Poppins', sans-serif;">Por haber completado satisfactoriamente todos los requisitos del programa:</p>
-                             <p id="certProgramName" class="text-2xl md:text-3xl my-4 font-semibold cert-title"></p>
-                             <p class="text-base md:text-lg" style="font-family: 'Poppins', sans-serif;">Finalizado el <span id="certCompletionDate"></span>.</p>
-                         </main>
-                         <footer class="absolute bottom-8 inset-x-8">
-                             <div class="flex justify-between items-end">
-                                 <div class="text-left">
-                                     <div class="mb-8">
-                                         <p class="border-t-2 border-gray-500 pt-2 w-48 text-center text-sm font-semibold" style="font-family: 'Poppins', sans-serif;">Director Académico</p>
-                                         <p class="text-center text-xs text-gray-500">Aulagenia.cl</p>
-                                     </div>
-                                     <div>
-                                         <p class="text-xs text-gray-500">Código de validación:</p>
-                                         <p id="certificateId" class="text-sm font-mono"></p>
-                                     </div>
+                <div id="certificate" class="certificate p-4 sm:p-8 md:p-12 w-full aspect-[1.414]">
+                     <header class="text-center">
+                         <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo Aulagenia" class="mx-auto h-12 sm:h-16 w-auto" onerror="this.onerror=null;this.src='https://placehold.co/200x60/cccccc/FFFFFF?text=Logo+Error';">
+                         <h2 class="mt-4 font-bold tracking-wider cert-title">Certificado de Finalización</h2>
+                     </header>
+                     <main class="flex-grow flex flex-col justify-center items-center text-center my-4">
+                         <p class="cert-text-lg mt-2">Se otorga a:</p>
+                         <p id="certStudentName" class="student-name my-2 sm:my-4"></p>
+                         <p class="cert-text-base max-w-2xl mx-auto">Por haber completado satisfactoriamente todos los requisitos del programa:</p>
+                         <p id="certProgramName" class="my-2 sm:my-4 font-semibold cert-program-name"></p>
+                         <p class="cert-text-base">Finalizado el <span id="certCompletionDate"></span>.</p>
+                     </main>
+                     <footer class="w-full mt-auto">
+                         <div class="flex justify-between items-end">
+                             <div class="text-left text-xs sm:text-sm">
+                                 <div class="mb-4 sm:mb-8">
+                                     <p class="border-t-2 border-gray-500 pt-2 w-32 sm:w-48 text-center font-semibold">Director Académico</p>
+                                     <p class="text-center text-xs text-gray-500">Aulagenia.cl</p>
                                  </div>
-                                 <div class="flex items-center gap-4">
-                                     <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%233b82f6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eACADEMIA%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAIAA%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='4.5' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eI.A. APLICADA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de AIAA" class="w-24 h-24" />
-                                     <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%2314b8a6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eCERTIFICADO%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAG%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eAULA GENIA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de Aulagenia" class="w-24 h-24" />
+                                 <div>
+                                     <p class="text-xs text-gray-500">Código de validación:</p>
+                                     <p id="certificateId" class="font-mono text-xs sm:text-sm break-all"></p>
                                  </div>
                              </div>
-                         </footer>
-                     </div>
+                             <div class="flex items-center gap-2 sm:gap-4">
+                                 <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%233b82f6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eACADEMIA%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAIAA%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='4.5' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eI.A. APLICADA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de AIAA" class="w-16 h-16 sm:w-24 sm:h-24" />
+                                 <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cdefs%3e%3cfilter id='f1' x='-0.1' y='-0.1' width='1.2' height='1.2'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='T'/%3e%3cfeDisplacementMap in='SourceGraphic' in2='T' scale='1.5'/%3e%3c/filter%3e%3c/defs%3e%3cg opacity='0.9'%3e%3ccircle cx='50' cy='50' r='42' fill='%2314b8a6' filter='url(%23f1)'/%3e%3ccircle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='1'/%3e%3ctext x='50' y='42' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eCERTIFICADO%3c/text%3e%3ctext x='50' y='52' font-family='Poppins, sans-serif' font-size='14' fill='%23ffffff' text-anchor='middle' font-weight='700'%3eAG%3c/text%3e%3ctext x='50' y='62' font-family='Poppins, sans-serif' font-size='6' fill='%23ffffff' text-anchor='middle' font-weight='500'%3eAULA GENIA%3c/text%3e%3c/g%3e%3c/svg%3e" alt="Sello de Aulagenia" class="w-16 h-16 sm:w-24 sm:h-24" />
+                             </div>
+                         </div>
+                     </footer>
                 </div>
             </div>
         </section>
