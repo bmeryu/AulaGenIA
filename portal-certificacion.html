@@ -140,14 +140,9 @@
             let currentUser = null;
 
             const ALL_COURSES_DATA = {
-                'inteligencia-aplicada': { 
-                    // ===== INICIO DE LA CORRECCIÓN =====
-                    title: 'IA Aplicada · Essential Program',
-                    // ===== FIN DE LA CORRECCIÓN =====
-                    modules: [
-                        { title: 'Módulo 0: Onboarding', lessons: [{ id: '0-1' }] },
-                        { title: 'Módulo 1: ¿Qué es la IA?', lessons: [{ id: '1-1' }, { id: 'q-1' }] }
-                    ]
+                'ia-aplicada-esencial': { 
+                    title: 'IA Aplicada · Esencial',
+                    totalLessons: 13 
                 }
             };
 
@@ -184,6 +179,13 @@
 
             async function loadUserDashboard() {
                 if (!currentUser) return;
+                
+                // Get updated name from Firestore
+                const userDocRef = db.collection('users').doc(currentUser.uid);
+                const userDoc = await userDocRef.get();
+                if (userDoc.exists() && userDoc.data().displayName) {
+                    currentUser.name = userDoc.data().displayName;
+                }
                 dom.studentNameDisplay.textContent = currentUser.name;
 
                 const userProgressRef = db.collection('userProgress').doc(currentUser.uid);
@@ -196,8 +198,8 @@
                         const courseInfo = ALL_COURSES_DATA[courseId];
                         const courseProgress = progressData[courseId];
                         if (courseInfo && courseProgress) {
-                            const totalLessons = courseInfo.modules.reduce((acc, module) => acc + module.lessons.length, 0);
-                            const completedLessonsCount = Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons.length : 0;
+                            const totalLessons = courseInfo.totalLessons;
+                            const completedLessonsCount = new Set(courseProgress.completedLessons || []).size;
                             if (totalLessons > 0 && completedLessonsCount >= totalLessons) {
                                 completedPrograms.push({ id: courseId, name: courseInfo.title });
                             }
@@ -231,24 +233,19 @@
                     const programId = button.dataset.programId;
                     const programName = button.dataset.programName;
 
-                    let studentNameForCert = auth.currentUser.displayName;
-                    const userDocRef = db.collection('users').doc(auth.currentUser.uid);
-                    const userDoc = await userDocRef.get();
-                    if (userDoc.exists && userDoc.data().displayName) {
-                        studentNameForCert = userDoc.data().displayName;
-                    }
-
+                    let studentNameForCert = currentUser.name; 
+                    
                     showStatus("Buscando certificado existente...", '#3b82f6');
                     
-                    const certificatesRef = db.collection(`artifacts/${appId}/public/data/certificates`);
-                    const q = certificatesRef.where("userId", "==", currentUser.uid).where("programId", "==", programId);
+                    const certificateId = `${currentUser.uid}_${programId}`;
+                    const certificatesRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(certificateId);
                     
-                    const querySnapshot = await q.get();
+                    const docSnap = await certificatesRef.get();
                     let certificateData;
 
-                    if (!querySnapshot.empty) {
-                        certificateData = querySnapshot.docs[0].data();
-                        certificateData.studentName = studentNameForCert;
+                    if (docSnap.exists) {
+                        certificateData = docSnap.data();
+                        certificateData.studentName = studentNameForCert; // Ensure name is up to date
                         showStatus("Certificado recuperado.", '#059669');
                     } else {
                         certificateData = {
@@ -256,7 +253,7 @@
                             programName: programName,
                             completionDate: formatSpanishDate(new Date()),
                             issuedAt: new Date().toISOString(),
-                            certificateId: generateUniqueCode(),
+                            certificateId: certificateId,
                             userId: currentUser.uid,
                             programId: programId
                         };
@@ -318,12 +315,6 @@
                     console.error("Error al generar PDF:", error);
                     showStatus("Error al descargar PDF.", '#ef4444');
                 }
-            }
-
-            function generateUniqueCode() {
-                const timestamp = Date.now().toString().slice(-8);
-                const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
-                return `AG-${timestamp}-${randomPart}`;
             }
 
             function formatSpanishDate(date) {
