@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.7 (Navigation Fix)
+  CAMPUS CURSO · AULA GENIA v3.6.5 (Stable Module Locking)
   -------------------------------------------------------------------
-  - BUG FIX: Se corrigió un error que impedía el avance automático
-    después de completar una lección que desbloqueaba el siguiente módulo.
-  - FEATURE: Se implementó la variable `intendedLessonId` para recordar
-    el destino original del usuario cuando es redirigido por un módulo
-    bloqueado, asegurando que se retome la navegación correcta.
+  - REVERT: Se ha revertido a la versión estable del bloqueo de módulos.
+  - FIX: Eliminada la lógica de redirección automática que causaba
+    problemas de navegación después de completar una lección.
+  - UX: El sistema ahora simplemente informa al usuario que debe completar
+    el módulo anterior sin forzar la navegación.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -758,8 +758,6 @@
             let notesSaveTimer = null;
             let currentLessonVideo = null;
             let hasShownCompletionModal = false;
-            let intendedLessonId = null;
-            let highlightNextActionId = null;
 
             const dom = {
                 userName: document.getElementById('user-name'),
@@ -1028,14 +1026,6 @@
             }
 
             async function advanceToNextLesson() {
-                if (intendedLessonId) {
-                    const targetId = intendedLessonId;
-                    intendedLessonId = null;
-                    showToast('¡Bien hecho! Continuando...');
-                    setTimeout(() => navigateToLesson(targetId), 1500);
-                    return;
-                }
-
                 const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
                 if (currentIndex < allLessons.length - 1) {
                     showToast('¡Excelente! Cargando siguiente lección...');
@@ -1150,17 +1140,6 @@
                     dom.mainActionBtn.textContent = 'Marcar como completada';
                     dom.mainActionBtn.disabled = (lesson.type === 'quiz');
                 }
-
-                // Highlight logic
-                if (highlightNextActionId && highlightNextActionId === lesson.id && !isCompleted) {
-                    dom.mainActionBtn.classList.add('animate-pulse', 'ring-4', 'ring-offset-2', 'ring-teal-500', 'transition-all', 'duration-300');
-                    setTimeout(() => {
-                        if (dom.mainActionBtn) {
-                           dom.mainActionBtn.classList.remove('animate-pulse', 'ring-4', 'ring-offset-2', 'ring-teal-500');
-                        }
-                    }, 4000); // Highlight for 4 seconds
-                    highlightNextActionId = null; // Reset the flag
-                }
             }
 
             async function navigateToLesson(lessonId) {
@@ -1176,15 +1155,8 @@
                         const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id));
                         
                         if (!isPreviousModuleCompleted) {
-                            const firstUncompletedLessonId = previousModuleLessonIds.find(id => !userProgress.completedLessons.includes(id));
-                            showToast(`Primero completa "${previousModule.title}" para continuar.`);
-                            
-                            if (firstUncompletedLessonId) {
-                                intendedLessonId = lessonId; 
-                                highlightNextActionId = firstUncompletedLessonId;
-                                setTimeout(() => navigateToLesson(firstUncompletedLessonId), 100);
-                            }
-                            return; 
+                            showToast(`Debes completar el "${previousModule.title}" para acceder.`);
+                            return;
                         }
                     }
                 }
