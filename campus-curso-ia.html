@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.5 (Module Locking)
+  CAMPUS CURSO · AULA GENIA v3.6.6 (Guided Navigation)
   -------------------------------------------------------------------
-  - FEATURE: Implementado el bloqueo de módulos. Un estudiante no puede
-    acceder a un módulo hasta que haya completado todas las lecciones
-    del módulo anterior.
-  - UX: Los módulos bloqueados se muestran visualmente como deshabilitados
-    en la barra lateral.
-  - LOGIC: La navegación ahora verifica si el módulo de destino está
-    desbloqueado antes de permitir el acceso.
-  - Una vez que el curso está completo, todos los módulos se desbloquean
-    para permitir la revisión libre.
+  - FEATURE: Mejorada la navegación para módulos bloqueados.
+  - UX: Si un usuario hace clic en una lección de un módulo bloqueado,
+    ahora es redirigido automáticamente a la primera lección sin completar
+    del módulo anterior que debe finalizar.
+  - UX: El botón de acción principal ("Marcar como completada") de la
+    lección a la que es redirigido se resalta temporalmente con una
+    animación para guiar al usuario sobre el siguiente paso.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -1139,16 +1137,24 @@
 
                 if (isCompleted) {
                     dom.mainActionBtn.classList.add('hidden');
-                    return;
+                } else {
+                    dom.mainActionBtn.classList.remove('hidden');
+                    dom.mainActionBtn.textContent = 'Marcar como completada';
+                    dom.mainActionBtn.disabled = (lesson.type === 'quiz');
                 }
 
-                dom.mainActionBtn.classList.remove('hidden');
-                dom.mainActionBtn.textContent = 'Marcar como completada';
-                dom.mainActionBtn.disabled = (lesson.type === 'quiz'); 
+                // Highlight logic
+                if (highlightNextActionId && highlightNextActionId === lesson.id && !isCompleted) {
+                    dom.mainActionBtn.classList.add('animate-pulse', 'ring-4', 'ring-offset-2', 'ring-teal-500', 'transition-all', 'duration-300');
+                    setTimeout(() => {
+                        dom.mainActionBtn.classList.remove('animate-pulse', 'ring-4', 'ring-offset-2', 'ring-teal-500');
+                    }, 4000); // Highlight for 4 seconds
+                    highlightNextActionId = null; // Reset the flag
+                }
             }
 
-            function updateOverallProgress() { const uniqueCompleted = new Set(userProgress.completedLessons); const completedCount = uniqueCompleted.size; const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0; if (dom.progressBar) dom.progressBar.style.width = `${percentage}%`; if (dom.progressText) dom.progressText.textContent = `${percentage}%`; }
-            
+            let highlightNextActionId = null;
+
             async function navigateToLesson(lessonId) {
                 const isCourseComplete = getIsCourseComplete();
                 if (!isCourseComplete) {
@@ -1162,8 +1168,16 @@
                         const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id));
                         
                         if (!isPreviousModuleCompleted) {
-                            showToast(`Debes completar el "${previousModule.title}" para acceder.`);
-                            return;
+                            const firstUncompletedLessonId = previousModuleLessonIds.find(id => !userProgress.completedLessons.includes(id));
+                            showToast(`Primero completa "${previousModule.title}" para continuar.`);
+                            
+                            if (firstUncompletedLessonId) {
+                                // Set flag to highlight the button on the target lesson
+                                highlightNextActionId = firstUncompletedLessonId;
+                                // Automatically navigate to the blocking lesson
+                                navigateToLesson(firstUncompletedLessonId);
+                            }
+                            return; // Stop the original navigation attempt
                         }
                     }
                 }
@@ -1842,5 +1856,5 @@
 
 </body>
 </html>
-
+" selected in the canvas. I will now respond to your query.
 
