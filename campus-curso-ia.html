@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.4 (Profile Modal UX Final Fix)
+  CAMPUS CURSO · AULA GENIA v3.6.5 (Module Locking)
   -------------------------------------------------------------------
-  - UX: Rediseñado el modal de perfil para evitar el scroll de página.
-    El formulario ahora se desplaza internamente si es necesario.
-  - UX FINAL FIX: El campo de nombre completo ahora SÍ aparece vacío
-    si el perfil nunca se ha guardado, implementando una bandera
-    'profileCompleted' para asegurar que el usuario ingrese su nombre
-    manualmente la primera vez.
+  - FEATURE: Implementado el bloqueo de módulos. Un estudiante no puede
+    acceder a un módulo hasta que haya completado todas las lecciones
+    del módulo anterior.
+  - UX: Los módulos bloqueados se muestran visualmente como deshabilitados
+    en la barra lateral.
+  - LOGIC: La navegación ahora verifica si el módulo de destino está
+    desbloqueado antes de permitir el acceso.
+  - Una vez que el curso está completo, todos los módulos se desbloquean
+    para permitir la revisión libre.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -58,6 +61,12 @@
         details > summary::-webkit-details-marker { display: none; }
         details[open] summary .arrow-down { transform: rotate(180deg); }
         .arrow-down { transition: transform 0.2s ease-in-out; }
+        .accordion-content {
+            display: none;
+        }
+        .accordion-content.open {
+            display: block;
+        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -831,7 +840,49 @@
                 lockPostCompletionActions();
             }
 
-            function renderSidebar() { const isCourseComplete = getIsCourseComplete(); let isPreviousModuleComplete = true; if (!dom.modulesContainer) return; dom.modulesContainer.innerHTML = courseData.modules.map((module) => { const isModuleLocked = isCourseComplete ? false : !isPreviousModuleComplete; const lessonsHtml = module.lessons.map(lesson => { const isCompleted = userProgress.completedLessons.includes(lesson.id); const isActive = userProgress.currentLessonId === lesson.id; let linkClasses = 'text-gray-600 hover:bg-slate-100'; let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle'); let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300'; if (isModuleLocked && !isCourseComplete) { linkClasses = 'text-gray-400 cursor-not-allowed opacity-70'; statusIcon = 'lock'; iconColor = 'text-slate-400'; } else if (isActive) { linkClasses = 'bg-teal-50 text-teal-700 font-semibold'; statusIcon = 'play-circle'; iconColor = ''; } const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file'; return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`; }).join(''); const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800'; const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down'; if (!isCourseComplete) { const moduleLessonIds = module.lessons.map(l => l.id); isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id)); } return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content open pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`; }).join(''); addSidebarListeners(); }
+            function renderSidebar() {
+                const isCourseComplete = getIsCourseComplete();
+                let isPreviousModuleComplete = true;
+                if (!dom.modulesContainer) return;
+
+                dom.modulesContainer.innerHTML = courseData.modules.map((module, moduleIndex) => {
+                    const isModuleLocked = isCourseComplete ? false : (moduleIndex > 0 && !isPreviousModuleComplete);
+                    
+                    const lessonsHtml = module.lessons.map(lesson => {
+                        const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const isActive = userProgress.currentLessonId === lesson.id;
+                        let linkClasses = 'text-gray-600 hover:bg-slate-100';
+                        let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
+                        let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        
+                        if (isModuleLocked) {
+                            linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
+                            statusIcon = 'lock';
+                            iconColor = 'text-slate-400';
+                        } else if (isActive) {
+                            linkClasses = 'bg-teal-50 text-teal-700 font-semibold';
+                            statusIcon = 'play-circle';
+                            iconColor = '';
+                        }
+                        
+                        const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
+                        
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                    }).join('');
+
+                    const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
+                    const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down';
+                    
+                    const moduleLessonIds = module.lessons.map(l => l.id);
+                    if (!isCourseComplete) {
+                        isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                    }
+                    
+                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content ${!isModuleLocked ? 'open' : ''} pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
+                }).join('');
+
+                addSidebarListeners();
+            }
             
             function renderLessonContent(lesson) {
                 const isCourseComplete = getIsCourseComplete();
@@ -1091,22 +1142,28 @@
 
             function updateOverallProgress() { const uniqueCompleted = new Set(userProgress.completedLessons); const completedCount = uniqueCompleted.size; const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0; if (dom.progressBar) dom.progressBar.style.width = `${percentage}%`; if (dom.progressText) dom.progressText.textContent = `${percentage}%`; }
             
-            async function navigateToLesson(lessonId) { 
+            async function navigateToLesson(lessonId) {
                 const isCourseComplete = getIsCourseComplete();
-                if (!isCourseComplete) { 
-                    const targetLessonInfo = getLessonInfo(lessonId); 
-                    if (!targetLessonInfo) return; 
-                    const targetModuleIndex = targetLessonInfo.moduleIndex; 
-                    if (targetModuleIndex > 0) { 
-                        const previousModule = courseData.modules[targetModuleIndex - 1]; 
-                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id); 
-                        const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id)); 
-                        if (!isPreviousModuleCompleted) { showToast(`Debes completar el "${previousModule.title}" para acceder.`); return; } 
-                    } 
-                } 
-                userProgress = { ...userProgress, currentLessonId: lessonId }; 
-                await saveProgress(); 
-                refreshUI(); 
+                if (!isCourseComplete) {
+                    const targetLessonInfo = getLessonInfo(lessonId);
+                    if (!targetLessonInfo) return;
+
+                    const targetModuleIndex = targetLessonInfo.moduleIndex;
+                    if (targetModuleIndex > 0) {
+                        const previousModule = courseData.modules[targetModuleIndex - 1];
+                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
+                        const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                        
+                        if (!isPreviousModuleCompleted) {
+                            showToast(`Debes completar el "${previousModule.title}" para acceder.`);
+                            return;
+                        }
+                    }
+                }
+                
+                userProgress = { ...userProgress, currentLessonId: lessonId };
+                await saveProgress();
+                refreshUI();
                 loadLessonTabData();
             }
 
@@ -1114,7 +1171,32 @@
             
             async function loadProgressAndInitialize() { const docRef = db.collection('userProgress').doc(currentUser.uid); try { const doc = await docRef.get(); if (doc.exists) { const courseProgress = doc.data()[courseId]; if (courseProgress) { userProgress = { completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [], currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id, unlockedBadges: Array.isArray(courseProgress.unlockedBadges) ? courseProgress.unlockedBadges : [] }; } } } catch (error) { console.error("Error al cargar el progreso.", error); } refreshUI(); loadLessonTabData(); }
             
-            function addSidebarListeners() { if (!dom.modulesContainer) return; dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => link.addEventListener('click', e => { e.preventDefault(); const li = e.currentTarget.closest('.lesson-item'); if (li) navigateToLesson(li.dataset.lessonId); })); dom.modulesContainer.querySelectorAll('.accordion-item').forEach(item => { const header = item.querySelector('.accordion-header'); const icon = header ? header.querySelector('i') : null; if (header && icon && icon.getAttribute('data-lucide') !== 'lock') { header.addEventListener('click', () => { const content = header.nextElementSibling; const isOpen = content.classList.toggle('open'); icon.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)'; }); } }); }
+            function addSidebarListeners() {
+                if (!dom.modulesContainer) return;
+                
+                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => {
+                    link.addEventListener('click', e => {
+                        e.preventDefault();
+                        const li = e.currentTarget.closest('.lesson-item');
+                        if (li && !e.currentTarget.classList.contains('cursor-not-allowed')) {
+                            navigateToLesson(li.dataset.lessonId);
+                        }
+                    });
+                });
+
+                dom.modulesContainer.querySelectorAll('.accordion-item').forEach(item => {
+                    const header = item.querySelector('.accordion-header');
+                    const icon = header ? header.querySelector('i') : null;
+                    if (header && icon && icon.getAttribute('data-lucide') !== 'lock') {
+                        header.addEventListener('click', () => {
+                            const content = header.nextElementSibling;
+                            const iconEl = header.querySelector('i[data-lucide="chevron-down"]');
+                            const isOpen = content.classList.toggle('open');
+                            if(iconEl) iconEl.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                        });
+                    }
+                });
+            }
             
             if (dom.mainActionBtn) dom.mainActionBtn.addEventListener('click', async () => {
                 const lessonId = userProgress.currentLessonId;
