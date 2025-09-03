@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.6 (Guided Navigation)
+  CAMPUS CURSO · AULA GENIA v3.6.7 (Navigation Fix)
   -------------------------------------------------------------------
-  - FEATURE: Mejorada la navegación para módulos bloqueados.
-  - UX: Si un usuario hace clic en una lección de un módulo bloqueado,
-    ahora es redirigido automáticamente a la primera lección sin completar
-    del módulo anterior que debe finalizar.
-  - UX: El botón de acción principal ("Marcar como completada") de la
-    lección a la que es redirigido se resalta temporalmente con una
-    animación para guiar al usuario sobre el siguiente paso.
+  - BUG FIX: Se corrigió un error que impedía el avance automático
+    después de completar una lección que desbloqueaba el siguiente módulo.
+  - FEATURE: Se implementó la variable `intendedLessonId` para recordar
+    el destino original del usuario cuando es redirigido por un módulo
+    bloqueado, asegurando que se retome la navegación correcta.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -760,6 +758,8 @@
             let notesSaveTimer = null;
             let currentLessonVideo = null;
             let hasShownCompletionModal = false;
+            let intendedLessonId = null;
+            let highlightNextActionId = null;
 
             const dom = {
                 userName: document.getElementById('user-name'),
@@ -1028,6 +1028,14 @@
             }
 
             async function advanceToNextLesson() {
+                if (intendedLessonId) {
+                    const targetId = intendedLessonId;
+                    intendedLessonId = null;
+                    showToast('¡Bien hecho! Continuando...');
+                    setTimeout(() => navigateToLesson(targetId), 1500);
+                    return;
+                }
+
                 const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
                 if (currentIndex < allLessons.length - 1) {
                     showToast('¡Excelente! Cargando siguiente lección...');
@@ -1147,13 +1155,13 @@
                 if (highlightNextActionId && highlightNextActionId === lesson.id && !isCompleted) {
                     dom.mainActionBtn.classList.add('animate-pulse', 'ring-4', 'ring-offset-2', 'ring-teal-500', 'transition-all', 'duration-300');
                     setTimeout(() => {
-                        dom.mainActionBtn.classList.remove('animate-pulse', 'ring-4', 'ring-offset-2', 'ring-teal-500');
+                        if (dom.mainActionBtn) {
+                           dom.mainActionBtn.classList.remove('animate-pulse', 'ring-4', 'ring-offset-2', 'ring-teal-500');
+                        }
                     }, 4000); // Highlight for 4 seconds
                     highlightNextActionId = null; // Reset the flag
                 }
             }
-
-            let highlightNextActionId = null;
 
             async function navigateToLesson(lessonId) {
                 const isCourseComplete = getIsCourseComplete();
@@ -1172,12 +1180,11 @@
                             showToast(`Primero completa "${previousModule.title}" para continuar.`);
                             
                             if (firstUncompletedLessonId) {
-                                // Set flag to highlight the button on the target lesson
+                                intendedLessonId = lessonId; 
                                 highlightNextActionId = firstUncompletedLessonId;
-                                // Automatically navigate to the blocking lesson
-                                navigateToLesson(firstUncompletedLessonId);
+                                setTimeout(() => navigateToLesson(firstUncompletedLessonId), 100);
                             }
-                            return; // Stop the original navigation attempt
+                            return; 
                         }
                     }
                 }
@@ -1199,8 +1206,8 @@
                     link.addEventListener('click', e => {
                         e.preventDefault();
                         const li = e.currentTarget.closest('.lesson-item');
-                        if (li && !e.currentTarget.classList.contains('cursor-not-allowed')) {
-                            navigateToLesson(li.dataset.lessonId);
+                        if (li) {
+                           navigateToLesson(li.dataset.lessonId);
                         }
                     });
                 });
@@ -1221,25 +1228,20 @@
             
             if (dom.mainActionBtn) dom.mainActionBtn.addEventListener('click', async () => {
                 const lessonId = userProgress.currentLessonId;
-                const isCompleted = userProgress.completedLessons.includes(lessonId);
+                if (!userProgress.completedLessons.includes(lessonId)) {
+                   handleLessonCompletion(lessonId);
+                }
+            });
 
-                if (!isCompleted) {
-                    userProgress = { ...userProgress, completedLessons: [...new Set([...userProgress.completedLessons, lessonId])] };
+            async function handleLessonCompletion(lessonId) {
+                 if (!userProgress.completedLessons.includes(lessonId)) {
+                    userProgress.completedLessons = [...new Set([...userProgress.completedLessons, lessonId])];
                     await saveProgress();
                     checkForBadgeUnlock(lessonId);
                     refreshUI();
-
-                    const isLastLesson = allLessons.findIndex(l => l.id === lessonId) === allLessons.length - 1;
-                    if (getIsCourseComplete() || isLastLesson) {
-                        if (!hasShownCompletionModal) {
-                            await showCompletionModal();
-                            hasShownCompletionModal = true;
-                        }
-                    } else {
-                        advanceToNextLesson();
-                    }
                 }
-            });
+                advanceToNextLesson();
+            }
 
             if (dom.prevBtn) dom.prevBtn.addEventListener('click', () => { const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); });
             
@@ -1856,5 +1858,4 @@
 
 </body>
 </html>
-" selected in the canvas. I will now respond to your query.
 
