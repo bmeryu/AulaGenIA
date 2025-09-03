@@ -1105,13 +1105,20 @@
                     
                     advanceToNextLesson();
                 } else {
-                    showToast(`Obtuviste ${correctAnswers} de ${totalQuestions}. ¡Sigue intentando!`);
+                    showToast(`Revisa tus respuestas. ${correctAnswers} de ${totalQuestions} son correctas.`);
+                    const firstIncorrect = dom.tabMaterialPanel.querySelector('.quiz-option.incorrect');
+                    if (firstIncorrect) {
+                        const questionContainer = firstIncorrect.closest('.space-y-4.mb-8');
+                        if (questionContainer) {
+                            questionContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
                     setTimeout(() => {
                         dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
                             opt.classList.remove('incorrect', 'correct');
                             opt.style.pointerEvents = 'auto';
                         });
-                    }, 3000);
+                    }, 5000);
                 }
             }
             
@@ -1835,4 +1842,5 @@
 
 </body>
 </html>
+
 
