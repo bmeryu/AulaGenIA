@@ -977,7 +977,6 @@
                             const questionId = opt.dataset.questionId;
                             dom.tabMaterialPanel.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
                             opt.classList.add('selected');
-                            // Habilitar el botón de verificación si todas las preguntas tienen una opción seleccionada
                             const allQuestionsAnswered = lesson.questions.every((_, qIndex) => {
                                 const qId = `quiz-${lesson.id}-q-${qIndex}`;
                                 return dom.tabMaterialPanel.querySelector(`.quiz-option[data-question-id="${qId}"].selected`);
@@ -1775,4 +1774,25 @@
         setTimeout(function(){ whenFirebaseReady(fn, tries+1); }, 100);
       }
       
-      function 
+      function syncTotalLessons(){
+        if (!FIRESTORE_SYNC) { console.log('[sync] Sincronización de total de lecciones deshabilitada.'); return; }
+        try {
+          const total = countLessonsInDOM();
+          if (!total || !(total > 0)) return;
+          const courseId = getCourseId();
+          const db = firebase.firestore();
+          db.collection('courses').doc(courseId)
+            .set({ totalLessons: total }, { merge: true })
+            .then(() => console.log(`[sync] Total de lecciones actualizado para ${courseId}: ${total}`))
+            .catch(err => console.warn('[sync] Falló la actualización de total de lecciones:', err));
+        } catch(e){ console.warn('[sync] Excepción en syncTotalLessons:', e); }
+      }
+      
+      whenFirebaseReady(syncTotalLessons);
+      document.addEventListener('DOMContentLoaded', syncTotalLessons);
+    })();
+    </script>
+    <!-- === END: Scripts de Sincronización y Medios === -->
+
+</body>
+</html>
