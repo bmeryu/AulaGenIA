@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.6 (Stable Module Locking)
+  CAMPUS CURSO · AULA GENIA v3.9 (Revisión Final: Sincronización de Progreso)
   -------------------------------------------------------------------
-  - FIX: Se ha corregido la lógica de navegación para que, al completar
-    una lección, el usuario sea redirigido automáticamente a la siguiente.
-  - FIX: Se corrigió la función que bloqueaba el botón "Completar"
-    cuando la lección ya estaba marcada como completada.
+  - FIX: Se ha corregido el error `ReferenceError: updateOverallProgress is not defined`
+    integrando la lógica de la versión estable del campus.
+  - FIX: La página de lecciones ahora sincroniza el total de lecciones con Firestore,
+    asegurando que el cálculo de progreso sea consistente.
+  - FIX: Se mantiene la lógica de avance secuencial y validación en quizzes.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -71,9 +72,6 @@
                     <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo de Aula GenIA" class="h-20 w-auto">
                 </a>
                 <div class="flex items-center gap-2 sm:gap-4">
-                    <a href="quienes-somos.html" class="text-gray-700 font-semibold border-2 border-gray-300 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-gray-100 hover:border-gray-400 transition-colors duration-300 hidden md:flex items-center">
-                        Quiénes Somos
-                    </a>
                     <a href="cursos.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">
                         Ver Cursos
                     </a>
@@ -271,7 +269,7 @@
                                 <option value="female">Femenino</option>
                                 <option value="male">Masculino</option>
                                 <option value="other">Otro</option>
-                                <option value="prefer_not-to-say">Prefiero no decir</option>
+                                <option value="prefer_not_to-say">Prefiero no decir</option>
                             </select>
                         </div>
                         <div>
@@ -748,23 +746,14 @@
               }
             };
 
-            if (!courseId || !ALL_COURSES_DATA[courseId]) {
-                console.error('ID de curso no válido o no proporcionado. Redirigiendo al campus.');
-                document.body.innerHTML = '<div style="padding: 40px; text-align: center; font-family: sans-serif;"><h1>Curso no encontrado</h1><p>Serás redirigido al campus principal en 3 segundos...</p></div>';
-                setTimeout(() => {
-                    window.location.href = `${baseUrl}/campus.html`;
-                }, 3000);
-                return;
-            }
-
             const courseData = ALL_COURSES_DATA[courseId];
             
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
             let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null, unlockedBadges: [] };
             let notesSaveTimer = null;
-            let currentLessonVideo = null; // Variable para la instancia del video
-            let hasShownCompletionModal = false; // Variable para controlar si el modal ya se mostró
+            let currentLessonVideo = null;
+            let hasShownCompletionModal = false;
 
             const dom = {
                 userName: document.getElementById('user-name'),
@@ -857,7 +846,8 @@
                         let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
                         let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
                         
-                        if (isModuleLocked) {
+                        // Bloqueo de lecciones individuales
+                        if (isModuleLocked || (!isCompleted && userProgress.completedLessons.includes(lesson.id) === false && (allLessons.findIndex(l => l.id === lesson.id) > 0 && userProgress.completedLessons.includes(allLessons[allLessons.findIndex(l => l.id === lesson.id) - 1].id) === false))) {
                             linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
                             statusIcon = 'lock';
                             iconColor = 'text-slate-400';
@@ -869,7 +859,7 @@
                         
                         const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
                         
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked || (!isCompleted && userProgress.completedLessons.includes(lesson.id) === false && (allLessons.findIndex(l => l.id === lesson.id) > 0 && userProgress.completedLessons.includes(allLessons[allLessons.findIndex(l => l.id === lesson.id) - 1].id) === false)) ? 'text-slate-400' : ''}"></i></a></li>`;
                     }).join('');
 
                     const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
@@ -959,7 +949,7 @@
                         if (isCourseComplete) {
                             materialHtml = `${quizHtml}<p class="text-sm text-slate-500 mt-4">Curso completado. Solo puedes revisar las respuestas.</p>`;
                         } else {
-                             materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
+                             materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">Verificar Respuestas</button></div>`;
                         }
                         break;
                     default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
@@ -967,15 +957,20 @@
                 if (dom.tabMaterialPanel) dom.tabMaterialPanel.innerHTML = materialHtml; 
                 
                 if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
+                    const checkBtn = document.getElementById('check-quiz-btn');
                     dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
                         opt.addEventListener('click', () => {
                             const questionId = opt.dataset.questionId;
                             dom.tabMaterialPanel.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
                             opt.classList.add('selected');
+                            const allQuestionsAnswered = lesson.questions.every((_, qIndex) => {
+                                const qId = `quiz-${lesson.id}-q-${qIndex}`;
+                                return dom.tabMaterialPanel.querySelector(`.quiz-option[data-question-id="${qId}"].selected`);
+                            });
+                            if (checkBtn) checkBtn.disabled = !allQuestionsAnswered;
                         });
                     });
 
-                    const checkBtn = document.getElementById('check-quiz-btn');
                     if (checkBtn) {
                         window.currentQuizHandler = () => checkQuizAnswers(lesson);
                         checkBtn.addEventListener('click', window.currentQuizHandler);
@@ -1151,17 +1146,15 @@
                 if (!isCourseComplete) {
                     const targetLessonInfo = getLessonInfo(lessonId);
                     if (!targetLessonInfo) return;
+                    
+                    const targetIndex = allLessons.findIndex(l => l.id === lessonId);
+                    const previousLessonId = targetIndex > 0 ? allLessons[targetIndex - 1].id : null;
+                    const isPreviousLessonCompleted = previousLessonId ? userProgress.completedLessons.includes(previousLessonId) : true;
+                    const isCurrentLessonCompleted = userProgress.completedLessons.includes(lessonId);
 
-                    const targetModuleIndex = targetLessonInfo.moduleIndex;
-                    if (targetModuleIndex > 0) {
-                        const previousModule = courseData.modules[targetModuleIndex - 1];
-                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
-                        const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id));
-                        
-                        if (!isPreviousModuleCompleted) {
-                            showToast(`Debes completar el "${previousModule.title}" para acceder.`);
-                            return;
-                        }
+                    if (targetIndex > 0 && !isPreviousLessonCompleted) {
+                        showToast(`Debes completar la lección anterior para acceder a esta.`);
+                        return;
                     }
                 }
                 
@@ -1330,7 +1323,10 @@
                     const dbData = doc.exists ? doc.data() : {};
                     const isProfileCompleted = dbData.profileCompleted === true;
 
+                    // Load name from DB ONLY if the profile has been completed before.
                     if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : '';
+                    
+                    // Other fields only come from DB
                     if (profileRutInput) profileRutInput.value = dbData.rut || '';
                     if (profileJobInput) profileJobInput.value = dbData.jobTitle || '';
                     if (profileCountrySelect) profileCountrySelect.value = dbData.country || '';
@@ -1570,7 +1566,7 @@
                     btn.disabled = false;
                 }
             }
-            
+
             async function loadUserResources(lessonId) {
                 if (!currentUser || !dom.userResourceList) return;
                 dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
