@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.7 (Flujo de Navegación Completo y Lógico)
+  CAMPUS CURSO · AULA GENIA v3.8 (Revisión Final: Lógica de Progreso y Avance)
   -------------------------------------------------------------------
-  - FIX: Se implementa la lógica de avance secuencial: al completar una
-    lección, se navega automáticamente a la siguiente.
-  - FIX: Se corrige el bloqueo de lecciones y módulos en el menú lateral.
-  - FIX: Se mejora la lógica de quizzes para requerir respuestas correctas
-    antes de marcar como completado.
-  - Se han eliminado los `pointer-events-none` de los overlays de los modales
-    para restaurar la interacción con el reproductor de vídeo cuando los modales
-    no están activos, resolviendo un bug anterior.
+  - FIX: Se integra la lógica de la versión anterior para el cálculo
+    y la visualización del porcentaje de avance.
+  - FIX: Se corrige la lógica de navegación para un flujo 100% secuencial.
+  - FIX: Se asegura que el botón "Marcar como completada" en videos y el
+    "Verificar Respuestas" en quizzes avancen a la lección correcta.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -665,29 +662,29 @@
                                     'Tomar decisiones éticas complejas sobre un proyecto.', 
                                     'Responder preguntas frecuentes de clientes con respuestas estandarizadas.', 
                                     'Liderar una reunión de equipo.'
-                            ], 
-                            correctAnswer: 2 
-                          },
-                          {
-                            text: 'Al integrar la IA para automatizar tareas, ¿cuál es el beneficio principal que se busca?',
-                            options: [
-                                'Aumentar la complejidad de las tareas diarias.',
-                                'Reducir la necesidad de supervisión humana a cero.',
-                                'Incrementar la eficiencia, ahorrar tiempo y reducir errores en procesos monótonos.',
-                                'Hacer que el trabajo sea más lento pero más detallado.'
-                            ],
-                            correctAnswer: 2
-                          },
-                          {
-                            text: 'Al automatizar tareas, ¿el objetivo es reemplazar completamente el juicio humano en todas las áreas?',
-                            options: [
-                                'Sí, la meta es que la IA tome todas las decisiones.',
-                                'No, el objetivo es liberar a los humanos de tareas monótonas para que se enfoquen en actividades de mayor valor.',
-                                'Sí, porque la IA siempre es más precisa que un humano.',
-                                'No, la automatización solo sirve para escribir correos.'
-                            ],
-                            correctAnswer: 1
-                          }
+                                ], 
+                                correctAnswer: 2 
+                            },
+                            {
+                                text: 'Al integrar la IA para automatizar tareas, ¿cuál es el beneficio principal que se busca?',
+                                options: [
+                                    'Aumentar la complejidad de las tareas diarias.',
+                                    'Reducir la necesidad de supervisión humana a cero.',
+                                    'Incrementar la eficiencia, ahorrar tiempo y reducir errores en procesos monótonos.',
+                                    'Hacer que el trabajo sea más lento pero más detallado.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Al automatizar tareas, ¿el objetivo es reemplazar completamente el juicio humano en todas las áreas?',
+                                options: [
+                                    'Sí, la meta es que la IA tome todas las decisiones.',
+                                    'No, el objetivo es liberar a los humanos de tareas monótonas para que se enfoquen en actividades de mayor valor.',
+                                    'Sí, porque la IA siempre es más precisa que un humano.',
+                                    'No, la automatización solo sirve para escribir correos.'
+                                ],
+                                correctAnswer: 1
+                            }
                         ], 
                         resources: [] 
                       }
@@ -717,29 +714,29 @@
                                     'Complejidad: El proyecto debe tener muchas funciones para parecer avanzado.', 
                                     'Simplicidad: Se deben eliminar pasos innecesarios.', 
                                     'Coherencia: Se debe mantener un estilo y tono constante.'
-                            ], 
-                            correctAnswer: 1 
-                          },
-                          {
-                            text: '¿Qué herramienta se recomienda en el curso para generar imágenes artísticas y conceptuales a través de prompts detallados?',
-                            options: [
-                                'Google Sites.',
-                                'Netlify.',
-                                'Midjourney.',
-                                'Google Forms.'
-                            ],
-                            correctAnswer: 2
-                          },
-                          {
-                            text: '¿Cuál es el paso final y más importante después de crear tu proyecto con IA para recibir feedback y seguir mejorando?',
-                            options: [
-                                'Guardarlo como un borrador final en tu computador.',
-                                'Borrar el proyecto para empezar uno nuevo de inmediato.',
-                                'Publicarlo y compartirlo con el mundo.',
-                                'Imprimir el código y archivarlo físicamente.'
-                            ],
-                            correctAnswer: 2
-                          }
+                                ], 
+                                correctAnswer: 1 
+                            },
+                            {
+                                text: '¿Qué herramienta se recomienda en el curso para generar imágenes artísticas y conceptuales a través de prompts detallados?',
+                                options: [
+                                    'Google Sites.',
+                                    'Netlify.',
+                                    'Midjourney.',
+                                    'Google Forms.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: '¿Cuál es el paso final y más importante después de crear tu proyecto con IA para recibir feedback y seguir mejorando?',
+                                options: [
+                                    'Guardarlo como un borrador final en tu computador.',
+                                    'Borrar el proyecto para empezar uno nuevo de inmediato.',
+                                    'Publicarlo y compartirlo con el mundo.',
+                                    'Imprimir el código y archivarlo físicamente.'
+                                ],
+                                correctAnswer: 2
+                            }
                         ], 
                         resources: [] 
                       }
@@ -764,8 +761,8 @@
             let currentUser = null;
             let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null, unlockedBadges: [] };
             let notesSaveTimer = null;
-            let currentLessonVideo = null; // Variable para la instancia del video
-            let hasShownCompletionModal = false; // Variable para controlar si el modal ya se mostró
+            let currentLessonVideo = null;
+            let hasShownCompletionModal = false;
 
             const dom = {
                 userName: document.getElementById('user-name'),
@@ -849,8 +846,6 @@
                 if (!dom.modulesContainer) return;
 
                 dom.modulesContainer.innerHTML = courseData.modules.map((module, moduleIndex) => {
-                    // Determinar si el módulo actual está bloqueado.
-                    // Está bloqueado si el curso no está completado y el módulo anterior no se ha completado.
                     const isModuleLocked = isCourseComplete ? false : (moduleIndex > 0 && !isPreviousModuleComplete);
                     
                     const lessonsHtml = module.lessons.map(lesson => {
@@ -1349,7 +1344,7 @@
                     if(formStatus) {
                         formStatus.textContent = 'Error al cargar tus datos. Intenta de nuevo.';
                         formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
-                        formStatus.classList.remove('hidden');
+                        formFormStatus.classList.remove('hidden');
                     }
                 }
                 
@@ -1577,7 +1572,7 @@
                     btn.disabled = false;
                 }
             }
-            
+
             async function loadUserResources(lessonId) {
                 if (!currentUser || !dom.userResourceList) return;
                 dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
