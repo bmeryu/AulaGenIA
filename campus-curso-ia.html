@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.5 (Stable Module Locking)
+  CAMPUS CURSO · AULA GENIA v3.6.6 (Stable Module Locking)
   -------------------------------------------------------------------
-  - REVERT: Se ha revertido a la versión estable del bloqueo de módulos.
-  - FIX: Eliminada la lógica de redirección automática que causaba
-    problemas de navegación después de completar una lección.
-  - UX: El sistema ahora simplemente informa al usuario que debe completar
-    el módulo anterior sin forzar la navegación.
+  - FIX: Se ha corregido la lógica de navegación para que, al completar
+    una lección, el usuario sea redirigido automáticamente a la siguiente.
+  - FIX: Se corrigió la función que bloqueaba el botón "Completar"
+    cuando la lección ya estaba marcada como completada.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
 <head>
-    <meta charset="UTF-8" />
-    <title>Lección del Curso - Aula GenIA (Perfil Unificado)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
@@ -38,7 +35,7 @@
         .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
         .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
         .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
-        
+
         .ltab.active {
             color: var(--brand-teal);
             border-bottom-color: var(--brand-teal);
@@ -565,7 +562,7 @@
                                     'Usar un lenguaje ambiguo para que la IA tenga más libertad.',
                                     'Ser claro, dar contexto, especificar el formato deseado y dar ejemplos.',
                                     'Escribir todo en mayúsculas para llamar su atención.'
-                                ],
+                                ], 
                                 correctAnswer: 2
                             },
                             {
@@ -751,13 +748,23 @@
               }
             };
 
+            if (!courseId || !ALL_COURSES_DATA[courseId]) {
+                console.error('ID de curso no válido o no proporcionado. Redirigiendo al campus.');
+                document.body.innerHTML = '<div style="padding: 40px; text-align: center; font-family: sans-serif;"><h1>Curso no encontrado</h1><p>Serás redirigido al campus principal en 3 segundos...</p></div>';
+                setTimeout(() => {
+                    window.location.href = `${baseUrl}/campus.html`;
+                }, 3000);
+                return;
+            }
+
             const courseData = ALL_COURSES_DATA[courseId];
+            
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
             let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null, unlockedBadges: [] };
             let notesSaveTimer = null;
-            let currentLessonVideo = null;
-            let hasShownCompletionModal = false;
+            let currentLessonVideo = null; // Variable para la instancia del video
+            let hasShownCompletionModal = false; // Variable para controlar si el modal ya se mostró
 
             const dom = {
                 userName: document.getElementById('user-name'),
@@ -832,7 +839,6 @@
                 updateOverallProgress(); 
                 updateMainActionButton(); 
                 lucide.createIcons();
-                // Invoca la nueva función aquí
                 lockPostCompletionActions();
             }
 
@@ -885,7 +891,6 @@
                 let materialHtml = ''; 
                 if (currentLessonVideo) { currentLessonVideo.pause(); currentLessonVideo = null; }
                 
-                // Clear existing quiz result handlers if any
                 if (window.currentQuizHandler) {
                     const checkBtn = document.getElementById('check-quiz-btn');
                     if (checkBtn) {
@@ -1019,7 +1024,6 @@
                     } catch (err) {
                         console.error('No se pudieron adjuntar medios/subtítulos:', err);
                     } finally {
-                        // Invoca la nueva función aquí, después de renderizar el material
                         lockPostCompletionActions();
                     }
                 })();
@@ -1068,7 +1072,6 @@
                     return;
                 }
 
-                // Show results visually
                 lesson.questions.forEach((question, qIndex) => {
                     const questionId = `quiz-${lesson.id}-q-${qIndex}`;
                     const questionContainer = document.getElementById(questionId);
@@ -1085,7 +1088,8 @@
                         selectedOption.classList.add('correct');
                     } else {
                         selectedOption.classList.add('incorrect');
-                        questionContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
+                        const correctOption = questionContainer.querySelector(`[data-index="${correctIndex}"]`);
+                        if(correctOption) correctOption.classList.add('correct');
                     }
                 });
 
@@ -1134,9 +1138,9 @@
                 const isCompleted = userProgress.completedLessons.includes(lesson.id);
 
                 if (isCompleted) {
-                    dom.mainActionBtn.classList.add('hidden');
+                    dom.mainActionBtn.textContent = 'Siguiente Lección';
+                    dom.mainActionBtn.disabled = false;
                 } else {
-                    dom.mainActionBtn.classList.remove('hidden');
                     dom.mainActionBtn.textContent = 'Marcar como completada';
                     dom.mainActionBtn.disabled = (lesson.type === 'quiz');
                 }
@@ -1200,8 +1204,17 @@
             
             if (dom.mainActionBtn) dom.mainActionBtn.addEventListener('click', async () => {
                 const lessonId = userProgress.currentLessonId;
-                if (!userProgress.completedLessons.includes(lessonId)) {
-                   handleLessonCompletion(lessonId);
+                const isCompleted = userProgress.completedLessons.includes(lessonId);
+
+                if (isCompleted) {
+                    advanceToNextLesson();
+                } else {
+                    const lessonInfo = getLessonInfo(lessonId);
+                    if (lessonInfo.lesson.type === 'video') {
+                        handleLessonCompletion(lessonId);
+                    } else if (lessonInfo.lesson.type === 'quiz') {
+                         checkQuizAnswers(lessonInfo.lesson);
+                    }
                 }
             });
 
@@ -1317,10 +1330,7 @@
                     const dbData = doc.exists ? doc.data() : {};
                     const isProfileCompleted = dbData.profileCompleted === true;
 
-                    // Load name from DB ONLY if the profile has been completed before.
                     if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : '';
-                    
-                    // Other fields only come from DB
                     if (profileRutInput) profileRutInput.value = dbData.rut || '';
                     if (profileJobInput) profileJobInput.value = dbData.jobTitle || '';
                     if (profileCountrySelect) profileCountrySelect.value = dbData.country || '';
@@ -1468,10 +1478,18 @@
                         const actionAttr = isPdf ? `data-pdf-url="${resource.url}" data-pdf-title="${resource.name}"` : `href="${resource.url}"`;
                         const targetAttr = resource.external ? 'target="_blank" rel="noopener noreferrer"' : '';
                         const tagName = isPdf ? 'button' : 'a';
-                        return `<${tagName} ${actionAttr} ${targetAttr} class="resource-item flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-teal-500 transition-all duration-200 group w-full text-left"><i data-lucide="${icon}" class="h-6 w-6 text-teal-500 mr-4"></i><span class="flex-1 font-medium text-gray-700 group-hover:text-teal-600">${resource.name}</span><i data-lucide="arrow-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i></${tagName}>`;
+
+                        return `
+                        <${tagName} ${actionAttr} ${targetAttr} class="resource-item flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-teal-500 transition-all duration-200 group w-full text-left">
+                            <i data-lucide="${icon}" class="h-6 w-6 text-teal-500 mr-4"></i>
+                            <span class="flex-1 font-medium text-gray-700 group-hover:text-teal-600">${resource.name}</span>
+                            <i data-lucide="arrow-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i>
+                        </${tagName}>`;
                     }).join('');
                 } else {
-                    dom.resourcesList.innerHTML = `<div class="text-center py-5 px-4 bg-gray-100 rounded-lg"><p class="text-gray-500 text-sm">No hay recursos del instructor para esta lección.</p></div>`;
+                    dom.resourcesList.innerHTML = `<div class="text-center py-5 px-4 bg-gray-100 rounded-lg">
+                        <p class="text-gray-500 text-sm">No hay recursos del instructor para esta lección.</p>
+                    </div>`;
                 }
                 lucide.createIcons();
             }
@@ -1552,7 +1570,7 @@
                     btn.disabled = false;
                 }
             }
-
+            
             async function loadUserResources(lessonId) {
                 if (!currentUser || !dom.userResourceList) return;
                 dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
@@ -1692,74 +1710,14 @@
                 const [t] = videoEl.textTracks; if (t) t.mode = 'showing';
                 videoEl.load();
             }
-
-            // --- Código del parche aquí ---
-            const BLOCK_SELECTORS_ON_COMPLETE = [
-              '#main-action-btn',
-              'button[id*="encuesta"]',
-              '[id*="btn-encuesta"]',
-              '[data-action="complete"]',
-              '[data-action="encuesta"]',
-              '.btn-completar-modulo',
-              '.btn-encuesta',
-              'a[href*="encuesta"]'
-            ];
             
-            // Evita bloquear controles de video o elementos dentro del <video>
-            function isInsideVideo(el) {
-              return !!el.closest('video, .plyr, .video-js, .video-container');
-            }
-
-            function hardDisable(el, reason = 'Curso finalizado: acción deshabilitada') {
-              if (!el || isInsideVideo(el)) return;
-              // estados y accesibilidad
-              el.setAttribute('aria-disabled', 'true');
-              el.setAttribute('tabindex', '-1');
-              el.title = reason;
-              // estilos visuales (Tailwind disponible)
-              el.classList.add('opacity-60', 'cursor-not-allowed');
-              // si es <button> deshabilitar nativo
-              if (el.tagName === 'BUTTON') el.disabled = true;
-
-              // Bloqueo duro en captura (antes de cualquier otro listener)
-              const blocker = (e) => {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                e.stopPropagation();
-                return false;
-              };
-              el.addEventListener('click', blocker, true);
-              el.addEventListener('pointerdown', blocker, true);
-              el.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') blocker(e);
-              }, true);
-            }
-
             function lockPostCompletionActions() {
               const courseIsDone = getIsCourseComplete();
               if (!courseIsDone) return;
-
-              // 1) Oculta la barra de navegación si aún no está oculta
               if (dom && dom.navigationButtons) {
                 dom.navigationButtons.classList.add('hidden');
               }
-
-              // 2) Deshabilita botones/enlaces de completar y encuesta existentes
-              BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
-                document.querySelectorAll(sel).forEach((el) => hardDisable(el));
-              });
-
-              // 3) Observa futuros nodos que coincidan (por re-render dinámico)
-              if (!window.__postCompleteObserver__) {
-                window.__postCompleteObserver__ = new MutationObserver(() => {
-                  BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
-                    document.querySelectorAll(sel).forEach((el) => hardDisable(el));
-                  });
-                });
-                window.__postCompleteObserver__.observe(document.body, { childList: true, subtree: true });
-              }
             }
-            // --- Fin del código del parche ---
 
             if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
 
@@ -1780,7 +1738,6 @@
     <!-- === START: Scripts de Sincronización y Medios (Refactorizado) === -->
     <script>
     (function(){
-      // Kill switch para evitar errores si Firestore no permite escritura
       const FIRESTORE_SYNC = true;
 
       function getCourseId() {
