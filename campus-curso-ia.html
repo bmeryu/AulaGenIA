@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.9 (Revisión Final: Sincronización de Progreso)
+  CAMPUS CURSO · AULA GENIA v3.6.5 (Module Locking)
   -------------------------------------------------------------------
-  - FIX: Se ha corregido el error `ReferenceError: updateOverallProgress is not defined`
-    integrando la lógica de la versión estable del campus.
-  - FIX: La página de lecciones ahora sincroniza el total de lecciones con Firestore,
-    asegurando que el cálculo de progreso sea consistente.
-  - FIX: Se mantiene la lógica de avance secuencial y validación en quizzes.
+  - FEATURE: Implementado el bloqueo de módulos. Un estudiante no puede
+    acceder a un módulo hasta que haya completado todas las lecciones
+    del módulo anterior.
+  - UX: Los módulos bloqueados se muestran visualmente como deshabilitados
+    en la barra lateral.
+  - LOGIC: La navegación ahora verifica si el módulo de destino está
+    desbloqueado antes de permitir el acceso.
+  - Una vez que el curso está completo, todos los módulos se desbloquean
+    para permitir la revisión libre.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
 <head>
+    <meta charset="UTF-8" />
+    <title>Lección del Curso - Aula GenIA (Perfil Unificado)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
@@ -36,7 +42,7 @@
         .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
         .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
         .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
-
+        
         .ltab.active {
             color: var(--brand-teal);
             border-bottom-color: var(--brand-teal);
@@ -72,6 +78,9 @@
                     <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo de Aula GenIA" class="h-20 w-auto">
                 </a>
                 <div class="flex items-center gap-2 sm:gap-4">
+                    <a href="quienes-somos.html" class="text-gray-700 font-semibold border-2 border-gray-300 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-gray-100 hover:border-gray-400 transition-colors duration-300 hidden md:flex items-center">
+                        Quiénes Somos
+                    </a>
                     <a href="cursos.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">
                         Ver Cursos
                     </a>
@@ -269,7 +278,7 @@
                                 <option value="female">Femenino</option>
                                 <option value="male">Masculino</option>
                                 <option value="other">Otro</option>
-                                <option value="prefer_not_to-say">Prefiero no decir</option>
+                                <option value="prefer_not-to-say">Prefiero no decir</option>
                             </select>
                         </div>
                         <div>
@@ -560,7 +569,7 @@
                                     'Usar un lenguaje ambiguo para que la IA tenga más libertad.',
                                     'Ser claro, dar contexto, especificar el formato deseado y dar ejemplos.',
                                     'Escribir todo en mayúsculas para llamar su atención.'
-                                ], 
+                                ],
                                 correctAnswer: 2
                             },
                             {
@@ -747,7 +756,6 @@
             };
 
             const courseData = ALL_COURSES_DATA[courseId];
-            
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
             let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null, unlockedBadges: [] };
@@ -828,6 +836,7 @@
                 updateOverallProgress(); 
                 updateMainActionButton(); 
                 lucide.createIcons();
+                // Invoca la nueva función aquí
                 lockPostCompletionActions();
             }
 
@@ -846,8 +855,7 @@
                         let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
                         let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
                         
-                        // Bloqueo de lecciones individuales
-                        if (isModuleLocked || (!isCompleted && userProgress.completedLessons.includes(lesson.id) === false && (allLessons.findIndex(l => l.id === lesson.id) > 0 && userProgress.completedLessons.includes(allLessons[allLessons.findIndex(l => l.id === lesson.id) - 1].id) === false))) {
+                        if (isModuleLocked) {
                             linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
                             statusIcon = 'lock';
                             iconColor = 'text-slate-400';
@@ -859,7 +867,7 @@
                         
                         const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
                         
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked || (!isCompleted && userProgress.completedLessons.includes(lesson.id) === false && (allLessons.findIndex(l => l.id === lesson.id) > 0 && userProgress.completedLessons.includes(allLessons[allLessons.findIndex(l => l.id === lesson.id) - 1].id) === false)) ? 'text-slate-400' : ''}"></i></a></li>`;
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`;
                     }).join('');
 
                     const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
@@ -881,6 +889,7 @@
                 let materialHtml = ''; 
                 if (currentLessonVideo) { currentLessonVideo.pause(); currentLessonVideo = null; }
                 
+                // Clear existing quiz result handlers if any
                 if (window.currentQuizHandler) {
                     const checkBtn = document.getElementById('check-quiz-btn');
                     if (checkBtn) {
@@ -949,7 +958,7 @@
                         if (isCourseComplete) {
                             materialHtml = `${quizHtml}<p class="text-sm text-slate-500 mt-4">Curso completado. Solo puedes revisar las respuestas.</p>`;
                         } else {
-                             materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">Verificar Respuestas</button></div>`;
+                             materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
                         }
                         break;
                     default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
@@ -957,20 +966,15 @@
                 if (dom.tabMaterialPanel) dom.tabMaterialPanel.innerHTML = materialHtml; 
                 
                 if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
-                    const checkBtn = document.getElementById('check-quiz-btn');
                     dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
                         opt.addEventListener('click', () => {
                             const questionId = opt.dataset.questionId;
                             dom.tabMaterialPanel.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
                             opt.classList.add('selected');
-                            const allQuestionsAnswered = lesson.questions.every((_, qIndex) => {
-                                const qId = `quiz-${lesson.id}-q-${qIndex}`;
-                                return dom.tabMaterialPanel.querySelector(`.quiz-option[data-question-id="${qId}"].selected`);
-                            });
-                            if (checkBtn) checkBtn.disabled = !allQuestionsAnswered;
                         });
                     });
 
+                    const checkBtn = document.getElementById('check-quiz-btn');
                     if (checkBtn) {
                         window.currentQuizHandler = () => checkQuizAnswers(lesson);
                         checkBtn.addEventListener('click', window.currentQuizHandler);
@@ -1019,6 +1023,7 @@
                     } catch (err) {
                         console.error('No se pudieron adjuntar medios/subtítulos:', err);
                     } finally {
+                        // Invoca la nueva función aquí, después de renderizar el material
                         lockPostCompletionActions();
                     }
                 })();
@@ -1067,6 +1072,7 @@
                     return;
                 }
 
+                // Show results visually
                 lesson.questions.forEach((question, qIndex) => {
                     const questionId = `quiz-${lesson.id}-q-${qIndex}`;
                     const questionContainer = document.getElementById(questionId);
@@ -1083,8 +1089,7 @@
                         selectedOption.classList.add('correct');
                     } else {
                         selectedOption.classList.add('incorrect');
-                        const correctOption = questionContainer.querySelector(`[data-index="${correctIndex}"]`);
-                        if(correctOption) correctOption.classList.add('correct');
+                        questionContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
                     }
                 });
 
@@ -1133,28 +1138,33 @@
                 const isCompleted = userProgress.completedLessons.includes(lesson.id);
 
                 if (isCompleted) {
-                    dom.mainActionBtn.textContent = 'Siguiente Lección';
-                    dom.mainActionBtn.disabled = false;
-                } else {
-                    dom.mainActionBtn.textContent = 'Marcar como completada';
-                    dom.mainActionBtn.disabled = (lesson.type === 'quiz');
+                    dom.mainActionBtn.classList.add('hidden');
+                    return;
                 }
+
+                dom.mainActionBtn.classList.remove('hidden');
+                dom.mainActionBtn.textContent = 'Marcar como completada';
+                dom.mainActionBtn.disabled = (lesson.type === 'quiz'); 
             }
 
+            function updateOverallProgress() { const uniqueCompleted = new Set(userProgress.completedLessons); const completedCount = uniqueCompleted.size; const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0; if (dom.progressBar) dom.progressBar.style.width = `${percentage}%`; if (dom.progressText) dom.progressText.textContent = `${percentage}%`; }
+            
             async function navigateToLesson(lessonId) {
                 const isCourseComplete = getIsCourseComplete();
                 if (!isCourseComplete) {
                     const targetLessonInfo = getLessonInfo(lessonId);
                     if (!targetLessonInfo) return;
-                    
-                    const targetIndex = allLessons.findIndex(l => l.id === lessonId);
-                    const previousLessonId = targetIndex > 0 ? allLessons[targetIndex - 1].id : null;
-                    const isPreviousLessonCompleted = previousLessonId ? userProgress.completedLessons.includes(previousLessonId) : true;
-                    const isCurrentLessonCompleted = userProgress.completedLessons.includes(lessonId);
 
-                    if (targetIndex > 0 && !isPreviousLessonCompleted) {
-                        showToast(`Debes completar la lección anterior para acceder a esta.`);
-                        return;
+                    const targetModuleIndex = targetLessonInfo.moduleIndex;
+                    if (targetModuleIndex > 0) {
+                        const previousModule = courseData.modules[targetModuleIndex - 1];
+                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
+                        const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                        
+                        if (!isPreviousModuleCompleted) {
+                            showToast(`Debes completar el "${previousModule.title}" para acceder.`);
+                            return;
+                        }
                     }
                 }
                 
@@ -1175,8 +1185,8 @@
                     link.addEventListener('click', e => {
                         e.preventDefault();
                         const li = e.currentTarget.closest('.lesson-item');
-                        if (li) {
-                           navigateToLesson(li.dataset.lessonId);
+                        if (li && !e.currentTarget.classList.contains('cursor-not-allowed')) {
+                            navigateToLesson(li.dataset.lessonId);
                         }
                     });
                 });
@@ -1199,27 +1209,23 @@
                 const lessonId = userProgress.currentLessonId;
                 const isCompleted = userProgress.completedLessons.includes(lessonId);
 
-                if (isCompleted) {
-                    advanceToNextLesson();
-                } else {
-                    const lessonInfo = getLessonInfo(lessonId);
-                    if (lessonInfo.lesson.type === 'video') {
-                        handleLessonCompletion(lessonId);
-                    } else if (lessonInfo.lesson.type === 'quiz') {
-                         checkQuizAnswers(lessonInfo.lesson);
-                    }
-                }
-            });
-
-            async function handleLessonCompletion(lessonId) {
-                 if (!userProgress.completedLessons.includes(lessonId)) {
-                    userProgress.completedLessons = [...new Set([...userProgress.completedLessons, lessonId])];
+                if (!isCompleted) {
+                    userProgress = { ...userProgress, completedLessons: [...new Set([...userProgress.completedLessons, lessonId])] };
                     await saveProgress();
                     checkForBadgeUnlock(lessonId);
                     refreshUI();
+
+                    const isLastLesson = allLessons.findIndex(l => l.id === lessonId) === allLessons.length - 1;
+                    if (getIsCourseComplete() || isLastLesson) {
+                        if (!hasShownCompletionModal) {
+                            await showCompletionModal();
+                            hasShownCompletionModal = true;
+                        }
+                    } else {
+                        advanceToNextLesson();
+                    }
                 }
-                advanceToNextLesson();
-            }
+            });
 
             if (dom.prevBtn) dom.prevBtn.addEventListener('click', () => { const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); });
             
@@ -1474,18 +1480,10 @@
                         const actionAttr = isPdf ? `data-pdf-url="${resource.url}" data-pdf-title="${resource.name}"` : `href="${resource.url}"`;
                         const targetAttr = resource.external ? 'target="_blank" rel="noopener noreferrer"' : '';
                         const tagName = isPdf ? 'button' : 'a';
-
-                        return `
-                        <${tagName} ${actionAttr} ${targetAttr} class="resource-item flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-teal-500 transition-all duration-200 group w-full text-left">
-                            <i data-lucide="${icon}" class="h-6 w-6 text-teal-500 mr-4"></i>
-                            <span class="flex-1 font-medium text-gray-700 group-hover:text-teal-600">${resource.name}</span>
-                            <i data-lucide="arrow-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i>
-                        </${tagName}>`;
+                        return `<${tagName} ${actionAttr} ${targetAttr} class="resource-item flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-teal-500 transition-all duration-200 group w-full text-left"><i data-lucide="${icon}" class="h-6 w-6 text-teal-500 mr-4"></i><span class="flex-1 font-medium text-gray-700 group-hover:text-teal-600">${resource.name}</span><i data-lucide="arrow-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i></${tagName}>`;
                     }).join('');
                 } else {
-                    dom.resourcesList.innerHTML = `<div class="text-center py-5 px-4 bg-gray-100 rounded-lg">
-                        <p class="text-gray-500 text-sm">No hay recursos del instructor para esta lección.</p>
-                    </div>`;
+                    dom.resourcesList.innerHTML = `<div class="text-center py-5 px-4 bg-gray-100 rounded-lg"><p class="text-gray-500 text-sm">No hay recursos del instructor para esta lección.</p></div>`;
                 }
                 lucide.createIcons();
             }
@@ -1706,14 +1704,74 @@
                 const [t] = videoEl.textTracks; if (t) t.mode = 'showing';
                 videoEl.load();
             }
+
+            // --- Código del parche aquí ---
+            const BLOCK_SELECTORS_ON_COMPLETE = [
+              '#main-action-btn',
+              'button[id*="encuesta"]',
+              '[id*="btn-encuesta"]',
+              '[data-action="complete"]',
+              '[data-action="encuesta"]',
+              '.btn-completar-modulo',
+              '.btn-encuesta',
+              'a[href*="encuesta"]'
+            ];
             
+            // Evita bloquear controles de video o elementos dentro del <video>
+            function isInsideVideo(el) {
+              return !!el.closest('video, .plyr, .video-js, .video-container');
+            }
+
+            function hardDisable(el, reason = 'Curso finalizado: acción deshabilitada') {
+              if (!el || isInsideVideo(el)) return;
+              // estados y accesibilidad
+              el.setAttribute('aria-disabled', 'true');
+              el.setAttribute('tabindex', '-1');
+              el.title = reason;
+              // estilos visuales (Tailwind disponible)
+              el.classList.add('opacity-60', 'cursor-not-allowed');
+              // si es <button> deshabilitar nativo
+              if (el.tagName === 'BUTTON') el.disabled = true;
+
+              // Bloqueo duro en captura (antes de cualquier otro listener)
+              const blocker = (e) => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                return false;
+              };
+              el.addEventListener('click', blocker, true);
+              el.addEventListener('pointerdown', blocker, true);
+              el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') blocker(e);
+              }, true);
+            }
+
             function lockPostCompletionActions() {
               const courseIsDone = getIsCourseComplete();
               if (!courseIsDone) return;
+
+              // 1) Oculta la barra de navegación si aún no está oculta
               if (dom && dom.navigationButtons) {
                 dom.navigationButtons.classList.add('hidden');
               }
+
+              // 2) Deshabilita botones/enlaces de completar y encuesta existentes
+              BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
+                document.querySelectorAll(sel).forEach((el) => hardDisable(el));
+              });
+
+              // 3) Observa futuros nodos que coincidan (por re-render dinámico)
+              if (!window.__postCompleteObserver__) {
+                window.__postCompleteObserver__ = new MutationObserver(() => {
+                  BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
+                    document.querySelectorAll(sel).forEach((el) => hardDisable(el));
+                  });
+                });
+                window.__postCompleteObserver__.observe(document.body, { childList: true, subtree: true });
+              }
             }
+            // --- Fin del código del parche ---
 
             if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
 
@@ -1734,6 +1792,7 @@
     <!-- === START: Scripts de Sincronización y Medios (Refactorizado) === -->
     <script>
     (function(){
+      // Kill switch para evitar errores si Firestore no permite escritura
       const FIRESTORE_SYNC = true;
 
       function getCourseId() {
@@ -1783,3 +1842,4 @@
 
 </body>
 </html>
+
