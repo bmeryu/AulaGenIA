@@ -668,29 +668,29 @@
                                     'Tomar decisiones éticas complejas sobre un proyecto.', 
                                     'Responder preguntas frecuentes de clientes con respuestas estandarizadas.', 
                                     'Liderar una reunión de equipo.'
-                                ], 
-                                correctAnswer: 2 
-                            },
-                            {
-                                text: 'Al integrar la IA para automatizar tareas, ¿cuál es el beneficio principal que se busca?',
-                                options: [
-                                    'Aumentar la complejidad de las tareas diarias.',
-                                    'Reducir la necesidad de supervisión humana a cero.',
-                                    'Incrementar la eficiencia, ahorrar tiempo y reducir errores en procesos monótonos.',
-                                    'Hacer que el trabajo sea más lento pero más detallado.'
-                                ],
-                                correctAnswer: 2
-                            },
-                            {
-                                text: 'Al automatizar tareas, ¿el objetivo es reemplazar completamente el juicio humano en todas las áreas?',
-                                options: [
-                                    'Sí, la meta es que la IA tome todas las decisiones.',
-                                    'No, el objetivo es liberar a los humanos de tareas monótonas para que se enfoquen en actividades de mayor valor.',
-                                    'Sí, porque la IA siempre es más precisa que un humano.',
-                                    'No, la automatización solo sirve para escribir correos.'
-                                ],
-                                correctAnswer: 1
-                            }
+                            ], 
+                            correctAnswer: 2 
+                          },
+                          {
+                            text: 'Al integrar la IA para automatizar tareas, ¿cuál es el beneficio principal que se busca?',
+                            options: [
+                                'Aumentar la complejidad de las tareas diarias.',
+                                'Reducir la necesidad de supervisión humana a cero.',
+                                'Incrementar la eficiencia, ahorrar tiempo y reducir errores en procesos monótonos.',
+                                'Hacer que el trabajo sea más lento pero más detallado.'
+                            ],
+                            correctAnswer: 2
+                          },
+                          {
+                            text: 'Al automatizar tareas, ¿el objetivo es reemplazar completamente el juicio humano en todas las áreas?',
+                            options: [
+                                'Sí, la meta es que la IA tome todas las decisiones.',
+                                'No, el objetivo es liberar a los humanos de tareas monótonas para que se enfoquen en actividades de mayor valor.',
+                                'Sí, porque la IA siempre es más precisa que un humano.',
+                                'No, la automatización solo sirve para escribir correos.'
+                            ],
+                            correctAnswer: 1
+                          }
                         ], 
                         resources: [] 
                       }
@@ -720,29 +720,29 @@
                                     'Complejidad: El proyecto debe tener muchas funciones para parecer avanzado.', 
                                     'Simplicidad: Se deben eliminar pasos innecesarios.', 
                                     'Coherencia: Se debe mantener un estilo y tono constante.'
-                                ], 
-                                correctAnswer: 1 
-                            },
-                            {
-                                text: '¿Qué herramienta se recomienda en el curso para generar imágenes artísticas y conceptuales a través de prompts detallados?',
-                                options: [
-                                    'Google Sites.',
-                                    'Netlify.',
-                                    'Midjourney.',
-                                    'Google Forms.'
-                                ],
-                                correctAnswer: 2
-                            },
-                            {
-                                text: '¿Cuál es el paso final y más importante después de crear tu proyecto con IA para recibir feedback y seguir mejorando?',
-                                options: [
-                                    'Guardarlo como un borrador final en tu computador.',
-                                    'Borrar el proyecto para empezar uno nuevo de inmediato.',
-                                    'Publicarlo y compartirlo con el mundo.',
-                                    'Imprimir el código y archivarlo físicamente.'
-                                ],
-                                correctAnswer: 2
-                            }
+                            ], 
+                            correctAnswer: 1 
+                          },
+                          {
+                            text: '¿Qué herramienta se recomienda en el curso para generar imágenes artísticas y conceptuales a través de prompts detallados?',
+                            options: [
+                                'Google Sites.',
+                                'Netlify.',
+                                'Midjourney.',
+                                'Google Forms.'
+                            ],
+                            correctAnswer: 2
+                          },
+                          {
+                            text: '¿Cuál es el paso final y más importante después de crear tu proyecto con IA para recibir feedback y seguir mejorando?',
+                            options: [
+                                'Guardarlo como un borrador final en tu computador.',
+                                'Borrar el proyecto para empezar uno nuevo de inmediato.',
+                                'Publicarlo y compartirlo con el mundo.',
+                                'Imprimir el código y archivarlo físicamente.'
+                            ],
+                            correctAnswer: 2
+                          }
                         ], 
                         resources: [] 
                       }
@@ -861,7 +861,7 @@
                         let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
                         let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
                         
-                        if (isModuleLocked) {
+                        if (isModuleLocked || (!isCompleted && !isPreviousModuleComplete)) {
                             linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
                             statusIcon = 'lock';
                             iconColor = 'text-slate-400';
@@ -873,7 +873,7 @@
                         
                         const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
                         
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked || (!isCompleted && !isPreviousModuleComplete) ? 'text-slate-400' : ''}"></i></a></li>`;
                     }).join('');
 
                     const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
@@ -963,7 +963,7 @@
                         if (isCourseComplete) {
                             materialHtml = `${quizHtml}<p class="text-sm text-slate-500 mt-4">Curso completado. Solo puedes revisar las respuestas.</p>`;
                         } else {
-                             materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
+                             materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Verificar Respuestas</button></div>`;
                         }
                         break;
                     default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
@@ -971,15 +971,21 @@
                 if (dom.tabMaterialPanel) dom.tabMaterialPanel.innerHTML = materialHtml; 
                 
                 if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
+                    const checkBtn = document.getElementById('check-quiz-btn');
                     dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
                         opt.addEventListener('click', () => {
                             const questionId = opt.dataset.questionId;
                             dom.tabMaterialPanel.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
                             opt.classList.add('selected');
+                            // Habilitar el botón de verificación si todas las preguntas tienen una opción seleccionada
+                            const allQuestionsAnswered = lesson.questions.every((_, qIndex) => {
+                                const qId = `quiz-${lesson.id}-q-${qIndex}`;
+                                return dom.tabMaterialPanel.querySelector(`.quiz-option[data-question-id="${qId}"].selected`);
+                            });
+                            if (checkBtn) checkBtn.disabled = !allQuestionsAnswered;
                         });
                     });
 
-                    const checkBtn = document.getElementById('check-quiz-btn');
                     if (checkBtn) {
                         window.currentQuizHandler = () => checkQuizAnswers(lesson);
                         checkBtn.addEventListener('click', window.currentQuizHandler);
@@ -1769,25 +1775,4 @@
         setTimeout(function(){ whenFirebaseReady(fn, tries+1); }, 100);
       }
       
-      function syncTotalLessons(){
-        if (!FIRESTORE_SYNC) { console.log('[sync] Sincronización de total de lecciones deshabilitada.'); return; }
-        try {
-          const total = countLessonsInDOM();
-          if (!total || !(total > 0)) return;
-          const courseId = getCourseId();
-          const db = firebase.firestore();
-          db.collection('courses').doc(courseId)
-            .set({ totalLessons: total }, { merge: true })
-            .then(() => console.log(`[sync] Total de lecciones actualizado para ${courseId}: ${total}`))
-            .catch(err => console.warn('[sync] Falló la actualización de total de lecciones:', err));
-        } catch(e){ console.warn('[sync] Excepción en syncTotalLessons:', e); }
-      }
-      
-      whenFirebaseReady(syncTotalLessons);
-      document.addEventListener('DOMContentLoaded', syncTotalLessons);
-    })();
-    </script>
-    <!-- === END: Scripts de Sincronización y Medios === -->
-
-</body>
-</html>
+      function 
