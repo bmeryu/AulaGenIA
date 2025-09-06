@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.7.0 (Module & Quiz Locking)
+  CAMPUS CURSO · AULA GENIA v3.7.1 (Quiz Review Mode)
   -------------------------------------------------------------------
-  - ANALYST UPGRADE: Lógica de bloqueo mejorada para un flujo de aprendizaje estructurado.
-  - FEATURE: Mantenido el bloqueo de módulos. Un estudiante no puede
-    acceder a un módulo hasta que haya completado todas las lecciones
-    del módulo anterior.
-  - NEW FEATURE: Implementado el bloqueo de quizzes. Un estudiante no puede
-    acceder al quiz de un módulo hasta haber completado todas las lecciones
-    de video/texto de ESE MISMO módulo.
-  - UX: Los módulos y quizzes bloqueados se muestran visualmente como 
-    deshabilitados en la barra lateral con un ícono de candado.
-  - LOGIC: La navegación ahora verifica ambas condiciones (módulo anterior
-    completo y lecciones del módulo actual completas para el quiz) antes
-    de permitir el acceso.
+  - ANALYST UPGRADE: Lógica de revisión de quizzes implementada.
+  - FEATURE: Mantenido el bloqueo de módulos y quizzes.
+  - NEW FEATURE: Una vez que un quiz es completado exitosamente, entra en 
+    modo "revisión".
+  - UX: Al revisitar un quiz completado, se muestran las respuestas 
+    correctas de forma estática y no se puede volver a intentar, 
+    reforzando el aprendizaje.
+  - LOGIC: La función renderLessonContent ahora verifica si el ID de un 
+    quiz ya está en el progreso del usuario antes de renderizarlo en modo
+    interactivo o de revisión.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -950,51 +948,61 @@
                         }
                         break; 
                     case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; 
-                    case 'quiz':
+                    case 'quiz': { // Use block scope for clarity
                         if (!lesson.questions || lesson.questions.length === 0) {
                             materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
                             break;
                         }
 
+                        const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const inReviewMode = isCourseComplete || isQuizCompleted;
+
                         let quizHtml = lesson.questions.map((question, qIndex) => {
-                            const questionId = `quiz-${lesson.id}-q-${qIndex}`;
-                            
-                            if (isCourseComplete) {
-                                const optionsHtml = question.options.map((opt, index) => {
+                            const optionsHtml = question.options.map((opt, index) => {
+                                if (inReviewMode) {
                                     const isCorrect = index === question.correctAnswer;
                                     const optionClasses = isCorrect ? 'quiz-option correct' : 'quiz-option opacity-60';
                                     return `<div class="${optionClasses} border-2 p-4 rounded-lg cursor-default">${opt}</div>`;
-                                }).join('');
-                                return `<div class="space-y-4 mb-8 p-4 border-b border-slate-200"><h3 class="text-xl font-semibold">${qIndex + 1}. ${question.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
-                            } else {
-                                const optionsHtml = question.options.map((opt, index) => `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}" data-question-id="${questionId}">${opt}</div>`).join('');
-                                return `<div class="space-y-4 mb-8 p-4 border-b border-slate-200" id="${questionId}"><h3 class="text-xl font-semibold">${qIndex + 1}. ${question.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
-                            }
+                                } else {
+                                    const questionId = `quiz-${lesson.id}-q-${qIndex}`;
+                                    return `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}" data-question-id="${questionId}">${opt}</div>`;
+                                }
+                            }).join('');
+                            
+                            const questionContainerAttributes = inReviewMode ? '' : `id="quiz-${lesson.id}-q-${qIndex}"`;
+                            return `<div class="space-y-4 mb-8 p-4 border-b border-slate-200" ${questionContainerAttributes}><h3 class="text-xl font-semibold">${qIndex + 1}. ${question.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
                         }).join('');
 
-                        if (isCourseComplete) {
-                            materialHtml = `${quizHtml}<p class="text-sm text-slate-500 mt-4">Curso completado. Solo puedes revisar las respuestas.</p>`;
+                        if (inReviewMode) {
+                            const reviewMessage = isQuizCompleted 
+                                ? 'Ya has completado este quiz. Puedes revisar las respuestas correctas.'
+                                : 'Curso completado. Solo puedes revisar las respuestas.';
+                            materialHtml = `${quizHtml}<p class="text-sm text-slate-500 mt-4 font-semibold text-center p-4 bg-slate-100 rounded-md">${reviewMessage}</p>`;
                         } else {
                              materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
                         }
                         break;
+                    }
                     default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
                 } 
                 if (dom.tabMaterialPanel) dom.tabMaterialPanel.innerHTML = materialHtml; 
                 
                 if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
-                    dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
-                        opt.addEventListener('click', () => {
-                            const questionId = opt.dataset.questionId;
-                            dom.tabMaterialPanel.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
-                            opt.classList.add('selected');
-                        });
-                    });
+                    const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
+                    if (!isQuizCompleted) {
+                      dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
+                          opt.addEventListener('click', () => {
+                              const questionId = opt.dataset.questionId;
+                              dom.tabMaterialPanel.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
+                              opt.classList.add('selected');
+                          });
+                      });
 
-                    const checkBtn = document.getElementById('check-quiz-btn');
-                    if (checkBtn) {
-                        window.currentQuizHandler = () => checkQuizAnswers(lesson);
-                        checkBtn.addEventListener('click', window.currentQuizHandler);
+                      const checkBtn = document.getElementById('check-quiz-btn');
+                      if (checkBtn) {
+                          window.currentQuizHandler = () => checkQuizAnswers(lesson);
+                          checkBtn.addEventListener('click', window.currentQuizHandler);
+                      }
                     }
                 }
 
@@ -1870,3 +1878,4 @@
 
 </body>
 </html>
+
