@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.6.5 (Module Locking)
+  CAMPUS CURSO · AULA GENIA v3.7.0 (Module & Quiz Locking)
   -------------------------------------------------------------------
-  - FEATURE: Implementado el bloqueo de módulos. Un estudiante no puede
+  - ANALYST UPGRADE: Lógica de bloqueo mejorada para un flujo de aprendizaje estructurado.
+  - FEATURE: Mantenido el bloqueo de módulos. Un estudiante no puede
     acceder a un módulo hasta que haya completado todas las lecciones
     del módulo anterior.
-  - UX: Los módulos bloqueados se muestran visualmente como deshabilitados
-    en la barra lateral.
-  - LOGIC: La navegación ahora verifica si el módulo de destino está
-    desbloqueado antes de permitir el acceso.
-  - Una vez que el curso está completo, todos los módulos se desbloquean
-    para permitir la revisión libre.
+  - NEW FEATURE: Implementado el bloqueo de quizzes. Un estudiante no puede
+    acceder al quiz de un módulo hasta haber completado todas las lecciones
+    de video/texto de ESE MISMO módulo.
+  - UX: Los módulos y quizzes bloqueados se muestran visualmente como 
+    deshabilitados en la barra lateral con un ícono de candado.
+  - LOGIC: La navegación ahora verifica ambas condiciones (módulo anterior
+    completo y lecciones del módulo actual completas para el quiz) antes
+    de permitir el acceso.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -851,11 +854,25 @@
                     const lessonsHtml = module.lessons.map(lesson => {
                         const isCompleted = userProgress.completedLessons.includes(lesson.id);
                         const isActive = userProgress.currentLessonId === lesson.id;
+                    
+                        // ANALYST UPGRADE: Combined locking logic for modules and quizzes.
+                        let isLocked = false;
+                        if (!isCourseComplete) {
+                            if (isModuleLocked) {
+                                isLocked = true;
+                            } else if (lesson.type === 'quiz') {
+                                const otherLessonsInModule = module.lessons.filter(l => l.type !== 'quiz');
+                                if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(l.id))) {
+                                    isLocked = true;
+                                }
+                            }
+                        }
+                        
                         let linkClasses = 'text-gray-600 hover:bg-slate-100';
                         let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
                         let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
                         
-                        if (isModuleLocked) {
+                        if (isLocked) {
                             linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
                             statusIcon = 'lock';
                             iconColor = 'text-slate-400';
@@ -867,7 +884,7 @@
                         
                         const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
                         
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isModuleLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isLocked ? 'text-slate-400' : ''}"></i></a></li>`;
                     }).join('');
 
                     const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
@@ -1151,18 +1168,29 @@
             
             async function navigateToLesson(lessonId) {
                 const isCourseComplete = getIsCourseComplete();
-                if (!isCourseComplete) {
-                    const targetLessonInfo = getLessonInfo(lessonId);
-                    if (!targetLessonInfo) return;
+                const targetLessonInfo = getLessonInfo(lessonId);
+                if (!targetLessonInfo) return;
 
+                if (!isCourseComplete) {
+                    // ANALYST UPGRADE: Stricter navigation checks.
+
+                    // 1. Check Module Lock (must complete previous module).
                     const targetModuleIndex = targetLessonInfo.moduleIndex;
                     if (targetModuleIndex > 0) {
                         const previousModule = courseData.modules[targetModuleIndex - 1];
                         const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
-                        const isPreviousModuleCompleted = previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id));
-                        
-                        if (!isPreviousModuleCompleted) {
+                        if (!previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id))) {
                             showToast(`Debes completar el "${previousModule.title}" para acceder.`);
+                            return;
+                        }
+                    }
+                    
+                    // 2. Check Intra-Module Quiz Lock (must complete lessons before quiz).
+                    const { lesson, module } = targetLessonInfo;
+                    if (lesson.type === 'quiz') {
+                        const otherLessonsInModule = module.lessons.filter(l => l.type !== 'quiz');
+                        if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(l.id))) {
+                            showToast(`Completa las lecciones del "${module.title}" para desbloquear el quiz.`);
                             return;
                         }
                     }
@@ -1842,4 +1870,3 @@
 
 </body>
 </html>
-
