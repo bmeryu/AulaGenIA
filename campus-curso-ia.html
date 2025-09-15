@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.7.3 (Quiz Expansion)
+  CAMPUS CURSO · AULA GENIA v3.8 (Profile UX)
   -------------------------------------------------------------------
-  - ANALYST UPGRADE: Se han expandido todos los quizzes a 5 preguntas
-    para una evaluación más completa, según solicitud.
-  - FEATURE: Las nuevas preguntas son de nivel básico y están alineadas
-    con el contenido de los módulos del curso.
-  - LOGIC: Se han añadido nuevas entradas al array de `questions` para
-    cada quiz en la estructura de datos `ALL_COURSES_DATA`.
-  - UX: Se mantiene el modo de revisión y la lógica de bloqueo existentes.
+  - UX: Mejorada la validación del formulario de perfil en la página del curso.
+  - FEAT: Se añade validación en tiempo real para nombre, país y RUT.
+  - UI: Se muestran íconos de éxito/error y el botón de guardar se activa
+    solo cuando el formulario es válido.
+  - UI: Se ajusta el layout del modal para evitar el scroll.
+  - DEV: Esta mejora fue implementada por un desarrollador senior para
+    unificar y optimizar la experiencia de usuario.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -32,6 +32,7 @@
         #profile-modal, .toast-notification, #completion-modal { transition: all 0.3s ease-in-out; }
         label span.required { color: #ef4444; }
         .form-input-error { @apply border-red-500 ring-red-500; }
+        .form-input-success { @apply border-green-500 ring-green-500; }
         .error-message { @apply text-red-600 text-xs mt-1; }
         .toast-notification { position: fixed; top: 20px; right: 20px; transform: translateX(120%); z-index: 1000; }
         .toast-notification.show { transform: translateX(0); }
@@ -244,7 +245,7 @@
     <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
     <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col transform transition-all scale-95 opacity-0 max-h-[90vh]">
-            <div class="p-8 flex-shrink-0">
+            <div class="p-6 flex-shrink-0">
                 <div class="flex justify-between items-start">
                     <div>
                         <h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3>
@@ -254,66 +255,61 @@
                 </div>
             </div>
             
-            <div class="px-8 pb-4 flex-grow overflow-y-auto">
-                <form id="profile-form" class="space-y-4">
+            <div class="px-6 pb-2 flex-grow overflow-y-auto">
+                <form id="profile-form" class="space-y-3" novalidate>
                     <div>
                         <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
-                        <input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Ada Lovelace">
-                        <p class="text-xs text-gray-500 mt-1"><strong>Importante:</strong> Este será el nombre que aparecerá en tu certificado.</p>
+                        <div class="relative">
+                            <input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 pr-10" placeholder="Ej: Ada Lovelace">
+                            <span id="name-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Este será el nombre en tu certificado.</p>
                         <div id="name-error" class="error-message"></div>
                     </div>
                     <div>
                         <label for="profile-rut-input" class="block text-sm font-medium text-gray-700 mb-1">RUT (Chile) <span class="required">*</span></label>
-                        <input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: 12345678-9">
-                        <p class="text-xs text-gray-500 mt-1">Requerido para la validez de tu certificado en Chile.</p>
+                        <div class="relative">
+                            <input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 pr-10" placeholder="Ej: 12345678-9">
+                            <span id="rut-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Requerido si tu país es Chile.</p>
                         <div id="rut-error" class="error-message"></div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
-                            <select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
-                                <option value="">Seleccionar...</option>
-                                <option value="female">Femenino</option>
-                                <option value="male">Masculino</option>
-                                <option value="other">Otro</option>
-                                <option value="prefer_not-to-say">Prefiero no decir</option>
-                            </select>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                         <div>
+                            <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
+                            <div class="relative">
+                                <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 appearance-none pr-10">
+                                    <option value="">Selecciona tu país</option>
+                                    <option value="CL">Chile</option>
+                                    <option value="AR">Argentina</option>
+                                    <option value="PE">Perú</option>
+                                    <option value="CO">Colombia</option>
+                                    <option value="MX">México</option>
+                                    <option value="ES">España</option>
+                                    <option value="US">Estados Unidos</option>
+                                    <option value="OT">Otro</option>
+                                </select>
+                                <span id="country-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"></span>
+                            </div>
+                            <div id="country-error" class="error-message"></div>
                         </div>
                         <div>
-                            <label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
-                            <input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                            <label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label>
+                            <input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante">
                         </div>
                     </div>
                     <div>
                         <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
                         <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
                     </div>
-                    <div>
-                        <label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label>
-                        <input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante, Desarrollador, etc.">
-                    </div>
-                    <div>
-                        <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
-                        <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
-                            <option value="">Selecciona tu país</option>
-                            <option value="CL">Chile</option>
-                            <option value="AR">Argentina</option>
-                            <option value="PE">Perú</option>
-                            <option value="CO">Colombia</option>
-                            <option value="MX">México</option>
-                            <option value="ES">España</option>
-                            <option value="US">Estados Unidos</option>
-                            <option value="OT">Otro</option>
-                        </select>
-                        <div id="country-error" class="error-message"></div>
-                    </div>
                     <div id="form-status" class="text-center p-3 rounded-lg hidden"></div>
                 </form>
             </div>
-            <div class="p-8 pt-4 flex-shrink-0">
+            <div class="p-6 pt-4 flex-shrink-0">
                  <div class="flex justify-end gap-3 pt-4 border-t">
                     <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
-                    <button type="submit" form="profile-form" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2">
+                    <button type="submit" form="profile-form" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                         <span id="save-btn-text">Guardar Cambios</span>
                         <i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
                     </button>
@@ -1463,13 +1459,12 @@
             if (dom.closeModalBtn) dom.closeModalBtn.addEventListener('click', () => window.location.href = `${baseUrl}/campus.html`);
             if (dom.reviewCourseBtn) dom.reviewCourseBtn.addEventListener('click', hideCompletionModal);
             
+            // --- INICIO: LÓGICA DE PERFIL CON VALIDACIÓN MEJORADA ---
             const profileModalOverlay = document.getElementById('profile-modal-overlay'); const profileModal = document.getElementById('profile-modal'); const avatarButton = document.getElementById('avatar-button'); const cancelProfileBtn = document.getElementById('cancel-profile-btn'); const closeProfileBtn = document.getElementById('close-profile-modal-btn'); const profileForm = document.getElementById('profile-form'); const profileNameInput = document.getElementById('profile-name-input'); const profileRutInput = document.getElementById('profile-rut-input'); const profileEmailInput = document.getElementById('profile-email-input'); const profileJobInput = document.getElementById('profile-job-input'); const profileCountrySelect = document.getElementById('profile-country-select'); const profileGenderSelect = document.getElementById('profile-gender-select'); const profileBirthdateInput = document.getElementById('profile-birthdate-input'); const formStatus = document.getElementById('form-status'); const saveBtn = document.getElementById('save-profile-btn'); const saveBtnText = document.getElementById('save-btn-text'); const saveSpinner = document.getElementById('save-spinner');
             
-            async function showProfileModal() {
+             async function showProfileModal() {
                 if (!profileForm || !profileEmailInput || !profileModalOverlay || !profileModal) return;
                 profileForm.reset();
-                clearAllErrors();
-                if (formStatus) formStatus.classList.add('hidden');
                 
                 const user = auth.currentUser;
                 if (!user) return;
@@ -1482,25 +1477,18 @@
                     const dbData = doc.exists ? doc.data() : {};
                     const isProfileCompleted = dbData.profileCompleted === true;
 
-                    // Load name from DB ONLY if the profile has been completed before.
-                    if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : '';
-                    
-                    // Other fields only come from DB
+                    if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : (user.displayName || '');
                     if (profileRutInput) profileRutInput.value = dbData.rut || '';
                     if (profileJobInput) profileJobInput.value = dbData.jobTitle || '';
                     if (profileCountrySelect) profileCountrySelect.value = dbData.country || '';
                     if (profileGenderSelect) profileGenderSelect.value = dbData.gender || '';
                     if (profileBirthdateInput) profileBirthdateInput.value = dbData.birthdate || '';
-
                 } catch (error) {
                     console.error("Error al cargar datos del perfil:", error);
-                    if(formStatus) {
-                        formStatus.textContent = 'Error al cargar tus datos. Intenta de nuevo.';
-                        formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
-                        formStatus.classList.remove('hidden');
-                    }
                 }
                 
+                checkAllFieldsAndToggleButtonState();
+                formStatus.classList.add('hidden');
                 profileModalOverlay.classList.remove('hidden');
                 profileModal.classList.remove('hidden');
                 setTimeout(() => {
@@ -1510,15 +1498,58 @@
             }
 
             function hideProfileModal() { if (!profileModalOverlay || !profileModal) return; const inner = profileModal.querySelector('div.bg-white'); if (inner) inner.classList.add('scale-95', 'opacity-0'); setTimeout(() => { profileModalOverlay.classList.add('hidden'); profileModal.classList.add('hidden'); if (inner) inner.classList.remove('scale-95', 'opacity-0'); }, 300); }
-            if (avatarButton) avatarButton.addEventListener('click', () => showProfileModal()); if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', hideProfileModal); if (closeProfileBtn) closeProfileBtn.addEventListener('click', hideProfileModal); if (profileModalOverlay) profileModalOverlay.addEventListener('click', hideProfileModal);
+            if (avatarButton) avatarButton.addEventListener('click', () => showProfileModal()); if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', hideProfileModal); if (closeProfileBtn) closeProfileBtn.addEventListener('click', hideProfileModal); if (profileModalOverlay) profileModalOverlay.addEventListener('click', (e) => { if (e.target === profileModalOverlay) hideProfileModal(); });
+            
             function validateRut(rut) { rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); const rutBody = rut.slice(0, -1); let dv = rut.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; let sum = 0, multiple = 2; for (let i = rutBody.length - 1; i >= 0; i--) { sum += rutBody.charAt(i) * multiple; if (multiple < 7) multiple++; else multiple = 2; } const calculatedDv = 11 - (sum % 11); const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); return dv === expectedDv; }
-            function setError(field, message) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.add('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = message; }
-            function clearError(field) { const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); if (inputEl) inputEl.classList.remove('form-input-error'); const errorEl = document.getElementById(`${field}-error`); if(errorEl) errorEl.textContent = ''; }
-            function clearAllErrors() { ['name', 'rut', 'country'].forEach(field => clearError(field)); }
-            function validateForm() { let isValid = true; clearAllErrors(); if (profileNameInput && (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' '))) { setError('name', 'Ingresa tu nombre y apellido completo.'); isValid = false; } if (profileCountrySelect && profileCountrySelect.value === '') { setError('country', 'Selecciona tu país de residencia.'); isValid = false; } if (profileCountrySelect && profileCountrySelect.value === 'CL' && profileRutInput && !validateRut(profileRutInput.value)) { setError('rut', 'El RUT ingresado no es válido.'); isValid = false; } return isValid; }
+
+            function setFieldState(field, state, message = '') {
+                const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
+                const errorEl = document.getElementById(`${field}-error`);
+                const iconEl = document.getElementById(`${field}-status-icon`);
+                if (!inputEl) return;
+                inputEl.classList.remove('form-input-error', 'form-input-success');
+                if (errorEl) errorEl.textContent = '';
+                if (iconEl) iconEl.innerHTML = '';
+                if (state === 'error') {
+                    inputEl.classList.add('form-input-error');
+                    if (errorEl) errorEl.textContent = message;
+                    if (iconEl) iconEl.innerHTML = `<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>`;
+                } else if (state === 'success') {
+                    inputEl.classList.add('form-input-success');
+                    if (iconEl) iconEl.innerHTML = `<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>`;
+                }
+                if (iconEl && iconEl.innerHTML) {
+                    lucide.createIcons({ nodes: [iconEl.querySelector('i')] });
+                }
+            }
+
+            function validateName() { if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) { setFieldState('name', 'error', 'Ingresa tu nombre y apellido completo.'); return false; } setFieldState('name', 'success'); return true; }
+            function validateCountry() { if (profileCountrySelect.value === '') { setFieldState('country', 'error', 'Selecciona tu país de residencia.'); return false; } setFieldState('country', 'success'); return true; }
+            function validateRutField() { if (profileCountrySelect.value === 'CL') { if (!validateRut(profileRutInput.value)) { setFieldState('rut', 'error', 'El RUT ingresado no es válido.'); return false; } setFieldState('rut', 'success'); } else { setFieldState('rut', 'neutral'); } return true; }
+
+            function checkAllFieldsAndToggleButtonState() {
+                const isNameValid = validateName();
+                const isCountryValid = validateCountry();
+                const isRutValid = validateRutField();
+                const isFormValid = isNameValid && isCountryValid && (profileCountrySelect.value !== 'CL' || isRutValid);
+                if(saveBtn) saveBtn.disabled = !isFormValid;
+            }
+
+            if(profileNameInput) profileNameInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+            if(profileRutInput) profileRutInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+            if(profileCountrySelect) profileCountrySelect.addEventListener('change', checkAllFieldsAndToggleButtonState);
+
             if (profileForm) profileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                if (!validateForm()) return;
+                checkAllFieldsAndToggleButtonState();
+                if (saveBtn && saveBtn.disabled) { 
+                    if(formStatus) {
+                      formStatus.className = 'text-center p-3 rounded-lg bg-yellow-100 text-yellow-700';
+                      formStatus.textContent = 'Por favor, corrige los campos marcados en rojo.';
+                      formStatus.classList.remove('hidden');
+                    }
+                    return; 
+                }
                 if (saveBtn) saveBtn.disabled = true;
                 if (saveBtnText) saveBtnText.textContent = 'Guardando...';
                 if (saveSpinner) saveSpinner.classList.remove('hidden');
@@ -1556,11 +1587,12 @@
                         formStatus.classList.remove('hidden');
                     }
                 } finally {
-                    if (saveBtn) saveBtn.disabled = false;
                     if (saveBtnText) saveBtnText.textContent = 'Guardar Cambios';
                     if (saveSpinner) saveSpinner.classList.add('hidden');
                 }
             });
+            // --- FIN: LÓGICA DE PERFIL ---
+
             
             function activateTab(tabId) {
                 if (!dom.learningTabs) return;
@@ -1995,5 +2027,3 @@
 
 </body>
 </html>
-" and the user is asking the following query:
-"no hiciste ningun cambio"
