@@ -1004,6 +1004,161 @@
         });
     </script>
 
+
+<!-- AULAGENIA: Firebase SDKs (v8) para permitir bypass de pago con allowlist en index -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+
+<!-- AULAGENIA: Inicialización Firebase (solo si no existe) -->
+<script>
+(function() {
+  if (!window.firebase || (firebase.apps && !firebase.apps.length)) {
+    const firebaseConfig = {
+            apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", // Reemplaza con tu API Key
+            authDomain: "aulagenia.firebaseapp.com",
+            projectId: "aulagenia",
+            storageBucket: "aulagenia.appspot.com",
+            messagingSenderId: "173328075630",
+            appId: "1:173328075630:web:825606db4271ea1e66cf7f",
+            measurementId: "G-X500LE6Z8X"
+        };
+    try {
+      firebase.initializeApp(firebaseConfig);
+    } catch (e) { console.warn('Firebase ya inicializado o error benigno:', e); }
+  }
+})();
+</script>
+
+
+<!-- AULAGENIA: Bypass de pago si el usuario está en allowlist -->
+<script>
+(function() {
+  // MAPEOS: Ajusta estos selectores / IDs a tus botones reales si quieres rotularlos como "Entrar sin pagar"
+  const COURSE_MAP = {
+    '#buy-esencial' : 'ia-aplicada-esencial',
+    '#buy-avanzado' : 'ia-aplicada-avanzado'
+  };
+
+  const q = (sel) => document.querySelector(sel);
+  const qa = (sel) => Array.from(document.querySelectorAll(sel));
+
+  function discoverBuyButtons() {
+    const byData = qa('[data-course]');
+    const byHref = qa('a[href*="checkout"], button[data-payment], a[data-payment], a[href*="#precios"], a[href*="acceso.html"]');
+    const configured = Object.keys(COURSE_MAP).map((s)=>q(s)).filter(Boolean);
+    return Array.from(new Set([...byData, ...byHref, ...configured]));
+  }
+
+  function resolveCourseIdFor(el) {
+    for (const [sel, cid] of Object.entries(COURSE_MAP)) {
+      if (el.matches(sel)) return cid;
+    }
+    const dataCourse = el.getAttribute('data-course');
+    if (dataCourse) return dataCourse;
+
+    const href = el.getAttribute('href') || '';
+    if (href.includes('?')) {
+      try {
+        const params = new URL(href, location.href).searchParams;
+        const c = params.get('course');
+        if (c) return c;
+      } catch(_) {}
+    }
+    // Fallback: si el botón está dentro de la tarjeta del plan esencial, asumimos esencial
+    if (el.closest('.border-teal-400')) return 'ia-aplicada-esencial';
+    return null;
+  }
+
+  function goToCampus(courseId) {
+    if (!courseId) return;
+    const url = 'campus-curso-ia.html?course=' + encodeURIComponent(courseId);
+    window.location.href = url;
+  }
+
+  function decorateAsFree(el) {
+    el.classList.add('agia-free');
+    el.dataset._origHref = el.getAttribute('href') || '';
+    el.setAttribute('href', 'javascript:void(0)');
+    el.textContent = 'Entrar sin pagar';
+  }
+
+  async function getAllowlistedCoursesFor(user) {
+    try {
+      if (!window.firebase) return [];
+      const email = (user && user.email || '').trim();
+      if (!email) return [];
+      const snap = await firebase.firestore().collection('allowlist').doc(email).get();
+      if (!snap.exists) return [];
+      const data = snap.data() || {};
+      return (data.active === true && Array.isArray(data.courses)) ? data.courses : [];
+    } catch (e) {
+      console.warn('[AGIA] allowlist error:', e);
+      return [];
+    }
+  }
+
+  function attachLoginInterceptor(el) {
+    el.addEventListener('click', (ev) => {
+      const cid = resolveCourseIdFor(el);
+      const next = 'campus-curso-ia.html' + (cid ? ('?course=' + encodeURIComponent(cid)) : '');
+      const loginUrl = 'acceso.html?next=' + encodeURIComponent(next);
+      ev.preventDefault();
+      window.location.href = loginUrl;
+    }, { passive: false });
+  }
+
+  function attachBypassInterceptor(el, allowCourses) {
+    el.addEventListener('click', (ev) => {
+      const cid = resolveCourseIdFor(el);
+      if (cid && allowCourses.includes(cid)) {
+        ev.preventDefault();
+        goToCampus(cid);
+      }
+    }, { passive: false });
+  }
+
+  function decorateButtonsAsFree(buttons, allowCourses) {
+    buttons.forEach((el) => {
+      const cid = resolveCourseIdFor(el);
+      if (cid && allowCourses.includes(cid)) {
+        decorateAsFree(el);
+      }
+      attachBypassInterceptor(el, allowCourses);
+    });
+  }
+
+  function main() {
+    const buttons = discoverBuyButtons();
+    if (!buttons.length) return;
+
+    if (!window.firebase) {
+      // Sin firebase en esta página -> fuerza login para poder evaluar allowlist en acceso.html
+      buttons.forEach(attachLoginInterceptor);
+      return;
+    }
+
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (!user) {
+        buttons.forEach(attachLoginInterceptor);
+        return;
+      }
+      const allowCourses = await getAllowlistedCoursesFor(user);
+      if (!allowCourses.length) return; // no decoramos; siguen al checkout normal
+      decorateButtonsAsFree(buttons, allowCourses);
+    });
+  }
+
+  // Espera DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', main);
+  } else {
+    main();
+  }
+})();
+</script>
+
 </body>
 </html>
 
