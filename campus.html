@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v7.2 (Lógica de Acceso Corregida)
+  CAMPUS DASHBOARD · AULA GENIA v7.3 (Arquitectura Final)
   -------------------------------------------------------------------
-  - FIX (Senior Developer): Se invirtió el orden de las comprobaciones de acceso.
-    Ahora, el script primero verifica si el usuario YA ESTÁ INSCRITO en un curso.
-    Solo si no lo está, procede a verificar la allowlist.
-  - Esto soluciona el loop de redirección, ya que un usuario de la allowlist es inscrito
-    en la página de acceso e inmediatamente reconocido como alumno regular en el campus,
-    mostrando el botón "Continuar aprendiendo" en lugar de "Entrar sin pagar" de nuevo.
+  - FIX (Senior Developer): Se reestructuró la lógica de acceso para seguir el principio de
+    separación de responsabilidades, eliminando la causa raíz del error de regresión.
+  - RESPONSABILIDAD DE 'acceso.html': Manejar login y matricular usuarios de la allowlist.
+  - RESPONSABILIDAD DE 'campus.html': Su única tarea ahora es verificar si un usuario
+    YA TIENE una matrícula ('enrollment'). No vuelve a consultar la allowlist.
+  - RESULTADO: Se soluciona el bloqueo a usuarios pagados y se mantiene el flujo
+    correcto para usuarios de la allowlist. Esta es la arquitectura estable.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -282,32 +283,6 @@
       };
       const expandAliases = (cid) => Array.from(new Set(COURSE_ALIASES[cid] || [cid]));
 
-      async function getAllowlistedCoursesFor(user) {
-        const email = (user && user.email || '').trim();
-        if (!email) return [];
-        try {
-          const snap = await db.collection('allowlist').doc(email).get();
-          if (!snap.exists) return [];
-          const data = snap.data() || {};
-          return (data.active === true && Array.isArray(data.courses)) ? data.courses : [];
-        } catch(e) {
-          console.warn('[CAMPUS] Error leyendo allowlist:', e);
-          return [];
-        }
-      }
-
-      async function ensureEnrollmentFor(user, courseId) {
-        const ref = db.collection('users').doc(user.uid).collection('enrollments').doc(courseId);
-        try {
-          await ref.set({ enrolled: true, source: 'allowlist', ts: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-          console.log(`[CAMPUS] Enrollment para ${courseId} exitoso por allowlist.`);
-          return true;
-        } catch(e) {
-          console.warn('[CAMPUS] No se pudo grabar enrollment (probablemente denegado por reglas):', e.message);
-          return false;
-        }
-      }
-
       function goToCourse(courseId) {
         window.location.href = 'campus-curso-ia.html?course=' + encodeURIComponent(courseId);
       }
@@ -498,7 +473,7 @@
           const footerEl = card.querySelector('.card-footer');
           const progressContainer = card.querySelector('.progress-container');
           
-          footerEl.innerHTML = ''; // Limpiar el footer para poner el botón nuevo
+          footerEl.innerHTML = ''; 
 
           progressContainer.classList.remove('hidden');
           percentEl.textContent = `${progress}%`;
@@ -562,94 +537,49 @@
           });
       }
 
-      function updateCardForAllowlistedUser(card, user) {
-        const tagEl = card.querySelector('.tag');
-        const actionBtnContainer = card.querySelector('.card-footer');
-        const courseId = card.dataset.courseId;
-
-        tagEl.textContent = 'Acceso liberado';
-        tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-purple-700 bg-purple-100 px-2 py-1 rounded-full';
-
-        const newBtn = document.createElement('button');
-        newBtn.textContent = 'Entrar sin pagar';
-        newBtn.className = 'w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors';
-        
-        actionBtnContainer.innerHTML = '';
-        actionBtnContainer.appendChild(newBtn);
-        
-        newBtn.addEventListener('click', async () => {
-          newBtn.disabled = true;
-          newBtn.textContent = 'Verificando acceso...';
-          
-          const success = await ensureEnrollmentFor(user, courseId);
-          
-          if (success) {
-            goToCourse(courseId);
-          } else {
-            alert('No se pudo completar la inscripción. Parece que no tienes permiso para este curso. Por favor, contacta a soporte si crees que es un error.');
-            newBtn.disabled = false;
-            newBtn.textContent = 'Entrar sin pagar';
-          }
-        });
-      }
-
-      // --- FUNCIÓN CORREGIDA Y REORDENADA ---
+      // --- LÓGICA DE CAMPUS SIMPLIFICADA ---
       async function processCourseCard(card, user) {
         const courseId = card.dataset.courseId;
         if (!courseId) return;
 
-        // 1. PRIORIDAD MÁXIMA: Verificar si ya tiene una inscripción (de cualquier fuente)
         const enrollmentsRef = db.collection('users').doc(user.uid).collection('enrollments');
         const courseIdsToCheck = expandAliases(courseId);
         let hasAccess = false;
 
+        // 1. Verificar si el usuario ya está inscrito (por pago, allowlist, etc.)
         for (const id of courseIdsToCheck) {
-            try {
-                const doc = await enrollmentsRef.doc(id).get();
-                if (doc.exists && doc.data().enrolled) {
-                    hasAccess = true;
-                    break;
-                }
-            } catch (e) {
-                console.error(`Error checking enrollment for ${id}:`, e);
+            const doc = await enrollmentsRef.doc(id).get();
+            if (doc.exists && doc.data().enrolled) {
+                hasAccess = true;
+                break;
             }
         }
 
+        // 2. Renderizar la tarjeta según el estado de la inscripción
         if (hasAccess) {
-            // Si está inscrito, mostrar el progreso y el botón "Continuar".
+            // Si está inscrito, mostrar su progreso y el botón para continuar
             const progressRef = db.collection('userProgress').doc(user.uid);
             progressRef.onSnapshot(doc => {
-              let completedCount = 0;
-              if (doc.exists) {
-                  const data = doc.data();
-                  const courseProgress = data[courseId]; 
-                  if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
-                      completedCount = new Set(courseProgress.completedLessons).size;
-                  }
-              }
-              const courseConfig = COURSE_CONFIG[courseId];
-              const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
-              const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
-              updateCardForEnrolledUser(card, percentage, courseId);
+                let completedCount = 0;
+                if (doc.exists) {
+                    const data = doc.data();
+                    const courseProgress = data[courseId];
+                    if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
+                        completedCount = new Set(courseProgress.completedLessons).size;
+                    }
+                }
+                const courseConfig = COURSE_CONFIG[courseId];
+                const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
+                const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
+                updateCardForEnrolledUser(card, percentage, courseId);
             }, error => {
-              console.error(`Error al escuchar progreso para ${courseId}:`, error);
-              updateCardForUnenrolledUser(card); // Fallback en caso de error
+                console.error(`Error al escuchar progreso para ${courseId}:`, error);
+                updateCardForUnenrolledUser(card); // Fallback
             });
-            return; // Termina el proceso aquí, ya que el usuario tiene acceso.
+        } else {
+            // Si no está inscrito, mostrar el botón de pago
+            updateCardForUnenrolledUser(card);
         }
-
-        // 2. Si no está inscrito, verificar si está en la Allowlist.
-        const allowlistedCourses = await getAllowlistedCoursesFor(user);
-        const allowedSet = new Set(allowlistedCourses.flatMap(expandAliases));
-
-        if (allowedSet.has(courseId)) {
-          // Mostrar el botón "Entrar sin pagar" para que pueda matricularse.
-          updateCardForAllowlistedUser(card, user);
-          return; 
-        }
-
-        // 3. Si no está inscrito ni en allowlist, mostrar el botón de pago.
-        updateCardForUnenrolledUser(card);
       }
       
       async function setupDynamicButton(user, buttonId, collectionName, buttonStates) {
@@ -751,7 +681,7 @@
           setupDynamicButton(user, 'waitlist-btn', 'waitingList_avanzado', {
               default: 'Unirme a la lista de espera',
               alreadyIn: '¡Ya estás en la lista!',
-              adding: 'Agregando...',
+              adding: 'Agregando...',\
               success: '¡Inscrito con éxito!',
               error: 'Error, intenta de nuevo',
               defaultColor: 'bg-blue-600',
