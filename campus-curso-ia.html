@@ -541,6 +541,49 @@
 })();
 </script>
 
+
+<!-- AULAGENIA · Gate por matrícula (acepta alias de courseId) -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.firebase) { console.warn('[CURSO] Firebase no cargado'); return; }
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+
+  const COURSE_ALIASES = {
+    'ia-aplicada-esencial': ['ia-aplicada-esencial', 'programa-esencial'],
+    'programa-esencial': ['programa-esencial', 'ia-aplicada-esencial']
+  };
+  const expandAliases = (cid) => Array.from(new Set(COURSE_ALIASES[cid] || [cid]));
+
+  async function hasAnyEnrollment(uid, courseId) {
+    const ids = expandAliases(courseId);
+    for (const id of ids) {
+      try {
+        const snap = await db.collection('users').doc(uid).collection('enrollments').doc(id).get();
+        if (snap.exists && snap.data() && snap.data().enrolled) return true;
+      } catch(e) { console.warn('[CURSO] Error consultando enrollment', id, e); }
+    }
+    return false;
+  }
+
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) { 
+      const next = location.pathname + location.search;
+      location.href = 'acceso.html?next=' + encodeURIComponent(next);
+      return;
+    }
+    const params = new URLSearchParams(location.search);
+    const courseId = params.get('course') || 'ia-aplicada-esencial';
+    const ok = await hasAnyEnrollment(user.uid, courseId);
+    if (!ok) {
+      location.href = 'index.html#precios';
+      return;
+    }
+    // si tienes una función de init propia, no la toco
+  });
+});
+</script>
+
 </body>
 </html>
 </html>
