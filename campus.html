@@ -705,79 +705,97 @@
     });
   </script>
 
-<!-- AULAGENIA · Allowlist override (MutationObserver) -->
+<!-- AULAGENIA · Campus: Mostrar "Entrar sin pagar" si está en allowlist -->
 <script>
-(function(){
-  if (!window.firebase) return;
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.firebase) { console.warn('[CAMPUS] Firebase no cargado'); return; }
   const db = firebase.firestore();
   const auth = firebase.auth();
 
-  const ALIASES = {
-    'ia-aplicada-esencial': ['ia-aplicada-esencial','programa-esencial'],
-    'programa-esencial': ['programa-esencial','ia-aplicada-esencial']
+  const COURSE_ALIASES = {
+    'ia-aplicada-esencial': ['ia-aplicada-esencial', 'programa-esencial'],
+    'programa-esencial': ['programa-esencial', 'ia-aplicada-esencial']
   };
-  const expand = (id) => Array.from(new Set(ALIASES[id] || [id]));
+  const expandAliases = (cid) => Array.from(new Set(COURSE_ALIASES[cid] || [cid]));
 
-  async function isCourseFreeForUser(courseId){
-    const user = auth.currentUser;
-    if (!user) return false;
-    const email = (user.email || '').trim();
-    if (!email) return false;
-    try{
-      const doc = await db.collection('allowlist').doc(email).get();
-      const d = doc.exists ? (doc.data() || {}) : {};
-      const list = (d.active === true && Array.isArray(d.courses)) ? d.courses : [];
-      const aliases = new Set(list.flatMap(expand));
-      return aliases.has(courseId);
-    }catch(e){ console.warn('[CAMPUS][observer] allowlist error', e); return false; }
+  function findCourseCards() {
+    return Array.from(document.querySelectorAll('[data-course-id]'));
   }
 
-  function decorateButton(btn, courseId){
-    try{
-      btn.textContent = 'Entrar sin pagar';
-      btn.classList.remove('cursor-wait','bg-gray-400','bg-slate-400');
-      btn.classList.add('bg-teal-600','hover:bg-teal-700');
-      btn.setAttribute('href','#');
-      btn.addEventListener('click', (ev)=>{
-        ev.preventDefault();
-        location.href = 'campus-curso-ia.html?course=' + encodeURIComponent(courseId);
-      }, {passive:false});
-    }catch(e){ console.warn('[CAMPUS][observer] decorate error', e); }
-  }
-
-  const obs = new MutationObserver(async (mutations)=>{
-    for (const m of mutations){
-      for (const node of m.addedNodes){
-        if (!(node instanceof Element)) continue;
-        const cards = node.matches?.('[data-course-id]') ? [node] : Array.from(node.querySelectorAll?.('[data-course-id]')||[]);
-        for (const card of cards){
-          const courseId = card.getAttribute('data-course-id');
-          const btn = card.querySelector('.course-action-btn, a[href], button');
-          if (!courseId || !btn) continue;
-          if (await isCourseFreeForUser(courseId)){
-            decorateButton(btn, courseId);
-          }
-        }
-      }
+  async function getAllowlistedCoursesFor(user) {
+    const email = (user && user.email || '').trim();
+    if (!email) return [];
+    try {
+      const snap = await db.collection('allowlist').doc(email).get();
+      if (!snap.exists) return [];
+      const data = snap.data() || {};
+      return (data.active === true && Array.isArray(data.courses)) ? data.courses : [];
+    } catch(e) {
+      console.warn('[CAMPUS] Error leyendo allowlist:', e);
+      return [];
     }
-  });
+  }
 
-  document.addEventListener('DOMContentLoaded', async ()=>{
-    const root = document.body;
-    obs.observe(root, {childList:true, subtree:true});
-    // Run once on existing nodes too
-    const existing = Array.from(document.querySelectorAll('[data-course-id]'));
-    for (const card of existing){
+  async function ensureEnrollmentFor(user, courseId) {
+    const ref = db.collection('users').doc(user.uid).collection('enrollments').doc(courseId);
+    try {
+      await ref.set({ enrolled: true, source: 'allowlist', ts: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+      console.log(`[CAMPUS] Enrollment para ${courseId} exitoso por allowlist.`);
+      return true;
+    } catch(e) {
+      console.warn('[CAMPUS] No se pudo grabar enrollment (probablemente denegado por reglas):', e.message);
+      return false;
+    }
+  }
+
+  function goToCourse(courseId) {
+    location.href = 'campus-curso-ia.html?course=' + encodeURIComponent(courseId);
+  }
+
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) return;
+    const allowList = await getAllowlistedCoursesFor(user);
+    const allowed = new Set(allowList.flatMap(expandAliases));
+    if (!allowed.size) return; // nada que hacer, que el pago siga normal
+
+    findCourseCards().forEach((card) => {
       const cid = card.getAttribute('data-course-id');
-      const btn = card.querySelector('.course-action-btn, a[href], button');
-      if (cid && btn && await isCourseFreeForUser(cid)){
-        decorateButton(btn, cid);
+      const actionBtn = card.querySelector('.course-action-btn, a[href], button');
+      if (!cid || !actionBtn) return;
+
+      if (allowed.has(cid)) {
+        // Clonamos el botón para remover listeners previos
+        const newBtn = actionBtn.cloneNode(true);
+        actionBtn.parentNode.replaceChild(newBtn, actionBtn);
+
+        // Decorar botón y bypass pago
+        newBtn.textContent = 'Entrar sin pagar';
+        newBtn.classList.remove('bg-gray-400', 'bg-slate-400');
+        newBtn.classList.add('bg-teal-600', 'hover:bg-teal-700');
+        newBtn.removeAttribute('href');
+        
+        newBtn.addEventListener('click', async (ev) => {
+          ev.preventDefault();
+          
+          newBtn.disabled = true;
+          newBtn.textContent = 'Verificando acceso...';
+          
+          const success = await ensureEnrollmentFor(user, cid);
+          
+          if (success) {
+            goToCourse(cid);
+          } else {
+            alert('No se pudo completar la inscripción. Parece que no tienes permiso para este curso. Por favor, contacta a soporte si crees que es un error.');
+            newBtn.disabled = false;
+            newBtn.textContent = 'Entrar sin pagar';
+          }
+        }, { passive: false });
       }
-    }
+    });
   });
-})();
+});
 </script>
 
 </body>
 </html>
-" and the rest of the document. I will now answer your query.
+
