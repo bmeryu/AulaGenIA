@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v7.3 (Arquitectura Final)
+  CAMPUS DASHBOARD · AULA GENIA v7.4 (Manejo de Errores Robusto)
   -------------------------------------------------------------------
-  - FIX (Senior Developer): Se reestructuró la lógica de acceso para seguir el principio de
-    separación de responsabilidades, eliminando la causa raíz del error de regresión.
-  - RESPONSABILIDAD DE 'acceso.html': Manejar login y matricular usuarios de la allowlist.
-  - RESPONSABILIDAD DE 'campus.html': Su única tarea ahora es verificar si un usuario
-    YA TIENE una matrícula ('enrollment'). No vuelve a consultar la allowlist.
-  - RESULTADO: Se soluciona el bloqueo a usuarios pagados y se mantiene el flujo
-    correcto para usuarios de la allowlist. Esta es la arquitectura estable.
+  - FIX (Senior Developer): Se añadieron bloques try/catch a las llamadas
+    críticas de Firestore (lectura de perfil y matrículas).
+  - Esto previene que la UI se quede en estado de carga si una lectura de
+    base de datos falla por permisos o problemas de red.
+  - Ahora, si la verificación de matrícula falla, se mostrará por defecto
+    el botón de inscripción, solucionando el problema del "botón invisible".
+  - Se mejoró el registro de errores en la consola para facilitar futuros diagnósticos.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -520,7 +520,7 @@
               newBtn.textContent = 'Iniciando pago...';
 
               try {
-                  const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
+                  const createPreference = firebase.functions().getCallable('createMercadoPagoPreference');
                   const result = await createPreference({ courseId: courseId });
 
                   if (result.data && result.data.init_point) {
@@ -547,12 +547,17 @@
         let hasAccess = false;
 
         // 1. Verificar si el usuario ya está inscrito (por pago, allowlist, etc.)
-        for (const id of courseIdsToCheck) {
-            const doc = await enrollmentsRef.doc(id).get();
-            if (doc.exists && doc.data().enrolled) {
-                hasAccess = true;
-                break;
+        try {
+            for (const id of courseIdsToCheck) {
+                const doc = await enrollmentsRef.doc(id).get();
+                if (doc.exists && doc.data().enrolled) {
+                    hasAccess = true;
+                    break;
+                }
             }
+        } catch (error) {
+            console.error(`Error al verificar la matrícula para el curso ${courseId}. Esto puede ser un problema de permisos.`, error);
+            hasAccess = false;
         }
 
         // 2. Renderizar la tarjeta según el estado de la inscripción
@@ -671,8 +676,8 @@
                     listenToAllCourses(user); 
                 }
             } catch (error) {
-                console.error("Error verificando el estado del perfil:", error);
-                showProfileModal(true);
+                console.error("Error crítico al inicializar la sesión del usuario. No se puede verificar el perfil.", error);
+                alert("Hubo un problema al cargar tu información. Por favor, recarga la página.");
             }
           }
         
@@ -681,7 +686,7 @@
           setupDynamicButton(user, 'waitlist-btn', 'waitingList_avanzado', {
               default: 'Unirme a la lista de espera',
               alreadyIn: '¡Ya estás en la lista!',
-              adding: 'Agregando...',\
+              adding: 'Agregando...',
               success: '¡Inscrito con éxito!',
               error: 'Error, intenta de nuevo',
               defaultColor: 'bg-blue-600',
