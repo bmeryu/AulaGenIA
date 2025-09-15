@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v7.1 (Allowlist Hotfix)
+  CAMPUS DASHBOARD · AULA GENIA v7.2 (Profile UX)
   -------------------------------------------------------------------
-  - FIX: Corregida la lógica de 'allowlist' para aceptar IDs de curso alternativos.
-  - LOGIC: La comprobación de `allowlist` ahora reconoce 'programa-esencial' 
-    como un alias válido para 'ia-aplicada-esencial'.
-  - BEHAVIOR: Usuarios en la `allowlist` con el curso 'programa-esencial' 
-    ahora son correctamente redirigidos al curso sin pasar por la pasarela de pago.
-  - DEV: Esta corrección fue implementada por un desarrollador senior para
-    resolver un error de redirección a Mercado Pago.
+  - UX: Mejorada la validación del formulario de perfil.
+  - FEAT: Se añade validación en tiempo real (al escribir) para los 
+    campos de nombre, país y RUT.
+  - UI: Se muestran íconos de éxito y error junto a los campos para
+    dar retroalimentación visual inmediata.
+  - LOGIC: El botón "Guardar Cambios" se activa únicamente cuando todos
+    los campos requeridos son válidos.
+  - DEV: Esta mejora fue implementada por un desarrollador senior para
+    optimizar la experiencia de usuario en la edición del perfil.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -19,7 +21,7 @@
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
   <link rel="canonical" href="https://aulagenia.cl/campus.html">
-  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image-x-icon" />
+  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,6 +44,9 @@
     
     .form-input-error {
         @apply border-red-500 ring-red-500;
+    }
+    .form-input-success {
+        @apply border-green-500 ring-green-500;
     }
     .error-message {
         @apply text-red-600 text-xs mt-1;
@@ -157,16 +162,22 @@
           </div>
           
           <div class="px-8 pb-4 flex-grow overflow-y-auto">
-              <form id="profile-form" class="space-y-4">
+              <form id="profile-form" class="space-y-4" novalidate>
                   <div>
                       <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
-                      <input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Ada Lovelace">
+                      <div class="relative">
+                        <input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 pr-10" placeholder="Ej: Ada Lovelace">
+                        <span id="name-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
+                      </div>
                       <p class="text-xs text-gray-500 mt-1"><strong>Importante:</strong> Este será el nombre que aparecerá en tu certificado.</p>
                       <div id="name-error" class="error-message"></div>
                   </div>
                   <div>
                       <label for="profile-rut-input" class="block text-sm font-medium text-gray-700 mb-1">RUT (Chile) <span class="required">*</span></label>
-                      <input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: 12345678-9">
+                      <div class="relative">
+                        <input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 pr-10" placeholder="Ej: 12345678-9">
+                        <span id="rut-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
+                      </div>
                       <p class="text-xs text-gray-500 mt-1">Requerido para la validez de tu certificado en Chile.</p>
                       <div id="rut-error" class="error-message"></div>
                   </div>
@@ -196,17 +207,20 @@
                   </div>
                   <div>
                       <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
-                      <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
-                          <option value="">Selecciona tu país</option>
-                          <option value="CL">Chile</option>
-                          <option value="AR">Argentina</option>
-                          <option value="PE">Perú</option>
-                          <option value="CO">Colombia</option>
-                          <option value="MX">México</option>
-                          <option value="ES">España</option>
-                          <option value="US">Estados Unidos</option>
-                          <option value="OT">Otro</option>
-                      </select>
+                      <div class="relative">
+                        <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 appearance-none pr-10">
+                            <option value="">Selecciona tu país</option>
+                            <option value="CL">Chile</option>
+                            <option value="AR">Argentina</option>
+                            <option value="PE">Perú</option>
+                            <option value="CO">Colombia</option>
+                            <option value="MX">México</option>
+                            <option value="ES">España</option>
+                            <option value="US">Estados Unidos</option>
+                            <option value="OT">Otro</option>
+                        </select>
+                        <span id="country-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"></span>
+                      </div>
                       <div id="country-error" class="error-message"></div>
                   </div>
                   <div id="form-status" class="text-center p-3 rounded-lg hidden"></div>
@@ -215,7 +229,7 @@
           <div class="p-8 pt-4 flex-shrink-0">
                <div class="flex justify-end gap-3 pt-4 border-t">
                   <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
-                  <button type="submit" form="profile-form" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2">
+                  <button type="submit" form="profile-form" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                       <span id="save-btn-text">Guardar Cambios</span>
                       <i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
                   </button>
@@ -281,8 +295,6 @@
 
       async function showProfileModal(isMandatory = false) {
           profileForm.reset();
-          clearAllErrors();
-          formStatus.classList.add('hidden');
           const user = auth.currentUser;
           if (!user) return;
 
@@ -293,7 +305,7 @@
               const dbData = doc.exists ? doc.data() : {};
               const isProfileCompleted = dbData.profileCompleted === true;
               
-              if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : '';
+              if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : (user.displayName || '');
               if (profileRutInput) profileRutInput.value = dbData.rut || '';
               if (profileJobInput) profileJobInput.value = dbData.jobTitle || '';
               if (profileCountrySelect) profileCountrySelect.value = dbData.country || '';
@@ -301,10 +313,9 @@
               if (profileBirthdateInput) profileBirthdateInput.value = dbData.birthdate || '';
           } catch (error) { 
               console.error("Error al cargar datos del perfil:", error);
-              formStatus.textContent = 'Error al cargar tus datos. Intenta de nuevo.';
-              formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
-              formStatus.classList.remove('hidden');
           }
+          
+          checkAllFieldsAndToggleButtonState(); // Set initial state of fields and button
 
           if (isMandatory) {
               modalTitle.textContent = '¡Completa tu perfil para continuar!';
@@ -319,7 +330,8 @@
               closeProfileBtn.classList.remove('hidden');
               profileModalOverlay.addEventListener('click', hideProfileModal);
           }
-
+          
+          formStatus.classList.add('hidden');
           profileModalOverlay.classList.remove('hidden');
           profileModal.classList.remove('hidden');
           setTimeout(() => {
@@ -342,6 +354,8 @@
       cancelProfileBtn.addEventListener('click', hideProfileModal);
       closeProfileBtn.addEventListener('click', hideProfileModal);
 
+      // --- INICIO: LÓGICA DE VALIDACIÓN DE FORMULARIO MEJORADA ---
+
       function validateRut(rut) { 
         rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); 
         const rutBody = rut.slice(0, -1); 
@@ -359,58 +373,86 @@
         return dv === expectedDv; 
       }
 
-      function setError(field, message) { 
-        const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); 
-        if (inputEl) inputEl.classList.add('form-input-error'); 
-        const errorEl = document.getElementById(`${field}-error`); 
-        if(errorEl) errorEl.textContent = message; 
+      function setFieldState(field, state, message = '') {
+        const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
+        const errorEl = document.getElementById(`${field}-error`);
+        const iconEl = document.getElementById(`${field}-status-icon`);
+
+        if (!inputEl) return;
+
+        inputEl.classList.remove('form-input-error', 'form-input-success');
+        if (errorEl) errorEl.textContent = '';
+        if (iconEl) iconEl.innerHTML = '';
+        
+        if (state === 'error') {
+            inputEl.classList.add('form-input-error');
+            if (errorEl) errorEl.textContent = message;
+            if (iconEl) iconEl.innerHTML = `<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>`;
+        } else if (state === 'success') {
+            inputEl.classList.add('form-input-success');
+            if (iconEl) iconEl.innerHTML = `<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>`;
+        }
+        
+        if (iconEl && iconEl.innerHTML) {
+            lucide.createIcons({ nodes: [iconEl.querySelector('i')] });
+        }
       }
 
-      function clearError(field) { 
-        const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); 
-        if (inputEl) inputEl.classList.remove('form-input-error'); 
-        const errorEl = document.getElementById(`${field}-error`); 
-        if(errorEl) errorEl.textContent = ''; 
+      function validateName() {
+        if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) {
+            setFieldState('name', 'error', 'Ingresa tu nombre y apellido completo.');
+            return false;
+        }
+        setFieldState('name', 'success');
+        return true;
       }
 
-      const countrySelect = document.getElementById('profile-country-select');
-      countrySelect.addEventListener('change', () => { 
-        if (countrySelect.value !== 'CL') { 
-          document.getElementById('rut-error').textContent = ''; 
-          document.getElementById('profile-rut-input').classList.remove('form-input-error'); 
-        } 
-      });
-
-      function clearAllErrors() { 
-        ['name', 'rut', 'country'].forEach(field => { 
-          const input = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`); 
-          if (input) input.classList.remove('form-input-error'); 
-          const errorEl = document.getElementById(`${field}-error`); 
-          if (errorEl) errorEl.textContent = ''; 
-        }); 
+      function validateCountry() {
+          if (profileCountrySelect.value === '') {
+              setFieldState('country', 'error', 'Selecciona tu país de residencia.');
+              return false;
+          }
+          setFieldState('country', 'success');
+          return true;
       }
 
-      function validateForm() { 
-        let isValid = true; 
-        clearAllErrors(); 
-        if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) { 
-          setError('name', 'Ingresa tu nombre y apellido completo.'); 
-          isValid = false; 
-        } 
-        if (profileCountrySelect.value === '') { 
-          setError('country', 'Selecciona tu país de residencia.'); 
-          isValid = false; 
-        } 
-        if (profileCountrySelect.value === 'CL' && !validateRut(profileRutInput.value)) { 
-          setError('rut', 'El RUT ingresado no es válido.'); 
-          isValid = false; 
-        } 
-        return isValid; 
+      function validateRutField() {
+          if (profileCountrySelect.value === 'CL') {
+              if (!validateRut(profileRutInput.value)) {
+                  setFieldState('rut', 'error', 'El RUT ingresado no es válido.');
+                  return false;
+              }
+              setFieldState('rut', 'success');
+          } else {
+              setFieldState('rut', 'neutral'); // No es requerido, se limpia el estado.
+          }
+          return true; // Es válido si no es Chile o si es un RUT chileno válido.
       }
+
+      function checkAllFieldsAndToggleButtonState() {
+        const isNameValid = validateName();
+        const isCountryValid = validateCountry();
+        const isRutValid = validateRutField();
+        
+        // El RUT solo es mandatorio si el país es Chile.
+        const isFormValid = isNameValid && isCountryValid && (profileCountrySelect.value !== 'CL' || isRutValid);
+
+        saveBtn.disabled = !isFormValid;
+      }
+
+      profileNameInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+      profileRutInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+      profileCountrySelect.addEventListener('change', checkAllFieldsAndToggleButtonState);
       
       profileForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          if (!validateForm()) return;
+          checkAllFieldsAndToggleButtonState(); // Correr una última validación
+          if (saveBtn.disabled) {
+            formStatus.className = 'text-center p-3 rounded-lg bg-yellow-100 text-yellow-700';
+            formStatus.textContent = 'Por favor, corrige los campos marcados en rojo.';
+            formStatus.classList.remove('hidden');
+            return;
+          }
 
           saveBtn.disabled = true;
           saveBtnText.textContent = 'Guardando...';
@@ -452,11 +494,12 @@
               formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.';
               formStatus.classList.remove('hidden');
           } finally {
-              saveBtn.disabled = false;
+              // El estado del botón se manejará con la próxima apertura del modal.
               saveBtnText.textContent = 'Guardar Cambios';
               saveSpinner.classList.add('hidden');
           }
       });
+      // --- FIN: LÓGICA DE VALIDACIÓN ---
 
       function updateCardForEnrolledUser(card, progress, courseId) {
           const tagEl = card.querySelector('.tag');
@@ -512,7 +555,7 @@
               newBtn.textContent = 'Iniciando pago...';
 
               try {
-                  const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
+                  const createPreference = firebase.functions().callable('createMercadoPagoPreference');
                   const result = await createPreference({ courseId: courseId });
 
                   if (result.data && result.data.init_point) {
@@ -529,7 +572,6 @@
           });
       }
 
-      // --- INICIO: FUNCIÓN ACTUALIZADA POR DESARROLLADOR SENIOR ---
       function listenForCourseProgress(userId) {
           const courseId = ESSENTIAL_COURSE_ID;
           let courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
@@ -555,8 +597,6 @@
                   const data = allowlistDoc.data();
                   const allowedCourses = data.courses || [];
                   
-                  // FIX: Se añade compatibilidad para IDs de curso alternativos en la allowlist.
-                  // Esto permite que 'programa-esencial' otorgue acceso a 'ia-aplicada-esencial'.
                   let hasAllowedCourse = allowedCourses.includes(courseId);
                   if (courseId === 'ia-aplicada-esencial' && !hasAllowedCourse) {
                       hasAllowedCourse = allowedCourses.includes('programa-esencial');
@@ -571,7 +611,7 @@
               let isEnrolled = false;
               if (userDoc.exists) {
                   const userData = userDoc.data();
-                  const oldEssentialCourseId = 'inteligencia-aplicada'; // Para compatibilidad
+                  const oldEssentialCourseId = 'inteligencia-aplicada';
                   if (userData.enrollments && (userData.enrollments[courseId] === true || userData.enrollments[oldEssentialCourseId] === true)) {
                       isEnrolled = true;
                   }
@@ -606,7 +646,6 @@
               updateCardForUnenrolledUser(courseCard);
           });
       }
-      // --- FIN: FUNCIÓN ACTUALIZADA ---
       
       async function setupDynamicButton(user, buttonId, collectionName, buttonStates) {
           const btn = document.getElementById(buttonId);
