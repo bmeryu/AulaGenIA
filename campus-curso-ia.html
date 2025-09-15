@@ -416,6 +416,33 @@
             const auth = firebase.auth();
             const db = firebase.firestore();
             const storage = firebase.storage();
+
+// === Gate de acceso por matrícula ===
+async function requireEnrollmentOrRedirect(courseId) {
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        window.location.href = `${baseUrl}/acceso.html?next=${encodeURIComponent(location.pathname + location.search)}`;
+        return false;
+    }
+    if (!courseId) {
+        console.warn('Falta courseId en la URL (?course=)');
+        window.location.href = `${baseUrl}/cursos.html`;
+        return false;
+    }
+    try {
+        const snap = await db.collection('users').doc(user.uid).collection('enrollments').doc(courseId).get();
+        if (!snap.exists || !snap.data()?.enrolled) {
+            window.location.href = `${baseUrl}/index.html#precios`;
+            return false;
+        }
+        return true;
+    } catch (e) {
+        console.error('Error al verificar matrícula', e);
+        window.location.href = `${baseUrl}/index.html#precios`;
+        return false;
+    }
+}
+
             
             const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
             const urlParams = new URLSearchParams(window.location.search);
@@ -1928,13 +1955,14 @@
 
             if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
 
-            auth.onAuthStateChanged(user => {
+            auth.onAuthStateChanged(async (user) => {
                 if (user) {
                     currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
                     if (dom.userName) dom.userName.textContent = currentUser.name;
                     if (dom.userAvatar) dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
                     if (dom.userProfile) { dom.userProfile.classList.remove('hidden'); dom.userProfile.classList.add('flex'); }
-                    loadProgressAndInitialize();
+                    const ok = await requireEnrollmentOrRedirect(getCourseId());
+                    if (ok) { loadProgressAndInitialize(); }
                 } else {
                     window.location.href = `${baseUrl}/acceso.html`;
                 }
