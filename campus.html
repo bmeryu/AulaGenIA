@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v7.4 (Manejo de Errores Robusto)
+  CAMPUS DASHBOARD · AULA GENIA v6.9 (Pago Integrado - Versión Completa)
   -------------------------------------------------------------------
-  - FIX (Senior Developer): Se añadieron bloques try/catch a las llamadas
-    críticas de Firestore (lectura de perfil y matrículas).
-  - Esto previene que la UI se quede en estado de carga si una lectura de
-    base de datos falla por permisos o problemas de red.
-  - Ahora, si la verificación de matrícula falla, se mostrará por defecto
-    el botón de inscripción, solucionando el problema del "botón invisible".
-  - Se mejoró el registro de errores en la consola para facilitar futuros diagnósticos.
+  - FEAT: Añadido SDK de Firebase Functions.
+  - FEAT: La función updateCardForUnenrolledUser ahora inicia el flujo 
+    de pago con Mercado Pago llamando a la Cloud Function 
+    'createMercadoPagoPreference'.
+  - FIX: Asegurada la correcta funcionalidad de todos los botones al
+    integrar la nueva lógica de pago.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -95,7 +94,9 @@
             </div>
           </div>
           <div class="card-footer bg-gray-50 px-6 py-4">
-            <div class="course-action-btn-placeholder h-[48px] bg-gray-200 rounded-lg animate-pulse"></div>
+            <a href="#" class="course-action-btn block text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg transition-colors cursor-wait">
+              Verificando acceso...
+            </a>
           </div>
         </article>
         <!-- FIN: Curso IA Aplicada · Esencial -->
@@ -277,16 +278,6 @@
       const saveBtnText = document.getElementById('save-btn-text');
       const saveSpinner = document.getElementById('save-spinner');
 
-      const COURSE_ALIASES = {
-        'ia-aplicada-esencial': ['ia-aplicada-esencial', 'programa-esencial'],
-        'programa-esencial': ['programa-esencial', 'ia-aplicada-esencial']
-      };
-      const expandAliases = (cid) => Array.from(new Set(COURSE_ALIASES[cid] || [cid]));
-
-      function goToCourse(courseId) {
-        window.location.href = 'campus-curso-ia.html?course=' + encodeURIComponent(courseId);
-      }
-
       async function showProfileModal(isMandatory = false) {
           profileForm.reset();
           clearAllErrors();
@@ -451,7 +442,7 @@
 
               setTimeout(() => {
                   hideProfileModal();
-                  listenToAllCourses(user);
+                  listenForCourseProgress(user.uid);
               }, 1500);
 
           } catch (error) {
@@ -472,14 +463,17 @@
           const fillEl = card.querySelector('.fill');
           const footerEl = card.querySelector('.card-footer');
           const progressContainer = card.querySelector('.progress-container');
+          const actionBtn = card.querySelector('.course-action-btn');
           
-          footerEl.innerHTML = ''; 
-
           progressContainer.classList.remove('hidden');
           percentEl.textContent = `${progress}%`;
           fillEl.style.width = `${progress}%`;
           
           const courseUrl = `campus-curso-ia.html?course=${courseId}`;
+          
+          actionBtn.href = courseUrl;
+          actionBtn.classList.remove('cursor-wait', 'bg-gray-400', 'bg-slate-400');
+          actionBtn.classList.add('bg-teal-500', 'hover:bg-teal-600');
           
           if (progress >= 100) {
               tagEl.textContent = 'Completado';
@@ -490,37 +484,34 @@
               tagEl.textContent = 'En progreso';
               tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full';
               fillEl.style.backgroundColor = 'var(--brand-teal)';
-              
-              const actionBtn = document.createElement('a');
-              actionBtn.href = courseUrl;
-              actionBtn.className = 'block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors';
               actionBtn.textContent = 'Continuar aprendiendo';
-              footerEl.appendChild(actionBtn);
           }
           lucide.createIcons();
       }
       
       function updateCardForUnenrolledUser(card) {
           const tagEl = card.querySelector('.tag');
-          const actionBtnContainer = card.querySelector('.card-footer');
+          const actionBtn = card.querySelector('.course-action-btn');
           const courseId = card.dataset.courseId;
 
           tagEl.textContent = 'Requiere Inscripción';
           tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full';
+          actionBtn.textContent = 'Inscríbete para Activar';
+          actionBtn.href = "#";
+          actionBtn.classList.remove('cursor-wait', 'bg-gray-400');
+          actionBtn.classList.add('bg-slate-400', 'hover:bg-slate-500');
 
-          const newBtn = document.createElement('button');
-          newBtn.textContent = 'Inscríbete para Activar';
-          newBtn.className = 'w-full text-center bg-slate-400 hover:bg-slate-500 text-white font-bold py-3 px-5 rounded-lg transition-colors';
+          const newBtn = actionBtn.cloneNode(true);
+          actionBtn.parentNode.replaceChild(newBtn, actionBtn);
 
-          actionBtnContainer.innerHTML = '';
-          actionBtnContainer.appendChild(newBtn);
-
-          newBtn.addEventListener('click', async () => {
+          newBtn.addEventListener('click', async (e) => {
+              e.preventDefault();
+              
               newBtn.disabled = true;
               newBtn.textContent = 'Iniciando pago...';
 
               try {
-                  const createPreference = firebase.functions().getCallable('createMercadoPagoPreference');
+                  const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
                   const result = await createPreference({ courseId: courseId });
 
                   if (result.data && result.data.init_point) {
@@ -537,54 +528,57 @@
           });
       }
 
-      // --- LÓGICA DE CAMPUS SIMPLIFICADA ---
-      async function processCourseCard(card, user) {
-        const courseId = card.dataset.courseId;
-        if (!courseId) return;
+      function listenForCourseProgress(userId) {
+          const courseId = ESSENTIAL_COURSE_ID;
+          let courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
+          if (!courseCard) {
+              console.warn(`No se encontró tarjeta para curso: ${courseId}`);
+              return;
+          }
 
-        const enrollmentsRef = db.collection('users').doc(user.uid).collection('enrollments');
-        const courseIdsToCheck = expandAliases(courseId);
-        let hasAccess = false;
+          db.collection('users').doc(userId).get().then(userDoc => {
+              let hasAccess = false;
+              if (userDoc.exists) {
+                  const userData = userDoc.data();
+                  const oldEssentialCourseId = 'inteligencia-aplicada';
+                  if (userData.enrollments && (userData.enrollments[courseId] === true || userData.enrollments[oldEssentialCourseId] === true)) {
+                      hasAccess = true;
+                  }
+              }
 
-        // 1. Verificar si el usuario ya está inscrito (por pago, allowlist, etc.)
-        try {
-            for (const id of courseIdsToCheck) {
-                const doc = await enrollmentsRef.doc(id).get();
-                if (doc.exists && doc.data().enrolled) {
-                    hasAccess = true;
-                    break;
-                }
-            }
-        } catch (error) {
-            console.error(`Error al verificar la matrícula para el curso ${courseId}. Esto puede ser un problema de permisos.`, error);
-            hasAccess = false;
-        }
+              if (hasAccess) {
+                  const progressRef = db.collection('userProgress').doc(userId);
+                  
+                  progressRef.onSnapshot(doc => {
+                      let completedCount = 0;
+                      
+                      if (doc.exists) {
+                          const data = doc.data();
+                          const courseProgress = data[courseId];
+                          if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
+                              completedCount = new Set(courseProgress.completedLessons).size;
+                          }
+                      }
+                      
+                      const courseConfig = COURSE_CONFIG[courseId];
+                      const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
+                      const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
 
-        // 2. Renderizar la tarjeta según el estado de la inscripción
-        if (hasAccess) {
-            // Si está inscrito, mostrar su progreso y el botón para continuar
-            const progressRef = db.collection('userProgress').doc(user.uid);
-            progressRef.onSnapshot(doc => {
-                let completedCount = 0;
-                if (doc.exists) {
-                    const data = doc.data();
-                    const courseProgress = data[courseId];
-                    if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
-                        completedCount = new Set(courseProgress.completedLessons).size;
-                    }
-                }
-                const courseConfig = COURSE_CONFIG[courseId];
-                const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
-                const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
-                updateCardForEnrolledUser(card, percentage, courseId);
-            }, error => {
-                console.error(`Error al escuchar progreso para ${courseId}:`, error);
-                updateCardForUnenrolledUser(card); // Fallback
-            });
-        } else {
-            // Si no está inscrito, mostrar el botón de pago
-            updateCardForUnenrolledUser(card);
-        }
+                      updateCardForEnrolledUser(courseCard, percentage, courseId);
+
+                  }, error => {
+                      console.error(`Error al escuchar el progreso para ${courseId}:`, error);
+                      updateCardForUnenrolledUser(courseCard);
+                  });
+
+              } else {
+                  updateCardForUnenrolledUser(courseCard);
+              }
+
+          }).catch(error => {
+              console.error(`Error al verificar el acceso para ${courseId}:`, error);
+              updateCardForUnenrolledUser(courseCard);
+          });
       }
       
       async function setupDynamicButton(user, buttonId, collectionName, buttonStates) {
@@ -643,12 +637,6 @@
           });
       }
 
-      function listenToAllCourses(user) {
-        document.querySelectorAll('article[data-course-id="ia-aplicada-esencial"]').forEach(card => {
-          processCourseCard(card, user);
-        });
-      }
-
       auth.onAuthStateChanged(user => {
         if (user) {
           db.collection('users').doc(user.uid).get().then(doc => {
@@ -673,11 +661,11 @@
                 if (!isProfileComplete) {
                     showProfileModal(true);
                 } else {
-                    listenToAllCourses(user); 
+                    listenForCourseProgress(user.uid); 
                 }
             } catch (error) {
-                console.error("Error crítico al inicializar la sesión del usuario. No se puede verificar el perfil.", error);
-                alert("Hubo un problema al cargar tu información. Por favor, recarga la página.");
+                console.error("Error verificando el estado del perfil:", error);
+                showProfileModal(true);
             }
           }
         
@@ -716,7 +704,6 @@
       lucide.createIcons();
     });
   </script>
-
 </body>
 </html>
-
+" and the rest of the document. I will now answer your query.
