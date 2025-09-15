@@ -238,7 +238,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
 
     <script defer>
     document.addEventListener('DOMContentLoaded', () => {
@@ -484,128 +483,6 @@
         });
     });
     </script>
-
-
-<!-- AULAGENIA: Auto-matrícula por allowlist en ACCESO -->
-<script>
-(function() {
-  if (!window.firebase) { console.warn('Firebase no está cargado en acceso.html'); return; }
-  const db = () => firebase.firestore();
-
-  function normalize(s){ return (s || '').trim(); } // Reglas exigen email EXACTO
-
-  async function getAllowlistedCoursesFor(user) {
-    const email = normalize(user && user.email);
-    if (!email) return [];
-    try {
-      const snap = await db().collection('allowlist').doc(email).get();
-      if (!snap.exists) return [];
-      const data = snap.data() || {};
-      return (data.active === true && Array.isArray(data.courses)) ? data.courses : [];
-    } catch(e) {
-      console.warn('[AGIA][acceso] allowlist error:', e);
-      return [];
-    }
-  }
-
-  async function ensureEnrollments(user, courseIds) {
-    if (!user || !courseIds || !courseIds.length) return;
-    const root = db().collection('users').doc(user.uid).collection('enrollments');
-    const batch = db().batch();
-    courseIds.forEach((courseId) => {
-      const ref = root.doc(String(courseId));
-      batch.set(ref, {
-        enrolled: true,
-        source: 'allowlist',
-        ts: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-    });
-    await batch.commit();
-  }
-
-  firebase.auth().onAuthStateChanged(async (user) => {
-    if (!user) return;
-    try {
-      const courses = await getAllowlistedCoursesFor(user);
-      if (courses.length) {
-        await ensureEnrollments(user, courses);
-        console.log('[AGIA][acceso] Acceso gratis por allowlist:', courses);
-      }
-    } catch (e) {
-      console.warn('[AGIA][acceso] Error auto-matrícula:', e);
-    }
-    // Redirección respetando ?next= si existe
-    const params = new URLSearchParams(location.search);
-    const next = params.get('next') || 'campus-curso-ia.html?course=programa-esencial';
-    window.location.href = next;
-  });
-})();
-</script>
-
-
-<!-- AULAGENIA · Allowlist auto-enrollment (ACCESO) -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  if (!window.firebase) { console.warn('[ACCESO] Firebase no cargado'); return; }
-  const db = firebase.firestore();
-  const auth = firebase.auth();
-
-  // Aliases para compatibilizar nombres históricos del curso
-  const COURSE_ALIASES = {
-    'ia-aplicada-esencial': ['ia-aplicada-esencial', 'programa-esencial'],
-    'programa-esencial': ['programa-esencial', 'ia-aplicada-esencial']
-  };
-  const expandAliases = (cid) => Array.from(new Set(COURSE_ALIASES[cid] || [cid]));
-
-  async function getAllowlistedCoursesFor(user) {
-    const email = (user && user.email || '').trim();
-    if (!email) return [];
-    try {
-      const snap = await db.collection('allowlist').doc(email).get();
-      if (!snap.exists) return [];
-      const data = snap.data() || {};
-      return (data.active === true && Array.isArray(data.courses)) ? data.courses : [];
-    } catch(e) {
-      console.warn('[ACCESO] Error leyendo allowlist:', e);
-      return [];
-    }
-  }
-
-  async function ensureEnrollments(user, courseIds) {
-    if (!user || !courseIds || !courseIds.length) return;
-    const batch = db.batch();
-    const base = db.collection('users').doc(user.uid).collection('enrollments');
-    courseIds.forEach((cid) => {
-      expandAliases(cid).forEach((aliasId) => {
-        const ref = base.doc(String(aliasId));
-        batch.set(ref, {
-          enrolled: true,
-          source: 'allowlist',
-          ts: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-      });
-    });
-    try { await batch.commit(); }
-    catch(e){ console.warn('[ACCESO] No se pudieron escribir enrollments (revisar reglas):', e); }
-  }
-
-  auth.onAuthStateChanged(async (user) => {
-    if (!user) return;
-    try {
-      const allowCourses = await getAllowlistedCoursesFor(user);
-      if (allowCourses.length) {
-        await ensureEnrollments(user, allowCourses);
-        console.log('[ACCESO] Acceso liberado por allowlist:', allowCourses);
-      }
-    } catch (e) {
-      console.warn('[ACCESO] Auto-matrícula falló:', e);
-    }
-    const params = new URLSearchParams(location.search);
-    const next = params.get('next') || 'campus.html';
-    location.href = next;
-  });
-});
-</script>
 
 </body>
 </html>
