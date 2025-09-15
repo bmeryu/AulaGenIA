@@ -254,42 +254,6 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-
-// === ALLOWLIST: auto-matrícula si corresponde ===
-const getDb = () => firebase.firestore();
-const norm = (s) => (s || '').trim(); // reglas comparan email EXACTO
-
-async function getAllowlistedCoursesFor(user) {
-  const email = norm(user?.email);
-  if (!email) return [];
-  try {
-    const snap = await getDb().collection('allowlist').doc(email).get();
-    if (!snap.exists) return [];
-    const data = snap.data() || {};
-    return (data.active === true && Array.isArray(data.courses)) ? data.courses : [];
-  } catch (e) {
-    console.error('allowlist get error', e);
-    return [];
-  }
-}
-
-async function ensureEnrollments(user, courseIds = []) {
-  if (!user || !courseIds.length) return;
-  const db = getDb();
-  const root = db.collection('users').doc(user.uid).collection('enrollments');
-  const batch = db.batch();
-  courseIds.forEach((courseId) => {
-    const ref = root.doc(String(courseId));
-    batch.set(ref, {
-      enrolled: true,
-      source: 'allowlist',
-      ts: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
-  });
-  await batch.commit();
-}
-
-
         // --- REFERENCIAS A ELEMENTOS DEL DOM ---
         const loginTab = document.getElementById('login-tab');
         const registerTab = document.getElementById('register-tab');
@@ -486,13 +450,8 @@ async function ensureEnrollments(user, courseIds = []) {
         });
 
         // --- MANEJO DEL ESTADO DE AUTENTICACIÓN Y REDIRECCIÓN ---
-        auth.onAuthStateChanged(async (user) => {
+        auth.onAuthStateChanged(user => {
             if (user) {
-                try {
-                    const courses = await getAllowlistedCoursesFor(user);
-                    if (courses.length) { await ensureEnrollments(user, courses); console.log('[AGIA] Acceso gratis por allowlist:', courses); }
-                } catch (e) { console.error('Error allowlist', e); }
-
                 console.log('Usuario autenticado. Redirigiendo al campus...');
                 window.location.href = 'campus.html';
             } else {
@@ -524,6 +483,63 @@ async function ensureEnrollments(user, courseIds = []) {
         });
     });
     </script>
+
+
+<!-- AULAGENIA: Auto-matrícula por allowlist en ACCESO -->
+<script>
+(function() {
+  if (!window.firebase) { console.warn('Firebase no está cargado en acceso.html'); return; }
+  const db = () => firebase.firestore();
+
+  function normalize(s){ return (s || '').trim(); } // Reglas exigen email EXACTO
+
+  async function getAllowlistedCoursesFor(user) {
+    const email = normalize(user && user.email);
+    if (!email) return [];
+    try {
+      const snap = await db().collection('allowlist').doc(email).get();
+      if (!snap.exists) return [];
+      const data = snap.data() || {};
+      return (data.active === true && Array.isArray(data.courses)) ? data.courses : [];
+    } catch(e) {
+      console.warn('[AGIA][acceso] allowlist error:', e);
+      return [];
+    }
+  }
+
+  async function ensureEnrollments(user, courseIds) {
+    if (!user || !courseIds || !courseIds.length) return;
+    const root = db().collection('users').doc(user.uid).collection('enrollments');
+    const batch = db().batch();
+    courseIds.forEach((courseId) => {
+      const ref = root.doc(String(courseId));
+      batch.set(ref, {
+        enrolled: true,
+        source: 'allowlist',
+        ts: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    });
+    await batch.commit();
+  }
+
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) return;
+    try {
+      const courses = await getAllowlistedCoursesFor(user);
+      if (courses.length) {
+        await ensureEnrollments(user, courses);
+        console.log('[AGIA][acceso] Acceso gratis por allowlist:', courses);
+      }
+    } catch (e) {
+      console.warn('[AGIA][acceso] Error auto-matrícula:', e);
+    }
+    // Redirección respetando ?next= si existe
+    const params = new URLSearchParams(location.search);
+    const next = params.get('next') || 'campus-curso-ia.html?course=programa-esencial';
+    window.location.href = next;
+  });
+})();
+</script>
 
 </body>
 </html>
