@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v7.1 (Corrección de Loop)
+  CAMPUS DASHBOARD · AULA GENIA v7.2 (Lógica de Acceso Corregida)
   -------------------------------------------------------------------
-  - FIX (Senior Developer): Se reemplazaron los botones de acción de curso (que eran links <a>)
-    por elementos <button> reales. Esto elimina una "navegación fantasma" que causaba una
-    pérdida momentánea de la sesión de autenticación y generaba un loop de redirección
-    hacia la página de acceso.
-  - El código ahora es más robusto y semánticamente correcto.
+  - FIX (Senior Developer): Se invirtió el orden de las comprobaciones de acceso.
+    Ahora, el script primero verifica si el usuario YA ESTÁ INSCRITO en un curso.
+    Solo si no lo está, procede a verificar la allowlist.
+  - Esto soluciona el loop de redirección, ya que un usuario de la allowlist es inscrito
+    en la página de acceso e inmediatamente reconocido como alumno regular en el campus,
+    mostrando el botón "Continuar aprendiendo" en lugar de "Entrar sin pagar" de nuevo.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -524,7 +525,6 @@
           lucide.createIcons();
       }
       
-      // --- FUNCIÓN CORREGIDA: Usa <button> en vez de <a> ---
       function updateCardForUnenrolledUser(card) {
           const tagEl = card.querySelector('.tag');
           const actionBtnContainer = card.querySelector('.card-footer');
@@ -533,12 +533,10 @@
           tagEl.textContent = 'Requiere Inscripción';
           tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full';
 
-          // Crear un elemento <button> real
           const newBtn = document.createElement('button');
           newBtn.textContent = 'Inscríbete para Activar';
           newBtn.className = 'w-full text-center bg-slate-400 hover:bg-slate-500 text-white font-bold py-3 px-5 rounded-lg transition-colors';
 
-          // Limpiar el contenedor y añadir el nuevo botón
           actionBtnContainer.innerHTML = '';
           actionBtnContainer.appendChild(newBtn);
 
@@ -564,7 +562,6 @@
           });
       }
 
-      // --- FUNCIÓN CORREGIDA: Usa <button> en vez de <a> ---
       function updateCardForAllowlistedUser(card, user) {
         const tagEl = card.querySelector('.tag');
         const actionBtnContainer = card.querySelector('.card-footer');
@@ -573,17 +570,14 @@
         tagEl.textContent = 'Acceso liberado';
         tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-purple-700 bg-purple-100 px-2 py-1 rounded-full';
 
-        // Crear un elemento <button> real
         const newBtn = document.createElement('button');
         newBtn.textContent = 'Entrar sin pagar';
         newBtn.className = 'w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors';
         
-        // Limpiar el contenedor y añadir el nuevo botón
         actionBtnContainer.innerHTML = '';
         actionBtnContainer.appendChild(newBtn);
         
         newBtn.addEventListener('click', async () => {
-          // Ya no se necesita preventDefault
           newBtn.disabled = true;
           newBtn.textContent = 'Verificando acceso...';
           
@@ -599,34 +593,30 @@
         });
       }
 
+      // --- FUNCIÓN CORREGIDA Y REORDENADA ---
       async function processCourseCard(card, user) {
         const courseId = card.dataset.courseId;
         if (!courseId) return;
 
-        // 1. PRIORIDAD MÁXIMA: Verificar Allowlist
-        const allowlistedCourses = await getAllowlistedCoursesFor(user);
-        const allowedSet = new Set(allowlistedCourses.flatMap(expandAliases));
-
-        if (allowedSet.has(courseId)) {
-          updateCardForAllowlistedUser(card, user);
-          return; 
-        }
-
-        // 2. Si no está en allowlist, verificar inscripción existente (pago, etc.)
+        // 1. PRIORIDAD MÁXIMA: Verificar si ya tiene una inscripción (de cualquier fuente)
         const enrollmentsRef = db.collection('users').doc(user.uid).collection('enrollments');
         const courseIdsToCheck = expandAliases(courseId);
         let hasAccess = false;
 
         for (const id of courseIdsToCheck) {
-            const doc = await enrollmentsRef.doc(id).get();
-            if (doc.exists && doc.data().enrolled) {
-                hasAccess = true;
-                break;
+            try {
+                const doc = await enrollmentsRef.doc(id).get();
+                if (doc.exists && doc.data().enrolled) {
+                    hasAccess = true;
+                    break;
+                }
+            } catch (e) {
+                console.error(`Error checking enrollment for ${id}:`, e);
             }
         }
 
         if (hasAccess) {
-            // Escuchar progreso del curso
+            // Si está inscrito, mostrar el progreso y el botón "Continuar".
             const progressRef = db.collection('userProgress').doc(user.uid);
             progressRef.onSnapshot(doc => {
               let completedCount = 0;
@@ -643,12 +633,23 @@
               updateCardForEnrolledUser(card, percentage, courseId);
             }, error => {
               console.error(`Error al escuchar progreso para ${courseId}:`, error);
-              updateCardForUnenrolledUser(card);
+              updateCardForUnenrolledUser(card); // Fallback en caso de error
             });
-        } else {
-            // 3. Si no está en allowlist ni inscrito, mostrar botón de pago
-            updateCardForUnenrolledUser(card);
+            return; // Termina el proceso aquí, ya que el usuario tiene acceso.
         }
+
+        // 2. Si no está inscrito, verificar si está en la Allowlist.
+        const allowlistedCourses = await getAllowlistedCoursesFor(user);
+        const allowedSet = new Set(allowlistedCourses.flatMap(expandAliases));
+
+        if (allowedSet.has(courseId)) {
+          // Mostrar el botón "Entrar sin pagar" para que pueda matricularse.
+          updateCardForAllowlistedUser(card, user);
+          return; 
+        }
+
+        // 3. Si no está inscrito ni en allowlist, mostrar el botón de pago.
+        updateCardForUnenrolledUser(card);
       }
       
       async function setupDynamicButton(user, buttonId, collectionName, buttonStates) {
@@ -783,3 +784,4 @@
 
 </body>
 </html>
+
