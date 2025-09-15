@@ -416,33 +416,6 @@
             const auth = firebase.auth();
             const db = firebase.firestore();
             const storage = firebase.storage();
-
-// === Gate de acceso por matrícula ===
-async function requireEnrollmentOrRedirect(courseId) {
-    const user = firebase.auth().currentUser;
-    if (!user) {
-        window.location.href = `${baseUrl}/acceso.html?next=${encodeURIComponent(location.pathname + location.search)}`;
-        return false;
-    }
-    if (!courseId) {
-        console.warn('Falta courseId en la URL (?course=)');
-        window.location.href = `${baseUrl}/cursos.html`;
-        return false;
-    }
-    try {
-        const snap = await db.collection('users').doc(user.uid).collection('enrollments').doc(courseId).get();
-        if (!snap.exists || !snap.data()?.enrolled) {
-            window.location.href = `${baseUrl}/index.html#precios`;
-            return false;
-        }
-        return true;
-    } catch (e) {
-        console.error('Error al verificar matrícula', e);
-        window.location.href = `${baseUrl}/index.html#precios`;
-        return false;
-    }
-}
-
             
             const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
             const urlParams = new URLSearchParams(window.location.search);
@@ -1955,14 +1928,13 @@ async function requireEnrollmentOrRedirect(courseId) {
 
             if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
 
-            auth.onAuthStateChanged(async (user) => {
+            auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
                     if (dom.userName) dom.userName.textContent = currentUser.name;
                     if (dom.userAvatar) dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
                     if (dom.userProfile) { dom.userProfile.classList.remove('hidden'); dom.userProfile.classList.add('flex'); }
-                    const ok = await requireEnrollmentOrRedirect(getCourseId());
-                    if (ok) { loadProgressAndInitialize(); }
+                    loadProgressAndInitialize();
                 } else {
                     window.location.href = `${baseUrl}/acceso.html`;
                 }
@@ -2020,6 +1992,60 @@ async function requireEnrollmentOrRedirect(courseId) {
     })();
     </script>
     <!-- === END: Scripts de Sincronización y Medios === -->
+
+
+<!-- AULAGENIA: Gate de matrícula en CAMPUS -->
+<script>
+(function() {
+  if (!window.firebase) { console.warn('Firebase no está cargado en campus-curso-ia.html'); return; }
+
+  async function requireEnrollmentOrRedirect(courseId) {
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      const next = location.pathname + location.search;
+      window.location.href = 'acceso.html?next=' + encodeURIComponent(next);
+      return false;
+    }
+    if (!courseId) {
+      console.warn('[AGIA][campus] Falta ?course=');
+      window.location.href = 'cursos.html';
+      return false;
+    }
+    const db = firebase.firestore();
+    try {
+      const snap = await db.collection('users').doc(user.uid).collection('enrollments').doc(courseId).get();
+      if (!snap.exists || !snap.data() || !snap.data().enrolled) {
+        window.location.href = 'index.html#precios';
+        return false;
+      }
+      return true;
+    } catch(e) {
+      console.error('[AGIA][campus] Error verificando enroll:', e);
+      window.location.href = 'index.html#precios';
+      return false;
+    }
+  }
+
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) {
+      const next = location.pathname + location.search;
+      window.location.href = 'acceso.html?next=' + encodeURIComponent(next);
+      return;
+    }
+    const urlParams = new URLSearchParams(window.location.search);
+    // IMPORTANTE: usamos el courseId que venga en la URL, pero tu allowlist ya tiene "programa-esencial".
+    // Si no hay parámetro, asumimos "programa-esencial" para evitar confusiones.
+    let courseId = urlParams.get('course') || 'programa-esencial';
+    const ok = await requireEnrollmentOrRedirect(courseId);
+    if (ok) {
+      // Si tu página ya tiene una función de inicio, la respetamos
+      if (typeof initCoursePage === 'function') {
+        try { initCoursePage(); } catch(e) { console.warn('initCoursePage falló:', e); }
+      }
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
