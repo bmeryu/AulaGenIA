@@ -542,46 +542,61 @@
 </script>
 
 
-<!-- AULAGENIA · Gate por matrícula (acepta alias de courseId) -->
+<!-- AULAGENIA · Gate por matrícula o allowlist -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+(function(){
   if (!window.firebase) { console.warn('[CURSO] Firebase no cargado'); return; }
   const db = firebase.firestore();
   const auth = firebase.auth();
-
-  const COURSE_ALIASES = {
-    'ia-aplicada-esencial': ['ia-aplicada-esencial', 'programa-esencial'],
-    'programa-esencial': ['programa-esencial', 'ia-aplicada-esencial']
+  const expand = (id) => {
+    const ALIASES = {
+      'ia-aplicada-esencial': ['ia-aplicada-esencial','programa-esencial'],
+      'programa-esencial': ['programa-esencial','ia-aplicada-esencial']
+    };
+    return Array.from(new Set((ALIASES[id] || [id])));
   };
-  const expandAliases = (cid) => Array.from(new Set(COURSE_ALIASES[cid] || [cid]));
 
-  async function hasAnyEnrollment(uid, courseId) {
-    const ids = expandAliases(courseId);
-    for (const id of ids) {
-      try {
+  async function hasEnrollment(uid, courseId){
+    for (const id of expand(courseId)){
+      try{
         const snap = await db.collection('users').doc(uid).collection('enrollments').doc(id).get();
         if (snap.exists && snap.data() && snap.data().enrolled) return true;
-      } catch(e) { console.warn('[CURSO] Error consultando enrollment', id, e); }
+      }catch(e){ console.warn('[CURSO] check enroll error', id, e); }
     }
     return false;
   }
 
-  auth.onAuthStateChanged(async (user) => {
-    if (!user) { 
-      const next = location.pathname + location.search;
-      location.href = 'acceso.html?next=' + encodeURIComponent(next);
-      return;
-    }
-    const params = new URLSearchParams(location.search);
-    const courseId = params.get('course') || 'ia-aplicada-esencial';
-    const ok = await hasAnyEnrollment(user.uid, courseId);
-    if (!ok) {
-      location.href = 'index.html#precios';
-      return;
-    }
-    // si tienes una función de init propia, no la toco
+  async function allowlistAllows(user, courseId){
+    const email = (user.email || '').trim();
+    if (!email) return false;
+    try{
+      const doc = await db.collection('allowlist').doc(email).get();
+      if (!doc.exists) return false;
+      const d = doc.data() || {};
+      const list = (d.active === true && Array.isArray(d.courses)) ? d.courses : [];
+      const set = new Set(list.flatMap(expand));
+      return set.has(courseId);
+    }catch(e){ console.warn('[CURSO] allowlist error', e); return false; }
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    auth.onAuthStateChanged(async (user)=>{
+      if (!user){
+        const next = location.pathname + location.search;
+        location.href = 'acceso.html?next=' + encodeURIComponent(next);
+        return;
+      }
+      const params = new URLSearchParams(location.search);
+      const courseId = params.get('course') || 'programa-esencial';
+      const ok = await hasEnrollment(user.uid, courseId) || await allowlistAllows(user, courseId);
+      if (!ok){
+        location.href = 'index.html#precios';
+      } else {
+        console.log('[CURSO] acceso concedido');
+      }
+    });
   });
-});
+})();
 </script>
 
 </body>
