@@ -21,33 +21,33 @@
 
     <meta property="og:title" content="Accede o Crea tu Cuenta - Aula GenIA">
     <meta property="og:description" content="Inicia sesión o regístrate para acceder a los cursos de Inteligencia Artificial de Aula GenIA.">
-    <meta property="og:image" content="https.aulagenia.cl/og-image.jpg">
-    <meta property="og:url" content="https.aulagenia.cl/acceso.html">
+    <meta property="og:image" content="https://aulagenia.cl/og-image.jpg">
+    <meta property="og:url" content="https://aulagenia.cl/acceso.html">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_ES">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Accede o Crea tu Cuenta - Aula GenIA">
     <meta name="twitter:description" content="Inicia sesión o regístrate para acceder a los cursos de Inteligencia Artificial de Aula GenIA.">
-    <meta name="twitter:image" content="https.aulagenia.cl/og-image.jpg">
+    <meta name="twitter:image" content="https://aulagenia.cl/og-image.jpg">
 
     <script type="application/ld+json">
     {
-      "@context": "https.schema.org",
+      "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "Organization",
           "name": "Aula GenIA",
-          "url": "https.aulagenia.cl/",
-          "logo": "https.aulagenia.cl/Logo_AGIA.png"
+          "url": "https://aulagenia.cl/",
+          "logo": "https://aulagenia.cl/Logo_AGIA.png"
         },
         {
           "@type": "WebSite",
           "name": "Aula GenIA",
-          "url": "https.aulagenia.cl/",
+          "url": "https://aulagenia.cl/",
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https.aulagenia.cl/cursos.html?q={search_term_string}",
+            "target": "https://aulagenia.cl/cursos.html?q={search_term_string}",
             "query-input": "required name=search_term_string"
           }
         }
@@ -55,11 +55,11 @@
     }
     </script>
 
-    <link rel="preconnect" href="https.fonts.googleapis.com">
-    <link rel="preconnect" href="https.fonts.gstatic.com" crossorigin>
-    <link href="https.fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="https.cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" />
 
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -112,7 +112,7 @@
     <header class="container mx-auto flex justify-center px-6 py-4">
       <a href="index.html" class="block" aria-label="Página de inicio de Aula GenIA">
         <img
-          src="https.aulagenia.cl/logo_dark.png"
+          src="https://aulagenia.cl/logo_dark.png"
           alt="Logo de Aula GenIA"
           class="h-12 w-auto"
           onerror="this.onerror=null; this.src='https://placehold.co/200x48/000000/ffffff?text=AulaGenIA';"
@@ -235,105 +235,346 @@
         </p>
     </footer>
 
-    <script src="https.cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
-    <script src="https.www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
-    <script src="https.www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
-    <script src="https.www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
 
-    <!-- TODO EL CÓDIGO ANTERIOR A ESTE PUNTO ES TU CÓDIGO ORIGINAL E INTACTO -->
-
-    <!-- ============================================================= -->
-    <!-- SCRIPT DE SEGURIDAD CORREGIDO Y UNIFICADO -->
-    <!-- Este bloque reemplaza los dos scripts conflictivos del final de tu archivo original. -->
-    <!-- ============================================================= -->
     <script defer>
-    (function(){
-      // Envolver toda la lógica en DOMContentLoaded para asegurar que el HTML existe
-      document.addEventListener('DOMContentLoaded', ()=>{
-        // Ocultar el cuerpo del documento para evitar el "parpadeo" del contenido antes de la verificación.
-        document.body.style.visibility = 'hidden';
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONFIGURACIÓN DE FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", // Reemplaza con tu API Key
+            authDomain: "aulagenia.firebaseapp.com",
+            projectId: "aulagenia",
+            storageBucket: "aulagenia.appspot.com",
+            messagingSenderId: "173328075630",
+            appId: "1:173328075630:web:825606db4271ea1e66cf7f",
+            measurementId: "G-X500LE6Z8X"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-        const firebaseCheck = setInterval(() => {
-            // Espera a que Firebase esté completamente cargado
-            if (window.firebase && window.firebase.auth && window.firebase.firestore) {
-                clearInterval(firebaseCheck);
-                initializeSecurityGate();
+        // --- REFERENCIAS A ELEMENTOS DEL DOM ---
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginFormContainer = document.getElementById('login-form-container');
+        const registerFormContainer = document.getElementById('register-form-container');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const googleSignInBtn = document.getElementById('google-signin-btn');
+        const facebookSignInBtn = document.getElementById('facebook-signin-btn');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        
+        // --- LÓGICA DE PESTAÑAS ---
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active-tab');
+            registerTab.classList.remove('active-tab');
+            loginFormContainer.classList.remove('hidden');
+            registerFormContainer.classList.add('hidden');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active-tab');
+            loginTab.classList.remove('active-tab');
+            registerFormContainer.classList.remove('hidden');
+            loginFormContainer.classList.add('hidden');
+        });
+
+        
+        // --- LÓGICA DE AUTENTICACIÓN REFACTORIZADA ---
+
+        const providerInfo = {
+          'google.com': { 
+            name: 'Google', 
+            instance: () => new firebase.auth.GoogleAuthProvider() 
+          },
+          'facebook.com': {
+            name: 'Facebook',
+            instance: () => {
+              const p = new firebase.auth.FacebookAuthProvider();
+              p.addScope('email');
+              p.setCustomParameters({
+                'display': 'popup'
+              });
+              return p;
             }
-        }, 100);
+          },
+          'password': { 
+            name: 'correo y contraseña', 
+            instance: () => null 
+          }
+        };
 
-        function initializeSecurityGate() {
-            // La configuración de Firebase debe estar aquí para asegurar que se use
-            const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
-            try {
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
-                }
-            } catch(e) { console.error("Error inicializando Firebase:", e); }
+
+        async function trySignIn(provider) {
+          try {
+            await auth.signInWithPopup(provider);
+          } catch (error) {
+
+            if (error.code !== 'auth/account-exists-with-different-credential') {
+              console.error("Error de autenticación:", error);
+              alert(`Ocurrió un error: ${error.message}`);
+              return;
+            }
+
+            const pendingCred = error.credential;
+            const email = ((error.email || (error.customData && error.customData.email)) || '').toLowerCase().trim();
             
-            const db = firebase.firestore();
-            const auth = firebase.auth();
-            
-            const expand = (id) => {
-              const ALIASES = {
-                'ia-aplicada-esencial': ['ia-aplicada-esencial','programa-esencial'],
-                'programa-esencial': ['programa-esencial','ia-aplicada-esencial']
-              };
-              return Array.from(new Set((ALIASES[id] || [id])));
-            };
+            console.log("--- Account Collision Detected ---");
+            console.log("Error Code:", error.code);
+            console.log("Extracted Email:", email);
+            console.log("Full Error Object:", error);
 
-            async function hasEnrollment(uid, courseId){
-              for (const id of expand(courseId)){
-                try{
-                  const snap = await db.collection('users').doc(uid).collection('enrollments').doc(id).get();
-                  if (snap.exists && snap.data() && snap.data().enrolled) return true;
-                }catch(e){ console.warn('[GATE] check enroll error', id, e); }
-              }
-              return false;
+            if (!email) {
+              console.error("No se pudo obtener el email del proveedor tras el error de colisión.", error);
+              alert('No pudimos obtener tu correo del proveedor para vincular las cuentas. Intenta iniciar sesión con tu método original.');
+              return;
             }
 
-            async function allowlistAllows(user, courseId){
-              const email = (user.email || '').trim();
-              if (!email) return false;
-              try{
-                const doc = await db.collection('allowlist').doc(email).get();
-                if (!doc.exists) return false;
-                const d = doc.data() || {};
-                const list = (d.active === true && Array.isArray(d.courses)) ? d.courses : [];
-                const set = new Set(list.flatMap(expand));
-                return set.has(courseId);
-              }catch(e){ console.warn('[GATE] allowlist error', e); return false; }
+            console.log(`[Colisión] Buscando métodos de inicio de sesión para: ${email}`);
+            const methods = await auth.fetchSignInMethodsForEmail(email);
+            console.log(`[Colisión] Métodos encontrados:`, methods);
+
+            if (!methods || methods.length === 0) {
+              console.error("Inconsistencia de Firebase: 'auth/account-exists-with-different-credential' fue lanzado, pero fetchSignInMethodsForEmail retornó un arreglo vacío.", {email: email});
+              alert('Ya existe una cuenta con este correo, pero el método fue Google. Por favor, intenta iniciar sesión directamente con tu método original (Google) o con tu correo y contraseña.');
+              return;
             }
 
-            auth.onAuthStateChanged(async (user)=>{
-              if (!user){
-                // Si no hay usuario, redirigir a la página de acceso, pasando la URL actual
-                // para poder volver aquí después del login.
-                const next = location.pathname + location.search;
-                location.href = 'acceso.html?next=' + encodeURIComponent(next);
+            const originalProviderId = methods[0];
+            const originalProviderInfo = providerInfo[originalProviderId] || { name: originalProviderId, instance: () => null };
+
+            if (originalProviderId === 'password') {
+              alert(`Ya tienes una cuenta con ${originalProviderInfo.name}. Por favor, inicia sesión con tu correo y contraseña para continuar.`);
+              return;
+            }
+
+            const originalProviderInstance = originalProviderInfo.instance();
+            if (!originalProviderInstance) {
+                alert(`No se pudo reconstruir el proveedor original (${originalProviderId}). Por favor, inicia sesión manualmente.`);
                 return;
-              }
-              
-              const params = new URLSearchParams(location.search);
-              const courseId = params.get('course') || 'programa-esencial';
-              const hasAccess = await hasEnrollment(user.uid, courseId) || await allowlistAllows(user, courseId);
-              
-              if (hasAccess){
-                console.log('[GATE] Acceso concedido al curso.');
-                // El acceso es válido, hacemos visible el contenido de la página.
-                document.body.style.visibility = 'visible';
-                // En este punto, el resto de tus scripts (si los tuvieras)
-                // pueden ejecutarse para renderizar el contenido dinámico del curso.
-              } else {
-                console.warn('[GATE] Acceso denegado. Redirigiendo...');
-                alert('No tienes acceso a este curso. Serás redirigido.');
-                location.href = 'index.html#precios';
-              }
-            });
+            }
+            
+            alert(`Ya tienes una cuenta con ${originalProviderInfo.name}. Inicia sesión con ${originalProviderInfo.name} para vincular tu nueva cuenta.`);
+            
+            try {
+                const { user } = await auth.signInWithPopup(originalProviderInstance);
+                await user.linkWithCredential(pendingCred);
+                console.log('¡Cuentas vinculadas con éxito!');
+            } catch (linkError) {
+                console.error("Error al vincular las cuentas:", linkError);
+                alert(`No se pudieron vincular las cuentas: ${linkError.message}`);
+            }
+          }
         }
-      });
-    })();
+
+        googleSignInBtn.addEventListener('click', () => {
+            const provider = providerInfo['google.com'].instance();
+            trySignIn(provider);
+        });
+        
+        facebookSignInBtn.addEventListener('click', () => {
+            const provider = providerInfo['facebook.com'].instance();
+            trySignIn(provider);
+        });
+
+
+        // Registro con Email y Contraseña
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = registerForm.querySelector('#register-name').value;
+            const email = registerForm.querySelector('#register-email').value;
+            const password = registerForm.querySelector('#register-password').value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    return userCredential.user.updateProfile({
+                        displayName: name
+                    });
+                })
+                .then(() => {
+                    console.log("Usuario registrado y perfil actualizado:", auth.currentUser);
+                })
+                .catch((error) => {
+                    console.error("Error en el registro:", error);
+                    // CAMBIO APLICADO AQUÍ: Manejo de error específico
+                    if (error.code === 'auth/email-already-in-use') {
+                        alert('Ya existe una cuenta con este correo electrónico. Por favor, intenta iniciar sesión o utiliza otro correo.');
+                    } else {
+                        // Error genérico para otros problemas
+                        alert(`Error en el registro: ${error.message}`);
+                    }
+                });
+        });
+
+        // Inicio de sesión con Email y Contraseña
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('#login-email').value;
+            const password = loginForm.querySelector('#login-password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    console.log("Usuario ha iniciado sesión:", userCredential.user);
+                })
+                .catch((error) => {
+                    console.error("Error en inicio de sesión:", error);
+                    alert(`Error: Credenciales incorrectas. Por favor, inténtalo de nuevo.`);
+                });
+        });
+
+        // Lógica de Restablecimiento de Contraseña
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-email');
+            const email = emailInput.value;
+
+            if (!email) {
+                alert('Por favor, ingresa tu correo electrónico en el campo correspondiente para restablecer tu contraseña.');
+                emailInput.focus();
+                return;
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    alert('Se ha enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada (y la carpeta de spam).');
+                })
+                .catch((error) => {
+                    console.error('Error al enviar correo de restablecimiento:', error);
+                    if (error.code === 'auth/user-not-found') {
+                        alert('No se encontró ninguna cuenta con ese correo electrónico.');
+                    } else {
+                        alert(`Ocurrió un error: ${error.message}`);
+                    }
+                });
+        });
+
+        // --- MANEJO DEL ESTADO DE AUTENTICACIÓN Y REDIRECCIÓN ---
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log('Usuario autenticado. Redirigiendo al campus...');
+                window.location.href = 'campus.html';
+            } else {
+                document.getElementById('auth-container').style.display = 'block';
+                document.getElementById('userInfo').style.display = 'none';
+                document.getElementById('auth-title').textContent = 'Accede a tu Cuenta';
+            }
+        });
+        
+        // --- INICIALIZACIÓN DE ÍCONOS Y COOKIES ---
+        lucide.createIcons();
+
+        window.addEventListener('load', () => {
+            if (window.cookieconsent) {
+                window.cookieconsent.initialise({
+                    palette: { popup: { background: '#1f2937' }, button: { background: '#14b8a6' } },
+                    theme: 'classic',
+                    position: 'bottom',
+                    type: 'opt-in',
+                    content: {
+                        message: 'Usamos cookies para mejorar tu experiencia.',
+                        dismiss: 'Aceptar',
+                        deny: 'Rechazar',
+                        link: 'Más info',
+                        href: 'politica-cookies.html'
+                    },
+                });
+            }
+        });
+    });
     </script>
+
+<!-- ============================================================= -->
+<!-- SCRIPT DE SEGURIDAD UNIFICADO Y CORREGIDO -->
+<!-- Pega este bloque donde estaban los dos scripts anteriores. -->
+<!-- ============================================================= -->
+<script defer>
+(function(){
+  document.addEventListener('DOMContentLoaded', ()=>{
+    // Ocultar el cuerpo para evitar que se vea contenido no autorizado
+    document.body.style.visibility = 'hidden';
+
+    const firebaseCheck = setInterval(() => {
+        // Espera a que los servicios de Firebase estén listos
+        if (window.firebase && window.firebase.auth && window.firebase.firestore) {
+            clearInterval(firebaseCheck);
+            initializeSecurityGate();
+        }
+    }, 100);
+
+    function initializeSecurityGate() {
+        // Es importante tener la config aquí para asegurar su carga
+        const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+        } catch(e) { console.error("Error inicializando Firebase:", e); }
+        
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
+        const expand = (id) => {
+          const ALIASES = {
+            'ia-aplicada-esencial': ['ia-aplicada-esencial','programa-esencial'],
+            'programa-esencial': ['programa-esencial','ia-aplicada-esencial']
+          };
+          return Array.from(new Set((ALIASES[id] || [id])));
+        };
+
+        async function hasEnrollment(uid, courseId){
+          for (const id of expand(courseId)){
+            try{
+              const snap = await db.collection('users').doc(uid).collection('enrollments').doc(id).get();
+              if (snap.exists && snap.data() && snap.data().enrolled) return true;
+            }catch(e){ console.warn('[GATE] Error revisando enrollment:', id, e); }
+          }
+          return false;
+        }
+
+        async function allowlistAllows(user, courseId){
+          const email = (user.email || '').trim();
+          if (!email) return false;
+          try{
+            const doc = await db.collection('allowlist').doc(email).get();
+            if (!doc.exists) return false;
+            const d = doc.data() || {};
+            const list = (d.active === true && Array.isArray(d.courses)) ? d.courses : [];
+            const set = new Set(list.flatMap(expand));
+            return set.has(courseId);
+          }catch(e){ console.warn('[GATE] Error revisando allowlist:', e); return false; }
+        }
+
+        auth.onAuthStateChanged(async (user)=>{
+          if (!user){
+            // Si no hay usuario, redirigir a acceso
+            const next = location.pathname + location.search;
+            location.href = 'acceso.html?next=' + encodeURIComponent(next);
+            return;
+          }
+          
+          const params = new URLSearchParams(location.search);
+          const courseId = params.get('course') || 'programa-esencial';
+          const hasAccess = await hasEnrollment(user.uid, courseId) || await allowlistAllows(user, courseId);
+          
+          if (hasAccess){
+            console.log('[GATE] Acceso concedido.');
+            // Si tiene acceso, muestra la página
+            document.body.style.visibility = 'visible';
+            // Aquí se ejecutarían las demás funciones que cargan tu curso
+          } else {
+            console.warn('[GATE] Acceso denegado.');
+            alert('No tienes acceso a este curso. Serás redirigido.');
+            location.href = 'index.html#precios';
+          }
+        });
+    }
+  });
+})();
+</script>
+
+
 
 </body>
 </html>
-
+</html>
