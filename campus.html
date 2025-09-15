@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v7.2 (Profile UX)
+  CAMPUS DASHBOARD · AULA GENIA v7.3 (Profile Consistency)
   -------------------------------------------------------------------
-  - UX: Mejorada la validación del formulario de perfil.
-  - FEAT: Se añade validación en tiempo real (al escribir) para los 
-    campos de nombre, país y RUT.
-  - UI: Se muestran íconos de éxito y error junto a los campos para
-    dar retroalimentación visual inmediata.
-  - LOGIC: El botón "Guardar Cambios" se activa únicamente cuando todos
-    los campos requeridos son válidos.
+  - REFACTOR: Se ha unificado el modal de perfil para que sea consistente
+    con el de la página del curso (campus-curso-ia.html).
+  - UI: Implementado el layout compacto que evita el scroll.
+  - UX: Se mantiene la validación en tiempo real con feedback visual
+    y activación condicional del botón de guardado.
   - DEV: Esta mejora fue implementada por un desarrollador senior para
-    optimizar la experiencia de usuario en la edición del perfil.
+    garantizar una experiencia de usuario coherente en toda la plataforma.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -150,8 +148,8 @@
   <!-- MODAL DE PERFIL -->
   <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
   <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col transform transition-all scale-95 opacity-0 max-h-[90vh]">
-          <div class="p-8 flex-shrink-0">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col transform transition-all scale-95 opacity-0">
+          <div class="p-6 flex-shrink-0">
               <div class="flex justify-between items-start">
                   <div>
                       <h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3>
@@ -161,15 +159,15 @@
               </div>
           </div>
           
-          <div class="px-8 pb-4 flex-grow overflow-y-auto">
-              <form id="profile-form" class="space-y-4" novalidate>
+          <div class="px-6 pb-2 flex-grow overflow-y-auto">
+              <form id="profile-form" class="space-y-3" novalidate>
                   <div>
                       <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
                       <div class="relative">
                         <input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 pr-10" placeholder="Ej: Ada Lovelace">
                         <span id="name-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
                       </div>
-                      <p class="text-xs text-gray-500 mt-1"><strong>Importante:</strong> Este será el nombre que aparecerá en tu certificado.</p>
+                      <p class="text-xs text-gray-500 mt-1">Este será el nombre en tu certificado.</p>
                       <div id="name-error" class="error-message"></div>
                   </div>
                   <div>
@@ -178,11 +176,35 @@
                         <input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 pr-10" placeholder="Ej: 12345678-9">
                         <span id="rut-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
                       </div>
-                      <p class="text-xs text-gray-500 mt-1">Requerido para la validez de tu certificado en Chile.</p>
+                      <p class="text-xs text-gray-500 mt-1">Requerido si tu país es Chile.</p>
                       <div id="rut-error" class="error-message"></div>
                   </div>
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                       <div>
+                          <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
+                          <div class="relative">
+                            <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 appearance-none pr-10">
+                                <option value="">Selecciona tu país</option>
+                                <option value="CL">Chile</option>
+                                <option value="AR">Argentina</option>
+                                <option value="PE">Perú</option>
+                                <option value="CO">Colombia</option>
+                                <option value="MX">México</option>
+                                <option value="ES">España</option>
+                                <option value="US">Estados Unidos</option>
+                                <option value="OT">Otro</option>
+                            </select>
+                            <span id="country-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"></span>
+                          </div>
+                          <div id="country-error" class="error-message"></div>
+                      </div>
                       <div>
+                          <label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label>
+                          <input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante">
+                      </div>
+                  </div>
+                   <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
                           <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
                           <select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
                               <option value="">Seleccionar...</option>
@@ -201,32 +223,10 @@
                       <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
                       <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
                   </div>
-                  <div>
-                      <label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label>
-                      <input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante, Desarrollador, etc.">
-                  </div>
-                  <div>
-                      <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
-                      <div class="relative">
-                        <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 appearance-none pr-10">
-                            <option value="">Selecciona tu país</option>
-                            <option value="CL">Chile</option>
-                            <option value="AR">Argentina</option>
-                            <option value="PE">Perú</option>
-                            <option value="CO">Colombia</option>
-                            <option value="MX">México</option>
-                            <option value="ES">España</option>
-                            <option value="US">Estados Unidos</option>
-                            <option value="OT">Otro</option>
-                        </select>
-                        <span id="country-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"></span>
-                      </div>
-                      <div id="country-error" class="error-message"></div>
-                  </div>
                   <div id="form-status" class="text-center p-3 rounded-lg hidden"></div>
               </form>
           </div>
-          <div class="p-8 pt-4 flex-shrink-0">
+          <div class="p-6 pt-4 flex-shrink-0">
                <div class="flex justify-end gap-3 pt-4 border-t">
                   <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
                   <button type="submit" form="profile-form" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
