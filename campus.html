@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v6.9 (Pago Integrado - Versión Completa)
+  CAMPUS DASHBOARD · AULA GENIA v7.0 (Lógica Unificada)
   -------------------------------------------------------------------
-  - FEAT: Añadido SDK de Firebase Functions.
-  - FEAT: La función updateCardForUnenrolledUser ahora inicia el flujo 
-    de pago con Mercado Pago llamando a la Cloud Function 
-    'createMercadoPagoPreference'.
-  - FIX: Asegurada la correcta funcionalidad de todos los botones al
-    integrar la nueva lógica de pago.
+  - FIX (Senior Developer): Se unificó la lógica de renderizado de los botones de curso.
+  - Se eliminó la "race condition" que causaba que el script de `allowlist` no funcionara
+    correctamente. Ahora, la verificación de allowlist tiene prioridad sobre la de pago.
+  - Se centralizó toda la lógica en un único script para mayor mantenibilidad.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -278,6 +276,44 @@
       const saveBtnText = document.getElementById('save-btn-text');
       const saveSpinner = document.getElementById('save-spinner');
 
+      // --- INICIO: FUNCIONES DE ALLOWLIST (MOVIDAS AQUÍ) ---
+      const COURSE_ALIASES = {
+        'ia-aplicada-esencial': ['ia-aplicada-esencial', 'programa-esencial'],
+        'programa-esencial': ['programa-esencial', 'ia-aplicada-esencial']
+      };
+      const expandAliases = (cid) => Array.from(new Set(COURSE_ALIASES[cid] || [cid]));
+
+      async function getAllowlistedCoursesFor(user) {
+        const email = (user && user.email || '').trim();
+        if (!email) return [];
+        try {
+          const snap = await db.collection('allowlist').doc(email).get();
+          if (!snap.exists) return [];
+          const data = snap.data() || {};
+          return (data.active === true && Array.isArray(data.courses)) ? data.courses : [];
+        } catch(e) {
+          console.warn('[CAMPUS] Error leyendo allowlist:', e);
+          return [];
+        }
+      }
+
+      async function ensureEnrollmentFor(user, courseId) {
+        const ref = db.collection('users').doc(user.uid).collection('enrollments').doc(courseId);
+        try {
+          await ref.set({ enrolled: true, source: 'allowlist', ts: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+          console.log(`[CAMPUS] Enrollment para ${courseId} exitoso por allowlist.`);
+          return true;
+        } catch(e) {
+          console.warn('[CAMPUS] No se pudo grabar enrollment (probablemente denegado por reglas):', e.message);
+          return false;
+        }
+      }
+
+      function goToCourse(courseId) {
+        window.location.href = 'campus-curso-ia.html?course=' + encodeURIComponent(courseId);
+      }
+      // --- FIN: FUNCIONES DE ALLOWLIST ---
+
       async function showProfileModal(isMandatory = false) {
           profileForm.reset();
           clearAllErrors();
@@ -442,7 +478,7 @@
 
               setTimeout(() => {
                   hideProfileModal();
-                  listenForCourseProgress(user.uid);
+                  listenToAllCourses(user);
               }, 1500);
 
           } catch (error) {
@@ -496,12 +532,12 @@
 
           tagEl.textContent = 'Requiere Inscripción';
           tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full';
-          actionBtn.textContent = 'Inscríbete para Activar';
-          actionBtn.href = "#";
-          actionBtn.classList.remove('cursor-wait', 'bg-gray-400');
-          actionBtn.classList.add('bg-slate-400', 'hover:bg-slate-500');
-
+          
           const newBtn = actionBtn.cloneNode(true);
+          newBtn.textContent = 'Inscríbete para Activar';
+          newBtn.href = "#";
+          newBtn.classList.remove('cursor-wait', 'bg-gray-400');
+          newBtn.classList.add('bg-slate-400', 'hover:bg-slate-500');
           actionBtn.parentNode.replaceChild(newBtn, actionBtn);
 
           newBtn.addEventListener('click', async (e) => {
@@ -528,57 +564,90 @@
           });
       }
 
-      function listenForCourseProgress(userId) {
-          const courseId = ESSENTIAL_COURSE_ID;
-          let courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
-          if (!courseCard) {
-              console.warn(`No se encontró tarjeta para curso: ${courseId}`);
-              return;
-          }
+      // --- NUEVA FUNCIÓN PARA ALLOWLIST ---
+      function updateCardForAllowlistedUser(card, user) {
+        const tagEl = card.querySelector('.tag');
+        const actionBtn = card.querySelector('.course-action-btn');
+        const courseId = card.dataset.courseId;
 
-          db.collection('users').doc(userId).get().then(userDoc => {
-              let hasAccess = false;
-              if (userDoc.exists) {
-                  const userData = userDoc.data();
-                  const oldEssentialCourseId = 'inteligencia-aplicada';
-                  if (userData.enrollments && (userData.enrollments[courseId] === true || userData.enrollments[oldEssentialCourseId] === true)) {
-                      hasAccess = true;
+        tagEl.textContent = 'Acceso liberado';
+        tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-purple-700 bg-purple-100 px-2 py-1 rounded-full';
+
+        const newBtn = actionBtn.cloneNode(true);
+        newBtn.textContent = 'Entrar sin pagar';
+        newBtn.href = "#";
+        newBtn.classList.remove('cursor-wait', 'bg-gray-400', 'bg-slate-400');
+        newBtn.classList.add('bg-teal-600', 'hover:bg-teal-700');
+        actionBtn.parentNode.replaceChild(newBtn, actionBtn);
+        
+        newBtn.addEventListener('click', async (ev) => {
+          ev.preventDefault();
+          
+          newBtn.disabled = true;
+          newBtn.textContent = 'Verificando acceso...';
+          
+          const success = await ensureEnrollmentFor(user, courseId);
+          
+          if (success) {
+            goToCourse(courseId);
+          } else {
+            alert('No se pudo completar la inscripción. Parece que no tienes permiso para este curso. Por favor, contacta a soporte si crees que es un error.');
+            newBtn.disabled = false;
+            newBtn.textContent = 'Entrar sin pagar';
+          }
+        });
+      }
+
+      async function processCourseCard(card, user) {
+        const courseId = card.dataset.courseId;
+        if (!courseId) return;
+
+        // 1. PRIORIDAD MÁXIMA: Verificar Allowlist
+        const allowlistedCourses = await getAllowlistedCoursesFor(user);
+        const allowedSet = new Set(allowlistedCourses.flatMap(expandAliases));
+
+        if (allowedSet.has(courseId)) {
+          updateCardForAllowlistedUser(card, user);
+          return; // Termina el proceso para esta tarjeta si está en allowlist
+        }
+
+        // 2. Si no está en allowlist, verificar inscripción existente (pago, etc.)
+        const enrollmentsRef = db.collection('users').doc(user.uid).collection('enrollments');
+        const courseIdsToCheck = expandAliases(courseId);
+        let hasAccess = false;
+
+        for (const id of courseIdsToCheck) {
+            const doc = await enrollmentsRef.doc(id).get();
+            if (doc.exists && doc.data().enrolled) {
+                hasAccess = true;
+                break;
+            }
+        }
+
+        if (hasAccess) {
+            // Escuchar progreso del curso
+            const progressRef = db.collection('userProgress').doc(user.uid);
+            progressRef.onSnapshot(doc => {
+              let completedCount = 0;
+              if (doc.exists) {
+                  const data = doc.data();
+                  const courseProgress = data[courseId]; // Usar el courseId original para el progreso
+                  if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
+                      completedCount = new Set(courseProgress.completedLessons).size;
                   }
               }
-
-              if (hasAccess) {
-                  const progressRef = db.collection('userProgress').doc(userId);
-                  
-                  progressRef.onSnapshot(doc => {
-                      let completedCount = 0;
-                      
-                      if (doc.exists) {
-                          const data = doc.data();
-                          const courseProgress = data[courseId];
-                          if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
-                              completedCount = new Set(courseProgress.completedLessons).size;
-                          }
-                      }
-                      
-                      const courseConfig = COURSE_CONFIG[courseId];
-                      const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
-                      const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
-
-                      updateCardForEnrolledUser(courseCard, percentage, courseId);
-
-                  }, error => {
-                      console.error(`Error al escuchar el progreso para ${courseId}:`, error);
-                      updateCardForUnenrolledUser(courseCard);
-                  });
-
-              } else {
-                  updateCardForUnenrolledUser(courseCard);
-              }
-
-          }).catch(error => {
-              console.error(`Error al verificar el acceso para ${courseId}:`, error);
-              updateCardForUnenrolledUser(courseCard);
-          });
+              const courseConfig = COURSE_CONFIG[courseId];
+              const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
+              const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
+              updateCardForEnrolledUser(card, percentage, courseId);
+            }, error => {
+              console.error(`Error al escuchar progreso para ${courseId}:`, error);
+              updateCardForUnenrolledUser(card);
+            });
+        } else {
+            // 3. Si no está en allowlist ni inscrito, mostrar botón de pago
+            updateCardForUnenrolledUser(card);
+        }
       }
       
       async function setupDynamicButton(user, buttonId, collectionName, buttonStates) {
@@ -637,6 +706,12 @@
           });
       }
 
+      function listenToAllCourses(user) {
+        document.querySelectorAll('article[data-course-id="ia-aplicada-esencial"]').forEach(card => {
+          processCourseCard(card, user);
+        });
+      }
+
       auth.onAuthStateChanged(user => {
         if (user) {
           db.collection('users').doc(user.uid).get().then(doc => {
@@ -661,7 +736,7 @@
                 if (!isProfileComplete) {
                     showProfileModal(true);
                 } else {
-                    listenForCourseProgress(user.uid); 
+                    listenToAllCourses(user); 
                 }
             } catch (error) {
                 console.error("Error verificando el estado del perfil:", error);
@@ -705,96 +780,10 @@
     });
   </script>
 
-<!-- AULAGENIA · Campus: Mostrar "Entrar sin pagar" si está en allowlist -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  if (!window.firebase) { console.warn('[CAMPUS] Firebase no cargado'); return; }
-  const db = firebase.firestore();
-  const auth = firebase.auth();
-
-  const COURSE_ALIASES = {
-    'ia-aplicada-esencial': ['ia-aplicada-esencial', 'programa-esencial'],
-    'programa-esencial': ['programa-esencial', 'ia-aplicada-esencial']
-  };
-  const expandAliases = (cid) => Array.from(new Set(COURSE_ALIASES[cid] || [cid]));
-
-  function findCourseCards() {
-    return Array.from(document.querySelectorAll('[data-course-id]'));
-  }
-
-  async function getAllowlistedCoursesFor(user) {
-    const email = (user && user.email || '').trim();
-    if (!email) return [];
-    try {
-      const snap = await db.collection('allowlist').doc(email).get();
-      if (!snap.exists) return [];
-      const data = snap.data() || {};
-      return (data.active === true && Array.isArray(data.courses)) ? data.courses : [];
-    } catch(e) {
-      console.warn('[CAMPUS] Error leyendo allowlist:', e);
-      return [];
-    }
-  }
-
-  async function ensureEnrollmentFor(user, courseId) {
-    const ref = db.collection('users').doc(user.uid).collection('enrollments').doc(courseId);
-    try {
-      await ref.set({ enrolled: true, source: 'allowlist', ts: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-      console.log(`[CAMPUS] Enrollment para ${courseId} exitoso por allowlist.`);
-      return true;
-    } catch(e) {
-      console.warn('[CAMPUS] No se pudo grabar enrollment (probablemente denegado por reglas):', e.message);
-      return false;
-    }
-  }
-
-  function goToCourse(courseId) {
-    location.href = 'campus-curso-ia.html?course=' + encodeURIComponent(courseId);
-  }
-
-  auth.onAuthStateChanged(async (user) => {
-    if (!user) return;
-    const allowList = await getAllowlistedCoursesFor(user);
-    const allowed = new Set(allowList.flatMap(expandAliases));
-    if (!allowed.size) return; // nada que hacer, que el pago siga normal
-
-    findCourseCards().forEach((card) => {
-      const cid = card.getAttribute('data-course-id');
-      const actionBtn = card.querySelector('.course-action-btn, a[href], button');
-      if (!cid || !actionBtn) return;
-
-      if (allowed.has(cid)) {
-        // Clonamos el botón para remover listeners previos
-        const newBtn = actionBtn.cloneNode(true);
-        actionBtn.parentNode.replaceChild(newBtn, actionBtn);
-
-        // Decorar botón y bypass pago
-        newBtn.textContent = 'Entrar sin pagar';
-        newBtn.classList.remove('bg-gray-400', 'bg-slate-400');
-        newBtn.classList.add('bg-teal-600', 'hover:bg-teal-700');
-        newBtn.removeAttribute('href');
-        
-        newBtn.addEventListener('click', async (ev) => {
-          ev.preventDefault();
-          
-          newBtn.disabled = true;
-          newBtn.textContent = 'Verificando acceso...';
-          
-          const success = await ensureEnrollmentFor(user, cid);
-          
-          if (success) {
-            goToCourse(cid);
-          } else {
-            alert('No se pudo completar la inscripción. Parece que no tienes permiso para este curso. Por favor, contacta a soporte si crees que es un error.');
-            newBtn.disabled = false;
-            newBtn.textContent = 'Entrar sin pagar';
-          }
-        }, { passive: false });
-      }
-    });
-  });
-});
-</script>
+<!-- 
+  BLOQUE DE SCRIPT DE ALLOWLIST ANTERIOR ELIMINADO.
+  SU LÓGICA AHORA ESTÁ INTEGRADA EN EL SCRIPT PRINCIPAL DE ARRIBA.
+-->
 
 </body>
 </html>
