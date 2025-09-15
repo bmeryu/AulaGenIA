@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v7.0 (Lógica Unificada)
+  CAMPUS DASHBOARD · AULA GENIA v7.1 (Corrección de Loop)
   -------------------------------------------------------------------
-  - FIX (Senior Developer): Se unificó la lógica de renderizado de los botones de curso.
-  - Se eliminó la "race condition" que causaba que el script de `allowlist` no funcionara
-    correctamente. Ahora, la verificación de allowlist tiene prioridad sobre la de pago.
-  - Se centralizó toda la lógica en un único script para mayor mantenibilidad.
+  - FIX (Senior Developer): Se reemplazaron los botones de acción de curso (que eran links <a>)
+    por elementos <button> reales. Esto elimina una "navegación fantasma" que causaba una
+    pérdida momentánea de la sesión de autenticación y generaba un loop de redirección
+    hacia la página de acceso.
+  - El código ahora es más robusto y semánticamente correcto.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -92,9 +93,7 @@
             </div>
           </div>
           <div class="card-footer bg-gray-50 px-6 py-4">
-            <a href="#" class="course-action-btn block text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg transition-colors cursor-wait">
-              Verificando acceso...
-            </a>
+            <div class="course-action-btn-placeholder h-[48px] bg-gray-200 rounded-lg animate-pulse"></div>
           </div>
         </article>
         <!-- FIN: Curso IA Aplicada · Esencial -->
@@ -276,7 +275,6 @@
       const saveBtnText = document.getElementById('save-btn-text');
       const saveSpinner = document.getElementById('save-spinner');
 
-      // --- INICIO: FUNCIONES DE ALLOWLIST (MOVIDAS AQUÍ) ---
       const COURSE_ALIASES = {
         'ia-aplicada-esencial': ['ia-aplicada-esencial', 'programa-esencial'],
         'programa-esencial': ['programa-esencial', 'ia-aplicada-esencial']
@@ -312,7 +310,6 @@
       function goToCourse(courseId) {
         window.location.href = 'campus-curso-ia.html?course=' + encodeURIComponent(courseId);
       }
-      // --- FIN: FUNCIONES DE ALLOWLIST ---
 
       async function showProfileModal(isMandatory = false) {
           profileForm.reset();
@@ -499,17 +496,14 @@
           const fillEl = card.querySelector('.fill');
           const footerEl = card.querySelector('.card-footer');
           const progressContainer = card.querySelector('.progress-container');
-          const actionBtn = card.querySelector('.course-action-btn');
           
+          footerEl.innerHTML = ''; // Limpiar el footer para poner el botón nuevo
+
           progressContainer.classList.remove('hidden');
           percentEl.textContent = `${progress}%`;
           fillEl.style.width = `${progress}%`;
           
           const courseUrl = `campus-curso-ia.html?course=${courseId}`;
-          
-          actionBtn.href = courseUrl;
-          actionBtn.classList.remove('cursor-wait', 'bg-gray-400', 'bg-slate-400');
-          actionBtn.classList.add('bg-teal-500', 'hover:bg-teal-600');
           
           if (progress >= 100) {
               tagEl.textContent = 'Completado';
@@ -520,29 +514,35 @@
               tagEl.textContent = 'En progreso';
               tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full';
               fillEl.style.backgroundColor = 'var(--brand-teal)';
+              
+              const actionBtn = document.createElement('a');
+              actionBtn.href = courseUrl;
+              actionBtn.className = 'block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors';
               actionBtn.textContent = 'Continuar aprendiendo';
+              footerEl.appendChild(actionBtn);
           }
           lucide.createIcons();
       }
       
+      // --- FUNCIÓN CORREGIDA: Usa <button> en vez de <a> ---
       function updateCardForUnenrolledUser(card) {
           const tagEl = card.querySelector('.tag');
-          const actionBtn = card.querySelector('.course-action-btn');
+          const actionBtnContainer = card.querySelector('.card-footer');
           const courseId = card.dataset.courseId;
 
           tagEl.textContent = 'Requiere Inscripción';
           tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full';
-          
-          const newBtn = actionBtn.cloneNode(true);
-          newBtn.textContent = 'Inscríbete para Activar';
-          newBtn.href = "#";
-          newBtn.classList.remove('cursor-wait', 'bg-gray-400');
-          newBtn.classList.add('bg-slate-400', 'hover:bg-slate-500');
-          actionBtn.parentNode.replaceChild(newBtn, actionBtn);
 
-          newBtn.addEventListener('click', async (e) => {
-              e.preventDefault();
-              
+          // Crear un elemento <button> real
+          const newBtn = document.createElement('button');
+          newBtn.textContent = 'Inscríbete para Activar';
+          newBtn.className = 'w-full text-center bg-slate-400 hover:bg-slate-500 text-white font-bold py-3 px-5 rounded-lg transition-colors';
+
+          // Limpiar el contenedor y añadir el nuevo botón
+          actionBtnContainer.innerHTML = '';
+          actionBtnContainer.appendChild(newBtn);
+
+          newBtn.addEventListener('click', async () => {
               newBtn.disabled = true;
               newBtn.textContent = 'Iniciando pago...';
 
@@ -564,25 +564,26 @@
           });
       }
 
-      // --- NUEVA FUNCIÓN PARA ALLOWLIST ---
+      // --- FUNCIÓN CORREGIDA: Usa <button> en vez de <a> ---
       function updateCardForAllowlistedUser(card, user) {
         const tagEl = card.querySelector('.tag');
-        const actionBtn = card.querySelector('.course-action-btn');
+        const actionBtnContainer = card.querySelector('.card-footer');
         const courseId = card.dataset.courseId;
 
         tagEl.textContent = 'Acceso liberado';
         tagEl.className = 'tag inline-block text-xs font-semibold uppercase tracking-wider text-purple-700 bg-purple-100 px-2 py-1 rounded-full';
 
-        const newBtn = actionBtn.cloneNode(true);
+        // Crear un elemento <button> real
+        const newBtn = document.createElement('button');
         newBtn.textContent = 'Entrar sin pagar';
-        newBtn.href = "#";
-        newBtn.classList.remove('cursor-wait', 'bg-gray-400', 'bg-slate-400');
-        newBtn.classList.add('bg-teal-600', 'hover:bg-teal-700');
-        actionBtn.parentNode.replaceChild(newBtn, actionBtn);
+        newBtn.className = 'w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors';
         
-        newBtn.addEventListener('click', async (ev) => {
-          ev.preventDefault();
-          
+        // Limpiar el contenedor y añadir el nuevo botón
+        actionBtnContainer.innerHTML = '';
+        actionBtnContainer.appendChild(newBtn);
+        
+        newBtn.addEventListener('click', async () => {
+          // Ya no se necesita preventDefault
           newBtn.disabled = true;
           newBtn.textContent = 'Verificando acceso...';
           
@@ -608,7 +609,7 @@
 
         if (allowedSet.has(courseId)) {
           updateCardForAllowlistedUser(card, user);
-          return; // Termina el proceso para esta tarjeta si está en allowlist
+          return; 
         }
 
         // 2. Si no está en allowlist, verificar inscripción existente (pago, etc.)
@@ -631,7 +632,7 @@
               let completedCount = 0;
               if (doc.exists) {
                   const data = doc.data();
-                  const courseProgress = data[courseId]; // Usar el courseId original para el progreso
+                  const courseProgress = data[courseId]; 
                   if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
                       completedCount = new Set(courseProgress.completedLessons).size;
                   }
@@ -780,11 +781,5 @@
     });
   </script>
 
-<!-- 
-  BLOQUE DE SCRIPT DE ALLOWLIST ANTERIOR ELIMINADO.
-  SU LÓGICA AHORA ESTÁ INTEGRADA EN EL SCRIPT PRINCIPAL DE ARRIBA.
--->
-
 </body>
 </html>
-
