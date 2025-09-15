@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v6.9 (Pago Integrado - Versión Completa)
+  CAMPUS DASHBOARD · AULA GENIA v7.0 (Allowlist Integration)
   -------------------------------------------------------------------
-  - FEAT: Añadido SDK de Firebase Functions.
-  - FEAT: La función updateCardForUnenrolledUser ahora inicia el flujo 
-    de pago con Mercado Pago llamando a la Cloud Function 
-    'createMercadoPagoPreference'.
-  - FIX: Asegurada la correcta funcionalidad de todos los botones al
-    integrar la nueva lógica de pago.
+  - FEAT: Integrada la lógica de 'allowlist' de Firestore.
+  - LOGIC: La función `listenForCourseProgress` ahora comprueba si el 
+    email del usuario está en la colección 'allowlist'.
+  - BEHAVIOR: Si un usuario está en la lista y activo, se le concede
+    acceso al curso correspondiente sin necesidad de pago, 
+    redirigiéndolo directamente al contenido del curso.
+  - DEV: Esta actualización fue realizada por un desarrollador senior
+    para implementar el acceso administrativo sin pago.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -528,6 +530,7 @@
           });
       }
 
+      // --- INICIO: FUNCIÓN ACTUALIZADA POR DESARROLLADOR SENIOR ---
       function listenForCourseProgress(userId) {
           const courseId = ESSENTIAL_COURSE_ID;
           let courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
@@ -535,23 +538,47 @@
               console.warn(`No se encontró tarjeta para curso: ${courseId}`);
               return;
           }
+          
+          const user = auth.currentUser;
+          if (!user || !user.email) {
+              console.error("Usuario no autenticado o sin email, no se puede verificar acceso.");
+              updateCardForUnenrolledUser(courseCard);
+              return;
+          }
 
-          db.collection('users').doc(userId).get().then(userDoc => {
-              let hasAccess = false;
-              if (userDoc.exists) {
-                  const userData = userDoc.data();
-                  const oldEssentialCourseId = 'inteligencia-aplicada';
-                  if (userData.enrollments && (userData.enrollments[courseId] === true || userData.enrollments[oldEssentialCourseId] === true)) {
-                      hasAccess = true;
+          // Se verifica el acceso desde dos fuentes:
+          // 1. La 'allowlist' (para acceso administrativo sin pago).
+          // 2. El documento del usuario (para inscripciones normales por pago).
+          const allowlistRef = db.collection('allowlist').doc(user.email);
+          const userRef = db.collection('users').doc(userId);
+          const progressRef = db.collection('userProgress').doc(userId);
+
+          Promise.all([allowlistRef.get(), userRef.get()]).then(([allowlistDoc, userDoc]) => {
+              let isWhitelisted = false;
+              if (allowlistDoc.exists) {
+                  const data = allowlistDoc.data();
+                  const allowedCourses = data.courses || [];
+                  if (data.active === true && allowedCourses.includes(courseId)) {
+                      console.log(`Acceso concedido para ${user.email} vía allowlist.`);
+                      isWhitelisted = true;
                   }
               }
 
+              let isEnrolled = false;
+              if (userDoc.exists) {
+                  const userData = userDoc.data();
+                  const oldEssentialCourseId = 'inteligencia-aplicada'; // Para compatibilidad
+                  if (userData.enrollments && (userData.enrollments[courseId] === true || userData.enrollments[oldEssentialCourseId] === true)) {
+                      isEnrolled = true;
+                  }
+              }
+
+              const hasAccess = isWhitelisted || isEnrolled;
+
               if (hasAccess) {
-                  const progressRef = db.collection('userProgress').doc(userId);
-                  
+                  // El usuario tiene acceso, se muestra la tarjeta de "inscrito" y se escucha su progreso.
                   progressRef.onSnapshot(doc => {
                       let completedCount = 0;
-                      
                       if (doc.exists) {
                           const data = doc.data();
                           const courseProgress = data[courseId];
@@ -563,23 +590,22 @@
                       const courseConfig = COURSE_CONFIG[courseId];
                       const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
                       const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
-
                       updateCardForEnrolledUser(courseCard, percentage, courseId);
-
                   }, error => {
                       console.error(`Error al escuchar el progreso para ${courseId}:`, error);
-                      updateCardForUnenrolledUser(courseCard);
+                      // Si falla el listener, igualmente se da acceso con progreso 0%.
+                      updateCardForEnrolledUser(courseCard, 0, courseId);
                   });
-
               } else {
+                  // El usuario no tiene acceso. Se muestra la tarjeta para inscribirse.
                   updateCardForUnenrolledUser(courseCard);
               }
-
           }).catch(error => {
-              console.error(`Error al verificar el acceso para ${courseId}:`, error);
-              updateCardForUnenrolledUser(courseCard);
+              console.error(`Error crítico al verificar el acceso para ${courseId}:`, error);
+              updateCardForUnenrolledUser(courseCard); // Como fallback, se muestra la opción de pago.
           });
       }
+      // --- FIN: FUNCIÓN ACTUALIZADA ---
       
       async function setupDynamicButton(user, buttonId, collectionName, buttonStates) {
           const btn = document.getElementById(buttonId);
@@ -706,4 +732,3 @@
   </script>
 </body>
 </html>
-" and the rest of the document. I will now answer your query.
