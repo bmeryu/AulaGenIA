@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v7.0 (Allowlist Integration)
+  CAMPUS DASHBOARD · AULA GENIA v7.1 (Allowlist Hotfix)
   -------------------------------------------------------------------
-  - FEAT: Integrada la lógica de 'allowlist' de Firestore.
-  - LOGIC: La función `listenForCourseProgress` ahora comprueba si el 
-    email del usuario está en la colección 'allowlist'.
-  - BEHAVIOR: Si un usuario está en la lista y activo, se le concede
-    acceso al curso correspondiente sin necesidad de pago, 
-    redirigiéndolo directamente al contenido del curso.
-  - DEV: Esta actualización fue realizada por un desarrollador senior
-    para implementar el acceso administrativo sin pago.
+  - FIX: Corregida la lógica de 'allowlist' para aceptar IDs de curso alternativos.
+  - LOGIC: La comprobación de `allowlist` ahora reconoce 'programa-esencial' 
+    como un alias válido para 'ia-aplicada-esencial'.
+  - BEHAVIOR: Usuarios en la `allowlist` con el curso 'programa-esencial' 
+    ahora son correctamente redirigidos al curso sin pasar por la pasarela de pago.
+  - DEV: Esta corrección fue implementada por un desarrollador senior para
+    resolver un error de redirección a Mercado Pago.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -20,7 +19,7 @@
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
   <link rel="canonical" href="https://aulagenia.cl/campus.html">
-  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image-x-icon" />
   <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -546,9 +545,6 @@
               return;
           }
 
-          // Se verifica el acceso desde dos fuentes:
-          // 1. La 'allowlist' (para acceso administrativo sin pago).
-          // 2. El documento del usuario (para inscripciones normales por pago).
           const allowlistRef = db.collection('allowlist').doc(user.email);
           const userRef = db.collection('users').doc(userId);
           const progressRef = db.collection('userProgress').doc(userId);
@@ -558,7 +554,15 @@
               if (allowlistDoc.exists) {
                   const data = allowlistDoc.data();
                   const allowedCourses = data.courses || [];
-                  if (data.active === true && allowedCourses.includes(courseId)) {
+                  
+                  // FIX: Se añade compatibilidad para IDs de curso alternativos en la allowlist.
+                  // Esto permite que 'programa-esencial' otorgue acceso a 'ia-aplicada-esencial'.
+                  let hasAllowedCourse = allowedCourses.includes(courseId);
+                  if (courseId === 'ia-aplicada-esencial' && !hasAllowedCourse) {
+                      hasAllowedCourse = allowedCourses.includes('programa-esencial');
+                  }
+
+                  if (data.active === true && hasAllowedCourse) {
                       console.log(`Acceso concedido para ${user.email} vía allowlist.`);
                       isWhitelisted = true;
                   }
@@ -576,7 +580,6 @@
               const hasAccess = isWhitelisted || isEnrolled;
 
               if (hasAccess) {
-                  // El usuario tiene acceso, se muestra la tarjeta de "inscrito" y se escucha su progreso.
                   progressRef.onSnapshot(doc => {
                       let completedCount = 0;
                       if (doc.exists) {
@@ -593,16 +596,14 @@
                       updateCardForEnrolledUser(courseCard, percentage, courseId);
                   }, error => {
                       console.error(`Error al escuchar el progreso para ${courseId}:`, error);
-                      // Si falla el listener, igualmente se da acceso con progreso 0%.
                       updateCardForEnrolledUser(courseCard, 0, courseId);
                   });
               } else {
-                  // El usuario no tiene acceso. Se muestra la tarjeta para inscribirse.
                   updateCardForUnenrolledUser(courseCard);
               }
           }).catch(error => {
               console.error(`Error crítico al verificar el acceso para ${courseId}:`, error);
-              updateCardForUnenrolledUser(courseCard); // Como fallback, se muestra la opción de pago.
+              updateCardForUnenrolledUser(courseCard);
           });
       }
       // --- FIN: FUNCIÓN ACTUALIZADA ---
@@ -732,3 +733,4 @@
   </script>
 </body>
 </html>
+
