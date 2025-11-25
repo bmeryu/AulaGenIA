@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v7.3 (Profile Consistency)
+  CAMPUS DASHBOARD · AULA GENIA v8.1 (Prompt Doctor Edition)
   -------------------------------------------------------------------
-  - REFACTOR: Se ha unificado el modal de perfil para que sea consistente
-    con el de la página del curso (campus-curso-ia.html).
-  - UI: Implementado el layout compacto que evita el scroll.
-  - UX: Se mantiene la validación en tiempo real con feedback visual
-    y activación condicional del botón de guardado.
-  - DEV: Esta mejora fue implementada por un desarrollador senior para
-    garantizar una experiencia de usuario coherente en toda la plataforma.
+  - UPDATE: Reemplazado "Generador de Avatares" por "Prompt Doctor".
+  - COPY: Integrado concepto de "Prompts con Asteroides" en la descripción.
+  - UI: Nueva paleta de colores (Esmeralda/Cyan) para diferenciar la herramienta.
+  - UX: Mismo comportamiento de bloqueo/desbloqueo premium.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -32,26 +29,41 @@
     :root {
       --brand-teal: #14b8a6;
       --brand-green: #22c55e;
+      --brand-purple: #7c3aed;
     }
     html { font-family: 'Poppins', sans-serif; }
     body { background-color: #f8fafc; }
     .card-hover {
       @apply transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl;
     }
+    /* Efecto brillo para tarjetas PRO */
+    .pro-shine {
+        position: relative;
+        overflow: hidden;
+    }
+    .pro-shine::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+        transform: skewX(-25deg);
+        animation: shine 6s infinite;
+    }
+    @keyframes shine {
+        0% { left: -100%; }
+        20% { left: 200%; }
+        100% { left: 200%; }
+    }
+    
     #profile-modal { transition: all 0.3s ease-in-out; }
     
-    .form-input-error {
-        @apply border-red-500 ring-red-500;
-    }
-    .form-input-success {
-        @apply border-green-500 ring-green-500;
-    }
-    .error-message {
-        @apply text-red-600 text-xs mt-1;
-    }
-    label span.required { 
-        @apply text-red-500;
-    }
+    .form-input-error { @apply border-red-500 ring-red-500; }
+    .form-input-success { @apply border-green-500 ring-green-500; }
+    .error-message { @apply text-red-600 text-xs mt-1; }
+    label span.required { @apply text-red-500; }
   </style>
 </head>
 <body class="text-gray-800">
@@ -74,11 +86,14 @@
   <main class="container mx-auto px-6 py-12 max-w-7xl">
     <section class="mb-12">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">¡Bienvenido de nuevo, <span id="welcome-name" class="whitespace-nowrap">Aprendiz</span>!</h1>
-      <p class="text-lg text-gray-600 mt-2">Sigamos creando cosas increíbles con&nbsp;IA ✨</p>
+      <p class="text-lg text-gray-600 mt-2">Tu centro de comando para dominar la IA.</p>
     </section>
 
-    <section aria-labelledby="courses-heading">
-      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6">Mis Cursos y Recursos</h2>
+    <!-- SECCIÓN DE CURSOS (Clásica) -->
+    <section aria-labelledby="courses-heading" class="mb-16">
+      <h2 id="courses-heading" class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6 flex items-center gap-2">
+        <i data-lucide="graduation-cap" class="w-6 h-6 text-gray-400"></i> Mis Cursos
+      </h2>
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
 
         <!-- INICIO: Curso IA Aplicada · Esencial -->
@@ -105,7 +120,7 @@
         </article>
         <!-- FIN: Curso IA Aplicada · Esencial -->
 
-        <!-- INICIO: Nuevo Curso Avanzado (Lista de Espera) -->
+        <!-- INICIO: Nuevo Curso Avanzado -->
         <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="programa-avanzado">
             <div class="p-6 flex-grow">
               <h3 class="text-xl font-bold mt-4 mb-2">Programa <span class="text-blue-600">Avanzado</span></h3>
@@ -119,9 +134,8 @@
               </button>
             </div>
         </article>
-        <!-- FIN: Nuevo Curso Avanzado (Lista de Espera) -->
         
-        <!-- INICIO: Laboratorio Experto (Reserva Preferente) -->
+        <!-- INICIO: Laboratorio Experto -->
         <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col" data-course-id="laboratorio-experto">
             <div class="p-6 flex-grow">
               <h3 class="text-xl font-bold mt-4 mb-2">Laboratorio <span class="text-indigo-600">Experto</span></h3>
@@ -135,17 +149,136 @@
               </button>
             </div>
         </article>
-        <!-- FIN: Laboratorio Experto (Reserva Preferente) -->
 
       </div>
     </section>
+
+    <!-- NUEVA SECCIÓN: POWER TOOLS & MODELOS (Marketero & Restringido) -->
+    <section aria-labelledby="apps-heading" class="relative">
+      <!-- Elemento decorativo de fondo -->
+      <div class="absolute inset-0 bg-gradient-to-r from-indigo-50 via-purple-50 to-white opacity-50 -z-10 rounded-3xl"></div>
+      
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-3">
+            <div class="p-2 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg shadow-lg text-white">
+                <i data-lucide="zap" class="h-6 w-6"></i>
+            </div>
+            <div>
+                <h2 id="apps-heading" class="text-2xl font-bold text-gray-900">Aplicaciones & Modelos</h2>
+                <p class="text-sm text-gray-500 hidden sm:block">Herramientas exclusivas para acelerar tu flujo de trabajo.</p>
+            </div>
+        </div>
+        <span class="px-3 py-1 bg-violet-100 text-violet-700 text-xs font-bold uppercase tracking-wider rounded-full border border-violet-200 animate-pulse">
+            Zona Pro
+        </span>
+      </div>
+
+      <div class="grid gap-8 md:grid-cols-2">
+        
+        <!-- CARD: IA Explorer (Diseño Dual: Bloqueado / Desbloqueado) -->
+        <article class="relative group rounded-2xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-2xl bg-slate-900 border border-slate-700 pro-shine h-64 md:h-72" data-tool-id="ia-explorer-tool">
+          
+          <!-- ESTADO: BLOQUEADO (Default) -->
+          <div class="locked-state absolute inset-0 bg-[url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center">
+             <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-[2px]"></div> <!-- Overlay oscuro -->
+             <div class="relative h-full p-8 flex flex-col justify-between z-10 text-white">
+                 <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-white/10 rounded-xl backdrop-blur-md border border-white/10">
+                            <i data-lucide="brain-circuit" class="h-8 w-8 text-violet-400"></i>
+                        </div>
+                        <div class="flex items-center gap-1 px-2 py-1 bg-black/40 rounded text-xs font-mono text-gray-400 border border-white/10">
+                            <i data-lucide="lock" class="h-3 w-3"></i> Locked
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">IA Explorer <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Ultimate</span></h3>
+                    <p class="text-slate-400 text-sm font-light leading-relaxed line-clamp-2">Accede a la librería maestra de 100+ prompts, simuladores de escenarios y la metodología AGIA.</p>
+                 </div>
+                 
+                 <button onclick="requestToolAccess()" class="w-full py-3 px-4 bg-white text-slate-900 font-bold rounded-lg hover:bg-violet-50 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-lg group-hover:shadow-violet-500/20">
+                    <span>Desbloquear Acceso</span>
+                    <i data-lucide="key" class="h-4 w-4"></i>
+                 </button>
+             </div>
+          </div>
+
+          <!-- ESTADO: DESBLOQUEADO (Visible vía JS) -->
+          <div class="unlocked-state absolute inset-0 bg-white hidden flex flex-col p-8">
+             <div class="flex-grow">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-violet-100 rounded-xl">
+                        <i data-lucide="brain-circuit" class="h-8 w-8 text-violet-600"></i>
+                    </div>
+                    <span class="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full border border-green-200">
+                        <i data-lucide="check" class="h-3 w-3 inline mr-1"></i>Activo
+                    </span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">IA Explorer Ultimate</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Tu herramienta diaria para ingeniería de prompts. Incluye el modelo AGIA y simulador en tiempo real.</p>
+             </div>
+             <a href="AI_Prompt_Explorer_Ultimate.html" class="block text-center bg-violet-600 text-white font-bold py-3.5 rounded-lg hover:bg-violet-700 transition-colors shadow-md shadow-violet-200">
+                Lanzar Aplicación 🚀
+             </a>
+          </div>
+        </article>
+
+        <!-- CARD: Prompt Doctor (Nuevo) -->
+        <article class="relative group rounded-2xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-2xl bg-slate-900 border border-slate-700 pro-shine h-64 md:h-72" data-tool-id="prompt-doctor-tool">
+          
+          <!-- ESTADO: BLOQUEADO (Default) -->
+          <div class="locked-state absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center">
+             <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-[2px]"></div>
+             <div class="relative h-full p-8 flex flex-col justify-between z-10 text-white">
+                 <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-white/10 rounded-xl backdrop-blur-md border border-white/10">
+                            <i data-lucide="activity" class="h-8 w-8 text-emerald-400"></i>
+                        </div>
+                        <div class="flex items-center gap-1 px-2 py-1 bg-black/40 rounded text-xs font-mono text-gray-400 border border-white/10">
+                            <i data-lucide="lock" class="h-3 w-3"></i> Locked
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Prompt <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Doctor</span></h3>
+                    <p class="text-slate-400 text-sm font-light leading-relaxed line-clamp-2">Diagnostica tus instrucciones y ponles 'asteroides' para resultados masivos. Corrección AGIA automática.</p>
+                 </div>
+                 
+                 <button onclick="requestToolAccess()" class="w-full py-3 px-4 bg-white text-slate-900 font-bold rounded-lg hover:bg-emerald-50 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-lg group-hover:shadow-emerald-500/20">
+                    <span>Desbloquear Diagnóstico</span>
+                    <i data-lucide="key" class="h-4 w-4"></i>
+                 </button>
+             </div>
+          </div>
+
+          <!-- ESTADO: DESBLOQUEADO -->
+          <div class="unlocked-state absolute inset-0 bg-white hidden flex flex-col p-8">
+             <div class="flex-grow">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-emerald-100 rounded-xl">
+                        <i data-lucide="rocket" class="h-8 w-8 text-emerald-600"></i>
+                    </div>
+                    <span class="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full border border-green-200">
+                        <i data-lucide="check" class="h-3 w-3 inline mr-1"></i>Activo
+                    </span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Prompt Doctor</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Pega tu prompt, recibe un diagnóstico de calidad y una versión mejorada con 'asteroides' AGIA.</p>
+             </div>
+             <button onclick="alert('Esta herramienta se abrirá en un modal...')" class="block w-full text-center bg-emerald-600 text-white font-bold py-3.5 rounded-lg hover:bg-emerald-700 transition-colors shadow-md shadow-emerald-200">
+                Iniciar Diagnóstico 🩺
+             </button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
   </main>
 
   <footer class="bg-white border-t mt-16 text-center text-gray-500 text-sm py-6">
     © 2025 Aula GenIA · Todos los derechos reservados.
   </footer>
 
-  <!-- MODAL DE PERFIL -->
+  <!-- MODAL DE PERFIL (Sin cambios, mantenido por consistencia) -->
   <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
   <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
       <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col transform transition-all scale-95 opacity-0">
@@ -244,6 +377,27 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js" defer></script>
 
   <script defer>
+    // Función Global para el botón de desbloqueo
+    window.requestToolAccess = function() {
+        alert('🚀 ¡Gracias por tu interés!\n\nEsta herramienta es exclusiva para miembros del "Laboratorio Experto".\n\nTe estamos redirigiendo para agendar tu cupo...');
+        // Aquí podrías redirigir a Stripe, MercadoPago o WhatsApp
+        // window.location.href = "https://wa.me/XXXXXXXX";
+        
+        // Simulación de desbloqueo para demo (Quitar en producción)
+        // unlockTool('ia-explorer-tool');
+    };
+
+    // Función interna para desbloquear UI
+    function unlockTool(toolId) {
+        const toolCard = document.querySelector(`[data-tool-id="${toolId}"]`);
+        if(toolCard) {
+            toolCard.querySelector('.locked-state').classList.add('hidden');
+            toolCard.querySelector('.unlocked-state').classList.remove('hidden');
+            toolCard.classList.remove('bg-slate-900', 'border-slate-700'); // Quitar estilos dark
+            toolCard.classList.add('bg-white', 'border-violet-200');
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
       
@@ -315,7 +469,7 @@
               console.error("Error al cargar datos del perfil:", error);
           }
           
-          checkAllFieldsAndToggleButtonState(); // Set initial state of fields and button
+          checkAllFieldsAndToggleButtonState();
 
           if (isMandatory) {
               modalTitle.textContent = '¡Completa tu perfil para continuar!';
@@ -354,8 +508,7 @@
       cancelProfileBtn.addEventListener('click', hideProfileModal);
       closeProfileBtn.addEventListener('click', hideProfileModal);
 
-      // --- INICIO: LÓGICA DE VALIDACIÓN DE FORMULARIO MEJORADA ---
-
+      // --- INICIO: LÓGICA DE VALIDACIÓN ---
       function validateRut(rut) { 
         rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); 
         const rutBody = rut.slice(0, -1); 
@@ -424,19 +577,16 @@
               }
               setFieldState('rut', 'success');
           } else {
-              setFieldState('rut', 'neutral'); // No es requerido, se limpia el estado.
+              setFieldState('rut', 'neutral');
           }
-          return true; // Es válido si no es Chile o si es un RUT chileno válido.
+          return true;
       }
 
       function checkAllFieldsAndToggleButtonState() {
         const isNameValid = validateName();
         const isCountryValid = validateCountry();
         const isRutValid = validateRutField();
-        
-        // El RUT solo es mandatorio si el país es Chile.
         const isFormValid = isNameValid && isCountryValid && (profileCountrySelect.value !== 'CL' || isRutValid);
-
         saveBtn.disabled = !isFormValid;
       }
 
@@ -446,7 +596,7 @@
       
       profileForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          checkAllFieldsAndToggleButtonState(); // Correr una última validación
+          checkAllFieldsAndToggleButtonState();
           if (saveBtn.disabled) {
             formStatus.className = 'text-center p-3 rounded-lg bg-yellow-100 text-yellow-700';
             formStatus.textContent = 'Por favor, corrige los campos marcados en rojo.';
@@ -494,7 +644,6 @@
               formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.';
               formStatus.classList.remove('hidden');
           } finally {
-              // El estado del botón se manejará con la próxima apertura del modal.
               saveBtnText.textContent = 'Guardar Cambios';
               saveSpinner.classList.add('hidden');
           }
@@ -550,25 +699,41 @@
 
           newBtn.addEventListener('click', async (e) => {
               e.preventDefault();
-              
               newBtn.disabled = true;
               newBtn.textContent = 'Iniciando pago...';
-
               try {
-                  // ----- CORRECCIÓN APLICADA AQUÍ -----
                   const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
                   const result = await createPreference({ courseId: courseId });
-
                   if (result.data && result.data.init_point) {
                       window.location.href = result.data.init_point;
                   } else {
-                      throw new Error('No se recibió la URL de pago de Mercado Pago.');
+                      throw new Error('No se recibió la URL de pago.');
                   }
               } catch (error) {
-                  console.error("Error al iniciar el proceso de pago:", error);
-                  alert('Hubo un error al generar el link de pago. Por favor, intenta de nuevo más tarde.');
+                  console.error("Error al iniciar pago:", error);
+                  alert('Hubo un error al generar el link. Intenta más tarde.');
                   newBtn.disabled = false;
                   newBtn.textContent = 'Inscríbete para Activar';
+              }
+          });
+      }
+
+      // Nueva Función: Verificar acceso a Herramientas (Power Tools)
+      function checkToolsAccess(userId) {
+          const userRef = db.collection('users').doc(userId);
+          // Nota: Aquí definimos que el acceso a "Tools" requiere tener comprado "laboratorio-experto"
+          // O estar en una lista específica.
+          userRef.get().then(doc => {
+              if (doc.exists) {
+                  const userData = doc.data();
+                  // Ejemplo: Si el usuario tiene acceso a "Laboratorio Experto" o un flag especial "pro_tools"
+                  // Cambia esto según tu lógica de negocio real.
+                  const hasProAccess = (userData.enrollments && userData.enrollments['laboratorio-experto'] === true) || userData.isProMember === true;
+                  
+                  if (hasProAccess) {
+                      unlockTool('ia-explorer-tool');
+                      unlockTool('prompt-doctor-tool');
+                  }
               }
           });
       }
@@ -576,14 +741,14 @@
       function listenForCourseProgress(userId) {
           const courseId = ESSENTIAL_COURSE_ID;
           let courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
-          if (!courseCard) {
-              console.warn(`No se encontró tarjeta para curso: ${courseId}`);
-              return;
-          }
+          
+          // Chequeamos acceso a herramientas también
+          checkToolsAccess(userId);
+
+          if (!courseCard) return;
           
           const user = auth.currentUser;
           if (!user || !user.email) {
-              console.error("Usuario no autenticado o sin email, no se puede verificar acceso.");
               updateCardForUnenrolledUser(courseCard);
               return;
           }
@@ -604,7 +769,6 @@
                   }
 
                   if (data.active === true && hasAllowedCourse) {
-                      console.log(`Acceso concedido para ${user.email} vía allowlist.`);
                       isWhitelisted = true;
                   }
               }
@@ -635,15 +799,12 @@
                       const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
                       const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
                       updateCardForEnrolledUser(courseCard, percentage, courseId);
-                  }, error => {
-                      console.error(`Error al escuchar el progreso para ${courseId}:`, error);
-                      updateCardForEnrolledUser(courseCard, 0, courseId);
                   });
               } else {
                   updateCardForUnenrolledUser(courseCard);
               }
           }).catch(error => {
-              console.error(`Error crítico al verificar el acceso para ${courseId}:`, error);
+              console.error(`Error verificando acceso:`, error);
               updateCardForUnenrolledUser(courseCard);
           });
       }
@@ -665,9 +826,7 @@
                   btn.classList.remove(buttonStates.defaultColor, buttonStates.hoverColor);
                   return;
               }
-          } catch (e) {
-              console.error(`Error al verificar estado en ${collectionName}: `, e);
-          }
+          } catch (e) { console.error(e); }
 
           btn.addEventListener('click', async () => {
               btn.disabled = true;
@@ -688,7 +847,6 @@
                   btn.classList.add(buttonStates.successColor);
 
               } catch (error) {
-                  console.error(`Error al añadir a ${collectionName}: `, error);
                   btnText.textContent = buttonStates.error;
                   btn.classList.remove(buttonStates.defaultColor, buttonStates.hoverColor);
                   btn.classList.add(buttonStates.errorColor);
@@ -767,7 +925,6 @@
         }
       });
 
-      // Inicializar iconos
       lucide.createIcons();
     });
   </script>
