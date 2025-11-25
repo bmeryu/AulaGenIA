@@ -25,6 +25,9 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         
+        @keyframes pulse-soft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        .animate-pulse-soft { animation: pulse-soft 2s infinite; }
+
         /* AGIA Model Styles & Connectors */
         .agia-step { position: relative; z-index: 10; }
         .agia-connector { position: absolute; top: 2rem; left: 50%; width: 100%; height: 2px; background: #e2e8f0; z-index: 0; }
@@ -201,8 +204,10 @@
                                 <h3 class="text-xs font-bold text-indigo-600 uppercase tracking-wider flex items-center gap-1">
                                     <span class="material-symbols-outlined text-sm">auto_awesome</span> Prompt Maestro (AGIA)
                                 </h3>
-                                <button onclick="copyPrompt()" class="flex items-center gap-1 text-[10px] bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-1 rounded-full font-bold transition-colors">
-                                    <span class="material-symbols-outlined text-[12px]">content_copy</span> COPIAR
+                                <!-- BOTÓN DE COPIAR MEJORADO -->
+                                <button onclick="copyPrompt()" class="group flex items-center gap-2 text-xs bg-indigo-100 text-indigo-700 hover:bg-indigo-600 hover:text-white px-4 py-1.5 rounded-full font-bold transition-all shadow-sm hover:shadow-md border border-indigo-200">
+                                    <span class="material-symbols-outlined text-sm group-hover:animate-bounce">content_copy</span> 
+                                    <span>COPIAR PROMPT</span>
                                 </button>
                             </div>
                             <div class="bg-slate-900 rounded-xl p-5 shadow-xl h-full border border-slate-700 relative overflow-hidden flex flex-col">
@@ -246,10 +251,10 @@
                             </div>
                         </div>
 
-                        <!-- Good Result -->
-                        <div class="relative">
+                        <!-- Good Result & CTA -->
+                        <div class="relative flex flex-col"> <!-- Flex col para que el CTA quede abajo -->
                             <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-30"></div>
-                            <div class="relative bg-white rounded-xl p-6 h-full border border-indigo-50 shadow-sm">
+                            <div class="relative bg-white rounded-xl p-6 h-full border border-indigo-50 shadow-sm flex flex-col">
                                 <h4 class="text-xs font-bold text-indigo-600 uppercase mb-4 flex items-center gap-2 border-b border-indigo-50 pb-2">
                                     <span class="material-symbols-outlined text-sm">sentiment_very_satisfied</span> Resultado Prompt AGIA
                                 </h4>
@@ -259,10 +264,20 @@
                                     <span>Procesando contexto y rol...</span>
                                 </div>
 
-                                <div id="sim-good-content" class="text-sm text-slate-700 prose-sm hidden"></div>
+                                <div id="sim-good-content" class="text-sm text-slate-700 prose-sm hidden flex-grow"></div>
                                 
                                 <!-- Image Result -->
-                                <div id="simulation-media" class="mt-4 rounded-lg overflow-hidden hidden border border-slate-100 shadow-sm"></div>
+                                <div id="simulation-media" class="mt-4 rounded-lg overflow-hidden hidden border border-slate-100 shadow-sm mb-4"></div>
+
+                                <!-- CTA CONVERSIÓN -->
+                                <div id="sim-good-cta" class="hidden mt-6 pt-4 border-t border-slate-100 text-center animate-in slide-in-from-bottom-2 fade-in duration-700">
+                                    <p class="text-xs text-slate-400 mb-3 font-medium">¿Te gustó este resultado?</p>
+                                    <a href="https://aulagenia.cl/ia-aplicada-esencial" target="_blank" class="block w-full bg-gradient-to-r from-indigo-600 to-violet-600 text-white py-3 px-4 rounded-lg shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group">
+                                        <span class="block font-bold text-sm">¿Quieres aprender a crear tus propios prompts maestros?</span>
+                                        <span class="block text-xs font-normal text-indigo-100 mt-0.5 group-hover:text-white">Únete al curso IA Aplicada · Esencial <span class="inline-block transition-transform group-hover:translate-x-1">→</span></span>
+                                    </a>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -475,6 +490,10 @@
             document.getElementById('sim-good-content').classList.add('hidden');
             document.getElementById('simulation-media').classList.add('hidden');
             document.getElementById('btn-simulate').classList.remove('hidden');
+            
+            // Reset CTA
+            const cta = document.getElementById('sim-good-cta');
+            if(cta) cta.classList.add('hidden');
 
             if(window.innerWidth < 768) toggleSidebar();
         }
@@ -497,14 +516,18 @@
             const rawText = cleanAGIA(allCases.find(x => x.title === document.getElementById('detail-title').innerText).agiaPromptTagged);
             navigator.clipboard.writeText(rawText);
             
-            // Visual feedback
+            // Visual feedback (Updated to match new button style)
             const btn = document.querySelector('button[onclick="copyPrompt()"]');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = `<span class="material-symbols-outlined text-[12px]">check</span> COPIADO`;
-            btn.classList.add('bg-green-100', 'text-green-700');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = `<span class="material-symbols-outlined text-sm">check_circle</span> <span>¡COPIADO!</span>`;
+            btn.classList.remove('bg-indigo-100', 'text-indigo-700');
+            btn.classList.add('bg-green-100', 'text-green-700', 'border-green-200');
+            
             setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.classList.remove('bg-green-100', 'text-green-700');
+                btn.innerHTML = originalHTML;
+                btn.classList.remove('bg-green-100', 'text-green-700', 'border-green-200');
+                btn.classList.add('bg-indigo-100', 'text-indigo-700');
             }, 2000);
         }
 
@@ -519,6 +542,7 @@
             const goodLoading = document.getElementById('sim-good-loading');
             const goodContent = document.getElementById('sim-good-content');
             const mediaDiv = document.getElementById('simulation-media');
+            const cta = document.getElementById('sim-good-cta');
 
             container.classList.remove('hidden');
             document.getElementById('btn-simulate').classList.add('hidden');
@@ -543,6 +567,9 @@
                     } else {
                         mediaDiv.classList.add('hidden');
                     }
+                    
+                    // Reveal CTA
+                    if(cta) cta.classList.remove('hidden');
                     
                     container.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 1500);
