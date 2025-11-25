@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v8.1 (Prompt Doctor Edition)
+  CAMPUS DASHBOARD · AULA GENIA v8.2 (Access Logic Update)
   -------------------------------------------------------------------
-  - UPDATE: Reemplazado "Generador de Avatares" por "Prompt Doctor".
-  - COPY: Integrado concepto de "Prompts con Asteroides" en la descripción.
-  - UI: Nueva paleta de colores (Esmeralda/Cyan) para diferenciar la herramienta.
-  - UX: Mismo comportamiento de bloqueo/desbloqueo premium.
+  - LOGIC UPDATE: Las "Power Tools" ahora se desbloquean si el usuario
+    tiene acceso al curso "IA Aplicada · Esencial".
+  - REDIRECT: El botón de desbloqueo ahora lleva a "aulagenia.cl/tool.html".
+  - OPTIMIZATION: Verificación de permisos unificada para evitar doble lectura.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL" class="scroll-smooth">
@@ -278,7 +278,7 @@
     © 2025 Aula GenIA · Todos los derechos reservados.
   </footer>
 
-  <!-- MODAL DE PERFIL (Sin cambios, mantenido por consistencia) -->
+  <!-- MODAL DE PERFIL (Sin cambios) -->
   <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
   <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
       <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col transform transition-all scale-95 opacity-0">
@@ -379,12 +379,7 @@
   <script defer>
     // Función Global para el botón de desbloqueo
     window.requestToolAccess = function() {
-        alert('🚀 ¡Gracias por tu interés!\n\nEsta herramienta es exclusiva para miembros del "Laboratorio Experto".\n\nTe estamos redirigiendo para agendar tu cupo...');
-        // Aquí podrías redirigir a Stripe, MercadoPago o WhatsApp
-        // window.location.href = "https://wa.me/XXXXXXXX";
-        
-        // Simulación de desbloqueo para demo (Quitar en producción)
-        // unlockTool('ia-explorer-tool');
+        window.location.href = "https://aulagenia.cl/tool.html";
     };
 
     // Función interna para desbloquear UI
@@ -718,33 +713,10 @@
           });
       }
 
-      // Nueva Función: Verificar acceso a Herramientas (Power Tools)
-      function checkToolsAccess(userId) {
-          const userRef = db.collection('users').doc(userId);
-          // Nota: Aquí definimos que el acceso a "Tools" requiere tener comprado "laboratorio-experto"
-          // O estar en una lista específica.
-          userRef.get().then(doc => {
-              if (doc.exists) {
-                  const userData = doc.data();
-                  // Ejemplo: Si el usuario tiene acceso a "Laboratorio Experto" o un flag especial "pro_tools"
-                  // Cambia esto según tu lógica de negocio real.
-                  const hasProAccess = (userData.enrollments && userData.enrollments['laboratorio-experto'] === true) || userData.isProMember === true;
-                  
-                  if (hasProAccess) {
-                      unlockTool('ia-explorer-tool');
-                      unlockTool('prompt-doctor-tool');
-                  }
-              }
-          });
-      }
-
       function listenForCourseProgress(userId) {
           const courseId = ESSENTIAL_COURSE_ID;
           let courseCard = document.querySelector(`[data-course-id="${courseId}"]`);
           
-          // Chequeamos acceso a herramientas también
-          checkToolsAccess(userId);
-
           if (!courseCard) return;
           
           const user = auth.currentUser;
@@ -785,6 +757,10 @@
               const hasAccess = isWhitelisted || isEnrolled;
 
               if (hasAccess) {
+                  // DESBLOQUEAR POWER TOOLS SI TIENE ACCESO AL CURSO ESENCIAL
+                  unlockTool('ia-explorer-tool');
+                  unlockTool('prompt-doctor-tool');
+
                   progressRef.onSnapshot(doc => {
                       let completedCount = 0;
                       if (doc.exists) {
