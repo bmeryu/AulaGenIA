@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Explorer: Guía Maestra de Prompts (AGIA)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts & Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* Custom Scrollbar */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        
+        /* AGIA Model Styles & Connectors */
+        .agia-step { position: relative; z-index: 10; }
+        .agia-connector { position: absolute; top: 2rem; left: 50%; width: 100%; height: 2px; background: #e2e8f0; z-index: 0; }
+        .agia-step:last-child .agia-connector { display: none; }
+
+        /* Highlight Classes for Prompts */
+        .hl-rol { background-color: #dbeafe; color: #1e40af; border-bottom: 2px solid #60a5fa; padding: 0 4px; border-radius: 4px; cursor: help; }
+        .hl-contexto { background-color: #d1fae5; color: #065f46; border-bottom: 2px solid #34d399; padding: 0 4px; border-radius: 4px; cursor: help; }
+        .hl-meta { background-color: #fef3c7; color: #92400e; border-bottom: 2px solid #fbbf24; padding: 0 4px; border-radius: 4px; cursor: help; }
+        .hl-limites { background-color: #fee2e2; color: #b91c1c; border-bottom: 2px solid #f87171; padding: 0 4px; border-radius: 4px; cursor: help; }
+        .hl-formato { background-color: #f3e8ff; color: #6b21a8; border-bottom: 2px solid #a855f7; padding: 0 4px; border-radius: 4px; cursor: help; }
+
+        .prose-sm p { margin-bottom: 0.5em; }
+        .prose-sm ul, .prose-sm ol { margin-left: 1.2em; margin-bottom: 0.5em; }
+        .prose-sm li { margin-bottom: 0.2em; }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-slate-800">
+
+    <!-- Header & AGIA Model Section -->
+    <header class="bg-white border-b border-slate-200 shadow-sm z-20 flex-none relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-4">
+                    <!-- Logo Aulagenia -->
+                    <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo Aulagenia AGIA" class="h-12 w-auto object-contain hover:scale-105 transition-transform">
+                    <div class="hidden sm:block border-l border-slate-200 pl-4">
+                        <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">IA Explorer <span class="text-indigo-600">Pro</span></h1>
+                        <p class="text-xs text-slate-500 font-medium">Librería de Casos & Prompt Engineering</p>
+                    </div>
+                </div>
+                <!-- Search Bar -->
+                <div class="relative w-full max-w-xs">
+                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">search</span>
+                    <input type="text" id="searchInput" placeholder="Buscar caso (ej: Excel, Viaje)..." 
+                        class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all shadow-inner"
+                        onkeyup="filterCases()">
+                </div>
+            </div>
+
+            <!-- AGIA Model Visualization (Legend) -->
+            <div class="bg-slate-50 rounded-xl border border-slate-200 p-4 hidden md:block">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-400">La Estructura Maestra (AGIA)</h2>
+                    <span class="text-[10px] text-slate-400 bg-white px-2 py-1 rounded border border-slate-100">Leyenda de colores para prompts</span>
+                </div>
+                <div class="grid grid-cols-5 gap-4 relative">
+                    <!-- ROL -->
+                    <div class="agia-step flex flex-col items-center text-center group">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-2 shadow-sm border border-blue-200 hl-rol border-none">
+                            <span class="material-symbols-outlined text-lg">face</span>
+                        </div>
+                        <div class="font-bold text-xs text-blue-700">1. ROL</div>
+                    </div>
+                    <!-- CONTEXTO -->
+                    <div class="agia-step flex flex-col items-center text-center group">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-2 shadow-sm border border-emerald-200 hl-contexto border-none">
+                            <span class="material-symbols-outlined text-lg">description</span>
+                        </div>
+                        <div class="font-bold text-xs text-emerald-700">2. CONTEXTO</div>
+                    </div>
+                    <!-- META -->
+                    <div class="agia-step flex flex-col items-center text-center group">
+                        <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mb-2 shadow-sm border border-amber-200 hl-meta border-none">
+                            <span class="material-symbols-outlined text-lg">track_changes</span>
+                        </div>
+                        <div class="font-bold text-xs text-amber-700">3. META</div>
+                    </div>
+                    <!-- LÍMITES -->
+                    <div class="agia-step flex flex-col items-center text-center group">
+                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center mb-2 shadow-sm border border-red-200 hl-limites border-none">
+                            <span class="material-symbols-outlined text-lg">block</span>
+                        </div>
+                        <div class="font-bold text-xs text-red-700">4. LÍMITES</div>
+                    </div>
+                    <!-- FORMATO -->
+                    <div class="agia-step flex flex-col items-center text-center group">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mb-2 shadow-sm border border-purple-200 hl-formato border-none">
+                            <span class="material-symbols-outlined text-lg">data_object</span>
+                        </div>
+                        <div class="font-bold text-xs text-purple-700">5. FORMATO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Category Navigation -->
+        <div class="border-t border-slate-100 bg-white">
+            <div class="max-w-7xl mx-auto px-4 overflow-x-auto custom-scroll">
+                <div class="flex space-x-2 py-2 min-w-max" id="category-nav">
+                    <!-- Categories injected by JS -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="flex flex-1 overflow-hidden max-w-7xl mx-auto w-full">
+        
+        <!-- Sidebar -->
+        <aside class="w-full md:w-80 flex flex-col bg-white border-r border-slate-200 flex-none z-10 transition-all duration-300 absolute md:relative h-full transform -translate-x-full md:translate-x-0 shadow-xl md:shadow-none" id="sidebar">
+            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list">
+                <!-- Cases injected by JS -->
+            </div>
+            <div class="p-3 border-t border-slate-100 text-xs text-center text-slate-400 bg-slate-50">
+                Librería cargada con <span id="count-display" class="font-bold">0</span> casos
+            </div>
+        </aside>
+
+        <!-- Mobile Toggle -->
+        <button onclick="toggleSidebar()" class="md:hidden absolute bottom-6 right-6 z-50 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col bg-slate-50/50 overflow-hidden relative w-full">
+            
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden h-full flex flex-col items-center justify-center text-slate-400 p-8 text-center">
+                <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-4 animate-bounce">
+                    <span class="material-symbols-outlined text-5xl text-slate-300">smart_toy</span>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-600">Selecciona un caso del menú</h3>
+                <p class="text-sm">Descubre cómo transformar un prompt básico en uno experto.</p>
+            </div>
+
+            <!-- Case Detail -->
+            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 pb-24">
+                <div class="max-w-5xl mx-auto fade-in">
+                    
+                    <!-- Title Header -->
+                    <div class="flex items-center gap-4 mb-6 border-b border-slate-200 pb-6">
+                        <div id="detail-icon-bg" class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-md border border-white bg-white">
+                            <span id="detail-icon" class="material-symbols-outlined text-3xl"></span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Categoría</span>
+                                <span class="text-[10px] font-medium text-slate-400 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">timer</span> 2 min lectura</span>
+                            </div>
+                            <h2 id="detail-title" class="text-3xl font-bold text-slate-800 leading-tight">Título del Caso</h2>
+                            <p id="detail-problem" class="text-sm text-slate-500 mt-1 font-medium"></p>
+                        </div>
+                    </div>
+
+                    <!-- PROMPT COMPARISON GRID -->
+                    <div class="grid md:grid-cols-2 gap-8 mb-10">
+                        
+                        <!-- BAD PROMPT -->
+                        <div class="flex flex-col h-full">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">close</span> Prompt Básico
+                                </h3>
+                            </div>
+                            <div class="bg-white border-2 border-slate-100 rounded-xl p-5 shadow-sm h-full flex flex-col justify-between group hover:border-red-100 transition-colors">
+                                <div>
+                                    <p id="detail-bad-prompt" class="font-mono text-sm text-slate-600 italic border-l-4 border-slate-200 pl-3 py-1">"..."</p>
+                                </div>
+                                <!-- Analysis of Deficiencies -->
+                                <div class="mt-4 pt-4 border-t border-slate-50">
+                                    <p class="text-[10px] uppercase font-bold text-slate-400 mb-2">Carencias Modelo AGIA:</p>
+                                    <div id="deficiency-badges" class="flex flex-wrap gap-2">
+                                        <!-- Injected by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GOOD PROMPT (AGIA) -->
+                        <div class="flex flex-col h-full">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xs font-bold text-indigo-600 uppercase tracking-wider flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">auto_awesome</span> Prompt Maestro (AGIA)
+                                </h3>
+                                <button onclick="copyPrompt()" class="flex items-center gap-1 text-[10px] bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-1 rounded-full font-bold transition-colors">
+                                    <span class="material-symbols-outlined text-[12px]">content_copy</span> COPIAR
+                                </button>
+                            </div>
+                            <div class="bg-slate-900 rounded-xl p-5 shadow-xl h-full border border-slate-700 relative overflow-hidden flex flex-col">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500 opacity-10 rounded-full -mr-10 -mt-10 blur-xl"></div>
+                                <div class="relative z-10 flex-1">
+                                    <p id="detail-prompt-rendered" class="font-mono text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">...</p>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-[10px] text-slate-500 font-mono">
+                                    <span>Pasa el mouse sobre el texto coloreado</span>
+                                    <span>Modelo AGIA aplicado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simulation Action -->
+                    <div class="flex justify-center mb-10 relative">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-slate-200"></div>
+                        </div>
+                        <button onclick="runSimulation()" id="btn-simulate" class="relative z-10 inline-flex items-center justify-center px-8 py-3 font-bold text-white transition-all duration-200 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-full hover:shadow-lg hover:scale-105 focus:outline-none ring-4 ring-slate-50 text-sm">
+                            <span class="mr-2 material-symbols-outlined">play_circle</span>
+                            Simular y Comparar Resultados
+                        </button>
+                    </div>
+
+                    <!-- RESULTS COMPARISON -->
+                    <div id="simulation-container" class="hidden grid md:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        
+                        <!-- Bad Result -->
+                        <div class="relative">
+                            <div class="absolute -inset-0.5 bg-slate-200 rounded-2xl blur opacity-50"></div>
+                            <div class="relative bg-white rounded-xl p-6 h-full border border-slate-200">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase mb-4 flex items-center gap-2 border-b border-slate-100 pb-2">
+                                    <span class="material-symbols-outlined text-sm">sentiment_dissatisfied</span> Resultado Prompt Básico
+                                </h4>
+                                <div id="sim-bad-loading" class="hidden animate-pulse text-xs text-slate-400 flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-slate-300 rounded-full animate-bounce"></div> Generando respuesta pobre...
+                                </div>
+                                <div id="sim-bad-content" class="text-sm text-slate-600 prose-sm font-medium"></div>
+                            </div>
+                        </div>
+
+                        <!-- Good Result -->
+                        <div class="relative">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-30"></div>
+                            <div class="relative bg-white rounded-xl p-6 h-full border border-indigo-50 shadow-sm">
+                                <h4 class="text-xs font-bold text-indigo-600 uppercase mb-4 flex items-center gap-2 border-b border-indigo-50 pb-2">
+                                    <span class="material-symbols-outlined text-sm">sentiment_very_satisfied</span> Resultado Prompt AGIA
+                                </h4>
+                                
+                                <div id="sim-good-loading" class="hidden animate-pulse flex flex-col gap-2 text-indigo-400 text-xs mt-10 items-center">
+                                    <span class="material-symbols-outlined animate-spin text-2xl">neurology</span>
+                                    <span>Procesando contexto y rol...</span>
+                                </div>
+
+                                <div id="sim-good-content" class="text-sm text-slate-700 prose-sm hidden"></div>
+                                
+                                <!-- Image Result -->
+                                <div id="simulation-media" class="mt-4 rounded-lg overflow-hidden hidden border border-slate-100 shadow-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- HELPERS PARA AGIA MARKUP ---
+        function renderAGIA(text) {
+            let html = text
+                .replace(/{r}(.*?){\/r}/g, '<span class="hl-rol" title="ROL: ¿Quién actúa?">$1</span>')
+                .replace(/{c}(.*?){\/c}/g, '<span class="hl-contexto" title="CONTEXTO: Antecedentes y detalles">$1</span>')
+                .replace(/{m}(.*?){\/m}/g, '<span class="hl-meta" title="META: Objetivo principal">$1</span>')
+                .replace(/{l}(.*?){\/l}/g, '<span class="hl-limites" title="LÍMITES: Restricciones y reglas">$1</span>')
+                .replace(/{f}(.*?){\/f}/g, '<span class="hl-formato" title="FORMATO: Estructura de salida">$1</span>')
+                .replace(/\n/g, '<br>');
+            return html;
+        }
+
+        function cleanAGIA(text) {
+            return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, '');
+        }
+
+        // --- DATA ENGINE ---
+        
+        const categoryConfig = {
+            personal: { label: "Vida Personal", color: "blue", icon: "home" },
+            office: { label: "Oficina & Productividad", color: "emerald", icon: "business_center" },
+            marketing: { label: "Marketing & Redes", color: "pink", icon: "campaign" },
+            tech: { label: "Tecnología & Datos", color: "violet", icon: "code" },
+            education: { label: "Educación & Estudio", color: "amber", icon: "school" }
+        };
+
+        // Función extendida para crear casos con análisis de carencias
+        const createCase = (id, cat, title, icon, problem, badPrompt, goodPromptTagged, badRes, goodRes, imgPrompt = null, deficiencies = []) => ({
+            id, category: cat, title, icon, problem, 
+            badPrompt, 
+            agiaPromptTagged: goodPromptTagged, 
+            badResponse: badRes, 
+            goodResponse: goodRes, 
+            imagePrompt: imgPrompt,
+            deficiencies: deficiencies.length ? deficiencies : ["Sin Rol", "Contexto Vago"] // Default values if empty
+        });
+
+        // --- 100 CASOS ROBUSTOS (Con Markup AGIA) ---
+        const allCases = [
+            // PERSONAL
+            createCase(1, 'personal', 'Menú de Supervivencia', 'restaurant', 'Sobras en la nevera y cero ideas.', 
+                'Dime qué cocinar con huevo y arroz.', 
+                '{r}Actúa como un chef Michelin experto en cocina de aprovechamiento.{/r} {c}Tengo [2 huevos, arroz frío, espinaca] y necesito usarlo todo.{/c} {m}Dame una receta creativa, paso a paso, que parezca gourmet pero tome menos de 15 minutos.{/m} {f}Incluye nombre del plato y sugerencia de emplatado.{/f}',
+                '<p>Puedes hacer arroz frito con huevo. Calienta aceite, echa el arroz y los huevos y mezcla todo con la espinaca. Añade sal.</p>',
+                '<p class="font-bold text-lg mb-2 text-indigo-700">Tortilla "Soufflé" de Arroz y Espinacas a la Florentina 🍳</p><ol class="list-decimal ml-4 space-y-2"><li><strong>Cristalizar (3 min):</strong> Saltea las espinacas con un diente de ajo laminado hasta que brillen intensamente.</li><li><strong>Airear (2 min):</strong> Bate las claras a punto de nieve y mézclalas suavemente con el arroz para dar textura "soufflé".</li><li><strong>Fusión (5 min):</strong> Cocina a fuego lento sin mover para crear una costra dorada inferior (socarrat).</li><li><strong>Emplatado:</strong> Sirve en plato hondo con un hilo de aceite de oliva virgen extra y pimienta negra recién molida para elevar el aroma.</li></ol>',
+                'gourmet spinach and rice omelette professional food photography lighting',
+                ["Sin Rol", "Sin Límites (Tiempo)", "Meta Imprecisa"]),
+
+            createCase(2, 'personal', 'Entrenador Casero', 'fitness_center', 'Quiero ejercitarme sin equipo.', 
+                'Dame una rutina de ejercicios.', 
+                '{r}Eres mi entrenador personal certificado nivel élite.{/r} {c}Tengo [20 minutos] disponibles y [cero equipo] en casa.{/c} {m}Diseña una rutina HIIT enfocada en [quemar grasa y fortalecer core].{/m} {l}No incluyas saltos porque vivo en un departamento.{/l} {f}Entrégame el resultado en una tabla con tiempos de trabajo/descanso.{/f}',
+                '<p>Haz 10 flexiones, 10 sentadillas y corre un poco. Repite 3 veces. Es bueno para la salud.</p>',
+                '<table class="w-full text-left border-collapse text-xs md:text-sm"><thead><tr class="bg-indigo-50"><th class="p-2 border-b">Ejercicio (Bajo Impacto)</th><th class="p-2 border-b">Tiempo</th><th class="p-2 border-b">Descanso</th></tr></thead><tbody><tr><td class="p-2 border-b">Burpees sin salto (caminados)</td><td class="p-2 border-b">45s</td><td class="p-2 border-b">15s</td></tr><tr><td class="p-2 border-b">Escaladores (Mountain Climbers)</td><td class="p-2 border-b">45s</td><td class="p-2 border-b">15s</td></tr><tr><td class="p-2 border-b">Plancha Isométrica</td><td class="p-2 border-b">45s</td><td class="p-2 border-b">15s</td></tr><tr><td class="p-2 border-b">Sentadillas sumo</td><td class="p-2 border-b">45s</td><td class="p-2 border-b">15s</td></tr></tbody></table><p class="mt-2 text-xs text-slate-500"><em>🔁 Repetir circuito 3 veces sin parar. Calorías estimadas: 250 kcal.</em></p>',
+                null,
+                ["Sin Contexto (Lugar/Equipo)", "Sin Rol", "Sin Formato"]),
+
+            createCase(3, 'personal', 'Consejero de Regalos', 'card_giftcard', 'No sé qué regalar.', 
+                'Ideas de regalo para un hombre de 40 años.', 
+                '{r}Actúa como un personal shopper experto en tendencias tecnológicas.{/r} {c}Busco un regalo para [Hombre, 40 años, ama la tecnología y el asado].{/c} {m}Dame 5 opciones originales y útiles.{/m} {l}Presupuesto máximo: [30 USD].{/l} {f}Formato lista con precio aproximado.{/f}',
+                '<p>Regálale una corbata, un libro o una tarjeta de regalo de Amazon. También un set de cuchillos.</p>',
+                '<ul class="space-y-3"><li>🥩 <strong>Termómetro Bluetooth ($25):</strong> Monitorea la temperatura interna de la carne desde el celular. <em>Factor Wow: Alto.</em></li><li>🐻 <strong>Garras de Oso ($15):</strong> Herramienta ergonómica para desmenuzar carne estilo BBQ. <em>Muy visual.</em></li><li>💡 <strong>Luz LED Magnética ($20):</strong> Se pega a la tapa de la parrilla para asados nocturnos.</li><li>🍺 <strong>Mandil "Táctico" ($28):</strong> Con bolsillos especiales para cerveza, celular y salsas.</li><li>🔥 <strong>Caja Ahumadora ($18):</strong> Convierte cualquier parrilla a gas en un ahumador con chips de madera.</li></ul>',
+                'bbq grilling accessories kit on wooden table',
+                ["Sin Límites (Presupuesto)", "Contexto Vago (Gustos)", "Meta Genérica"]),
+
+            createCase(4, 'personal', 'Planificador de Viajes', 'flight', 'Viaje express sin plan.', 
+                'Qué hacer en Ciudad de México en 3 días.', 
+                '{r}Eres un guía turístico local experto en cultura urbana y gastronomía.{/r} {c}Voy a [Ciudad de México] por [3 días] y quiero evitar las trampas para turistas.{/c} {m}Crea un itinerario por día que mezcle [1 lugar turístico obligatorio] con [1 joya oculta donde comen los locales].{/m} {f}Presenta el plan día por día.{/f}',
+                '<p>Ve al Zócalo, a las pirámides de Teotihuacán y al museo de Frida Kahlo. Come tacos en la calle.</p>',
+                '<div class="space-y-2"><div class="p-2 bg-slate-50 border-l-4 border-blue-400"><h4 class="font-bold">Día 1: Centro Histórico Profundo</h4><p>📍 <strong>Must:</strong> Zócalo y Catedral.</p><p>🌮 <strong>Joya Local:</strong> Tacos de canasta en "Los Especiales" (Av Madero). Fila larga, sabor real.</p></div><div class="p-2 bg-slate-50 border-l-4 border-emerald-400"><h4 class="font-bold">Día 2: El Sur Bohemio</h4><p>📍 <strong>Must:</strong> Casa Azul (Frida Kahlo).</p><p>☕ <strong>Joya Local:</strong> Café "El Jarocho" en Coyoacán. Pide un café de olla y siéntate en la banca de la plaza.</p></div></div>',
+                null,
+                ["Sin Rol", "Meta Imprecisa", "Sin Formato Temporal"]),
+
+            // OFFICE
+            createCase(21, 'office', 'Traductor Corporativo', 'translate', 'Escribir email difícil.', 
+                'Arregla este correo: "No voy a hacer esto porque me pagan poco".', 
+                '{r}Actúa como experto en comunicación corporativa diplomática.{/r} {c}Necesito rechazar una nueva tarea que excede mis funciones.{/c} {m}Reescribe este mensaje: "[No voy a hacer esto porque no me pagan lo suficiente y no es mi trabajo]".{/m} {l}El tono debe ser firme pero educado, sin sonar agresivo.{/l} {f}Entrégame solo el cuerpo del correo.{/f}',
+                '<p>Hola, no puedo hacer esa tarea porque mi sueldo es bajo. Saludos.</p>',
+                '<div class="bg-white p-4 rounded shadow-sm border border-slate-200 italic text-slate-600">"Estimado [Nombre],<br><br>He revisado la solicitud y noto que estas nuevas responsabilidades exceden el alcance actual de mi rol y la remuneración acordada en mi contrato.<br><br>Sugiero que agendemos una reunión para revisar formalmente mis funciones y discutir un posible ajuste antes de proceder con estas tareas adicionales.<br><br>Quedo atento a tus comentarios."</div>',
+                null,
+                ["Sin Rol (Diplomacia)", "Contexto Nulo", "Sin Límites (Tono)"]),
+
+            createCase(22, 'office', 'Mago de Excel', 'table_view', 'No sé la fórmula.', 
+                'Cómo separo nombres en Excel.', 
+                '{r}Actúa como instructor experto en Excel avanzado.{/r} {c}Tengo una columna A con formato "Nombre Apellido" (ej: Juan Pérez).{/c} {m}Dame la fórmula exacta para extraer solo el [Nombre] en la columna B y el [Apellido] en la columna C.{/m} {f}Muestra la fórmula y explica brevemente la lógica.{/f}',
+                '<p>Usa la herramienta Texto en Columnas en la pestaña Datos. Es lo más fácil.</p>',
+                '<p class="mb-2"><strong>Para el Nombre (Celda B1):</strong></p><code class="block bg-slate-800 text-green-400 p-2 rounded mb-2 text-xs">=IZQUIERDA(A1;HALLAR(" ";A1)-1)</code><p class="text-xs text-slate-500 mb-4">Lógica: "Toma los caracteres desde la izquierda hasta encontrar el primer espacio".</p><p class="mb-2"><strong>Para el Apellido (Celda C1):</strong></p><code class="block bg-slate-800 text-green-400 p-2 rounded mb-2 text-xs">=DERECHA(A1;LARGO(A1)-HALLAR(" ";A1))</code><p class="text-xs text-slate-500">Lógica: "Toma los caracteres de la derecha restando la posición del espacio al largo total".</p>',
+                null,
+                ["Sin Rol", "Meta Confusa", "Sin Formato (Explicación)"]),
+
+            // MARKETING
+            createCase(41, 'marketing', 'Calendario RRSS', 'calendar_month', 'Sin ideas para postear.', 
+                'Dames ideas para Instagram de café.', 
+                '{r}Actúa como Social Media Manager senior.{/r} {c}Gestiono una marca de [Café de Especialidad] y necesito contenido para la próxima semana.{/c} {m}Crea un calendario de 3 posts.{/m} {l}Deben ser educativos y entretenidos (Edutainment).{/l} {f}Formato tabla con: Día, Idea, Formato (Reel/Carrusel) y Hook (Gancho visual/texto).{/f}',
+                '<p>Sube una foto de café el lunes. El martes un video sirviendo café. El miércoles una frase de buenos días.</p>',
+                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-pink-50 text-pink-800"><th>Día</th><th>Idea Central</th><th>Formato</th><th>Hook (Gancho)</th></tr></thead><tbody><tr class="border-b"><td>Lun</td><td>ASMR moliendo granos</td><td>Reel (Video)</td><td>"El sonido de tu cerebro despertando..." 🎧 (Solo audio y primer plano)</td></tr><tr class="border-b"><td>Mié</td><td>Guía de Moliendas</td><td>Carrusel</td><td>"¿Tu café sabe amargo? Es culpa de esto" ❌ (Flecha señalando molinillo)</td></tr><tr><td>Vie</td><td>Latte Art Fail</td><td>Reel</td><td>"Expectativa vs Realidad" 😂 (Muestra intento fallido para humanizar marca)</td></tr></tbody></table>',
+                null,
+                ["Sin Rol", "Meta Vaga", "Sin Formato (Estructura)"]),
+
+             // EDUCATION
+            createCase(81, 'education', 'Tutor Socrático', 'psychology', 'Estudiar conceptos difíciles.', 
+                'Explícame qué es la Justicia.', 
+                '{r}Actúa como Sócrates.{/r} {c}Quiero entender profundamente el concepto de "[Justicia]" para mi examen de filosofía.{/c} {m}No me des la definición directa. Hazme 3 preguntas progresivas que desafíen mis prejuicios.{/m} {l}No uses lenguaje académico complejo.{/l}',
+                '<p>La justicia es dar a cada uno lo que le corresponde según el derecho y la razón. Es un valor esencial.</p>',
+                '<ol class="list-decimal ml-4 space-y-3 p-4 bg-amber-50 rounded-lg text-amber-900"><li>"Imagina que un amigo te presta un cuchillo. Si días después enloquece y te lo pide de vuelta, ¿sería <strong>justo</strong> devolvérselo porque es suyo, o sería peligroso?"</li><li>"Si dijiste que no, ¿significa entonces que la justicia no es siempre cumplir las reglas o deudas?"</li><li>"Entonces, ¿la justicia sirve al reglamento o sirve al bien de las personas? ¿Cómo definirías ese "bien"?"</li></ol>',
+                null,
+                ["Sin Rol (Socrático)", "Sin Límites (Estilo)", "Meta Directa (Errónea)"]),
+        ];
+
+        // --- RELLENO INTELIGENTE (Fillers) ---
+        const fillerTemplates = {
+            personal: {
+                titles: ['Rutina de Mañana', 'Lista de Compras', 'Meditación Nocturna', 'Organizar Armario'],
+                badPrompt: 'Ayúdame a organizarme.',
+                goodPrompt: '{r}Actúa como experto en productividad.{/r} {c}Soy una persona [desordenada y nocturna].{/c} {m}Crea una rutina de [mañana] realista.{/m} {f}Lista con horarios.{/f}',
+                deficiencies: ["Sin Contexto", "Sin Rol", "Sin Formato"]
+            },
+            tech: {
+                titles: ['Documentar Código', 'Generar JSON', 'Explicar Blockchain', 'Comandos Git'],
+                badPrompt: 'Explica esto.',
+                goodPrompt: '{r}Actúa como Senior Developer.{/r} {m}Explica [Blockchain] a un niño de 5 años.{/m} {c}Usa una analogía.{/c} {f}Párrafo corto.{/f}',
+                deficiencies: ["Sin Contexto (Audiencia)", "Sin Meta Clara", "Sin Formato"]
+            }
+        };
+
+        let idCounter = 90;
+        Object.keys(fillerTemplates).forEach(catKey => {
+            const tpl = fillerTemplates[catKey];
+            tpl.titles.forEach(title => {
+                allCases.push(createCase(idCounter++, catKey, title, 'bolt', 'Necesidad general.', tpl.badPrompt, tpl.goodPrompt, '<p>Respuesta genérica...</p>', '<p>Respuesta experta...</p>', null, tpl.deficiencies));
+            });
+        });
+
+        // --- LÓGICA UI ---
+        let currentCategory = 'personal';
+        let searchQuery = '';
+
+        function init() {
+            renderCategories();
+            renderCaseList();
+            selectCase(allCases[0].id);
+        }
+
+        function renderCategories() {
+            const nav = document.getElementById('category-nav');
+            nav.innerHTML = Object.keys(categoryConfig).map(key => {
+                const conf = categoryConfig[key];
+                const isActive = currentCategory === key;
+                const activeClass = isActive 
+                    ? `bg-${conf.color}-100 text-${conf.color}-700 border-${conf.color}-200 shadow-sm ring-1 ring-${conf.color}-300` 
+                    : `bg-white text-slate-500 border-slate-100 hover:bg-slate-50`;
+                return `<button onclick="setCategory('${key}')" class="flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold transition-all whitespace-nowrap ${activeClass}"><span class="material-symbols-outlined text-lg">${conf.icon}</span>${conf.label}</button>`;
+            }).join('');
+        }
+
+        function renderCaseList() {
+            const listEl = document.getElementById('case-list');
+            const filtered = allCases.filter(c => (c.category === currentCategory || searchQuery !== '') && (c.title.toLowerCase().includes(searchQuery.toLowerCase()) || c.problem.toLowerCase().includes(searchQuery.toLowerCase())));
+            document.getElementById('count-display').innerText = filtered.length;
+            
+            if (filtered.length === 0) {
+                listEl.innerHTML = `<div class="flex flex-col items-center justify-center p-8 text-slate-400 opacity-50"><span class="material-symbols-outlined text-4xl mb-2">search_off</span><p class="text-xs">No encontrado</p></div>`;
+                return;
+            }
+
+            listEl.innerHTML = filtered.map(c => {
+                const config = categoryConfig[c.category];
+                return `<button onclick="selectCase(${c.id})" class="w-full text-left p-3 rounded-lg group transition-all mb-2 hover:bg-indigo-50/50 border border-transparent focus:bg-white focus:border-${config.color}-300 focus:shadow-md focus:ring-1 focus:ring-${config.color}-200 relative overflow-hidden"><div class="absolute left-0 top-0 bottom-0 w-1 bg-${config.color}-400 opacity-0 group-hover:opacity-100 transition-opacity"></div><div class="flex items-center gap-3 pl-2"><div class="w-8 h-8 rounded-lg bg-white border border-slate-100 text-${config.color}-500 flex items-center justify-center flex-none shadow-sm"><span class="material-symbols-outlined text-lg">${c.icon}</span></div><div class="overflow-hidden"><h4 class="text-sm font-semibold text-slate-700 truncate group-hover:text-indigo-700 transition-colors">${c.title}</h4><p class="text-[10px] text-slate-400 truncate">${c.problem}</p></div></div></button>`;
+            }).join('');
+        }
+
+        function selectCase(id) {
+            const c = allCases.find(x => x.id === id);
+            if(!c) return;
+            const conf = categoryConfig[c.category];
+
+            // Update Headers
+            document.getElementById('detail-title').innerText = c.title;
+            document.getElementById('detail-icon').innerText = c.icon;
+            document.getElementById('detail-icon-bg').className = `w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg border-2 border-white bg-${conf.color}-50 text-${conf.color}-600 transform transition-transform hover:scale-105`;
+            document.getElementById('detail-category-badge').innerText = conf.label;
+            document.getElementById('detail-category-badge').className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-${conf.color}-100 text-${conf.color}-700 border border-${conf.color}-200`;
+            document.getElementById('detail-problem').innerText = c.problem;
+            
+            // Update Bad Prompt & Badges
+            document.getElementById('detail-bad-prompt').innerText = `"${c.badPrompt}"`;
+            const badgesContainer = document.getElementById('deficiency-badges');
+            badgesContainer.innerHTML = c.deficiencies.map(d => 
+                `<span class="px-2 py-1 bg-red-50 text-red-600 text-[10px] font-bold rounded-md border border-red-100 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">warning</span>${d}</span>`
+            ).join('');
+
+            // Update Good Prompt (Render HTML)
+            document.getElementById('detail-prompt-rendered').innerHTML = renderAGIA(c.agiaPromptTagged);
+
+            // Reset Simulation
+            document.getElementById('simulation-container').classList.add('hidden');
+            document.getElementById('sim-bad-loading').classList.add('hidden');
+            document.getElementById('sim-bad-content').innerHTML = '';
+            document.getElementById('sim-good-loading').classList.add('hidden');
+            document.getElementById('sim-good-content').innerHTML = '';
+            document.getElementById('sim-good-content').classList.add('hidden');
+            document.getElementById('simulation-media').classList.add('hidden');
+            document.getElementById('btn-simulate').classList.remove('hidden');
+
+            if(window.innerWidth < 768) toggleSidebar();
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            renderCategories();
+            renderCaseList();
+        }
+
+        function filterCases() {
+            searchQuery = document.getElementById('searchInput').value;
+            renderCaseList();
+        }
+
+        function copyPrompt() {
+            // Clean tags for clipboard
+            const rawText = cleanAGIA(allCases.find(x => x.title === document.getElementById('detail-title').innerText).agiaPromptTagged);
+            navigator.clipboard.writeText(rawText);
+            
+            // Visual feedback
+            const btn = document.querySelector('button[onclick="copyPrompt()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined text-[12px]">check</span> COPIADO`;
+            btn.classList.add('bg-green-100', 'text-green-700');
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('bg-green-100', 'text-green-700');
+            }, 2000);
+        }
+
+        function runSimulation() {
+            const title = document.getElementById('detail-title').innerText;
+            const c = allCases.find(x => x.title === title);
+            if(!c) return;
+
+            const container = document.getElementById('simulation-container');
+            const badLoading = document.getElementById('sim-bad-loading');
+            const badContent = document.getElementById('sim-bad-content');
+            const goodLoading = document.getElementById('sim-good-loading');
+            const goodContent = document.getElementById('sim-good-content');
+            const mediaDiv = document.getElementById('simulation-media');
+
+            container.classList.remove('hidden');
+            document.getElementById('btn-simulate').classList.add('hidden');
+            
+            // 1. Simulate Bad Response
+            badLoading.classList.remove('hidden');
+            setTimeout(() => {
+                badLoading.classList.add('hidden');
+                badContent.innerHTML = c.badResponse;
+                
+                // 2. Start Good Response
+                goodLoading.classList.remove('hidden');
+                setTimeout(() => {
+                    goodLoading.classList.add('hidden');
+                    goodContent.classList.remove('hidden');
+                    goodContent.innerHTML = c.goodResponse;
+
+                    if(c.imagePrompt) {
+                        mediaDiv.classList.remove('hidden');
+                        const url = `/gen?prompt=${encodeURIComponent(c.imagePrompt)}&aspect=16:9`;
+                        mediaDiv.innerHTML = `<img src="${url}" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700">`;
+                    } else {
+                        mediaDiv.classList.add('hidden');
+                    }
+                    
+                    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 1500);
+            }, 800);
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        }
+
+        init();
+
+    </script>
+</body>
+</html>
