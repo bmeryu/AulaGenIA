@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta Comercial Cangurito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+/* 1. SETUP & RESET */
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact; /* Crucial for printing colors */
+  print-color-adjust: exact;
+}
+
+body {
+  background-color: #e2e8f0; /* Outer background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px 0;
+  font-family: 'Lato', sans-serif;
+}
+
+/* 2. SLIDE CONTAINER - BRANDING: NAVY & GOLD */
+.slide-container {
+  align-items: center;
+  background-color: #0B1120 !important; /* Force color for print */
+  border-radius: 0px; 
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  height: 720px; /* Fixed height for slide aspect ratio */
+  justify-content: center;
+  overflow: hidden;
+  padding: 60px;
+  position: relative;
+  width: 1280px; /* Fixed width for slide aspect ratio */
+  color: #F8FAFC;
+  page-break-after: always; /* Ensure each slide is a new page */
+  break-after: page;
+}
+
+/* Decorative Gold Line for Branding */
+.slide-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #F59E0B, #D97706); /* Gold Gradient */
+    z-index: 10;
+}
+
+/* Logo Positioning */
+.slide-logo {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 120px;
+    z-index: 15;
+    background: transparent;
+    border-radius: 5px; /* Slight roundness looks better */
+}
+
+/* 3. TYPOGRAPHY */
+.slide-container h1,
+.slide-container h2,
+.slide-container h3 {
+  font-family: 'Playfair Display', serif;
+  color: #F59E0B; /* Gold for headers */
+  margin: 0;
+  line-height: 1.2;
+}
+
+.slide-container h1 {
+  font-size: 72px;
+  margin-bottom: 20px;
+}
+
+.slide-container .slide-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 20px;
+}
+
+.slide-container p,
+.slide-container li {
+  font-family: 'Lato', sans-serif;
+  font-size: 22px;
+  line-height: 1.6;
+  color: #CBD5E1; /* Light gray for readability */
+}
+
+/* 4. LAYOUT UTILITIES */
+.content-area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+
+.image-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+  height: 400px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid #334155;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.two-column .image-wrapper img {
+    object-fit: contain; /* For app mockups */
+    background: #1e293b;
+}
+
+/* BLEED LAYOUT */
+.slide-container.bleed-image-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+  gap: 0;
+  align-items: start;
+}
+
+.slide-container.bleed-image-layout .content-container {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.slide-container.bleed-image-layout .image-container {
+    height: 100%;
+    width: 100%;
+}
+
+.slide-container.bleed-image-layout img.bleed-image-side {
+    height: 100%;
+    max-height: 720px;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* TILED LAYOUTS */
+.tiled-content {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+
+.tile {
+  background: #1E293B; /* Lighter navy tile */
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 40px 30px;
+  flex: 1;
+  text-align: center;
+}
+
+.tile .icon {
+    font-size: 48px;
+    color: #F59E0B;
+    margin-bottom: 20px;
+}
+
+.tile h3 {
+    color: #F1F5F9;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+}
+
+/* NUMBERS LAYOUT */
+.highlight-numbers-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    width: 100%;
+}
+
+.highlight-numbers-layout .number {
+    font-size: 140px;
+    color: #F59E0B;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.highlight-numbers-layout .text-side h3 {
+    font-size: 42px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* LISTS */
+ul {
+    padding-left: 20px;
+}
+li {
+    margin-bottom: 15px;
+}
+li::marker {
+    color: #F59E0B;
+}
+
+/* TITLE SLIDE SPECIFIC */
+.title-slide-content {
+    text-align: center;
+    z-index: 2;
+}
+.subtitle {
+    font-size: 28px;
+    color: #94A3B8;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* FULL BG IMAGE OVERLAY */
+.full-bg-overlay {
+    background: rgba(11, 17, 32, 0.85); /* Heavy dark overlay */
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+}
+
+/* PRINT SPECIFICS */
+@media print {
+    body {
+        background-color: white;
+        padding: 0;
+        display: block;
+    }
+    .slide-container {
+        width: 100% !important;
+        height: 100vh !important; /* Full page height */
+        page-break-after: always !important;
+        break-after: page !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        border: none !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+    .print-btn-container {
+        display: none !important;
+    }
+    /* Hide scrollbars specifically for print to avoid weird lines */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* DOWNLOAD BUTTON */
+.print-btn-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+.print-btn {
+    background-color: #F59E0B;
+    color: #0B1120;
+    border: none;
+    padding: 15px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s, background-color 0.2s;
+    font-family: 'Lato', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.print-btn:hover {
+    transform: translateY(-2px);
+    background-color: #d97706;
+}
+
+    </style>
+</head>
+<body>
+
+<!-- Download Button -->
+<div class="print-btn-container">
+    <button onclick="window.print()" class="print-btn">
+        <i class="fa-solid fa-file-pdf"></i> Guardar como PDF
+    </button>
+</div>
+
+<!-- Slide 1: Title Slide -->
+<div class="slide-container full-bg-image" id="slide1" style="background-image: url('http://googleusercontent.com/image_collection/image_retrieval/6717564817113839696'); background-size: cover; background-position: center;">
+    <div class="full-bg-overlay"></div>
+    <!-- Added Logo -->
+    <img src="uploaded:Logo_AGIA_big.jpg-111b6c97-159d-4695-8f11-2a7e8321a8aa" alt="AGIA Logo" class="slide-logo">
+    <div class="title-slide-content">
+        <h1>Propuesta de Modernización<br>Administrativa</h1>
+        <p class="subtitle">Preparado exclusivamente para Jardín Infantil Cangurito</p>
+        <hr style="width: 100px; border: 2px solid #F59E0B; margin: 40px auto;">
+        <p style="font-size: 18px; color: #cbd5e1;">Bernardita Mery | Consultora en Soluciones IA</p>
+    </div>
+</div>
+
+<!-- Slide 2: Pain Point (Bleed Layout) -->
+<div class="slide-container bleed-image-layout" id="slide2">
+    <!-- Added Logo -->
+    <img src="uploaded:Logo_AGIA_big.jpg-111b6c97-159d-4695-8f11-2a7e8321a8aa" alt="AGIA Logo" class="slide-logo">
+    <div class="content-container">
+        <h2>El Desafío Actual</h2>
+        <div style="width: 80px; height: 4px; background: #F59E0B; margin: 20px 0 30px;"></div>
+        <div class="bleed-text-side">
+            <p>La gestión administrativa manual de los pagos consume tiempo valioso y genera incertidumbre.</p>
+            <ul>
+                <li>Cruce manual propenso a errores (App vs. Cartola).</li>
+                <li>Pérdida de horas hombre dedicadas a "cuadrar caja".</li>
+                <li>Falta de herramientas ágiles para comunicación.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="image-container">
+        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/15503825190266400620" alt="Persona estresada con documentos financieros">
+    </div>
+</div>
+
+<!-- Slide 3: Solution Ecosystem (Tiled Text) -->
+<div class="slide-container" id="slide3">
+    <!-- Added Logo -->
+    <img src="uploaded:Logo_AGIA_big.jpg-111b6c97-159d-4695-8f11-2a7e8321a8aa" alt="AGIA Logo" class="slide-logo">
+    <h2 class="slide-title">Sistema de Gestión Inteligente</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div class="tile" style="text-align: left;">
+                <h3><i class="fa-solid fa-robot"></i>&nbsp; Automatización</h3>
+                <p>Implementación de agentes de IA personalizados que realizan el trabajo pesado de conciliación bancaria por ti.</p>
+            </div>
+            <div class="tile" style="text-align: left;">
+                <h3><i class="fa-solid fa-mobile-screen"></i>&nbsp; Herramientas Ágiles</h3>
+                <p>Acceso a aplicaciones diseñadas a medida para resolver la comunicación y planificación educativa en segundos.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Feature 1 - The Gem -->
+<div class="slide-container" id="slide4">
+    <!-- Added Logo -->
+    <img src="uploaded:Logo_AGIA_big.jpg-111b6c97-159d-4695-8f11-2a7e8321a8aa" alt="AGIA Logo" class="slide-logo">
+    <h2 class="slide-title">1. Asistente de Pagos IA</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p>Olvídate de revisar línea por línea. Tu nuevo asistente inteligente hace el cruce automático.</p>
+                <ul>
+                    <li><strong>Simple:</strong> Subes el PDF del banco y el Excel de la App.</li>
+                    <li><strong>Rápido:</strong> En segundos obtienes la lista de quién pagó y quién debe.</li>
+                    <li><strong>Seguro:</strong> Reduce el error humano a cero.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <img src="http://googleusercontent.com/image_collection/image_retrieval/11314592450012219188" alt="Interfaz abstracta de inteligencia artificial y automatización">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: Feature 2 - The App -->
+<div class="slide-container" id="slide5">
+    <!-- Added Logo -->
+    <img src="uploaded:Logo_AGIA_big.jpg-111b6c97-159d-4695-8f11-2a7e8321a8aa" alt="AGIA Logo" class="slide-logo">
+    <h2 class="slide-title">2. App "Maestro Prompts"</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="image-wrapper" style="border: none; box-shadow: none; background: transparent;">
+                <img src="http://googleusercontent.com/image_collection/image_retrieval/5463556753264765182" style="object-fit: contain;" alt="Mockup de aplicación móvil limpia">
+            </div>
+            <div>
+                <p>Una herramienta personalizada en tu celular con categorías diseñadas para la realidad del jardín.</p>
+                <ul>
+                    <li><strong>Cobranza Amable:</strong> Mensajes pre-redactados para recordar pagos sin fricción.</li>
+                    <li><strong>Comunicados:</strong> Redacta circulares en segundos.</li>
+                    <li><strong>Actividades:</strong> Generador de ideas para días de lluvia o eventos especiales.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Support (Bleed Layout) -->
+<div class="slide-container bleed-image-layout" id="slide6">
+    <!-- Added Logo -->
+    <img src="uploaded:Logo_AGIA_big.jpg-111b6c97-159d-4695-8f11-2a7e8321a8aa" alt="AGIA Logo" class="slide-logo">
+    <div class="image-container">
+        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/9065739925496292292" alt="Apretón de manos profesional">
+    </div>
+    <div class="content-container">
+        <h2>3. Capacitación y Soporte</h2>
+        <div style="width: 80px; height: 4px; background: #F59E0B; margin: 20px 0 30px;"></div>
+        <div class="bleed-text-side">
+            <p>No te entregamos una herramienta y desaparecemos. Te acompañamos en el proceso.</p>
+            <ul>
+                <li><strong>Sesión Ejecutiva (90 min):</strong> Dejamos todo instalado y te enseñamos a usarlo.</li>
+                <li><strong>Soporte Prioritario:</strong> Acompañamiento vía WhatsApp durante la primera semana.</li>
+                <li><strong>Aula GenIA:</strong> Acceso completo al curso online para profundizar conocimientos.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Benefits Summary -->
+<div class="slide-container" id="slide7">
+    <!-- Added Logo -->
+    <img src="uploaded:Logo_AGIA_big.jpg-111b6c97-159d-4695-8f11-2a7e8321a8aa" alt="AGIA Logo" class="slide-logo">
+    <h2 class="slide-title">Impacto en tu Día a Día</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-clock"></i></div>
+                <h3>Ahorro de Tiempo</h3>
+                <p>Recupera +50 horas anuales de trabajo administrativo tedioso.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-brain"></i></div>
+                <h3>Cero Estrés</h3>
+                <p>Elimina la incertidumbre financiera y los errores de cálculo.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>Modernización</h3>
+                <p>Posiciona a Cangurito como una institución de vanguardia.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Investment -->
+<div class="slide-container" id="slide8">
+    <!-- Added Logo -->
+    <img src="uploaded:Logo_AGIA_big.jpg-111b6c97-159d-4695-8f11-2a7e8321a8aa" alt="AGIA Logo" class="slide-logo">
+    <h2 class="slide-title" style="border: none; text-align: center;">Inversión Única</h2>
+    <div class="content-area">
+        <div class="highlight-numbers-layout">
+            <div class="text-side">
+                <h3>Paquete "Llave en Mano"</h3>
+                <p>Incluye desarrollo, implementación, <br>licencias y capacitación.</p>
+                <p style="font-size: 16px; color: #94A3B8; margin-top: 20px;">*Se puede pagar en 2 cuotas (50% inicio / 50% entrega)</p>
+            </div>
+            <div>
+                <div class="number">$300k</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Contact -->
+<div class="slide-container" id="slide9">
+    <!-- Added Logo -->
+    <img src="uploaded:Logo_AGIA_big.jpg-111b6c97-159d-4695-8f11-2a7e8321a8aa" alt="AGIA Logo" class="slide-logo">
+    <div class="qa-layout">
+        <h2 style="font-size: 60px; color: #F59E0B;">¿Comenzamos?</h2>
+        <p style="margin-top: 30px;">Estoy lista para ayudarte a recuperar tu tiempo.</p>
+        <div style="margin-top: 50px; padding: 30px; border: 1px solid #334155; border-radius: 12px; display: inline-block;">
+            <p style="color: #fff; font-size: 24px; margin-bottom: 10px;"><i class="fa-solid fa-envelope" style="color: #F59E0B;"></i> &nbsp; bernardita@aulagenia.cl</p>
+            <p style="color: #fff; font-size: 24px;"><i class="fa-solid fa-phone" style="color: #F59E0B;"></i> &nbsp; +56 9 XXXX XXXX</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
