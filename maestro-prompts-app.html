@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
         
         /* Custom Scrollbar */
         .custom-scroll::-webkit-scrollbar { width: 6px; }
@@ -24,8 +24,6 @@
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        
-        .blur-locked { filter: blur(4px); user-select: none; pointer-events: none; }
         
         /* Highlight Classes for Prompts */
         .hl-rol { background-color: #dbeafe; color: #1e40af; border-bottom: 2px solid #60a5fa; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
@@ -53,15 +51,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-4">
-                    <!-- Logo Placeholder -->
-                    <div class="h-10 w-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-xl">AG</div>
+                    <div class="h-10 w-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-xl shadow-indigo-200 shadow-lg">AG</div>
                     <div class="border-l border-slate-200 pl-4">
                         <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">Bóveda de Prompts <span class="text-indigo-600">AGIA</span></h1>
                         <p class="text-xs text-slate-500 font-medium">Librería de Copiar & Pegar</p>
                     </div>
                 </div>
-                <!-- Botón Compra Header -->
-                <button onclick="openPaywall()" class="hidden md:flex bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:shadow-lg transition-all items-center gap-2 border border-slate-700">
+                <button onclick="openPaywall()" class="hidden md:flex bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-800 transition-all items-center gap-2">
                     <span class="material-symbols-outlined text-sm text-yellow-400">lock_open</span>
                     DESBLOQUEAR TODO
                 </button>
@@ -69,9 +65,7 @@
 
             <!-- Category Navigation -->
             <div class="overflow-x-auto custom-scroll pb-2">
-                <div class="flex space-x-2 min-w-max" id="category-nav">
-                    <!-- Injected by JS -->
-                </div>
+                <div class="flex space-x-2 min-w-max" id="category-nav"></div>
             </div>
         </div>
     </header>
@@ -89,9 +83,7 @@
                         onkeyup="filterCases()">
                 </div>
             </div>
-            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list">
-                <!-- Cases injected by JS -->
-            </div>
+            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list"></div>
             <div class="p-3 border-t border-slate-100 text-xs text-center text-slate-400 bg-slate-50">
                 Bóveda cargada con <span id="count-display" class="font-bold">0</span> prompts
             </div>
@@ -104,10 +96,8 @@
 
         <!-- Main Content -->
         <main class="flex-1 flex flex-col bg-slate-50/50 overflow-hidden relative w-full">
-            
-            <!-- Case Detail -->
             <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 pb-24">
-                <div class="max-w-4xl mx-auto fade-in">
+                <div class="max-w-5xl mx-auto fade-in">
                     
                     <!-- Title Header -->
                     <div class="flex items-center gap-4 mb-6 border-b border-slate-200 pb-6">
@@ -118,7 +108,7 @@
                             <div class="flex items-center gap-2 mb-1">
                                 <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Categoría</span>
                                 <span class="text-[10px] font-medium text-slate-400 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-100">
-                                    <span class="material-symbols-outlined text-[10px] text-green-500">verified</span> Validado por AGIA
+                                    <span class="material-symbols-outlined text-[10px] text-green-500">verified</span> Validado
                                 </span>
                             </div>
                             <h2 id="detail-title" class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">Título del Caso</h2>
@@ -126,101 +116,93 @@
                         </div>
                     </div>
 
-                    <!-- AGIA LEGEND (BARRA DE COLORES - MOVIDA ARRIBA) -->
-                    <div class="mb-4 bg-white rounded-xl border border-slate-200 p-3 overflow-x-auto">
-                        <div class="flex justify-between items-center min-w-max gap-4 md:gap-0">
-                            <!-- ROL -->
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold hl-rol border-none">1</div>
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Rol</span>
-                            </div>
-                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
-                            <!-- CONTEXTO -->
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold hl-contexto border-none">2</div>
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Contexto</span>
-                            </div>
-                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
-                            <!-- META -->
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded bg-amber-100 text-amber-600 flex items-center justify-center text-[10px] font-bold hl-meta border-none">3</div>
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Meta</span>
-                            </div>
-                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
-                            <!-- LIMITES -->
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded bg-red-100 text-red-600 flex items-center justify-center text-[10px] font-bold hl-limites border-none">4</div>
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Límites</span>
-                            </div>
-                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
-                            <!-- FORMATO -->
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-bold hl-formato border-none">5</div>
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Formato</span>
-                            </div>
+                    <!-- AGIA LEGEND -->
+                    <div class="mb-6 bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase mb-3">La Fórmula Secreta (AGIA)</h3>
+                        <div class="flex flex-wrap gap-3 text-xs">
+                            <div class="flex items-center gap-1.5 px-2 py-1 bg-blue-50 rounded border border-blue-100"><div class="w-3 h-3 rounded-full bg-blue-500"></div><span class="font-medium text-blue-700">Rol</span></div>
+                            <div class="flex items-center gap-1.5 px-2 py-1 bg-emerald-50 rounded border border-emerald-100"><div class="w-3 h-3 rounded-full bg-emerald-500"></div><span class="font-medium text-emerald-700">Contexto</span></div>
+                            <div class="flex items-center gap-1.5 px-2 py-1 bg-amber-50 rounded border border-amber-100"><div class="w-3 h-3 rounded-full bg-amber-500"></div><span class="font-medium text-amber-700">Meta</span></div>
+                            <div class="flex items-center gap-1.5 px-2 py-1 bg-red-50 rounded border border-red-100"><div class="w-3 h-3 rounded-full bg-red-500"></div><span class="font-medium text-red-700">Límites</span></div>
+                            <div class="flex items-center gap-1.5 px-2 py-1 bg-purple-50 rounded border border-purple-100"><div class="w-3 h-3 rounded-full bg-purple-500"></div><span class="font-medium text-purple-700">Formato</span></div>
                         </div>
                     </div>
 
-                    <!-- PROMPT BOX (HERO) -->
-                    <div class="bg-slate-900 rounded-2xl p-1 shadow-2xl mb-8 border border-slate-700 relative group">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500 opacity-20 rounded-full -mr-10 -mt-10 blur-3xl group-hover:opacity-30 transition-opacity"></div>
+                    <!-- PROMPT MAESTRO (HERO) -->
+                    <div class="bg-slate-900 rounded-2xl p-1 shadow-2xl mb-10 border border-slate-700 relative group overflow-hidden">
+                        <!-- Top Bar -->
+                        <div class="bg-slate-800/80 backdrop-blur rounded-t-xl px-4 py-3 flex justify-between items-center border-b border-slate-700">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-yellow-400 text-sm animate-pulse">auto_awesome</span>
+                                <span class="text-xs font-bold text-slate-200 tracking-wider">PROMPT MAESTRO (COPIAR Y PEGAR)</span>
+                            </div>
+                            <button onclick="copyPrompt()" class="flex items-center gap-2 text-xs bg-indigo-600 text-white hover:bg-indigo-500 px-4 py-1.5 rounded-lg font-bold transition-all shadow-lg ring-1 ring-white/10">
+                                <span class="material-symbols-outlined text-sm">content_copy</span> COPIAR
+                            </button>
+                        </div>
+                        <!-- Content -->
+                        <div class="p-6 md:p-8 relative">
+                            <p id="detail-prompt-rendered" class="font-mono text-sm md:text-base text-slate-200 leading-relaxed whitespace-pre-wrap">...</p>
+                        </div>
+                    </div>
+
+                    <!-- COMPARISON GRID (BEFORE & AFTER) -->
+                    <div class="grid md:grid-cols-2 gap-8">
                         
-                        <!-- Header Prompt Box -->
-                        <div class="bg-slate-800/50 rounded-t-xl px-4 py-3 flex justify-between items-center border-b border-slate-700">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-yellow-400 text-sm">auto_awesome</span>
-                                <span class="text-xs font-bold text-slate-300 tracking-wider">PROMPT MAESTRO</span>
+                        <!-- COLUMN 1: THE MISTAKE -->
+                        <div class="flex flex-col gap-4">
+                            <div class="flex items-center gap-2 pb-2 border-b border-slate-200">
+                                <div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs">A</div>
+                                <h3 class="text-sm font-bold text-slate-500 uppercase">Modo Novato</h3>
                             </div>
-                            <div class="flex gap-2">
-                                <button onclick="copyPrompt()" class="flex items-center gap-2 text-xs bg-indigo-600 text-white hover:bg-indigo-500 px-4 py-1.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-indigo-500/25 ring-1 ring-white/10">
-                                    <span class="material-symbols-outlined text-sm">content_copy</span> 
-                                    <span>COPIAR</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Content Prompt Box -->
-                        <div class="p-6 relative">
-                            <p id="detail-prompt-rendered" class="font-mono text-sm md:text-base text-slate-200 leading-relaxed whitespace-pre-wrap select-all">...</p>
-                        </div>
-                    </div>
-
-                    <!-- COMPARISON GRID (VISIBLE POR DEFECTO) -->
-                    <div class="mb-8">
-                        <div id="comparison-container" class="grid md:grid-cols-2 gap-6 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            
                             <!-- Bad Prompt -->
-                            <div>
-                                <h3 class="text-xs font-bold text-slate-400 uppercase mb-2 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm">close</span> Lo que escribe la mayoría
-                                </h3>
-                                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 text-sm text-slate-500 italic font-mono">
-                                    <p id="detail-bad-prompt">"..."</p>
-                                </div>
-                                <div class="mt-2 flex flex-wrap gap-2" id="deficiency-badges"></div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
+                                <div class="absolute -top-2.5 left-4 bg-slate-200 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">INPUT (PROMPT)</div>
+                                <p id="detail-bad-prompt" class="text-sm text-slate-500 italic font-mono">"..."</p>
+                                <div class="mt-3 flex flex-wrap gap-2" id="deficiency-badges"></div>
                             </div>
-                            <!-- Result Preview -->
-                            <div class="border-l border-slate-100 pl-4 md:pl-6">
-                                <h3 class="text-xs font-bold text-slate-400 uppercase mb-2 flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-sm text-indigo-500">check_circle</span> Resultado en ChatGPT (Real)
-                                </h3>
-                                <!-- Contenedor con scroll si es muy ancho -->
-                                <div class="overflow-x-auto">
-                                    <div id="preview-response" class="text-xs text-slate-700 prose-sm bg-indigo-50/50 p-4 rounded-lg border border-indigo-50">
-                                        <!-- JS injects preview here -->
+
+                            <!-- Bad Result -->
+                            <div class="bg-red-50 p-4 rounded-xl border border-red-100 relative opacity-80">
+                                <div class="absolute -top-2.5 left-4 bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded">OUTPUT (RESULTADO)</div>
+                                <div class="text-xs text-slate-600 prose-sm font-medium">
+                                    <div class="flex items-start gap-2">
+                                        <span class="material-symbols-outlined text-red-400 text-lg flex-none">cancel</span>
+                                        <div id="detail-bad-result">Respuesta genérica...</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- COLUMN 2: THE SOLUTION -->
+                        <div class="flex flex-col gap-4">
+                            <div class="flex items-center gap-2 pb-2 border-b border-indigo-200">
+                                <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">B</div>
+                                <h3 class="text-sm font-bold text-indigo-700 uppercase">Modo Experto AGIA</h3>
+                            </div>
+
+                            <!-- Pointer to Hero -->
+                            <div class="hidden md:flex items-center gap-2 text-xs text-indigo-400 italic px-4">
+                                <span class="material-symbols-outlined text-lg">arrow_upward</span>
+                                El prompt maestro de arriba genera esto 👇
+                            </div>
+
+                            <!-- Good Result -->
+                            <div class="bg-indigo-50 p-5 rounded-xl border border-indigo-100 relative shadow-sm h-full">
+                                <div class="absolute -top-2.5 left-4 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">OUTPUT (RESULTADO)</div>
+                                <div id="preview-response" class="text-xs text-slate-800 prose-sm mt-2">
+                                    <!-- JS injects preview here -->
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <!-- AGIA MODEL IMAGE (MOVIDA AL FINAL) -->
-                    <div class="mb-8 pt-8 border-t border-slate-200 opacity-80 hover:opacity-100 transition-opacity">
-                         <h3 class="text-xs font-bold text-slate-400 uppercase mb-4 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-sm">schema</span> Referencia: La Estructura Maestra
-                         </h3>
-                         <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
-                             <img src="https://aulagenia.cl/maestro-prompts.png" alt="Modelo AGIA - Estructura Maestra" class="w-full h-auto rounded-lg">
-                         </div>
+                    <!-- Footer Image -->
+                    <div class="mt-12 pt-8 border-t border-slate-200 opacity-60 hover:opacity-100 transition-opacity">
+                        <p class="text-[10px] text-center text-slate-400 uppercase tracking-widest mb-4">Referencia: Estructura AGIA</p>
+                        <img src="https://aulagenia.cl/maestro-prompts.png" alt="Estructura AGIA" class="w-full max-w-2xl mx-auto rounded-lg grayscale hover:grayscale-0 transition-all">
                     </div>
 
                 </div>
@@ -228,44 +210,26 @@
         </main>
     </div>
 
-    <!-- PAYWALL MODAL (Bloqueo de Ventas) -->
+    <!-- PAYWALL MODAL -->
     <div id="paywall-modal" class="fixed inset-0 z-[60] hidden">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
-        
-        <!-- Modal Content -->
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closePaywall()"></div>
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
-            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in duration-300">
-                <button onclick="closePaywall()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 bg-white rounded-full p-1 z-10">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-                
-                <!-- Image/Header -->
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+                <button onclick="closePaywall()" class="absolute top-3 right-3 text-white/50 hover:text-white bg-black/20 rounded-full p-1 z-10"><span class="material-symbols-outlined">close</span></button>
                 <div class="bg-slate-900 p-8 text-center relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-600 rounded-full blur-3xl opacity-30 -mr-10 -mt-10"></div>
                     <span class="material-symbols-outlined text-5xl text-yellow-400 mb-2 relative z-10">lock</span>
                     <h3 class="text-white font-bold text-xl relative z-10">Contenido Premium</h3>
-                    <p class="text-indigo-200 text-sm relative z-10">Este prompt es parte de la Bóveda Privada.</p>
                 </div>
-
-                <!-- Body -->
                 <div class="p-6 text-center">
-                    <p class="text-slate-600 text-sm mb-6">
-                        Estás viendo la versión gratuita. Accede a los <span class="font-bold text-slate-900">100+ casos avanzados</span> y copia mis fórmulas validadas.
-                    </p>
-                    
+                    <p class="text-slate-600 text-sm mb-6">Accede a los <span class="font-bold text-slate-900">100+ casos avanzados</span>.</p>
                     <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6">
-                        <p class="text-xs font-bold text-yellow-800 uppercase tracking-wide">🔥 Oferta Black Friday</p>
+                        <p class="text-xs font-bold text-yellow-800 uppercase">🔥 Oferta Black Friday</p>
                         <p class="text-2xl font-black text-slate-900">$9.990 <span class="text-sm font-normal text-slate-500 line-through">$19.990</span></p>
-                        <p class="text-[10px] text-slate-500">Pago único. Acceso de por vida.</p>
                     </div>
-
-                    <a id="payment-btn" href="#" target="_blank" class="block w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-lg shadow-indigo-200 mb-3 flex items-center justify-center gap-2">
-                        <span>DESBLOQUEAR BÓVEDA AHORA</span>
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    <a id="payment-btn" href="#" target="_blank" class="block w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg flex items-center justify-center gap-2">
+                        <span>DESBLOQUEAR AHORA</span> <span class="material-symbols-outlined text-sm">arrow_forward</span>
                     </a>
-                    
-                    <p class="text-[10px] text-slate-400">Garantía de satisfacción. Pago seguro vía Mercado Pago.</p>
                 </div>
             </div>
         </div>
@@ -273,145 +237,96 @@
 
     <script>
         // ==========================================
-        // CONFIGURACIÓN DE VENTA (TU LINK AQUÍ)
+        // CONFIGURACIÓN DE VENTA
         // ==========================================
-        const LINK_MERCADO_PAGO = "#"; // <--- PEGA TU LINK ENTRE LAS COMILLAS
-        
-        // Asignar link al botón
+        const LINK_MERCADO_PAGO = "#"; // <--- PEGA TU LINK AQUÍ
         document.getElementById('payment-btn').href = LINK_MERCADO_PAGO;
 
-        // --- HELPERS PARA AGIA MARKUP ---
+        // --- AGIA RENDERER ---
         function renderAGIA(text) {
-            let html = text
-                .replace(/{r}(.*?){\/r}/g, '<span class="hl-rol" title="ROL: ¿Quién actúa?">$1</span>')
-                .replace(/{c}(.*?){\/c}/g, '<span class="hl-contexto" title="CONTEXTO: Antecedentes y detalles">$1</span>')
-                .replace(/{m}(.*?){\/m}/g, '<span class="hl-meta" title="META: Objetivo principal">$1</span>')
-                .replace(/{l}(.*?){\/l}/g, '<span class="hl-limites" title="LÍMITES: Restricciones y reglas">$1</span>')
-                .replace(/{f}(.*?){\/f}/g, '<span class="hl-formato" title="FORMATO: Estructura de salida">$1</span>')
+            return text
+                .replace(/{r}(.*?){\/r}/g, '<span class="hl-rol">$1</span>')
+                .replace(/{c}(.*?){\/c}/g, '<span class="hl-contexto">$1</span>')
+                .replace(/{m}(.*?){\/m}/g, '<span class="hl-meta">$1</span>')
+                .replace(/{l}(.*?){\/l}/g, '<span class="hl-limites">$1</span>')
+                .replace(/{f}(.*?){\/f}/g, '<span class="hl-formato">$1</span>')
                 .replace(/\n/g, '<br>');
-            return html;
         }
+        function cleanAGIA(text) { return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, ''); }
 
-        function cleanAGIA(text) {
-            return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, '');
-        }
-
-        // --- DATA ENGINE ---
-        
+        // --- DATA ---
         const categoryConfig = {
             office: { label: "Oficina & Excel", color: "emerald", icon: "business_center" },
-            finance: { label: "Finanzas (Nuevo)", color: "cyan", icon: "attach_money" }, // NUEVA CATEGORIA
+            finance: { label: "Finanzas", color: "cyan", icon: "attach_money" }, // FIX: SIN (Nuevo)
             marketing: { label: "Marketing", color: "pink", icon: "campaign" },
             personal: { label: "Vida Personal", color: "blue", icon: "home" },
             tech: { label: "Tecnología", color: "violet", icon: "code" },
             education: { label: "Educación", color: "amber", icon: "school" }
         };
 
-        // Función extendida con propiedad LOCKED (Bloqueo)
-        const createCase = (id, cat, title, icon, problem, badPrompt, goodPromptTagged, goodResPreview, locked = false, deficiencies = []) => ({
+        // ADDED badResPreview param
+        const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goodPromptTagged, goodResPreview, locked = false, deficiencies = []) => ({
             id, category: cat, title, icon, problem, 
             badPrompt, 
+            badResPreview, // New field for Bad Result
             agiaPromptTagged: goodPromptTagged, 
             previewResponse: goodResPreview,
-            locked: locked, // TRUE = Candado, FALSE = Abierto (AHORA TODO FALSE PARA REVISIÓN)
+            locked: locked,
             deficiencies: deficiencies.length ? deficiencies : ["Sin Rol", "Contexto Vago"]
         });
 
-        // --- BASE DE DATOS DE PROMPTS ---
-        // NOTA: Para vender, después cambiaremos 'false' a 'true' en los casos Premium.
         const allCases = [
-            
-            // --- OFICINA & EXCEL (EL DOLOR MÁS GRANDE) ---
-            createCase(22, 'office', 'El Mago de Excel', 'table_view', 'No sé qué fórmula usar.', 
+            createCase(22, 'office', 'El Mago de Excel', 'table_view', 'Fórmulas desconocidas.', 
                 'Ayuda con excel para sumar si cumple condición.', 
-                '{r}Actúa como un instructor experto de Excel MVP.{/r} {c}Tengo una tabla de Ventas con [Columna A: Vendedores, Columna B: Mes, Columna C: Monto].{/c} {m}Necesito una fórmula para sumar el total vendido por "Juan" en "Enero".{/m} {f}Dame la fórmula SUMAR.SI.CONJUNTO y explica los argumentos.{/f}',
-                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2">=SUMAR.SI.CONJUNTO(C:C; A:A; "Juan"; B:B; "Enero")</div><ul class="list-disc ml-4 space-y-1 text-slate-600"><li><strong>C:C</strong> = Rango a sumar (Montos)</li><li><strong>A:A</strong> = Rango criterio 1 (Vendedores)</li><li><strong>B:B</strong> = Rango criterio 2 (Meses)</li></ul>',
-                false, 
-                ["Sin Contexto de Datos", "Petición Genérica"]),
+                'Prueba usando la función SUMAR.SI. Selecciona el rango y pon el criterio. Es fácil.', // Bad Result
+                '{r}Actúa como un instructor experto de Excel MVP.{/r} {c}Tengo una tabla de Ventas [Col A: Vendedores, B: Mes, C: Monto].{/c} {m}Necesito una fórmula para sumar el total de "Juan" en "Enero".{/m} {f}Fórmula SUMAR.SI.CONJUNTO + explicación.{/f}',
+                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2 select-all">=SUMAR.SI.CONJUNTO(C:C; A:A; "Juan"; B:B; "Enero")</div><ul class="list-disc ml-4 space-y-1 text-slate-600"><li><strong>C:C</strong>: Rango Suma (Montos)</li><li><strong>A:A</strong>: Criterio 1 (Vendedores)</li></ul>',
+                false, ["Sin Contexto", "Petición Genérica"]),
 
-            createCase(21, 'office', 'Traductor Corporativo', 'translate', 'Escribir email difícil.', 
+            createCase(21, 'office', 'Traductor Corporativo', 'translate', 'Email difícil.', 
                 'Redacta un correo para decir que no alcanzo a entregar.', 
-                '{r}Actúa como experto en comunicación asertiva.{/r} {c}Estoy atrasado con el informe mensual por falta de datos de Finanzas.{/c} {m}Escribe un correo a mi jefe informando el retraso sin sonar irresponsable.{/m} {l}Propón nueva fecha (Viernes). Tono profesional pero firme.{/l}',
-                '<div class="bg-white p-2 rounded border border-slate-200 italic text-slate-600">"Hola [Nombre],<br><br>Te escribo para actualizarte sobre el informe mensual. Debido a una demora en la recepción de la data de Finanzas, no podré cerrarlo hoy como estaba previsto.<br><br>Ya gestioné la entrega de los datos faltantes y podré enviarte el informe completo este <strong>viernes antes del mediodía</strong>.<br><br>Gracias por tu comprensión."</div>',
-                false, 
-                ["Excusa Vaga", "Sin Propuesta de Solución"]),
+                'Hola jefe, no alcanzo a terminar el informe hoy. Lo mando mañana. Saludos.', // Bad Result
+                '{r}Experto en comunicación asertiva.{/r} {c}Retraso en informe por falta de datos.{/c} {m}Informar al jefe sin sonar irresponsable.{/m} {l}Propón nueva fecha.{/l}',
+                '<div class="bg-white p-3 rounded border border-slate-200 italic text-slate-600">"Hola [Nombre], te actualizo sobre el informe. Debido a una demora en la data de Finanzas, no podré cerrarlo hoy. Ya gestioné los datos y lo enviaré el <strong>viernes AM</strong> sin falta."</div>',
+                false, ["Excusa Vaga", "Tono Informal"]),
 
-            // --- FINANZAS (NUEVO) ---
-            createCase(90, 'finance', 'Negociador de Sueldo', 'payments', 'Pedir aumento da miedo.', 
-                'Cómo pido un aumento de sueldo.', 
-                '{r}Actúa como un coach de negociación salarial.{/r} {c}Llevo 2 años en la empresa, superé mis KPIs en un 20% y el mercado paga un 15% más.{/c} {m}Dame un guion para la reunión con mi jefe.{/m} {l}Sin ultimatums, enfocado en valor aportado.{/l} {f}Estructura: Apertura, Evidencia, Petición.{/f}',
-                '<p class="font-bold mb-1">Guion de la Reunión:</p><ul class="list-disc ml-4 space-y-2"><li><strong>Apertura:</strong> "Gracias por el tiempo. Quería revisar mi trayectoria de estos 2 años..."</li><li><strong>Evidencia:</strong> "Como sabes, logré superar la meta en un 20%, lo que trajo X beneficio..."</li><li><strong>Petición:</strong> "Basado en estos resultados y el mercado actual, solicito un ajuste salarial del 15% para alinear mi compensación con mi aporte."</li></ul>',
-                false, 
-                ["Sin Datos", "Enfoque en Necesidad Propia"]),
+            createCase(90, 'finance', 'Negociador de Sueldo', 'payments', 'Pedir aumento.', 
+                'Cómo pido un aumento.', 
+                'Dile a tu jefe que trabajas mucho y necesitas más dinero porque todo está caro.', // Bad Result
+                '{r}Coach de negociación.{/r} {c}2 años en empresa, superé KPIs 20%.{/c} {m}Guion para pedir ajuste salarial.{/m} {l}Enfocado en valor, no en necesidad.{/l}',
+                '<p class="font-bold mb-1">Guion Estratégico:</p><ul class="list-disc ml-4 space-y-2"><li><strong>Apertura:</strong> "Quería revisar mi impacto de estos 2 años..."</li><li><strong>Evidencia:</strong> "Superé la meta un 20%, generando X retorno."</li><li><strong>Cierre:</strong> "Solicito un ajuste del 15% para alinear mi compensación al mercado."</li></ul>',
+                false, ["Enfoque en Queja", "Sin Datos"]),
 
-            createCase(91, 'finance', 'Analista de Gastos', 'pie_chart', 'No sé en qué se me va la plata.', 
-                'Ayúdame a ordenar mis gastos.', 
-                '{r}Actúa como asesor financiero personal.{/r} {c}Gano $1.5M líquidos y siento que no llego a fin de mes.{/c} {m}Crea una estructura de presupuesto basada en la regla 50/30/20 adaptada a la realidad chilena.{/m} {f}Tabla con montos sugeridos y categorías.{/f}',
-                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-cyan-100"><th class="p-1">Regla</th><th class="p-1">Monto</th><th class="p-1">Destino</th></tr></thead><tbody><tr><td>50% Necesidades</td><td>$750.000</td><td>Arriendo, Supermercado, Cuentas</td></tr><tr><td>30% Deseos</td><td>$450.000</td><td>Salidas, Netflix, Rappi</td></tr><tr><td>20% Ahorro/Deuda</td><td>$300.000</td><td>Fondo Emergencia, Pago Tarjeta</td></tr></tbody></table>',
-                false, 
-                ["Sin Cifras", "Meta Vaga"]),
-
-            // --- MARKETING (GANCHO FUERTE) ---
             createCase(41, 'marketing', 'Calendario RRSS', 'calendar_month', 'Bloqueo creativo.', 
-                'Ideas para posts de Instagram de café.', 
-                '{r}Social Media Manager experto en viralidad.{/r} {c}Vendo café de grano online.{/c} {m}Dame 3 ideas de Reels que sean "Edutainment" (Educar + Entretener) para atraer clientes nuevos.{/m} {f}Tabla: Título, Gancho Visual (primeros 3 seg) y CTA.{/f}',
-                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-pink-100"><th class="p-1">Título</th><th class="p-1">Gancho Visual</th></tr></thead><tbody><tr><td>Tu café sabe amargo</td><td>Tirar el café al lavaplatos con cara de asco 🤢</td></tr><tr><td>Ahorra $50.000/mes</td><td>Pantallazo de gastos en Starbucks vs. Bolsa de grano 📉</td></tr><tr><td>ASMR Mañanero</td><td>Solo sonido de molienda y agua cayendo (Satisfying) 🎧</td></tr></tbody></table>',
-                false, 
-                ["Muy Genérico", "Sin Formato Viral"]),
-
-            // --- PERSONAL ---
-            createCase(1, 'personal', 'Menú de Supervivencia', 'restaurant', 'Sobras en la nevera.', 
-                'Qué cocino con huevo y arroz.', 
-                '{r}Chef Michelin de cocina de aprovechamiento.{/r} {c}Tengo huevos, arroz frío y espinaca.{/c} {m}Receta gourmet en 15 min.{/m}',
-                '<p class="font-bold text-indigo-700">Tortilla "Soufflé" Florentina</p>...',
-                false, ["Sin Rol", "Sin Límites"]),
-
-            createCase(3, 'personal', 'Consejero de Regalos', 'card_giftcard', 'Regalo hombre 40 años.', 
-                'Qué le regalo a mi marido.', 
-                '{r}Personal Shopper.{/r} {c}40 años, tecnológico, parrillero.{/c} {m}5 ideas bajo $30.000.{/m}',
-                '1. Termómetro Bluetooth para asado...',
-                false, ["Información Insuficiente"]),
-
-            createCase(4, 'personal', 'Planificador de Viajes', 'flight', 'Viaje express.', 
-                'Qué hacer en Buenos Aires 3 días.', 
-                '{r}Guía porteño local.{/r} {c}Evitar trampas turísticas.{/c} {m}Itinerario real de comida y paseos.{/m}',
-                'Día 1: Pizza en Guerrin y Teatro Colón...',
-                false, ["Muy Amplio"]),
-
-            // --- EDUCATION ---
-            createCase(81, 'education', 'Tutor Socrático', 'psychology', 'Estudiar activo.', 
-                'Explícame la inflación.', 
-                '{r}Profesor de Economía.{/r} {m}Explícalo como si tuviera 10 años usando el ejemplo de las láminas del álbum del mundial.{/m}',
-                '"Imagina que todos tienen 10 láminas. Si de pronto el profesor regala 1000 láminas a cada uno, ¿tus láminas valen más o menos?..."',
-                false, ["Muy Complejo"])
+                'Ideas para Instagram de café.', 
+                'Sube una foto de una taza de café y pon "Buenos días". A la gente le gusta el café.', // Bad Result
+                '{r}Social Media Manager.{/r} {c}Marca de café de grano.{/c} {m}3 ideas Edutainment.{/m} {f}Tabla con Ganchos Visuales.{/f}',
+                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-pink-100"><th class="p-1">Título</th><th class="p-1">Gancho (3 seg)</th></tr></thead><tbody><tr><td>Tu café sabe amargo</td><td>Tirar café al lavaplatos 🤢</td></tr><tr><td>Ahorra $50k/mes</td><td>Ticket Starbucks vs Bolsa Grano 📉</td></tr></tbody></table>',
+                false, ["Aburrido", "Sin Estrategia"]),
+            
+            // Fillers...
+            createCase(1, 'personal', 'Menú Supervivencia', 'restaurant', 'Sobras.', 'Qué cocino.', 'Haz arroz con huevo.', '{r}Chef.{/r} {m}Receta gourmet.{/m}', 'Tortilla Soufflé...', false, ["Vago"]),
+            createCase(81, 'education', 'Tutor Socrático', 'psychology', 'Estudiar.', 'Explica inflación.', 'Los precios suben.', '{r}Profe Economía.{/r} {m}Analogía simple.{/m}', 'Imagina un álbum de láminas...', false, ["Simple"]),
         ];
 
-        // --- GENERADOR DE RELLENO (PARA QUE PAREZCAN 100+) ---
+        // Fillers generation
         const fillers = [
-            {t: 'Crear Logo Midjourney', c: 'marketing'}, {t: 'Resumidor de Papers PDF', c: 'education'}, 
-            {t: 'Debuggueador de Python', c: 'tech'}, {t: 'Script de Ventas en Frío', c: 'office'},
-            {t: 'Plan de Entrenamiento Maratón', c: 'personal'}, {t: 'Meditación Guiada', c: 'personal'},
-            {t: 'Analista de Contratos Legales', c: 'office'}, {t: 'Generador de Quiz', c: 'education'},
-            {t: 'Traductor de Código Legacy', c: 'tech'}, {t: 'Estratega de SEO', c: 'marketing'},
-            {t: 'Carta de Recomendación', c: 'office'}, {t: 'Planificador de Boda', c: 'personal'}
+            {t: 'Debug Python', c: 'tech'}, {t: 'Resumen PDF', c: 'education'}, 
+            {t: 'Logo AI', c: 'marketing'}, {t: 'Contratos', c: 'office'}
         ];
-        
         let idCounter = 100;
-        // Multiplicamos los fillers para que se vea lleno
-        for(let i=0; i<3; i++) {
-            fillers.forEach(f => {
-                allCases.push(createCase(idCounter++, f.c, f.t, 'lock', 'Contenido Premium', 'Ayuda...', '...', '...', false)); // <--- AQUÍ TAMBIÉN DESBLOQUEADO
-            });
+        for(let i=0; i<4; i++) {
+            fillers.forEach(f => allCases.push(createCase(idCounter++, f.c, f.t, 'lock', 'Premium', '...', '...', '...', '...', false))); // ALL UNLOCKED FOR REVIEW
         }
 
-        // --- LÓGICA UI ---
-        let currentCategory = 'office'; // Empezar en Oficina que es fuerte
+        // --- UI LOGIC ---
+        let currentCategory = 'office';
         let searchQuery = '';
 
         function init() {
             renderCategories();
             renderCaseList();
-            selectCase(22); // Seleccionar Excel por defecto
+            selectCase(22); // Default
         }
 
         function renderCategories() {
@@ -429,21 +344,15 @@
         function renderCaseList() {
             const listEl = document.getElementById('case-list');
             const filtered = allCases.filter(c => (c.category === currentCategory || searchQuery !== '') && (c.title.toLowerCase().includes(searchQuery.toLowerCase()) || c.problem.toLowerCase().includes(searchQuery.toLowerCase())));
+            document.getElementById('count-display').innerText = allCases.length;
             
-            document.getElementById('count-display').innerText = allCases.length; // Total real
-            
-            if (filtered.length === 0) {
-                listEl.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No hay resultados</div>`;
-                return;
-            }
+            if (filtered.length === 0) { listEl.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No hay resultados</div>`; return; }
 
             listEl.innerHTML = filtered.map(c => {
                 const config = categoryConfig[c.category];
-                // Icon logic: Lock if locked, Category icon if free
                 const iconDisplay = c.locked ? 'lock' : c.icon;
                 const iconColorClass = c.locked ? 'text-slate-300 bg-slate-50' : `text-${config.color}-500 bg-white`;
                 const lockOpacity = c.locked ? 'opacity-70' : '';
-                
                 return `<button onclick="selectCase(${c.id})" class="w-full text-left p-3 rounded-lg group transition-all mb-2 hover:bg-slate-50 border border-transparent relative overflow-hidden ${lockOpacity}">
                     <div class="flex items-center gap-3 pl-2">
                         <div class="w-8 h-8 rounded-lg border border-slate-100 flex items-center justify-center flex-none shadow-sm ${iconColorClass}">
@@ -454,7 +363,7 @@
                                 ${c.title} 
                                 ${!c.locked ? '<span class="text-[9px] bg-green-100 text-green-700 px-1.5 rounded-full">GRATIS</span>' : ''}
                             </h4>
-                            <p class="text-[10px] text-slate-400 truncate">${c.locked ? 'Solo miembros Premium' : c.problem}</p>
+                            <p class="text-[10px] text-slate-400 truncate">${c.locked ? 'Premium' : c.problem}</p>
                         </div>
                     </div>
                 </button>`;
@@ -464,16 +373,9 @@
         function selectCase(id) {
             const c = allCases.find(x => x.id === id);
             if(!c) return;
-
-            // PAYWALL CHECK
-            if (c.locked) {
-                openPaywall();
-                return;
-            }
+            if (c.locked) { openPaywall(); return; }
 
             const conf = categoryConfig[c.category];
-
-            // Render Detail
             document.getElementById('detail-title').innerText = c.title;
             document.getElementById('detail-icon').innerText = c.icon;
             document.getElementById('detail-icon-bg').className = `w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg border-2 border-white bg-${conf.color}-50 text-${conf.color}-600`;
@@ -481,66 +383,33 @@
             document.getElementById('detail-category-badge').className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-${conf.color}-100 text-${conf.color}-700 border border-${conf.color}-200`;
             document.getElementById('detail-problem').innerText = c.problem;
             
-            // Render Bad Prompt & Badges
+            // Bad Side
             document.getElementById('detail-bad-prompt').innerText = `"${c.badPrompt}"`;
-            document.getElementById('deficiency-badges').innerHTML = c.deficiencies.map(d => 
-                `<span class="px-2 py-1 bg-red-50 text-red-600 text-[10px] font-bold rounded-md border border-red-100 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">warning</span>${d}</span>`
-            ).join('');
+            document.getElementById('detail-bad-result').innerText = c.badResPreview || "Respuesta genérica..."; // Show Bad Result
+            document.getElementById('deficiency-badges').innerHTML = c.deficiencies.map(d => `<span class="px-2 py-1 bg-red-50 text-red-600 text-[10px] font-bold rounded-md border border-red-100 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">warning</span>${d}</span>`).join('');
 
-            // Render Good Prompt
+            // Good Side
             document.getElementById('detail-prompt-rendered').innerHTML = renderAGIA(c.agiaPromptTagged);
             document.getElementById('preview-response').innerHTML = c.previewResponse;
 
             if(window.innerWidth < 768) toggleSidebar();
         }
 
-        function setCategory(cat) {
-            currentCategory = cat;
-            searchQuery = '';
-            document.getElementById('searchInput').value = '';
-            renderCategories();
-            renderCaseList();
-        }
-
-        function filterCases() {
-            searchQuery = document.getElementById('searchInput').value;
-            renderCaseList();
-        }
-
+        function setCategory(cat) { currentCategory = cat; searchQuery = ''; document.getElementById('searchInput').value = ''; renderCategories(); renderCaseList(); }
+        function filterCases() { searchQuery = document.getElementById('searchInput').value; renderCaseList(); }
         function copyPrompt() {
             const title = document.getElementById('detail-title').innerText;
             const c = allCases.find(x => x.title === title);
             if(!c) return;
-
-            const rawText = cleanAGIA(c.agiaPromptTagged);
-            navigator.clipboard.writeText(rawText);
-            
-            // Visual feedback
+            navigator.clipboard.writeText(cleanAGIA(c.agiaPromptTagged));
+            // Feedback visual simple
             const btn = document.querySelector('button[onclick="copyPrompt()"]');
-            const originalHTML = btn.innerHTML;
-            
-            btn.innerHTML = `<span class="material-symbols-outlined text-sm">check_circle</span> <span>¡COPIADO!</span>`;
-            btn.classList.remove('bg-indigo-600', 'text-white');
-            btn.classList.add('bg-green-500', 'text-white', 'shadow-none');
-            
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove('bg-green-500', 'text-white', 'shadow-none');
-                btn.classList.add('bg-indigo-600', 'text-white');
-            }, 2000);
+            btn.innerHTML = `<span class="material-symbols-outlined text-sm">check</span> ¡LISTO!`;
+            setTimeout(() => btn.innerHTML = `<span class="material-symbols-outlined text-sm">content_copy</span> COPIAR`, 2000);
         }
-
-        // --- PAYWALL LOGIC ---
-        function openPaywall() {
-            document.getElementById('paywall-modal').classList.remove('hidden');
-        }
-        function closePaywall() {
-            document.getElementById('paywall-modal').classList.add('hidden');
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-        }
+        function openPaywall() { document.getElementById('paywall-modal').classList.remove('hidden'); }
+        function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
 
         init();
     </script>
