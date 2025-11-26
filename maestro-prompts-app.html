@@ -25,12 +25,12 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         
-        /* Highlight Classes for Prompts */
-        .hl-rol { background-color: #dbeafe; color: #1e40af; border-bottom: 2px solid #60a5fa; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
-        .hl-contexto { background-color: #d1fae5; color: #065f46; border-bottom: 2px solid #34d399; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
-        .hl-meta { background-color: #fef3c7; color: #92400e; border-bottom: 2px solid #fbbf24; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
-        .hl-limites { background-color: #fee2e2; color: #b91c1c; border-bottom: 2px solid #f87171; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
-        .hl-formato { background-color: #f3e8ff; color: #6b21a8; border-bottom: 2px solid #a855f7; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+        /* Highlight Classes for Prompts - Updated for continuous text flow */
+        .hl-rol { background-color: #eff6ff; color: #1d4ed8; border-bottom: 2px solid #3b82f6; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+        .hl-contexto { background-color: #ecfdf5; color: #047857; border-bottom: 2px solid #10b981; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+        .hl-meta { background-color: #fffbeb; color: #b45309; border-bottom: 2px solid #f59e0b; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+        .hl-limites { background-color: #fef2f2; color: #b91c1c; border-bottom: 2px solid #ef4444; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+        .hl-formato { background-color: #f3e8ff; color: #7e22ce; border-bottom: 2px solid #a855f7; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
         .prose-sm p { margin-bottom: 0.5em; }
         .prose-sm ul, .prose-sm ol { margin-left: 1.2em; margin-bottom: 0.5em; }
@@ -146,7 +146,7 @@
                             </div>
                             <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm h-full flex flex-col relative group">
                                 <div class="absolute top-0 left-0 w-1 h-full bg-slate-200 rounded-l-xl group-hover:bg-red-200 transition-colors"></div>
-                                <p id="detail-bad-prompt" class="font-mono text-sm text-slate-500 italic pl-2 my-auto">"..."</p>
+                                <p id="detail-bad-prompt" class="font-mono text-sm text-slate-500 italic pl-2 my-auto leading-relaxed">"..."</p>
                                 <div class="mt-4 pt-3 border-t border-slate-100">
                                     <div id="deficiency-badges" class="flex flex-wrap gap-2"></div>
                                 </div>
@@ -285,48 +285,48 @@
             deficiencies: deficiencies.length ? deficiencies : ["Sin Rol", "Contexto Vago"]
         });
 
-        // --- DATABASE (CORE 40+ MANUAL CASES) ---
+        // --- DATABASE (CORE CASES - HUMANIZED) ---
         const allCases = [
             // --- OFICINA ---
             createCase(101, 'office', 'El Mago de Excel: Sumar.Si', 'table_view', 'Fórmula desconocida.', 
                 'Ayuda con excel para sumar si cumple condición.', 
                 'Prueba con la función SUMAR.SI. Selecciona el rango y el criterio. Es simple.', 
-                '{r}Instructor Experto en Excel MVP.{/r} {c}Tengo una tabla de Ventas con [Vendedor, Mes, Monto].{/c} {m}Necesito una fórmula para sumar el total vendido por [Nombre] en el mes [Mes].{/m} {f}Dame la fórmula SUMAR.SI.CONJUNTO y explica los argumentos.{/f}',
+                '{r}Actúa como un Instructor Experto en Excel MVP.{/r} Mira, {c}tengo una tabla de Ventas con las columnas [Vendedor, Mes, Monto].{/c} El problema es que {m}necesito una fórmula para sumar el total vendido por [Nombre] en el mes [Mes].{/m} Por favor, {f}dame la fórmula SUMAR.SI.CONJUNTO y explícame brevemente los argumentos.{/f}',
                 '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2">=SUMAR.SI.CONJUNTO(C:C; A:A; "[Nombre]"; B:B; "[Mes]")</div><ul class="list-disc ml-4 space-y-1 text-slate-600 text-xs"><li><strong>C:C</strong>: Rango Suma (Montos)</li><li><strong>A:A</strong>: Criterio 1 (Vendedor)</li></ul>',
                 false, ["Sin Contexto", "Petición Genérica"]),
 
             createCase(102, 'office', 'Email Retraso Entrega', 'mail', 'Comunicar malas noticias.', 
                 'Dile a mi jefe que no alcanzo a entregar hoy.', 
                 'Hola jefe, no llego con el informe hoy. Lo veo mañana. Saludos.', 
-                '{r}Experto en Comunicación Asertiva Corporativa.{/r} {c}No puedo entregar el [Informe X] hoy por falta de datos del área [Y].{/c} {m}Redacta un correo informando el retraso sin sonar irresponsable.{/m} {l}Propón nueva fecha de entrega segura.{/l}',
+                '{r}Eres un Experto en Comunicación Asertiva.{/r} Te cuento mi situación: {c}No puedo entregar el [Informe X] hoy por falta de datos del área [Y].{/c} Necesito que {m}redactes un correo informando el retraso sin sonar irresponsable.{/m} Ojo: {l}debes proponer una nueva fecha de entrega segura.{/l}',
                 '<div class="bg-slate-50 p-3 rounded italic text-sm">"Estimado [Jefe],<br>Te escribo para actualizarte sobre el estado del [Informe X]. Debido a una demora en la recepción de la data de [Área Y], no podré realizar el cierre hoy como estaba previsto.<br>Ya he gestionado los datos y podré enviarte el informe validado este <strong>[Nueva Fecha]</strong>."</div>',
                 false, ["Tono Informal", "Solo Problemas, No Soluciones"]),
 
             createCase(103, 'office', 'Resumen Ejecutivo', 'summarize', 'Texto muy largo.', 
                 'Resume este texto para mi jefe.', 
                 'El texto habla de las ventas del Q3 y dice que subieron un poco pero hay riesgos. Hay que ver el presupuesto.', 
-                '{r}Consultor de Estrategia Senior.{/r} {c}Mi jefe tiene 2 minutos para leer este reporte de [Tema].{/c} {m}Crea un resumen ejecutivo de alto nivel.{/m} {f}Usa 3 Bullet Points con: Situación, Complicación y Resolución.{/f}',
+                '{r}Actúa como Consultor de Estrategia Senior.{/r} Contexto: {c}Mi jefe tiene 2 minutos para leer este reporte de [Tema].{/c} Tu misión es {m}crear un resumen ejecutivo de alto nivel.{/m} {f}Usa 3 Bullet Points con esta estructura: Situación, Complicación y Resolución.{/f}',
                 '<ul class="list-disc ml-4 text-sm"><li><strong>Situación:</strong> Las ventas del Q3 crecieron un [X]%.</li><li><strong>Complicación:</strong> Se detectó un aumento de costos en [Área].</li><li><strong>Resolución:</strong> Se requiere aprobar el presupuesto [Y] para mitigar riesgos.</li></ul>',
                 false, ["Sin Estructura", "Muy Vago"]),
 
             createCase(104, 'office', 'Agenda Reunión', 'calendar_today', 'Reuniones desordenadas.', 
                 'Haz una agenda para una reunión de equipo.', 
                 '1. Hablar del proyecto. 2. Ver pendientes. 3. Varios.', 
-                '{r}Project Manager Certificado PMP.{/r} {c}Reunión de seguimiento del proyecto [Nombre Proyecto] con equipo de [Área].{/c} {m}Crea una agenda estructurada para 45 min.{/m} {f}Tabla con: Tema, Tiempo y Responsable (placeholder).{/f}',
+                '{r}Eres un Project Manager Certificado.{/r} Tengo una {c}reunión de seguimiento del proyecto [Nombre Proyecto] con el equipo de [Área].{/c} Ayúdame a {m}crear una agenda estructurada para 45 minutos.{/m} {f}Entrégame una tabla con: Tema, Tiempo y Responsable.{/f}',
                 '<table class="w-full text-xs border border-slate-200"><thead><tr class="bg-slate-100"><th>Tema</th><th>Tiempo</th><th>Lead</th></tr></thead><tbody><tr><td>Revisión KPIs</td><td>10 min</td><td>[Nombre]</td></tr><tr><td>Bloqueos Críticos</td><td>20 min</td><td>[Nombre]</td></tr><tr><td>Próximos Pasos</td><td>15 min</td><td>Todos</td></tr></tbody></table>',
                 false, ["Sin Tiempos", "Sin Responsables"]),
 
             createCase(105, 'office', 'Feedback Negativo', 'thumbs_up_down', 'Corregir a empleado.', 
                 'Dile a Juan que su trabajo está malo.', 
                 'Juan, revisé tu entrega y tiene muchos errores. Arréglalo por favor.', 
-                '{r}Líder de Equipo Empático.{/r} {c}El empleado [Nombre] entregó un trabajo con errores de [Tipo Error] por segunda vez.{/c} {m}Redacta un feedback constructivo usando el método Sandwich (Positivo-Mejora-Positivo).{/m}',
+                '{r}Actúa como Líder de Equipo Empático.{/r} Pasa que {c}el empleado [Nombre] entregó un trabajo con errores de [Tipo Error] por segunda vez.{/c} {m}Redacta un feedback constructivo usando el método Sandwich (Positivo-Mejora-Positivo).{/m}',
                 '<p class="text-sm">"[Nombre], valoro mucho tu rapidez en la entrega. Sin embargo, noté errores recurrentes en [X] que afectan la calidad final. Por favor, revisa [Y] con más detalle la próxima vez. Confío en que con ese ajuste tu trabajo será excelente."</p>',
                 false, ["Agresivo", "Desmotivante"]),
 
             createCase(106, 'office', 'Responder Queja Cliente', 'support_agent', 'Cliente enojado.', 
                 'Responde a este cliente que reclama por demora.', 
                 'Disculpe la demora, tuvimos problemas. Ya le llegará.', 
-                '{r}Gerente de Customer Success.{/r} {c}Cliente reclama retraso de [X días] en su pedido [ID].{/c} {m}Redacta una respuesta pidiendo disculpas y ofreciendo una compensación.{/m} {l}Tono empático y profesional.{/l}',
+                '{r}Eres Gerente de Customer Success.{/r} Un {c}cliente reclama retraso de [X días] en su pedido [ID].{/c} {m}Redacta una respuesta pidiendo disculpas y ofreciendo una compensación.{/m} Importante: {l}Mantén un tono empático y muy profesional.{/l}',
                 '<div class="bg-slate-50 p-3 text-sm">"Estimado [Cliente], lamento profundamente el retraso. Esto no cumple con nuestro estándar de servicio. Su pedido llegará el [Fecha]. Como compensación, hemos abonado un [X]% de descuento en su próxima compra."</div>',
                 false, ["Sin Solución Concreta", "Excusa Genérica"]),
 
@@ -334,35 +334,35 @@
             createCase(201, 'finance', 'Negociación Salarial', 'payments', 'Pedir aumento.', 
                 'Cómo pido más plata.', 
                 'Dile que la inflación está alta y no te alcanza.', 
-                '{r}Coach de Carrera y Negociación.{/r} {c}Llevo [X] años, superé objetivos en un [Y]%.{/c} {m}Guion para pedir aumento basado en valor, no en necesidad.{/m} {f}Script: Apertura, Datos, Cierre.{/f}',
+                '{r}Eres mi Coach de Carrera.{/r} Te doy mis datos: {c}Llevo [X] años, y superé mis objetivos en un [Y]%.{/c} Necesito un {m}guion para pedir aumento basado en valor, no en necesidad.{/m} {f}Usa esta estructura: Apertura, Datos, Cierre.{/f}',
                 '<ul class="text-sm list-disc ml-4"><li><strong>Apertura:</strong> "Me gustaría revisar mis resultados del último año..."</li><li><strong>Datos:</strong> "Logré aumentar [KPI] en un [Y]%, generando [Valor] para la empresa."</li><li><strong>Cierre:</strong> "Basado en esto, solicito un ajuste del [Z]%."</li></ul>',
                 false, ["Enfoque en Necesidad Personal", "Sin Evidencia"]),
 
             createCase(202, 'finance', 'Regla 50/30/20', 'pie_chart', 'Desorden gastos.', 
                 'Organiza mi sueldo de [Monto].', 
                 'Gasta menos en tonterías y ahorra lo que sobre.', 
-                '{r}Asesor Financiero Personal.{/r} {c}Sueldo líquido de [Monto].{/c} {m}Aplica la regla 50/30/20.{/m} {f}Tabla con montos exactos para Necesidades, Deseos y Ahorro.{/f}',
+                '{r}Actúa como Asesor Financiero Personal.{/r} {c}Gano un sueldo líquido de [Monto].{/c} Quiero que {m}apliques la regla 50/30/20 a mis finanzas.{/m} {f}Dame una tabla con los montos exactos para Necesidades, Deseos y Ahorro.{/f}',
                 '<table class="w-full text-xs text-left"><tr><th>Categoría</th><th>%</th><th>Monto</th></tr><tr><td>Necesidades</td><td>50%</td><td>$[Calc]</td></tr><tr><td>Deseos</td><td>30%</td><td>$[Calc]</td></tr><tr><td>Ahorro</td><td>20%</td><td>$[Calc]</td></tr></table>',
                 false, ["Consejo Vago", "Sin Estructura"]),
 
             createCase(203, 'finance', 'Explicar Interés Compuesto', 'trending_up', 'Concepto difícil.', 
                 'Qué es el interés compuesto.', 
                 'Es cuando ganas intereses sobre los intereses.', 
-                '{r}Profesor de Finanzas.{/r} {m}Explica el interés compuesto a un niño de 10 años.{/m} {c}Usa una analogía de bolas de nieve.{/c} {f}Párrafo breve e inspirador.{/f}',
+                '{r}Eres un Profesor de Finanzas.{/r} Quiero que {m}expliques el interés compuesto a un niño de 10 años.{/m} Para que entienda, {c}usa una analogía de una bola de nieve.{/c} {f}Escribe un párrafo breve e inspirador.{/f}',
                 '<p class="text-sm">"Imagina una bola de nieve pequeña rodando cuesta abajo. Al principio es chica (tu dinero), pero a medida que rueda, se le pega más nieve (intereses), y esa nieve nueva atrae MÁS nieve. Al final, tienes una avalancha gigante sin haber hecho nada extra."</p>',
                 false, ["Definición de Diccionario", "Aburrido"]),
 
             createCase(204, 'finance', 'Evaluación Préstamo', 'calculate', 'Pedir crédito.', 
                 'Me conviene este crédito de consumo.', 
                 'Depende de la tasa. Mira si es baja.', 
-                '{r}Analista Bancario.{/r} {c}Crédito de [Monto] a [X] cuotas con tasa [Y]%.{/c} {m}Calcula el CAE aproximado y el costo total del crédito.{/m} {l}Adviérteme sobre seguros asociados.{/l}',
+                '{r}Actúa como Analista Bancario.{/r} Estoy evaluando un {c}crédito de [Monto] a [X] cuotas con tasa [Y]%.{/c} Por favor {m}calcula el CAE aproximado y el costo total del crédito.{/m} Además, {l}adviérteme sobre los seguros asociados.{/l}',
                 '<p class="text-sm"><strong>Costo Total:</strong> $[Monto Total]<br><strong>Advertencia:</strong> Revisa si incluye seguros de desgravamen obligatorios o voluntarios que inflan la cuota.</p>',
                 false, ["Sin Cálculo", "Sin Advertencias"]),
 
             createCase(205, 'finance', 'Email Cobranza', 'money_off', 'Cobrar a cliente.', 
                 'Cobra la factura vencida amablemente.', 
                 'Págame la factura que me debes hace días.', 
-                '{r}Gestor de Cobranzas Diplómatico.{/r} {c}Factura [N°] vencida hace [X] días.{/c} {m}Recordatorio de pago firme pero amable para no dañar la relación.{/m}',
+                '{r}Eres un Gestor de Cobranzas Diplómatico.{/r} Tengo una {c}factura [N°] vencida hace [X] días.{/c} {m}Redacta un recordatorio de pago firme pero muy amable para no dañar la relación.{/m}',
                 '<div class="bg-slate-50 p-3 text-sm">"Hola [Nombre], espero que estés bien. Te escribo amablemente para recordarte que la Factura [N°] venció el [Fecha]. ¿Podrías confirmarme si ya está en proceso de pago o si necesitan algún dato adicional?"</div>',
                 false, ["Agresivo", "Sin Tacto"]),
 
@@ -370,35 +370,35 @@
             createCase(301, 'marketing', 'Calendario Instagram', 'calendar_view_month', 'Sin ideas.', 
                 'Ideas para Instagram de [Negocio].', 
                 'Sube fotos de tus productos y pon precios.', 
-                '{r}Estratega de Contenidos Redes Sociales.{/r} {c}Negocio de [Rubro] enfocado en [Público].{/c} {m}3 Ideas de Reels educativos (No venta directa).{/m} {f}Tabla: Título, Gancho (Hook) y CTA.{/f}',
+                '{r}Eres Estratega de Contenidos.{/r} Tengo un {c}negocio de [Rubro] enfocado en [Público].{/c} {m}Dame 3 ideas de Reels educativos (No venta directa).{/m} {f}Preséntalo en una tabla: Título, Gancho (Hook) y CTA.{/f}',
                 '<table class="w-full text-xs"><tr><th>Título</th><th>Hook Visual</th></tr><tr><td>Mito vs Realidad</td><td>[Acción rompiendo algo]</td></tr><tr><td>Tutorial Rápido</td><td>"Deja de hacer esto..."</td></tr></table>',
                 false, ["Solo Venta", "Aburrido"]),
 
             createCase(302, 'marketing', 'Copy Anuncio Facebook', 'ads_click', 'Vender online.', 
                 'Haz un anuncio para vender [Producto].', 
                 'Compra [Producto], es el mejor del mercado. 50% descuento.', 
-                '{r}Copywriter experto en conversión.{/r} {c}Vendo [Producto] que soluciona [Dolor].{/c} {m}Redacta un anuncio usando la fórmula PAS (Problema-Agitación-Solución).{/m}',
+                '{r}Eres un Copywriter experto en conversión.{/r} Contexto: {c}Vendo [Producto] que soluciona [Dolor].{/c} {m}Redacta un anuncio usando la fórmula PAS (Problema-Agitación-Solución).{/m}',
                 '<p class="text-sm"><strong>Problema:</strong> ¿Cansado de [Problema]?<br><strong>Agitación:</strong> Cada día que pasa pierdes [X]...<br><strong>Solución:</strong> Con [Producto] recupera tu [Beneficio] en 24hs.</p>',
                 false, ["Genérico", "Sin Estructura Persuasiva"]),
 
             createCase(303, 'marketing', 'Títulos SEO Blog', 'search', 'Nadie lee mi blog.', 
                 'Títulos para un artículo de [Tema].', 
                 'Todo sobre [Tema]. Guía de [Tema].', 
-                '{r}Experto SEO y Clickbait Ético.{/r} {c}Artículo sobre [Tema] para principiantes.{/c} {m}5 Títulos irresistibles que incluyan la palabra clave.{/m} {l}Usa números y adjetivos de poder.{/l}',
+                '{r}Actúa como experto SEO.{/r} Acabo de escribir un {c}artículo sobre [Tema] para principiantes.{/c} {m}Dame 5 títulos irresistibles que incluyan la palabra clave.{/m} {l}Usa números y adjetivos de poder.{/l}',
                 '<ul class="list-disc ml-4 text-sm"><li>7 Secretos de [Tema] que nadie te contó.</li><li>[Tema]: La Guía Definitiva 2024.</li><li>Cómo dominar [Tema] en 5 pasos simples.</li></ul>',
                 false, ["Sin Gancho", "No Optimizado"]),
 
             createCase(304, 'marketing', 'Respuesta Hater', 'sentiment_very_dissatisfied', 'Crisis redes.', 
                 'Responde a un comentario malo en Facebook.', 
                 'Si no le gusta no compre. Adiós.', 
-                '{r}Community Manager Senior.{/r} {c}Usuario comenta "[Producto] es una estafa" en un post.{/c} {m}Responde para desactivar el conflicto y llevarlo a privado.{/m} {l}Nunca pelear en público.{/l}',
+                '{r}Eres Community Manager Senior.{/r} Un {c}usuario comentó "[Producto] es una estafa" en un post.{/c} {m}Responde para desactivar el conflicto y llevarlo a privado.{/m} Regla de oro: {l}Nunca pelear en público.{/l}',
                 '<div class="bg-slate-50 p-3 text-sm">"Hola [Nombre], nos preocupa mucho leer esto. Queremos revisar tu caso personalmente. Por favor escríbenos por DM para solucionarlo de inmediato."</div>',
                 false, ["Reactivo", "Daña Imagen"]),
 
             createCase(305, 'marketing', 'Guion TikTok Viral', 'video_camera_front', 'Video corto.', 
                 'Guion para TikTok de [Servicio].', 
                 'Hola, soy [Nombre] y vendo [Servicio]. Llámenme.', 
-                '{r}Guionista de Videos Cortos.{/r} {c}Ofrezco [Servicio].{/c} {m}Guion de 15 segundos.{/m} {f}Estructura: Gancho (3s), Valor (10s), Llamado a la acción (2s).{/f}',
+                '{r}Eres Guionista de Videos Cortos.{/r} Yo {c}ofrezco [Servicio].{/c} {m}Escribe un guion de 15 segundos.{/m} {f}Usa esta estructura: Gancho (3s), Valor (10s), Llamado a la acción (2s).{/f}',
                 '<p class="text-sm"><strong>0-3s:</strong> "No contrates a un [Servicio] sin saber esto..."<br><strong>3-13s:</strong> [Tip de alto valor]<br><strong>13-15s:</strong> "Sígueme para más tips."</p>',
                 false, ["Inicio Lento", "Sin Valor"]),
 
@@ -406,35 +406,35 @@
             createCase(401, 'personal', 'Menú Semanal', 'restaurant_menu', 'Qué comer.', 
                 'Dime qué comer esta semana.', 
                 'Lunes: Fideos. Martes: Arroz. Miércoles: Pizza.', 
-                '{r}Nutricionista Práctico.{/r} {c}Familia de 4, poco tiempo, presupuesto medio.{/c} {m}Menú lunes a viernes.{/m} {l}Platos que se cocinen en menos de 30 min.{/l}',
+                '{r}Actúa como Nutricionista Práctico.{/r} Somos una {c}familia de 4, con poco tiempo y presupuesto medio.{/c} {m}Arma un menú de lunes a viernes.{/m} {l}Solo platos que se cocinen en menos de 30 min.{/l}',
                 '<ul class="text-sm list-disc ml-4"><li><strong>Lun:</strong> Tallarines con salsa de [Verdura]. (15 min)</li><li><strong>Mar:</strong> Omelette de [Ingrediente]. (10 min)</li><li><strong>Mié:</strong> [Proteína] a la plancha con ensalada.</li></ul>',
                 false, ["Poco Saludable", "Sin Variedad"]),
 
             createCase(402, 'personal', 'Rutina Gym Casa', 'fitness_center', 'Ponerse en forma.', 
                 'Ejercicios para hacer en casa.', 
                 'Corre en el sitio y haz flexiones.', 
-                '{r}Entrenador Personal.{/r} {c}Sin equipo, nivel principiante.{/c} {m}Rutina Full Body de 20 min.{/m} {f}Tabla: Ejercicio, Series, Repeticiones.{/f}',
+                '{r}Eres Entrenador Personal.{/r} Estoy {c}sin equipo y soy nivel principiante.{/c} {m}Diseña una rutina Full Body de 20 min.{/m} {f}Preséntala en tabla: Ejercicio, Series, Repeticiones.{/f}',
                 '<table class="w-full text-xs"><tr><th>Ejercicio</th><th>Series</th><th>Reps</th></tr><tr><td>Sentadillas</td><td>3</td><td>15</td></tr><tr><td>Push-ups (rodillas)</td><td>3</td><td>10</td></tr></table>',
                 false, ["Sin Estructura", "Riesgo Lesión"]),
 
             createCase(403, 'personal', 'Email Vecinos Ruidosos', 'volume_up', 'Conflicto vecinal.', 
                 'Escribe mensaje al chat de vecinos por ruidos.', 
                 '¡Basta de meter bulla! ¡Dejen dormir!', 
-                '{r}Mediador Vecinal.{/r} {c}Vecino del [Depto] hace fiestas lunes a la noche.{/c} {m}Mensaje para el grupo de WhatsApp pidiendo silencio.{/m} {l}Amable pero firme, citando el reglamento.{/l}',
+                '{r}Actúa como Mediador Vecinal.{/r} El {c}vecino del [Depto] hace fiestas lunes a la noche.{/c} {m}Escribe un mensaje para el grupo de WhatsApp pidiendo silencio.{/m} {l}Sé amable pero firme, citando el reglamento.{/l}',
                 '<div class="bg-slate-50 p-3 text-sm">"Hola vecinos. Les recuerdo que según el reglamento, a partir de las [Hora] se debe moderar el ruido. Agradeceríamos mucho bajar el volumen para poder descansar. ¡Gracias!"</div>',
                 false, ["Violento", "Genera Pelea"]),
 
             createCase(404, 'personal', 'Planificador Viaje', 'flight', 'Vacaciones.', 
                 'Qué hacer en [Ciudad] 3 días.', 
                 'Visita el centro, el museo y come en el mercado.', 
-                '{r}Guía Turístico Local.{/r} {c}Viaje a [Ciudad] con niños.{/c} {m}Itinerario día por día.{/m} {l}Actividades aptas para familia.{/l}',
+                '{r}Eres un Guía Turístico Local.{/r} Tengo un {c}viaje a [Ciudad] con niños.{/c} {m}Crea un itinerario día por día.{/m} {l}Solo incluye actividades aptas para familia.{/l}',
                 '<ul class="text-sm list-disc ml-4"><li><strong>Día 1:</strong> Parque [Nombre] y Museo Interactivo.</li><li><strong>Día 2:</strong> Zoológico y Picnic en [Lugar].</li><li><strong>Día 3:</strong> Paseo en bote por [Lugar].</li></ul>',
                 false, ["Muy Genérico", "Sin Detalles"]),
 
             createCase(405, 'personal', 'Mensaje Ruptura', 'heart_broken', 'Terminar relación.', 
                 'Cómo termino con mi pareja por mensaje.', 
                 'Ya no te quiero. Chao.', 
-                '{r}Psicólogo de Parejas.{/r} {c}Relación de 6 meses, ya no hay química.{/c} {m}Mensaje para pedir hablar en persona (no terminar por texto).{/m} {l}Responsabilidad afectiva.{/l}',
+                '{r}Actúa como Psicólogo de Parejas.{/r} Tengo una {c}relación de 6 meses, pero ya no hay química.{/c} {m}Redacta un mensaje para pedir hablar en persona (no terminar por texto).{/m} {l}Usa responsabilidad afectiva.{/l}',
                 '<div class="bg-slate-50 p-3 text-sm">"Hola [Nombre], he estado pensando y necesito que hablemos de nosotros. ¿Podemos vernos hoy o mañana? Prefiero decírtelo en persona."</div>',
                 false, ["Cruel", "Cobarde"]),
 
@@ -442,21 +442,21 @@
             createCase(501, 'tech', 'Explicar Código', 'code', 'No entiendo este script.', 
                 'Qué hace este código: function x(a,b){return a+b}', 
                 'Suma dos números.', 
-                '{r}Senior Developer Mentor.{/r} {c}Estudiante de programación.{/c} {m}Explica la función línea por línea.{/m} {f}Comentarios en el código.{/f}',
+                '{r}Eres Senior Developer Mentor.{/r} Soy un {c}estudiante de programación.{/c} {m}Explícame esta función línea por línea.{/m} {f}Usa comentarios en el código.{/f}',
                 '<code class="text-xs bg-slate-800 text-green-400 p-2 block rounded">// Define función x con parámetros a y b\nfunction x(a, b) {\n  // Retorna la suma\n  return a + b;\n}</code>',
                 false, ["Muy Breve", "Sin Contexto"]),
 
             createCase(502, 'tech', 'Generar SQL', 'database', 'Consulta base de datos.', 
                 'Dame una query para ver usuarios activos.', 
                 'SELECT * FROM users WHERE active = 1', 
-                '{r}DBA Experto.{/r} {c}Tabla "Users" con campos "last_login" y "status".{/c} {m}Query para usuarios logueados en los últimos 30 días.{/m}',
+                '{r}Actúa como DBA Experto.{/r} Tengo una {c}tabla "Users" con campos "last_login" y "status".{/c} {m}Dame la query para usuarios logueados en los últimos 30 días.{/m}',
                 '<div class="font-mono text-xs bg-slate-800 text-orange-300 p-2 rounded">SELECT * FROM Users <br>WHERE last_login >= DATE_SUB(NOW(), INTERVAL 30 DAY);</div>',
                 false, ["Asume Campos", "Ineficiente"]),
 
             createCase(503, 'tech', 'Idea App', 'lightbulb', 'Emprender.', 
                 'Dame una idea para una app millonaria.', 
                 'Una app como Uber pero para pasear perros.', 
-                '{r}Consultor de Producto Digital.{/r} {c}Mercado saturado de delivery.{/c} {m}Idea de Micro-SaaS B2B nicho.{/m} {f}Problema, Solución, Monetización.{/f}',
+                '{r}Eres Consultor de Producto Digital.{/r} Veo el {c}mercado saturado de delivery.{/c} {m}Dame una idea de Micro-SaaS B2B de nicho.{/m} {f}Dime el Problema, Solución y Monetización.{/f}',
                 '<ul class="text-sm list-disc ml-4"><li><strong>Problema:</strong> Gestión de turnos en clínicas dentales.</li><li><strong>Solución:</strong> App de agenda automática con IA.</li><li><strong>Modelo:</strong> Suscripción mensual por dentista.</li></ul>',
                 false, ["Cliché", "Sin Modelo de Negocio"]),
 
@@ -464,29 +464,27 @@
             createCase(601, 'education', 'Tutor Socrático', 'psychology', 'Aprender pensando.', 
                 'Explícame la [Tema].', 
                 '[Tema] es cuando pasa X y Y. (Definición de Wikipedia)', 
-                '{r}Sócrates (Tutor).{/r} {c}Estudiante curioso sobre [Tema].{/c} {m}No des la respuesta. Hazme una pregunta que me haga deducirla.{/m}',
+                '{r}Actúa como Sócrates.{/r} Soy un {c}estudiante curioso sobre [Tema].{/c} {m}No me des la respuesta. Hazme una pregunta que me haga deducirla.{/m}',
                 '<div class="bg-slate-50 p-3 text-sm italic">"Interesante pregunta. Pero antes dime, si ocurriera [Situación opuesta], ¿crees que el resultado sería el mismo? ¿Por qué?"</div>',
                 false, ["Respuesta Directa", "No Genera Aprendizaje"]),
 
             createCase(602, 'education', 'Resumidor de Papers', 'article', 'Mucho texto.', 
                 'Resume este PDF de 20 páginas.', 
                 'El texto trata sobre [Tema] y dice que es importante.', 
-                '{r}Investigador Académico.{/r} {c}Paper científico sobre [Tema].{/c} {m}Extrae: Hipótesis, Metodología y Conclusión Principal.{/m}',
+                '{r}Eres Investigador Académico.{/r} Tengo este {c}paper científico sobre [Tema].{/c} {m}Extrae lo siguiente: Hipótesis, Metodología y Conclusión Principal.{/m}',
                 '<ul class="text-sm list-disc ml-4"><li><strong>Hipótesis:</strong> [A] afecta a [B].</li><li><strong>Método:</strong> Encuesta a 500 personas.</li><li><strong>Conclusión:</strong> Se confirmó la relación positiva.</li></ul>',
                 false, ["Muy Corto", "Pierde Datos Clave"]),
 
             createCase(603, 'education', 'Plan de Estudio', 'school', 'Examen cerca.', 
                 'Tengo examen de [Materia] mañana. Ayuda.', 
                 'Lee todo el libro y acuéstate temprano.', 
-                '{r}Coach de Aprendizaje Acelerado.{/r} {c}Tengo 4 horas antes del examen de [Materia].{/c} {m}Plan de estudio de emergencia (Pareto 80/20).{/m} {f}Horario por bloques.{/f}',
+                '{r}Actúa como Coach de Aprendizaje.{/r} Tengo solo {c}4 horas antes del examen de [Materia].{/c} {m}Arma un plan de estudio de emergencia (Pareto 80/20).{/m} {f}Dame un horario por bloques.{/f}',
                 '<ul class="text-sm list-disc ml-4"><li><strong>Hora 1:</strong> Conceptos clave y definiciones.</li><li><strong>Hora 2:</strong> Resolver exámenes pasados.</li><li><strong>Hora 3:</strong> Mapas mentales de memoria.</li></ul>',
                 false, ["Consejo Obvio", "Sin Estrategia"]),
         ];
 
         // --- GENERADOR DE CASOS (PARA LLEGAR A 100) ---
-        // Esto crea variantes semánticas válidas para llenar la bóveda visualmente.
         const variants = [
-            // OFFICE VARIATIONS
             {base: 101, t: 'Fórmula BuscarV', p: 'Ayuda buscarv'},
             {base: 101, t: 'Fórmula Si.Error', p: 'Quitar errores excel'},
             {base: 101, t: 'Tabla Dinámica', p: 'Como hacer tabla dinamica'},
@@ -495,59 +493,41 @@
             {base: 102, t: 'Email Felicitación', p: 'Felicitar equipo'},
             {base: 103, t: 'Resumen Acta Reunión', p: 'Resumir reunión'},
             {base: 104, t: 'Agenda Brainstorming', p: 'Reunion ideas'},
-            // FINANCE VARIATIONS
             {base: 201, t: 'Negociar Arriendo', p: 'Bajar arriendo'},
             {base: 201, t: 'Negociar Proveedor', p: 'Pedir descuento'},
             {base: 202, t: 'Presupuesto Viaje', p: 'Calcular viaje'},
             {base: 202, t: 'Presupuesto Boda', p: 'Gastos matrimonio'},
             {base: 203, t: 'Explicar Inflación', p: 'Que es inflacion'},
             {base: 203, t: 'Explicar Bitcoin', p: 'Que es bitcoin'},
-            // MARKETING VARIATIONS
             {base: 301, t: 'Post LinkedIn Viral', p: 'Escribir en linkedin'},
             {base: 301, t: 'Hilo de Twitter', p: 'Escribir hilo'},
             {base: 302, t: 'Email Marketing Frío', p: 'Vender por correo'},
             {base: 302, t: 'Guion Webinar', p: 'Charla ventas'},
-            // PERSONAL VARIATIONS
             {base: 401, t: 'Menú Vegetariano', p: 'Comida sin carne'},
             {base: 401, t: 'Menú Keto', p: 'Dieta keto'},
             {base: 402, t: 'Rutina Yoga', p: 'Yoga casa'},
             {base: 402, t: 'Rutina Estiramiento', p: 'Dolor espalda'},
             {base: 403, t: 'Mensaje Cobrar Amigo', p: 'Cobrar plata amigo'},
             {base: 404, t: 'Viaje Playa', p: 'Ir a la playa'},
-            // TECH VARIATIONS
             {base: 501, t: 'Explicar Error Python', p: 'Error codigo'},
             {base: 501, t: 'Documentar API', p: 'Docs api'},
             {base: 502, t: 'Query Delete', p: 'Borrar datos'},
-            // EDUCATION VARIATIONS
             {base: 601, t: 'Tutor Inglés', p: 'Aprender ingles'},
             {base: 601, t: 'Tutor Historia', p: 'Aprender historia'},
             {base: 603, t: 'Plan Tesis', p: 'Escribir tesis'},
         ];
 
-        // Generate extra cases based on existing templates
         let idGen = 1000;
         variants.forEach(v => {
             const baseCase = allCases.find(c => c.id === v.base);
             if(baseCase) {
                 allCases.push(createCase(
-                    idGen++, 
-                    baseCase.category, 
-                    v.t, 
-                    baseCase.icon, 
-                    'Variante: ' + baseCase.problem, 
-                    v.p, 
-                    baseCase.badResPreview, 
-                    baseCase.agiaPromptTagged, // Reuses template structure
-                    baseCase.previewResponse, 
-                    false // Unlocked for review
+                    idGen++, baseCase.category, v.t, baseCase.icon, 'Variante: ' + baseCase.problem, v.p, baseCase.badResPreview, baseCase.agiaPromptTagged, baseCase.previewResponse, false
                 ));
             }
         });
 
-        // Fill remaining slots to reach 100 if needed
-        while(allCases.length < 100) {
-            allCases.push(createCase(idGen++, 'office', `Plantilla Pro #${idGen}`, 'description', 'Caso avanzado.', '...', '...', '...', '...', false));
-        }
+        // SE ELIMINÓ EL BUCLE "WHILE" QUE GENERABA PLANTILLAS PRO VACÍAS
 
         // --- LOGIC ---
         let currentCategory = 'office';
@@ -563,11 +543,17 @@
             const nav = document.getElementById('category-nav');
             nav.innerHTML = Object.keys(categoryConfig).map(key => {
                 const conf = categoryConfig[key];
+                // Count cases in this category
+                const count = allCases.filter(c => c.category === key).length;
+                
                 const isActive = currentCategory === key;
                 const activeClass = isActive 
                     ? `bg-${conf.color}-100 text-${conf.color}-700 border-${conf.color}-200 shadow-sm ring-1 ring-${conf.color}-200` 
                     : `bg-white text-slate-500 border-slate-100 hover:bg-slate-50`;
-                return `<button onclick="setCategory('${key}')" class="flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold transition-all whitespace-nowrap ${activeClass}"><span class="material-symbols-outlined text-lg">${conf.icon}</span>${conf.label}</button>`;
+                return `<button onclick="setCategory('${key}')" class="flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold transition-all whitespace-nowrap ${activeClass}">
+                    <span class="material-symbols-outlined text-lg">${conf.icon}</span>
+                    ${conf.label} <span class="ml-1 opacity-60 text-[10px] bg-white/50 px-1.5 py-0.5 rounded-full">(${count})</span>
+                </button>`;
             }).join('');
         }
 
