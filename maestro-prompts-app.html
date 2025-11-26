@@ -299,106 +299,119 @@
         // --- DATA ENGINE ---
         
         const categoryConfig = {
-            personal: { label: "Vida Personal", color: "blue", icon: "home" },
-            office: { label: "Oficina", color: "emerald", icon: "business_center" },
+            office: { label: "Oficina & Excel", color: "emerald", icon: "business_center" },
+            finance: { label: "Finanzas (Nuevo)", color: "cyan", icon: "attach_money" }, // NUEVA CATEGORIA
             marketing: { label: "Marketing", color: "pink", icon: "campaign" },
+            personal: { label: "Vida Personal", color: "blue", icon: "home" },
             tech: { label: "Tecnología", color: "violet", icon: "code" },
             education: { label: "Educación", color: "amber", icon: "school" }
         };
 
         // Función extendida con propiedad LOCKED (Bloqueo)
-        const createCase = (id, cat, title, icon, problem, badPrompt, goodPromptTagged, goodResPreview, locked = true, deficiencies = []) => ({
+        const createCase = (id, cat, title, icon, problem, badPrompt, goodPromptTagged, goodResPreview, locked = false, deficiencies = []) => ({
             id, category: cat, title, icon, problem, 
             badPrompt, 
             agiaPromptTagged: goodPromptTagged, 
             previewResponse: goodResPreview,
-            locked: locked, // TRUE = Candado, FALSE = Abierto
+            locked: locked, // TRUE = Candado, FALSE = Abierto (AHORA TODO FALSE PARA REVISIÓN)
             deficiencies: deficiencies.length ? deficiencies : ["Sin Rol", "Contexto Vago"]
         });
 
         // --- BASE DE DATOS DE PROMPTS ---
-        // NOTA BI: Aquí configuro cuáles son GRATIS (false) y cuáles DE PAGO (true)
+        // NOTA: Para vender, después cambiaremos 'false' a 'true' en los casos Premium.
         const allCases = [
-            // GRATIS (GANCHOS) -- AHORA CON HTML COMPLETO EN 'goodResPreview'
-            createCase(1, 'personal', 'Menú de Supervivencia', 'restaurant', 'Sobras en la nevera y cero ideas.', 
-                'Dime qué cocinar con huevo y arroz.', 
-                '{r}Actúa como un chef Michelin experto en cocina de aprovechamiento.{/r} {c}Tengo [2 huevos, arroz frío, espinaca] y necesito usarlo todo.{/c} {m}Dame una receta creativa, paso a paso, que parezca gourmet pero tome menos de 15 minutos.{/m} {f}Incluye nombre del plato y sugerencia de emplatado.{/f}',
-                '<p class="font-bold text-indigo-700 mb-2">Tortilla "Soufflé" de Arroz y Espinacas a la Florentina 🍳</p><ol class="list-decimal ml-4 space-y-2"><li><strong>Cristalizar (3 min):</strong> Saltea las espinacas con ajo.</li><li><strong>Airear (2 min):</strong> Bate claras a punto de nieve y mezcla con arroz.</li><li><strong>Fusión (5 min):</strong> Cocina a fuego lento.</li><li><strong>Emplatado:</strong> Hilo de aceite de oliva y pimienta.</li></ol>',
+            
+            // --- OFICINA & EXCEL (EL DOLOR MÁS GRANDE) ---
+            createCase(22, 'office', 'El Mago de Excel', 'table_view', 'No sé qué fórmula usar.', 
+                'Ayuda con excel para sumar si cumple condición.', 
+                '{r}Actúa como un instructor experto de Excel MVP.{/r} {c}Tengo una tabla de Ventas con [Columna A: Vendedores, Columna B: Mes, Columna C: Monto].{/c} {m}Necesito una fórmula para sumar el total vendido por "Juan" en "Enero".{/m} {f}Dame la fórmula SUMAR.SI.CONJUNTO y explica los argumentos.{/f}',
+                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2">=SUMAR.SI.CONJUNTO(C:C; A:A; "Juan"; B:B; "Enero")</div><ul class="list-disc ml-4 space-y-1 text-slate-600"><li><strong>C:C</strong> = Rango a sumar (Montos)</li><li><strong>A:A</strong> = Rango criterio 1 (Vendedores)</li><li><strong>B:B</strong> = Rango criterio 2 (Meses)</li></ul>',
                 false, 
-                ["Sin Rol", "Sin Límites"]),
-
-            createCase(2, 'personal', 'Entrenador Casero', 'fitness_center', 'Quiero ejercitarme sin equipo.', 
-                'Dame una rutina de ejercicios.', 
-                '{r}Eres mi entrenador personal certificado nivel élite.{/r} {c}Tengo [20 minutos] y [cero equipo].{/c} {m}Diseña una rutina HIIT.{/m} {l}Sin saltos.{/l} {f}Tabla con tiempos.{/f}',
-                '<table class="w-full text-left border-collapse text-xs"><thead><tr class="bg-indigo-100"><th class="p-1">Ejercicio</th><th class="p-1">Tiempo</th></tr></thead><tbody><tr><td class="p-1 border-b">Burpees sin salto</td><td class="p-1 border-b">45s</td></tr><tr><td class="p-1 border-b">Escaladores</td><td class="p-1 border-b">45s</td></tr><tr><td class="p-1 border-b">Plancha</td><td class="p-1 border-b">45s</td></tr></tbody></table><p class="mt-2 text-[10px] text-slate-500"><em>🔁 Repetir 3 veces.</em></p>',
-                false, 
-                ["Sin Contexto", "Sin Formato"]),
+                ["Sin Contexto de Datos", "Petición Genérica"]),
 
             createCase(21, 'office', 'Traductor Corporativo', 'translate', 'Escribir email difícil.', 
-                'Arregla este correo agresivo.', 
-                '{r}Actúa como experto en diplomacia corporativa.{/r} {c}Debo rechazar una tarea extra.{/c} {m}Reescribe para sonar profesional pero firme.{/m}',
-                '<div class="bg-white p-2 rounded border border-slate-200 italic text-slate-600">"Estimado [Nombre],<br><br>He revisado la solicitud y noto que estas nuevas responsabilidades exceden el alcance actual de mi rol.<br><br>Sugiero agendar una reunión para revisar formalmente mis funciones.<br><br>Saludos."</div>',
+                'Redacta un correo para decir que no alcanzo a entregar.', 
+                '{r}Actúa como experto en comunicación asertiva.{/r} {c}Estoy atrasado con el informe mensual por falta de datos de Finanzas.{/c} {m}Escribe un correo a mi jefe informando el retraso sin sonar irresponsable.{/m} {l}Propón nueva fecha (Viernes). Tono profesional pero firme.{/l}',
+                '<div class="bg-white p-2 rounded border border-slate-200 italic text-slate-600">"Hola [Nombre],<br><br>Te escribo para actualizarte sobre el informe mensual. Debido a una demora en la recepción de la data de Finanzas, no podré cerrarlo hoy como estaba previsto.<br><br>Ya gestioné la entrega de los datos faltantes y podré enviarte el informe completo este <strong>viernes antes del mediodía</strong>.<br><br>Gracias por tu comprensión."</div>',
                 false, 
-                ["Tono Agresivo", "Sin Contexto"]),
+                ["Excusa Vaga", "Sin Propuesta de Solución"]),
 
-            // DE PAGO (LOCKED = TRUE) - SE MANTIENEN IGUAL (Snippet corto)
-            createCase(3, 'personal', 'Consejero de Regalos', 'card_giftcard', 'No sé qué regalar.', 
-                'Ideas regalo hombre 40 años.', 
-                '{r}Personal Shopper Tech.{/r} {c}Hombre 40 años, ama asados.{/c} {m}5 ideas originales.{/m}',
-                '1. Termómetro Bluetooth para carne...',
-                true, // BLOQUEADO
-                ["Muy Genérico"]),
+            // --- FINANZAS (NUEVO) ---
+            createCase(90, 'finance', 'Negociador de Sueldo', 'payments', 'Pedir aumento da miedo.', 
+                'Cómo pido un aumento de sueldo.', 
+                '{r}Actúa como un coach de negociación salarial.{/r} {c}Llevo 2 años en la empresa, superé mis KPIs en un 20% y el mercado paga un 15% más.{/c} {m}Dame un guion para la reunión con mi jefe.{/m} {l}Sin ultimatums, enfocado en valor aportado.{/l} {f}Estructura: Apertura, Evidencia, Petición.{/f}',
+                '<p class="font-bold mb-1">Guion de la Reunión:</p><ul class="list-disc ml-4 space-y-2"><li><strong>Apertura:</strong> "Gracias por el tiempo. Quería revisar mi trayectoria de estos 2 años..."</li><li><strong>Evidencia:</strong> "Como sabes, logré superar la meta en un 20%, lo que trajo X beneficio..."</li><li><strong>Petición:</strong> "Basado en estos resultados y el mercado actual, solicito un ajuste salarial del 15% para alinear mi compensación con mi aporte."</li></ul>',
+                false, 
+                ["Sin Datos", "Enfoque en Necesidad Propia"]),
 
-            createCase(4, 'personal', 'Planificador de Viajes', 'flight', 'Viaje express sin plan.', 
-                'Qué hacer en CDMX 3 días.', 
-                '{r}Guía Local experto.{/r} {c}Evitar trampas turísticas.{/c} {m}Itinerario real.{/m}',
-                'Día 1: Tacos en Los Especiales...',
-                true, // BLOQUEADO
-                ["Plan Vago"]),
+            createCase(91, 'finance', 'Analista de Gastos', 'pie_chart', 'No sé en qué se me va la plata.', 
+                'Ayúdame a ordenar mis gastos.', 
+                '{r}Actúa como asesor financiero personal.{/r} {c}Gano $1.5M líquidos y siento que no llego a fin de mes.{/c} {m}Crea una estructura de presupuesto basada en la regla 50/30/20 adaptada a la realidad chilena.{/m} {f}Tabla con montos sugeridos y categorías.{/f}',
+                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-cyan-100"><th class="p-1">Regla</th><th class="p-1">Monto</th><th class="p-1">Destino</th></tr></thead><tbody><tr><td>50% Necesidades</td><td>$750.000</td><td>Arriendo, Supermercado, Cuentas</td></tr><tr><td>30% Deseos</td><td>$450.000</td><td>Salidas, Netflix, Rappi</td></tr><tr><td>20% Ahorro/Deuda</td><td>$300.000</td><td>Fondo Emergencia, Pago Tarjeta</td></tr></tbody></table>',
+                false, 
+                ["Sin Cifras", "Meta Vaga"]),
 
-            createCase(22, 'office', 'Mago de Excel', 'table_view', 'Fórmulas complejas.', 
-                'Cómo separo nombres.', 
-                '{r}Instructor Excel MVP.{/r} {m}Fórmula para separar Nombre/Apellido.{/m}',
-                '=IZQUIERDA(A1;HALLAR(" ";A1)-1)...',
-                true, // BLOQUEADO
-                ["Sin Lógica"]),
-
+            // --- MARKETING (GANCHO FUERTE) ---
             createCase(41, 'marketing', 'Calendario RRSS', 'calendar_month', 'Bloqueo creativo.', 
-                'Ideas Instagram Café.', 
-                '{r}Social Media Manager.{/r} {m}3 ideas Edutainment.{/m} {f}Tabla con Ganchos.{/f}',
-                'Reel: ASMR moliendo granos...',
-                true, // BLOQUEADO
-                ["Sin Estrategia"]),
-                
-            createCase(81, 'education', 'Tutor Socrático', 'psychology', 'Aprender conceptos.', 
-                'Qué es la Justicia.', 
-                '{r}Sócrates.{/r} {m}Hazme preguntas, no des respuestas.{/m}',
-                '¿Es justo devolver un arma a un loco?...',
-                true, // BLOQUEADO
-                ["Respuesta Directa"])
+                'Ideas para posts de Instagram de café.', 
+                '{r}Social Media Manager experto en viralidad.{/r} {c}Vendo café de grano online.{/c} {m}Dame 3 ideas de Reels que sean "Edutainment" (Educar + Entretener) para atraer clientes nuevos.{/m} {f}Tabla: Título, Gancho Visual (primeros 3 seg) y CTA.{/f}',
+                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-pink-100"><th class="p-1">Título</th><th class="p-1">Gancho Visual</th></tr></thead><tbody><tr><td>Tu café sabe amargo</td><td>Tirar el café al lavaplatos con cara de asco 🤢</td></tr><tr><td>Ahorra $50.000/mes</td><td>Pantallazo de gastos en Starbucks vs. Bolsa de grano 📉</td></tr><tr><td>ASMR Mañanero</td><td>Solo sonido de molienda y agua cayendo (Satisfying) 🎧</td></tr></tbody></table>',
+                false, 
+                ["Muy Genérico", "Sin Formato Viral"]),
+
+            // --- PERSONAL ---
+            createCase(1, 'personal', 'Menú de Supervivencia', 'restaurant', 'Sobras en la nevera.', 
+                'Qué cocino con huevo y arroz.', 
+                '{r}Chef Michelin de cocina de aprovechamiento.{/r} {c}Tengo huevos, arroz frío y espinaca.{/c} {m}Receta gourmet en 15 min.{/m}',
+                '<p class="font-bold text-indigo-700">Tortilla "Soufflé" Florentina</p>...',
+                false, ["Sin Rol", "Sin Límites"]),
+
+            createCase(3, 'personal', 'Consejero de Regalos', 'card_giftcard', 'Regalo hombre 40 años.', 
+                'Qué le regalo a mi marido.', 
+                '{r}Personal Shopper.{/r} {c}40 años, tecnológico, parrillero.{/c} {m}5 ideas bajo $30.000.{/m}',
+                '1. Termómetro Bluetooth para asado...',
+                false, ["Información Insuficiente"]),
+
+            createCase(4, 'personal', 'Planificador de Viajes', 'flight', 'Viaje express.', 
+                'Qué hacer en Buenos Aires 3 días.', 
+                '{r}Guía porteño local.{/r} {c}Evitar trampas turísticas.{/c} {m}Itinerario real de comida y paseos.{/m}',
+                'Día 1: Pizza en Guerrin y Teatro Colón...',
+                false, ["Muy Amplio"]),
+
+            // --- EDUCATION ---
+            createCase(81, 'education', 'Tutor Socrático', 'psychology', 'Estudiar activo.', 
+                'Explícame la inflación.', 
+                '{r}Profesor de Economía.{/r} {m}Explícalo como si tuviera 10 años usando el ejemplo de las láminas del álbum del mundial.{/m}',
+                '"Imagina que todos tienen 10 láminas. Si de pronto el profesor regala 1000 láminas a cada uno, ¿tus láminas valen más o menos?..."',
+                false, ["Muy Complejo"])
         ];
 
-        // RELLENO PARA QUE SE VEA LLENO (SOLO VISUAL, TODOS BLOQUEADOS)
+        // --- GENERADOR DE RELLENO (PARA QUE PAREZCAN 100+) ---
         const fillers = [
-            {t: 'Analista de Datos SQL', c: 'tech'}, {t: 'Resumidor de Papers', c: 'education'}, 
-            {t: 'Creador de Logos Midjourney', c: 'marketing'}, {t: 'Negociador de Salario', c: 'office'},
-            {t: 'Asistente Legal Contratos', c: 'office'}, {t: 'Debuggueador de Python', c: 'tech'}
+            {t: 'Crear Logo Midjourney', c: 'marketing'}, {t: 'Resumidor de Papers PDF', c: 'education'}, 
+            {t: 'Debuggueador de Python', c: 'tech'}, {t: 'Script de Ventas en Frío', c: 'office'},
+            {t: 'Plan de Entrenamiento Maratón', c: 'personal'}, {t: 'Meditación Guiada', c: 'personal'},
+            {t: 'Analista de Contratos Legales', c: 'office'}, {t: 'Generador de Quiz', c: 'education'},
+            {t: 'Traductor de Código Legacy', c: 'tech'}, {t: 'Estratega de SEO', c: 'marketing'},
+            {t: 'Carta de Recomendación', c: 'office'}, {t: 'Planificador de Boda', c: 'personal'}
         ];
         
         let idCounter = 100;
-        fillers.forEach(f => {
-            allCases.push(createCase(idCounter++, f.c, f.t, 'lock', 'Contenido Premium', '...', '...', '...', true));
-        });
+        // Multiplicamos los fillers para que se vea lleno
+        for(let i=0; i<3; i++) {
+            fillers.forEach(f => {
+                allCases.push(createCase(idCounter++, f.c, f.t, 'lock', 'Contenido Premium', 'Ayuda...', '...', '...', false)); // <--- AQUÍ TAMBIÉN DESBLOQUEADO
+            });
+        }
 
         // --- LÓGICA UI ---
-        let currentCategory = 'personal';
+        let currentCategory = 'office'; // Empezar en Oficina que es fuerte
         let searchQuery = '';
 
         function init() {
             renderCategories();
             renderCaseList();
-            // Cargar el primer caso gratuito por defecto
-            selectCase(1);
+            selectCase(22); // Seleccionar Excel por defecto
         }
 
         function renderCategories() {
