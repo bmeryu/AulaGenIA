@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         
         /* Custom Scrollbar */
         .custom-scroll::-webkit-scrollbar { width: 6px; }
@@ -25,12 +25,14 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         
-        /* Highlight Classes for Prompts - Updated for continuous text flow */
-        .hl-rol { background-color: #eff6ff; color: #1d4ed8; border-bottom: 2px solid #3b82f6; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-        .hl-contexto { background-color: #ecfdf5; color: #047857; border-bottom: 2px solid #10b981; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-        .hl-meta { background-color: #fffbeb; color: #b45309; border-bottom: 2px solid #f59e0b; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-        .hl-limites { background-color: #fef2f2; color: #b91c1c; border-bottom: 2px solid #ef4444; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-        .hl-formato { background-color: #f3e8ff; color: #7e22ce; border-bottom: 2px solid #a855f7; padding: 2px 6px; border-radius: 4px; cursor: help; font-weight: 500; display: inline; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+        .blur-locked { filter: blur(4px); user-select: none; pointer-events: none; }
+        
+        /* Highlight Classes for Prompts - AGIA SYSTEM */
+        .hl-rol { background-color: #dbeafe; color: #1e40af; border-bottom: 2px solid #60a5fa; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+        .hl-contexto { background-color: #d1fae5; color: #065f46; border-bottom: 2px solid #34d399; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+        .hl-meta { background-color: #fef3c7; color: #92400e; border-bottom: 2px solid #fbbf24; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+        .hl-limites { background-color: #fee2e2; color: #b91c1c; border-bottom: 2px solid #f87171; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+        .hl-formato { background-color: #f3e8ff; color: #6b21a8; border-bottom: 2px solid #a855f7; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
 
         .prose-sm p { margin-bottom: 0.5em; }
         .prose-sm ul, .prose-sm ol { margin-left: 1.2em; margin-bottom: 0.5em; }
@@ -51,13 +53,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-4">
-                    <div class="h-10 w-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-xl shadow-indigo-200 shadow-lg">AG</div>
+                    <!-- Logo Placeholder -->
+                    <div class="h-10 w-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-xl">AG</div>
                     <div class="border-l border-slate-200 pl-4">
                         <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">Bóveda de Prompts <span class="text-indigo-600">AGIA</span></h1>
-                        <p class="text-xs text-slate-500 font-medium">Librería de Copiar & Pegar</p>
+                        <p class="text-xs text-slate-500 font-medium">Librería de Ingeniería de Prompts</p>
                     </div>
                 </div>
-                <button onclick="openPaywall()" class="hidden md:flex bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-800 transition-all items-center gap-2">
+                <!-- Botón Compra Header -->
+                <button onclick="openPaywall()" class="hidden md:flex bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:shadow-lg transition-all items-center gap-2 border border-slate-700">
                     <span class="material-symbols-outlined text-sm text-yellow-400">lock_open</span>
                     DESBLOQUEAR TODO
                 </button>
@@ -66,7 +70,7 @@
             <!-- Category Navigation -->
             <div class="overflow-x-auto custom-scroll pb-2">
                 <div class="flex space-x-2 min-w-max" id="category-nav">
-                    <!-- JS injects categories here -->
+                    <!-- Injected by JS -->
                 </div>
             </div>
         </div>
@@ -100,8 +104,10 @@
 
         <!-- Main Content -->
         <main class="flex-1 flex flex-col bg-slate-50/50 overflow-hidden relative w-full">
+            
+            <!-- Case Detail -->
             <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 pb-24">
-                <div class="max-w-6xl mx-auto fade-in">
+                <div class="max-w-4xl mx-auto fade-in">
                     
                     <!-- Title Header -->
                     <div class="flex items-center gap-4 mb-6 border-b border-slate-200 pb-6">
@@ -112,7 +118,7 @@
                             <div class="flex items-center gap-2 mb-1">
                                 <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Categoría</span>
                                 <span class="text-[10px] font-medium text-slate-400 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-100">
-                                    <span class="material-symbols-outlined text-[10px] text-green-500">verified</span> Validado por AGIA
+                                    <span class="material-symbols-outlined text-[10px] text-green-500">verified</span> Estructura AGIA
                                 </span>
                             </div>
                             <h2 id="detail-title" class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">Título del Caso</h2>
@@ -121,98 +127,100 @@
                     </div>
 
                     <!-- AGIA LEGEND -->
-                    <div class="mb-6 bg-white rounded-xl border border-slate-200 p-4 shadow-sm overflow-x-auto">
-                        <div class="flex items-center justify-between min-w-max gap-4">
-                            <h3 class="text-xs font-bold text-slate-400 uppercase mr-4">La Fórmula AGIA:</h3>
-                            <div class="flex gap-4 text-xs">
-                                <div class="flex items-center gap-1.5 px-2 py-1 bg-blue-50 rounded border border-blue-100"><div class="w-2 h-2 rounded-full bg-blue-500"></div><span class="font-bold text-blue-700">Rol</span></div>
-                                <div class="flex items-center gap-1.5 px-2 py-1 bg-emerald-50 rounded border border-emerald-100"><div class="w-2 h-2 rounded-full bg-emerald-500"></div><span class="font-bold text-emerald-700">Contexto</span></div>
-                                <div class="flex items-center gap-1.5 px-2 py-1 bg-amber-50 rounded border border-amber-100"><div class="w-2 h-2 rounded-full bg-amber-500"></div><span class="font-bold text-amber-700">Meta</span></div>
-                                <div class="flex items-center gap-1.5 px-2 py-1 bg-red-50 rounded border border-red-100"><div class="w-2 h-2 rounded-full bg-red-500"></div><span class="font-bold text-red-700">Límites</span></div>
-                                <div class="flex items-center gap-1.5 px-2 py-1 bg-purple-50 rounded border border-purple-100"><div class="w-2 h-2 rounded-full bg-purple-500"></div><span class="font-bold text-purple-700">Formato</span></div>
+                    <div class="mb-4 bg-white rounded-xl border border-slate-200 p-3 overflow-x-auto">
+                        <div class="flex justify-between items-center min-w-max gap-4 md:gap-0">
+                            <!-- ROL -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold hl-rol border-none">1</div>
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Rol</span>
+                            </div>
+                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
+                            <!-- CONTEXTO -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold hl-contexto border-none">2</div>
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Contexto (Adjuntar)</span>
+                            </div>
+                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
+                            <!-- META -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded bg-amber-100 text-amber-600 flex items-center justify-center text-[10px] font-bold hl-meta border-none">3</div>
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Meta</span>
+                            </div>
+                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
+                            <!-- LIMITES -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded bg-red-100 text-red-600 flex items-center justify-center text-[10px] font-bold hl-limites border-none">4</div>
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Límites</span>
+                            </div>
+                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
+                            <!-- FORMATO -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-bold hl-formato border-none">5</div>
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Formato</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- COMPARISON GRID: PROMPTS (ROW 1) -->
-                    <div class="grid md:grid-cols-12 gap-6 mb-10">
+                    <!-- PROMPT BOX (HERO) -->
+                    <div class="bg-slate-900 rounded-2xl p-1 shadow-2xl mb-8 border border-slate-700 relative group">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500 opacity-20 rounded-full -mr-10 -mt-10 blur-3xl group-hover:opacity-30 transition-opacity"></div>
                         
-                        <!-- BAD PROMPT (Left - Smaller) -->
-                        <div class="md:col-span-4 flex flex-col">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm">close</span> Lo que escribe la mayoría
-                                </h3>
+                        <!-- Header Prompt Box -->
+                        <div class="bg-slate-800/50 rounded-t-xl px-4 py-3 flex justify-between items-center border-b border-slate-700">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-yellow-400 text-sm">auto_awesome</span>
+                                <span class="text-xs font-bold text-slate-300 tracking-wider">PROMPT MAESTRO</span>
                             </div>
-                            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm h-full flex flex-col relative group">
-                                <div class="absolute top-0 left-0 w-1 h-full bg-slate-200 rounded-l-xl group-hover:bg-red-200 transition-colors"></div>
-                                <p id="detail-bad-prompt" class="font-mono text-sm text-slate-500 italic pl-2 my-auto leading-relaxed">"..."</p>
-                                <div class="mt-4 pt-3 border-t border-slate-100">
-                                    <div id="deficiency-badges" class="flex flex-wrap gap-2"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- GOOD PROMPT (Right - Hero) -->
-                        <div class="md:col-span-8 flex flex-col">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="text-xs font-bold text-indigo-600 uppercase tracking-wider flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm">auto_awesome</span> Prompt Maestro (AGIA)
-                                </h3>
-                                <button onclick="copyPrompt()" class="group flex items-center gap-2 text-[10px] bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-1 rounded-full font-bold transition-all border border-indigo-100">
-                                    <span class="material-symbols-outlined text-sm group-hover:animate-bounce">content_copy</span> 
+                            <div class="flex gap-2">
+                                <button onclick="copyPrompt()" class="flex items-center gap-2 text-xs bg-indigo-600 text-white hover:bg-indigo-500 px-4 py-1.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-indigo-500/25 ring-1 ring-white/10">
+                                    <span class="material-symbols-outlined text-sm">content_copy</span> 
                                     <span>COPIAR</span>
                                 </button>
                             </div>
-                            <div class="bg-slate-900 rounded-xl p-6 shadow-xl h-full border border-slate-700 relative overflow-hidden flex flex-col justify-center group">
-                                <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-600 opacity-10 rounded-full -mr-10 -mt-10 blur-3xl group-hover:opacity-20 transition-opacity"></div>
-                                <p id="detail-prompt-rendered" class="relative z-10 font-mono text-sm md:text-base text-slate-200 leading-relaxed whitespace-pre-wrap selection:bg-indigo-500 selection:text-white">...</p>
-                            </div>
+                        </div>
+
+                        <!-- Content Prompt Box -->
+                        <div class="p-6 relative">
+                            <p id="detail-prompt-rendered" class="font-mono text-sm md:text-base text-slate-200 leading-relaxed whitespace-pre-wrap select-all">...</p>
                         </div>
                     </div>
 
-                    <!-- DIVIDER / ARROW -->
-                    <div class="flex justify-center mb-10 -mt-4 relative z-10">
-                        <div class="bg-slate-100 rounded-full p-2 border-4 border-white shadow-sm text-slate-400">
-                            <span class="material-symbols-outlined text-2xl animate-bounce">arrow_downward</span>
-                        </div>
-                    </div>
-
-                    <!-- COMPARISON GRID: RESULTS (ROW 2) -->
-                    <div class="grid md:grid-cols-12 gap-6 mb-12">
-                        
-                        <!-- BAD RESULT -->
-                        <div class="md:col-span-4">
-                            <h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Resultado Pobre</h4>
-                            <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 h-full opacity-70 hover:opacity-100 transition-opacity">
-                                <div class="flex items-start gap-2 text-sm text-slate-500 italic">
-                                    <span class="material-symbols-outlined text-lg text-red-300 flex-none">cancel</span>
-                                    <div id="detail-bad-result">...</div>
+                    <!-- COMPARISON GRID -->
+                    <div class="mb-8">
+                        <div id="comparison-container" class="grid md:grid-cols-2 gap-6 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <!-- Bad Prompt -->
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-400 uppercase mb-2 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">close</span> Lo que escribe la mayoría
+                                </h3>
+                                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 text-sm text-slate-500 italic font-mono">
+                                    <p id="detail-bad-prompt">"..."</p>
                                 </div>
+                                <div class="mt-2 flex flex-wrap gap-2" id="deficiency-badges"></div>
                             </div>
-                        </div>
-
-                        <!-- GOOD RESULT -->
-                        <div class="md:col-span-8">
-                            <h4 class="text-xs font-bold text-indigo-600 uppercase mb-2 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-sm">check_circle</span> Resultado Experto
-                            </h4>
-                            <div class="bg-white rounded-xl p-6 border border-indigo-100 shadow-md h-full relative overflow-hidden">
-                                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-400 to-purple-500"></div>
-                                <div id="preview-response" class="text-sm text-slate-700 prose-sm max-w-none">
-                                    <!-- JS injects rich content here -->
+                            <!-- Result Preview -->
+                            <div class="border-l border-slate-100 pl-4 md:pl-6">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase mb-2 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-sm text-indigo-500">check_circle</span> Resultado Estimado
+                                </h3>
+                                <!-- Contenedor con scroll si es muy ancho -->
+                                <div class="overflow-x-auto">
+                                    <div id="preview-response" class="text-xs text-slate-700 prose-sm bg-indigo-50/50 p-4 rounded-lg border border-indigo-50">
+                                        <!-- JS injects preview here -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Footer Image -->
-                    <div class="mt-8 pt-8 border-t border-slate-200 opacity-60 hover:opacity-100 transition-opacity">
-                        <div class="flex items-center justify-center gap-2 mb-4">
-                            <span class="material-symbols-outlined text-slate-400">schema</span>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Referencia Visual: Estructura AGIA</p>
-                        </div>
-                        <img src="https://aulagenia.cl/maestro-prompts.png" alt="Estructura AGIA" class="w-full max-w-2xl mx-auto rounded-lg border border-slate-200 shadow-sm grayscale hover:grayscale-0 transition-all duration-500">
+                    <!-- AGIA MODEL IMAGE (Reference) -->
+                    <div class="mb-8 pt-8 border-t border-slate-200 opacity-80 hover:opacity-100 transition-opacity">
+                         <h3 class="text-xs font-bold text-slate-400 uppercase mb-4 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">schema</span> Referencia: La Estructura Maestra
+                         </h3>
+                         <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
+                             <img src="https://aulagenia.cl/maestro-prompts.png" alt="Modelo AGIA - Estructura Maestra" class="w-full h-auto rounded-lg">
+                         </div>
                     </div>
 
                 </div>
@@ -222,24 +230,37 @@
 
     <!-- PAYWALL MODAL -->
     <div id="paywall-modal" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closePaywall()"></div>
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
-            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-                <button onclick="closePaywall()" class="absolute top-3 right-3 text-white/50 hover:text-white bg-black/20 rounded-full p-1 z-10"><span class="material-symbols-outlined">close</span></button>
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in duration-300">
+                <button onclick="closePaywall()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 bg-white rounded-full p-1 z-10">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+                
                 <div class="bg-slate-900 p-8 text-center relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-600 rounded-full blur-3xl opacity-30 -mr-10 -mt-10"></div>
                     <span class="material-symbols-outlined text-5xl text-yellow-400 mb-2 relative z-10">lock</span>
                     <h3 class="text-white font-bold text-xl relative z-10">Contenido Premium</h3>
+                    <p class="text-indigo-200 text-sm relative z-10">Este prompt es parte de la Bóveda Privada.</p>
                 </div>
+
                 <div class="p-6 text-center">
-                    <p class="text-slate-600 text-sm mb-6">Accede a los <span class="font-bold text-slate-900">100+ casos avanzados</span>.</p>
+                    <p class="text-slate-600 text-sm mb-6">
+                        Estás viendo la versión gratuita. Accede a los <span class="font-bold text-slate-900">100+ casos avanzados</span> y copia mis fórmulas validadas.
+                    </p>
+                    
                     <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6">
-                        <p class="text-xs font-bold text-yellow-800 uppercase">🔥 Oferta Black Friday</p>
+                        <p class="text-xs font-bold text-yellow-800 uppercase tracking-wide">🔥 Oferta Black Friday</p>
                         <p class="text-2xl font-black text-slate-900">$9.990 <span class="text-sm font-normal text-slate-500 line-through">$19.990</span></p>
+                        <p class="text-[10px] text-slate-500">Pago único. Acceso de por vida.</p>
                     </div>
-                    <a id="payment-btn" href="#" target="_blank" class="block w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg flex items-center justify-center gap-2">
-                        <span>DESBLOQUEAR AHORA</span> <span class="material-symbols-outlined text-sm">arrow_forward</span>
+
+                    <a id="payment-btn" href="#" target="_blank" class="block w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-lg shadow-indigo-200 mb-3 flex items-center justify-center gap-2">
+                        <span>DESBLOQUEAR BÓVEDA AHORA</span>
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
                     </a>
+                    
+                    <p class="text-[10px] text-slate-400">Garantía de satisfacción. Pago seguro vía Mercado Pago.</p>
                 </div>
             </div>
         </div>
@@ -249,224 +270,238 @@
         // ==========================================
         // CONFIGURACIÓN DE VENTA
         // ==========================================
-        const LINK_MERCADO_PAGO = "#"; // <--- PEGA TU LINK AQUÍ
+        const LINK_MERCADO_PAGO = "#"; 
         document.getElementById('payment-btn').href = LINK_MERCADO_PAGO;
 
-        // --- AGIA RENDERER ---
+        // --- HELPERS PARA AGIA MARKUP ---
         function renderAGIA(text) {
-            return text
-                .replace(/{r}(.*?){\/r}/g, '<span class="hl-rol">$1</span>')
-                .replace(/{c}(.*?){\/c}/g, '<span class="hl-contexto">$1</span>')
-                .replace(/{m}(.*?){\/m}/g, '<span class="hl-meta">$1</span>')
-                .replace(/{l}(.*?){\/l}/g, '<span class="hl-limites">$1</span>')
-                .replace(/{f}(.*?){\/f}/g, '<span class="hl-formato">$1</span>')
+            let html = text
+                .replace(/{r}(.*?){\/r}/g, '<span class="hl-rol" title="ROL: ¿Quién actúa?">$1</span>')
+                .replace(/{c}(.*?){\/c}/g, '<span class="hl-contexto" title="CONTEXTO: Antecedentes y archivos (Verde)">$1</span>')
+                .replace(/{m}(.*?){\/m}/g, '<span class="hl-meta" title="META: Objetivo principal">$1</span>')
+                .replace(/{l}(.*?){\/l}/g, '<span class="hl-limites" title="LIMITES: Restricciones y reglas">$1</span>')
+                .replace(/{f}(.*?){\/f}/g, '<span class="hl-formato" title="FORMATO: Estructura de salida">$1</span>')
                 .replace(/\n/g, '<br>');
+            return html;
         }
-        function cleanAGIA(text) { return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, ''); }
 
-        // --- DATA CONFIG ---
+        function cleanAGIA(text) {
+            return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, '');
+        }
+
+        // --- DATA ENGINE ---
         const categoryConfig = {
-            office: { label: "Oficina", color: "emerald", icon: "business_center" },
-            finance: { label: "Finanzas", color: "cyan", icon: "attach_money" },
-            marketing: { label: "Marketing", color: "pink", icon: "campaign" },
-            personal: { label: "Vida Personal", color: "blue", icon: "home" },
-            tech: { label: "Tecnología", color: "violet", icon: "code" },
+            office: { label: "Oficina & Excel", color: "emerald", icon: "table_view" },
+            finance: { label: "Finanzas & Dinero", color: "cyan", icon: "attach_money" },
+            marketing: { label: "Marketing & RRSS", color: "pink", icon: "campaign" },
+            personal: { label: "Vida & Hogar", color: "blue", icon: "home" },
+            tech: { label: "Tecnología & Código", color: "violet", icon: "terminal" },
             education: { label: "Educación", color: "amber", icon: "school" }
         };
 
-        // --- CASE GENERATOR ---
-        const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goodPromptTagged, goodResPreview, locked = false, deficiencies = []) => ({
+        const createCase = (id, cat, title, icon, problem, badPrompt, goodPromptTagged, goodResPreview, locked = false, deficiencies = []) => ({
             id, category: cat, title, icon, problem, 
             badPrompt, 
-            badResPreview,
             agiaPromptTagged: goodPromptTagged, 
             previewResponse: goodResPreview,
-            locked: locked,
+            locked: locked, 
             deficiencies: deficiencies.length ? deficiencies : ["Sin Rol", "Contexto Vago"]
         });
 
-        // --- DATABASE (CORE CASES - HUMANIZED) ---
+        // --- BASE DE DATOS DE PROMPTS AGIA (Optimizada y Realista) ---
         const allCases = [
-            // --- OFICINA ---
-            createCase(101, 'office', 'El Mago de Excel: Sumar.Si', 'table_view', 'Fórmula desconocida.', 
-                'Ayuda con excel para sumar si cumple condición.', 
-                'Prueba con la función SUMAR.SI. Selecciona el rango y el criterio. Es simple.', 
-                '{r}Actúa como un Instructor Experto en Excel MVP.{/r} Mira, {c}tengo una tabla de Ventas con las columnas [Vendedor, Mes, Monto].{/c} El problema es que {m}necesito una fórmula para sumar el total vendido por [Nombre] en el mes [Mes].{/m} Por favor, {f}dame la fórmula SUMAR.SI.CONJUNTO y explícame brevemente los argumentos.{/f}',
-                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2">=SUMAR.SI.CONJUNTO(C:C; A:A; "[Nombre]"; B:B; "[Mes]")</div><ul class="list-disc ml-4 space-y-1 text-slate-600 text-xs"><li><strong>C:C</strong>: Rango Suma (Montos)</li><li><strong>A:A</strong>: Criterio 1 (Vendedor)</li></ul>',
-                false, ["Sin Contexto", "Petición Genérica"]),
+            
+            // ==========================================================
+            // CATEGORÍA: OFICINA & EXCEL (20 CASOS POWER)
+            // ==========================================================
+            
+            // 1. Limpieza de Data (Clásico)
+            createCase(22, 'office', 'El Limpiador de Data', 'cleaning_services', 'Base de datos sucia (Nombres, Mayúsculas).', 
+                'Arregla esta lista.', 
+                '{r}Actúa como Experto en Excel y Limpieza de Datos.{/r} {c}Te adjunto (pega aquí tu tabla) una lista de nombres con formatos mezclados y espacios extra.{/c} {m}Genera una fórmula para dejar todo como "Nombre Propio" y eliminar espacios vacíos.{/m} {l}Solo fórmulas, nada de macros.{/l} {f}Bloque de código con la fórmula y explicación breve.{/f}',
+                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-2 rounded mb-2">=NOMPROPIO(ESPACIOS(A2))</div>',
+                false, ["Sin Instrucción", "Vago"]),
 
-            createCase(107, 'office', 'Profe de Excel (BuscarV)', 'school', 'Quiero entender, no solo la fórmula.', 
-                'Cómo cruzo dos tablas en Excel (BuscarV).', 
-                'Usa BUSCARV(valor, matriz, columna, 0).', 
-                '{r}Actúa como mi Profesor de Excel con don para enseñar.{/r} Tengo dos tablas diferentes y necesito traer datos de una a la otra usando un ID común. {c}No quiero solo que me des el pez, quiero que me enseñes a pescar.{/c} {m}Explícame conceptualmente cómo funcionan BUSCARV o su sucesor XLOOKUP.{/m} {f}Usa una analogía simple para que no se me olvide.{/f}',
-                '<p class="text-sm font-medium text-slate-700 mb-2">Imagina que BUSCARV es como buscar un número en una guía telefónica:</p><ul class="list-disc ml-4 text-xs text-slate-600 space-y-1"><li><strong>El Valor:</strong> El nombre de tu amigo.</li><li><strong>La Matriz:</strong> La guía completa.</li><li><strong>La Columna:</strong> El número de teléfono.</li></ul><p class="text-xs mt-2 text-indigo-600 font-bold">💡 Consejo Pro: Usa XLOOKUP si tienes Office 365, es más difícil que falle.</p>',
-                false, ["Respuesta Técnica", "Sin Explicación"]),
+            // 2. Email Diplomático (Negociación)
+            createCase(23, 'office', 'El "No" Diplomático', 'block', 'Decir que NO al cliente sin perderlo.', 
+                'Dile que no voy a hacer el cambio gratis.', 
+                '{r}Actúa como Gerente de Cuentas Senior.{/r} {c}El cliente pide un cambio fuera del contrato original. Tenemos buena relación.{/c} {m}Escribe un correo rechazando el trabajo gratis pero ofreciendo una cotización.{/m} {l}Tono empático, firme y profesional.{/l} {f}Estructura: Agradecer -> Explicar Límite -> Ofrecer Solución -> Cierre.{/f}',
+                '<div class="bg-white p-2 text-xs italic text-slate-600">"Entiendo la necesidad... para mantener los estándares de calidad, esto requiere un presupuesto adicional..."</div>',
+                false, ["Agresivo", "Sin Alternativa"]),
 
-            createCase(108, 'office', 'Arreglar Error #N/A', 'bug_report', 'Error frustrante en Excel.', 
-                'Me sale un error en mi planilla y no sé qué es.', 
-                'Revisa si los datos están bien escritos. Puede ser un espacio.', 
-                '{r}Eres un Experto Solucionador de Problemas en Excel.{/r} Mira, estoy pegado con esto: {c}En la celda [C3] me aparece este error exacto: "[Pegar Error Aquí]"{/c}. {m}Analiza la posible causa raíz y dame la solución paso a paso para arreglarlo.{/m} {l}Sé directo y pragmático, sin teoría innecesaria.{/l}',
-                '<div class="bg-red-50 border-l-4 border-red-400 p-2 mb-2"><p class="text-xs text-red-700 font-bold">Diagnóstico: Dato no encontrado</p></div><p class="text-xs text-slate-600">El error #N/A usualmente significa que Excel no encuentra el valor buscado. <br><strong>Solución rápida:</strong> Envuelve tu fórmula en un SI.ERROR. <br><code class="bg-slate-100 px-1 rounded">=SI.ERROR(TuFórmula; "No encontrado")</code></p>',
-                false, ["Consejo Vago", "No Diagnostica"]),
+            // 3. Resumir Reunión (Adjunto Texto)
+            createCase(201, 'office', 'Acta de Reunión Instantánea', 'history_edu', 'Tengo notas desordenadas de una reunión larga.', 
+                'Resume esto.', 
+                '{r}Actúa como Secretario Ejecutivo Eficiente.{/r} {c}Adjunto la transcripción desordenada de nuestra reunión de equipo.{/c} {m}Crea un Acta de Reunión profesional.{/m} {l}Ignora chistes o comentarios irrelevantes.{/l} {f}Formato: 1. Acuerdos Tomados 2. Tareas (Quién hace qué y para cuándo).{/f}',
+                '<p class="font-bold">Acuerdos:</p><ul class="list-disc ml-4 text-xs"><li>Se aprueba presupuesto 2024.</li></ul><p class="font-bold mt-2">Tareas:</p><ul class="list-disc ml-4 text-xs"><li>Juan: Enviar reporte (Viernes).</li></ul>',
+                false, ["Sin Formato", "Muy Largo"]),
 
-            createCase(102, 'office', 'Email Retraso Entrega', 'mail', 'Comunicar malas noticias.', 
-                'Dile a mi jefe que no alcanzo a entregar hoy.', 
-                'Hola jefe, no llego con el informe hoy. Lo veo mañana. Saludos.', 
-                '{r}Eres un Experto en Comunicación Asertiva.{/r} Te cuento mi situación: {c}No puedo entregar el [Informe X] hoy por falta de datos del área [Y].{/c} Necesito que {m}redactes un correo informando el retraso sin sonar irresponsable.{/m} Ojo: {l}debes proponer una nueva fecha de entrega segura.{/l}',
-                '<div class="bg-slate-50 p-3 rounded italic text-sm">"Estimado [Jefe],<br>Te escribo para actualizarte sobre el estado del [Informe X]. Debido a una demora en la recepción de la data de [Área Y], no podré realizar el cierre hoy como estaba previsto.<br>Ya he gestionado los datos y podré enviarte el informe validado este <strong>[Nueva Fecha]</strong>."</div>',
-                false, ["Tono Informal", "Solo Problemas, No Soluciones"]),
+            // 4. Analizar PDF Largo (Adjunto PDF)
+            createCase(202, 'office', 'Analista de Reportes PDF', 'picture_as_pdf', 'Me enviaron un PDF de 50 páginas y no tengo tiempo.', 
+                'De qué trata este pdf.', 
+                '{r}Actúa como Analista de Negocios Senior.{/r} {c}Adjunto este reporte anual en PDF.{/c} {m}Extrae los 5 puntos críticos que debo saber para mi reunión con el directorio.{/m} {l}Máximo 1 página de lectura.{/l} {f}Lista numerada con los hallazgos clave y riesgos.{/f}',
+                '<ol class="list-decimal ml-4 text-xs"><li>Los ingresos cayeron un 5% en Q3.</li><li>Riesgo alto de cadena de suministro en Asia.</li></ol>',
+                false, ["Muy General", "Pierde Detalles"]),
 
-            createCase(104, 'office', 'Temario Reunión', 'calendar_today', 'Reuniones desordenadas.', 
-                'Haz una agenda para una reunión de equipo.', 
-                '1. Hablar del proyecto. 2. Ver pendientes. 3. Varios.', 
-                '{r}Eres un Project Manager Certificado.{/r} Tengo una {c}reunión de seguimiento del proyecto [Nombre Proyecto] con el equipo de [Área].{/c} Ayúdame a {m}crear un temario estructurado para 45 minutos.{/m} {f}Entrégame una tabla con: Tema, Tiempo y Responsable.{/f}',
-                '<table class="w-full text-xs border border-slate-200"><thead><tr class="bg-slate-100"><th>Tema</th><th>Tiempo</th><th>Lead</th></tr></thead><tbody><tr><td>Revisión KPIs</td><td>10 min</td><td>[Nombre]</td></tr><tr><td>Bloqueos Críticos</td><td>20 min</td><td>[Nombre]</td></tr><tr><td>Próximos Pasos</td><td>15 min</td><td>Todos</td></tr></tbody></table>',
-                false, ["Sin Tiempos", "Sin Responsables"]),
+            // 5. De Excel a PowerPoint (Adjunto Tabla)
+            createCase(203, 'office', 'Creador de Diapositivas', 'slideshow', 'Tengo datos en Excel y necesito una slide.', 
+                'Haz una presentación con esto.', 
+                '{r}Actúa como Diseñador de Presentaciones Corporativas.{/r} {c}Adjunto esta tabla de ventas trimestrales.{/c} {m}Diseña el contenido para una diapositiva de alto impacto.{/m} {l}No quiero que leas la tabla, quiero los "insights" (conclusiones).{/l} {f}Título de la Slide -> 3 Bullets Clave -> Sugerencia de Gráfico.{/f}',
+                '<p class="font-bold">Título:</p> "Crecimiento Sostenido en Q4"<br><p class="font-bold">Bullets:</p> - Superamos meta en 12%...<br><p class="font-bold">Gráfico:</p> Barras apiladas.',
+                false, ["Aburrido", "Solo Copia Datos"]),
 
-            createCase(106, 'office', 'Responder Queja Cliente', 'support_agent', 'Cliente enojado.', 
-                'Responde a este cliente que reclama por demora.', 
-                'Disculpe la demora, tuvimos problemas. Ya le llegará.', 
-                '{r}Eres Gerente de Customer Success.{/r} Un cliente me escribió lo siguiente: {c}"[Pegar la queja completa del cliente aquí]"{/c}. {m}Redacta una respuesta pidiendo disculpas y ofreciendo una compensación.{/m} Importante: {l}Mantén un tono empático y muy profesional.{/l}',
-                '<div class="bg-slate-50 p-3 text-sm">"Estimado [Nombre del Cliente], he leído su mensaje y lamento profundamente su mala experiencia. Esto no cumple con nuestro estándar. Su pedido llegará el [Fecha] y, como compensación por la espera, hemos abonado un [X]% de descuento a su cuenta."</div>',
-                false, ["Sin Solución Concreta", "Excusa Genérica"]),
+            // 6. Fórmula Compleja (BuscarV a XLookUp)
+            createCase(204, 'office', 'Modernizador de Fórmulas', 'functions', 'Mis BuscarV se rompen siempre.', 
+                'Mejora esta fórmula.', 
+                '{r}Actúa como MVP de Excel.{/r} {c}Adjunto imagen de mi tabla donde uso BUSCARV y me da error si muevo columnas.{/c} {m}Reemplaza esto con INDICE/COINCIDIR o BUSCARX para que sea robusto.{/m} {f}La fórmula nueva y por qué es mejor.{/f}',
+                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-2 rounded">=BUSCARX(H2; A:A; C:C; "No hallado")</div>',
+                false, ["Usa Fórmulas Viejas", "Sin Explicación"]),
 
-            // --- FINANZAS ---
-            createCase(201, 'finance', 'Negociación Salarial', 'payments', 'Pedir aumento.', 
-                'Cómo pido más plata.', 
-                'Dile que la inflación está alta y no te alcanza.', 
-                '{r}Eres mi Coach de Carrera.{/r} Te doy mis datos: {c}Llevo [X] años, y superé mis objetivos en un [Y]%.{/c} Necesito un {m}guion para pedir aumento basado en valor, no en necesidad.{/m} {f}Usa esta estructura: Apertura, Datos, Cierre.{/f}',
-                '<ul class="text-sm list-disc ml-4"><li><strong>Apertura:</strong> "Me gustaría revisar mis resultados del último año..."</li><li><strong>Datos:</strong> "Logré aumentar [KPI] en un [Y]%, generando [Valor] para la empresa."</li><li><strong>Cierre:</strong> "Basado en esto, solicito un ajuste del [Z]%."</li></ul>',
-                false, ["Enfoque en Necesidad Personal", "Sin Evidencia"]),
+            // 7. Redactar Correo de Cobranza
+            createCase(205, 'office', 'Cobrador Amable', 'money_off', 'Cliente no paga la factura hace 15 días.', 
+                'Cobra la factura al cliente.', 
+                '{r}Actúa como Asistente de Finanzas Diplomatico.{/r} {c}El cliente debe la factura #101 vencida hace 15 días. Es un buen cliente.{/c} {m}Escribe un recordatorio de pago.{/m} {l}No uses la palabra "deuda" ni amenaces. Asume que fue un olvido.{/l} {f}Email breve y cordial.{/f}',
+                '<div class="bg-white p-2 text-xs italic text-slate-600">"Hola [Nombre], solo para chequear si recibieron la factura #101, quizás se traspapeló..."</div>',
+                false, ["Muy Agresivo", "Sin Tacto"]),
 
-            createCase(202, 'finance', 'Regla 50/30/20', 'pie_chart', 'Desorden gastos.', 
-                'Organiza mi sueldo de [Monto].', 
-                'Gasta menos en tonterías y ahorra lo que sobre.', 
-                '{r}Actúa como Asesor Financiero Personal.{/r} {c}Gano un sueldo líquido de [Monto].{/c} Quiero que {m}apliques la regla 50/30/20 a mis finanzas.{/m} {f}Dame una tabla con los montos exactos para Necesidades, Deseos y Ahorro.{/f}',
-                '<table class="w-full text-xs text-left"><tr><th>Categoría</th><th>%</th><th>Monto</th></tr><tr><td>Necesidades</td><td>50%</td><td>$[Calc]</td></tr><tr><td>Deseos</td><td>30%</td><td>$[Calc]</td></tr><tr><td>Ahorro</td><td>20%</td><td>$[Calc]</td></tr></table>',
-                false, ["Consejo Vago", "Sin Estructura"]),
+            // 8. Crear Agenda de Reunión
+            createCase(206, 'office', 'Arquitecto de Reuniones', 'calendar_today', 'Mis reuniones se alargan y no sirven.', 
+                'Haz una agenda para reunión de ventas.', 
+                '{r}Actúa como Facilitador Agile.{/r} {c}Tenemos reunión de revisión mensual de ventas (1 hora).{/c} {m}Crea una agenda minuto a minuto para no perder tiempo.{/m} {f}Tabla: Hora | Tema | Responsable | Objetivo del bloque.{/f}',
+                '<table class="w-full text-xs border-collapse"><tr><td>0-5 min</td><td>Icebreaker</td></tr><tr><td>5-20 min</td><td>Revisión KPIs</td></tr></table>',
+                false, ["Sin Tiempos", "Desordenada"]),
 
-            // --- MARKETING ---
-            createCase(301, 'marketing', 'Calendario Instagram', 'calendar_view_month', 'Sin ideas.', 
-                'Ideas para Instagram de [Negocio].', 
-                'Sube fotos de tus productos y pon precios.', 
-                '{r}Eres Estratega de Contenidos.{/r} Tengo un {c}negocio de [Rubro] enfocado en [Público].{/c} {m}Dame 3 ideas de Reels educativos (No venta directa).{/m} {f}Preséntalo en una tabla: Título, Gancho (Hook) y CTA.{/f}',
-                '<table class="w-full text-xs"><tr><th>Título</th><th>Hook Visual</th></tr><tr><td>Mito vs Realidad</td><td>[Acción rompiendo algo]</td></tr><tr><td>Tutorial Rápido</td><td>"Deja de hacer esto..."</td></tr></table>',
-                false, ["Solo Venta", "Aburrido"]),
+            // 9. Feedback a Empleado (Difícil)
+            createCase(207, 'office', 'Feedback Constructivo', 'psychology', 'Tengo que corregir a alguien sin desmotivarlo.', 
+                'Dile a Juan que llega tarde siempre.', 
+                '{r}Actúa como Coach de Liderazgo.{/r} {c}Juan es muy bueno técnicamente, pero llega tarde a las reuniones y retrasa al equipo.{/c} {m}Escribe un guion para darle feedback 1 a 1.{/m} {l}Usa el método SBI (Situación, Comportamiento, Impacto).{/l} {f}Guion de conversación.{/f}',
+                '<p>"Juan, en la reunión de ayer (S), llegaste 10 min tarde (B), lo que hizo que el equipo esperara y perdiéramos foco (I)."</p>',
+                false, ["Ataque Personal", "Vago"]),
 
-            createCase(302, 'marketing', 'Copy Anuncio Facebook', 'ads_click', 'Vender online.', 
-                'Haz un anuncio para vender [Producto].', 
-                'Compra [Producto], es el mejor del mercado. 50% descuento.', 
-                '{r}Eres un Copywriter experto en conversión.{/r} Contexto: {c}Vendo [Producto] que soluciona [Dolor].{/c} {m}Redacta un anuncio usando la fórmula PAS (Problema-Agitación-Solución).{/m}',
-                '<p class="text-sm"><strong>Problema:</strong> ¿Cansado de [Problema]?<br><strong>Agitación:</strong> Cada día que pasa pierdes [X]...<br><strong>Solución:</strong> Con [Producto] recupera tu [Beneficio] en 24hs.</p>',
-                false, ["Genérico", "Sin Estructura Persuasiva"]),
+            // 10. Traducir Email Formal (Inglés)
+            createCase(208, 'office', 'Traductor Corporativo', 'translate', 'Mi inglés es básico y debo escribir al CEO global.', 
+                'Traduce esto a inglés formal.', 
+                '{r}Actúa como Editor Nativo de Inglés de Negocios.{/r} {c}Adjunto mi borrador en español sobre el retraso del proyecto.{/c} {m}Tradúcelo a un inglés corporativo, profesional y directo.{/m} {l}Evita sonar como traducción literal de Google.{/l} {f}Email en inglés.{/f}',
+                '<div class="bg-white p-2 text-xs italic text-slate-600">"Dear Mr. Smith, I am writing to provide an update regarding..."</div>',
+                false, ["Spanglish", "Informal"]),
 
-            createCase(305, 'marketing', 'Guion TikTok Viral', 'video_camera_front', 'Video corto.', 
-                'Guion para TikTok de [Servicio].', 
-                'Hola, soy [Nombre] y vendo [Servicio]. Llámenme.', 
-                '{r}Eres Guionista de Contenido Viral con especialidad en Neuro-Marketing.{/r} Yo {c}ofrezco [Servicio].{/c} {m}Escribe un guion de 15 segundos.{/m} {f}Usa esta estructura: Gancho (3s), Valor (10s), Llamado a la acción (2s).{/f}',
-                '<p class="text-sm"><strong>0-3s:</strong> "No contrates a un [Servicio] sin saber esto..."<br><strong>3-13s:</strong> [Tip de alto valor]<br><strong>13-15s:</strong> "Sígueme para más tips."</p>',
-                false, ["Inicio Lento", "Sin Valor"]),
+            // 11. Comparar Listas Excel (Adjunto)
+            createCase(209, 'office', 'Detective de Excel', 'find_in_page', 'Tengo dos listas y no sé quién falta.', 
+                'Compara estas dos listas.', 
+                '{r}Actúa como Analista de Datos.{/r} {c}Adjunto la Lista A (Invitados) y Lista B (Asistentes).{/c} {m}Dime exactamente quiénes de la Lista A NO están en la Lista B.{/m} {l}Entrega solo los nombres faltantes.{/l} {f}Lista simple.{/f}',
+                '<p>Faltaron:</p><ul class="list-disc ml-4 text-xs"><li>Pedro Perez</li><li>Ana Garcia</li></ul>',
+                false, ["Confuso", "No Filtra"]),
 
-            // --- PERSONAL ---
-            createCase(401, 'personal', 'Menú Semanal', 'restaurant_menu', 'Qué comer.', 
-                'Dime qué comer esta semana.', 
-                'Lunes: Fideos. Martes: Arroz. Miércoles: Pizza.', 
-                '{r}Actúa como Nutricionista Práctico.{/r} Somos una {c}familia de 4, con poco tiempo y presupuesto medio.{/c} {m}Arma un menú de lunes a viernes.{/m} {l}Solo platos que se cocinen en menos de 30 min.{/l}',
-                '<ul class="text-sm list-disc ml-4"><li><strong>Lun:</strong> Tallarines con salsa de [Verdura]. (15 min)</li><li><strong>Mar:</strong> Omelette de [Ingrediente]. (10 min)</li><li><strong>Mié:</strong> [Proteína] a la plancha con ensalada.</li></ul>',
-                false, ["Poco Saludable", "Sin Variedad"]),
+            // 12. Ideas Team Building
+            createCase(210, 'office', 'Gerente de Felicidad', 'celebration', 'El equipo remoto está desconectado.', 
+                'Ideas para motivar al equipo.', 
+                '{r}Actúa como Experto en Cultura Remota.{/r} {c}Tengo un equipo de 10 personas trabajando desde casa.{/c} {m}Dame 3 ideas de actividades de 15 minutos para el viernes.{/m} {l}Que se puedan hacer por Zoom y sin costo.{/l} {f}Actividad + Instrucciones.{/f}',
+                '<p class="font-bold">"Tour del Escritorio":</p> Cada uno muestra un objeto curioso de su mesa y cuenta la historia.',
+                false, ["Cringe", "Requiere Presupuesto"]),
 
-            // --- TECH ---
-            createCase(501, 'tech', 'Explicar Código', 'code', 'No entiendo este script.', 
-                'Qué hace este código: function x(a,b){return a+b}', 
-                'Suma dos números.', 
-                '{r}Eres Senior Developer Mentor.{/r} Soy un {c}estudiante de programación.{/c} {m}Explícame esta función línea por línea.{/m} {f}Usa comentarios en el código.{/f}',
-                '<code class="text-xs bg-slate-800 text-green-400 p-2 block rounded">// Define función x con parámetros a y b\nfunction x(a, b) {\n  // Retorna la suma\n  return a + b;\n}</code>',
-                false, ["Muy Breve", "Sin Contexto"]),
+            // 13. Job Description (Adjunto Notas)
+            createCase(211, 'office', 'Reclutador IT', 'badge', 'Necesito contratar a alguien y no sé escribir el aviso.', 
+                'Haz un aviso de trabajo.', 
+                '{r}Actúa como Headhunter Especialista.{/r} {c}Busco un Asistente Administrativo. Adjunto mis notas sueltas sobre lo que debe hacer.{/c} {m}Redacta una Descripción de Cargo (JD) atractiva.{/m} {f}Título del Cargo -> Responsabilidades -> Requisitos -> Beneficios.{/f}',
+                '<p class="font-bold">Asistente Administrativo Estrella</p><p class="text-xs">Buscamos a la persona que mantendrá el orden...</p>',
+                false, ["Aburrido", "Sin Estructura"]),
 
-            // --- EDUCATION ---
-            createCase(601, 'education', 'Tutor Socrático', 'psychology', 'Aprender pensando.', 
-                'Explícame la [Tema].', 
-                '[Tema] es cuando pasa X y Y. (Definición de Wikipedia)', 
-                '{r}Actúa como Sócrates.{/r} Soy un {c}estudiante curioso sobre [Tema].{/c} {m}No me des la respuesta. Hazme una pregunta que me haga deducirla.{/m}',
-                '<div class="bg-slate-50 p-3 text-sm italic">"Interesante pregunta. Pero antes dime, si ocurriera [Situación opuesta], ¿crees que el resultado sería el mismo? ¿Por qué?"</div>',
-                false, ["Respuesta Directa", "No Genera Aprendizaje"]),
+            // 14. Excel: Formato Condicional
+            createCase(212, 'office', 'Semáforo de Excel', 'traffic', 'Quiero que la tabla me avise si algo va mal.', 
+                'Ponle colores a la tabla.', 
+                '{r}Actúa como Instructor de Excel.{/r} {c}Adjunto tabla de inventario. Quiero que se ponga rojo si el stock es menor a 5.{/c} {m}Explícame cómo configurar el Formato Condicional.{/m} {f}Paso 1, Paso 2, Paso 3.{/f}',
+                '<ol class="list-decimal ml-4 text-xs"><li>Selecciona la columna "Stock".</li><li>Ve a Formato Condicional > Reglas para resaltar celdas > Es menor que...</li><li>Escribe "5" y elige Rojo.</li></ol>',
+                false, ["No Explica Pasos", "Confuso"]),
+
+            // 15. Carta de Renuncia
+            createCase(213, 'office', 'Salida Elegante', 'door_front', 'Me voy de la empresa y no quiero quedar mal.', 
+                'Escribe mi renuncia.', 
+                '{r}Actúa como Asesor de Carrera.{/r} {c}Me voy porque me ofrecieron más sueldo en otro lado, pero quiero dejar las puertas abiertas aquí.{/c} {m}Redacta una carta de renuncia formal y agradecida.{/m} {l}No menciones el dinero.{/l} {f}Carta Formal.{/f}',
+                '<div class="bg-white p-2 text-xs italic text-slate-600">"Estimados, por medio de la presente comunico mi renuncia... Agradezco profundamente las oportunidades..."</div>',
+                false, ["Muy Seca", "Quema Puentes"]),
+
+            // 16. Excel: Corregir Fechas (Adjunto)
+            createCase(214, 'office', 'Arregla-Fechas', 'calendar_month', 'El sistema me bajó las fechas al revés (mes/día).', 
+                'Arregla estas fechas que están mal.', 
+                '{r}Actúa como Experto en Datos.{/r} {c}Adjunto lista de fechas en formato gringo (MM/DD/YYYY) y mi Excel está en español (DD/MM/YYYY).{/c} {m}Dame una fórmula para invertirlas.{/m} {f}Fórmula de texto.{/f}',
+                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-2 rounded">=FECHA(DERECHA(A1;4);IZQUIERDA(A1;2);EXTRAE(A1;4;2))</div>',
+                false, ["Manual", "Lento"]),
+
+            // 17. Resumir Hilo de Correos (Adjunto)
+            createCase(215, 'office', 'Resumidor de Cadenas', 'mail', 'Me copiaron en un email con 30 respuestas.', 
+                'Qué pasó en estos correos.', 
+                '{r}Actúa como Asistente Personal Inteligente.{/r} {c}Adjunto una cadena de correos eterna sobre el "Evento de Fin de Año".{/c} {m}Dime en 3 puntos: ¿En qué quedó? ¿Qué debo hacer yo?{/m} {f}Resumen Ejecutivo.{/f}',
+                '<ul class="list-disc ml-4 text-xs"><li>Fecha confirmada: 15 Dic.</li><li>Tu tarea: Aprobar presupuesto antes del Jueves.</li></ul>',
+                false, ["Lee Todo", "Pierde Tiempo"]),
+
+            // 18. Plan de Proyecto Simple
+            createCase(216, 'office', 'Project Manager Express', 'checklist', 'Tengo un proyecto nuevo y no sé por dónde empezar.', 
+                'Organiza este proyecto.', 
+                '{r}Actúa como PMP Certificado.{/r} {c}Debemos organizar la "Fiesta de Navidad" para 100 personas.{/c} {m}Crea una lista de tareas dividida por fases (Pre, Durante, Post).{/m} {f}Lista de Checklist.{/f}',
+                '<p class="font-bold">Fase 1: Planificación</p> [ ] Definir Presupuesto...<br><p class="font-bold">Fase 2: Ejecución</p> [ ] Reservar Local...',
+                false, ["Desordenado", "Olvida Pasos"]),
+
+            // 19. Mensaje de Ausencia (Vacaciones)
+            createCase(217, 'office', 'Modo Vacaciones', 'beach_access', 'Me voy de vacaciones y necesito el auto-reply.', 
+                'Mensaje de fuera de oficina.', 
+                '{r}Actúa como Profesional Organizado.{/r} {c}Estaré fuera del 1 al 15 de Febrero. Para urgencias contactar a Ana.{/c} {m}Redacta mi respuesta automática de correo.{/m} {l}Divertido pero profesional.{/l} {f}Texto del correo.{/f}',
+                '<div class="bg-white p-2 text-xs italic text-slate-600">"Hola, estoy recargando baterías 🔋. Vuelvo el 15. Si se está incendiando algo, habla con Ana."</div>',
+                false, ["Muy Serio", "Sin Info"]),
+
+            // 20. Excel: Concatenar (Unir Nombres)
+            createCase(218, 'office', 'Unificador de Celdas', 'join', 'Tengo Nombre en Columna A y Apellido en B.', 
+                'Junta nombre y apellido.', 
+                '{r}Actúa como Ayudante de Excel.{/r} {c}Adjunto tabla. Columna A: Nombre, Columna B: Apellido.{/c} {m}Dame la fórmula para unirlos en una sola celda con un espacio al medio.{/m} {f}Fórmula simple.{/f}',
+                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-2 rounded">=A2 & " " & B2</div>',
+                false, ["Manual", "Lento"]),
+
+
+            // ==========================================================
+            // OTRAS CATEGORIAS (Muestra pequeña)
+            // ==========================================================
+            createCase(90, 'finance', 'FBI Salary Negotiator', 'verified_user', 'Miedo a pedir aumento.', 'Dame argumentos...', '{r}Actúa como Ex-Negociador del FBI...{/r}', '...', false),
+            createCase(41, 'marketing', 'Estratega de Ganchos', 'bolt', 'Mis videos no tienen visitas.', 'Ideas para videos...', '{r}Actúa como Consultor Viral...{/r}', '...', false),
         ];
 
-        // --- GENERADOR DE CASOS (PARA LLEGAR A 100) ---
-        const variants = [
-            {base: 101, t: 'Fórmula Si.Error', p: 'Quitar errores excel'},
-            {base: 101, t: 'Tabla Dinámica', p: 'Como hacer tabla dinamica'},
-            {base: 102, t: 'Email Licencia Médica', p: 'Avisar licencia'},
-            {base: 102, t: 'Email Renuncia', p: 'Carta renuncia'},
-            {base: 102, t: 'Email Felicitación', p: 'Felicitar equipo'},
-            {base: 103, t: 'Resumen Acta Reunión', p: 'Resumir reunión'},
-            {base: 104, t: 'Agenda Brainstorming', p: 'Reunion ideas'},
-            {base: 201, t: 'Negociar Arriendo', p: 'Bajar arriendo'},
-            {base: 201, t: 'Negociar Proveedor', p: 'Pedir descuento'},
-            {base: 202, t: 'Presupuesto Viaje', p: 'Calcular viaje'},
-            {base: 202, t: 'Presupuesto Boda', p: 'Gastos matrimonio'},
-            {base: 301, t: 'Post LinkedIn Viral', p: 'Escribir en linkedin'},
-            {base: 301, t: 'Hilo de Twitter', p: 'Escribir hilo'},
-            {base: 302, t: 'Email Marketing Frío', p: 'Vender por correo'},
-            {base: 302, t: 'Guion Webinar', p: 'Charla ventas'},
-            {base: 401, t: 'Menú Vegetariano', p: 'Comida sin carne'},
-            {base: 401, t: 'Menú Keto', p: 'Dieta keto'},
-            {base: 501, t: 'Explicar Error Python', p: 'Error codigo'},
-            {base: 501, t: 'Documentar API', p: 'Docs api'},
-            {base: 601, t: 'Tutor Inglés', p: 'Aprender ingles'},
-            {base: 601, t: 'Tutor Historia', p: 'Aprender historia'},
-        ];
-
-        let idGen = 1000;
-        variants.forEach(v => {
-            const baseCase = allCases.find(c => c.id === v.base);
-            if(baseCase) {
-                allCases.push(createCase(
-                    idGen++, baseCase.category, v.t, baseCase.icon, 'Variante: ' + baseCase.problem, v.p, baseCase.badResPreview, baseCase.agiaPromptTagged, baseCase.previewResponse, false
-                ));
-            }
-        });
-
-        // --- LOGIC ---
-        let currentCategory = 'office';
+        // --- LÓGICA UI ---
+        let currentCategory = 'office'; 
         let searchQuery = '';
 
         function init() {
             renderCategories();
             renderCaseList();
-            selectCase(101); 
+            selectCase(22); 
         }
 
         function renderCategories() {
             const nav = document.getElementById('category-nav');
             nav.innerHTML = Object.keys(categoryConfig).map(key => {
                 const conf = categoryConfig[key];
-                // Count cases in this category
-                const count = allCases.filter(c => c.category === key).length;
-                
                 const isActive = currentCategory === key;
                 const activeClass = isActive 
-                    ? `bg-${conf.color}-100 text-${conf.color}-700 border-${conf.color}-200 shadow-sm ring-1 ring-${conf.color}-200` 
+                    ? `bg-${conf.color}-100 text-${conf.color}-700 border-${conf.color}-200 shadow-sm ring-1 ring-${conf.color}-300` 
                     : `bg-white text-slate-500 border-slate-100 hover:bg-slate-50`;
-                return `<button onclick="setCategory('${key}')" class="flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold transition-all whitespace-nowrap ${activeClass}">
-                    <span class="material-symbols-outlined text-lg">${conf.icon}</span>
-                    ${conf.label} <span class="ml-1 opacity-60 text-[10px] bg-white/50 px-1.5 py-0.5 rounded-full">(${count})</span>
-                </button>`;
+                return `<button onclick="setCategory('${key}')" class="flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold transition-all whitespace-nowrap ${activeClass}"><span class="material-symbols-outlined text-lg">${conf.icon}</span>${conf.label}</button>`;
             }).join('');
         }
 
         function renderCaseList() {
             const listEl = document.getElementById('case-list');
             const filtered = allCases.filter(c => (c.category === currentCategory || searchQuery !== '') && (c.title.toLowerCase().includes(searchQuery.toLowerCase()) || c.problem.toLowerCase().includes(searchQuery.toLowerCase())));
-            document.getElementById('count-display').innerText = allCases.length;
             
-            if (filtered.length === 0) { listEl.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No hay resultados</div>`; return; }
+            document.getElementById('count-display').innerText = allCases.length; 
+            
+            if (filtered.length === 0) {
+                listEl.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No hay resultados</div>`;
+                return;
+            }
 
             listEl.innerHTML = filtered.map(c => {
                 const config = categoryConfig[c.category];
                 const iconDisplay = c.locked ? 'lock' : c.icon;
                 const iconColorClass = c.locked ? 'text-slate-300 bg-slate-50' : `text-${config.color}-500 bg-white`;
-                const lockOpacity = c.locked ? 'opacity-70' : '';
+                const lockOpacity = c.locked ? 'opacity-70 grayscale' : '';
+                
                 return `<button onclick="selectCase(${c.id})" class="w-full text-left p-3 rounded-lg group transition-all mb-2 hover:bg-slate-50 border border-transparent relative overflow-hidden ${lockOpacity}">
                     <div class="flex items-center gap-3 pl-2">
                         <div class="w-8 h-8 rounded-lg border border-slate-100 flex items-center justify-center flex-none shadow-sm ${iconColorClass}">
@@ -475,7 +510,7 @@
                         <div class="overflow-hidden">
                             <h4 class="text-sm font-semibold text-slate-700 truncate group-hover:text-indigo-700 transition-colors flex items-center gap-2">
                                 ${c.title} 
-                                ${!c.locked ? '<span class="text-[9px] bg-green-100 text-green-700 px-1.5 rounded-full">GRATIS</span>' : ''}
+                                ${!c.locked ? '<span class="text-[9px] bg-green-100 text-green-700 px-1.5 rounded-full border border-green-200">GRATIS</span>' : ''}
                             </h4>
                             <p class="text-[10px] text-slate-400 truncate">${c.locked ? 'Solo miembros Premium' : c.problem}</p>
                         </div>
@@ -487,9 +522,15 @@
         function selectCase(id) {
             const c = allCases.find(x => x.id === id);
             if(!c) return;
-            if (c.locked) { openPaywall(); return; }
+
+            if (c.locked) {
+                openPaywall();
+                return;
+            }
 
             const conf = categoryConfig[c.category];
+
+            // Render Detail
             document.getElementById('detail-title').innerText = c.title;
             document.getElementById('detail-icon').innerText = c.icon;
             document.getElementById('detail-icon-bg').className = `w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg border-2 border-white bg-${conf.color}-50 text-${conf.color}-600`;
@@ -497,36 +538,64 @@
             document.getElementById('detail-category-badge').className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-${conf.color}-100 text-${conf.color}-700 border border-${conf.color}-200`;
             document.getElementById('detail-problem').innerText = c.problem;
             
+            // Render Bad Prompt & Badges
             document.getElementById('detail-bad-prompt').innerText = `"${c.badPrompt}"`;
-            document.getElementById('detail-bad-result').innerHTML = c.badResPreview || "Respuesta genérica...";
-            document.getElementById('deficiency-badges').innerHTML = c.deficiencies.map(d => `<span class="px-2 py-1 bg-red-50 text-red-600 text-[10px] font-bold rounded-md border border-red-100 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">warning</span>${d}</span>`).join('');
+            document.getElementById('deficiency-badges').innerHTML = c.deficiencies.map(d => 
+                `<span class="px-2 py-1 bg-red-50 text-red-600 text-[10px] font-bold rounded-md border border-red-100 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">warning</span>${d}</span>`
+            ).join('');
 
+            // Render Good Prompt
             document.getElementById('detail-prompt-rendered').innerHTML = renderAGIA(c.agiaPromptTagged);
             document.getElementById('preview-response').innerHTML = c.previewResponse;
 
             if(window.innerWidth < 768) toggleSidebar();
         }
 
-        function setCategory(cat) { currentCategory = cat; searchQuery = ''; document.getElementById('searchInput').value = ''; renderCategories(); renderCaseList(); }
-        function filterCases() { searchQuery = document.getElementById('searchInput').value; renderCaseList(); }
+        function setCategory(cat) {
+            currentCategory = cat;
+            searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            renderCategories();
+            renderCaseList();
+        }
+
+        function filterCases() {
+            searchQuery = document.getElementById('searchInput').value;
+            renderCaseList();
+        }
+
         function copyPrompt() {
             const title = document.getElementById('detail-title').innerText;
             const c = allCases.find(x => x.title === title);
             if(!c) return;
-            navigator.clipboard.writeText(cleanAGIA(c.agiaPromptTagged));
+
+            const rawText = cleanAGIA(c.agiaPromptTagged);
+            navigator.clipboard.writeText(rawText);
             
             const btn = document.querySelector('button[onclick="copyPrompt()"]');
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<span class="material-symbols-outlined text-sm">check</span> <span>¡COPIADO!</span>`;
-            btn.classList.add('text-green-600', 'bg-green-50');
+            
+            btn.innerHTML = `<span class="material-symbols-outlined text-sm">check_circle</span> <span>¡COPIADO!</span>`;
+            btn.classList.remove('bg-indigo-600', 'text-white');
+            btn.classList.add('bg-green-500', 'text-white', 'shadow-none');
+            
             setTimeout(() => {
                 btn.innerHTML = originalHTML;
-                btn.classList.remove('text-green-600', 'bg-green-50');
+                btn.classList.remove('bg-green-500', 'text-white', 'shadow-none');
+                btn.classList.add('bg-indigo-600', 'text-white');
             }, 2000);
         }
-        function openPaywall() { document.getElementById('paywall-modal').classList.remove('hidden'); }
-        function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
+
+        function openPaywall() {
+            document.getElementById('paywall-modal').classList.remove('hidden');
+        }
+        function closePaywall() {
+            document.getElementById('paywall-modal').classList.add('hidden');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        }
 
         init();
     </script>
