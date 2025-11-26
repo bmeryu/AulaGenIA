@@ -171,6 +171,10 @@
                                 <span class="material-symbols-outlined text-yellow-400 text-sm">auto_awesome</span>
                                 <span class="text-xs font-bold text-slate-300 tracking-wider">PROMPT MAESTRO</span>
                             </div>
+                            
+                            <!-- Suggested AI Badge (Inserted Here) -->
+                            <div id="ai-badge-container" class="hidden md:flex"></div>
+
                             <div class="flex gap-2">
                                 <button onclick="copyPrompt()" class="flex items-center gap-2 text-xs bg-indigo-600 text-white hover:bg-indigo-500 px-4 py-1.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-indigo-500/25 ring-1 ring-white/10">
                                     <span class="material-symbols-outlined text-sm">content_copy</span> 
@@ -181,6 +185,8 @@
 
                         <!-- Content Prompt Box -->
                         <div class="p-6 relative">
+                            <!-- Mobile AI Badge -->
+                            <div id="ai-badge-mobile" class="md:hidden mb-4"></div>
                             <p id="detail-prompt-rendered" class="font-mono text-sm md:text-base text-slate-200 leading-relaxed whitespace-pre-wrap select-all">...</p>
                         </div>
                     </div>
@@ -289,6 +295,14 @@
             return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, '');
         }
 
+        // --- CONFIGURACIÓN DE IAs ---
+        const aiConfig = {
+            chatgpt: { name: "ChatGPT 4o", bg: "bg-teal-600", icon: "bolt" },
+            claude: { name: "Claude 3.5 Sonnet", bg: "bg-orange-700", icon: "auto_awesome" },
+            gemini: { name: "Gemini 1.5 Pro", bg: "bg-blue-600", icon: "psychology" },
+            midjourney: { name: "Midjourney v6", bg: "bg-indigo-900", icon: "palette" }
+        };
+
         // --- DATA ENGINE ---
         const categoryConfig = {
             office: { label: "Oficina & Excel", color: "emerald", icon: "table_view" },
@@ -299,11 +313,12 @@
             education: { label: "Educación", color: "amber", icon: "school" }
         };
 
-        const createCase = (id, cat, title, icon, problem, badPrompt, goodPromptTagged, goodResPreview, locked = false, deficiencies = []) => ({
+        const createCase = (id, cat, title, icon, problem, badPrompt, goodPromptTagged, goodResPreview, suggestedAI, locked = false, deficiencies = []) => ({
             id, category: cat, title, icon, problem, 
             badPrompt, 
             agiaPromptTagged: goodPromptTagged, 
             previewResponse: goodResPreview,
+            suggestedAI: suggestedAI, // Nueva propiedad
             locked: locked, 
             deficiencies: deficiencies.length ? deficiencies : ["Sin Rol", "Contexto Vago"]
         });
@@ -315,152 +330,152 @@
             // CATEGORÍA: OFICINA & EXCEL (20 CASOS POWER)
             // ==========================================================
             
-            // 1. Limpieza de Data (Clásico)
+            // 1. Limpieza de Data (Clásico) -> Claude es el rey del código/fórmula
             createCase(22, 'office', 'El Limpiador de Data', 'cleaning_services', 'Base de datos sucia (Nombres, Mayúsculas).', 
                 'Arregla esta lista.', 
                 '{r}Actúa como Experto en Excel y Limpieza de Datos.{/r} {c}Te adjunto (pega aquí tu tabla) una lista de nombres con formatos mezclados y espacios extra.{/c} {m}Genera una fórmula para dejar todo como "Nombre Propio" y eliminar espacios vacíos.{/m} {l}Solo fórmulas, nada de macros.{/l} {f}Bloque de código con la fórmula y explicación breve.{/f}',
                 '<div class="font-mono text-xs bg-slate-800 text-green-400 p-2 rounded mb-2">=NOMPROPIO(ESPACIOS(A2))</div>',
-                false, ["Sin Instrucción", "Vago"]),
+                'claude', false, ["Sin Instrucción", "Vago"]),
 
-            // 2. Email Diplomático (Negociación)
+            // 2. Email Diplomático (Negociación) -> ChatGPT es bueno en tono
             createCase(23, 'office', 'El "No" Diplomático', 'block', 'Decir que NO al cliente sin perderlo.', 
                 'Dile que no voy a hacer el cambio gratis.', 
                 '{r}Actúa como Gerente de Cuentas Senior.{/r} {c}El cliente pide un cambio fuera del contrato original. Tenemos buena relación.{/c} {m}Escribe un correo rechazando el trabajo gratis pero ofreciendo una cotización.{/m} {l}Tono empático, firme y profesional.{/l} {f}Estructura: Agradecer -> Explicar Límite -> Ofrecer Solución -> Cierre.{/f}',
                 '<div class="bg-white p-2 text-xs italic text-slate-600">"Entiendo la necesidad... para mantener los estándares de calidad, esto requiere un presupuesto adicional..."</div>',
-                false, ["Agresivo", "Sin Alternativa"]),
+                'chatgpt', false, ["Agresivo", "Sin Alternativa"]),
 
-            // 3. Resumir Reunión (Adjunto Texto)
+            // 3. Resumir Reunión (Adjunto Texto) -> Gemini tiene ventana de contexto gigante
             createCase(201, 'office', 'Acta de Reunión Instantánea', 'history_edu', 'Tengo notas desordenadas de una reunión larga.', 
                 'Resume esto.', 
                 '{r}Actúa como Secretario Ejecutivo Eficiente.{/r} {c}Adjunto la transcripción desordenada de nuestra reunión de equipo.{/c} {m}Crea un Acta de Reunión profesional.{/m} {l}Ignora chistes o comentarios irrelevantes.{/l} {f}Formato: 1. Acuerdos Tomados 2. Tareas (Quién hace qué y para cuándo).{/f}',
                 '<p class="font-bold">Acuerdos:</p><ul class="list-disc ml-4 text-xs"><li>Se aprueba presupuesto 2024.</li></ul><p class="font-bold mt-2">Tareas:</p><ul class="list-disc ml-4 text-xs"><li>Juan: Enviar reporte (Viernes).</li></ul>',
-                false, ["Sin Formato", "Muy Largo"]),
+                'gemini', false, ["Sin Formato", "Muy Largo"]),
 
-            // 4. Analizar PDF Largo (Adjunto PDF)
+            // 4. Analizar PDF Largo (Adjunto PDF) -> Gemini es el mejor para archivos grandes
             createCase(202, 'office', 'Analista de Reportes PDF', 'picture_as_pdf', 'Me enviaron un PDF de 50 páginas y no tengo tiempo.', 
                 'De qué trata este pdf.', 
                 '{r}Actúa como Analista de Negocios Senior.{/r} {c}Adjunto este reporte anual en PDF.{/c} {m}Extrae los 5 puntos críticos que debo saber para mi reunión con el directorio.{/m} {l}Máximo 1 página de lectura.{/l} {f}Lista numerada con los hallazgos clave y riesgos.{/f}',
                 '<ol class="list-decimal ml-4 text-xs"><li>Los ingresos cayeron un 5% en Q3.</li><li>Riesgo alto de cadena de suministro en Asia.</li></ol>',
-                false, ["Muy General", "Pierde Detalles"]),
+                'gemini', false, ["Muy General", "Pierde Detalles"]),
 
-            // 5. De Excel a PowerPoint (Adjunto Tabla)
+            // 5. De Excel a PowerPoint (Adjunto Tabla) -> Claude entiende muy bien estructuras
             createCase(203, 'office', 'Creador de Diapositivas', 'slideshow', 'Tengo datos en Excel y necesito una slide.', 
                 'Haz una presentación con esto.', 
                 '{r}Actúa como Diseñador de Presentaciones Corporativas.{/r} {c}Adjunto esta tabla de ventas trimestrales.{/c} {m}Diseña el contenido para una diapositiva de alto impacto.{/m} {l}No quiero que leas la tabla, quiero los "insights" (conclusiones).{/l} {f}Título de la Slide -> 3 Bullets Clave -> Sugerencia de Gráfico.{/f}',
                 '<p class="font-bold">Título:</p> "Crecimiento Sostenido en Q4"<br><p class="font-bold">Bullets:</p> - Superamos meta en 12%...<br><p class="font-bold">Gráfico:</p> Barras apiladas.',
-                false, ["Aburrido", "Solo Copia Datos"]),
+                'claude', false, ["Aburrido", "Solo Copia Datos"]),
 
-            // 6. Fórmula Compleja (BuscarV a XLookUp)
+            // 6. Fórmula Compleja -> Claude
             createCase(204, 'office', 'Modernizador de Fórmulas', 'functions', 'Mis BuscarV se rompen siempre.', 
                 'Mejora esta fórmula.', 
                 '{r}Actúa como MVP de Excel.{/r} {c}Adjunto imagen de mi tabla donde uso BUSCARV y me da error si muevo columnas.{/c} {m}Reemplaza esto con INDICE/COINCIDIR o BUSCARX para que sea robusto.{/m} {f}La fórmula nueva y por qué es mejor.{/f}',
                 '<div class="font-mono text-xs bg-slate-800 text-green-400 p-2 rounded">=BUSCARX(H2; A:A; C:C; "No hallado")</div>',
-                false, ["Usa Fórmulas Viejas", "Sin Explicación"]),
+                'claude', false, ["Usa Fórmulas Viejas", "Sin Explicación"]),
 
-            // 7. Redactar Correo de Cobranza
+            // 7. Redactar Correo de Cobranza -> ChatGPT
             createCase(205, 'office', 'Cobrador Amable', 'money_off', 'Cliente no paga la factura hace 15 días.', 
                 'Cobra la factura al cliente.', 
                 '{r}Actúa como Asistente de Finanzas Diplomatico.{/r} {c}El cliente debe la factura #101 vencida hace 15 días. Es un buen cliente.{/c} {m}Escribe un recordatorio de pago.{/m} {l}No uses la palabra "deuda" ni amenaces. Asume que fue un olvido.{/l} {f}Email breve y cordial.{/f}',
                 '<div class="bg-white p-2 text-xs italic text-slate-600">"Hola [Nombre], solo para chequear si recibieron la factura #101, quizás se traspapeló..."</div>',
-                false, ["Muy Agresivo", "Sin Tacto"]),
+                'chatgpt', false, ["Muy Agresivo", "Sin Tacto"]),
 
-            // 8. Crear Agenda de Reunión
+            // 8. Crear Agenda de Reunión -> ChatGPT
             createCase(206, 'office', 'Arquitecto de Reuniones', 'calendar_today', 'Mis reuniones se alargan y no sirven.', 
                 'Haz una agenda para reunión de ventas.', 
                 '{r}Actúa como Facilitador Agile.{/r} {c}Tenemos reunión de revisión mensual de ventas (1 hora).{/c} {m}Crea una agenda minuto a minuto para no perder tiempo.{/m} {f}Tabla: Hora | Tema | Responsable | Objetivo del bloque.{/f}',
                 '<table class="w-full text-xs border-collapse"><tr><td>0-5 min</td><td>Icebreaker</td></tr><tr><td>5-20 min</td><td>Revisión KPIs</td></tr></table>',
-                false, ["Sin Tiempos", "Desordenada"]),
+                'chatgpt', false, ["Sin Tiempos", "Desordenada"]),
 
-            // 9. Feedback a Empleado (Difícil)
+            // 9. Feedback a Empleado -> Claude (mejor empatía)
             createCase(207, 'office', 'Feedback Constructivo', 'psychology', 'Tengo que corregir a alguien sin desmotivarlo.', 
                 'Dile a Juan que llega tarde siempre.', 
                 '{r}Actúa como Coach de Liderazgo.{/r} {c}Juan es muy bueno técnicamente, pero llega tarde a las reuniones y retrasa al equipo.{/c} {m}Escribe un guion para darle feedback 1 a 1.{/m} {l}Usa el método SBI (Situación, Comportamiento, Impacto).{/l} {f}Guion de conversación.{/f}',
                 '<p>"Juan, en la reunión de ayer (S), llegaste 10 min tarde (B), lo que hizo que el equipo esperara y perdiéramos foco (I)."</p>',
-                false, ["Ataque Personal", "Vago"]),
+                'claude', false, ["Ataque Personal", "Vago"]),
 
-            // 10. Traducir Email Formal (Inglés)
+            // 10. Traducir Email -> DeepL (no es LLM chat) o Claude
             createCase(208, 'office', 'Traductor Corporativo', 'translate', 'Mi inglés es básico y debo escribir al CEO global.', 
                 'Traduce esto a inglés formal.', 
                 '{r}Actúa como Editor Nativo de Inglés de Negocios.{/r} {c}Adjunto mi borrador en español sobre el retraso del proyecto.{/c} {m}Tradúcelo a un inglés corporativo, profesional y directo.{/m} {l}Evita sonar como traducción literal de Google.{/l} {f}Email en inglés.{/f}',
                 '<div class="bg-white p-2 text-xs italic text-slate-600">"Dear Mr. Smith, I am writing to provide an update regarding..."</div>',
-                false, ["Spanglish", "Informal"]),
+                'claude', false, ["Spanglish", "Informal"]),
 
-            // 11. Comparar Listas Excel (Adjunto)
+            // 11. Comparar Listas Excel -> Claude
             createCase(209, 'office', 'Detective de Excel', 'find_in_page', 'Tengo dos listas y no sé quién falta.', 
                 'Compara estas dos listas.', 
                 '{r}Actúa como Analista de Datos.{/r} {c}Adjunto la Lista A (Invitados) y Lista B (Asistentes).{/c} {m}Dime exactamente quiénes de la Lista A NO están en la Lista B.{/m} {l}Entrega solo los nombres faltantes.{/l} {f}Lista simple.{/f}',
                 '<p>Faltaron:</p><ul class="list-disc ml-4 text-xs"><li>Pedro Perez</li><li>Ana Garcia</li></ul>',
-                false, ["Confuso", "No Filtra"]),
+                'claude', false, ["Confuso", "No Filtra"]),
 
-            // 12. Ideas Team Building
+            // 12. Ideas Team Building -> ChatGPT
             createCase(210, 'office', 'Gerente de Felicidad', 'celebration', 'El equipo remoto está desconectado.', 
                 'Ideas para motivar al equipo.', 
                 '{r}Actúa como Experto en Cultura Remota.{/r} {c}Tengo un equipo de 10 personas trabajando desde casa.{/c} {m}Dame 3 ideas de actividades de 15 minutos para el viernes.{/m} {l}Que se puedan hacer por Zoom y sin costo.{/l} {f}Actividad + Instrucciones.{/f}',
                 '<p class="font-bold">"Tour del Escritorio":</p> Cada uno muestra un objeto curioso de su mesa y cuenta la historia.',
-                false, ["Cringe", "Requiere Presupuesto"]),
+                'chatgpt', false, ["Cringe", "Requiere Presupuesto"]),
 
-            // 13. Job Description (Adjunto Notas)
+            // 13. Job Description -> ChatGPT
             createCase(211, 'office', 'Reclutador IT', 'badge', 'Necesito contratar a alguien y no sé escribir el aviso.', 
                 'Haz un aviso de trabajo.', 
                 '{r}Actúa como Headhunter Especialista.{/r} {c}Busco un Asistente Administrativo. Adjunto mis notas sueltas sobre lo que debe hacer.{/c} {m}Redacta una Descripción de Cargo (JD) atractiva.{/m} {f}Título del Cargo -> Responsabilidades -> Requisitos -> Beneficios.{/f}',
                 '<p class="font-bold">Asistente Administrativo Estrella</p><p class="text-xs">Buscamos a la persona que mantendrá el orden...</p>',
-                false, ["Aburrido", "Sin Estructura"]),
+                'chatgpt', false, ["Aburrido", "Sin Estructura"]),
 
-            // 14. Excel: Formato Condicional
+            // 14. Excel: Formato Condicional -> Claude
             createCase(212, 'office', 'Semáforo de Excel', 'traffic', 'Quiero que la tabla me avise si algo va mal.', 
                 'Ponle colores a la tabla.', 
                 '{r}Actúa como Instructor de Excel.{/r} {c}Adjunto tabla de inventario. Quiero que se ponga rojo si el stock es menor a 5.{/c} {m}Explícame cómo configurar el Formato Condicional.{/m} {f}Paso 1, Paso 2, Paso 3.{/f}',
                 '<ol class="list-decimal ml-4 text-xs"><li>Selecciona la columna "Stock".</li><li>Ve a Formato Condicional > Reglas para resaltar celdas > Es menor que...</li><li>Escribe "5" y elige Rojo.</li></ol>',
-                false, ["No Explica Pasos", "Confuso"]),
+                'claude', false, ["No Explica Pasos", "Confuso"]),
 
-            // 15. Carta de Renuncia
+            // 15. Carta de Renuncia -> ChatGPT
             createCase(213, 'office', 'Salida Elegante', 'door_front', 'Me voy de la empresa y no quiero quedar mal.', 
                 'Escribe mi renuncia.', 
                 '{r}Actúa como Asesor de Carrera.{/r} {c}Me voy porque me ofrecieron más sueldo en otro lado, pero quiero dejar las puertas abiertas aquí.{/c} {m}Redacta una carta de renuncia formal y agradecida.{/m} {l}No menciones el dinero.{/l} {f}Carta Formal.{/f}',
                 '<div class="bg-white p-2 text-xs italic text-slate-600">"Estimados, por medio de la presente comunico mi renuncia... Agradezco profundamente las oportunidades..."</div>',
-                false, ["Muy Seca", "Quema Puentes"]),
+                'chatgpt', false, ["Muy Seca", "Quema Puentes"]),
 
-            // 16. Excel: Corregir Fechas (Adjunto)
+            // 16. Excel: Corregir Fechas -> Claude
             createCase(214, 'office', 'Arregla-Fechas', 'calendar_month', 'El sistema me bajó las fechas al revés (mes/día).', 
                 'Arregla estas fechas que están mal.', 
                 '{r}Actúa como Experto en Datos.{/r} {c}Adjunto lista de fechas en formato gringo (MM/DD/YYYY) y mi Excel está en español (DD/MM/YYYY).{/c} {m}Dame una fórmula para invertirlas.{/m} {f}Fórmula de texto.{/f}',
                 '<div class="font-mono text-xs bg-slate-800 text-green-400 p-2 rounded">=FECHA(DERECHA(A1;4);IZQUIERDA(A1;2);EXTRAE(A1;4;2))</div>',
-                false, ["Manual", "Lento"]),
+                'claude', false, ["Manual", "Lento"]),
 
-            // 17. Resumir Hilo de Correos (Adjunto)
+            // 17. Resumir Hilo de Correos -> Gemini
             createCase(215, 'office', 'Resumidor de Cadenas', 'mail', 'Me copiaron en un email con 30 respuestas.', 
                 'Qué pasó en estos correos.', 
                 '{r}Actúa como Asistente Personal Inteligente.{/r} {c}Adjunto una cadena de correos eterna sobre el "Evento de Fin de Año".{/c} {m}Dime en 3 puntos: ¿En qué quedó? ¿Qué debo hacer yo?{/m} {f}Resumen Ejecutivo.{/f}',
                 '<ul class="list-disc ml-4 text-xs"><li>Fecha confirmada: 15 Dic.</li><li>Tu tarea: Aprobar presupuesto antes del Jueves.</li></ul>',
-                false, ["Lee Todo", "Pierde Tiempo"]),
+                'gemini', false, ["Lee Todo", "Pierde Tiempo"]),
 
-            // 18. Plan de Proyecto Simple
+            // 18. Plan de Proyecto Simple -> ChatGPT
             createCase(216, 'office', 'Project Manager Express', 'checklist', 'Tengo un proyecto nuevo y no sé por dónde empezar.', 
                 'Organiza este proyecto.', 
                 '{r}Actúa como PMP Certificado.{/r} {c}Debemos organizar la "Fiesta de Navidad" para 100 personas.{/c} {m}Crea una lista de tareas dividida por fases (Pre, Durante, Post).{/m} {f}Lista de Checklist.{/f}',
                 '<p class="font-bold">Fase 1: Planificación</p> [ ] Definir Presupuesto...<br><p class="font-bold">Fase 2: Ejecución</p> [ ] Reservar Local...',
-                false, ["Desordenado", "Olvida Pasos"]),
+                'chatgpt', false, ["Desordenado", "Olvida Pasos"]),
 
-            // 19. Mensaje de Ausencia (Vacaciones)
+            // 19. Mensaje de Ausencia -> ChatGPT
             createCase(217, 'office', 'Modo Vacaciones', 'beach_access', 'Me voy de vacaciones y necesito el auto-reply.', 
                 'Mensaje de fuera de oficina.', 
                 '{r}Actúa como Profesional Organizado.{/r} {c}Estaré fuera del 1 al 15 de Febrero. Para urgencias contactar a Ana.{/c} {m}Redacta mi respuesta automática de correo.{/m} {l}Divertido pero profesional.{/l} {f}Texto del correo.{/f}',
                 '<div class="bg-white p-2 text-xs italic text-slate-600">"Hola, estoy recargando baterías 🔋. Vuelvo el 15. Si se está incendiando algo, habla con Ana."</div>',
-                false, ["Muy Serio", "Sin Info"]),
+                'chatgpt', false, ["Muy Serio", "Sin Info"]),
 
-            // 20. Excel: Concatenar (Unir Nombres)
+            // 20. Excel: Concatenar -> Claude
             createCase(218, 'office', 'Unificador de Celdas', 'join', 'Tengo Nombre en Columna A y Apellido en B.', 
                 'Junta nombre y apellido.', 
                 '{r}Actúa como Ayudante de Excel.{/r} {c}Adjunto tabla. Columna A: Nombre, Columna B: Apellido.{/c} {m}Dame la fórmula para unirlos en una sola celda con un espacio al medio.{/m} {f}Fórmula simple.{/f}',
                 '<div class="font-mono text-xs bg-slate-800 text-green-400 p-2 rounded">=A2 & " " & B2</div>',
-                false, ["Manual", "Lento"]),
+                'claude', false, ["Manual", "Lento"]),
 
 
             // ==========================================================
-            // OTRAS CATEGORIAS (Muestra pequeña)
+            // OTRAS CATEGORIAS
             // ==========================================================
-            createCase(90, 'finance', 'FBI Salary Negotiator', 'verified_user', 'Miedo a pedir aumento.', 'Dame argumentos...', '{r}Actúa como Ex-Negociador del FBI...{/r}', '...', false),
-            createCase(41, 'marketing', 'Estratega de Ganchos', 'bolt', 'Mis videos no tienen visitas.', 'Ideas para videos...', '{r}Actúa como Consultor Viral...{/r}', '...', false),
+            createCase(90, 'finance', 'FBI Salary Negotiator', 'verified_user', 'Miedo a pedir aumento.', 'Dame argumentos...', '{r}Actúa como Ex-Negociador del FBI...{/r}', '...', 'chatgpt', false),
+            createCase(41, 'marketing', 'Estratega de Ganchos', 'bolt', 'Mis videos no tienen visitas.', 'Ideas para videos...', '{r}Actúa como Consultor Viral...{/r}', '...', 'chatgpt', false),
         ];
 
         // --- LÓGICA UI ---
@@ -529,6 +544,7 @@
             }
 
             const conf = categoryConfig[c.category];
+            const ai = aiConfig[c.suggestedAI] || aiConfig['chatgpt']; // Default fallback
 
             // Render Detail
             document.getElementById('detail-title').innerText = c.title;
@@ -538,6 +554,16 @@
             document.getElementById('detail-category-badge').className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-${conf.color}-100 text-${conf.color}-700 border border-${conf.color}-200`;
             document.getElementById('detail-problem').innerText = c.problem;
             
+            // RENDER AI BADGE
+            const badgeHTML = `
+                <div class="${ai.bg} text-white px-3 py-1 rounded-full flex items-center gap-2 shadow-lg ring-1 ring-white/20">
+                    <span class="material-symbols-outlined text-sm">${ai.icon}</span>
+                    <span class="text-[10px] font-bold tracking-wide uppercase">Recomendada: ${ai.name}</span>
+                </div>
+            `;
+            document.getElementById('ai-badge-container').innerHTML = badgeHTML;
+            document.getElementById('ai-badge-mobile').innerHTML = badgeHTML;
+
             // Render Bad Prompt & Badges
             document.getElementById('detail-bad-prompt').innerText = `"${c.badPrompt}"`;
             document.getElementById('deficiency-badges').innerHTML = c.deficiencies.map(d => 
