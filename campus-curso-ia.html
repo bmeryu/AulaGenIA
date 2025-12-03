@@ -599,6 +599,12 @@
                         resources: [] 
                       },
                       { 
+                        id: '2-taller', 
+                        title: 'Taller: Radar de Automatización', 
+                        type: 'taller', 
+                        resources: [] 
+                      },
+                      { 
                         id: 'q-2', 
                         title: 'Quiz: Módulo 2', 
                         type: 'quiz', 
@@ -1057,6 +1063,59 @@
                 }
 
                 switch(lesson.type) { 
+                    case 'taller':
+                        materialHtml = `
+                        <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                                <h3 class="text-2xl font-bold text-gray-800">El Radar de Automatización</h3>
+                                <span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">Taller Práctico</span>
+                            </div>
+                            
+                            <p class="mb-6 text-gray-600">Completa este radar para identificar qué delegar a la IA. Al final, copia el resultado para tu Mentor.</p>
+
+                            <div class="mb-6 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-teal-700 mb-3">1. EL RADAR (Tareas Mecánicas > 30 min)</h4>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t1" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 1 (Ej: Facturas)">
+                                        <input type="text" id="taller-m1" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t2" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 2">
+                                        <input type="text" id="taller-m2" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t3" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 3">
+                                        <input type="text" id="taller-m3" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="font-bold text-teal-700 mb-2">2. EL CUELLO DE BOTELLA</h4>
+                                <p class="text-xs text-gray-500 mb-2">¿Cuál te frustra más y por qué?</p>
+                                <textarea id="taller-bottleneck" class="w-full p-3 border rounded-lg h-24 focus:ring-2 focus:ring-teal-500" placeholder="Lo que más me traba es..."></textarea>
+                            </div>
+
+                            <div class="mb-8">
+                                <h4 class="font-bold text-teal-700 mb-2">3. EL OBSTÁCULO MENTAL</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Perfeccionismo"> Perfeccionismo ("Nadie lo hará como yo")</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Tecnología"> Tecnología ("No sé configurar")</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Tiempo"> Tiempo ("No tengo tiempo para automatizar")</label>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-900 text-white p-6 rounded-lg text-center">
+                                <p class="mb-4 font-semibold text-teal-400">¿Listo para automatizar?</p>
+                                <button onclick="window.copyTallerPrompt()" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-full transition-transform hover:scale-105 flex items-center justify-center gap-2 mx-auto">
+                                    <i data-lucide="copy" class="w-5 h-5"></i> Copiar Respuestas como Prompt
+                                </button>
+                                <p class="text-xs text-gray-400 mt-2">Copia y pégalo en el chat de tu Mentor IA</p>
+                            </div>
+                        </div>
+                        `;
+                        break;
                     case 'video':
                         if (lesson.videoUrl) {
                             materialHtml = `<div class="flex flex-col gap-4">
@@ -2069,6 +2128,38 @@
       whenFirebaseReady(syncTotalLessons);
       document.addEventListener('DOMContentLoaded', syncTotalLessons);
     })();
+      // Función para el Taller del Módulo 2
+    window.copyTallerPrompt = function() {
+        const t1 = document.getElementById('taller-t1')?.value || 'N/A';
+        const m1 = document.getElementById('taller-m1')?.value || '0';
+        const t2 = document.getElementById('taller-t2')?.value || 'N/A';
+        const m2 = document.getElementById('taller-m2')?.value || '0';
+        const t3 = document.getElementById('taller-t3')?.value || 'N/A';
+        const m3 = document.getElementById('taller-m3')?.value || '0';
+        const bottleneck = document.getElementById('taller-bottleneck')?.value || 'No especificado';
+        
+        let obstacles = [];
+        document.querySelectorAll('.taller-chk:checked').forEach(cb => obstacles.push(cb.value));
+        
+        const promptText = `Hola Mentor IA. Mis respuestas del Radar de Automatización:\n\n` +
+            `1. TAREAS:\n- ${t1} (${m1} mins)\n- ${t2} (${m2} mins)\n- ${t3} (${m3} mins)\n\n` +
+            `2. FRUSTRACIÓN PRINCIPAL:\n"${bottleneck}"\n\n` +
+            `3. OBSTÁCULOS:\n${obstacles.join(', ') || 'Ninguno'}\n\n` +
+            `Dame un plan paso a paso para automatizar la tarea más crítica.`;
+
+        navigator.clipboard.writeText(promptText).then(() => {
+            const btn = document.querySelector('button[onclick="window.copyTallerPrompt()"]');
+            if(btn) { 
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> ¡Copiado!';
+                setTimeout(() => btn.innerHTML = original, 3000);
+                lucide.createIcons();
+            }
+            // Usamos tu función de notificaciones existente si está disponible
+            if(typeof showToast === 'function') showToast('Prompt copiado al portapapeles');
+            else alert('Prompt copiado. Pégalo en tu GPT.');
+        });
+    };
     </script>
     <!-- === END: Scripts de Sincronización y Medios === -->
 
