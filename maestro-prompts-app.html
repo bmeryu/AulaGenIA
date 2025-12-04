@@ -281,9 +281,15 @@
             return html;
         }
 
-        function cleanAGIA(text) {
-            return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, '');
-        }
+       // --- REEMPLAZA TU FUNCIÓN cleanAGIA POR ESTA ---
+function cleanAGIA(text) {
+    return text
+        .replace(/{[rcmlf]}/g, '')           // Quita etiquetas de apertura
+        .replace(/{\/[rcmlf]}/g, '')         // Quita etiquetas de cierre
+        .replace(/<br\s*\/?>/gi, '\n')       // Convierte los <br> en saltos de línea reales
+        .replace(/&nbsp;/g, ' ')             // Limpia espacios de HTML
+        .replace(/<\/?[^>]+(>|$)/g, "");     // Limpia cualquier otra etiqueta HTML sobrante
+}
 
         // --- CONFIGURACIÓN DE IAs ---
         const aiConfig = {
@@ -1164,20 +1170,53 @@
             }).join('');
         }
 
-        function renderCaseList() {
-            const listEl = document.getElementById('case-list');
-            if(!listEl) return;
-            
-            const filtered = allCases.filter(c => (c.category === currentCategory || searchQuery !== '') && (c.title.toLowerCase().includes(searchQuery.toLowerCase()) || c.problem.toLowerCase().includes(searchQuery.toLowerCase())));
-            
-            const countDisplay = document.getElementById('count-display');
-            if(countDisplay) countDisplay.innerText = allCases.length; 
-            
-            if (filtered.length === 0) {
-                listEl.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No hay resultados</div>`;
-                return;
-            }
+        // --- REEMPLAZA TU FUNCIÓN renderCaseList POR ESTA ---
+function renderCaseList() {
+    const listEl = document.getElementById('case-list');
+    if(!listEl) return;
+    
+    // Filtrado de casos
+    const filtered = allCases.filter(c => (c.category === currentCategory || searchQuery !== '') && (c.title.toLowerCase().includes(searchQuery.toLowerCase()) || c.problem.toLowerCase().includes(searchQuery.toLowerCase())));
+    
+    const countDisplay = document.getElementById('count-display');
+    if(countDisplay) countDisplay.innerText = allCases.length; 
+    
+    if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No hay resultados</div>`;
+        return;
+    }
 
+    listEl.innerHTML = filtered.map(c => {
+        const config = categoryConfig[c.category];
+        
+        let iconDisplay = c.locked ? 'lock' : c.icon;
+        let iconColorClass = '';
+        
+        if (c.category === 'tools') {
+            iconColorClass = c.locked ? 'text-slate-300 bg-slate-50' : `text-slate-600 bg-slate-100`;
+        } else {
+            iconColorClass = c.locked ? 'text-slate-300 bg-slate-50' : `text-${config.color}-600 bg-${config.color}-50`;
+        }
+
+        const lockOpacity = c.locked ? 'opacity-70 grayscale' : '';
+        
+        // AQUÍ ESTÁ EL CAMBIO CLAVE: Agregamos el if(window.innerWidth < 768) toggleSidebar()
+        return `<button onclick="selectCase(${c.id}); if(window.innerWidth < 768) toggleSidebar();" class="w-full text-left p-3 rounded-xl group transition-all hover:bg-slate-50 border border-transparent hover:border-slate-200 relative overflow-hidden ${lockOpacity}">
+            <div class="flex items-center gap-3 pl-1">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-none shadow-sm ${iconColorClass}">
+                    <span class="material-symbols-outlined text-xl">${iconDisplay}</span>
+                </div>
+                <div class="overflow-hidden flex-1">
+                    <h4 class="text-sm font-bold text-slate-700 truncate group-hover:text-indigo-700 transition-colors flex items-center gap-2">
+                        ${c.title} 
+                        ${!c.locked ? '<span class="text-[9px] bg-green-100 text-green-700 px-1.5 rounded-full border border-green-200 tracking-wide">GRATIS</span>' : ''}
+                    </h4>
+                    <p class="text-[11px] text-slate-400 truncate leading-tight mt-0.5">${c.locked ? 'Solo miembros Premium' : c.problem}</p>
+                </div>
+            </div>
+        </button>`;
+    }).join('');
+}
             listEl.innerHTML = filtered.map(c => {
                 const config = categoryConfig[c.category];
                 
