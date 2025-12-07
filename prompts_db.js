@@ -19,7 +19,7 @@ const allCases = [
     // ==========================================
     createCase(101, 'productivity', 'El Limpiador de Data', 'cleaning_services', 'Excel: Base de datos sucia (Nombres, Mayúsculas).', 
         'Hola, estoy trabajando con una base de datos de clientes en Excel y tengo un problema. Los nombres en la columna A están todos desordenados, algunos en mayúsculas y otros con muchos espacios porque los copiaron de una web. Necesito que me des una fórmula para dejarlo todo ordenado como Nombre Propio y quitar los espacios que sobran, por favor.',
-        'Aquí tienes la lista arreglada... (La IA suele limpiar el texto pero no te da la fórmula reutilizable para las 5.000 filas).', 
+        '<div class="text-xs text-slate-500 italic">"Aquí tienes los nombres arreglados:<br>Juan Perez<br>Maria Gomez<br>Pedro Soto..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">error</span> Problema: La IA procesó el texto pero NO te dio la fórmula reutilizable. Ahora tienes que hacerlo manual para las otras 5.000 filas.</div>', 
         '{r}Actúa como Experto en Excel y Limpieza de Datos.{/r} {c}Tengo una lista de nombres sucia (pegada desde la web) con mayúsculas mezcladas y espacios irregulares en la columna A.{/c} {m}Genera la fórmula anidada más eficiente para dejarlo como "Nombre Propio" y eliminar espacios.{/m} {l}No uses macros, solo fórmulas nativas.{/l} {f}Entrégame la fórmula en un bloque de código y una tabla explicativa.{/f}', 
         'Datos de entrada: "JUAN  perez", "MARIA gomez".',
         'Verifica que nombres compuestos como "María José" mantengan el espacio medio correcto.',
@@ -28,8 +28,8 @@ const allCases = [
 
     createCase(102, 'productivity', 'El "No" Diplomático', 'block', 'Email: Decir que NO al cliente sin perderlo.', 
         'Necesito ayuda para escribirle un correo a un cliente. Me está pidiendo que agregue unas funciones extra al proyecto que no estaban en el presupuesto original. Escribe un mail diciéndole que no lo puedo hacer gratis porque son muchas horas, pero ofrécele cobrarle un extra de forma amable para no perder la relación.',
-        'Estimado cliente: No realizaré los cambios solicitados ya que no están estipulados en el contrato original. Si los desea, tendrán un costo extra. Saludos.', 
-        '{r}Actúa como Gerente de Cuentas Senior y Experto en Negociación.{/r} {c}Un cliente pide cambios fuera del alcance (Scope Creep).{/c} {m}Redacta un correo rechazando la gratuidad pero ofreciendo una cotización por el extra (Upsell).{/m} {l}Tono: Empático, firme y orientado a la solución. No uses la palabra "No" al inicio.{/l} {f}Asunto del correo + Cuerpo del mensaje.{/f}', 
+        '<div class="text-xs text-slate-500 italic">"Estimado cliente,<br>Lamentablemente no podemos realizar los cambios solicitados de forma gratuita ya que están fuera del alcance del proyecto. Si desea realizarlos, tendrán un costo adicional. Saludos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">cancel</span> Problema: Demasiado brusco y corta la negociación.</div>', 
+        '{r}Actúa como Gerente de Cuentas Senior y Experto en Negociación.{/r} {c}Un cliente solicita funciones extra no presupuestadas que requieren muchas horas de trabajo.{/c} {m}Redacta un correo rechazando la gratuidad pero ofreciendo una cotización por el extra (Upsell).{/m} {l}Tono: Empático, firme y orientado a la solución. No uses la palabra "No" al inicio.{/l} {f}Asunto del correo + Cuerpo del mensaje.{/f}', 
         'Menciona que el requerimiento extra tomaría aprox. 5 horas de desarrollo.',
         'El correo debe ofrecer una alternativa de pago inmediata.',
         '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200"><strong>Asunto:</strong> Propuesta para implementación de mejoras solicitadas (Fase 2)<br><br>"Hola [Nombre], gracias por la sugerencia. Me encanta la idea de incluir la función X, realmente aportaría valor. <br><br>Revisando el alcance original del contrato, esta funcionalidad califica como una nueva fase de desarrollo (aprox 5 horas). Para no detener el avance actual, te he preparado una cotización preferencial para implementarlo la próxima semana. ¿Te parece bien si la revisamos?"</div>', 
@@ -37,8 +37,8 @@ const allCases = [
 
     createCase(103, 'productivity', 'Resumidor de Reuniones', 'groups', 'Gestión: Transforma audios largos en tareas.',
         'Tengo aquí la transcripción de la reunión de equipo que tuvimos hoy, duró como una hora. Hablamos de varios temas del presupuesto, los plazos y los proveedores. Por favor léelo todo y hazme un resumen de lo más importante que se dijo y dime qué tareas quedaron pendientes para enviar un correo.',
-        'La reunión empezó hablando del clima. Luego Juan dijo que el proyecto va bien...',
-        '{r}Actúa como Project Manager Senior.{/r} {c}Adjunto la transcripción de una reunión de brainstorming de 1 hora.{/c} {m}Extrae SOLO los acuerdos firmes y las tareas asignadas.{/m} {l}Ignora las ideas descartadas, chistes y discusiones circulares.{/l} {f}Lista de Tareas: [Tarea] - [Responsable] - [Plazo].{/f}',
+        '<div class="text-xs text-slate-500 italic">"En la reunión se discutió sobre el clima y luego se pasó a revisar el presupuesto. Juan comentó que el proyecto va bien encaminado. Se mencionaron algunos problemas con proveedores pero se solucionarán pronto."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">do_not_disturb</span> Problema: Resumen narrativo vago, sin responsables ni fechas claras.</div>', 
+        '{r}Actúa como Project Manager Senior.{/r} {c}Adjunto la transcripción de una reunión de brainstorming (1 hora) sobre presupuesto, plazos y proveedores.{/c} {m}Extrae SOLO los acuerdos firmes y las tareas asignadas.{/m} {l}Ignora las ideas descartadas, chistes y discusiones circulares.{/l} {f}Lista de Tareas: [Tarea] - [Responsable] - [Plazo].{/f}',
         'INPUT: Transcripción automática de Zoom/Teams.',
         'Cada tarea debe tener un verbo de acción (Crear, Enviar, Llamar).',
         '<div class="bg-slate-50 p-2 rounded text-xs"><h4 class="font-bold text-indigo-700 mb-1">📋 ACUERDOS Y TAREAS</h4><ul class="list-disc ml-4 space-y-1"><li><strong>Enviar presupuesto final</strong> (Ana) - <strong>Viernes 12:00</strong></li><li><strong>Contactar a proveedor de hosting</strong> (Carlos) - <strong>Hoy PM</strong></li><li><strong>Validar diseño de la Home</strong> (Equipo) - <strong>Lunes 9:00</strong></li></ul></div>',
@@ -46,8 +46,8 @@ const allCases = [
 
     createCase(104, 'productivity', 'Traductor Corporativo', 'translate', 'Email: Inglés de negocios para CEO.', 
         'Necesito traducir este correo al inglés para mandárselo al CEO de la empresa en Estados Unidos. El texto es: "Hola jefe, le cuento que el proyecto se va a atrasar dos días por un problema técnico con el servidor, pero ya lo estamos arreglando". Que suene profesional y no como Google Translate.',
-        'Hello boss, the project is late because of technical problems.', 
-        '{r}Actúa como Editor Nativo de Inglés de Negocios (C-Level).{/r} {c}Adjunto mi borrador en español sobre un retraso.{/c} {m}Tradúcelo a un inglés corporativo, sofisticado y directo, transmitiendo control sobre la situación.{/m} {l}Evita sonar como traducción literal. Usa "Dear Mr. [Apellido]".{/l} {f}Email formal.{/f}', 
+        '<div class="text-xs text-slate-500 italic">"Hello boss, I tell you that the project is going to be late two days because of a technical problem with the server, but we are fixing it already."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">translate</span> Problema: Traducción literal y tono demasiado informal ("Hello boss").</div>', 
+        '{r}Actúa como Editor Nativo de Inglés de Negocios (C-Level).{/r} {c}Adjunto mi borrador en español sobre un retraso de 2 días por falla de servidor.{/c} {m}Tradúcelo a un inglés corporativo, sofisticado y directo, transmitiendo control sobre la situación.{/m} {l}Evita sonar como traducción literal. Usa "Dear Mr. [Apellido]".{/l} {f}Email formal.{/f}', 
         'Contexto: El retraso es de 2 días por caída de servidor.',
         'El texto debe usar conectores formales como "However", "Regarding".',
         '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200">"Dear Mr. Smith,<br><br>I am writing to provide an update regarding the project timeline. Due to unforeseen server latency issues encountered yesterday, we are currently navigating a 48-hour adjustment in the delivery schedule. However, the team has already mitigated the root cause, and we are confident in meeting the revised milestone by Thursday."</div>', 
@@ -55,8 +55,8 @@ const allCases = [
 
     createCase(105, 'productivity', 'Resumen Hilos de Email', 'mail_lock', 'Email: Me reenviaron 50 correos.',
         'Me acaban de reenviar esta cadena de correos eterna sobre el proyecto de marketing y la verdad no entiendo nada de lo que está pasando. Por favor lee todos los mensajes de la cadena y explícame en qué quedó la conversación, cuál es el problema actual y quién se supone que tiene que responder ahora.',
-        'Parece que están hablando de un proyecto y discutiendo fechas. El último correo dice "ok".',
-        '{r}Actúa como Asistente Ejecutivo Eficiente.{/r} {c}Adjunto un hilo de correos largo y confuso.{/c} {m}Genera un resumen cronológico de los hitos clave y dime cuál es la "Última Acción" pendiente y quién la tiene.{/m} {f}Bullets cronológicos + Estado Actual (Semáforo).{/f}',
+        '<div class="text-xs text-slate-500 italic">"Parece que están hablando de un proyecto de marketing y discutiendo sobre los colores. Pedro envió el último correo diciendo \'ok, aprobado\', así que creo que ya está listo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">visibility_off</span> Problema: Perdió el detalle crítico de que el "ok" era condicional.</div>', 
+        '{r}Actúa como Asistente Ejecutivo Eficiente.{/r} {c}Adjunto un hilo de correos largo y confuso sobre el proyecto de marketing.{/c} {m}Genera un resumen cronológico de los hitos clave y dime cuál es la "Última Acción" pendiente y quién la tiene.{/m} {f}Bullets cronológicos + Estado Actual (Semáforo).{/f}',
         'Tip: Pega los correos desde el más antiguo al más nuevo.',
         'Identifica claramente quién tiene la responsabilidad ahora mismo.',
         '<p class="text-xs"><strong>Cronología:</strong><br>• 10/Oct: Cliente solicita cambio de color.<br>• 12/Oct: TI rechaza cambio por seguridad.<br>• 13/Oct: Marketing pide revisión.<br><br><strong>Estado Actual:</strong> 🔴 <strong>BLOQUEADO.</strong> La pelota está en el lado de <strong>Pedro (Gerencia)</strong>, quien debe aprobar la excepción de seguridad desde el 14/Oct.</p>',
@@ -64,8 +64,8 @@ const allCases = [
 
     createCase(106, 'productivity', 'Organizador de Archivos', 'folder_open', 'Gestión: Mi escritorio es un caos.',
         'Tengo el escritorio de mi computador lleno de archivos desordenados con nombres como "final", "final_v2", "este_si_que_si". Trabajo en marketing y necesito una forma lógica de nombrar mis archivos para encontrar las cosas rápido. Dame una estructura de nombres que sirva.',
-        'Ponle fecha y nombre. Ejemplo: Archivo_Enero.',
-        '{r}Actúa como Experto en Gestión Documental Digital.{/r} {c}Trabajo en Marketing con muchas versiones.{/c} {m}Diseña una convención de nomenclatura (Naming Convention) lógica y escalable.{/m} {f}Estructura del nombre + Ejemplo.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Puedes ponerle fecha y nombre. Por ejemplo: Archivo_Enero_Final.pdf"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">warning</span> Problema: No soluciona el ordenamiento cronológico automático en el computador.</div>', 
+        '{r}Actúa como Experto en Gestión Documental Digital.{/r} {c}Trabajo en Marketing con muchas versiones de archivos.{/c} {m}Diseña una convención de nomenclatura (Naming Convention) lógica y escalable.{/m} {f}Estructura del nombre + Ejemplo.{/f}',
         'Problema: Tengo archivos "Final", "Final Final".',
         'Debe permitir orden cronológico automático.',
         '<div class="bg-slate-50 p-2 rounded text-xs"><p class="font-bold mb-1">Estructura Propuesta:</p><code class="bg-slate-200 px-1">AAAA-MM-DD_Proyecto_Tipo_Versión</code><br><br><strong>Ejemplos Reales:</strong><br>📂 2024-11-25_BlackFriday_Contrato_v01.pdf<br>📂 2024-11-25_BlackFriday_Contrato_v02_FINAL.pdf<br><br><em>Nota: Al usar la fecha invertida (ISO 8601) al inicio, tu computador ordenará todo cronológicamente por defecto.</em></div>',
@@ -73,8 +73,8 @@ const allCases = [
 
     createCase(107, 'productivity', 'Time Blocking Semanal', 'schedule', 'Gestión: Siento que no me alcanza el tiempo.',
         'Necesito ayuda para organizar mi semana laboral porque siento que no avanzo nada. Tengo que hacer trabajo creativo de diseño en la mañana, pero en la tarde me la paso en reuniones. Ármame un horario semanal para ser más productivo y no distraerme tanto.',
-        'Haz una lista y ve tachando lo que haces. Levántate más temprano.',
-        '{r}Actúa como Coach de Productividad (Método Cal Newport).{/r} {c}Tengo tareas creativas (mañana) y reuniones (tarde).{/c} {m}Crea un horario semanal basado en "Bloques de Tiempo" y "Trabajo Profundo".{/m} {f}Tabla de horario ideal.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Lunes: Trabajar y reuniones. Martes: Trabajar y reuniones..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">schedule</span> Problema: Horario genérico que no aplica la técnica de bloques solicitada.</div>', 
+        '{r}Actúa como Coach de Productividad (Método Cal Newport).{/r} {c}Rutina actual: Diseño creativo en mañanas, reuniones toda la tarde.{/c} {m}Crea un horario semanal basado en "Bloques de Tiempo" y "Trabajo Profundo".{/m} {f}Tabla de horario ideal.{/f}',
         'Restricción: No programar reuniones antes de las 11 AM.',
         'Incluir bloques de descanso.',
         '<table class="w-full text-xs border border-slate-200 mt-1"><thead><tr class="bg-indigo-50"><th class="p-1">Hora</th><th class="p-1">Actividad</th></tr></thead><tbody><tr><td class="p-1 border font-bold">08:00 - 11:00</td><td class="p-1 border">🦁 DEEP WORK (Sin celular, tarea única)</td></tr><tr><td class="p-1 border font-bold">11:00 - 12:00</td><td class="p-1 border">📧 Gestión Admin (Emails)</td></tr><tr><td class="p-1 border font-bold">14:00 - 17:00</td><td class="p-1 border">🤝 Reuniones en Bloque</td></tr></tbody></table>',
@@ -82,17 +82,17 @@ const allCases = [
 
     createCase(108, 'productivity', 'Mensaje Networking LinkedIn', 'connect_without_contact', 'Networking: Contactar a alguien importante.',
         'Quiero escribirle a un Gerente de Logística por LinkedIn para conectar con él. No quiero pedirle trabajo directamente todavía, pero sí me interesa que vea mi perfil y acepte la conexión. Escríbeme un mensaje corto y amable para enviarle en la solicitud.',
-        'Hola, busco trabajo y vi tu perfil. ¿Me das una reunión?',
-        '{r}Actúa como Experto en Networking Estratégico.{/r} {c}Quiero conectar con un Gerente de mi industria.{/c} {m}Redacta una nota de conexión de LinkedIn (máx 300 caracteres) que aporte valor o elogie algo específico.{/m} {f}Texto de la nota.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Hola, soy Juan y busco trabajo en logística. Vi tu perfil y me gustaría conectar. Saludos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">person_off</span> Problema: Demasiado directo y centrado en "yo", alto riesgo de ser ignorado.</div>', 
+        '{r}Actúa como Experto en Networking Estratégico.{/r} {c}Quiero conectar con un Gerente de mi industria sin pedir empleo.{/c} {m}Redacta una nota de conexión de LinkedIn (máx 300 caracteres) que aporte valor o elogie algo específico.{/m} {f}Texto de la nota.{/f}',
         'Menciona un artículo reciente que él haya publicado.',
         'Sin venta directa.',
         '<p class="text-xs italic">"Hola [Nombre], leí tu artículo sobre IA en Logística y me voló la cabeza el punto sobre la última milla. Coincido en que la automatización es clave. Solo quería conectar para seguir tu contenido. ¡Saludos!"</p>',
         'claude', false, false, 'intermediate'),
         
     createCase(109, 'productivity', 'Feedback Constructivo', 'thumbs_up_down', 'Gestión: Corregir a un empleado.',
-        'Tengo que hablar con Juan, que es muy buen empleado pero últimamente está entregando todo tarde y eso nos está atrasando. Dame un guion para decirle que tiene que mejorar los tiempos de entrega sin que se ofenda ni se lo tome personal.',
-        'Juan, apúrate. Estás trabajando muy lento.',
-        '{r}Actúa como Líder de Equipo Empático.{/r} {c}Empleado talentoso pero lento en entregas.{/c} {m}Escribe un guion de feedback usando el modelo SBI (Situation-Behavior-Impact).{/m} {f}Guion de conversación.{/f}',
+        'Tengo que hablar con Juan, que es muy buen empleado pero últimamente está entregando todo tarde y atrasa al resto. Dame un guion para decirle que tiene que mejorar los tiempos sin que se lo tome a mal.',
+        '<div class="text-xs text-slate-500 italic">"Juan, tienes que apurarte más con las entregas. Estás trabajando muy lento y atrasas a todos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">psychology_alt</span> Problema: Crítica personal directa que genera defensa en lugar de cambio.</div>', 
+        '{r}Actúa como Líder de Equipo Empático.{/r} {c}Empleado talentoso pero con entregas tardías que afectan al equipo.{/c} {m}Escribe un guion de feedback usando el modelo SBI (Situation-Behavior-Impact).{/m} {f}Guion de conversación.{/f}',
         'Enfócate en el impacto, no en la persona.',
         'Termina con un plan de acción.',
         '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-yellow-200">"Juan, quería comentarte algo sobre el reporte de ayer (Situación). Noté que la entrega llegó 2 horas después del cierre (Comportamiento), lo que impidió que el equipo de diseño pudiera avanzar, retrasando el proyecto final (Impacto). Eres muy detallista y eso lo valoro, pero ¿cómo podemos equilibrar esa calidad con los tiempos de entrega para la próxima?"</div>',
@@ -100,7 +100,7 @@ const allCases = [
 
     createCase(110, 'productivity', 'Planificación de Evento', 'event', 'Gestión: Organizar fiesta de fin de año.',
         'Me encargaron organizar la fiesta de fin de año de la empresa para 50 personas y no quiero que se me olvide nada importante. Hazme una lista de las cosas que tengo que preparar con tiempo, como la comida, el lugar y los invitados.',
-        'Compra comida y bebida. Busca un lugar bonito.',
+        '<div class="text-xs text-slate-500 italic">"Lista de cosas: 1. Comida 2. Bebida 3. Música 4. Lugar 5. Invitaciones. No olvides pasarlo bien."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">list_alt</span> Problema: Lista básica sin cronograma ni detalles logísticos críticos.</div>', 
         '{r}Actúa como Event Planner Corporativo.{/r} {c}Fiesta 50 personas, presupuesto medio.{/c} {m}Crea un Checklist Maestro cronológico (1 mes antes, 1 semana antes, día D).{/m} {f}Lista de verificación.{/f}',
         'No olvides dietas especiales.',
         'Incluye plan B por lluvia.',
@@ -109,8 +109,8 @@ const allCases = [
 
     createCase(111, 'productivity', 'Carta de Renuncia', 'logout', 'RRHH: Renunciar sin quemar puentes.',
         'Voy a renunciar a mi trabajo actual porque encontré una mejor oferta en otra empresa. Redacta una carta de renuncia para mi jefe que sea formal. Quiero irme en buena onda y dejar las puertas abiertas para el futuro.',
-        'Chao jefe, me voy. Gracias por todo.',
-        '{r}Actúa como Consultor de Carrera.{/r} {c}Me voy a la competencia por mejor sueldo.{/c} {m}Redacta una carta de renuncia formal, agradecida y profesional.{/m} {l}No menciones el dinero.{/l} {f}Carta.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Jefe, renuncio. Me voy a otra empresa donde me pagan más. Gracias por todo, chao."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">sentiment_dissatisfied</span> Problema: Demasiado informal y menciona el dinero, lo cual puede verse poco profesional.</div>', 
+        '{r}Actúa como Consultor de Carrera.{/r} {c}Renuncio por mejor oferta en competencia. Objetivo: Salir en excelentes términos.{/c} {m}Redacta una carta de renuncia formal, agradecida y profesional.{/m} {l}No menciones el dinero.{/l} {f}Carta.{/f}',
         'Ofrece ayuda en la transición.',
         'Mantén la puerta abierta.',
         '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200">"Estimado [Jefe],<br><br>Por medio de la presente, presento mi renuncia al cargo de [Cargo], efectiva a partir del [Fecha].<br><br>Agradezco profundamente las oportunidades de crecimiento durante estos años. Me comprometo a dejar toda mi documentación al día y capacitar a mi reemplazo para asegurar una transición fluida."</div>',
@@ -118,8 +118,8 @@ const allCases = [
 
     createCase(112, 'productivity', 'Brainstorming Estructurado', 'lightbulb', 'Creatividad: Lluvia de ideas que sirva.',
         'Necesito ideas para vender más café en mi tienda porque las ventas están un poco bajas. Dame algunas ideas creativas y originales para atraer más gente que no sea solo bajar los precios.',
-        'Haz descuentos y pon música.',
-        '{r}Actúa como Facilitador de Innovación.{/r} {c}Producto: Café en grano.{/c} {m}Usa el método SCAMPER (Sustituir, Combinar, Adaptar...) para generar 7 ideas disruptivas.{/m} {f}Lista SCAMPER.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Puedes hacer promociones, poner música agradable, o regalar una galleta con el café."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">lightbulb_circle</span> Problema: Ideas obvias que no innovan en el modelo de negocio.</div>', 
+        '{r}Actúa como Facilitador de Innovación.{/r} {c}Ventas de café bajas. Busco ideas creativas (no solo descuentos).{/c} {m}Usa el método SCAMPER (Sustituir, Combinar, Adaptar...) para generar 7 ideas disruptivas.{/m} {f}Lista SCAMPER.{/f}',
         'Idea loca bienvenida.',
         'Una idea por letra.',
         '<ul class="list-disc ml-4 text-xs"><li><strong>Sustituir:</strong> Café que no se bebe, se mastica (Gomitas de café).</li><li><strong>Combinar:</strong> Café + Suscripción de libros (Box mensual "Lectura y Cafeína").</li><li><strong>Eliminar:</strong> Café sin envase (Venta a granel en tiendas de barrio).</li></ul>',
@@ -127,17 +127,17 @@ const allCases = [
 
     createCase(113, 'productivity', 'Respuesta a Queja Cliente', 'support_agent', 'Soporte: Cliente furioso por demora.',
         'Un cliente me escribió muy molesto al correo porque su pedido lleva 3 días de retraso. Escribe una respuesta pidiendo perdón y explicándole que tuvimos un problema de stock, pero que ya va en camino. No quiero perder al cliente.',
-        'Cálmese, ya va. Tuvimos un problema pero lo solucionamos.',
-        '{r}Actúa como Especialista en Customer Success.{/r} {c}Cliente reclama demora de 3 días.{/c} {m}Responde con empatía, explicación honesta y compensación.{/m} {f}Email de respuesta.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Hola, cálmese por favor. Tuvimos un problema pero ya se solucionó. Su pedido llega pronto."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">mood_bad</span> Problema: Tono defensivo e invalidante ("cálmese") que empeora la situación.</div>', 
+        '{r}Actúa como Especialista en Customer Success.{/r} {c}Cliente furioso por 3 días de retraso (quiebre de stock). El pedido ya va en camino.{/c} {m}Responde con empatía, explicación honesta y compensación.{/m} {f}Email de respuesta.{/f}',
         'No uses "pero".',
         'Ofrece algo concreto.',
         '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200">"Hola [Nombre], entiendo perfectamente tu frustración y te pido disculpas sinceras. Tuvimos un quiebre de stock inesperado que retrasó tu pedido. <br><br>Como solución inmediata, hemos abonado el envío express sin costo para que lo recibas mañana antes de las 12:00. Gracias por tu paciencia."</div>',
         'chatgpt', false, false, 'intermediate'),
 
-    createCase(202, 'productivity', 'Analista de Reportes PDF', 'picture_as_pdf', 'Lectura: PDF de 50 páginas.', 
+    createCase(114, 'productivity', 'Analista de Reportes PDF', 'picture_as_pdf', 'Lectura: PDF de 50 páginas.', 
         'Tengo este reporte anual de 50 páginas de la empresa y la verdad no tengo tiempo de leerlo. Hazme un resumen con los puntos más importantes sobre el desempeño de la empresa y los riesgos que mencionan.',
-        'El reporte cubre el desempeño fiscal del año 2023. Se mencionan los ingresos, los gastos operativos y las proyecciones. En general, la empresa creció.', 
-        '{r}Actúa como Consultor de Estrategia de Negocios.{/r} {c}Adjunto reporte anual extenso.{/c} {m}Extrae los "Golden Nuggets": 3 oportunidades de crecimiento y 3 riesgos críticos ocultos.{/m} {f}Usa Markdown y negritas.{/f}', 
+        '<div class="text-xs text-slate-500 italic">"El reporte cubre el desempeño fiscal del año 2023. Se mencionan los ingresos, los gastos operativos y las proyecciones. En general, la empresa creció y le fue bien."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">description</span> Problema: Resumen demasiado general sin datos duros ni hallazgos específicos.</div>', 
+        '{r}Actúa como Consultor de Estrategia de Negocios.{/r} {c}Reporte anual (50 págs) sobre desempeño fiscal, ingresos y proyecciones.{/c} {m}Extrae los "Golden Nuggets": 3 oportunidades de crecimiento y 3 riesgos críticos ocultos.{/m} {f}Usa Markdown y negritas.{/f}', 
         'Enfócate en MD&A.',
         'Debe contener cifras financieras.',
         '<p class="font-bold text-indigo-700 mb-1">🚀 Oportunidades Clave:</p><ul class="list-disc ml-4 text-xs mb-2"><li><strong>Expansión Asia:</strong> El mercado asiático creció un 40% YoY (pág 12).</li><li><strong>Eficiencia:</strong> La nueva patente de IA reducirá costos en un 15%.</li></ul><p class="font-bold text-red-600 mb-1">⚠️ Riesgos Críticos:</p><ul class="list-disc ml-4 text-xs"><li><strong>Costos MP:</strong> Se proyecta un aumento del 20% en el litio.</li></ul>', 
@@ -148,26 +148,26 @@ const allCases = [
     // ==========================================
     createCase(201, 'finance', 'Analista de Acciones (Buffett)', 'trending_up', 'Inversión: Leer un balance general.',
         'Mira este balance general de Apple que te adjunto y dime si crees que es buena idea invertir o no. Fíjate sobre todo en si tienen muchas deudas o si están perdiendo plata.',
-        'Apple es una empresa grande con muchos ingresos. Parece una buena inversión.',
-        '{r}Actúa como Analista Financiero de Value Investing (Estilo Warren Buffett).{/r} {c}Adjunto el Estado de Resultados 2024 de una empresa.{/c} {m}Calcula el Margen Neto y el Ratio de Deuda/Patrimonio. Compara con la media de la industria.{/m} {f}Veredicto: "Atractiva" o "Riesgosa" + Justificación numérica.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Apple es una empresa muy grande y famosa. Vende muchos iPhones y tiene muchos ingresos. Yo creo que es una buena inversión a largo plazo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">analytics</span> Problema: Opinión basada en fama, no en análisis fundamental de los números adjuntos.</div>', 
+        '{r}Actúa como Analista Financiero de Value Investing (Estilo Warren Buffett).{/r} {c}Adjunto Balance de Apple. Foco: Nivel de deuda y rentabilidad vs año anterior.{/c} {m}Calcula el Margen Neto y el Ratio de Deuda/Patrimonio. Compara con la media de la industria.{/m} {f}Veredicto: "Atractiva" o "Riesgosa" + Justificación numérica.{/f}',
         'Dato clave: Busca el "Free Cash Flow" (Flujo de caja libre).',
         'El veredicto debe basarse en números.',
         '<p class="text-xs"><strong>📊 Análisis Financiero Rápido:</strong><br>- <strong>Margen Neto:</strong> 2% (Industria: 10%) ❌<br>- <strong>Deuda/Patrimonio:</strong> 2.5 (Muy alto) ❌<br>- <strong>Free Cash Flow:</strong> Negativo.<br><br><strong>Veredicto:</strong> <span class="bg-red-100 text-red-800 px-1 font-bold">RIESGOSA</span>. Aunque vende mucho, la empresa es ineficiente y está sobreendeudada. No tiene "Moat" (ventaja competitiva) visible en los números.</p>',
         'claude', true, false, 'advanced'),
 
     createCase(202, 'finance', 'Eliminador de Deudas', 'snowboarding', 'Personal: Salir del hoyo financiero.', 
-        'Tengo 3 deudas diferentes y estoy medio ahogado. Tengo una tarjeta de crédito, un crédito de consumo y le debo plata a un amigo. En total debo como 2 millones. Ayúdame a ver cuál pago primero para ordenarme.',
-        'Paga la más cara primero. Ahorra más.', 
-        '{r}Actúa como Asesor Financiero experto en Método Bola de Nieve.{/r} {c}Adjunto mis 3 deudas (Monto, Tasa, Cuota). Tengo $50k extra al mes.{/c} {m}Crea un plan matemático exacto para eliminar las deudas.{/m} {f}Tabla cronológica.{/f}', 
+        'Tengo 3 deudas diferentes: una tarjeta de crédito, un crédito de consumo y una deuda con un familiar. En total debo como 2 millones y no sé cuál pagar primero. Ayúdame a ordenarme.',
+        '<div class="text-xs text-slate-500 italic">"Deberías tratar de ahorrar más y pagar la deuda más grande primero para salir de eso rápido. O paga la que te cobra más intereses."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">calculate</span> Problema: Consejo genérico sin plan de acción matemático ni fechas.</div>', 
+        '{r}Actúa como Asesor Financiero experto en Método Bola de Nieve.{/r} {c}Deudas totales $2M (Tarjeta, Crédito, Familiar). Capacidad de pago extra: $50k.{/c} {m}Crea un plan matemático exacto para eliminar las deudas.{/m} {f}Tabla cronológica.{/f}', 
         'Deuda A: $1M (2%), Deuda B: $500k (3%).',
         'Mostrar fecha exacta de libertad.',
         '<table class="w-full text-xs border-collapse border border-slate-200"><thead><tr class="bg-slate-100"><th>Mes</th><th>Acción</th><th>Efecto</th></tr></thead><tbody><tr><td>1-3</td><td>Pagar mínimos + $50k a Tarjeta A</td><td>Tarjeta A pagada ✅</td></tr><tr><td>4-8</td><td>Usar flujo liberado ($150k) en Crédito B</td><td>Bola de nieve crece ❄️</td></tr></tbody></table><p class="text-xs mt-1 font-bold">¡Libertad Financiera: Agosto 2025!</p>', 
         'chatgpt', false, false, 'intermediate'),
 
     createCase(203, 'finance', 'Broker Hipotecario IA', 'real_estate_agent', 'Inmobiliario: Elegir el mejor crédito.', 
-        'Estoy cotizando un crédito hipotecario y me dieron dos ofertas. El Banco A me da una tasa del 4.5% y el Banco B una del 4.7%. ¿Cuál me conviene más elegir para pagar menos al final de los 20 años?',
-        'El Banco A porque la tasa es más baja.', 
-        '{r}Actúa como Corredor de Propiedades Matemático.{/r} {c}Adjunto simulaciones Banco A y Banco B.{/c} {m}Dime cuál es más barato al final del periodo (Costo Total del Crédito).{/m} {l}Ignora la tasa nominal, fíjate en el CAE y seguros.{/l} {f}Comparativa directa: Ahorro total en pesos.{/f}', 
+        'Me dieron dos simulaciones de crédito hipotecario. El Banco A me da una tasa del 4.5% y el Banco B una del 4.7%. ¿Cuál me conviene más elegir para pagar menos al final de los 20 años?',
+        '<div class="text-xs text-slate-500 italic">"Te conviene el Banco A porque 4.5% es menor que 4.7%. Siempre busca la tasa más baja."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">warning</span> Problema: Ignora el CAE y los seguros, que pueden hacer que la tasa baja sea más cara.</div>', 
+        '{r}Actúa como Corredor de Propiedades Matemático.{/r} {c}Comparativa: Banco A (4.5%) vs Banco B (4.7%).{/c} {m}Dime cuál es más barato al final del periodo (Costo Total del Crédito).{/m} {l}Ignora la tasa nominal, fíjate en el CAE y seguros.{/l} {f}Comparativa directa: Ahorro total en pesos.{/f}', 
         'Datos: Banco A (Seguros caros), Banco B (Seguros baratos).',
         'Calcular diferencia en dinero real.',
         '<p class="text-green-600 font-bold text-xs">Ganador: Banco B.</p><p class="text-xs">Aunque su tasa es mayor (4.7%), sus seguros de desgravamen son un 40% más baratos. Esto impacta más en la cuota final.<br><br><strong>Ahorro total estimado: $2.500.000</strong> al final del crédito.</p>', 
@@ -175,8 +175,8 @@ const allCases = [
 
     createCase(204, 'finance', 'Simulador de Jubilación FIRE', 'savings', 'Retiro: ¿Cuánto necesito?',
         'Me quiero jubilar joven, ojalá a los 40 años. Gasto unos 1000 dólares mensuales en vivir. ¿Cuánta plata necesito juntar en total para poder dejar de trabajar y vivir de los intereses?',
-        'Necesitas ahorrar mucho dinero. Quizás un millón de dólares.',
-        '{r}Actúa como Planificador Financiero FIRE (Financial Independence, Retire Early).{/r} {c}Gasto mensual: $1.000 USD. Tasa de retiro segura: 4%.{/c} {m}Calcula mi "Número FIRE" exacto y cuántos años me faltan si invierto $500 USD al mes.{/m} {f}Cálculo matemático + Años restantes.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Depende de muchos factores, pero necesitas ahorrar bastante dinero. Probablemente un millón de dólares o más para estar seguro."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">calculate</span> Problema: Respuesta vaga sin la fórmula matemática del "4% rule" ni proyección temporal.</div>', 
+        '{r}Actúa como Planificador Financiero FIRE (Financial Independence, Retire Early).{/r} {c}Meta: Retiro a los 40. Gasto mensual actual: $1000 USD.{/c} {m}Calcula mi "Número FIRE" exacto y cuántos años me faltan si invierto $500 USD al mes.{/m} {f}Cálculo matemático + Años restantes.{/f}',
         'Regla del 25x: Gasto Anual x 25.',
         'Debe dar una cifra concreta.',
         '<div class="bg-slate-50 p-2 rounded text-xs"><p><strong>Tu Número FIRE:</strong> $300.000 USD (Para cubrir $12k/año).</p><p class="mt-1">Invirtiendo $500/mes al 7% de retorno anual promedio, tardarás <strong>22 años</strong> en ser libre financieramente. Si aumentas tu ahorro a $1000/mes, bajas a 14 años.</p></div>',
@@ -184,17 +184,17 @@ const allCases = [
 
     createCase(205, 'finance', 'Comparador de Seguros', 'health_and_safety', 'Seguros: Elegir plan de salud.',
         'Tengo que elegir un plan de salud y tengo dos opciones. El Plan A es más caro mensual pero el bono es barato, y el Plan B es barato mensual pero el bono es caro. Soy una persona sana, ¿cuál elijo?',
-        'El más caro cubre más.',
-        '{r}Actúa como Corredor de Seguros Independiente.{/r} {c}Plan A (Copago bajo, mensualidad alta) vs Plan B (Copago alto, mensualidad baja). Soy sano.{/c} {m}Calcula el "Punto de Equilibrio": ¿Cuántas veces debo ir al médico para que convenga el Plan A?{/m} {f}Cálculo y recomendación.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Generalmente es mejor tener un plan que cubra más, así que el Plan A suena mejor por si te enfermas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">balance</span> Problema: Consejo genérico que no hace el análisis de costo-beneficio según uso real.</div>', 
+        '{r}Actúa como Corredor de Seguros Independiente.{/r} {c}Plan A (Fijo alto/Variable bajo) vs Plan B (Fijo bajo/Variable alto). Perfil: Sano.{/c} {m}Calcula el "Punto de Equilibrio": ¿Cuántas veces debo ir al médico para que convenga el Plan A?{/m} {f}Cálculo y recomendación.{/f}',
         'Considera urgencias.',
         'Básate en gasto anual total.',
         '<p class="text-xs"><strong>Análisis:</strong> El Plan A cuesta $200.000 más al año en prima fija. Cada consulta en Plan B cuesta $10.000 más.<br><br><strong>Veredicto:</strong> Si vas al médico menos de 20 veces al año (Punto de Equilibrio), <strong>quédate con el Plan B</strong>. Estás sobre-asegurado en el A.</p>',
         'chatgpt', false, false, 'intermediate'),
 
     createCase(206, 'finance', 'Explicador de Impuestos', 'receipt_long', 'Impuestos: Entender mi declaración.',
-        'Soy trabajador independiente y no entiendo bien eso de la retención de impuestos en las boletas de honorarios. Explícame fácil para qué sirve esa plata y si me la devuelven a fin de año.',
-        'Es para pagar impuestos.',
-        '{r}Actúa como Contador Auditor.{/r} {c}Soy trabajador independiente.{/c} {m}Explícame la "Retención de Honorarios" con una analogía de alcancía.{/m} {f}Explicación simple.{/f}',
+        'Soy trabajador independiente y no entiendo bien eso de la retención de impuestos en las boletas de honorarios. Explícame fácil qué pasa con esa plata y si me la devuelven.',
+        '<div class="text-xs text-slate-500 italic">"La retención es un porcentaje que se paga al SII como anticipo del impuesto a la renta global complementario según la tabla de tramos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">help</span> Problema: Explicación técnica incomprensible sin analogías claras.</div>', 
+        '{r}Actúa como Contador Auditor.{/r} {c}Trabajador independiente confundido con la retención de impuestos en boletas.{/c} {m}Explícame la "Retención de Honorarios" con una analogía de alcancía.{/m} {f}Explicación simple.{/f}',
         'No uses jerga del SII.',
         'Aclara si me devuelven plata o no.',
         '<p class="text-xs">"Imagina que es una <strong>Alcancía Obligatoria</strong>. El gobierno te quita el 13.75% de cada boleta y lo guarda. En abril (Operación Renta), rompen la alcancía. Primero se paga tu salud y pensión. Si sobra plata, te la devuelven. Si falta, tú debes poner la diferencia."</p>',
@@ -202,8 +202,8 @@ const allCases = [
 
     createCase(207, 'finance', 'Evaluador de Proyectos', 'calculate', 'Negocios: ¿Es rentable mi idea?',
         'Estoy pensando en poner un carrito de completos. Tengo 1 millón para invertir y creo que puedo vender unos 50 al día. Hazme los cálculos para ver si es buen negocio y cuándo recupero la plata.',
-        'Sí, a la gente le gusta comer.',
-        '{r}Actúa como Ingeniero Comercial.{/r} {c}Inversión inicial: $1M. Venta diaria estimada: 50 completos. Costo unitario: $500. Precio venta: $1500.{/c} {m}Calcula el Punto de Equilibrio (cuántos debo vender para recuperar el millón) y la utilidad mensual.{/m} {f}Cálculos.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Sí, suena como un buen negocio porque a la gente le gusta comer y los completos son baratos de hacer."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">trending_down</span> Problema: Optimismo sin matemáticas. No calcula el punto de equilibrio.</div>', 
+        '{r}Actúa como Ingeniero Comercial.{/r} {c}Proyecto: Carrito completos. Inversión $1M, Estimación venta: 50/día.{/c} {m}Calcula el Punto de Equilibrio (cuántos debo vender para recuperar el millón) y la utilidad mensual.{/m} {f}Cálculos.{/f}',
         'Considera costos fijos (permiso, gas).',
         'Resultado en meses.',
         '<p class="text-xs"><strong>Margen por completo:</strong> $1.000.<br><strong>Punto de Equilibrio:</strong> Necesitas vender <strong>1.000 completos</strong> para recuperar la inversión inicial. A un ritmo de 50 diarios, tardarás <strong>20 días</strong> en empezar a ganar dinero real. ¡Es un proyecto viable!</p>',
@@ -211,17 +211,17 @@ const allCases = [
 
     createCase(208, 'finance', 'Auditor de Gastos Hormiga', 'coffee', 'Ahorro: Se me va la plata.',
         'Siento que se me va el sueldo y no sé en qué. Compro café y snacks todos los días en la oficina. Calcúlame cuánto estoy gastando en eso al año para ver si es mucho dinero de verdad.',
-        'Deja de comprar café.',
-        '{r}Actúa como Coach Financiero Estricto.{/r} {c}Gasto diario: $3.000 en café/snack.{/c} {m}Proyecta este gasto a 10 años con interés compuesto (si lo invirtieras al 8%).{/m} {f}Cifra impactante.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Probablemente estás gastando mucho. Deberías intentar llevar comida de tu casa para ahorrar."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">visibility_off</span> Problema: Consejo moralista sin visualización del impacto financiero real.</div>', 
+        '{r}Actúa como Coach Financiero Estricto.{/r} {c}Gasto diario recurrente en café/snacks. Sensación de pérdida de sueldo.{/c} {m}Proyecta este gasto a 10 años con interés compuesto (si lo invirtieras al 8%).{/m} {f}Cifra impactante.{/f}',
         'Usa el factor "shock".',
         'Compara con algo grande (un auto).',
         '<p class="text-xs">Gastas $1.000.000 al año en café. Si invirtieras ese dinero, en 10 años tendrías <strong>$15 Millones de pesos</strong>. Básicamente, te estás "bebiendo" un auto nuevo cada década.</p>',
         'chatgpt', false, false, 'beginner'),
 
     createCase(209, 'finance', 'Negociador de Deuda Bancaria', 'call_made', 'Deudas: Repactar con el banco.',
-        'No voy a poder pagar la cuota del crédito este mes porque tuve un problema. Necesito llamar al banco para repactar. Escribe lo que tengo que decirles para que me den más plazo y no me manden a Dicom.',
-        'Diles que no tienes plata.',
-        '{r}Actúa como Abogado de Insolvencia.{/r} {c}No puedo pagar la cuota actual. Quiero repactar a más plazo.{/c} {m}Escribe un script para leerle al ejecutivo del banco mostrando voluntad de pago pero incapacidad real.{/m} {f}Script telefónico.{/f}',
+        'No voy a poder pagar la cuota del crédito este mes porque tuve un problema. Necesito llamar al banco para repactar la deuda. Escribe lo que tengo que decirles para que me den más plazo.',
+        '<div class="text-xs text-slate-500 italic">"Hola, quería avisar que no voy a poder pagar este mes porque no tengo plata. ¿Me pueden esperar?"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">gavel</span> Problema: Muestra debilidad total y no propone solución, activando protocolos de cobranza agresiva.</div>', 
+        '{r}Actúa como Abogado de Insolvencia.{/r} {c}Imposibilidad de pago cuota actual. Necesito repactar para evitar Dicom.{/c} {m}Escribe un script para leerle al ejecutivo del banco mostrando voluntad de pago pero incapacidad real.{/m} {f}Script telefónico.{/f}',
         'No aceptes la primera oferta.',
         'Pide "meses de gracia".',
         '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200">"Hola, mi intención es pagar, pero mi liquidez actual cambió drásticamente. Necesito una solución realista para no caer en mora, porque la cuota actual es matemáticamente imposible para mí hoy. ¿Qué opciones de reprogramación con meses de gracia tienen disponible para clientes con buen comportamiento anterior?"</div>',
@@ -229,8 +229,8 @@ const allCases = [
 
     createCase(210, 'finance', 'Diversificación de Portafolio', 'pie_chart', 'Inversión: No poner todos los huevos en la misma canasta.',
         'Tengo 10 millones de pesos ahorrados y los quiero invertir a 5 años plazo. No quiero arriesgarlo todo en una sola cosa, pero quiero ganar algo. ¿En qué instrumentos debería poner la plata para diversificar?',
-        'Compra acciones de Apple.',
-        '{r}Actúa como Asesor de Inversiones Certificado.{/r} {c}Perfil moderado, horizonte 5 años.{/c} {m}Sugiere una asignación de activos (Asset Allocation) porcentual entre Renta Fija, Variable Nacional e Internacional.{/m} {f}Gráfico de torta en texto.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Deberías comprar acciones de empresas tecnológicas grandes como Apple o Google, siempre suben."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">warning</span> Problema: Recomendación riesgosa (Stock picking) sin diversificación real de activos.</div>', 
+        '{r}Actúa como Asesor de Inversiones Certificado.{/r} {c}Capital: $10M. Plazo: 5 años. Perfil: Moderado (evitar pérdida total, buscar ganancia).{/c} {m}Sugiere una asignación de activos (Asset Allocation) porcentual entre Renta Fija, Variable Nacional e Internacional.{/m} {f}Gráfico de torta en texto.{/f}',
         'Explica por qué diversificar.',
         'No recomiendes acciones específicas, solo índices (ETF).',
         '<p class="text-xs"><strong>Estrategia 40/40/20:</strong><br>🟢 <strong>40% Renta Fija (UF):</strong> Estabilidad y protección contra inflación.<br>🔵 <strong>40% S&P 500 (EEUU):</strong> Crecimiento global a largo plazo.<br>🟡 <strong>20% Depósitos Plazo:</strong> Liquidez inmediata para emergencias.</p>',
@@ -241,7 +241,7 @@ const allCases = [
     // ==========================================
     createCase(301, 'sales', 'FBI Salary Negotiator', 'verified_user', 'Negociación: Pedir aumento de sueldo.', 
         'Voy a tener mi evaluación anual y quiero pedir un aumento de sueldo del 15% porque he tenido buenos resultados este año. Escribe un guion de lo que le tengo que decir a mi jefe en la reunión para convencerlo.',
-        'Hola jefe, he trabajado mucho y necesito más dinero por la inflación.', 
+        '<div class="text-xs text-slate-500 italic">"Hola jefe, quería ver si me puede subir el sueldo porque la inflación ha subido mucho y he trabajado harto este año."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">thumb_down</span> Problema: Argumento basado en necesidad personal ("necesito plata") en lugar de valor para la empresa.</div>', 
         '{r}Actúa como Negociador Experto del FBI.{/r} {c}Llevo 2 años, superé KPIs en un 15%.{/c} {m}Diseña un guion de negociación paso a paso.{/m} {l}Usa argumentos de valor ("aporto X"), no emocionales.{/l} {f}Guion: Apertura -> Logros -> Manejo de Objeción "No hay presupuesto".{/f}', 
         'Logro específico: "Aumenté la retención un 10%".',
         'Usa "Mirroring".',
@@ -250,7 +250,7 @@ const allCases = [
 
     createCase(302, 'sales', 'Calendario Editorial 30 Días', 'calendar_today', 'RRSS: Ideas de contenido.', 
         'Tengo una marca de ropa sustentable y no sé qué subir a Instagram la próxima semana. Dame ideas de contenido para todos los días que sean entretenidas y sirvan para vender, no solo fotos de productos.',
-        'Sube fotos de tu ropa y pon frases bonitas.', 
+        '<div class="text-xs text-slate-500 italic">"Lunes: Foto de producto. Martes: Frase motivacional. Miércoles: Foto de producto. Jueves: TBT..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">repeat</span> Problema: Contenido repetitivo y aburrido sin ganchos (Hooks) reales.</div>', 
         '{r}Actúa como Estratega de Contenidos Digitales.{/r} {c}Marca: Ropa sustentable. Público: Millennials.{/c} {m}Desarrolla una matriz de 1 semana: Educación, Entretenimiento y Venta.{/m} {f}Tabla: Día | Idea | Gancho (Hook).{/f}', 
         'Pilar Venta: Testimonio.',
         'Hook visual o verbal.',
@@ -259,7 +259,7 @@ const allCases = [
 
     createCase(303, 'sales', 'Cold Email B2B', 'mail', 'Outbound: Vender en frío.',
         'Tengo una agencia de diseño web y quiero ofrecerle mis servicios a clínicas dentales por correo. Redacta un mail en frío presentándome y ofreciendo hacerles una página nueva porque la que tienen es lenta.',
-        'Hola, somos una agencia de diseño...',
+        '<div class="text-xs text-slate-500 italic">"Hola, somos Agencia Web y hacemos páginas modernas. Vimos su sitio y podemos mejorarlo. Tenemos buenos precios. Avísenos si les interesa."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">delete</span> Problema: Centrado en "nosotros" y características, no en el dolor del cliente. Parece spam.</div>', 
         '{r}Actúa como Experto en "Cold Email" B2B.{/r} {c}Vendo rediseño web a clínicas.{/c} {m}Consigue una llamada de 15 minutos.{/m} {l}Máx 75 palabras. Enfócate en su problema.{/l} {f}Asunto + Cuerpo.{/f}',
         'Pain Point: Agendar online.',
         'Leer en un pantallazo.',
@@ -268,7 +268,7 @@ const allCases = [
 
     createCase(304, 'sales', 'Psicólogo de Consumo', 'person_search', 'Estrategia: Buyer Persona.', 
         'Vendo kits de robótica para niños que cuestan 100 dólares. Ayúdame a definir quién es mi cliente ideal, qué le gusta y por qué gastaría esa plata en un juguete para sus hijos.',
-        'Padres y escuelas.', 
+        '<div class="text-xs text-slate-500 italic">"Tu cliente son padres y madres que quieren que sus hijos aprendan y se diviertan. También escuelas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">person</span> Problema: Definición demográfica básica que no explora la motivación emocional profunda (miedo/deseo).</div>', 
         '{r}Actúa como Investigador de Mercado.{/r} {c}Producto: Kits de Robótica caros ($100 USD).{/c} {m}Crea un perfil de "Buyer Persona" detallando sus miedos profundos.{/m} {f}Perfil: Nombre, Miedo, Deseo.{/f}', 
         'Miedo emocional.',
         'No funcional.',
@@ -277,7 +277,7 @@ const allCases = [
 
     createCase(305, 'sales', 'Manejo de Objeciones', 'price_check', 'Cierre: Cliente dice "Muy caro".',
         'Estoy vendiendo un servicio de consultoría y el cliente me dice que le gusta pero que lo encuentra muy caro. Dame algunas respuestas para convencerlo de que vale la pena la inversión y no es un gasto.',
-        'Ofrécele un descuento.',
+        '<div class="text-xs text-slate-500 italic">"Entiendo, pero nuestro servicio es de alta calidad y vale la pena. Si quiere le puedo hacer un pequeño descuento."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">sell</span> Problema: Se justifica y cede precio inmediatamente, validando que era caro.</div>', 
         '{r}Actúa como Experto en Cierre de Ventas High-Ticket.{/r} {c}Objeción: "Es muy caro".{/c} {m}Dame 3 respuestas para reencuadrar el precio como inversión (ROI).{/m} {f}Lógica, Emocional, Costo Inacción.{/f}',
         'Enfoque: Costo de NO solucionar.',
         'No justificarse.',
@@ -286,7 +286,7 @@ const allCases = [
         
     createCase(306, 'sales', 'Script Venta Telefónica', 'call', 'Ventas: Llamada en frío.',
         'Tengo que llamar a empresas para ofrecer un software de recursos humanos. Necesito una frase de entrada para cuando me contesten el teléfono y no me corten al tiro, algo que enganche rápido.',
-        'Hola, le ofrezco mis servicios.',
+        '<div class="text-xs text-slate-500 italic">"Hola, buenas tardes, ¿tiene un minuto? Lo llamo para ofrecerle un software increíble que le va a gustar..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">phone_missed</span> Problema: Pide permiso ("tiene un minuto") y habla del producto, no del problema del cliente.</div>', 
         '{r}Actúa como Telemarketer Senior.{/r} {c}Vendo Software de RRHH.{/c} {m}Escribe un script de apertura de 15 segundos para pasar el "filtro" de la secretaria o captar atención.{/m} {f}Script.{/f}',
         'No preguntes "¿tiene un minuto?".',
         'Ve al grano con un beneficio.',
@@ -295,7 +295,7 @@ const allCases = [
 
     createCase(307, 'sales', 'Respuesta "Déjame pensarlo"', 'hourglass_empty', 'Cierre: El cliente duda.',
         'El cliente me dijo "lo voy a pensar" al final de la reunión de ventas. ¿Qué le puedo responder ahí mismo para tratar de cerrar la venta o saber qué es lo que le preocupa realmente?',
-        'Ok, avísame.',
+        '<div class="text-xs text-slate-500 italic">"Bueno, piénsalo tranquilo y me avisas cualquier cosa. Quedo atento a tu respuesta."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">door_open</span> Problema: Pierde el control del proceso. "Pensarlo" suele ser una excusa educada para decir no.</div>', 
         '{r}Actúa como Coach de Ventas.{/r} {c}El cliente dice "déjame pensarlo" al final de la reunión.{/c} {m}Dame una respuesta para descubrir la objeción real oculta.{/m} {f}Respuesta.{/f}',
         'No presiones, indaga.',
         'Generalmente es dinero o duda.',
@@ -304,7 +304,7 @@ const allCases = [
 
     createCase(308, 'sales', 'Títulos de Webinar', 'video_camera_front', 'Marketing: Títulos que convierten.',
         'Voy a hacer un webinar gratuito sobre inversión inmobiliaria para principiantes. Dame 5 opciones de títulos llamativos para que la gente se registre, algo que prometa resultados.',
-        'Aprende de finanzas.',
+        '<div class="text-xs text-slate-500 italic">"Webinar de Inversión Inmobiliaria", "Aprende a invertir", "Todo sobre propiedades".</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">bedtime</span> Problema: Títulos descriptivos y aburridos que no prometen un beneficio concreto ni despiertan curiosidad.</div>', 
         '{r}Actúa como Copywriter Directo.{/r} {c}Webinar sobre inversión inmobiliaria.{/c} {m}Escribe 5 títulos con la fórmula: Cómo [Beneficio] sin [Dolor].{/m} {f}Lista de títulos.{/f}',
         'Usa números.',
         'Promete resultado.',
@@ -313,7 +313,7 @@ const allCases = [
 
     createCase(309, 'sales', 'Recuperación de Carrito', 'shopping_cart_checkout', 'Ecommerce: Cliente abandonó la compra.',
         'La gente deja el carrito de compras botado en mi web de zapatillas. Escribe un correo automático para enviarles y convencerlos de que vuelvan y terminen la compra.',
-        'Vuelve a comprar por favor.',
+        '<div class="text-xs text-slate-500 italic">"Hola, olvidaste comprar tus zapatillas. Vuelve a la web para terminar tu pedido."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">send</span> Problema: Mensaje robótico que no conecta emocionalmente ni incentiva la acción.</div>', 
         '{r}Actúa como Especialista en Email Marketing.{/r} {c}Abandono de carrito en tienda de zapatillas.{/c} {m}Redacta un correo gracioso/persuasivo para recuperar la venta.{/m} {f}Asunto + Cuerpo.{/f}',
         'No ofrezcas descuento al tiro.',
         'Usa humor.',
@@ -322,7 +322,7 @@ const allCases = [
 
     createCase(310, 'sales', 'Perfil LinkedIn Vendedor', 'badge', 'Marca Personal: Optimizar perfil para venta.',
         'Soy consultor de logística y quiero mejorar mi perfil de LinkedIn para conseguir más clientes. Ayúdame a escribir un titular y un resumen que expliquen bien lo que hago y los resultados que doy.',
-        'Soy vendedor proactivo.',
+        '<div class="text-xs text-slate-500 italic">"Consultor de Logística | Experto en transporte | Proactivo y responsable."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">badge</span> Problema: Titular que describe el cargo, no el valor que aporta al cliente potencial.</div>', 
         '{r}Actúa como Consultor de Social Selling.{/r} {c}Vendo servicios de consultoría.{/c} {m}Reescribe mi Titular y "Acerca de" para que se centren en el cliente, no en mí.{/m} {f}Titular + Bio.{/f}',
         'Fórmula: Ayudo a X a lograr Y.',
         'Incluye prueba social.',
@@ -331,7 +331,7 @@ const allCases = [
 
     createCase(311, 'sales', 'Testimonio Perfecto', 'format_quote', 'Marketing: Pedir reseñas que vendan.',
         'Terminé un trabajo con un cliente y quiero pedirle que me deje un testimonio escrito para mi web. Escribe el mensaje para pedírselo sin sonar molesto, guiándolo para que diga cosas buenas.',
-        'Dime si te gustó.',
+        '<div class="text-xs text-slate-500 italic">"Hola, ¿me podrías dejar un testimonio sobre mi trabajo? Gracias."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">star_rate</span> Problema: El cliente no sabe qué escribir y suele poner "Muy bueno", que no sirve para vender.</div>', 
         '{r}Actúa como Copywriter.{/r} {c}Quiero pedir un testimonio escrito.{/c} {m}Crea un formulario con 3 preguntas guía para que el cliente escriba el testimonio perfecto (Problema -> Solución -> Resultado).{/m} {f}Las 3 preguntas.{/f}',
         'Evita respuestas de "Sí/No".',
         'Pregunta por el "antes".',
@@ -340,7 +340,7 @@ const allCases = [
 
     createCase(312, 'sales', 'Propuesta de Valor (UVP)', 'diamond', 'Estrategia: Diferenciarse de la competencia.',
         'Soy nutricionista pero hay miles iguales. Quiero especializarme en madres post-parto. Ayúdame a redactar una frase que explique por qué mi servicio es diferente y mejor que los demás.',
-        'Soy el mejor y más barato.',
+        '<div class="text-xs text-slate-500 italic">"Nutricionista profesional para madres. Planes personalizados y atención de calidad."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">content_copy</span> Problema: Frase genérica que podría usar cualquier nutricionista. No destaca el beneficio único.</div>', 
         '{r}Actúa como Estratega de Marca.{/r} {c}Soy Nutricionista. Hay miles iguales.{/c} {m}Ayúdame a redactar mi UVP (Unique Value Proposition) enfocada en un nicho específico.{/m} {f}Propuesta.{/f}',
         'Nicho: Madres post-parto.',
         'Beneficio único.',
@@ -349,7 +349,7 @@ const allCases = [
 
     createCase(313, 'sales', 'Guion de Video de Ventas (VSL)', 'play_circle', 'Marketing: Video para página web.',
         'Quiero grabar un video corto para mi web vendiendo mi curso de Excel. Escribe el guion del primer minuto para atrapar a la gente y que entiendan el problema que resuelvo.',
-        'Hola, compren mi curso.',
+        '<div class="text-xs text-slate-500 italic">"Hola a todos, bienvenidos a mi video. Hoy les quiero presentar mi nuevo curso de Excel que tiene 10 módulos y es muy completo..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">skip_next</span> Problema: Empieza hablando del producto y características, aburriendo al espectador en 5 segundos.</div>', 
         '{r}Actúa como Guionista de VSL (Video Sales Letter).{/r} {c}Curso de Excel.{/c} {m}Escribe la estructura de los primeros 60 segundos: Gancho, Problema, Agitación, Solución.{/m} {f}Guion paso a paso.{/f}',
         'Agitación: Haz que duela el problema.',
         'Gancho fuerte.',
@@ -358,7 +358,7 @@ const allCases = [
 
     createCase(406, 'sales', 'Gestión de Crisis', 'policy', 'RRSS: Comentario hater.', 
         'Alguien comentó en mi última foto de Instagram diciendo que somos una estafa. Escribe una respuesta para ponerle ahí mismo, que sea educada pero firme para aclarar la situación y llevarlo al privado.',
-        'Bórralo.', 
+        '<div class="text-xs text-slate-500 italic">"Eso es mentira, deja de difamar. O mejor borro tu comentario."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">warning</span> Problema: Respuesta agresiva o censuradora que valida la sospecha ante otros usuarios.</div>', 
         '{r}Actúa como Relacionador Público Senior.{/r} {c}Comentario falso de estafa.{/c} {m}Respuesta pública empática y profesional.{/m} {l}Objetivo: Llevar al DM.{/l} {f}Texto respuesta.{/f}', 
         'Tono de ayuda.',
         'Invitación al privado.',
@@ -367,7 +367,7 @@ const allCases = [
 
     createCase(502, 'sales', 'Naming de Marca', 'badge', 'Branding: Nombre para marca.', 
         'Estoy creando una marca de ropa hecha con plástico reciclado del mar. Necesito ideas de nombres que suenen modernos y ecológicos, pero no los típicos "Eco" o "Bio".',
-        'EcoModa.', 
+        '<div class="text-xs text-slate-500 italic">"EcoModa, RopaVerde, BioPlast, ReciclaWear."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">recycling</span> Problema: Nombres genéricos y descriptivos que suenan a marca barata, no a branding moderno.</div>', 
         '{r}Actúa como Director Creativo.{/r} {c}Ropa de plástico reciclado.{/c} {m}5 nombres modernos y evocadores.{/m} {l}Sin "Eco" ni "Bio".{/l} {f}Lista + Significado.{/f}', 
         'Metáfora marina.',
         'Verificar sonoridad.',
@@ -376,7 +376,7 @@ const allCases = [
 
     createCase(503, 'sales', 'Optimizador Bio LinkedIn', 'face', 'Marca Personal: Perfil LinkedIn.',
         'Soy contador auditor y quiero actualizar mi LinkedIn. Escribe un texto para la sección "Acerca de" que explique que ayudo a Pymes a pagar menos impuestos, enfocado en el beneficio para ellos.',
-        'Contador responsable.',
+        '<div class="text-xs text-slate-500 italic">"Soy contador responsable y proactivo con 10 años de experiencia. Manejo Excel y balances."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">person</span> Problema: Currículum aburrido centrado en características, no en cómo ayuda al cliente.</div>', 
         '{r}Actúa como Experto Marca Personal.{/r} {c}Soy Contador especializado en reducir impuestos para Pymes.{/c} {m}Redacta un Titular (Headline) y un "Acerca de" que hable de beneficios para el cliente, no de mí.{/m} {f}Texto.{/f}',
         'Fórmula: Ayudo a X a lograr Y.',
         'Palabras clave.',
@@ -385,7 +385,7 @@ const allCases = [
 
     createCase(504, 'sales', 'Generador de Analogías', 'compare_arrows', 'Ventas: Explicar producto difícil.',
         'Tengo que explicarle a un cliente qué es la tecnología Blockchain y la ciberseguridad, pero no entiende nada de técnica. Dame una analogía simple con cosas cotidianas para que lo entienda.',
-        'Es encriptación.',
+        '<div class="text-xs text-slate-500 italic">"Es un sistema de registro distribuido descentralizado e inmutable que usa criptografía."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">help</span> Problema: Usa más jerga técnica para explicar la jerga, confundiendo más al cliente.</div>', 
         '{r}Actúa como Divulgador Científico.{/r} {c}Producto complejo.{/c} {m}Crea una analogía simple "Es como...".{/m} {f}La Analogía.{/f}',
         'Elementos cotidianos.',
         'Cliente debe entender al instante.',
@@ -394,7 +394,7 @@ const allCases = [
 
     createCase(505, 'sales', 'Ideas Lead Magnet', 'magnet', 'Marketing: Captar correos.',
         'Quiero captar correos de abogados para venderles mi software. Dame ideas de qué recurso gratuito (PDF o guía) podría regalarles que les interese descargar y les sirva.',
-        'Un ebook.',
+        '<div class="text-xs text-slate-500 italic">"Regálales una guía sobre leyes o una consulta gratis."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">download</span> Problema: "Leyes" es muy amplio y la consulta gratis es costosa en tiempo.</div>', 
         '{r}Actúa como Estratega de Growth Marketing.{/r} {c}Target: Abogados ocupados.{/c} {m}Dame 3 ideas de "Lead Magnets" (Recursos Gratuitos) de alto valor y consumo rápido.{/m} {f}Título + Promesa.{/f}',
         'Ahorro de tiempo real.',
         'Título específico.',
@@ -403,7 +403,7 @@ const allCases = [
 
     createCase(506, 'sales', 'Estratega de Hashtags', 'tag', 'RRSS: Crecer en Instagram.',
         'Tengo una tienda de accesorios para perros y mis posts no tienen alcance. Dame una lista de hashtags que debería usar para llegar a gente que tiene mascotas en mi ciudad.',
-        '#perro #love.',
+        '<div class="text-xs text-slate-500 italic">"#perro #gato #mascotas #amor #doglover"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">tag</span> Problema: Hashtags demasiado genéricos con millones de posts donde tu contenido desaparece al instante.</div>', 
         '{r}Actúa como Experto en SEO de Instagram.{/r} {c}Tienda perros.{/c} {m}Escalera de Hashtags: Nicho, Medios, Grandes.{/m} {f}Listas.{/f}',
         'Nicho específico.',
         'Evitar saturados.',
@@ -412,7 +412,7 @@ const allCases = [
 
     createCase(507, 'sales', 'Respuesta a Reseña', 'reviews', 'Fidelización: Cliente feliz.',
         'Un cliente nos dejó una reseña de 5 estrellas diciendo que le encantó la comida. Escribe una respuesta agradeciéndole para que se sienta especial e invítalo a volver.',
-        'Gracias.',
+        '<div class="text-xs text-slate-500 italic">"Gracias por tu preferencia. Saludos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">sentiment_neutral</span> Problema: Respuesta robotizada que no aprovecha la oportunidad de fidelizar.</div>', 
         '{r}Actúa como Gerente de Fidelización.{/r} {c}Cliente feliz.{/c} {m}Respuesta agradecida que invite a volver.{/m} {l}No venta directa.{/l} {f}Texto.{/f}',
         'Personaliza nombre.',
         'Hacer sentir especial.',
@@ -422,7 +422,7 @@ const allCases = [
     // --- 🎨 ARTE DIGITAL ---
     createCase(401, 'art', 'Artista de IA (Midjourney)', 'camera', 'Prompts: Fotografía realista.', 
         'Quiero generar una imagen en Midjourney de una botella de jugo de naranja para un anuncio. Describe la imagen detalladamente para que se vea realista y apetitosa, con buena iluminación.',
-        '(Dibujo animado).', 
+        '<div class="text-xs text-slate-500 italic">"Una botella de jugo de naranja rica con naranjas al lado."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">image</span> Problema: La IA generará un dibujo animado o algo deforme por falta de especificaciones técnicas.</div>', 
         '{r}Actúa como Fotógrafo Publicitario y Experto en Midjourney.{/r} {c}Producto: Botella de jugo de naranja.{/c} {m}Escribe 3 prompts técnicos para foto ultra-realista.{/m} {l}Usa terminología de cámara.{/l} {f}Estructura: [Sujeto] + [Entorno] + [Cámara] + [Parámetros].{/f}', 
         'Parámetros: --ar 4:5 --style raw.',
         'Especificar iluminación.',
@@ -431,7 +431,7 @@ const allCases = [
 
     createCase(402, 'art', 'Director de Arte (Concept)', 'palette', 'Concepto: Visualizar idea abstracta.',
         'Necesito una imagen que represente el concepto de "innovación tecnológica" pero que no sea el típico foco o un cerebro digital. Dame una idea visual original y abstracta.',
-        'Foco con circuitos.',
+        '<div class="text-xs text-slate-500 italic">"Dibuja una ampolleta conectada a unos cables de computadora."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">lightbulb</span> Problema: Recurre al cliché exacto que pediste evitar.</div>', 
         '{r}Actúa como Director de Arte de Apple.{/r} {c}Concepto: "Innovación invisible".{/c} {m}Describe una escena visual minimalista y abstracta que represente este concepto sin usar clichés.{/m} {f}Descripción visual.{/f}',
         'Estilo: Vidrio, luz.',
         'Evocar sensaciones.',
@@ -440,7 +440,7 @@ const allCases = [
 
     createCase(403, 'art', 'Generador Paletas Color', 'colors', 'Branding: Colores que combinan.',
         'Voy a abrir una cafetería moderna y necesito definir los colores de la marca. Dame una paleta de 4 colores con sus códigos HEX que combine bien.',
-        'Café y beige.',
+        '<div class="text-xs text-slate-500 italic">"Usa café oscuro y beige porque es café."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">palette</span> Problema: Paleta monótona y predecible sin códigos de color exactos.</div>', 
         '{r}Actúa como Experto en Teoría del Color.{/r} {c}Marca: Café moderno.{/c} {m}Genera una paleta de 4 colores con sus códigos HEX.{/m} {l}Busca contraste.{/l} {f}Color + HEX.{/f}',
         'Color de acento.',
         'Contraste web.',
@@ -448,8 +448,8 @@ const allCases = [
         'chatgpt', false, false, 'beginner'),
 
     createCase(404, 'art', 'Diseñador Iconos App', 'app_shortcut', 'UI/UX: Icono app móvil.',
-        'Estoy haciendo una app de meditación y necesito el icono. Describe cómo debería ser para que se vea bien y transmita paz en la tienda de aplicaciones.',
-        'Un loto.',
+        'Estoy haciendo una app de meditación y necesito diseñar el icono para la tienda de aplicaciones. Describe cómo debería ser para que se vea bien y transmita paz.',
+        '<div class="text-xs text-slate-500 italic">"Pon una flor de loto o una persona sentada."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">filter_vintage</span> Problema: Idea genérica que se perderá entre miles de iconos iguales.</div>', 
         '{r}Actúa como Diseñador de Iconos iOS (Estilo Apple).{/r} {c}App: Meditación y sueño.{/c} {m}Describe un icono simple, reconocible y escalable.{/m} {f}Prompt visual descriptivo.{/f}',
         'Estilo Apple.',
         'Verse bien pequeño.',
@@ -457,8 +457,8 @@ const allCases = [
         'midjourney', false, false, 'intermediate'),
         
     createCase(405, 'art', 'Diseño de Logo Minimalista', 'draw', 'Branding: Logo para startup.',
-        'Necesito un logo para una startup de envíos rápidos con drones. Quiero algo minimalista y geométrico, nada de dibujos complicados. Describe cómo podría ser.',
-        'Un camión rápido.',
+        'Necesito un logo para una startup de envíos rápidos con drones. Quiero algo minimalista y geométrico, nada de dibujos complicados. Describe cómo podría ser el diseño.',
+        '<div class="text-xs text-slate-500 italic">"Dibuja un camión con alas o un dron llevando una caja."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">local_shipping</span> Problema: Ilustración literal, no un logotipo escalable y moderno.</div>', 
         '{r}Actúa como Paul Rand (Diseñador Legendario).{/r} {c}Startup: Envíos ultra rápidos con drones.{/c} {m}Describe un concepto de logo geométrico y abstracto.{/m} {l}Sin camiones ni paquetes literales.{/l} {f}Concepto visual.{/f}',
         'Usa formas básicas: Círculo, Flecha.',
         'Debe funcionar en blanco y negro.',
@@ -467,7 +467,7 @@ const allCases = [
 
     createCase(406, 'art', 'Fotografía de Retrato LinkedIn', 'person', 'Imagen: Foto profesional con IA.',
         'Necesito una foto para mi LinkedIn pero no puedo ir a un estudio. Dame un prompt para crear una foto de una persona de negocios realista con buena luz.',
-        '(Sube tu foto y la IA la deforma).',
+        '<div class="text-xs text-slate-500 italic">"Foto de persona profesional en oficina."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">face</span> Problema: Resultado con cara deforme, iluminación plana y aspecto de stock falso.</div>', 
         '{r}Actúa como Fotógrafo de Retratos Corporativos.{/r} {c}Quiero generar una foto de "Persona de Negocios" genérica para usar de avatar.{/c} {m}Escribe un prompt para Midjourney de un retrato profesional con iluminación de estudio.{/m} {f}Prompt.{/f}',
         'Iluminación Rembrandt.',
         'Fondo desenfocado oficina.',
@@ -476,7 +476,7 @@ const allCases = [
 
     createCase(407, 'art', 'Diseño de Slide Powerpoint', 'slideshow', 'Presentaciones: Diapositiva impactante.',
         'Tengo que presentar el crecimiento de ventas de la empresa y quiero una diapositiva que impacte. Dime cómo diseñarla para que se vea moderna y limpia.',
-        'Pon el texto y un gráfico.',
+        '<div class="text-xs text-slate-500 italic">"Pon el título arriba, luego un gráfico de barras y a la derecha una lista con todos los datos y explicaciones."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">view_quilt</span> Problema: Sobrecarga cognitiva. Demasiada información en una sola slide.</div>', 
         '{r}Actúa como Diseñador de Presentaciones TED.{/r} {c}Slide: Crecimiento de ventas 200%.{/c} {m}Describe la composición visual para máximo impacto. Menos es más.{/m} {f}Descripción de elementos.{/f}',
         'Regla de tercios.',
         'Un solo número grande.',
@@ -485,7 +485,7 @@ const allCases = [
 
     createCase(408, 'art', 'Texturas 3D Realistas', 'texture', '3D: Prompt para materiales.',
         'Necesito una textura de madera vieja para un diseño 3D que estoy haciendo. Describe cómo debe ser la imagen para que la IA la genere bien y parezca real.',
-        'Madera café.',
+        '<div class="text-xs text-slate-500 italic">"Madera café oscuro vieja."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">texture</span> Problema: Textura plana, sin detalles de relieve ni realismo.</div>', 
         '{r}Actúa como Artista de Texturas 3D.{/r} {c}Necesito una textura para un render arquitectónico.{/c} {m}Describe una textura de "Madera de Nogal Envejecida" para generar en IA.{/m} {f}Prompt de textura (Seamless).{/f}',
         'Detalles: Vetas, imperfecciones, barniz.',
         'Tileable (repetible).',
@@ -494,7 +494,7 @@ const allCases = [
 
     createCase(409, 'art', 'Ilustración Estilo Editorial', 'brush', 'Arte: Estilo revista New Yorker.',
         'Quiero una ilustración estilo revista sobre el estrés del teletrabajo. Describe la escena para que un ilustrador (o IA) la pueda dibujar con ese estilo.',
-        'Gente trabajando en computadores.',
+        '<div class="text-xs text-slate-500 italic">"Dibuja a alguien trabajando en su casa con el computador."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">brush</span> Problema: Imagen literal y aburrida, sin el estilo artístico solicitado.</div>', 
         '{r}Actúa como Ilustrador del New Yorker.{/r} {c}Tema: El estrés del teletrabajo.{/c} {m}Describe una ilustración satírica con estilo de tinta y acuarela.{/m} {f}Prompt descriptivo.{/f}',
         'Línea fina, colores desaturados.',
         'Humor visual.',
@@ -503,7 +503,7 @@ const allCases = [
 
     createCase(410, 'art', 'Diseño de Packaging', 'package_2', 'Producto: Caja atractiva.',
         'Voy a vender galletas veganas y necesito diseñar la caja. Dame una idea de cómo debería ser el empaque para que se vea natural y premium a la vez.',
-        'Una caja cuadrada con el logo.',
+        '<div class="text-xs text-slate-500 italic">"Una caja cuadrada con el logo al medio y una foto de la galleta."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">inventory_2</span> Problema: Diseño estándar que no comunica los valores de la marca.</div>', 
         '{r}Actúa como Diseñador de Empaques Sustentables.{/r} {c}Producto: Galletas artesanales veganas.{/c} {m}Describe un empaque que comunique "natural" y "premium" visualmente.{/m} {f}Concepto visual.{/f}',
         'Materiales: Cartón kraft, tinta blanca.',
         'Ventana transparente.',
@@ -512,7 +512,7 @@ const allCases = [
 
     createCase(411, 'art', 'Flyer de Evento', 'campaign', 'Diseño: Volante publicitario.',
         'Necesito un flyer para una fiesta electrónica underground. Dime qué elementos visuales poner para que llame la atención de los jóvenes.',
-        'Pon la hora y el lugar con luces.',
+        '<div class="text-xs text-slate-500 italic">"Pon el nombre de la fiesta, la hora y el lugar, y decora con luces de neón."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">style</span> Problema: Estética genérica de "disco" que no atrae al nicho underground.</div>', 
         '{r}Actúa como Diseñador de Carteles de Festivales.{/r} {c}Evento: Fiesta Techno Underground.{/c} {m}Describe la estética visual para un flyer de alto impacto.{/m} {f}Estilo, Tipografía y Colores.{/f}',
         'Estilo: Brutalista o Cyberpunk.',
         'Tipografía grande y distorsionada.',
@@ -521,7 +521,7 @@ const allCases = [
 
     createCase(412, 'art', 'Moodboard Decoración', 'chair', 'Interiorismo: Inspiración visual.',
         'Quiero redecorar mi sala que es pequeña y oscura. Dame ideas de qué muebles y colores usar para que se vea más amplia y estilo japonés.',
-        'Compra un sofá gris.',
+        '<div class="text-xs text-slate-500 italic">"Pinta las paredes blancas y compra un sofá gris. Pon una planta."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">weekend</span> Problema: Consejo básico sin coherencia de estilo ni atmósfera.</div>', 
         '{r}Actúa como Interiorista Estilo Japandi.{/r} {c}Sala pequeña, poca luz.{/c} {m}Describe un "Moodboard" visual para generar una imagen de referencia.{/m} {f}Elementos clave y paleta.{/f}',
         'Madera clara, plantas, textiles.',
         'Iluminación cálida.',
@@ -529,8 +529,8 @@ const allCases = [
         'midjourney', false, false, 'beginner'),
 
     createCase(501, 'art', 'Desbloqueo Creativo', 'edit', 'Escritura: No se me ocurre nada.', 
-        'Quiero escribir un cuento de terror pero estoy bloqueado y no se me ocurre nada. Dame una idea original que involucre un objeto cotidiano.',
-        'Casa embrujada.', 
+        'Quiero escribir un cuento de terror pero estoy bloqueado y no se me ocurre nada. Dame una idea original que involucre un objeto cotidiano dentro de una casa.',
+        '<div class="text-xs text-slate-500 italic">"Escribe sobre una muñeca poseída o una casa embrujada donde se escuchan ruidos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">auto_stories</span> Problema: Cliché absoluto. No inspira ni desbloquea.</div>', 
         '{r}Actúa como Stephen King.{/r} {c}Terror Psicológico.{/c} {m}Premisa "What if" con objeto cotidiano.{/m} {f}Sinopsis.{/f}', 
         'Objeto: Reloj.',
         'Amenaza inmediata.',
@@ -539,17 +539,17 @@ const allCases = [
 
     // --- 🧠 CEREBRO DIGITAL ---
     createCase(601, 'tech', 'Explicador de Código', 'code', 'Código: Entender script.',
-        'Tengo este código en Python que encontré y no entiendo qué hace. Explícame la lógica paso a paso como si fuera principiante.',
-        'Imprime números.',
+        'Tengo este código en Python que encontré en internet y no entiendo qué hace. Explícame la lógica paso a paso como si fuera principiante.',
+        '<div class="text-xs text-slate-500 italic">"Es un bucle for que itera sobre una lista e imprime los números."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">code_off</span> Problema: Explicación técnica que no ayuda a entender el "por qué" o el flujo.</div>', 
         '{r}Actúa como Senior Developer Mentor.{/r} {c}Script Python complejo.{/c} {m}Explica la lógica línea por línea en lenguaje natural.{/m} {f}Comentarios.{/f}',
         'Input: Bucle anidado.',
         'Apto principiante.',
-        '<code class="text-xs bg-slate-800 text-blue-300 p-1">for item in list:</code> <span class="text-xs text-slate-500">// Recorre cada elemento...</span>',
+        '<code class="text-xs bg-slate-800 text-blue-300 p-1">for item in list:</code> <span class="text-xs text-slate-500">// Recorre cada elemento de tu lista de compras, uno por uno, para procesarlo.</span>',
         'chatgpt', false, false, 'intermediate'),
 
     createCase(602, 'tech', 'Generador Consultas SQL', 'database', 'Data: Extraer info base datos.',
         'Necesito sacar de la base de datos la lista de los 10 clientes que más dinero han gastado en el último mes. Escribe la consulta SQL.',
-        'SELECT * FROM clientes...',
+        '<div class="text-xs text-slate-500 italic">"SELECT * FROM clientes WHERE compra > 100"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">database</span> Problema: Consulta básica incorrecta. No suma, no agrupa y no ordena.</div>', 
         '{r}Actúa como Data Engineer.{/r} {c}Tablas Users, Orders.{/c} {m}Escribe la Query SQL para obtener el TOP 10 de clientes.{/m} {f}Código SQL.{/f}',
         'Usa JOIN.',
         'Ordenado desc.',
@@ -558,7 +558,7 @@ const allCases = [
 
     createCase(603, 'tech', 'Fórmulas Google Sheets', 'regular_expression', 'Lógica: Extraer emails complejos.',
         'Tengo una columna en Excel con textos largos que incluyen correos electrónicos mezclados. Dame una fórmula para extraer solo los emails.',
-        'Dividir texto.',
+        '<div class="text-xs text-slate-500 italic">"Usa la función \'Texto en columnas\' en el menú de datos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">function</span> Problema: Solución manual y destructiva, no una fórmula dinámica.</div>', 
         '{r}Actúa como Experto en Google Sheets y Regex.{/r} {c}Texto sucio.{/c} {m}Fórmula para extraer SOLO el email.{/m} {f}Fórmula REGEXEXTRACT.{/f}',
         'Funcionar con cualquier dominio.',
         'Correos con puntos.',
@@ -567,7 +567,7 @@ const allCases = [
 
     createCase(604, 'tech', 'Traductor Jerga Tech', 'terminal', 'Conceptos: Entender programadores.',
         'Tengo que explicarle a mi abuela qué es una API. Dame una explicación muy sencilla usando un ejemplo de la vida real.',
-        'Interfaz de aplicación.',
+        '<div class="text-xs text-slate-500 italic">"Es una interfaz de programación de aplicaciones que permite que dos sistemas se comuniquen."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">school</span> Problema: Definición de diccionario que no entiende nadie fuera de sistemas.</div>', 
         '{r}Actúa como Profesor de Tecnología.{/r} {c}Concepto: API.{/c} {m}Explícalo con una analogía de restaurante.{/m} {f}Analogía.{/f}',
         'Menú, Mesero, Cocina.',
         'API es el mensajero.',
@@ -576,7 +576,7 @@ const allCases = [
 
     createCase(605, 'tech', 'Explicar Git y GitHub', 'commit', 'Dev: ¿Qué es el control de versiones?',
         'Estoy aprendiendo a programar y no entiendo para qué sirve Git y GitHub. Explícamelo fácil, usando una analogía si puedes.',
-        'Un sistema de control de versiones.',
+        '<div class="text-xs text-slate-500 italic">"Es un sistema para guardar versiones de código en la nube."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">history</span> Problema: Correcto pero abstracto. No explica la utilidad práctica.</div>', 
         '{r}Actúa como Senior Dev.{/r} {c}Estudiante principiante.{/c} {m}Explica Git usando la analogía de "Guardar Partida" en un videojuego.{/m} {f}Explicación simple.{/f}',
         'Commit = Guardar.',
         'Branch = Línea de tiempo alternativa.',
@@ -585,7 +585,7 @@ const allCases = [
 
     createCase(606, 'tech', 'Generador de HTML Básico', 'html', 'Web: Crear una Landing Page simple.',
         'Escribe el código HTML básico para hacer una página web simple que tenga un título que diga "Hola" y un texto abajo.',
-        '<code>&lt;h1&gt;Hola&lt;/h1&gt;</code>',
+        '<div class="text-xs text-slate-500 italic">"&lt;h1&gt;Hola&lt;/h1&gt;&lt;p&gt;Texto&lt;/p&gt;"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">code</span> Problema: Fragmento incompleto. No es un archivo HTML válido ni tiene diseño.</div>', 
         '{r}Actúa como Frontend Developer.{/r} {c}Necesito una estructura base de HTML5 para una Landing Page.{/c} {m}Escribe el código con Header, Hero Section (Título y Botón) y Footer. Usa Tailwind CSS vía CDN.{/m} {f}Código HTML completo.{/f}',
         'Incluye meta viewport.',
         'Diseño centrado.',
@@ -594,7 +594,7 @@ const allCases = [
 
     createCase(607, 'tech', 'Comparador de Hosting', 'dns', 'Infraestructura: Dónde alojar mi web.',
         'Quiero subir mi página web a internet. ¿Qué hosting me recomiendas contratar? He visto GoDaddy y AWS pero no sé la diferencia.',
-        'GoDaddy o AWS.',
+        '<div class="text-xs text-slate-500 italic">"Contrata GoDaddy, es famoso. O AWS si quieres algo potente."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">cloud_off</span> Problema: Recomendación peligrosa sin analizar el nivel técnico del usuario.</div>', 
         '{r}Actúa como Arquitecto Cloud.{/r} {c}Proyecto: Tienda online pequeña (WordPress). Tráfico bajo.{/c} {m}Compara Shared Hosting vs VPS vs Cloud. Recomienda la mejor opción costo/beneficio.{/m} {f}Recomendación.{/f}',
         'Considera dificultad técnica.',
         'Evita sobre-ingeniería.',
@@ -603,7 +603,7 @@ const allCases = [
 
     createCase(608, 'tech', 'Automatización con Zapier', 'bolt', 'No-Code: Conectar aplicaciones.',
         'Quiero que cuando me llegue un correo con una factura, el archivo adjunto se guarde solo en una carpeta de Google Drive. Dime cómo configuro eso.',
-        'Usa Zapier.',
+        '<div class="text-xs text-slate-500 italic">"Usa Zapier o IFTTT para conectar Gmail con Drive."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">settings_ethernet</span> Problema: Nombra la herramienta pero no explica la lógica de los pasos (Triggers/Actions).</div>', 
         '{r}Actúa como Experto en Automatización.{/r} {c}Trigger: Nuevo email en Gmail con etiqueta "Factura". Action: Guardar adjunto en Drive y datos en Sheets.{/c} {m}Describe los pasos lógicos para configurar este Zap.{/m} {f}Paso 1, 2, 3.{/f}',
         'Detalla qué datos mapear (Asunto, Remitente).',
         'Menciona el "Trigger".',
@@ -612,7 +612,7 @@ const allCases = [
 
     createCase(609, 'tech', 'Diagnóstico de Error Windows', 'bug_report', 'Soporte: Mi PC pantalla azul.',
         'Mi computador me tiró un pantallazo azul con un error raro y se reinició. ¿Qué puedo hacer para arreglarlo?',
-        'Reinicia el PC.',
+        '<div class="text-xs text-slate-500 italic">"Reinicia el PC. Si no funciona, formatéalo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">restart_alt</span> Problema: Solución nuclear innecesaria. No ofrece diagnóstico.</div>', 
         '{r}Actúa como Técnico de Soporte IT Nivel 2.{/r} {c}Error: Pantalla Azul "CRITICAL_PROCESS_DIED".{/c} {m}Dame 3 pasos de solución escalonada (del más fácil al más drástico).{/m} {f}Pasos.{/f}',
         'No recomiendes formatear de inmediato.',
         'Usa comandos CMD seguros (sfc).',
@@ -621,7 +621,7 @@ const allCases = [
 
     createCase(610, 'tech', 'Prompt CSS Centrado', 'style', 'Código: Centrar un div (la pesadilla).',
         'Estoy haciendo una web y no logro centrar un elemento "div" en el medio de la pantalla. Pásame el código CSS para hacerlo.',
-        'Margin: auto.',
+        '<div class="text-xs text-slate-500 italic">"Usa margin: 0 auto; o text-align: center."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">css</span> Problema: Soluciones antiguas que no centran verticalmente.</div>', 
         '{r}Actúa como Experto en CSS Moderno.{/r} {c}Tengo un div hijo dentro de un padre.{/c} {m}Dame el código para centrarlo perfecta y verticalmente usando Flexbox.{/m} {f}Snippet CSS.{/f}',
         'Usa display: flex.',
         'Explica justify y align.',
@@ -629,8 +629,8 @@ const allCases = [
         'claude', false, false, 'beginner'),
 
     createCase(611, 'tech', 'Creador de README.md', 'description', 'Dev: Documentar mi proyecto.',
-        'Terminé mi código de una calculadora y lo subí a GitHub pero no tiene instrucciones. Escribe el README para que la gente sepa cómo usarla.',
-        'Este es mi código, úsenlo.',
+        'Terminé mi código de una calculadora y lo subí a GitHub pero no tiene instrucciones. Escribe el README para que la gente sepa cómo instalarla y usarla.',
+        '<div class="text-xs text-slate-500 italic">"Esta es una calculadora hecha en Python. Úsenla con cuidado."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">article</span> Problema: No explica cómo instalar, dependencias ni ejemplos de uso.</div>', 
         '{r}Actúa como Open Source Maintainer.{/r} {c}Proyecto: Calculadora en Python.{/c} {m}Genera un archivo README.md profesional con secciones: Instalación, Uso y Contribución.{/m} {f}Markdown.{/f}',
         'Incluye bloques de código para instalación.',
         'Usa badges si puedes.',
@@ -639,7 +639,7 @@ const allCases = [
 
     createCase(612, 'tech', 'Consultor de Ciberseguridad', 'security', 'Seguridad: ¿Es este correo real?',
         'Me llegó un correo del banco diciendo que bloquearon mi cuenta y que haga clic en un link para recuperarla. ¿Cómo sé si es real o una estafa?',
-        'No lo abras.',
+        '<div class="text-xs text-slate-500 italic">"Probablemente es falso. Mejor no lo abras."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">security</span> Problema: No enseña a identificar las señales de alerta (remitente, urgencia).</div>', 
         '{r}Actúa como Analista de Ciberseguridad.{/r} {c}Correo sospechoso del "Banco" pidiendo actualizar datos urgente. Link extraño.{/c} {m}Analiza los indicadores de Phishing (Urgencia, Remitente, Link) y dime qué hacer.{/m} {f}Análisis + Acción.{/f}',
         'Regla: Los bancos nunca piden claves por mail.',
         'Revisa el dominio del remitente.',
@@ -649,7 +649,7 @@ const allCases = [
     // --- 🎓 EDUCACIÓN ---
     createCase(701, 'education', 'Tutor Socrático', 'psychology', 'Matemáticas: Aprender sin respuesta.', 
         'Ayúdame a resolver esta ecuación cuadrática x^2 - 5x + 6 = 0, pero no me des la respuesta directa, guíame para que yo la resuelva.',
-        'x=2.', 
+        '<div class="text-xs text-slate-500 italic">"Las soluciones son x=2 y x=3. Usa la fórmula general."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">school</span> Problema: La IA "spoilea" el aprendizaje dando el resultado final.</div>', 
         '{r}Actúa como Profesor Socrático.{/r} {c}Alumno confundido.{/c} {m}Guía con preguntas, NO des respuesta.{/m} {f}Diálogo.{/f}', 
         'Si equivoca, pregunta.',
         'Termina con pregunta.',
@@ -658,7 +658,7 @@ const allCases = [
 
     createCase(702, 'education', 'Plan de Estudio', 'calendar_month', 'Estudio: Examen grande.', 
         'Tengo un examen importante en 3 meses y no sé cómo organizarme. Hazme un horario de estudio.',
-        'Estudia 8 horas.', 
+        '<div class="text-xs text-slate-500 italic">"Estudia todos los días de 8 a 6. Lee todos los libros y repasa."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">calendar_today</span> Problema: Plan ineficiente que lleva al burnout, sin técnicas de retención.</div>', 
         '{r}Actúa como Coach Neuroaprendizaje.{/r} {c}Examen 3 meses.{/c} {m}Crea un plan macro basado en Repetición Espaciada.{/m} {f}Plan Mensual.{/f}', 
         'Flashcards.',
         'Descansos.',
@@ -667,7 +667,7 @@ const allCases = [
 
     createCase(703, 'education', 'Traductor Ciencia', 'science', 'Lectura: Paper difícil.', 
         'Estoy leyendo un paper sobre cambio climático y no entiendo qué significa "mitigación antropogénica". Explícamelo como si tuviera 12 años.',
-        'Reducción humana.', 
+        '<div class="text-xs text-slate-500 italic">"Se refiere a la reducción de las emisiones de gases de efecto invernadero causadas por la actividad humana."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">menu_book</span> Problema: Usa palabras complejas para explicar palabras complejas.</div>', 
         '{r}Actúa como Periodista Científico.{/r} {c}Frase compleja.{/c} {m}Traduce a lenguaje de niño de 12 años.{/m} {f}Explicación.{/f}', 
         'Analogía tráfico.',
         'Simple.',
@@ -676,7 +676,7 @@ const allCases = [
 
     createCase(704, 'education', 'Simulador Examen Oral', 'mic', 'Práctica: Preguntas difíciles.', 
         'Tengo un examen oral de Derecho Civil mañana. Hazme preguntas difíciles sobre "Contratos" para practicar mis respuestas.',
-        '¿Qué es contrato?', 
+        '<div class="text-xs text-slate-500 italic">"¿Qué es un contrato? ¿Cuáles son los elementos de validez?"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">quiz</span> Problema: Preguntas de memoria básica que no preparan para un examen real.</div>', 
         '{r}Actúa como Profesor Estricto.{/r} {c}Tema: Contratos.{/c} {m}Haz preguntas de caso práctico con trampa.{/m} {f}Preguntas.{/f}', 
         'Trampa menor edad.',
         'Obliga justificar.',
@@ -685,7 +685,7 @@ const allCases = [
 
     createCase(705, 'education', 'Resumen de Libro por Capítulos', 'menu_book', 'Lectura: Extraer lo vital de un libro.',
         'No tengo tiempo de leer "Hábitos Atómicos". Hazme un resumen de las ideas principales y cómo aplicarlas en mi vida.',
-        'Habla de tener buenos hábitos.',
+        '<div class="text-xs text-slate-500 italic">"El libro habla de cómo crear buenos hábitos. Dice que hay que hacerlos obvios, atractivos, fáciles y satisfactorios."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">summarize</span> Problema: Resumen de contraportada que no da herramientas accionables.</div>', 
         '{r}Actúa como Bibliotecario Experto.{/r} {c}Libro: "Hábitos Atómicos".{/c} {m}Resume las 3 ideas centrales de cada una de las "4 Leyes del Cambio de Conducta".{/m} {f}Lista estructurada.{/f}',
         'No resumas la introducción.',
         'Enfócate en la acción práctica.',
@@ -694,7 +694,7 @@ const allCases = [
 
     createCase(706, 'education', 'Generador de Quiz', 'quiz', 'Estudio: Autoevaluación rápida.',
         'Estoy estudiando biología celular. Hazme un quiz de 3 preguntas sobre la célula para ver si entendí la materia.',
-        '¿Qué es la célula?',
+        '<div class="text-xs text-slate-500 italic">"¿Qué es la célula? ¿Cuáles son sus partes? ¿Para qué sirve?"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">help_center</span> Problema: Preguntas abiertas que no permiten autoevaluación objetiva.</div>', 
         '{r}Actúa como Profesor de Biología.{/r} {c}Tema: La Célula y sus organelos.{/c} {m}Crea 3 preguntas de selección múltiple con una sola respuesta correcta.{/m} {f}Pregunta + Opciones (No des la respuesta aún).{/f}',
         'Opciones plausibles (distractores).',
         'Nivel universitario.',
@@ -703,7 +703,7 @@ const allCases = [
 
     createCase(707, 'education', 'Explicador Histórico (Storytelling)', 'history_edu', 'Historia: Entender el contexto, no solo fechas.',
         'Explícame por qué empezó la Revolución Francesa. No quiero solo fechas, cuéntame la historia como si fuera un chisme.',
-        'Porque la gente tenía hambre en 1789.',
+        '<div class="text-xs text-slate-500 italic">"La Revolución Francesa comenzó en 1789 debido a una crisis económica y social, culminando en la toma de la Bastilla."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">history_edu</span> Problema: Dato de enciclopedia aburrido que no ayuda a retener la historia.</div>', 
         '{r}Actúa como Narrador de Historia.{/r} {c}Evento: Revolución Francesa.{/c} {m}Explica las causas sociales como si fuera un chisme de barrio entre ricos y pobres.{/m} {f}Narrativa.{/f}',
         'Analogía: Fiesta exclusiva.',
         'Personajes: El Rey desconectado.',
@@ -712,7 +712,7 @@ const allCases = [
 
     createCase(708, 'education', 'Corrector de Ensayos', 'edit_note', 'Escritura: Mejorar estilo académico.',
         'Escribí este ensayo para la universidad. Revísalo y dime qué puedo mejorar en la redacción y los argumentos para que suene más académico.',
-        'Está bien, corrige las comas.',
+        '<div class="text-xs text-slate-500 italic">"Está bien escrito, solo corrige algunas comas y acentos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">spellcheck</span> Problema: Corrección ortográfica básica, no de estructura ni argumentación.</div>', 
         '{r}Actúa como Editor Académico de Harvard.{/r} {c}Adjunto mi ensayo argumentativo.{/c} {m}Critica la estructura de mis argumentos y la fuerza de mi tesis. Sugiere mejoras de vocabulario.{/m} {f}Crítica constructiva.{/f}',
         'Detecta repeticiones.',
         'Sugiere conectores lógicos.',
@@ -721,7 +721,7 @@ const allCases = [
 
     createCase(709, 'education', 'Profesor de Idiomas (Roleplay)', 'translate', 'Idiomas: Practicar conversación real.',
         'Quiero practicar mi inglés. Tengamos una conversación como si yo fuera un cliente en una cafetería en Londres y tú el mesero.',
-        'Hello, how are you.',
+        '<div class="text-xs text-slate-500 italic">"Hello, how are you? What do you want to order?"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">chat_bubble</span> Problema: Frase de libro de texto, robótica y sin modismos naturales.</div>', 
         '{r}Actúa como Barista en Londres.{/r} {c}Yo soy un cliente entrando a tu café.{/c} {m}Inicia un diálogo casual, pregúntame qué quiero y hazme charla sobre el clima.{/m} {f}Diálogo en Inglés.{/f}',
         'Corrige errores sutilmente al final.',
         'Usa jerga británica ("Mate", "Cheers").',
@@ -730,7 +730,7 @@ const allCases = [
 
     createCase(710, 'education', 'Resolutor de Problemas Física', 'calculate', 'Ciencias: Entender el procedimiento.',
         'Ayúdame a plantear este problema de física: Un auto va a 20m/s y frena en 5 segundos. ¿Cómo calculo la aceleración?',
-        'La respuesta es 50 Newtons.',
+        '<div class="text-xs text-slate-500 italic">"La aceleración es -4 m/s². Usa la fórmula de velocidad."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">functions</span> Problema: Entrega el número sin mostrar el razonamiento ni el planteamiento.</div>', 
         '{r}Actúa como Profesor de Física.{/r} {c}Problema: Coche frenando (Cinemática).{/c} {m}Identifica las variables conocidas, la incógnita y la fórmula a usar. No des el número final.{/m} {f}Planteamiento.{/f}',
         'Dibuja el diagrama de cuerpo libre (en texto).',
         'Verifica unidades.',
@@ -739,7 +739,7 @@ const allCases = [
 
     createCase(711, 'education', 'Ayudante de Tesis', 'school', 'Investigación: Estructurar mi tesis.',
         'Estoy haciendo mi tesis sobre el impacto de la Inteligencia Artificial en el empleo. Ayúdame a formular una hipótesis y los objetivos.',
-        'Escribe la introducción y luego el desarrollo.',
+        '<div class="text-xs text-slate-500 italic">"Introducción: La IA es importante. Desarrollo: La IA cambia trabajos. Conclusión: Hay que adaptarse."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">school</span> Problema: Estructura de colegio, no de tesis doctoral.</div>', 
         '{r}Actúa como Tutor de Tesis Doctoral.{/r} {c}Tema: Impacto de IA en empleo.{/c} {m}Ayúdame a formular una Hipótesis sólida y 3 Objetivos Específicos medibles.{/m} {f}Estructura.{/f}',
         'Verbos en infinitivo (Analizar, Comparar).',
         'Hipótesis falsable.',
@@ -748,7 +748,7 @@ const allCases = [
 
     createCase(712, 'education', 'Debate (Abogado del Diablo)', 'gavel', 'Pensamiento Crítico: Reforzar argumentos.',
         'Creo que el teletrabajo debería ser un derecho obligatorio. Juega al abogado del diablo y dame argumentos en contra para preparar mi debate.',
-        'Sí, es buena.',
+        '<div class="text-xs text-slate-500 italic">"Sí, es una buena idea porque la gente es más feliz en casa."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">thumb_up</span> Problema: La IA tiende a complacer (sycophancy) en lugar de desafiar como se pidió.</div>', 
         '{r}Actúa como Oponente de Debate.{/r} {c}Mi postura: El teletrabajo debería ser obligatorio.{/c} {m}Ataca mi postura con 3 contraargumentos sólidos (económicos y sociales) para obligarme a defenderla mejor.{/m} {f}Contraargumentos.{/f}',
         'Busca puntos ciegos.',
         'Cita consecuencias no deseadas.',
@@ -758,7 +758,7 @@ const allCases = [
     // --- 🧘 VIDA BALANCEADA ---
     createCase(801, 'life', 'Contrato Paz Familiar', 'handshake', 'Hogar: Hijos peleando.', 
         'Mis hijos de 6 y 8 años se pasan peleando por quién usa la tablet. Dame ideas para poner reglas y que dejen de gritar.',
-        'Castígalos.', 
+        '<div class="text-xs text-slate-500 italic">"Quítales la tablet si pelean o cómprales otra para que no discutan."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">gavel</span> Problema: Solución reactiva o costosa, no enseña convivencia.</div>', 
         '{r}Actúa como Mediador Familiar.{/r} {c}Hermanos peleando.{/c} {m}Diseña un "Contrato de Paz" divertido con reglas y premios.{/m} {f}Texto contrato.{/f}', 
         'Recompensa positiva.',
         'Lenguaje positivo.',
@@ -767,7 +767,7 @@ const allCases = [
 
     createCase(802, 'life', 'Chef de Sobras', 'restaurant_menu', 'Cocina: Refri vacío.',
         'No tengo nada en el refrigerador, solo arroz cocido, un par de huevos y un tomate. ¿Qué puedo cocinar con eso que quede rico?',
-        'Arroz con huevo.',
+        '<div class="text-xs text-slate-500 italic">"Puedes hacer arroz con huevo frito."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">soup_kitchen</span> Problema: Respuesta obvia que no aporta creatividad culinaria.</div>', 
         '{r}Actúa como Chef Gourmet.{/r} {c}Ingredientes: Arroz, huevo.{/c} {m}Receta sofisticada con sobras.{/m} {f}Nombre + Pasos.{/f}',
         'Técnica salteado.',
         'Sonar rico.',
@@ -776,7 +776,7 @@ const allCases = [
 
     createCase(803, 'life', 'Planificador Viajes', 'flight', 'Viajes: Itinerario.',
         'Me voy 3 días a Roma. Dime qué lugares tengo que visitar sí o sí y ármame un itinerario para aprovechar el tiempo.',
-        'Coliseo.',
+        '<div class="text-xs text-slate-500 italic">"Visita el Coliseo, el Vaticano, la Fontana di Trevi y come pizza."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">map</span> Problema: Lista de lugares sin orden lógico de visita ni tiempos.</div>', 
         '{r}Actúa como Guía Local.{/r} {c}Roma.{/c} {m}Itinerario optimizado geográficamente.{/m} {f}Día a día.{/f}',
         'Agrupa lugares.',
         'Comida.',
@@ -785,7 +785,7 @@ const allCases = [
 
     createCase(804, 'life', 'Entrenador HIIT', 'fitness_center', 'Salud: Entrenar en casa.', 
         'Quiero empezar a hacer ejercicio en casa pero no tengo pesas ni máquinas. Dame una rutina de 30 minutos para quemar grasa.',
-        'Corre.', 
+        '<div class="text-xs text-slate-500 italic">"Sal a correr 10 minutos y luego haz 50 abdominales."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">fitness_center</span> Problema: Rutina desbalanceada y aburrida, no cumple con "en casa".</div>', 
         '{r}Actúa como Entrenador Funcional.{/r} {c}30 min, sin equipo.{/c} {m}Rutina TABATA.{/m} {f}Circuito.{/f}', 
         'Cuida postura.',
         'Tiempos exactos.',
@@ -794,7 +794,7 @@ const allCases = [
 
     createCase(805, 'life', 'Sommelier de Bolsillo', 'wine_bar', 'Social: Elegir vino.', 
         'Tengo una cena y van a servir lasaña de carne. No sé nada de vinos, ¿qué botella debería llevar para quedar bien?',
-        'Tinto.', 
+        '<div class="text-xs text-slate-500 italic">"Lleva un vino tinto, cualquiera sirve con pastas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">wine_bar</span> Problema: Consejo vago. No ayuda a elegir en la góndola.</div>', 
         '{r}Actúa como Sommelier.{/r} {c}Lasaña.{/c} {m}Recomienda cepa y explica maridaje.{/m} {f}Recomendación.{/f}', 
         'Acidez.',
         'Explica por qué.',
@@ -803,7 +803,7 @@ const allCases = [
 
     createCase(806, 'life', 'Mentor Estoico', 'self_improvement', 'Mente: Ansiedad.',
         'Estoy muy estresado por un problema en el trabajo que no depende de mí. Dame algún consejo estoico para calmarme.',
-        'Tranquilo.',
+        '<div class="text-xs text-slate-500 italic">"No te preocupes, todo va a salir bien. Trata de relajarte."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">spa</span> Problema: Frase de galleta de la fortuna, no una herramienta mental.</div>', 
         '{r}Actúa como Mentor Estoico.{/r} {c}Problema fuera de mi control.{/c} {m}Dame un ejercicio de "Dicotomía del Control".{/m} {f}Ejercicio.{/f}',
         'Dos columnas.',
         'Acción mental.',
@@ -812,7 +812,7 @@ const allCases = [
 
     createCase(807, 'life', 'Plan de Comidas Semanal', 'local_dining', 'Salud: Comer sano sin pensar.',
         'Quiero comer más sano pero no tengo tiempo para cocinar todos los días. Hazme un menú para la semana usando cosas simples.',
-        'Come ensalada y pollo.',
+        '<div class="text-xs text-slate-500 italic">"Lunes: Ensalada. Martes: Pollo. Miércoles: Pescado. Jueves: Lentejas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">restaurant</span> Problema: Menú idealista que requiere cocinar desde cero cada día.</div>', 
         '{r}Actúa como Nutricionista Práctico.{/r} {c}Objetivo: Energía estable. Poco tiempo para cocinar.{/c} {m}Crea un menú semanal (Lunes a Viernes) con Batch Cooking (cocinar una vez, comer varias).{/m} {f}Menú + Lista de compras.{/f}',
         'Reutiliza ingredientes.',
         'Balancea proteína y fibra.',
@@ -821,7 +821,7 @@ const allCases = [
 
     createCase(808, 'life', 'Rutina de Sueño Bebés', 'crib', 'Familia: Dormir mejor.',
         'Mi bebé de 1 año se despierta muchas veces en la noche. Ayúdame a crear una rutina para antes de dormir que lo relaje.',
-        'Déjalo llorar un poco.',
+        '<div class="text-xs text-slate-500 italic">"Acuéstalo más temprano y déjalo llorar un poco hasta que se duerma."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">bedtime_off</span> Problema: Consejo desactualizado y estresante para los padres.</div>', 
         '{r}Actúa como Consultora de Sueño Infantil Respetuosa.{/r} {c}Bebé de 12 meses, despierta 3 veces.{/c} {m}Diseña una rutina de "bajada de revoluciones" antes de dormir.{/m} {f}Rutina paso a paso.{/f}',
         'Evita pantallas.',
         'Crea asociaciones positivas.',
@@ -830,7 +830,7 @@ const allCases = [
 
     createCase(809, 'life', 'Ideas Citas en Casa', 'favorite', 'Pareja: Romper la rutina.',
         'Quiero hacer algo especial con mi pareja en casa el viernes, pero no tenemos mucho presupuesto. Dame ideas que no sean ver una película.',
-        'Vean una película.',
+        '<div class="text-xs text-slate-500 italic">"Cocinen juntos o vean una serie nueva en Netflix."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">movie</span> Problema: Justamente lo que querías evitar. Cero creatividad.</div>', 
         '{r}Actúa como Coach de Parejas.{/r} {c}Noche de cita en casa, sin niños, bajo presupuesto.{/c} {m}Dame 3 ideas creativas que NO sean ver Netflix.{/m} {f}Actividad + Ambiente.{/f}',
         'Interactuar, no solo mirar.',
         'Elemento sorpresa.',
@@ -839,7 +839,7 @@ const allCases = [
 
     createCase(810, 'life', 'Lista de Compras Optimizada', 'shopping_cart', 'Hogar: Supermercado eficiente.',
         'Siempre voy al supermercado y se me olvidan cosas o compro de más. Organiza una lista de compras básica por pasillos.',
-        'Leche, pan, huevos.',
+        '<div class="text-xs text-slate-500 italic">"Pan, leche, huevos, carne, verduras, confort, jabón."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">shopping_cart</span> Problema: Lista desordenada que te hará dar vueltas en el súper.</div>', 
         '{r}Actúa como Experto en Logística de Hogar.{/r} {c}Menú semanal definido.{/c} {m}Organiza la lista de compras por pasillos del supermercado para no dar vueltas.{/m} {f}Lista categorizada.{/f}',
         'Verdulería primero.',
         'Congelados al final.',
@@ -848,7 +848,7 @@ const allCases = [
 
     createCase(811, 'life', 'Organizador de Mudanza', 'box', 'Caos: Cambiarse de casa.',
         'Me cambio de casa en un mes y tengo un desorden total. Hazme una lista de qué cosas debería ir guardando semana a semana.',
-        'Empaca todo en cajas.',
+        '<div class="text-xs text-slate-500 italic">"Empieza a guardar todo en cajas y contrata un camión."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">inventory</span> Problema: Obvio. No ayuda a priorizar qué guardar primero.</div>', 
         '{r}Actúa como Organizador Profesional.{/r} {c}Mudanza en 1 mes.{/c} {m}Crea un checklist regresivo semana a semana.{/m} {f}Semana 4, 3, 2, 1.{/f}',
         'Semana 4: Depurar (botar).',
         'Etiquetar cajas por cuarto.',
@@ -857,7 +857,7 @@ const allCases = [
 
     createCase(812, 'life', 'Meditación Guiada Texto', 'self_improvement', 'Salud Mental: Calmar ansiedad.',
         'Me está dando un ataque de ansiedad. Escribe una guía corta de meditación o respiración para calmarme ahora mismo.',
-        'Respira hondo.',
+        '<div class="text-xs text-slate-500 italic">"Trata de calmarte y respira profundo. Piensa en cosas positivas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">self_improvement</span> Problema: Consejo abstracto difícil de seguir en pánico.</div>', 
         '{r}Actúa como Guía de Mindfulness.{/r} {c}Ataque de ansiedad leve.{/c} {m}Escribe un guion de "Grounding" (Poner los pies en la tierra) usando los 5 sentidos.{/m} {f}Instrucciones pausadas.{/f}',
         'Técnica 5-4-3-2-1.',
         'Enfócate en el presente.',
@@ -866,7 +866,7 @@ const allCases = [
 
     createCase(813, 'life', 'Consejo Crianza Pataletas', 'child_care', 'Familia: Manejo de emociones.',
         'Mi hijo de 3 años hace berrinches terribles cuando no le compro dulces. Dime qué puedo decirle para calmarlo sin ceder.',
-        'Ignóralo o castígalo.',
+        '<div class="text-xs text-slate-500 italic">"Dile que no y si sigue llorando lo ignoras o lo castigas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">escalator_warning</span> Problema: Enfoque punitivo que aumenta la frustración del niño.</div>', 
         '{r}Actúa como Psicólogo Infantil (Disciplina Positiva).{/r} {c}Niño de 3 años en plena pataleta.{/c} {m}Dame un script para validar su emoción y poner el límite.{/m} {f}Frase.{/f}',
         'Conectar antes de corregir.',
         'Validar no es ceder.',
@@ -875,7 +875,7 @@ const allCases = [
 
     createCase(814, 'life', 'Diagnóstico Reparación Casera', 'build', 'DIY: Arreglar cosas.',
         'Mi lavadora está haciendo un ruido raro y no centrifuga. Dime qué podría ser antes de llamar a un técnico.',
-        'Llama al técnico.',
+        '<div class="text-xs text-slate-500 italic">"Probablemente se rompió el motor. Llama al servicio técnico."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">build_circle</span> Problema: Asume lo peor sin descartar problemas simples (filtro).</div>', 
         '{r}Actúa como Técnico de Electrodomésticos.{/r} {c}Lavadora carga frontal, no centrifuga, hace ruido.{/c} {m}Dame 3 posibles causas comunes antes de llamar al servicio.{/m} {f}Lista de chequeo.{/f}',
         'Filtro sucio.',
         'Carga desbalanceada.',
@@ -885,7 +885,7 @@ const allCases = [
     // --- 🛠️ INGENIERÍA PROMPT ---
     createCase(901, 'engineering', 'Anti-Patrón: Ambiguo', 'warning', 'Técnica: Arreglar peticiones.', 
         'Necesito ayuda con unos datos de ventas que tengo en Excel. Quiero hacer un reporte.',
-        '¿Qué necesitas?', 
+        '<div class="text-xs text-slate-500 italic">"Claro, puedo ayudarte. ¿Qué tipo de reporte quieres? ¿Qué datos tienes?"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">question_mark</span> Problema: La IA te devuelve la pregunta y pierdes tiempo en un "ping-pong" innecesario.</div>', 
         '{r}Actúa como Ingeniero de Datos.{/r} {c}Base de datos ventas.{/c} {m}Reporte ejecutivo sin tablas dinámicas.{/m} {f}Fórmulas listas.{/f}', 
         'Especifica columnas.',
         'Formula funcional.',
@@ -894,7 +894,7 @@ const allCases = [
 
     createCase(902, 'engineering', 'Chain of Thought', 'link', 'Técnica: Paso a paso.', 
         'Revisa este balance financiero y dime si la empresa está bien o mal.',
-        'Está bien.', 
+        '<div class="text-xs text-slate-500 italic">"Según el documento, la empresa tiene activos y pasivos equilibrados. Parece estar estable."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">link_off</span> Problema: Respuesta superficial. La IA no "pensó" en los ratios críticos antes de contestar.</div>', 
         '{r}Actúa como Analista Financiero Senior.{/r} {c}Balance General.{/c} {m}PASO 1: Calcula ratios. PASO 2: Compara con industria.{/m} {f}Veredicto.{/f}', 
         'Pide paso intermedio.',
         'Justifica.',
@@ -903,7 +903,7 @@ const allCases = [
 
     createCase(903, 'engineering', 'Control Alucinaciones', 'fact_check', 'Técnica: Evitar inventos.', 
         '¿Cuánto cuesta un Tesla Model 3 nuevo en Chile? Dame el precio exacto.',
-        '$35M (Inventado).', 
+        '<div class="text-xs text-slate-500 italic">"El precio aproximado es de $35.000.000, pero depende del distribuidor."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">psychology_alt</span> Problema: Alucinación. Tesla no vende oficialmente en Chile y el precio es inventado.</div>', 
         '{r}Actúa como Investigador Riguroso.{/r} {m}Busca precio oficial.{/m} {l}Si no hay, di "No disponible".{/l} {f}Dato + Fuente.{/f}', 
         'Fuente oficial.',
         'Link directo.',
@@ -912,7 +912,7 @@ const allCases = [
         
     createCase(904, 'engineering', 'Prompt Iterativo (Mejora)', 'loop', 'Técnica: Pulir resultados.',
         'Mejora este texto que escribí para mi web. Quiero que suene más profesional y venda más.',
-        'Aquí está mejorado.',
+        '<div class="text-xs text-slate-500 italic">"Aquí tienes una versión mejorada: [Texto con algunos sinónimos cambiados]."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">sync</span> Problema: Mejora cosmética. No hay un cambio estructural de persuasión.</div>', 
         '{r}Actúa como Editor Senior.{/r} {c}Texto original.{/c} {m}Mejora el texto en 3 iteraciones: 1. Claridad, 2. Tono persuasivo, 3. Corrección de estilo final.{/m} {f}Las 3 versiones.{/f}',
         'Muestra la evolución.',
         'Versión final pulida.',
@@ -921,7 +921,7 @@ const allCases = [
 
     createCase(905, 'engineering', 'Simulación Rol Múltiple', 'groups_3', 'Técnica: Mesa de expertos.',
         'Tengo un problema con mi negocio. Dame consejos como si fueras Steve Jobs y Warren Buffett.',
-        'Trabaja duro.',
+        '<div class="text-xs text-slate-500 italic">"Steve Jobs diría que innoves y Warren Buffett que ahorres dinero."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">group</span> Problema: Caricatura superficial. No simula el proceso de pensamiento profundo de cada uno.</div>', 
         '{r}Actúa como un Consejo Asesor compuesto por: Steve Jobs (Producto), Warren Buffett (Finanzas) y Sun Tzu (Estrategia).{/r} {c}Problema: Mi startup no crece.{/c} {m}Que cada experto me de un consejo desde su perspectiva.{/m} {f}Diálogo.{/f}',
         'Diferencia las voces.',
         'Perspectivas opuestas.',
@@ -930,7 +930,7 @@ const allCases = [
 
     createCase(906, 'engineering', 'Salida Estructurada JSON', 'data_object', 'Técnica: Datos para programar.',
         'Dame una lista de los países de Sudamérica con sus capitales y monedas.',
-        'Chile, Argentina, Perú...',
+        '<div class="text-xs text-slate-500 italic">"Chile (Santiago, Peso), Argentina (Buenos Aires, Peso), Perú (Lima, Sol)..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">code_off</span> Problema: Texto plano difícil de procesar por código.</div>', 
         '{r}Actúa como API Generator.{/r} {c}Lista de países de Sudamérica.{/c} {m}Genera un objeto JSON válido con claves: nombre, capital, moneda.{/m} {f}Bloque de código JSON.{/f}',
         'Formato estricto.',
         'Sin texto adicional.',
@@ -939,7 +939,7 @@ const allCases = [
 
     createCase(907, 'engineering', 'Prompt Semilla (Seed)', 'forest', 'Técnica: Imágenes consistentes.',
         'Hiciste una imagen de un personaje que me gustó. Ahora haz otra imagen del mismo personaje pero corriendo.',
-        '(Genera uno distinto).',
+        '<div class="text-xs text-slate-500 italic">"(Genera una imagen con un personaje totalmente diferente corriendo)."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">casino</span> Problema: Sin la semilla (seed), la IA genera aleatoriamente cada vez.</div>', 
         '{r}Midjourney Expert.{/r} {c}Personaje creado anteriormente.{/c} {m}Genera el mismo personaje en otra pose usando el parámetro --seed X.{/m} {f}Prompt con semilla.{/f}',
         'Usa el mismo número de seed.',
         'Mantiene rasgos faciales.',
@@ -948,7 +948,7 @@ const allCases = [
 
     createCase(908, 'engineering', 'Árbol de Pensamiento (ToT)', 'account_tree', 'Técnica: Problemas complejos.',
         'Tengo este acertijo lógico que no puedo resolver. Ayúdame a encontrar la respuesta paso a paso.',
-        'La respuesta es 5.',
+        '<div class="text-xs text-slate-500 italic">"La respuesta es 5."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">call_split</span> Problema: Salta a la conclusión (posiblemente errónea) sin validar caminos alternativos.</div>', 
         '{r}Actúa como Lógico Matemático.{/r} {c}Problema lógico complejo.{/c} {m}Usa "Tree of Thoughts": Genera 3 posibles caminos de solución, evalúa cada uno y descarta los erróneos antes de concluir.{/m} {f}Proceso mental.{/f}',
         'Explora ramas.',
         'Autocorrección.',
@@ -957,7 +957,7 @@ const allCases = [
 
     createCase(909, 'engineering', 'Prompt Evaluador', 'rate_review', 'Técnica: La IA se corrige a sí misma.',
         'Escribí este correo para un cliente. ¿Crees que está bien o le cambiarías algo?',
-        'Sí, está bueno.',
+        '<div class="text-xs text-slate-500 italic">"Sí, está súper bien. Se entiende claro."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">check_circle</span> Problema: La IA tiende a ser "amable" y no critica constructivamente si no se lo pides.</div>', 
         '{r}Actúa como Crítico Literario Severo.{/r} {c}Borrador de email.{/c} {m}Evalúa del 1 al 10: Claridad, Empatía y Brevedad. Luego reescribe para que sea un 10.{/m} {f}Evaluación + Versión Final.{/f}',
         'Sé duro con la nota.',
         'Mejora tangible.',
@@ -966,7 +966,7 @@ const allCases = [
 
     createCase(910, 'engineering', 'Restricciones Negativas', 'do_not_disturb_on', 'Técnica: Lo que NO quieres.',
         'Escribe un artículo sobre inteligencia artificial pero que sea fácil de leer.',
-        '(Escribe con palabras raras).',
+        '<div class="text-xs text-slate-500 italic">"La inteligencia artificial es una tecnología revolucionaria que está transformando paradigmas..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">block</span> Problema: Usa clichés y palabras complejas ("revolucionaria", "paradigmas") que querías evitar.</div>', 
         '{r}Actúa como Periodista.{/r} {c}Tema: IA.{/c} {m}Escribe un párrafo.{/m} {l}Restricciones negativas: NO uses la palabra "revolucionario", NO uses voz pasiva, NO uses frases de más de 20 palabras.{/l} {f}Texto.{/f}',
         'Fuerza simplicidad.',
         'Control de estilo.',
@@ -975,7 +975,7 @@ const allCases = [
 
     createCase(911, 'engineering', 'Ajuste de Tono (Tone Voice)', 'equalizer', 'Técnica: Personalidad de marca.',
         'Escribe un tweet sobre lo difícil que es levantarse los lunes.',
-        'Hola a todos.',
+        '<div class="text-xs text-slate-500 italic">"¡Ánimo a todos! Los lunes son una nueva oportunidad para brillar. #FelizLunes"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">record_voice_over</span> Problema: Tono corporativo "positivo tóxico" que no conecta con nadie.</div>', 
         '{r}Actúa como Comediante Sarcástico (Estilo Dr. House).{/r} {c}Tema: Lunes por la mañana.{/c} {m}Escribe un tweet quejándose del lunes pero con inteligencia.{/m} {f}Tweet.{/f}',
         'Define el personaje.',
         'Tono consistente.',
@@ -984,7 +984,7 @@ const allCases = [
 
     createCase(912, 'engineering', 'Delimitadores de Contexto', 'code_blocks', 'Técnica: Separar instrucciones de datos.',
         'Resume el texto que te voy a pegar a continuación.',
-        '(Se confunde con el texto).',
+        '<div class="text-xs text-slate-500 italic">"(La IA se confunde y empieza a ejecutar las instrucciones que estaban DENTRO del texto a resumir)."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">code</span> Problema: Inyección de prompt accidental por no separar datos de instrucciones.</div>', 
         '{r}Resumidor.{/r} {c}Te daré un texto delimitado por triple comilla (""").{/c} {m}Resume solo el texto dentro de los delimitadores.{/m} """[Texto aquí]"""',
         'Evita inyección de prompt.',
         'Claridad para la IA.',
