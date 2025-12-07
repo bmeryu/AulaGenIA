@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bóveda de Prompts AGIA 2.0 | Versión Premium</title>
+    <title>Bóveda de Prompts AGIA 2.0 | Estructura Maestra</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts & Icons -->
+    <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Fuente para Código Premium -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
         
         /* Custom Scrollbar */
         .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -27,76 +26,78 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         
-        /* --- ESTILOS AGIA 2.0 --- */
-        .font-code { font-family: 'JetBrains Mono', monospace; }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .toast-enter { animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        /* Highlight Classes - Interactivos */
-        .hl-base { transition: all 0.2s ease; cursor: help; position: relative; z-index: 1; }
-        .hl-active { box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 15px rgba(99, 102, 241, 0.6); transform: scale(1.05); z-index: 10; display: inline-block; }
-
-        .hl-rol { background-color: #bfdbfe; color: #1e3a8a; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #60a5fa; }
-        .hl-contexto { background-color: #a7f3d0; color: #064e3b; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #34d399; }
-        .hl-ejemplos { background-color: #fcd34d; color: #92400e; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #f59e0b; }
-        .hl-meta { background-color: #fde68a; color: #78350f; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #fbbf24; }
-        .hl-limites { background-color: #fecaca; color: #7f1d1d; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #f87171; }
-        .hl-formato { background-color: #e9d5ff; color: #581c87; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #a855f7; }
-        .hl-validacion { background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #22c55e; }
-
-        /* LEYENDA INTERACTIVA */
-        .legend-item { transition: all 0.3s ease; opacity: 0.6; filter: grayscale(80%); cursor: pointer; }
-        .legend-item:hover, .legend-item.active { opacity: 1; transform: translateY(-2px); filter: grayscale(0%); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background-color: white; z-index: 5; }
-
-        /* SWITCH TOGGLE */
-        .toggle-checkbox:checked { right: 0; border-color: #6366f1; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #6366f1; }
+        /* --- COLORES ESTRUCTURA MAESTRA --- */
+        .hl-tag { cursor: help; transition: all 0.2s; position: relative; z-index: 1; display: inline-block; }
+        .hl-tag:hover { transform: scale(1.05); z-index: 10; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         
-        /* EFECTO BLUR PAYWALL (Teaser) */
-        .blur-content { filter: blur(6px); user-select: none; pointer-events: none; opacity: 0.5; }
-        .premium-overlay { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: rgba(15, 23, 42, 0.1); z-index: 20;
-            backdrop-filter: blur(2px);
-        }
+        /* 1. ROL (Azul) */
+        .hl-rol { background-color: #bfdbfe; color: #1e3a8a; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #60a5fa; } 
+        /* 2. CONTEXTO (Verde) */
+        .hl-contexto { background-color: #a7f3d0; color: #064e3b; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #34d399; } 
+        /* 3. META (Amarillo/Ambar) */
+        .hl-meta { background-color: #fde68a; color: #78350f; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #fbbf24; } 
+        /* 4. RESTRICCIONES (Rojo) */
+        .hl-restricciones { background-color: #fecaca; color: #7f1d1d; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #f87171; } 
+        /* 5. FORMATO (Morado) */
+        .hl-formato { background-color: #e9d5ff; color: #581c87; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #a855f7; } 
 
-        /* TOAST NOTIFICATION */
-        #toast-container {
-            position: fixed; bottom: 20px; right: 20px; z-index: 100;
-            transform: translateY(150px); opacity: 0; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-        #toast-container.show { transform: translateY(0); opacity: 1; }
+        /* Tips Extra */
+        .hl-ejemplos, .hl-validacion { background-color: #f1f5f9; color: #475569; padding: 2px 6px; border-radius: 4px; font-weight: 500; border: 1px dashed #cbd5e1; font-style: italic; font-size: 0.75rem; margin-left: 4px; }
+
+        /* Legend Active States */
+        .legend-active { transform: scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: currentColor; background-color: white; }
 
         .prose-sm p { margin-bottom: 0.8em; line-height: 1.6; }
         .prose-sm ul, .prose-sm ol { margin-left: 1.2em; margin-bottom: 0.8em; }
-        .prose-sm li { margin-bottom: 0.4em; }
         
-        /* Tooltip Styles */
-        .tooltip-trigger:hover .tooltip-content { display: block; }
+        /* Blur Teaser Effect */
+        .blur-content { filter: blur(5px); user-select: none; pointer-events: none; opacity: 0.6; }
+        .premium-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(15, 23, 42, 0.05); z-index: 20;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Tips Animation */
+        .tip-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .tip-open { max-height: 200px; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-100">
 
-    <!-- Header "Brand" Style -->
-    <header class="bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg z-20 flex-none relative text-white">
+    <!-- Header "Brand" Style (Nuevo Diseño Azul) -->
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg z-30 flex-none relative text-white">
         <div class="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
             <!-- Top Row: Logo & CTA -->
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-4">
-                    <!-- Logo AGIA -->
-                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Logo AGIA" class="h-12 w-auto object-contain brightness-0 invert filter drop-shadow-md">
+                    <!-- Logo Placeholder (AGIA) -->
+                    <div class="w-10 h-10 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center text-white font-black text-xl border border-white/30">
+                        A
+                    </div>
                     <div class="border-l border-white/20 pl-4 hidden sm:block">
-                        <h1 class="text-lg font-bold tracking-tight leading-tight">Bóveda de Prompts AGIA 2.0</h1>
-                        <p class="text-[11px] text-indigo-100 font-medium opacity-90">Framework Avanzado de Ingeniería de Prompts</p>
+                        <h1 class="text-lg font-bold tracking-tight leading-tight text-white">Bóveda de Prompts AGIA 2.0</h1>
+                        <p class="text-[11px] text-indigo-100 font-medium opacity-90">Framework Maestro de Ingeniería de Prompts</p>
                     </div>
                 </div>
-                <!-- Botón Compra Header -->
-                <button onclick="openPaywall()" class="hidden md:flex bg-yellow-400 hover:bg-yellow-300 text-indigo-900 px-4 py-1.5 rounded-full text-xs font-bold shadow-md transition-all items-center gap-2 transform hover:scale-105">
-                    <span class="material-symbols-outlined text-sm">lock_open</span>
-                    DESBLOQUEAR TODO
-                </button>
+                
+                <div class="flex gap-3">
+                    <button onclick="showWelcome()" class="text-indigo-200 hover:text-white transition-colors">
+                        <span class="material-symbols-outlined">help</span>
+                    </button>
+                    <!-- Botón Compra Amarillo (Alto Contraste) -->
+                    <button onclick="openPaywall()" class="hidden md:flex bg-yellow-400 hover:bg-yellow-300 text-indigo-900 px-4 py-1.5 rounded-full text-xs font-bold shadow-lg shadow-indigo-900/20 transition-all items-center gap-2 transform hover:scale-105">
+                        <span class="material-symbols-outlined text-sm">lock_open</span>
+                        DESBLOQUEAR TODO
+                    </button>
+                </div>
             </div>
 
-            <!-- Category Navigation (Pills) -->
+            <!-- Category Navigation (Pills Translucidas) -->
             <div class="overflow-x-auto custom-scroll pb-2 -mx-4 px-4 md:mx-0 md:px-0">
                 <div class="flex space-x-3 min-w-max" id="category-nav">
                     <!-- Injected by JS -->
@@ -106,167 +107,145 @@
     </header>
 
     <!-- Main Layout -->
-    <div class="flex flex-1 overflow-hidden max-w-[1920px] mx-auto w-full relative bg-slate-100">
+    <div class="flex flex-1 overflow-hidden max-w-[1920px] mx-auto w-full relative">
         
         <!-- Sidebar -->
-        <aside class="w-full md:w-80 flex flex-col bg-white border-r border-slate-200 flex-none z-10 transition-all duration-300 absolute md:relative h-full transform -translate-x-full md:translate-x-0 shadow-xl md:shadow-none" id="sidebar">
-            <div class="p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
-                <div class="relative">
-                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">search</span>
-                    <input type="text" id="searchInput" placeholder="Buscar prompt..." 
-                        class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+        <aside class="w-full md:w-80 flex flex-col bg-white border-r border-slate-200 flex-none z-20 transition-all duration-300 absolute md:relative h-full transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none" id="sidebar">
+            <div class="p-4 border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur z-10">
+                <div class="relative group">
+                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors">search</span>
+                    <input type="text" id="searchInput" placeholder="Buscar caso de uso..." 
+                        class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
                         onkeyup="filterCases()">
                 </div>
             </div>
-            <div class="flex-1 overflow-y-auto custom-scroll p-3 space-y-2" id="case-list">
-                <!-- Cases injected by JS -->
+            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list">
+                <!-- Cases JS -->
             </div>
-            <div class="p-3 border-t border-slate-100 text-xs text-center text-slate-400 bg-slate-50">
-                Bóveda cargada con <span id="count-display" class="font-bold">0</span> prompts
+            <!-- TOTAL STRATEGIES COUNTER -->
+            <div class="p-3 border-t border-slate-100 text-[10px] text-center text-slate-400 bg-slate-50 flex justify-between px-6">
+                <span>Viendo: <strong id="count-display" class="text-slate-600">0</strong></span>
+                <span>Total Bóveda: <strong id="total-display" class="text-indigo-600">0</strong></span>
             </div>
         </aside>
 
         <!-- Mobile Toggle -->
-        <button onclick="toggleSidebar()" class="md:hidden absolute bottom-6 left-6 z-40 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors flex items-center justify-center">
+        <button onclick="toggleSidebar()" class="md:hidden absolute bottom-6 left-6 z-40 bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 transition-colors flex items-center justify-center">
             <span class="material-symbols-outlined">menu_open</span>
         </button>
 
         <!-- Main Content -->
         <main class="flex-1 flex flex-col bg-slate-50 overflow-hidden relative w-full">
-            
-            <!-- Case Detail -->
-            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 pb-24">
-                <div class="max-w-5xl mx-auto fade-in">
+            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 pb-32">
+                <div class="max-w-6xl mx-auto fade-in">
                     
-                    <!-- Title Header -->
-                    <div class="flex items-center gap-4 mb-6 border-b border-slate-200 pb-6">
-                        <div id="detail-icon-bg" class="w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center border-2 bg-white shadow-sm">
+                    <!-- Header Case -->
+                    <div class="flex flex-col md:flex-row md:items-center gap-4 mb-8 border-b border-slate-200 pb-6">
+                        <div id="detail-icon-bg" class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm bg-white border border-slate-100 flex-none">
                             <span id="detail-icon" class="material-symbols-outlined text-3xl"></span>
                         </div>
                         <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-1">
+                            <div class="flex items-center gap-2 mb-2">
                                 <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border">Categoría</span>
-                                <span id="detail-verified-badge" class="text-[10px] font-medium text-slate-400 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-100">
-                                    <span class="material-symbols-outlined text-[10px] text-green-500">verified</span> Estructura AGIA 2.0
+                                <span id="detail-verified-badge" class="hidden md:flex text-[10px] font-medium text-slate-500 items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-200 shadow-sm">
+                                    <span class="material-symbols-outlined text-[10px] text-green-500">verified</span> Estructura Maestra 5 Pasos
                                 </span>
                             </div>
                             <h2 id="detail-title" class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">Título del Caso</h2>
-                            <p id="detail-problem" class="text-sm text-slate-500 mt-1 font-medium"></p>
+                            <p id="detail-problem" class="text-sm text-slate-500 mt-1"></p>
                         </div>
                     </div>
 
-                    <!-- AGIA 2.0 LEGEND (INTERACTIVA) -->
-                    <div id="agia-legend" class="mb-6 bg-white rounded-xl border border-slate-200 shadow-sm p-1 flex overflow-x-auto">
-                        <div class="legend-item flex-1 flex items-center justify-center py-2 border-r border-slate-100 gap-2 min-w-[90px]" data-type="rol" onmouseover="highlightText('rol')" onmouseout="clearHighlight()">
-                            <div class="w-5 h-5 rounded bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold">1</div>
-                            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wide">Rol</span>
-                        </div>
-                        <div class="legend-item flex-1 flex items-center justify-center py-2 border-r border-slate-100 gap-2 min-w-[90px]" data-type="contexto" onmouseover="highlightText('contexto')" onmouseout="clearHighlight()">
-                            <div class="w-5 h-5 rounded bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">2</div>
-                            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wide">Contexto</span>
-                        </div>
-                        <div class="legend-item flex-1 flex items-center justify-center py-2 border-r border-slate-100 gap-2 min-w-[90px]" data-type="ejemplos" onmouseover="highlightText('ejemplos')" onmouseout="clearHighlight()">
-                            <div class="w-5 h-5 rounded bg-yellow-100 text-yellow-700 flex items-center justify-center text-[10px] font-bold">3</div>
-                            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wide">Ejemplos</span>
-                        </div>
-                        <div class="legend-item flex-1 flex items-center justify-center py-2 border-r border-slate-100 gap-2 min-w-[90px]" data-type="meta" onmouseover="highlightText('meta')" onmouseout="clearHighlight()">
-                            <div class="w-5 h-5 rounded bg-amber-100 text-amber-600 flex items-center justify-center text-[10px] font-bold">4</div>
-                            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wide">Meta</span>
-                        </div>
-                        <div class="legend-item flex-1 flex items-center justify-center py-2 border-r border-slate-100 gap-2 min-w-[90px]" data-type="limites" onmouseover="highlightText('limites')" onmouseout="clearHighlight()">
-                            <div class="w-5 h-5 rounded bg-red-100 text-red-600 flex items-center justify-center text-[10px] font-bold">5</div>
-                            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wide">Límites</span>
-                        </div>
-                        <div class="legend-item flex-1 flex items-center justify-center py-2 border-r border-slate-100 gap-2 min-w-[90px]" data-type="formato" onmouseover="highlightText('formato')" onmouseout="clearHighlight()">
-                            <div class="w-5 h-5 rounded bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-bold">6</div>
-                            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wide">Formato</span>
-                        </div>
-                        <div class="legend-item flex-1 flex items-center justify-center py-2 gap-2 min-w-[90px]" data-type="validacion" onmouseover="highlightText('validacion')" onmouseout="clearHighlight()">
-                            <div class="w-5 h-5 rounded bg-green-100 text-green-600 flex items-center justify-center text-[10px] font-bold">7</div>
-                            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wide">Validación</span>
-                        </div>
+                    <!-- Interactive Legend (The 5 Pillars) -->
+                    <div id="agia-legend" class="mb-6 flex flex-wrap gap-2 justify-center md:justify-start">
+                        <!-- Legend items injected by JS -->
                     </div>
 
-                    <!-- PROMPT BOX (HERO) - CON MAGIC SWITCH -->
-                    <div id="main-box" class="bg-slate-900 rounded-2xl shadow-xl mb-8 border border-slate-700 relative transition-all duration-300">
-                        <!-- Decorative Glow -->
-                        <div id="box-glow" class="absolute top-0 left-1/2 transform -translate-x-1/2 w-2/3 h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-70"></div>
-                        
-                        <!-- Header Prompt Box -->
-                        <div id="box-header" class="bg-slate-800/80 backdrop-blur px-6 py-4 flex flex-col md:flex-row justify-between items-center border-b border-slate-700/50 rounded-t-2xl gap-4 md:gap-0">
-                            
-                            <!-- Magic Switch -->
-                            <div class="flex items-center gap-3">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Modo Normal</span>
-                                <label for="magic-toggle" class="flex items-center cursor-pointer relative">
-                                    <input type="checkbox" id="magic-toggle" class="sr-only" onchange="toggleMagicMode()">
-                                    <div class="w-12 h-6 bg-slate-700 rounded-full border border-slate-600 shadow-inner transition-colors duration-300 ease-in-out hover:border-indigo-500"></div>
-                                    <div class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition transform duration-300 ease-in-out shadow-sm"></div>
-                                </label>
-                                <span class="text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400 uppercase tracking-wider animate-pulse">✨ AGIA Mode</span>
+                    <!-- THE PROMPT BOX (The Asset) -->
+                    <div id="main-box" class="bg-white rounded-2xl shadow-sm border border-slate-200 mb-4 overflow-hidden transition-all duration-300 hover:shadow-md relative">
+                        <div class="bg-slate-50/50 px-6 py-3 flex justify-between items-center border-b border-slate-100">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                                <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Prompt Maestro</span>
                             </div>
-                            
-                            <div class="flex items-center gap-4 w-full md:w-auto justify-end">
-                                <!-- Suggested AI Badge -->
-                                <div id="ai-badge-container" class="hidden md:block"></div>
-                                
-                                <div class="flex flex-col items-end">
-                                    <!-- Copy Button -->
-                                    <button id="box-actions" onclick="copyPrompt()" class="flex items-center gap-2 text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg font-bold transition-all shadow-lg shadow-indigo-500/20 border border-indigo-500">
-                                        <span class="material-symbols-outlined text-sm">content_copy</span> 
-                                        <span>COPIAR</span>
-                                    </button>
-                                    <!-- Social Proof Counter -->
-                                    <span class="text-[9px] text-slate-500 mt-1 hidden md:block" id="social-proof-counter">🔥 Usado 142 veces hoy</span>
+                            <div class="flex items-center gap-3">
+                                <div id="ai-badge-container"></div>
+                                <!-- Botón Copiar Azul Indigo -->
+                                <button id="copy-btn" onclick="copyPrompt()" class="flex items-center gap-2 text-xs bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg font-bold shadow-md shadow-indigo-200 transition-all group">
+                                    <span class="material-symbols-outlined text-sm">content_copy</span> 
+                                    <span>COPIAR</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="box-content-area" class="relative bg-white min-h-[150px]">
+                            <!-- Content injected here -->
+                            <div id="detail-prompt-rendered" class="p-6 md:p-8 font-mono text-sm leading-relaxed text-slate-700 whitespace-pre-wrap select-all"></div>
+                        </div>
+                    </div>
+
+                    <!-- INTERACTIVE TIPS (Separated from Model) -->
+                    <div id="tips-container" class="grid md:grid-cols-2 gap-4 mb-8">
+                        <!-- Tip: Example -->
+                        <div id="tip-example-box" class="bg-yellow-50 border border-yellow-100 rounded-xl overflow-hidden transition-all">
+                            <button onclick="toggleTip('example')" class="w-full px-4 py-3 flex items-center justify-between text-yellow-800 hover:bg-yellow-100/50 transition-colors">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-yellow-600">lightbulb</span>
+                                    <span class="text-xs font-bold uppercase tracking-wide">Tip: Ejemplo (Few-Shot)</span>
+                                </div>
+                                <span id="icon-tip-example" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+                            </button>
+                            <div id="content-tip-example" class="tip-content bg-white/50 px-4">
+                                <div class="py-3 text-xs text-slate-600 italic border-t border-yellow-100">
+                                    <p class="mb-1 font-bold not-italic text-yellow-700">Agrega esto al prompt para mayor precisión:</p>
+                                    <p id="detail-example-tip">...</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Content Prompt Box -->
-                        <div id="box-content-area" class="p-6 md:p-8 relative bg-slate-900/50 rounded-b-2xl min-h-[200px]">
-                            <!-- Mobile AI Badge -->
-                            <div id="ai-badge-mobile" class="md:hidden mb-6"></div>
-                            
-                            <!-- Prompt Rendered -->
-                            <div id="detail-prompt-rendered" class="font-sans text-sm md:text-base leading-loose text-slate-400 italic transition-all duration-300">...</div>
+                        <!-- Tip: Validation -->
+                        <div id="tip-validation-box" class="bg-green-50 border border-green-100 rounded-xl overflow-hidden transition-all">
+                            <button onclick="toggleTip('validation')" class="w-full px-4 py-3 flex items-center justify-between text-green-800 hover:bg-green-100/50 transition-colors">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-green-600">fact_check</span>
+                                    <span class="text-xs font-bold uppercase tracking-wide">Tip: Criterio de Validación</span>
+                                </div>
+                                <span id="icon-tip-validation" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+                            </button>
+                            <div id="content-tip-validation" class="tip-content bg-white/50 px-4">
+                                <div class="py-3 text-xs text-slate-600 border-t border-green-100">
+                                    <p class="mb-1 font-bold text-green-700">Verifica el resultado con esto:</p>
+                                    <p id="detail-validation-tip">...</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- COMPARISON GRID -->
                     <div id="comparison-container" class="grid md:grid-cols-2 gap-6">
-                        
-                        <!-- Bad Prompt & Bad Result -->
-                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-4 opacity-70 hover:opacity-100 transition-opacity">
-                            <div>
-                                <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-3 flex items-center gap-1 tracking-wider">
-                                    <span class="material-symbols-outlined text-base text-red-400">close</span> Lo que escribe la mayoría
-                                </h3>
-                                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 text-sm text-slate-500 italic font-mono">
-                                    <p id="detail-bad-prompt">"..."</p>
-                                </div>
+                        <!-- Bad -->
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">cancel</span> Lo que hace la mayoría
+                            </h3>
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 text-sm text-slate-400 italic font-mono mb-4 shadow-sm">
+                                <p id="detail-bad-prompt">"..."</p>
                             </div>
-
-                            <div class="pt-4 border-t border-slate-100">
-                                <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-2 flex items-center gap-1 tracking-wider">
-                                    <span class="material-symbols-outlined text-base text-slate-400">output</span> Resultado Típico (Sin AGIA)
-                                </h3>
-                                <div class="text-xs text-slate-600 leading-relaxed bg-slate-50/50 p-3 rounded border border-slate-100">
-                                     <p id="detail-bad-result">...</p>
-                                </div>
+                            <div class="text-xs text-slate-500">
+                                <span class="font-bold">Resultado Típico:</span> <span id="detail-bad-result">...</span>
                             </div>
-
-                            <div class="flex flex-wrap gap-2 mt-auto" id="deficiency-badges"></div>
                         </div>
 
-                        <!-- Result Preview (Good) -->
-                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col relative overflow-hidden">
-                            <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-3 flex items-center gap-1 tracking-wider">
-                                <span class="material-symbols-outlined text-base text-indigo-500">check_circle</span> Resultado AGIA (Optimizado)
+                        <!-- Good (Result Preview) -->
+                        <div class="bg-white p-6 rounded-xl border border-indigo-100 shadow-sm relative overflow-hidden group hover:border-indigo-300 transition-colors">
+                            <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                <span class="material-symbols-outlined text-8xl text-indigo-600">auto_awesome</span>
+                            </div>
+                            <h3 class="text-xs font-bold text-indigo-600 uppercase mb-3 flex items-center gap-2 relative z-10">
+                                <span class="material-symbols-outlined text-lg">check_circle</span> Resultado AGIA
                             </h3>
-                            <div class="overflow-x-auto flex-1">
-                                <div id="preview-response" class="text-xs text-slate-700 prose-sm bg-indigo-50/30 p-4 rounded-lg border border-indigo-100 h-full">
-                                    <!-- JS injects preview here -->
-                                </div>
+                            <div id="preview-response" class="text-xs text-slate-700 prose-sm h-full relative z-10">
+                                <!-- Preview -->
                             </div>
                         </div>
                     </div>
@@ -276,495 +255,826 @@
         </main>
     </div>
 
-    <!-- PAYWALL MODAL (VENTANA EMERGENTE) -->
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-x-full transition-transform duration-300">
+        <div class="bg-slate-800 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 border border-slate-700">
+            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-slate-900 animate-bounce">
+                <span class="material-symbols-outlined">thumb_up</span>
+            </div>
+            <div>
+                <h4 class="font-bold text-sm">¡Copiado al portapapeles!</h4>
+                <p class="text-xs text-slate-300 mt-0.5" id="toast-message">Listo para pegar en ChatGPT</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- WELCOME MODAL -->
+    <div id="welcome-modal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closeWelcome()"></div>
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden relative max-w-3xl w-full animate-in zoom-in fade-in duration-300 z-10 flex flex-col md:flex-row">
+            
+            <!-- Left: Visual -->
+            <div class="bg-slate-900 p-8 md:w-1/3 flex flex-col justify-center text-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-white text-3xl font-black shadow-xl mx-auto mb-4 relative z-10 border border-white/30 backdrop-blur">A</div>
+                <h2 class="text-white font-bold text-2xl relative z-10">Método AGIA</h2>
+                <p class="text-indigo-200 text-sm mt-2 relative z-10">La fórmula de 5 pasos para dominar la IA.</p>
+            </div>
+
+            <!-- Right: Steps -->
+            <div class="p-8 md:w-2/3">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-slate-800 text-lg">Estructura Maestra del Prompt</h3>
+                    <button onclick="closeWelcome()" class="text-slate-400 hover:text-slate-600">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <div class="space-y-3 mb-8">
+                    <!-- Updated colors in welcome modal to match the new palette -->
+                    <div class="flex items-center gap-3 p-2 rounded hover:bg-slate-50 transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs border border-blue-200">1</div>
+                        <div><p class="text-xs font-bold text-slate-700 uppercase">Rol</p><p class="text-[10px] text-slate-500">¿Quién actúa? (Experto)</p></div>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 rounded hover:bg-slate-50 transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs border border-emerald-200">2</div>
+                        <div><p class="text-xs font-bold text-slate-700 uppercase">Contexto</p><p class="text-[10px] text-slate-500">¿Qué sucede? (Datos)</p></div>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 rounded hover:bg-slate-50 transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs border border-amber-200">3</div>
+                        <div><p class="text-xs font-bold text-slate-700 uppercase">Meta</p><p class="text-[10px] text-slate-500">¿Qué lograr? (Objetivo)</p></div>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 rounded hover:bg-slate-50 transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-xs border border-red-200">4</div>
+                        <div><p class="text-xs font-bold text-slate-700 uppercase">Restricciones</p><p class="text-[10px] text-slate-500">¿Qué evitar? (Reglas)</p></div>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 rounded hover:bg-slate-50 transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs border border-purple-200">5</div>
+                        <div><p class="text-xs font-bold text-slate-700 uppercase">Formato</p><p class="text-[10px] text-slate-500">¿Cómo entregar? (Salida)</p></div>
+                    </div>
+                </div>
+
+                <button onclick="closeWelcome()" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg text-sm">
+                    ENTENDIDO, VAMOS A LA BÓVEDA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAYWALL MODAL -->
     <div id="paywall-modal" class="fixed inset-0 z-[60] hidden">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in duration-300">
-                <button onclick="closePaywall()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 bg-white rounded-full p-1 z-10">
+                <button onclick="closePaywall()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 bg-slate-100 rounded-full p-1 z-10">
                     <span class="material-symbols-outlined">close</span>
                 </button>
                 
-                <div class="bg-slate-900 p-8 text-center relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-600 rounded-full blur-3xl opacity-30 -mr-10 -mt-10"></div>
-                    <span class="material-symbols-outlined text-5xl text-yellow-400 mb-2 relative z-10">lock</span>
-                    <h3 class="text-white font-bold text-xl relative z-10">Contenido Premium</h3>
-                    <p class="text-indigo-200 text-sm relative z-10">Este prompt es parte de la Bóveda Privada.</p>
+                <div class="bg-gradient-to-br from-indigo-600 to-purple-800 p-8 text-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                    <span class="material-symbols-outlined text-5xl text-yellow-300 mb-3 relative z-10 drop-shadow-md">workspace_premium</span>
+                    <h3 class="text-white font-black text-2xl relative z-10 tracking-tight">Acceso VIP</h3>
+                    <p class="text-indigo-100 text-sm relative z-10 mt-1">Desbloquea la fórmula detrás de este resultado.</p>
                 </div>
-
-                <div class="p-6 text-center">
-                    <p class="text-slate-600 text-sm mb-6">
-                        Estás viendo la versión gratuita. Accede a los <span class="font-bold text-slate-900">100+ casos avanzados</span> y copia mis fórmulas validadas.
-                    </p>
-                    
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6">
-                        <p class="text-xs font-bold text-yellow-800 uppercase tracking-wide">🔥 Oferta Black Friday</p>
-                        <p class="text-2xl font-black text-slate-900">$9.990 <span class="text-sm font-normal text-slate-500 line-through">$19.990</span></p>
+                
+                <div class="p-6">
+                    <div class="text-center mb-6">
+                         <p class="text-xs text-slate-400 line-through mb-1">$19.990</p>
+                         <p class="text-3xl font-black text-slate-800">$9.990 <span class="text-xs font-normal text-slate-500 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full ml-2">50% OFF</span></p>
                     </div>
-
-                    <a id="payment-btn" href="#" target="_blank" class="block w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-lg shadow-indigo-200 mb-3 flex items-center justify-center gap-2">
-                        <span>DESBLOQUEAR BÓVEDA AHORA</span>
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    <a href="#" class="block w-full bg-indigo-600 text-white py-3.5 rounded-xl font-bold hover:bg-indigo-700 transform hover:-translate-y-1 transition-all shadow-xl flex items-center justify-center gap-2">
+                        <span>DESBLOQUEAR BÓVEDA</span>
                     </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast-container" class="bg-slate-900 text-white p-4 rounded-xl shadow-2xl border border-slate-700 flex items-start gap-4 max-w-sm">
-        <div class="bg-green-500/20 p-2 rounded-full text-green-400">
-            <span class="material-symbols-outlined">check_circle</span>
-        </div>
-        <div>
-            <h4 class="font-bold text-sm text-white">¡Prompt Copiado!</h4>
-            <p class="text-xs text-slate-400 mt-1">Este prompt te ahorrará aprox. <span class="text-yellow-400 font-bold">20 minutos</span>.</p>
-            <div class="mt-3 flex gap-2">
-                <a href="#" class="text-[10px] bg-sky-500 hover:bg-sky-400 text-white px-3 py-1.5 rounded font-bold transition-colors">
-                    Twittear Éxito
-                </a>
-                <button onclick="hideToast()" class="text-[10px] text-slate-400 hover:text-white px-2">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- WELCOME MODAL (AGIA 2.0) -->
-    <div id="welcome-modal" class="fixed inset-0 z-[70] hidden">
-        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl p-4 max-h-[90vh] overflow-y-auto">
-            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden relative">
-                <button onclick="closeWelcome()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 bg-white rounded-full p-1 z-10 shadow-md">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-                
-                <div class="bg-gradient-to-br from-indigo-600 to-purple-600 p-8 text-center relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-full opacity-10">
-                         <!-- Decorative circles -->
-                         <div class="absolute top-10 left-10 w-20 h-20 bg-white rounded-full"></div>
-                    </div>
-                    <span class="material-symbols-outlined text-6xl text-white mb-3 relative z-10">auto_awesome</span>
-                    <h2 class="text-white font-bold text-3xl mb-2 relative z-10">¡Bienvenido a AGIA 2.0!</h2>
-                    <p class="text-indigo-100 text-sm relative z-10">La evolución del sistema de prompts más efectivo</p>
-                </div>
-
-                <div class="p-8">
-                     <div class="bg-slate-50 rounded-xl p-4 mb-6 border border-slate-100">
-                        <p class="text-sm font-bold text-slate-700 mb-2">Ahora con Modo Interactivo:</p>
-                        <ul class="text-xs text-slate-600 space-y-2">
-                            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-indigo-500 text-sm">toggle_on</span> Usa el switch para ver la "magia" del formato.</li>
-                            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-indigo-500 text-sm">touch_app</span> Pasa el mouse por la leyenda para aprender.</li>
-                        </ul>
-                    </div>
-                    <div class="text-center">
-                        <button onclick="closeWelcome()" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg inline-flex items-center gap-2">
-                            Empezar a explorar
-                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                        </button>
-                    </div>
+                    <p class="text-[10px] text-center text-slate-400 mt-3">Pago único y seguro.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // CONFIGURACIÓN DE VENTA & ESTADO
-        // ==========================================
-        const LINK_MERCADO_PAGO = "#"; 
-        document.getElementById('payment-btn').href = LINK_MERCADO_PAGO;
-        let activeCaseId = null;
-
-        // --- HELPERS PARA AGIA 2.0 MARKUP INTERACTIVO ---
-        function renderAGIA(text) {
-            let html = text
-                .replace(/{r}(.*?){\/r}/g, '<span class="hl-rol hl-base" data-type="rol" onmouseover="highlightText(\'rol\')" onmouseout="clearHighlight()">$1</span>')
-                .replace(/{c}(.*?){\/c}/g, '<span class="hl-contexto hl-base" data-type="contexto" onmouseover="highlightText(\'contexto\')" onmouseout="clearHighlight()">$1</span>')
-                .replace(/{e}(.*?){\/e}/g, '<span class="hl-ejemplos hl-base" data-type="ejemplos" onmouseover="highlightText(\'ejemplos\')" onmouseout="clearHighlight()">$1</span>')
-                .replace(/{m}(.*?){\/m}/g, '<span class="hl-meta hl-base" data-type="meta" onmouseover="highlightText(\'meta\')" onmouseout="clearHighlight()">$1</span>')
-                .replace(/{l}(.*?){\/l}/g, '<span class="hl-limites hl-base" data-type="limites" onmouseover="highlightText(\'limites\')" onmouseout="clearHighlight()">$1</span>')
-                .replace(/{f}(.*?){\/f}/g, '<span class="hl-formato hl-base" data-type="formato" onmouseover="highlightText(\'formato\')" onmouseout="clearHighlight()">$1</span>')
-                .replace(/{v}(.*?){\/v}/g, '<span class="hl-validacion hl-base" data-type="validacion" onmouseover="highlightText(\'validacion\')" onmouseout="clearHighlight()">$1</span>')
-                .replace(/\n/g, '<br>');
-            return html;
-        }
-
-        function cleanAGIA(text) {
-            return text
-                .replace(/{[rcemlfv]}/g, '')
-                .replace(/{\/[rcemlfv]}/g, '')
-                .replace(/<br\s*\/?>/gi, '\n')
-                .replace(/&nbsp;/g, ' ')
-                .replace(/<\/?[^>]+(>|$)/g, "");
-        }
-
-        // --- CONFIGURACIÓN DE IAs ---
-        const aiConfig = {
-            chatgpt: { name: "ChatGPT", bg: "bg-indigo-600", icon: "bolt" }, 
-            gemini: { name: "Gemini", bg: "bg-blue-600", icon: "psychology" },
-            midjourney: { name: "Midjourney", bg: "bg-fuchsia-600", icon: "palette" },
-            claude: { name: "Claude", bg: "bg-orange-600", icon: "auto_awesome" }
+        // CONFIG - 8 CATEGORIES (Clean & Short Keys)
+        const config = {
+            categories: {
+                productivity: { label: "🚀 Productividad 10x", color: "emerald", icon: "rocket_launch" },
+                finance: { label: "💰 Finanzas & Inversión", color: "amber", icon: "monetization_on" }, 
+                sales: { label: "🔥 Ventas & Copy", color: "pink", icon: "campaign" },
+                art: { label: "🎨 Arte Digital", color: "fuchsia", icon: "palette" },
+                life: { label: "🧘 Vida Balanceada", color: "orange", icon: "self_improvement" },
+                tech: { label: "🧠 Cerebro Digital", color: "violet", icon: "memory" },
+                education: { label: "🎓 Educación", color: "cyan", icon: "school" },
+                engineering: { label: "🛠️ Ingeniería Prompt", color: "slate", icon: "construction" }
+            },
+            legend: [
+                { k: 'r', l: '1. Rol', c: 'hl-rol' },
+                { k: 'c', l: '2. Contexto', c: 'hl-contexto' },
+                { k: 'm', l: '3. Meta', c: 'hl-meta' },
+                { k: 'l', l: '4. Restricciones', c: 'hl-restricciones' },
+                { k: 'f', l: '5. Formato', c: 'hl-formato' }
+            ]
         };
 
-        // --- CATEGORÍAS ORIENTADAS A BENEFICIOS ---
-        const categoryConfig = {
-            office: { label: "🚀 Productividad 10x", color: "emerald", icon: "speed" },
-            finance: { label: "💰 Finanzas & Inversión", color: "amber", icon: "monetization_on" }, 
-            marketing: { label: "🔥 Ventas & Copy", color: "pink", icon: "ads_click" },
-            creativity: { label: "🎨 Arte Digital", color: "fuchsia", icon: "palette" }, 
-            personal: { label: "🧘 Vida Balanceada", color: "orange", icon: "self_improvement" },
-            tech: { label: "🧠 Cerebro Digital", color: "violet", icon: "code" }, 
-            education: { label: "🎓 Educación", color: "cyan", icon: "school" },
-            advanced: { label: "🛠️ Ingeniería Prompt", color: "slate", icon: "construction" },
-            tools: { label: "⚙️ Herramientas", color: "zinc", icon: "extension" }
-        };
-
-        const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goodPromptTagged, goodResPreview, suggestedAI, locked = false, deficiencies = [], isTool = false, difficulty = 'beginner') => ({
+        // --- DATA ENGINE ---
+        const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goodPromptTagged, exampleTip, validationTip, goodResPreview, suggestedAI, locked = false, isTool = false, difficulty = 'beginner') => ({
             id, category: cat, title, icon, problem, 
             badPrompt, 
             badResponsePreview: badResPreview,
             agiaPromptTagged: goodPromptTagged, 
+            exampleTip, validationTip,
             previewResponse: goodResPreview,
-            suggestedAI: suggestedAI, 
-            locked: locked, 
-            deficiencies: deficiencies.length ? deficiencies : ["Sin Rol", "Contexto Vago"],
-            isTool: isTool,
-            difficulty: difficulty
+            suggestedAI, locked, isTool, difficulty
         });
 
-        // --- BASE DE DATOS DE PROMPTS AGIA 2.0 ---
+        // ==========================================
+        // DATA DE LA BÓVEDA (LISTA MAESTRA)
+        // ==========================================
+
         const allCases = [
-            // --- TÉCNICAS AVANZADAS ---
-            createCase(801, 'advanced', 'Anti-Patrón: Prompt Ambiguo', 'warning', 'Qué NO hacer al pedir ayuda con IA', 
-                'Ayúdame con Excel.',
-                'Claro, ¿qué necesitas hacer en Excel? (Se pierde 1 minuto esperando aclaración)', 
-                '{r}Actúa como Ingeniero de Datos.{/r} {c}Tengo 3 columnas: Ventas (columna A), Fecha (columna B), y Vendedor (columna C).{/c} {m}Necesito:\n1. Crear una tabla dinámica que muestre ventas totales por vendedor\n2. Filtrar solo los datos del último trimestre{/m} {f}Dame los pasos numerados con capturas de menú.{/f}', 
-                '<p class="text-xs font-bold mb-2">Pasos para crear Tabla Dinámica:</p><ol class="list-decimal ml-4 text-xs space-y-1"><li>Selecciona todo el rango (A1:C501): <strong>Ctrl + Shift + Fin</strong></li><li>Menú: <strong>Alt → N → V</strong></li></ol>', 
-                'gemini', false, ["Sin Contexto", "Pérdida de Tiempo"], false, 'intermediate'),
-
-            // --- CASO PREMIUM DE EJEMPLO (LOCKED) ---
-            createCase(802, 'advanced', 'Encadenamiento de Prompts', 'link', 'Para proyectos complejos, divide en etapas', 
-                'Analiza este informe financiero y hazme un resumen.',
-                'Respuesta superficial que toca todo pero sin profundidad.', 
-                '{r}Actúa como CFO.{/r} {c}Adjunto informe Q3.{/c} {m}PASO 1: Identifica 3 hallazgos críticos en márgenes.{/m} {l}Ignora notas al pie.{/l} {f}Lista de 3 hallazgos con cifra exacta.{/f}', 
-                '<p>Contenido Premium...</p>', 
-                'chatgpt', true, ["Prompt Único Gigante", "Superficial"], false, 'advanced'),
             
-            // --- MARKETING (GRATIS) ---
-             createCase(301, 'marketing', 'Generador de Títulos Virales', 'campaign', 'Mis títulos no generan clics', 
-                'Dame ideas de títulos para un video sobre productividad.',
-                '1. Consejos de productividad\n2. Cómo ser más productivo\n3. Tips para trabajar mejor', 
-                '{r}Actúa como Experto en Clickbait Ético de YouTube.{/r} {c}El video trata sobre la técnica Pomodoro pero aplicada a padres ocupados.{/c} {e}MALO: "Usa la técnica Pomodoro"\nBUENO: "Probé Pomodoro por 7 días con mis hijos y pasó esto"{/e} {m}Genera 5 títulos que generen curiosidad (gap de información).{/m} {l}Máximo 50 caracteres. Sin exclamaciones excesivas.{/l} {f}Lista numerada con una breve explicación de por qué funciona cada uno.{/f} {v}Deben provocar una emoción específica (miedo a perderse algo, curiosidad, validación).{/v}', 
-                '<ul class="list-disc ml-4 text-xs"><li><strong>"Por qué dejé de usar listas de tareas (y qué hago ahora)"</strong>: Rompe una creencia común.</li><li><strong>"La regla de los 25 minutos que salvó mi matrimonio"</strong>: Beneficio emocional inesperado.</li></ul>', 
-                'claude', false, ["Aburrido", "Genérico"], false, 'beginner'),
+            // ==========================================
+            // 🚀 PRODUCTIVIDAD 10X (Office, Excel, Gestión)
+            // ==========================================
+            createCase(101, 'productivity', 'El Limpiador de Data', 'cleaning_services', 'Excel: Base de datos sucia (Nombres, Mayúsculas).', 
+                'Tengo una lista de nombres desordenada en Excel. Arréglala.',
+                'Aquí tienes la lista arreglada... (Suele devolver texto plano, no fórmulas reutilizables).', 
+                '{r}Actúa como Experto en Excel y Limpieza de Datos.{/r} {c}Tengo una lista de nombres sucia (pegada desde la web) con mayúsculas mezcladas y espacios irregulares en la columna A.{/c} {m}Genera la fórmula anidada más eficiente para dejarlo como "Nombre Propio" y eliminar espacios.{/m} {l}No uses macros, solo fórmulas nativas.{/l} {f}Entrégame la fórmula en un bloque de código y una tabla explicativa.{/f}', 
+                'Datos de entrada: "JUAN  perez", "MARIA gomez".',
+                'Verifica que nombres compuestos como "María José" mantengan el espacio medio correcto.',
+                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2">=NOMPROPIO(ESPACIOS(LIMPIAR(A2)))</div><p class="text-xs text-slate-700"><strong>Explicación:</strong><br>1. <code>LIMPIAR</code>: Elimina caracteres fantasmas.<br>2. <code>ESPACIOS</code>: Quita dobles espacios.<br>3. <code>NOMPROPIO</code>: Capitaliza correctamente.</p>', 
+                'gemini', false, false, 'beginner'),
 
-             // --- OFFICE ---
-            createCase(22, 'office', 'El Limpiador de Data', 'cleaning_services', 'Base de datos sucia (Nombres, Mayúsculas).', 
-                'Limpia estos nombres de la columna A y déjalos en formato título.',
-                'Usa =NOMPROPIO(A1)', 
-                '{r}Actúa como Ingeniero de Datos especializado en Excel.{/r} {c}Tengo una columna A con nombres sucios: "  JUAN  perez  ".{/c} {m}Genera UNA fórmula que elimine espacios y capitalice.{/m} {f}```\n=FÓRMULA\n```{/f} {v}Debe transformar "  JUAN " en "Juan"{/v}', 
-                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2">=NOMPROPIO(ESPACIOS(A1))</div>', 
-                'gemini', false, ["Sin Contexto", "Vago"], false, 'beginner'),
-            
-            // --- TOOLS ---
-            createCase(901, 'tools', 'Guía: ChatGPT', 'bolt', '¿Cuándo usar ChatGPT?', 'Ideal para texto e ideas.', '', '{r}Tool{/r}', '...', 'chatgpt', false, [], true, 'beginner')
+            createCase(102, 'productivity', 'El "No" Diplomático', 'block', 'Email: Decir que NO al cliente sin perderlo.', 
+                'Dile al cliente que no haré los cambios gratis. Que no sea pesado.',
+                'Estimado, no realizaré los cambios porque no están en el contrato. Saludos.', 
+                '{r}Actúa como Gerente de Cuentas Senior y Experto en Negociación.{/r} {c}Un cliente pide cambios fuera del alcance (Scope Creep).{/c} {m}Redacta un correo rechazando la gratuidad pero ofreciendo una cotización por el extra (Upsell).{/m} {l}Tono: Empático, firme y orientado a la solución. No uses la palabra "No" al inicio.{/l} {f}Asunto del correo + Cuerpo del mensaje.{/f}', 
+                'Menciona que el requerimiento extra tomaría aprox. 5 horas de desarrollo.',
+                'El correo debe ofrecer una alternativa de pago inmediata.',
+                '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200"><strong>Asunto:</strong> Propuesta para implementación de mejoras solicitadas<br><br>"Hola [Nombre], me encanta la idea de incluir X. Revisando el alcance original, esto sería una nueva fase. Para no detener el avance, te preparé una cotización preferencial..."</div>', 
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(103, 'productivity', 'Resumidor de Reuniones', 'groups', 'Gestión: Transforma audios largos en tareas.',
+                'Resume lo que hablamos en esta reunión.',
+                'La reunión empezó hablando del clima. Luego Juan dijo que el proyecto va bien...',
+                '{r}Actúa como Project Manager Senior.{/r} {c}Adjunto la transcripción de una reunión de brainstorming de 1 hora.{/c} {m}Extrae SOLO los acuerdos firmes y las tareas asignadas.{/m} {l}Ignora las ideas descartadas, chistes y discusiones circulares.{/l} {f}Lista de Tareas: [Tarea] - [Responsable] - [Plazo].{/f}',
+                'INPUT: Transcripción automática de Zoom/Teams.',
+                'Cada tarea debe tener un verbo de acción (Crear, Enviar, Llamar).',
+                '<ul class="list-disc ml-4 text-xs"><li><strong>Enviar presupuesto final</strong> - Ana - Antes del viernes.</li><li><strong>Contactar a proveedor</strong> - Carlos - Hoy PM.</li></ul>',
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(104, 'productivity', 'Traductor Corporativo', 'translate', 'Email: Inglés de negocios para CEO.', 
+                'Traduce: "Hola jefe, el proyecto va tarde por problemas técnicos".',
+                'Hello boss, the project is late because of technical problems.', 
+                '{r}Actúa como Editor Nativo de Inglés de Negocios (C-Level).{/r} {c}Adjunto mi borrador en español sobre un retraso.{/c} {m}Tradúcelo a un inglés corporativo, sofisticado y directo, transmitiendo control sobre la situación.{/m} {l}Evita sonar como traducción literal. Usa "Dear Mr. [Apellido]".{/l} {f}Email formal.{/f}', 
+                'Contexto: El retraso es de 2 días por caída de servidor.',
+                'El texto debe usar conectores formales como "However", "Regarding".',
+                '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200">"Dear Mr. Smith, I am writing to provide an update regarding the project timeline..."</div>', 
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(105, 'productivity', 'Resumen Hilos de Email', 'mail_lock', 'Email: Me reenviaron 50 correos.',
+                'Lee estos correos y dime en qué quedó todo.',
+                'Parece que hablan de un proyecto.',
+                '{r}Actúa como Asistente Ejecutivo Eficiente.{/r} {c}Adjunto un hilo de correos largo y confuso.{/c} {m}Genera un resumen cronológico de los hitos clave y dime cuál es la "Última Acción" pendiente y quién la tiene.{/m} {f}Bullets cronológicos + Estado Actual (Semáforo).{/f}',
+                'Tip: Pega los correos desde el más antiguo al más nuevo.',
+                'Identifica claramente quién tiene la responsabilidad ahora mismo.',
+                '<p class="text-xs"><strong>Estado:</strong> 🔴 Bloqueado. Esperando aprobación de Gerencia (Pedro) desde el 14/Oct.</p>',
+                'claude', false, false, 'intermediate'),
+
+            createCase(106, 'productivity', 'Fórmulas Google Sheets (Regex)', 'regular_expression', 'Lógica: Extraer emails de celdas sucias.',
+                'Sácame los correos de estas celdas.',
+                'Usa la función dividir texto.',
+                '{r}Actúa como Experto en Google Sheets y Expresiones Regulares (Regex).{/r} {c}Columna A tiene texto sucio: "Contacto: juan@mail.com - Tel: 555...".{/c} {m}Dame una fórmula para extraer SOLO la dirección de correo electrónico.{/m} {f}Fórmula REGEXEXTRACT.{/f}',
+                'Ejemplo de celda: "Hola, mi mail es nombre.apellido@empresa.com, escríbeme".',
+                'La fórmula debe funcionar con cualquier extensión de dominio (.com, .cl, .net).',
+                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2">=REGEXEXTRACT(A2, "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")</div>',
+                'gemini', false, false, 'advanced'),
+
+            createCase(107, 'productivity', 'Organizador de Archivos', 'folder_open', 'Gestión: Mi escritorio es un caos.',
+                'Dime cómo nombrar mis archivos.',
+                'Ponle fecha y nombre.',
+                '{r}Actúa como Experto en Gestión Documental Digital.{/r} {c}Trabajo en Marketing con muchas versiones.{/c} {m}Diseña una convención de nomenclatura (Naming Convention) lógica y escalable.{/m} {f}Estructura del nombre + Ejemplo.{/f}',
+                'Problema: Tengo archivos "Final", "Final Final".',
+                'Debe permitir orden cronológico automático.',
+                '<p class="text-xs">AAAA-MM-DD_Proyecto_Tipo_Versión<br>Ej: 2024-11-25_BlackFriday_Contrato_v03.pdf</p>',
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(108, 'productivity', 'Time Blocking Semanal', 'schedule', 'Gestión: Siento que no me alcanza el tiempo.',
+                'Organiza mi semana.',
+                'Haz una lista.',
+                '{r}Actúa como Coach de Productividad (Método Cal Newport).{/r} {c}Tengo tareas creativas (mañana) y reuniones (tarde).{/c} {m}Crea un horario semanal basado en "Bloques de Tiempo" y "Trabajo Profundo".{/m} {f}Tabla de horario ideal.{/f}',
+                'Restricción: No programar reuniones antes de las 11 AM.',
+                'Incluir bloques de descanso.',
+                '<p class="text-xs">08:00 - 11:00: Deep Work (Sin celular).</p>',
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(109, 'productivity', 'Mensaje Networking LinkedIn', 'connect_without_contact', 'Networking: Contactar a alguien importante.',
+                'Escríbele para pedirle pega.',
+                'Hola, busco trabajo.',
+                '{r}Actúa como Experto en Networking Estratégico.{/r} {c}Quiero conectar con un Gerente de mi industria.{/c} {m}Redacta una nota de conexión de LinkedIn (máx 300 caracteres) que aporte valor o elogie algo específico.{/m} {f}Texto de la nota.{/f}',
+                'Menciona un artículo reciente que él haya publicado.',
+                'Sin venta directa.',
+                '<p class="text-xs italic">"Hola [Nombre], leí tu artículo sobre IA y me voló la cabeza..."</p>',
+                'claude', false, false, 'intermediate'),
+
+            createCase(202, 'productivity', 'Analista de Reportes PDF', 'picture_as_pdf', 'Lectura: PDF de 50 páginas.', 
+                'Resume este reporte anual.',
+                'El reporte cubre el desempeño 2023...', 
+                '{r}Actúa como Consultor de Estrategia de Negocios.{/r} {c}Adjunto reporte anual extenso.{/c} {m}Extrae los "Golden Nuggets": 3 oportunidades de crecimiento y 3 riesgos críticos ocultos.{/m} {f}Usa Markdown y negritas.{/f}', 
+                'Enfócate en MD&A.',
+                'Debe contener cifras financieras.',
+                '<p class="text-xs font-bold text-red-600">⚠️ Riesgo: Aumento 20% costos MP.</p>', 
+                'gemini', false, false, 'advanced'),
+
+            // ==========================================
+            // 💰 FINANZAS & INVERSIÓN
+            // ==========================================
+            createCase(201, 'finance', 'Analista de Acciones (Buffett)', 'trending_up', 'Inversión: Leer un balance general.',
+                'Lee este PDF del balance de Apple y dime si invierto.',
+                'Apple es una empresa grande. Parece buena.',
+                '{r}Actúa como Analista Financiero de Value Investing (Estilo Warren Buffett).{/r} {c}Adjunto el Estado de Resultados 2024 de una empresa.{/c} {m}Calcula el Margen Neto y el Ratio de Deuda/Patrimonio. Compara con la media de la industria.{/m} {f}Veredicto: "Atractiva" o "Riesgosa" + Justificación numérica.{/f}',
+                'Dato clave: Busca el "Free Cash Flow" (Flujo de caja libre).',
+                'El veredicto debe basarse en números, no en la fama de la empresa.',
+                '<p class="text-xs"><strong>Veredicto:</strong> Riesgosa.<br>Aunque vende mucho, su margen neto cayó al 2% (Industria: 10%) y su deuda se duplicó. No tiene "Moat" (ventaja competitiva) claro en los números.</p>',
+                'claude', true, false, 'advanced'),
+
+            createCase(202, 'finance', 'Eliminador de Deudas', 'snowboarding', 'Personal: Salir del hoyo financiero.', 
+                'Tengo muchas deudas y no sé cuál pagar.',
+                'Paga la más cara primero.', 
+                '{r}Actúa como Asesor Financiero experto en Método Bola de Nieve.{/r} {c}Adjunto mis 3 deudas (Monto, Tasa, Cuota). Tengo $50k extra al mes.{/c} {m}Crea un plan matemático exacto para eliminar las deudas.{/m} {f}Tabla cronológica.{/f}', 
+                'Deuda A: $1M (2%), Deuda B: $500k (3%).',
+                'Mostrar fecha exacta de libertad.',
+                '<p class="text-xs">Mes 4-8: Atacar Crédito B.</p>', 
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(203, 'finance', 'Broker Hipotecario IA', 'real_estate_agent', 'Inmobiliario: Elegir el mejor crédito.', 
+                '¿Cuál crédito es mejor? A: 4.5%, B: 4.7%.',
+                'El A es mejor por la tasa.', 
+                '{r}Actúa como Corredor de Propiedades Matemático.{/r} {c}Adjunto simulaciones Banco A y Banco B.{/c} {m}Dime cuál es más barato al final del periodo (Costo Total del Crédito).{/m} {l}Ignora la tasa nominal, fíjate en el CAE y seguros.{/l} {f}Comparativa directa: Ahorro total en pesos.{/f}', 
+                'Datos: Banco A (Seguros caros), Banco B (Seguros baratos).',
+                'Calcular diferencia en dinero real.',
+                '<p class="text-green-600 font-bold text-xs">Ganador: Banco B (Ahorras $2.5M).</p>', 
+                'gemini', false, false, 'advanced'),
+
+            createCase(204, 'finance', 'Simulador de Jubilación FIRE', 'savings', 'Retiro: ¿Cuánto necesito?',
+                'Quiero jubilarme joven.',
+                'Necesitas ahorrar mucho.',
+                '{r}Actúa como Planificador Financiero FIRE (Financial Independence, Retire Early).{/r} {c}Gasto mensual: $1.000 USD. Tasa de retiro segura: 4%.{/c} {m}Calcula mi "Número FIRE" exacto y cuántos años me faltan si invierto $500 USD al mes.{/m} {f}Cálculo matemático + Años restantes.{/f}',
+                'Regla del 25x: Gasto Anual x 25.',
+                'Debe dar una cifra concreta.',
+                '<p class="text-xs">Número FIRE: $300k. Faltan 22 años.</p>',
+                'chatgpt', false, false, 'intermediate'),
+
+            // ==========================================
+            // 🔥 VENTAS & COPY (Marketing)
+            // ==========================================
+            createCase(301, 'sales', 'FBI Salary Negotiator', 'verified_user', 'Negociación: Pedir aumento de sueldo.', 
+                'Escribe un guion para pedir aumento.',
+                'Hola jefe, quiero más dinero.', 
+                '{r}Actúa como Negociador Experto del FBI.{/r} {c}Llevo 2 años, superé KPIs en un 15%.{/c} {m}Diseña un guion de negociación paso a paso.{/m} {l}Evita argumentos emocionales ("necesito plata"). Usa argumentos de valor ("aporto X").{/l} {f}Guion: Apertura -> Logros -> Manejo de Objeción "No hay presupuesto".{/f}', 
+                'Logro específico: "Aumenté la retención un 10%".',
+                'Usa "Mirroring".',
+                '<p class="text-xs">"¿Entiendo que la falta de presupuesto es lo único que impide ajustar mi valor?"</p>', 
+                'chatgpt', false, false, 'advanced'),
+
+            createCase(302, 'sales', 'Calendario Editorial 30 Días', 'calendar_today', 'RRSS: Ideas de contenido.', 
+                'Dame ideas para Instagram.',
+                'Sube fotos de tu ropa.', 
+                '{r}Actúa como Estratega de Contenidos Digitales.{/r} {c}Marca: Ropa sustentable. Público: Millennials.{/c} {m}Desarrolla una matriz de 1 semana: Educación, Entretenimiento y Venta.{/m} {f}Tabla: Día | Pilar | Idea | Gancho inicial (Hook).{/f}', 
+                'Pilar Venta: Testimonio.',
+                'Hook visual o verbal.',
+                '<p class="text-xs">Lun: "5 telas tóxicas".</p>', 
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(303, 'sales', 'Cold Email B2B', 'mail', 'Outbound: Vender en frío.',
+                'Escribe un correo para vender diseño web.',
+                'Hola, somos una agencia...',
+                '{r}Actúa como Experto en "Cold Email" B2B.{/r} {c}Vendo rediseño web a clínicas.{/c} {m}Consigue una llamada de 15 minutos.{/m} {l}Máx 75 palabras. Enfócate en su problema (perder pacientes), no en ti.{/l} {f}Asunto (Curioso) + Cuerpo.{/f}',
+                'Pain Point: Agendar online.',
+                'Leer en un pantallazo.',
+                '<p class="text-xs italic">"Intenté agendar en su web y tardó 8 segundos..."</p>',
+                'claude', false, false, 'intermediate'),
+
+            createCase(304, 'sales', 'Psicólogo de Consumo', 'person_search', 'Estrategia: Buyer Persona.', 
+                'Dime quién compra mis kits.',
+                'Padres y escuelas.', 
+                '{r}Actúa como Investigador de Mercado.{/r} {c}Producto: Kits de Robótica caros ($100 USD).{/c} {m}Crea un perfil de "Buyer Persona" detallando sus miedos profundos.{/m} {f}Perfil: Nombre, Miedo Principal, Deseo Oculto.{/f}', 
+                'Miedo emocional.',
+                'No funcional.',
+                '<p class="text-xs">Miedo: Que su hijo se quede atrás en el futuro.</p>', 
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(305, 'sales', 'Manejo de Objeciones', 'price_check', 'Cierre: Cliente dice "Muy caro".',
+                'El cliente dice que cobro mucho.',
+                'Ofrécele descuento.',
+                '{r}Actúa como Experto en Cierre de Ventas High-Ticket.{/r} {c}Objeción: "Es muy caro".{/c} {m}Dame 3 respuestas para reencuadrar el precio como inversión (ROI).{/m} {f}Opción Lógica, Emocional y "Costo de Inacción".{/f}',
+                'Enfoque: Costo de NO solucionar.',
+                'No justificarse.',
+                '<p class="text-xs">"¿Has calculado cuánto te cuesta mensualmente NO tener esto?"</p>',
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(406, 'sales', 'Gestión de Crisis', 'policy', 'RRSS: Comentario hater.', 
+                'Dicen que soy estafa.',
+                'Bórralo.', 
+                '{r}Actúa como Relacionador Público Senior.{/r} {c}Comentario falso de estafa.{/c} {m}Respuesta pública empática y profesional.{/m} {l}Objetivo: Llevar al DM.{/l} {f}Texto respuesta.{/f}', 
+                'Tono de ayuda.',
+                'Invitación al privado.',
+                '<p class="text-xs italic">"Hola, tu pedido aparece en ruta. Envíanos DM..."</p>', 
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(502, 'sales', 'Naming de Marca', 'badge', 'Branding: Nombre para marca.', 
+                'Nombres para ropa ecológica.',
+                'EcoModa.', 
+                '{r}Actúa como Director Creativo.{/r} {c}Ropa de plástico reciclado.{/c} {m}5 nombres modernos y evocadores.{/m} {l}Sin "Eco" ni "Bio".{/l} {f}Lista + Significado.{/f}', 
+                'Metáfora marina.',
+                'Verificar sonoridad.',
+                '<p class="text-xs"><strong>Thalassa</strong>, <strong>ReWave</strong>.</p>', 
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(503, 'sales', 'Optimizador Bio LinkedIn', 'face', 'Marca Personal: Perfil LinkedIn.',
+                'Mejora mi bio.',
+                'Contador responsable.',
+                '{r}Actúa como Experto Marca Personal.{/r} {c}Soy Contador especializado en reducir impuestos para Pymes.{/c} {m}Redacta un Titular (Headline) y un "Acerca de" que hable de beneficios para el cliente, no de mí.{/m} {f}Titular + Texto Acerca de.{/f}',
+                'Fórmula: Ayudo a X a lograr Y.',
+                'Palabras clave.',
+                '<p class="text-xs">"Ayudo a Pymes a recuperar impuestos..."</p>',
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(504, 'sales', 'Generador de Analogías', 'compare_arrows', 'Ventas: Explicar producto difícil.',
+                'Explica ciberseguridad blockchain.',
+                'Es encriptación.',
+                '{r}Actúa como Divulgador Científico.{/r} {c}Producto complejo.{/c} {m}Crea una analogía simple "Es como...".{/m} {f}La Analogía.{/f}',
+                'Elementos cotidianos.',
+                'Cliente debe entender al instante.',
+                '<p class="text-xs">"Es como darle una copia de tu diario a todo el estadio..."</p>',
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(505, 'sales', 'Ideas Lead Magnet', 'magnet', 'Marketing: Captar correos.',
+                'Qué regalar a abogados.',
+                'Un ebook.',
+                '{r}Actúa como Estratega de Growth Marketing.{/r} {c}Target: Abogados ocupados.{/c} {m}3 ideas de recursos de consumo rápido.{/m} {f}Título + Promesa.{/f}',
+                'Ahorro de tiempo real.',
+                'Título específico.',
+                '<p class="text-xs">"Plantilla de Contrato a prueba de balas".</p>',
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(506, 'sales', 'Estratega de Hashtags', 'tag', 'RRSS: Crecer en Instagram.',
+                'Hashtags para tienda mascotas.',
+                '#perro #love.',
+                '{r}Actúa como Experto en SEO de Instagram.{/r} {c}Tienda perros.{/c} {m}Escalera de Hashtags: Nicho, Medios, Grandes.{/m} {f}Listas.{/f}',
+                'Nicho específico.',
+                'Evitar saturados.',
+                '<p class="text-xs">#BulldogFrancesMexico</p>',
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(507, 'sales', 'Respuesta a Reseña', 'reviews', 'Fidelización: Cliente feliz.',
+                'Responde review 5 estrellas.',
+                'Gracias.',
+                '{r}Actúa como Gerente de Fidelización.{/r} {c}Cliente feliz.{/c} {m}Respuesta agradecida que invite a volver.{/m} {l}No venta directa.{/l} {f}Texto.{/f}',
+                'Personaliza nombre.',
+                'Hacer sentir especial.',
+                '<p class="text-xs italic">"¡Gracias Ana! Pregunta por el postre secreto..."</p>',
+                'chatgpt', false, false, 'beginner'),
+
+            // ==========================================
+            // 🎨 ARTE DIGITAL (Creatividad e Imagen)
+            // ==========================================
+            createCase(401, 'art', 'Artista de IA (Midjourney)', 'camera', 'Prompts: Fotografía realista.', 
+                'Hazme una foto de un jugo.',
+                '(Dibujo animado).', 
+                '{r}Actúa como Fotógrafo Publicitario y Experto en Midjourney.{/r} {c}Producto: Botella de jugo de naranja.{/c} {m}Escribe 3 prompts técnicos para foto ultra-realista.{/m} {l}Usa terminología de cámara.{/l} {f}Estructura: [Sujeto] + [Entorno] + [Cámara] + [Parámetros].{/f}', 
+                'Parámetros: --ar 4:5 --style raw.',
+                'Especificar iluminación.',
+                '<div class="font-mono text-xs">/imagine prompt: cinematic lighting...</div>', 
+                'midjourney', false, false, 'advanced'),
+
+            createCase(402, 'art', 'Director de Arte (Concept)', 'palette', 'Concepto: Visualizar idea abstracta.',
+                'Imagen para "innovación".',
+                'Foco con circuitos.',
+                '{r}Actúa como Director de Arte de Apple.{/r} {c}Concepto: "Innovación invisible".{/c} {m}Describe una escena visual minimalista y abstracta que represente este concepto sin usar clichés.{/m} {f}Descripción visual.{/f}',
+                'Estilo: Vidrio, luz.',
+                'Evocar sensaciones.',
+                '<p class="text-xs">"Cubo de cristal flotando..."</p>',
+                'midjourney', false, false, 'intermediate'),
+
+            createCase(403, 'art', 'Generador Paletas Color', 'colors', 'Branding: Colores que combinan.',
+                'Colores para café.',
+                'Café y beige.',
+                '{r}Actúa como Experto en Teoría del Color.{/r} {c}Marca: Café moderno.{/c} {m}Genera una paleta de 4 colores con sus códigos HEX.{/m} {l}Busca contraste.{/l} {f}Color + HEX.{/f}',
+                'Color de acento.',
+                'Contraste web.',
+                '<p class="text-xs">Electric Orange (#FF6B35)</p>',
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(404, 'art', 'Diseñador Iconos App', 'app_shortcut', 'UI/UX: Icono app móvil.',
+                'Icono para app meditación.',
+                'Un loto.',
+                '{r}Actúa como Diseñador de Iconos iOS (Estilo Apple).{/r} {c}App: Meditación y sueño.{/c} {m}Describe un icono simple, reconocible y escalable.{/m} {f}Prompt visual descriptivo.{/f}',
+                'Estilo Apple.',
+                'Verse bien pequeño.',
+                '<p class="text-xs">"Nube estilizada con gradiente..."</p>',
+                'midjourney', false, false, 'intermediate'),
+
+            createCase(501, 'art', 'Desbloqueo Creativo', 'edit', 'Escritura: No se me ocurre nada.', 
+                'Idea cuento terror.',
+                'Casa embrujada.', 
+                '{r}Actúa como Stephen King.{/r} {c}Terror Psicológico.{/c} {m}Premisa "What if" con objeto cotidiano.{/m} {f}Sinopsis.{/f}', 
+                'Objeto: Reloj.',
+                'Amenaza inmediata.',
+                '<p class="text-xs">"Un hombre nota una mancha de humedad..."</p>', 
+                'claude', false, false, 'beginner'),
+
+            // ==========================================
+            // 🧠 CEREBRO DIGITAL (Tecnología y Código)
+            // ==========================================
+            createCase(601, 'tech', 'Explicador de Código', 'code', 'Código: Entender script.',
+                '¿Qué hace este código?',
+                'Imprime números.',
+                '{r}Actúa como Senior Developer Mentor.{/r} {c}Script Python complejo.{/c} {m}Explica la lógica línea por línea en lenguaje natural.{/m} {f}Comentarios.{/f}',
+                'Input: Bucle anidado.',
+                'Apto principiante.',
+                '<p class="text-xs">// Recorre cada elemento...</p>',
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(602, 'tech', 'Generador Consultas SQL', 'database', 'Data: Extraer info base datos.',
+                'Clientes que compraron > 100.',
+                'SELECT * FROM clientes...',
+                '{r}Actúa como Data Engineer.{/r} {c}Tablas Users, Orders.{/c} {m}Escribe la Query SQL para obtener el TOP 10 de clientes.{/m} {f}Código SQL.{/f}',
+                'Usa JOIN.',
+                'Ordenado desc.',
+                '<div class="font-mono text-xs">SELECT u.name...</div>',
+                'chatgpt', false, false, 'advanced'),
+
+            createCase(603, 'tech', 'Fórmulas Google Sheets', 'regular_expression', 'Lógica: Extraer emails complejos.',
+                'Sácame los correos.',
+                'Dividir texto.',
+                '{r}Actúa como Experto en Google Sheets y Regex.{/r} {c}Texto sucio.{/c} {m}Fórmula para extraer SOLO el email.{/m} {f}Fórmula REGEXEXTRACT.{/f}',
+                'Funcionar con cualquier dominio.',
+                'Correos con puntos.',
+                '<div class="font-mono text-xs">=REGEXEXTRACT(...)</div>',
+                'gemini', false, false, 'advanced'),
+
+            createCase(604, 'tech', 'Traductor Jerga Tech', 'terminal', 'Conceptos: Entender programadores.',
+                '¿Qué es una API?',
+                'Interfaz de aplicación.',
+                '{r}Actúa como Profesor de Tecnología.{/r} {c}Concepto: API.{/c} {m}Explícalo con una analogía de restaurante.{/m} {f}Analogía.{/f}',
+                'Menú, Mesero, Cocina.',
+                'API es el mensajero.',
+                '<p class="text-xs">"La API es el Mesero..."</p>',
+                'chatgpt', false, false, 'beginner'),
+
+            // ==========================================
+            // 🎓 EDUCACIÓN
+            // ==========================================
+            createCase(701, 'education', 'Tutor Socrático', 'psychology', 'Matemáticas: Aprender sin respuesta.', 
+                'Resuelve ecuación.',
+                'x=2.', 
+                '{r}Actúa como Profesor Socrático.{/r} {c}Alumno confundido.{/c} {m}Guía con preguntas, NO des respuesta.{/m} {f}Diálogo.{/f}', 
+                'Si equivoca, pregunta.',
+                'Termina con pregunta.',
+                '<p class="text-xs italic">"¿Qué dos números multiplicados...?"</p>', 
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(702, 'education', 'Plan de Estudio', 'calendar_month', 'Estudio: Examen grande.', 
+                'Arma horario.',
+                'Estudia 8 horas.', 
+                '{r}Actúa como Coach de Neuroaprendizaje.{/r} {c}Examen 3 meses.{/c} {m}Crea un plan macro basado en Repetición Espaciada.{/m} {f}Plan Mensual.{/f}', 
+                'Flashcards.',
+                'Descansos.',
+                '<p class="text-xs">Mes 1: Lectura. Mes 2: Repaso activo.</p>', 
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(703, 'education', 'Traductor Ciencia', 'science', 'Lectura: Paper difícil.', 
+                'Explica mitigación antropogénica.',
+                'Reducción humana.', 
+                '{r}Actúa como Periodista Científico.{/r} {c}Frase compleja.{/c} {m}Traduce a lenguaje de niño de 12 años.{/m} {f}Explicación.{/f}', 
+                'Analogía tráfico.',
+                'Simple.',
+                '<p class="text-xs">"Es como dejar la llave del gas abierta..."</p>', 
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(704, 'education', 'Simulador Examen Oral', 'mic', 'Práctica: Preguntas difíciles.', 
+                'Hazme preguntas Derecho.',
+                '¿Qué es contrato?', 
+                '{r}Actúa como Profesor Estricto.{/r} {c}Tema: Contratos.{/c} {m}Haz preguntas de caso práctico con trampa.{/m} {f}Preguntas.{/f}', 
+                'Trampa menor edad.',
+                'Obliga justificar.',
+                '<p class="text-xs">"¿Es nulo el contrato? Justifique."</p>', 
+                'chatgpt', false, false, 'advanced'),
+
+            // ==========================================
+            // 🧘 VIDA BALANCEADA (Personal y Hogar)
+            // ==========================================
+            createCase(801, 'life', 'Contrato Paz Familiar', 'handshake', 'Hogar: Hijos peleando.', 
+                'Mis hijos pelean.',
+                'Castígalos.', 
+                '{r}Actúa como Mediador Familiar.{/r} {c}Hermanos peleando.{/c} {m}Diseña un "Contrato de Paz" divertido.{/m} {f}Texto contrato.{/f}', 
+                'Recompensa positiva.',
+                'Lenguaje positivo.',
+                '<p class="text-xs">"Regla: Si hay gritos, tablet a la Cárcel."</p>', 
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(802, 'life', 'Chef de Sobras', 'restaurant_menu', 'Cocina: Refri vacío.',
+                'Qué cocino con arroz y huevo.',
+                'Arroz con huevo.',
+                '{r}Actúa como Chef Gourmet.{/r} {c}Ingredientes: Arroz, huevo.{/c} {m}Crea una receta sofisticada con sobras.{/m} {f}Nombre + Pasos.{/f}',
+                'Técnica salteado.',
+                'Sonar rico.',
+                '<p class="text-xs">"Arroz Frito Cantonés Express".</p>',
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(803, 'life', 'Planificador Viajes', 'flight', 'Viajes: Itinerario.',
+                'Qué ver en Roma 3 días.',
+                'Coliseo.',
+                '{r}Actúa como Guía Local.{/r} {c}Roma.{/c} {m}Crea itinerario optimizado geográficamente.{/m} {f}Día a día.{/f}',
+                'Agrupa lugares.',
+                'Comida.',
+                '<p class="text-xs">Día 1: Antigua. Almuerzo Monti.</p>',
+                'gemini', false, false, 'intermediate'),
+
+            createCase(804, 'life', 'Entrenador HIIT', 'fitness_center', 'Salud: Entrenar en casa.', 
+                'Dame ejercicios.',
+                'Corre.', 
+                '{r}Actúa como Entrenador Funcional.{/r} {c}30 min, sin equipo.{/c} {m}Rutina Full Body tipo TABATA.{/m} {f}Circuito.{/f}', 
+                'Cuida postura.',
+                'Tiempos exactos.',
+                '<p class="text-xs">Sentadillas (20s) - Descanso (10s).</p>', 
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(805, 'life', 'Sommelier de Bolsillo', 'wine_bar', 'Social: Elegir vino.', 
+                'Vino para lasaña.',
+                'Tinto.', 
+                '{r}Actúa como Sommelier.{/r} {c}Lasaña.{/c} {m}Recomienda cepa y explica maridaje.{/m} {f}Recomendación.{/f}', 
+                'Acidez.',
+                'Explica por qué.',
+                '<p class="text-xs">Chianti: Corta la grasa.</p>', 
+                'chatgpt', false, false, 'beginner'),
+
+            createCase(806, 'life', 'Mentor Estoico', 'self_improvement', 'Mente: Ansiedad.',
+                'Estoy estresado.',
+                'Tranquilo.',
+                '{r}Actúa como Mentor Estoico.{/r} {c}Problema fuera de mi control.{/c} {m}Dame un ejercicio de "Dicotomía del Control".{/m} {f}Ejercicio.{/f}',
+                'Dos columnas.',
+                'Acción mental.',
+                '<p class="text-xs">A (Controlo) vs B (No controlo).</p>',
+                'chatgpt', false, false, 'intermediate'),
+
+            // ==========================================
+            // 🛠️ INGENIERÍA PROMPT (Estructura Avanzada)
+            // ==========================================
+            createCase(901, 'engineering', 'Anti-Patrón: Ambiguo', 'warning', 'Técnica: Arreglar peticiones.', 
+                'Ayuda Excel.',
+                '¿Qué necesitas?', 
+                '{r}Actúa como Ingeniero de Datos.{/r} {c}Base de datos ventas.{/c} {m}Reporte ejecutivo sin tablas dinámicas.{/m} {f}Fórmulas listas.{/f}', 
+                'Especifica columnas.',
+                'Formula funcional.',
+                '<p class="text-xs font-mono">=SUMAR.SI(...)</p>', 
+                'gemini', false, false, 'intermediate'),
+
+            createCase(902, 'engineering', 'Chain of Thought', 'link', 'Técnica: Paso a paso.', 
+                'Analiza balance.',
+                'Está bien.', 
+                '{r}Actúa como Analista Financiero Senior.{/r} {c}Balance General.{/c} {m}PASO 1: Calcula ratios. PASO 2: Compara con industria.{/m} {f}Veredicto.{/f}', 
+                'Pide paso intermedio.',
+                'Justifica.',
+                '<p class="text-xs">Veredicto: VENDER.</p>', 
+                'chatgpt', true, false, 'advanced'),
+
+            createCase(903, 'engineering', 'Control Alucinaciones', 'fact_check', 'Técnica: Evitar inventos.', 
+                'Precio Tesla.',
+                '$35M (Inventado).', 
+                '{r}Actúa como Investigador Riguroso.{/r} {m}Busca precio oficial.{/m} {l}Si no hay, di "No disponible".{/l} {f}Dato + Fuente.{/f}', 
+                'Fuente oficial.',
+                'Link directo.',
+                '<p class="text-xs text-red-600">Dato NO disponible.</p>', 
+                'gemini', false, false, 'advanced')
         ];
 
-        // --- LÓGICA UI ---
-        let currentCategory = 'advanced'; 
-        let searchQuery = '';
+        // --- RENDER ENGINE ---
+        let currentCategory = 'productivity';
 
         function init() {
             renderCategories();
+            renderLegend();
             renderCaseList();
-            selectCase(801); // Seleccionar el primero por defecto
+            updateTotalCounter();
             
-            const hasSeenWelcome = localStorage.getItem('agia_v2_welcome_seen');
-            if (!hasSeenWelcome) {
-                setTimeout(() => {
-                    document.getElementById('welcome-modal').classList.remove('hidden');
-                }, 500);
+            if (!localStorage.getItem('agia_welcome_seen_v2')) {
+                showWelcome();
             }
+
+            selectCase(101); // Select first item
+            setupLegendInteractions();
         }
 
+        function showWelcome() { document.getElementById('welcome-modal').classList.remove('hidden'); }
         function closeWelcome() {
             document.getElementById('welcome-modal').classList.add('hidden');
-            localStorage.setItem('agia_v2_welcome_seen', 'true');
+            localStorage.setItem('agia_welcome_seen_v2', 'true');
+        }
+
+        function toggleTip(type) {
+            const content = document.getElementById(`content-tip-${type}`);
+            const icon = document.getElementById(`icon-tip-${type}`);
+            
+            if (content.classList.contains('tip-open')) {
+                content.classList.remove('tip-open');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('tip-open');
+                icon.style.transform = 'rotate(180deg)';
+            }
         }
 
         function renderCategories() {
             const nav = document.getElementById('category-nav');
-            if(!nav) return;
-            nav.innerHTML = Object.keys(categoryConfig).map(key => {
-                const conf = categoryConfig[key];
-                const isActive = currentCategory === key;
-                const activeClass = isActive ? `bg-white text-indigo-700 shadow-md font-bold` : `bg-white/10 text-white hover:bg-white/20`;
-                
-                return `<button onclick="setCategory('${key}')" class="flex items-center gap-2 px-4 py-2 rounded-full text-xs transition-all whitespace-nowrap backdrop-blur-sm ${activeClass} border border-white/10">
-                    <span class="material-symbols-outlined text-lg">${conf.icon}</span>
-                    ${conf.label}
+            nav.innerHTML = Object.keys(config.categories).map(key => {
+                const conf = config.categories[key];
+                const active = currentCategory === key;
+                const activeClass = active 
+                    ? `bg-white text-indigo-700 shadow-md font-bold` 
+                    : `bg-white/10 text-white hover:bg-white/20`;
+
+                return `<button onclick="setCategory('${key}')" class="${activeClass} px-4 py-2 rounded-full text-xs transition-all whitespace-nowrap flex items-center gap-2 border border-white/10 backdrop-blur-sm">
+                    <span class="material-symbols-outlined text-base">${conf.icon}</span> ${conf.label}
                 </button>`;
             }).join('');
+        }
+
+        function renderLegend() {
+            const el = document.getElementById('agia-legend');
+            el.innerHTML = config.legend.map(item => `
+                <div class="legend-item flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all cursor-help select-none text-[10px]" data-type="${item.k}">
+                    <div class="w-3 h-3 rounded bg-[${item.c}] ${item.c.replace('hl-', 'bg-').replace('rol', 'blue-200').replace('contexto', 'emerald-200').replace('meta', 'amber-200').replace('restricciones', 'red-200').replace('formato', 'purple-200')}"></div>
+                    <span class="font-bold text-slate-600 uppercase tracking-tight">${item.l}</span>
+                </div>
+            `).join('');
         }
 
         function renderCaseList() {
-            const listEl = document.getElementById('case-list');
-            if(!listEl) return;
+            const list = document.getElementById('case-list');
+            const filtered = allCases.filter(c => c.category === currentCategory);
             
-            const filtered = allCases.filter(c => (c.category === currentCategory || searchQuery !== '') && (c.title.toLowerCase().includes(searchQuery.toLowerCase()) || c.problem.toLowerCase().includes(searchQuery.toLowerCase())));
-            const countDisplay = document.getElementById('count-display');
-            if(countDisplay) countDisplay.innerText = allCases.length; 
-            
-            if (filtered.length === 0) {
-                listEl.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No hay resultados</div>`;
+            document.getElementById('count-display').innerText = filtered.length;
+
+            if(filtered.length === 0) {
+                list.innerHTML = `<div class="p-4 text-center text-slate-400 text-xs mt-10">Pronto más casos en esta categoría.</div>`;
                 return;
             }
 
-            listEl.innerHTML = filtered.map(c => {
-                const config = categoryConfig[c.category];
-                let iconDisplay = c.locked ? 'lock' : c.icon;
-                let iconColorClass = c.category === 'tools' 
-                    ? (c.locked ? 'text-slate-300 bg-slate-50' : 'text-slate-600 bg-slate-100')
-                    : (c.locked ? 'text-slate-300 bg-slate-50' : `text-${config.color}-600 bg-${config.color}-50`);
-
-                const diffConfig = {
-                    beginner: { label: 'BÁSICO', color: 'bg-green-100 text-green-700 border-green-200' },
-                    intermediate: { label: 'INTERMEDIO', color: 'bg-blue-100 text-blue-700 border-blue-200' },
-                    advanced: { label: 'AVANZADO', color: 'bg-purple-100 text-purple-700 border-purple-200' }
-                };
-                const diff = diffConfig[c.difficulty] || diffConfig['beginner'];
-                const diffBadge = c.category === 'advanced' ? `<span class="text-[8px] ${diff.color} px-1.5 py-0.5 rounded-full border tracking-wide font-bold ml-1">${diff.label}</span>` : '';
-                
-                return `<button onclick="selectCase(${c.id}); if(window.innerWidth < 768) toggleSidebar();" class="w-full text-left p-3 rounded-xl group transition-all hover:bg-slate-50 border border-transparent hover:border-slate-200 relative overflow-hidden ${c.locked ? 'opacity-70 grayscale' : ''}">
-                    <div class="flex items-center gap-3 pl-1">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-none shadow-sm ${iconColorClass}">
-                            <span class="material-symbols-outlined text-xl">${iconDisplay}</span>
+            list.innerHTML = filtered.map(c => {
+                const isLocked = c.locked;
+                return `<div onclick="selectCase(${c.id}); if(window.innerWidth < 768) toggleSidebar()" class="group p-3 rounded-lg cursor-pointer hover:bg-indigo-50 transition-all border border-transparent hover:border-indigo-100 relative">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded bg-white border border-slate-100 flex items-center justify-center shadow-sm flex-none group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-lg ${isLocked ? 'text-slate-300' : 'text-indigo-600'}">${isLocked ? 'lock' : c.icon}</span>
                         </div>
-                        <div class="overflow-hidden flex-1">
-                            <h4 class="text-sm font-bold text-slate-700 truncate group-hover:text-indigo-700 transition-colors flex items-center gap-1">
-                                ${c.title} 
-                                ${!c.locked && !c.isTool ? '<span class="text-[9px] bg-green-100 text-green-700 px-1.5 rounded-full border border-green-200 tracking-wide">GRATIS</span>' : ''}
-                                ${diffBadge}
-                            </h4>
-                            <p class="text-[11px] text-slate-400 truncate leading-tight mt-0.5">${c.locked ? 'Solo miembros Premium' : c.problem}</p>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-sm font-bold text-slate-700 truncate group-hover:text-indigo-700">${c.title}</h4>
+                            <p class="text-[11px] text-slate-400 truncate">${c.problem}</p>
                         </div>
+                        ${isLocked ? '<span class="text-[9px] bg-slate-100 text-slate-500 px-1.5 rounded border">PRO</span>' : ''}
                     </div>
-                </button>`;
+                </div>`
             }).join('');
         }
 
-        // --- CORE LOGIC: SELECT CASE ---
         function selectCase(id) {
-            activeCaseId = id;
             const c = allCases.find(x => x.id === id);
             if(!c) return;
 
-            // 1. UI RESET
-            document.getElementById('magic-toggle').checked = false; // Reset switch
-            const dot = document.querySelector('.dot');
-            if(dot) dot.style.transform = 'translateX(0)';
-
-            // 2. SETUP BASICO
-            const conf = categoryConfig[c.category];
-            const ai = aiConfig[c.suggestedAI] || aiConfig['chatgpt']; 
-            const isTool = c.category === 'tools';
-
-            const setInnerText = (id, text) => { const el = document.getElementById(id); if(el) el.innerText = text; };
-            setInnerText('detail-title', c.title);
-            setInnerText('detail-icon', c.icon);
-            setInnerText('detail-problem', c.problem);
+            document.getElementById('detail-title').innerText = c.title;
+            document.getElementById('detail-problem').innerText = c.problem;
+            document.getElementById('detail-icon').innerText = c.icon;
+            
+            const catConf = config.categories[c.category];
+            const badge = document.getElementById('detail-category-badge');
+            badge.innerText = catConf.label;
+            badge.className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border bg-${catConf.color}-50 text-${catConf.color}-700 border-${catConf.color}-200`;
             
             const iconBg = document.getElementById('detail-icon-bg');
-            if(iconBg) {
-                const iconBgClass = isTool ? `bg-slate-100 text-slate-600 border-slate-200` : `bg-${conf.color}-50 text-${conf.color}-600 border-white shadow-sm`;
-                iconBg.className = `w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center border-2 ${iconBgClass}`;
-            }
+            iconBg.className = `w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm bg-${catConf.color}-50 border border-${catConf.color}-100 flex-none text-${catConf.color}-600`;
+
+            // Tips Injection
+            document.getElementById('detail-example-tip').innerText = c.exampleTip || "No se requiere ejemplo específico para este caso.";
+            document.getElementById('detail-validation-tip').innerText = c.validationTip || "Verifica que el output cumpla la meta.";
             
-            const badge = document.getElementById('detail-category-badge');
-            if(badge) {
-                badge.innerText = conf.label;
-                badge.className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${isTool ? 'bg-slate-100 text-slate-600 border-slate-200' : `bg-${conf.color}-100 text-${conf.color}-800 border-${conf.color}-200`}`;
-            }
+            document.querySelectorAll('.tip-content').forEach(el => el.classList.remove('tip-open'));
+            document.querySelectorAll('[id^="icon-tip-"]').forEach(el => el.style.transform = 'rotate(0deg)');
 
-            // AI Badge Tooltip
-            const badgeHTML = `
-                <div class="tooltip-trigger relative group">
-                    <div class="${ai.bg} text-white px-3 py-1 rounded-full flex items-center gap-2 shadow-lg ring-1 ring-white/20 cursor-help transition-transform hover:scale-105">
-                        <span class="material-symbols-outlined text-sm">${ai.icon}</span>
-                        <span class="text-[10px] font-bold tracking-wide uppercase">${isTool ? 'Plataforma' : 'Sugerida: ' + ai.name}</span>
-                    </div>
-                    <div class="tooltip-content hidden absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-slate-800 text-white text-[10px] p-2 rounded shadow-xl text-center border border-slate-600 z-50">
-                        ${isTool ? 'Información de la herramienta.' : 'Es solo una sugerencia, no un requisito.'}
-                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
-                    </div>
-                </div>
-            `;
-            document.getElementById('ai-badge-container').innerHTML = badgeHTML;
-            document.getElementById('ai-badge-mobile').innerHTML = badgeHTML;
+            document.getElementById('detail-bad-prompt').innerText = `"${c.badPrompt}"`;
+            document.getElementById('detail-bad-result').innerHTML = c.badResponsePreview;
+            document.getElementById('preview-response').innerHTML = c.previewResponse;
 
-            // 3. LOGICA PROMPT BOX & TEASER
-            const promptArea = document.getElementById('detail-prompt-rendered');
             const contentArea = document.getElementById('box-content-area');
-            const boxHeader = document.getElementById('box-header');
+            const copyBtn = document.getElementById('copy-btn');
             
-            // Limpiar overlays
-            const existingOverlay = document.querySelector('.premium-overlay');
-            if(existingOverlay) existingOverlay.remove();
-
             if (c.locked) {
-                // MODO TEASER (Blur)
-                promptArea.innerHTML = renderAGIA(c.agiaPromptTagged);
-                promptArea.className = "font-code text-sm md:text-base leading-loose text-slate-300 blur-content";
+                // TEASER MODE
+                copyBtn.classList.add('hidden');
+                document.getElementById('tips-container').classList.add('hidden');
                 
-                const overlay = document.createElement('div');
-                overlay.className = 'premium-overlay';
-                overlay.innerHTML = `
-                    <span class="material-symbols-outlined text-4xl text-yellow-400 mb-2 drop-shadow-lg">lock</span>
-                    <p class="text-white font-bold text-lg mb-4 drop-shadow-md text-center px-4">Fórmula Maestra Protegida</p>
-                    <button onclick="openPaywall()" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-900 px-6 py-2 rounded-full font-bold shadow-lg transform transition hover:scale-105 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-sm">key</span> Desbloquear ($)
-                    </button>
+                contentArea.innerHTML = `
+                    <div class="relative w-full overflow-hidden">
+                        <!-- Blurred Content -->
+                        <div class="p-8 blur-content bg-slate-50 h-64">
+                             <span class="hl-tag hl-rol">Actúa como experto...</span> <span class="hl-tag hl-contexto">Contexto detallado...</span>
+                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                             <br><br>
+                             <span class="hl-tag hl-meta">Instrucción clave...</span> Duis aute irure dolor.
+                        </div>
+                        
+                        <!-- Premium Overlay -->
+                        <div class="premium-overlay">
+                            <div class="bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 text-center max-w-sm animate-in zoom-in duration-300">
+                                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <span class="material-symbols-outlined text-yellow-600 text-2xl">lock</span>
+                                </div>
+                                <h3 class="font-bold text-slate-800 text-lg">Contenido Premium</h3>
+                                <p class="text-xs text-slate-500 mb-4 px-4">Desbloquea la fórmula secreta detrás de este resultado.</p>
+                                <button onclick="openPaywall()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg font-bold text-xs transition-colors shadow-lg flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined text-sm">key</span> REVELAR FÓRMULA
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 `;
-                contentArea.appendChild(overlay);
-                document.getElementById('magic-toggle').disabled = true;
-                
-                // Ocultar comparativas
-                document.getElementById('comparison-container').classList.add('opacity-50', 'pointer-events-none');
-
             } else {
-                // MODO ABIERTO
-                document.getElementById('magic-toggle').disabled = false;
-                document.getElementById('comparison-container').classList.remove('opacity-50', 'pointer-events-none');
-                
-                // Estado inicial: Bad Prompt
-                if (isTool) {
-                    // Si es una herramienta, mostramos info directa
-                     promptArea.innerHTML = c.agiaPromptTagged;
-                     promptArea.className = "text-slate-300 leading-relaxed";
-                } else {
-                    promptArea.innerHTML = c.badPrompt;
-                    promptArea.className = "font-sans text-sm md:text-base leading-relaxed text-slate-400 italic";
-                }
-            }
-
-            // Fill Bad Prompt / Result logic
-            const badPromptEl = document.getElementById('detail-bad-prompt');
-            const badResultEl = document.getElementById('detail-bad-result');
-            const badgesContainer = document.getElementById('deficiency-badges');
-            
-            if(badPromptEl) badPromptEl.innerText = `"${c.badPrompt}"`;
-            if(badResultEl) badResultEl.innerText = c.badResponsePreview;
-            if(badgesContainer) {
-                badgesContainer.innerHTML = c.deficiencies.map(d => `<span class="px-2 py-1 bg-red-50 text-red-600 text-[10px] font-bold rounded-md border border-red-100 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">warning</span>${d}</span>`).join('');
-            }
-            
-            // Preview Response
-            const previewRes = document.getElementById('preview-response');
-            if(previewRes) previewRes.innerHTML = c.previewResponse;
-
-            if(window.innerWidth < 768) toggleSidebar();
-        }
-
-        // --- MAGIC SWITCH LOGIC ---
-        function toggleMagicMode() {
-            const checkbox = document.getElementById('magic-toggle');
-            const c = allCases.find(x => x.id === activeCaseId);
-            const promptArea = document.getElementById('detail-prompt-rendered');
-            const dot = document.querySelector('.dot');
-            
-            if(c.isTool || c.locked) return; // No magic for tools or locked
-
-            if(checkbox.checked) {
-                // ACTIVAR AGIA (Good)
-                dot.style.transform = 'translateX(100%)';
-                promptArea.style.opacity = '0';
-                setTimeout(() => {
-                    promptArea.innerHTML = renderAGIA(c.agiaPromptTagged);
-                    promptArea.className = "font-code text-sm md:text-base leading-loose text-slate-300 select-all whitespace-pre-wrap transition-opacity duration-300";
-                    promptArea.style.opacity = '1';
-                }, 200);
-            } else {
-                // ACTIVAR NORMAL (Bad)
-                dot.style.transform = 'translateX(0)';
-                promptArea.style.opacity = '0';
-                setTimeout(() => {
-                    promptArea.innerHTML = c.badPrompt;
-                    promptArea.className = "font-sans text-sm md:text-base leading-relaxed text-slate-400 italic transition-opacity duration-300";
-                    promptArea.style.opacity = '1';
-                }, 200);
+                // UNLOCKED MODE
+                copyBtn.classList.remove('hidden');
+                document.getElementById('tips-container').classList.remove('hidden');
+                contentArea.innerHTML = `<div id="detail-prompt-rendered" class="p-6 md:p-8 font-mono text-sm leading-relaxed text-slate-700 whitespace-pre-wrap select-all transition-colors duration-300">` 
+                    + parseAGIA(c.agiaPromptTagged) + 
+                    `</div>`;
             }
         }
 
-        // --- INTERACCION LEYENDA (HOVER) ---
-        function highlightText(type) {
-            // Leyenda -> Texto
-            document.querySelectorAll(`.legend-item`).forEach(el => el.classList.remove('active'));
-            document.querySelector(`.legend-item[data-type="${type}"]`).classList.add('active');
+        function parseAGIA(text) {
+            let html = text
+                .replace(/{r}(.*?){\/r}/g, '<span class="hl-tag hl-rol" data-type="r">$1</span>')
+                .replace(/{c}(.*?){\/c}/g, '<span class="hl-tag hl-contexto" data-type="c">$1</span>')
+                .replace(/{m}(.*?){\/m}/g, '<span class="hl-tag hl-meta" data-type="m">$1</span>')
+                .replace(/{l}(.*?){\/l}/g, '<span class="hl-tag hl-restricciones" data-type="l">$1</span>')
+                .replace(/{f}(.*?){\/f}/g, '<span class="hl-tag hl-formato" data-type="f">$1</span>')
+                .replace(/\n/g, '<br>');
+            return html;
+        }
+
+        function setupLegendInteractions() {
+            document.querySelectorAll('.legend-item').forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    const type = item.getAttribute('data-type');
+                    document.querySelectorAll(`.hl-tag[data-type="${type}"]`).forEach(el => {
+                        el.classList.add('ring-2', 'ring-offset-1', 'ring-slate-400', 'scale-105');
+                    });
+                });
+                item.addEventListener('mouseleave', () => {
+                    const type = item.getAttribute('data-type');
+                    document.querySelectorAll(`.hl-tag[data-type="${type}"]`).forEach(el => {
+                        el.classList.remove('ring-2', 'ring-offset-1', 'ring-slate-400', 'scale-105');
+                    });
+                });
+            });
+        }
+
+        const SAVED_TIME_MAP = {
+            'beginner': '10-15',      // Tareas rápidas
+            'intermediate': '30-45',  // Análisis medios
+            'advanced': '90+'         // Estrategias complejas
+        };
+
+        function copyPrompt() {
+            const title = document.getElementById('detail-title').innerText;
+            const c = allCases.find(x => x.title === title);
+            if(!c) return;
+
+            const rawText = c.agiaPromptTagged
+                .replace(/{[rcmlf]}/g, '')
+                .replace(/{\/[rcmlf]}/g, '')
+                .replace(/<br\s*\/?>/gi, '\n');
+
+            navigator.clipboard.writeText(rawText);
+
+            const toast = document.getElementById('toast');
+            // Consistent time range based on difficulty
+            const savedTime = SAVED_TIME_MAP[c.difficulty] || '15-20';
             
-            const spans = document.querySelectorAll(`span[data-type="${type}"]`);
-            spans.forEach(span => span.classList.add('hl-active'));
+            document.getElementById('toast-message').innerHTML = `Ahorraste aprox. <strong>${savedTime} minutos</strong> de trabajo.`;
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => { toast.classList.add('translate-x-full'); }, 3000);
         }
 
-        function highlightLegend(type) {
-            // Texto -> Leyenda (esto se invoca desde el HTML generado en renderAGIA)
-            // Ya está manejado por el mismo highlightText si usamos onmouseover en el span
-        }
-
-        function clearHighlight() {
-            document.querySelectorAll('.legend-item').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.hl-active').forEach(el => el.classList.remove('hl-active'));
-        }
-
-        // --- GENERAL UI ---
         function setCategory(cat) {
             currentCategory = cat;
-            searchQuery = '';
-            const searchInput = document.getElementById('searchInput');
-            if(searchInput) searchInput.value = '';
             renderCategories();
             renderCaseList();
         }
 
-        function filterCases() {
-            const searchInput = document.getElementById('searchInput');
-            if(searchInput) {
-                searchQuery = searchInput.value;
-                renderCaseList();
-            }
+        function updateTotalCounter() {
+            const totalEl = document.getElementById('total-display');
+            if(totalEl) totalEl.innerText = allCases.length;
         }
 
-        function copyPrompt() {
-            const c = allCases.find(x => x.id === activeCaseId);
-            if(!c || c.locked) return; // No copiar si está bloqueado
-
-            // Si el switch está apagado (Bad prompt), copiamos el AGIA igual? 
-            // Mejor copiamos lo que se ve, o forzamos AGIA. Por valor, copiemos AGIA limpio.
-            const rawText = cleanAGIA(c.agiaPromptTagged);
-            navigator.clipboard.writeText(rawText);
-            
-            showToast();
-            
-            // Actualizar contador social fake
-            const counter = document.getElementById('social-proof-counter');
-            if(counter) {
-                let num = parseInt(counter.innerText.match(/\d+/)[0]);
-                counter.innerText = `🔥 Usado ${num + 1} veces hoy`;
-                counter.classList.add('text-green-500', 'font-bold');
-            }
-        }
-
-        function showToast() {
-            const toast = document.getElementById('toast-container');
-            toast.classList.add('show');
-            setTimeout(() => { hideToast(); }, 5000);
-        }
-
-        function hideToast() {
-            document.getElementById('toast-container').classList.remove('show');
-        }
-
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
         function openPaywall() { document.getElementById('paywall-modal').classList.remove('hidden'); }
         function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
 
         init();
     </script>
