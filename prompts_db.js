@@ -278,7 +278,7 @@ const allCases = [
     createCase(305, 'sales', 'Manejo de Objeciones', 'price_check', 'Cierre: Cliente dice "Muy caro".',
         'Estoy vendiendo un servicio de consultoría y el cliente me dice que le gusta pero que lo encuentra muy caro. Dame algunas respuestas para convencerlo de que vale la pena la inversión y no es un gasto.',
         '<div class="text-xs text-slate-500 italic">"Entiendo, pero nuestro servicio es de alta calidad y vale la pena. Si quiere le puedo hacer un pequeño descuento."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">sell</span> Problema: Se justifica y cede precio inmediatamente, validando que era caro.</div>', 
-        '{r}Actúa como Experto en Cierre de Ventas High-Ticket.{/r} {c}El cliente me lanza la objeción: "Me gusta, pero es muy caro comparado con X".{/c} {m}Dame 3 scripts de respuesta para reencuadrar el precio como una inversión (ROI) y no como un gasto.{/m} {f}Opción Lógica, Opción Emocional, Opción "Costo de Inacción".{/f}',
+        '{r}Actúa como Experto en Cierre de Ventas High-Ticket.{/r} {c}El cliente me lanza la objeción: "Me gusta, pero es muy caro comparado con X".{/c} {m}Dame 3 respuestas para reencuadrar el precio como inversión (ROI).{/m} {f}Lógica, Emocional, Costo Inacción.{/f}',
         'Enfoque: Costo de NO solucionar.',
         'No justificarse.',
         '<p class="text-xs"><strong>Opción Costo de Inacción:</strong> "Entiendo perfectamente. Pero, ¿has calculado cuánto te está costando mensualmente <strong>NO</strong> tener este sistema automatizado? A veces lo \'barato\' sale caro en horas hombre perdidas."</p>',
