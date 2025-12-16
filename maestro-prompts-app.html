@@ -33,7 +33,10 @@
         .animate-pulse-soft { animation: pulse-soft 2s infinite; }
 
         /* AGIA Tag Styles */
-        .hl-tag { transition: all 0.2s; display: inline-block; padding: 2px 4px; border-radius: 4px; margin: 0 2px; font-weight: 600; font-size: 0.9em;}
+        .hl-tag { transition: all 0.2s; display: inline-block; padding: 2px 4px; border-radius: 4px; margin: 0 2px; font-weight: 600; font-size: 0.9em; cursor: help; position: relative; z-index: 1; }
+        /* Active state for interactive legend */
+        .hl-active { transform: scale(1.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10; }
+
         .hl-rol { color: #1e3a8a; background: #bfdbfe; border: 1px solid #60a5fa; }           /* 1. ROL (Azul) */
         .hl-contexto { color: #064e3b; background: #a7f3d0; border: 1px solid #34d399; }      /* 2. CONTEXTO (Verde) */
         .hl-meta { color: #78350f; background: #fde68a; border: 1px solid #fbbf24; }          /* 3. META (Amarillo/Ambar) */
@@ -72,6 +75,14 @@
             background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%);
         }
         
+        /* Interactive Tips Animation */
+        .tip-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .tip-open { max-height: 200px; }
+        
+        /* Legend Item Interactive */
+        .legend-item { cursor: pointer; transition: transform 0.2s; }
+        .legend-item:hover { transform: scale(1.05); }
+
         /* Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -139,8 +150,13 @@
             <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list">
                 <!-- Cases JS -->
             </div>
-            <!-- User Status Footer -->
+            
+            <!-- RESTORED: User Status & Total Counter -->
             <div class="p-4 border-t border-slate-200 bg-white">
+                <div class="flex justify-between items-center mb-3 text-[10px] text-slate-400">
+                    <span>Viendo: <strong id="count-display" class="text-slate-600">0</strong></span>
+                    <span>Total Bóveda: <strong id="total-display" class="text-indigo-600">0</strong></span>
+                </div>
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-500">
                         <span class="material-symbols-outlined text-sm">visibility</span>
@@ -178,9 +194,10 @@
                     <!-- THE COMPARISON ENGINE -->
                     <div class="grid lg:grid-cols-12 gap-6">
                         
-                        <!-- Left: Input Variables (Control Panel) -->
+                        <!-- Left: Input Variables & TIPS (RESTORED) -->
                         <div class="lg:col-span-3 space-y-4">
-                            <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 shadow-sm sticky top-4">
+                            <!-- Variables Panel -->
+                            <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 shadow-sm">
                                 <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-3">
                                     <span class="material-symbols-outlined text-indigo-500">tune</span>
                                     <h3 class="text-sm font-bold text-slate-700 uppercase">Tus Datos</h3>
@@ -191,6 +208,37 @@
                                 </div>
                                 <div class="mt-4 pt-4 border-t border-slate-200 text-[10px] text-slate-400 text-center italic">
                                     Edita los campos y mira cómo cambia el resultado a la derecha.
+                                </div>
+                            </div>
+
+                            <!-- RESTORED: Interactive Tips Accordion -->
+                            <div id="tips-accordion" class="space-y-2">
+                                <!-- Tip: Example -->
+                                <div class="bg-yellow-50 border border-yellow-100 rounded-lg overflow-hidden">
+                                    <button onclick="toggleTip('example')" class="w-full px-3 py-2 flex items-center justify-between text-yellow-800 hover:bg-yellow-100/50 transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-sm text-yellow-600">lightbulb</span>
+                                            <span class="text-[10px] font-bold uppercase tracking-wide">Ejemplo (Tip)</span>
+                                        </div>
+                                        <span id="icon-tip-example" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+                                    </button>
+                                    <div id="content-tip-example" class="tip-content bg-white/50 px-3">
+                                        <p id="detail-example-tip" class="py-2 text-[10px] text-slate-600 italic border-t border-yellow-100 leading-relaxed">...</p>
+                                    </div>
+                                </div>
+
+                                <!-- Tip: Validation -->
+                                <div class="bg-green-50 border border-green-100 rounded-lg overflow-hidden">
+                                    <button onclick="toggleTip('validation')" class="w-full px-3 py-2 flex items-center justify-between text-green-800 hover:bg-green-100/50 transition-colors">
+                                        <div class="flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-sm text-green-600">fact_check</span>
+                                            <span class="text-[10px] font-bold uppercase tracking-wide">Validación</span>
+                                        </div>
+                                        <span id="icon-tip-validation" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+                                    </button>
+                                    <div id="content-tip-validation" class="tip-content bg-white/50 px-3">
+                                        <p id="detail-validation-tip" class="py-2 text-[10px] text-slate-600 leading-relaxed border-t border-green-100">...</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -248,13 +296,13 @@
                                         <!-- The AGIA Prompt -->
                                         <div id="detail-prompt-rendered" class="font-mono text-xs leading-relaxed text-slate-700 whitespace-pre-wrap h-[200px] overflow-y-auto custom-scroll"></div>
 
-                                        <!-- Legend Overlay -->
-                                        <div class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-100 px-4 py-2 flex flex-wrap gap-3 text-[9px] justify-center opacity-90">
-                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400"></span> Rol</span>
-                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Contexto</span>
-                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Meta</span>
-                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-400"></span> Restricciones</span>
-                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-400"></span> Formato</span>
+                                        <!-- RESTORED: Interactive Legend Overlay -->
+                                        <div id="interactive-legend" class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-100 px-4 py-2 flex flex-wrap gap-3 text-[9px] justify-center opacity-90">
+                                            <span class="legend-item flex items-center gap-1" data-type="r"><span class="w-2 h-2 rounded-full bg-blue-400"></span> Rol</span>
+                                            <span class="legend-item flex items-center gap-1" data-type="c"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Contexto</span>
+                                            <span class="legend-item flex items-center gap-1" data-type="m"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Meta</span>
+                                            <span class="legend-item flex items-center gap-1" data-type="l"><span class="w-2 h-2 rounded-full bg-red-400"></span> Restricciones</span>
+                                            <span class="legend-item flex items-center gap-1" data-type="f"><span class="w-2 h-2 rounded-full bg-purple-400"></span> Formato</span>
                                         </div>
                                         
                                         <!-- Premium Overlay -->
@@ -271,7 +319,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Result Box (NEW) -->
+                                <!-- Result Box -->
                                 <div class="bg-indigo-50 rounded-xl border border-indigo-100 overflow-hidden">
                                      <div class="p-5">
                                          <div class="text-[10px] font-bold text-indigo-600 uppercase mb-2 flex gap-2 items-center">
@@ -290,90 +338,21 @@
         </main>
     </div>
 
-    <!-- Mobile Toggle -->
-    <button onclick="toggleSidebar()" class="md:hidden fixed bottom-6 left-6 z-40 bg-slate-900 text-white p-4 rounded-full shadow-2xl hover:bg-slate-800 transition-colors flex items-center justify-center">
-        <span class="material-symbols-outlined">menu_open</span>
-    </button>
-
-    <!-- SOCIAL PROOF TOAST (Course Sales) -->
-    <div id="sales-toast" class="fixed bottom-6 left-6 z-50 transform translate-y-24 opacity-0 transition-all duration-500">
-        <div class="bg-white/90 backdrop-blur border border-slate-200 p-3 rounded-lg shadow-xl flex items-center gap-3 max-w-xs">
-            <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs relative">
-                E
-                <span class="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-white"></span>
+    <!-- TOAST (Restored Time Saved Logic) -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-x-full transition-transform duration-300">
+        <div class="bg-slate-800 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 border border-slate-700">
+            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-slate-900 animate-bounce">
+                <span class="material-symbols-outlined">thumb_up</span>
             </div>
             <div>
-                <p class="text-xs text-slate-800"><span class="font-bold">Estudiante #402</span> se inscribió</p>
-                <p class="text-[10px] text-slate-500">Curso Maestría AGIA • hace 5 min</p>
+                <h4 class="font-bold text-sm">¡Copiado al portapapeles!</h4>
+                <p class="text-xs text-slate-300 mt-0.5" id="toast-message">Listo para pegar en ChatGPT</p>
             </div>
         </div>
     </div>
 
-    <!-- PAYWALL MODAL (Course Focused) -->
-    <div id="paywall-modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
-        <div class="w-full max-w-lg relative">
-            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in duration-300">
-                <button onclick="closePaywall()" class="absolute top-4 right-4 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full p-1 z-20 transition-colors">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-                
-                <!-- Hero Section -->
-                <div class="bg-indigo-900 p-8 text-center relative overflow-hidden">
-                    <div class="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                    <span class="inline-block bg-yellow-400 text-slate-900 text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wide mb-3 relative z-10">Método Exclusivo</span>
-                    <h3 class="text-white font-black text-2xl relative z-10 leading-tight mb-2">Deja de adivinar.<br>Empieza a <span class="text-cyan-400">Ingenierizar</span>.</h3>
-                    <p class="text-indigo-200 text-xs relative z-10 mt-2 max-w-xs mx-auto">Domina el modelo AGIA y multiplica tu productividad por 10.</p>
-                </div>
-                
-                <div class="p-8">
-                    <div class="text-center mb-6">
-                        <p class="text-sm text-slate-500 font-medium">Lo que obtienes en el curso:</p>
-                    </div>
-                    <!-- Features List -->
-                    <div class="grid grid-cols-2 gap-4 mb-8">
-                        <div class="flex items-start gap-2">
-                            <span class="material-symbols-outlined text-green-500 text-lg">school</span>
-                            <div class="text-xs text-slate-600"><strong>Masterclass</strong> del modelo AGIA paso a paso.</div>
-                        </div>
-                        <div class="flex items-start gap-2">
-                            <span class="material-symbols-outlined text-green-500 text-lg">library_books</span>
-                            <div class="text-xs text-slate-600"><strong>Bóveda PDF</strong> con 50+ templates listos.</div>
-                        </div>
-                        <div class="flex items-start gap-2">
-                            <span class="material-symbols-outlined text-green-500 text-lg">group</span>
-                            <div class="text-xs text-slate-600"><strong>Comunidad</strong> privada de alumnos.</div>
-                        </div>
-                        <div class="flex items-start gap-2">
-                            <span class="material-symbols-outlined text-green-500 text-lg">verified</span>
-                            <div class="text-xs text-slate-600"><strong>Certificado</strong> de finalización.</div>
-                        </div>
-                    </div>
-
-                    <!-- Pricing Anchor -->
-                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-between mb-6">
-                        <div>
-                            <p class="text-[10px] text-slate-400 uppercase font-bold">Inversión Única</p>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-2xl font-black text-slate-900">$27</span>
-                                <span class="text-xs text-red-400 line-through font-medium">$97</span>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                             <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-full">AHORRAS 70%</span>
-                        </div>
-                    </div>
-
-                    <!-- CTA -->
-                    <button class="w-full bg-indigo-600 text-white py-3.5 rounded-xl font-bold text-base hover:bg-indigo-700 transform hover:-translate-y-1 transition-all shadow-xl shadow-indigo-200 flex items-center justify-center gap-2 group">
-                        INSCRÍBETE AHORA
-                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                    </button>
-                    <p class="text-[10px] text-center text-slate-400 mt-3">Garantía de satisfacción de 30 días.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- DB Import -->
+    <script src="prompts_db.js"></script>
 
     <!-- MAIN LOGIC & DATA -->
     <script>
@@ -401,11 +380,10 @@
         });
 
         // ==========================================
-        // 🧠 BÓVEDA DE PROMPTS AGIA 2.0 - DATA (CON VARIABLES REACTIVADAS)
+        // 🧠 BÓVEDA DE PROMPTS AGIA 2.0 - DATA (DEMO / FALLBACK)
         // ==========================================
-        const allCases = [
-            
-            // 🚀 PRODUCTIVIDAD 10X
+        const demoCases = [
+            // [AQUI IRÍAN LOS CASOS DE DEMO SI FALLA LA DB]
             createCase(101, 'productivity', 'El Limpiador de Data', 'cleaning_services', 'Excel: Base de datos sucia (Nombres, Mayúsculas).', 
                 'Tengo una lista de nombres en Excel que está horrible, con espacios y mayúsculas mezcladas. Dame una fórmula para arreglarlos.',
                 '<div class="text-xs text-slate-500 italic">"Claro, usa la función =NOMPROPIO(). Aquí tienes el resultado:<br>Juan Perez<br>Maria Gomez"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">error</span> Problema: Solución parcial. No quita espacios dobles ni caracteres ocultos web.</div>', 
@@ -414,172 +392,55 @@
                 'Verifica anidación correcta.',
                 '<div class="font-mono text-xs bg-slate-900 text-green-400 p-3 rounded mb-2 border-l-4 border-green-600 shadow-sm">=NOMPROPIO(ESPACIOS(LIMPIAR(SUSTITUIR(A2,CARACTER(160)," "))))</div><p class="text-[10px] text-slate-600 mt-1"><strong>Lógica:</strong><br>1. <code>SUSTITUIR</code>: Elimina espacios web (ASCII 160).<br>2. <code>LIMPIAR</code>: Quita saltos de línea.<br>3. <code>ESPACIOS</code>: Reduce dobles espacios a uno.<br>4. <code>NOMPROPIO</code>: Capitaliza formato Título.</p>', 
                 'gemini', false, false, 'beginner'),
-
-            createCase(102, 'productivity', 'El "No" Diplomático', 'block', 'Email: Rechazar cambios gratis y cobrar por ellos.', 
-                'Escríbele al cliente que no puedo hacer esos cambios gratis porque no están en el contrato, pero ofrécele cobrarle extra.',
-                '<div class="text-xs text-slate-500 italic">"Estimado, no podemos hacer eso gratis. Si quiere, le mando una cotización. Saludos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">cancel</span> Problema: Tono seco que cierra puertas. Se siente como un rechazo, no una oportunidad.</div>', 
-                '{r}Actúa como Gerente de Cuentas Senior experto en Negociación.{/r} {c}El cliente solicitó {client_request|funcionalidades fuera del alcance original} (Scope Creep). Debo rechazar la gratuidad sin dañar la relación.{/c} {m}Redacta un email respuesta usando la técnica del "Sí condicional": Valida la idea, pero enmárcala inmediatamente como una "Fase 2" o mejora que requiere presupuesto adicional.{/m} {l}Prohibido usar la palabra "No" al inicio. Tono colaborativo.{/l} {f}Estructura de Email Persuasivo.{/f}', 
-                'Técnica: "Me encanta la idea, aquí está el precio".',
-                'Convierte el problema en un proyecto nuevo.',
-                '<div class="bg-white p-3 text-xs text-slate-700 border border-slate-200 shadow-sm rounded"><strong>Asunto:</strong> Estrategia para implementar [Mejora Solicitada]<br><br>"Hola [Cliente],<br><br>Estuve revisando tu solicitud y <strong>me parece brillante</strong>; aportaría mucho valor a la usabilidad.<br><br>Dado que esto excede el alcance técnico actual, lo he estructurado como un \'Módulo de Expansión\'. Te adjunto la estimación de horas para activarlo esta misma semana sin frenar el desarrollo principal.<br><br>¿Te parece si procedemos?"</div>', 
-                'chatgpt', false, false, 'intermediate'),
-
-            createCase(103, 'productivity', 'Resumidor de Reuniones', 'groups', 'Gestión: Transcripción a Tareas.',
-                'Resume esta reunión larga y dime qué hay que hacer.',
-                '<div class="text-xs text-slate-500 italic">"Hablaron del presupuesto y de marketing. Juan dijo que iba a ver lo del diseño. Fin."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">do_not_disturb</span> Problema: Narrativa vaga. Nadie sabe qué hacer exactamente ni para cuándo.</div>', 
-                '{r}Actúa como Project Manager (PMP) obsesionado con la eficiencia.{/r} {c}Tengo la transcripción de una reunión desordenada de 1 hora sobre {topic|Presupuesto y Marketing}.{/c} {m}Extrae SOLO los "Action Items" (Tareas) y Decisiones Tomadas. Ignora toda la paja y charla social.{/m} {l}Formato estricto: Tarea | Responsable | Deadline.{/l} {f}Tabla Markdown.{/f}',
-                'Input: Texto sucio de Teams/Zoom.',
-                'Busca verbos de acción.',
-                '<table class="w-full text-[10px] border border-slate-300 mt-1"><thead><tr class="bg-indigo-100 text-indigo-800"><th>Tarea</th><th>Owner</th><th>Deadline</th></tr></thead><tbody><tr><td class="p-1 border">Aprobar presupuesto Q4</td><td class="p-1 border font-bold">Sofia</td><td class="p-1 border text-red-600">Viernes 12:00</td></tr><tr><td class="p-1 border">Contactar proveedor AWS</td><td class="p-1 border font-bold">Carlos</td><td class="p-1 border">Hoy PM</td></tr></tbody></table>',
-                'claude', false, false, 'beginner'),
-
-            createCase(104, 'productivity', 'Traductor Corporativo', 'translate', 'Email: Inglés de negocios para CEO.', 
-                'Necesito traducir este correo al inglés para mandárselo al CEO de la empresa en Estados Unidos.',
-                '<div class="text-xs text-slate-500 italic">"Hello boss, I tell you that the project is going to be late two days because of a technical problem with the server, but we are fixing it already."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">translate</span> Problema: Traducción literal y tono demasiado informal ("Hello boss").</div>', 
-                '{r}Actúa como Editor Nativo de Inglés de Negocios (Nivel C-Level).{/r} {c}Tengo un borrador en español informando {problem|un retraso de 2 días} debido a {cause|una caída de servidores}, que debo enviar al CEO en Estados Unidos.{/c} {m}Traduce y eleva este texto a un inglés corporativo, sofisticado y directo, que transmita que tenemos control total sobre la situación a pesar del inconveniente.{/m} {l}Evita sonar como una traducción literal. Jamás uses "Hello boss", utiliza "Dear Mr. [Apellido]".{/l} {f}Entrégame el email formal listo para ser enviado.{/f}', 
-                'Contexto: El retraso es de 2 días por caída de servidor.',
-                'El texto debe usar conectores formales como "However", "Regarding".',
-                '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200">"Dear Mr. Smith,<br><br>I am writing to provide an update regarding the project timeline. Due to unforeseen server latency issues encountered yesterday, we are currently navigating a 48-hour adjustment in the delivery schedule. However, the team has already mitigated the root cause, and we are confident in meeting the revised milestone by Thursday."</div>', 
-                'chatgpt', false, false, 'intermediate'),
-
-            // 💰 FINANZAS
-            createCase(201, 'finance', 'Analista Financiero (Buffett)', 'trending_up', 'Inversión: Analizar Balance General.',
-                '¿Invierto en esta empresa? Aquí está su balance. Dime si es buena.',
-                '<div class="text-xs text-slate-500 italic">"Parece una empresa sólida con muchos activos. Podría ser una buena inversión a largo plazo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">analytics</span> Problema: Opinión subjetiva basada en "pareceres", sin análisis de ratios de riesgo real.</div>', 
-                '{r}Actúa como Analista de Value Investing (Escuela Warren Buffett).{/r} {c}Adjunto el {docs|Balance General y Estado de Resultados}.{/c} {m}Realiza un análisis fundamental enfocado en la salud financiera. Calcula: Margen Neto, Ratio de Deuda/Equity y ROE.{/m} {l}Sé escéptico. Busca banderas rojas.{/l} {f}Tabla de Ratios + Veredicto (COMPRAR / VENDER / ESPERAR).{/f}',
-                'Busca el "Moat" (Ventaja competitiva).',
-                'Calcula deuda real.',
-                '<div class="text-xs bg-slate-50 p-2 rounded"><p class="font-bold text-slate-700 border-b mb-1">📊 Análisis Fundamental Rápido</p><div class="grid grid-cols-2 gap-2 mb-2"><div><span class="text-slate-500">ROE:</span> <span class="text-green-600 font-bold">18%</span> ✅</div><div><span class="text-slate-500">Deuda/Equity:</span> <span class="text-red-600 font-bold">2.5</span> ⚠️</div></div><p><strong>Veredicto:</strong> <span class="bg-yellow-100 text-yellow-800 px-1 rounded font-bold">ESPERAR</span>. Aunque es rentable, está peligrosamente endeudada. Esperar a que baje el ratio de deuda a <1.0.</p></div>',
-                'claude', false, false, 'advanced'), // Desbloqueado
-
-            // 🔥 VENTAS
-            createCase(301, 'sales', 'FBI Salary Negotiator', 'verified_user', 'Carrera: Pedir aumento de sueldo.', 
-                'Quiero pedir un 20% de aumento. Dame un guion para decirle a mi jefe.',
-                '<div class="text-xs text-slate-500 italic">"Jefe, he trabajado duro y la inflación está alta. Merezco un aumento."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">thumb_down</span> Problema: Argumento centrado en TI ("yo necesito"), no en la empresa ("yo aporto").</div>', 
-                '{r}Actúa como Negociador Experto del FBI (Estilo Chris Voss).{/r} {c}Voy a pedir un aumento. Mis logros: {logros|Aumenté ventas un 15% y reduje costos 5%}.{/c} {m}Crea un guion de negociación basado en VALOR, no en necesidad. Usa "Preguntas Calibradas" para que el jefe llegue solo a la conclusión de darme el aumento.{/m} {f}Guion paso a paso: Anclaje -> Evidencia -> Cierre.{/f}', 
-                'Usa: "¿Cómo se supone que logre X...?"',
-                'Evita el "Sí/No".',
-                '<div class="bg-white p-2 text-xs italic text-slate-600 border-l-4 border-indigo-500"><p class="mb-1"><strong>Tú:</strong> "En los últimos 12 meses, mis iniciativas han generado $50k adicionales netos a la empresa."</p><p class="mb-1"><strong>Jefe:</strong> "No hay presupuesto."</p><p><strong>Tú (Calibrada):</strong> "¿Cómo podríamos ajustar mi compensación para que sea justo con el valor de mercado actual, sin afectar el presupuesto operativo de otras áreas?"</p></div>', 
-                'chatgpt', false, false, 'advanced'),
-
-            createCase(303, 'sales', 'Cold Email B2B (Rompehielos)', 'ac_unit', 'Ventas: Email en frío que sí abren.',
-                'Escribe un mail para ofrecer mis servicios de diseño web a dentistas.',
-                '<div class="text-xs text-slate-500 italic">"Hola, somos la agencia X y hacemos webs bonitas. Tenemos ofertas. Contáctanos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">delete</span> Problema: Spam genérico centrado en características. Va directo a la papelera.</div>', 
-                '{r}Actúa como Experto en Cold Emailing B2B.{/r} {c}Target: {target|Dueños de clínicas dentales ocupados}. Problema: {pain|Sus webs viejas no permiten agendar online}.{/c} {m}Escribe un email de <75 palabras enfocado 100% en SU dolor ({pain_short|perder pacientes}) y una solución específica.{/m} {l}Asunto intrigante. Nada de "Hola, somos...".{/l} {f}Asunto + Cuerpo.{/f}',
-                'Pain Point: Silla vacía.',
-                'Call to Action (CTA) de bajo riesgo.',
-                '<p class="font-bold text-xs mb-1">Asunto: Pacientes perdidos en [Nombre Clínica]</p><div class="bg-white p-2 text-xs italic text-slate-600">"Hola Dr. Soto, intenté agendar hora en su web pero tardó 8 segundos en cargar. El 40% de los pacientes abandona a los 3 segundos.<br><br>Implementé un sistema de "Agenda en 1-Clic" para la Clínica dental X y llenaron su agenda en 2 semanas. ¿Le cuento cómo funciona en una llamada de 5 min?"</div>',
-                'claude', false, false, 'intermediate'),
-
-            // 🎨 ARTE
-            createCase(401, 'art', 'Fotografía de Producto (Cinemática)', 'camera_enhance', 'Midjourney: Foto comercial realista.', 
-                'Quiero una foto de una botella de jugo de naranja que se vea rica. Dame el prompt.',
-                '<div class="text-xs text-slate-500 italic">"Una botella de jugo de naranja en una mesa con frutas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">image_not_supported</span> Problema: Resultado plano, parece dibujo animado o stock barato. Falta dirección de arte.</div>', 
-                '{r}Actúa como Fotógrafo Publicitario y Director de Arte.{/r} {c}Producto: {product|Jugo de Naranja Premium}.{/c} {m}Construye un prompt técnico para Midjourney v6.{/m} {l}Incluye: Iluminación, Tipo de Cámara, Lente, Entorno y Parámetros de estilo (--s, --style raw).{/l} {f}Bloque de código listo para copiar.{/f}', 
-                'Usa "Backlighting" para traslucidez.',
-                'Gotas de condensación = frescura.',
-                '<div class="font-mono text-[10px] bg-slate-900 text-purple-300 p-2 rounded border border-purple-900 shadow-lg">/imagine prompt: extreme close-up shot of a glass bottle of orange juice, condensation droplets on glass, cinematic backlighting, sun rays passing through liquid, glowing orange color, surrounded by fresh orange slices and green leaves, wooden rustic table, bokeh orchard background, shot on Sony A7R IV, 85mm lens, f/1.8, photorealistic, 8k, --ar 4:5 --style raw --s 250</div>', 
-                'midjourney', false, false, 'advanced'),
-
-            createCase(405, 'art', 'Logo Minimalista (Paul Rand)', 'architecture', 'Diseño: Logo que escale.',
-                'Necesito un logo para una empresa de envíos con drones. Algo moderno.',
-                '<div class="text-xs text-slate-500 italic">"Un dron llevando una caja azul con letras modernas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">draw</span> Problema: Literalidad. Los logos complejos no funcionan en tamaños pequeños (favicon).</div>', 
-                '{r}Actúa como Diseñador Gráfico Minimalista (Estilo Bauhaus/Paul Rand).{/r} {c}Empresa: {company_name|"AeroFast"} ({company_desc|Logística Drones}).{/c} {m}Describe un isotipo abstracto y geométrico que sugiera velocidad y aire, sin mostrar un dron literal.{/m} {f}Prompt descriptivo conceptual.{/f}',
-                'Espacio negativo.',
-                'Geometría simple.',
-                '<p class="text-xs text-slate-700">"Un hexágono equilátero (representando la caja) formado por tres flechas o vectores de velocidad que convergen en el centro, utilizando espacio negativo. Color: Naranja Eléctrico sobre fondo blanco. Estilo plano, vectorial, sin sombras."</p>',
-                'midjourney', false, false, 'intermediate'),
-
-            // 🧠 CEREBRO DIGITAL (TECH)
-            createCase(602, 'tech', 'SQL Query Optimizer', 'database', 'Data: Consultas eficientes.',
-                'Sácame los 10 clientes que más compraron el último mes de la base de datos.',
-                '<div class="text-xs text-slate-500 italic">"SELECT * FROM ventas WHERE fecha = mes_pasado"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">data_array</span> Problema: Query ineficiente (SELECT *), no agrupa por cliente, sintaxis incorrecta.</div>', 
-                '{r}Actúa como Senior Data Engineer.{/r} {c}Tablas: {tables|`Users` (id, name), `Orders` (id, user_id, amount, created_at)}.{/c} {m}Escribe una Query SQL optimizada para obtener el Top 10 Clientes por monto total (SUM) en los últimos 30 días.{/m} {f}Bloque SQL con comentarios.{/f}',
-                'Usa JOIN explícito.',
-                'Filtra fecha antes de agrupar.',
-                '<div class="font-mono text-[10px] bg-slate-900 text-blue-300 p-2 rounded mb-1">SELECT u.name, SUM(o.amount) as total_spent<br>FROM Users u<br>JOIN Orders o ON u.id = o.user_id<br>WHERE o.created_at >= DATE("now", "-30 days")<br>GROUP BY u.id<br>ORDER BY total_spent DESC<br>LIMIT 10;</div>',
-                'chatgpt', false, false, 'advanced'),
-
-            createCase(609, 'tech', 'Diagnóstico IT (Pantalla Azul)', 'bug_report', 'Soporte: Arreglar PC sin formatear.',
-                'Me salió pantalla azul en Windows. ¿Qué hago?',
-                '<div class="text-xs text-slate-500 italic">"Reinicia o formatea el equipo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">dangerous</span> Problema: La solución nuclear (formatear) es el último recurso. Falta diagnóstico.</div>', 
-                '{r}Actúa como Técnico de Soporte Nivel 2.{/r} {c}Síntoma: BSOD (Blue Screen of Death) con código "{error_code|CRITICAL_PROCESS_DIED}".{/c} {m}Provee una lista escalonada de soluciones, desde la menos invasiva (comandos de reparación) hasta la verificación de hardware.{/m} {f}Pasos con comandos CMD.{/f}',
-                'Comandos: sfc, dism.',
-                'Verificar drivers.',
-                '<div class="bg-slate-50 p-2 rounded text-xs"><p class="font-bold mb-1">Paso 1: Reparación de Archivos</p><code class="bg-black text-white px-1">sfc /scannow</code><br><p class="mt-1 font-bold">Paso 2: Imagen de Sistema</p><code class="bg-black text-white px-1">DISM /Online /Cleanup-Image /RestoreHealth</code></div>',
-                'gemini', false, false, 'intermediate'),
-
-            // 🎓 EDUCACIÓN
-            createCase(701, 'education', 'Tutor Socrático', 'psychology', 'Matemáticas: Aprender sin respuesta.', 
-                'Ayúdame a resolver esta ecuación cuadrática x^2 - 5x + 6 = 0, pero no me des la respuesta directa, guíame para que yo la resuelva.',
-                '<div class="text-xs text-slate-500 italic">"Las soluciones son x=2 y x=3. Usa la fórmula general."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">school</span> Problema: La IA "spoilea" el aprendizaje dando el resultado final.</div>', 
-                '{r}Actúa como Profesor Socrático.{/r} {c}Alumno confundido con: {problem|Ecuación cuadrática x^2 - 5x + 6 = 0}.{/c} {m}Guía con preguntas, NO des respuesta.{/m} {f}Diálogo.{/f}', 
-                'Si equivoca, pregunta.',
-                'Termina con pregunta.',
-                '<p class="text-xs italic text-indigo-700">"¡Hola! Vamos paso a paso. Necesitamos dos números que multiplicados den +6 y sumados den -5. ¿Se te ocurre alguno?"</p>', 
-                'chatgpt', false, false, 'beginner'),
-
-            // 🛠️ INGENIERÍA
-            createCase(902, 'engineering', 'Chain of Thought (CoT)', 'psychology', 'Lógica: Pensar antes de responder.', 
-                'Resuelve este problema lógico complejo rápido.',
-                '<div class="text-xs text-slate-500 italic">"La respuesta es 5."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">psychology</span> Problema: Las IAs alucinan si se les fuerza a dar una respuesta directa sin razonar primero.</div>', 
-                '{r}Actúa como Profesor de Lógica Matemática.{/r} {c}Problema con múltiples variables: {problem_desc|Juan tiene el doble que Ana, y Ana tiene 3 menos que Pedro...}.{/c} {m}Utiliza la técnica "Chain of Thought" (Cadena de Pensamiento): Desglosa el problema paso a paso, valida cada premisa y SOLO al final entrega la conclusión.{/m} {f}Paso 1, Paso 2, Conclusión.{/f}', 
-                'Pide "Piensa paso a paso".',
-                'Reduce errores un 80%.',
-                '<p class="text-xs text-slate-600"><strong>Paso 1:</strong> Identificamos las variables X e Y...<br><strong>Paso 2:</strong> Calculamos la derivada de...<br><strong>Paso 3:</strong> Verificamos contradicciones...<br><strong>Resultado:</strong> 42.</p>', 
-                'chatgpt', false, false, 'advanced'), // Desbloqueado
-
-            createCase(906, 'engineering', 'Salida JSON Estructurada', 'data_object', 'Dev: Respuestas para programadores.',
-                'Dame una lista de los países de Sudamérica con sus capitales y monedas.',
-                '<div class="text-xs text-slate-500 italic">"Chile (Santiago, Peso), Argentina (Buenos Aires, Peso), Perú (Lima, Sol)..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">code_off</span> Problema: Texto plano difícil de procesar por código.</div>', 
-                '{r}Actúa como Generador de API.{/r} {c}Datos de {data_topic|países de Sudamérica}.{/c} {m}Genera un Array de Objetos JSON válido y estricto. Keys: {json_keys|"country", "capital", "iso_code", "currency"}.{/m} {l}Solo código. Sin texto introductorio.{/l} {f}Bloque JSON.{/f}',
-                'Especifica las keys exactas.',
-                'Pide "Solo JSON".',
-                '<div class="font-mono text-[10px] bg-slate-900 text-green-400 p-2 rounded">[<br>  { "country": "Chile", "capital": "Santiago", "iso": "CL" },<br>  { "country": "Argentina", "capital": "Buenos Aires", "iso": "AR" }<br>]</div>',
-                'gemini', false, false, 'advanced'),
-
-            createCase(910, 'engineering', 'Restricciones Negativas', 'do_not_disturb_on', 'Técnica: Lo que NO quieres.',
-                'Escribe un artículo sobre inteligencia artificial pero que sea fácil de leer.',
-                '<div class="text-xs text-slate-500 italic">"La inteligencia artificial es una tecnología revolucionaria que está transformando paradigmas..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">block</span> Problema: Usa clichés y palabras complejas ("revolucionaria", "paradigmas") que querías evitar.</div>', 
-                '{r}Actúa como Periodista de Tecnología Crítico.{/r} {c}Tema: {topic|Impacto real de la IA}.{/c} {m}Escribe un párrafo introductorio.{/m} {l}Restricciones Negativas (Lo que NO quiero): NO uses las palabras {banned_words|"revolucionario", "futuro", "paradigma"} ni voz pasiva. NO uses frases de más de 20 palabras.{/l} {f}Texto plano.{/f}',
-                'Fuerza simplicidad.',
-                'Control de estilo.',
-                '<p class="text-xs italic text-slate-700">"Los algoritmos ya deciden quién recibe un préstamo. No es ciencia ficción, es contabilidad automatizada. Mientras debatimos sobre robots asesinos, el software silenciosamente reescribe las reglas del mercado laboral."</p>',
-                'chatgpt', false, false, 'intermediate')
         ];
 
         // --- 2. LOGICA DE LA APLICACIÓN ---
         
         const config = {
             categories: {
-                productivity: { label: "🚀 Productividad", color: "emerald", icon: "rocket_launch" },
-                finance: { label: "💰 Finanzas", color: "amber", icon: "monetization_on" }, 
-                sales: { label: "🔥 Ventas", color: "pink", icon: "campaign" },
-                art: { label: "🎨 Arte", color: "fuchsia", icon: "palette" },
-                life: { label: "🧘 Vida", color: "orange", icon: "self_improvement" },
-                tech: { label: "🧠 Tech", color: "violet", icon: "memory" },
+                productivity: { label: "🚀 Productividad 10x", color: "emerald", icon: "rocket_launch" },
+                finance: { label: "💰 Finanzas & Inversión", color: "amber", icon: "monetization_on" }, 
+                sales: { label: "🔥 Ventas & Copy", color: "pink", icon: "campaign" },
+                art: { label: "🎨 Arte Digital", color: "fuchsia", icon: "palette" },
+                life: { label: "🧘 Vida Balanceada", color: "orange", icon: "self_improvement" },
+                tech: { label: "🧠 Cerebro Digital", color: "violet", icon: "memory" },
                 education: { label: "🎓 Educación", color: "cyan", icon: "school" },
-                engineering: { label: "🛠️ Ingeniería", color: "slate", icon: "construction" }
+                engineering: { label: "🛠️ Ingeniería Prompt", color: "slate", icon: "construction" }
             }
         };
 
         let currentPromptTemplate = "";
         let currentBadPromptTemplate = "";
         let currentVariables = {};
+        let casesData = [];
 
         function init() {
+            // Verificar si allCases (externo) existe
+            if (typeof allCases !== 'undefined') {
+                casesData = allCases;
+                console.log("Cargada base de datos externa: " + casesData.length + " casos.");
+            } else {
+                casesData = demoCases;
+                console.log("Cargada base de datos DEMO: " + casesData.length + " casos.");
+            }
+
             renderCategories();
             renderCaseList();
+            updateTotalCounter(); // RESTORED
             startCountdown();
             startSocialProof();
-            const first = allCases[0];
+            
+            // Interaction Setup
+            setupLegendInteractions();
+
+            const first = casesData[0];
             if(first) loadCase(first.id);
         }
 
         // --- CORE: VARIABLE GENERATOR LOGIC ---
 
         function loadCase(id) {
-            const c = allCases.find(x => x.id === id);
+            const c = casesData.find(x => x.id === id);
             if(!c) return;
 
             document.getElementById('detail-title').innerText = c.title;
@@ -587,8 +448,13 @@
             
             // Populate Bad Result Preview
             document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview;
-            // Populate Good Result Preview (NEW)
+            // Populate Good Result Preview
             document.getElementById('good-result-preview').innerHTML = c.previewResponse;
+
+            // RESTORED: Tips
+            document.getElementById('detail-example-tip').innerText = c.exampleTip || "No hay tips adicionales.";
+            document.getElementById('detail-validation-tip').innerText = c.validationTip || "Verifica que el output cumpla la meta.";
+            resetTips(); // Close accordions
 
             // Category Badge
             const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
@@ -664,12 +530,12 @@
                 renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${val}</span>`);
             });
 
-            // Parse Colors
+            // Parse Colors (RESTORED TAG INTERACTION CLASS)
             const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
             Object.keys(tags).forEach(t => {
                 const className = `hl-${tags[t]}`;
                 const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
-                renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}">$1</span>`);
+                renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
             });
             renderedAgia = renderedAgia.replace(/\n/g, '<br>');
             document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
@@ -683,6 +549,89 @@
                 renderedBad = renderedBad.replace(regex, `<span class="var-highlight-bad">${val}</span>`);
             });
             document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
+        }
+
+        // --- RESTORED: INTERACTIVE FUNCTIONS ---
+
+        function toggleTip(type) {
+            const content = document.getElementById(`content-tip-${type}`);
+            const icon = document.getElementById(`icon-tip-${type}`);
+            
+            if (content.classList.contains('tip-open')) {
+                content.classList.remove('tip-open');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Close others first
+                resetTips();
+                content.classList.add('tip-open');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function resetTips() {
+            document.querySelectorAll('.tip-content').forEach(el => el.classList.remove('tip-open'));
+            document.querySelectorAll('[id^="icon-tip-"]').forEach(el => el.style.transform = 'rotate(0deg)');
+        }
+
+        function setupLegendInteractions() {
+            const legendContainer = document.getElementById('interactive-legend');
+            if(!legendContainer) return;
+
+            legendContainer.addEventListener('mouseover', (e) => {
+                const item = e.target.closest('.legend-item');
+                if(!item) return;
+                
+                const type = item.dataset.type;
+                document.querySelectorAll(`.hl-tag[data-tag-type="${type}"]`).forEach(el => {
+                    el.classList.add('hl-active');
+                });
+            });
+
+            legendContainer.addEventListener('mouseout', (e) => {
+                const item = e.target.closest('.legend-item');
+                if(!item) return;
+                
+                const type = item.dataset.type;
+                document.querySelectorAll(`.hl-tag[data-tag-type="${type}"]`).forEach(el => {
+                    el.classList.remove('hl-active');
+                });
+            });
+        }
+
+        function copyPrompt() {
+            const rawText = document.getElementById('detail-prompt-rendered').innerText;
+            navigator.clipboard.writeText(rawText);
+            
+            const btn = document.getElementById('copy-btn');
+            const originalHTML = btn.innerHTML;
+            
+            // Logic for Time Saved based on Difficulty (RESTORED)
+            const title = document.getElementById('detail-title').innerText;
+            const c = casesData.find(x => x.title === title) || { difficulty: 'beginner' };
+            const SAVED_TIME_MAP = { 'beginner': '15', 'intermediate': '30', 'advanced': '60' };
+            const savedTime = SAVED_TIME_MAP[c.difficulty] || '20';
+
+            // Button Feedback
+            btn.innerHTML = `<span class="material-symbols-outlined text-[10px]">check</span> COPIADO`;
+            btn.classList.add('bg-green-500');
+            
+            // Toast Notification
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerHTML = `Ahorraste aprox. <strong>${savedTime} minutos</strong> de trabajo.`;
+            toast.classList.remove('translate-x-full');
+
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.remove('bg-green-500');
+                toast.classList.add('translate-x-full');
+            }, 3000);
+        }
+
+        function updateTotalCounter() {
+            const totalEl = document.getElementById('total-display');
+            const countEl = document.getElementById('count-display');
+            if(totalEl) totalEl.innerText = casesData.length;
+            // Note: countEl updates on filter
         }
 
         // --- UI UTILS ---
@@ -699,15 +648,15 @@
         }
 
         function filterByCategory(cat) {
-            document.getElementById('searchInput').value = ''; // Reset text search
+            document.getElementById('searchInput').value = ''; 
             const list = document.getElementById('case-list');
-            const filtered = allCases.filter(c => c.category === cat);
+            const filtered = casesData.filter(c => c.category === cat);
             renderList(filtered);
         }
 
         function filterCases() { 
             const search = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allCases.filter(c => 
+            const filtered = casesData.filter(c => 
                 c.title.toLowerCase().includes(search) || 
                 c.problem.toLowerCase().includes(search) ||
                 c.category.toLowerCase().includes(search)
@@ -717,6 +666,8 @@
 
         function renderList(cases) {
             const list = document.getElementById('case-list');
+            document.getElementById('count-display').innerText = cases.length; // Update View Counter
+
             if(cases.length === 0) {
                 list.innerHTML = '<div class="p-4 text-center text-xs text-slate-400">No se encontraron resultados.</div>';
                 return;
@@ -740,26 +691,13 @@
         }
         
         function renderCaseList() {
-            renderList(allCases);
+            renderList(casesData);
         }
         
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
         function openPaywall() { document.getElementById('paywall-modal').classList.remove('hidden'); }
         function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
         function showWelcome() { alert("Tutorial: Selecciona un caso. Escribe tus variables a la izquierda y compara el resultado mediocre vs. el método AGIA."); }
-
-        function copyPrompt() {
-            const rawText = document.getElementById('detail-prompt-rendered').innerText;
-            navigator.clipboard.writeText(rawText);
-            const btn = document.getElementById('copy-btn');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<span class="material-symbols-outlined text-[10px]">check</span>`;
-            btn.classList.add('bg-green-500');
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove('bg-green-500');
-            }, 2000);
-        }
 
         // --- SALES PSYCHOLOGY ---
         function startCountdown() {
