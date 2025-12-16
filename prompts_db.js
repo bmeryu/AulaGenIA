@@ -251,7 +251,7 @@ const allCases = [
     // ==========================================
     
     // [OPTIMIZADO]
-   [
+   
     createCase('sales_001',
         'ventas&copy',
         'Cold Email B2B Irresistible',
@@ -339,7 +339,7 @@ const allCases = [
         true,
         false,
         'advanced')
-]
+
     // ==========================================
     // 🧠 CEREBRO DIGITAL
     // ==========================================
