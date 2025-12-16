@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGIA Generator 3.0 | Bóveda de Prompts Interactiva</title>
+    <title>AGIA Generator 3.0 | Bóveda Maestra</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,8 +32,8 @@
         @keyframes pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         .animate-pulse-soft { animation: pulse-soft 2s infinite; }
 
-        /* AGIA Tag Styles - Mantenemos los colores originales del modelo */
-        .hl-tag { transition: all 0.2s; display: inline-block; padding: 2px 4px; border-radius: 4px; margin: 0 2px; font-weight: 500; }
+        /* AGIA Tag Styles */
+        .hl-tag { transition: all 0.2s; display: inline-block; padding: 2px 4px; border-radius: 4px; margin: 0 2px; font-weight: 600; font-size: 0.9em;}
         .hl-rol { color: #1e3a8a; background: #bfdbfe; border: 1px solid #60a5fa; }           /* 1. ROL (Azul) */
         .hl-contexto { color: #064e3b; background: #a7f3d0; border: 1px solid #34d399; }      /* 2. CONTEXTO (Verde) */
         .hl-meta { color: #78350f; background: #fde68a; border: 1px solid #fbbf24; }          /* 3. META (Amarillo/Ambar) */
@@ -50,6 +50,15 @@
             border-radius: 2px;
             animation: highlightChange 0.5s ease;
         }
+        
+        .var-highlight-bad {
+            background-color: #f1f5f9;
+            border-bottom: 2px solid #94a3b8;
+            color: #64748b;
+            font-weight: 600;
+            padding: 0 4px;
+        }
+
         @keyframes highlightChange { 0% { background-color: #38bdf8; color: white; } 100% { background-color: #e0f2fe; color: #0284c7; } }
 
         /* Premium Overlay Glassmorphism */
@@ -74,11 +83,11 @@
     <div id="sticky-banner" class="sticky-banner text-white py-2 px-4 flex justify-center items-center gap-4 text-xs md:text-sm z-50 shadow-md flex-none">
         <div class="flex items-center gap-2">
             <span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded animate-pulse">OFERTA FLASH</span>
-            <span>Desbloquea el Generador Ilimitado con <strong>50% OFF</strong></span>
+            <span>Aprende a crear estos sistemas. Curso Completo con <strong>50% OFF</strong></span>
         </div>
         <div class="font-mono font-bold text-yellow-400 bg-white/10 px-2 py-0.5 rounded" id="countdown">14:59</div>
         <button onclick="openPaywall()" class="bg-yellow-400 hover:bg-yellow-300 text-slate-900 px-3 py-1 rounded font-bold text-xs transition-colors shadow-sm">
-            APROVECHAR
+            VER CURSO
         </button>
     </div>
 
@@ -92,7 +101,7 @@
                     </div>
                     <div>
                         <h1 class="text-sm font-bold text-slate-800 leading-tight">AGIA Generator <span class="text-indigo-600">3.0</span></h1>
-                        <p class="text-[10px] text-slate-500 font-medium">De Idea a Prompt en Segundos</p>
+                        <p class="text-[10px] text-slate-500 font-medium">Laboratorio de Ingeniería de Prompts</p>
                     </div>
                 </div>
                 
@@ -101,8 +110,8 @@
                         <span class="material-symbols-outlined text-base">help</span> Tutorial
                     </button>
                     <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-lg shadow-indigo-200 transition-all flex items-center gap-2 transform hover:scale-105">
-                        <span class="material-symbols-outlined text-sm">diamond</span>
-                        <span class="hidden sm:inline">UPGRADE PRO</span>
+                        <span class="material-symbols-outlined text-sm">school</span>
+                        <span class="hidden sm:inline">ACCEDER AL CURSO</span>
                     </button>
                 </div>
             </div>
@@ -120,10 +129,10 @@
         <!-- Sidebar (List of Tools) -->
         <aside class="w-full md:w-80 flex flex-col bg-slate-50 border-r border-slate-200 flex-none z-20 transition-transform duration-300 absolute md:relative h-full transform -translate-x-full md:translate-x-0 shadow-xl md:shadow-none" id="sidebar">
             <div class="p-3 border-b border-slate-200 sticky top-0 bg-slate-50/95 backdrop-blur z-10">
-                <div class="relative">
-                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">search</span>
-                    <input type="text" id="searchInput" placeholder="Buscar herramienta..." 
-                        class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none shadow-sm"
+                <div class="relative group">
+                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg group-focus-within:text-indigo-500 transition-colors">search</span>
+                    <input type="text" id="searchInput" placeholder="Buscar herramienta, problema..." 
+                        class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none shadow-sm"
                         onkeyup="filterCases()">
                 </div>
             </div>
@@ -134,13 +143,12 @@
             <div class="p-4 border-t border-slate-200 bg-white">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-500">
-                        <span class="material-symbols-outlined text-sm">person</span>
+                        <span class="material-symbols-outlined text-sm">visibility</span>
                     </div>
                     <div class="flex-1">
-                        <p class="text-xs font-bold text-slate-700">Cuenta Gratuita</p>
-                        <p class="text-[10px] text-slate-400">1/3 Prompts diarios</p>
+                        <p class="text-xs font-bold text-slate-700">Modo Visitante</p>
+                        <p class="text-[10px] text-slate-400">Comparador Interactivo</p>
                     </div>
-                    <button onclick="openPaywall()" class="text-indigo-600 text-xs font-bold hover:underline">Mejorar</button>
                 </div>
             </div>
         </aside>
@@ -148,94 +156,121 @@
         <!-- Main Workspace -->
         <main class="flex-1 flex flex-col bg-white overflow-hidden relative w-full">
             <div id="workspace-empty" class="hidden flex-col items-center justify-center h-full text-center p-8">
-                <span class="material-symbols-outlined text-6xl text-slate-200 mb-4">auto_awesome_mosaic</span>
-                <h3 class="text-slate-400 font-medium">Selecciona una herramienta para comenzar</h3>
+                <span class="material-symbols-outlined text-6xl text-slate-200 mb-4">compare</span>
+                <h3 class="text-slate-400 font-medium">Selecciona un caso de la lista para comenzar</h3>
             </div>
 
             <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 pb-32">
-                <div class="max-w-6xl mx-auto fade-in">
+                <div class="max-w-7xl mx-auto fade-in">
                     
                     <!-- Header Tool -->
                     <div class="mb-8">
                         <div class="flex items-center gap-2 mb-2">
                             <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border">Categoría</span>
-                            <span class="flex items-center gap-1 text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
-                                <span class="material-symbols-outlined text-[12px]">bolt</span> Generador Activo
+                            <span class="flex items-center gap-1 text-[10px] font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+                                <span class="material-symbols-outlined text-[12px]">experiment</span> Laboratorio de Comparación
                             </span>
                         </div>
                         <h2 id="detail-title" class="text-3xl font-bold text-slate-900 tracking-tight mb-2">Título del Caso</h2>
                         <p id="detail-problem" class="text-sm text-slate-500 leading-relaxed max-w-2xl"></p>
                     </div>
 
-                    <!-- THE GENERATOR ENGINE (New High Value Feature) -->
+                    <!-- THE COMPARISON ENGINE -->
                     <div class="grid lg:grid-cols-12 gap-6">
                         
-                        <!-- Left: Input Variables -->
-                        <div class="lg:col-span-4 space-y-4">
+                        <!-- Left: Input Variables (Control Panel) -->
+                        <div class="lg:col-span-3 space-y-4">
                             <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 shadow-sm sticky top-4">
                                 <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-3">
                                     <span class="material-symbols-outlined text-indigo-500">tune</span>
-                                    <h3 class="text-sm font-bold text-slate-700 uppercase">Configurar Prompt</h3>
+                                    <h3 class="text-sm font-bold text-slate-700 uppercase">Tus Datos</h3>
                                 </div>
                                 <div id="variables-container" class="space-y-4">
                                     <!-- Inputs generated dynamically -->
                                     <div class="text-xs text-slate-400 italic">Cargando variables...</div>
                                 </div>
-                            </div>
-                            
-                            <!-- Tips Box -->
-                             <div class="bg-yellow-50 rounded-xl p-4 border border-yellow-100 shadow-sm">
-                                <div class="flex items-start gap-2">
-                                    <span class="material-symbols-outlined text-yellow-600 text-lg mt-0.5">lightbulb</span>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-yellow-800 mb-1">Tip de Experto</h4>
-                                        <p id="detail-example-tip" class="text-xs text-yellow-800/80 leading-relaxed">...</p>
-                                    </div>
+                                <div class="mt-4 pt-4 border-t border-slate-200 text-[10px] text-slate-400 text-center italic">
+                                    Edita los campos y mira cómo cambia el resultado a la derecha.
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Right: The Prompt Result -->
-                        <div class="lg:col-span-8">
-                            <div id="main-box" class="bg-white rounded-xl shadow-lg border border-indigo-100 overflow-hidden relative group">
-                                <div class="bg-slate-900 text-white px-5 py-3 flex justify-between items-center border-b border-slate-800">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                                        <span class="text-xs font-bold uppercase tracking-wider">Prompt Maestro</span>
-                                    </div>
-                                    <button id="copy-btn" onclick="copyPrompt()" class="flex items-center gap-2 text-xs bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-md">
-                                        <span class="material-symbols-outlined text-sm">content_copy</span> COPIAR
-                                    </button>
-                                </div>
-
-                                <div class="relative min-h-[300px] bg-white">
-                                    <!-- Content injected here -->
-                                    <div id="detail-prompt-rendered" class="p-6 md:p-8 font-mono text-sm leading-relaxed text-slate-700 whitespace-pre-wrap"></div>
-                                    
-                                    <!-- Premium Overlay (Hidden by default) -->
-                                    <div id="premium-lock" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center premium-blur text-center p-6 transition-all duration-300">
-                                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl mb-4 transform rotate-3 hover:rotate-6 transition-transform">
-                                            <span class="material-symbols-outlined text-white text-3xl">lock</span>
+                        <!-- Right: The Comparison (The Selling Point) -->
+                        <div class="lg:col-span-9 grid md:grid-cols-2 gap-6">
+                            
+                            <!-- 1. THE BAD WAY (Pain Agitation) -->
+                            <div class="flex flex-col gap-4">
+                                <div class="bg-slate-100 rounded-xl border border-slate-200 overflow-hidden opacity-90">
+                                    <div class="bg-slate-200 px-4 py-3 border-b border-slate-300 flex justify-between items-center">
+                                        <div class="flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-slate-500 text-sm">cancel</span>
+                                            <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Lo que hace el 99%</span>
                                         </div>
-                                        <h3 class="text-2xl font-black text-slate-900 mb-2">Contenido Pro</h3>
-                                        <p class="text-sm text-slate-600 mb-6 max-w-sm">Esta herramienta avanzada genera ventas reales. Acceso restringido a miembros.</p>
-                                        <button onclick="openPaywall()" class="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold shadow-xl transform hover:-translate-y-1 transition-all flex items-center gap-2">
-                                            DESBLOQUEAR AHORA
-                                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                                        </button>
-                                        <p class="mt-4 text-[10px] text-slate-400">Garantía de devolución de 30 días.</p>
                                     </div>
-                                </div>
-                                
-                                <!-- Legend - AGIA Model Names Preserved -->
-                                <div class="bg-slate-50 border-t border-slate-100 px-6 py-3 flex flex-wrap gap-3 text-[10px] justify-start opacity-90">
-                                    <span class="flex items-center gap-1.5 font-bold text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-blue-200 border border-blue-400"></span> 1. ROL</span>
-                                    <span class="flex items-center gap-1.5 font-bold text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-emerald-200 border border-emerald-400"></span> 2. CONTEXTO</span>
-                                    <span class="flex items-center gap-1.5 font-bold text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-amber-200 border border-amber-400"></span> 3. META</span>
-                                    <span class="flex items-center gap-1.5 font-bold text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-red-200 border border-red-400"></span> 4. RESTRICCIONES</span>
-                                    <span class="flex items-center gap-1.5 font-bold text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-purple-200 border border-purple-400"></span> 5. FORMATO</span>
+                                    <div class="p-5">
+                                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-2">Prompt Típico (Novato)</div>
+                                        <div id="bad-prompt-rendered" class="font-mono text-xs text-slate-600 bg-white p-3 rounded border border-slate-200 mb-4 italic">
+                                            ...
+                                        </div>
+                                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-2">Resultado Mediocre</div>
+                                        <div id="bad-result-preview" class="text-xs text-slate-500 leading-relaxed bg-slate-50 p-3 rounded border border-slate-200 h-40 overflow-y-auto custom-scroll">
+                                            ...
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- 2. THE AGIA WAY (Solution) -->
+                            <div class="flex flex-col gap-4 relative">
+                                <!-- Connecting Arrow (Desktop only) -->
+                                <div class="hidden md:block absolute top-1/2 -left-3 transform -translate-y-1/2 -translate-x-1/2 z-10">
+                                    <span class="material-symbols-outlined text-3xl text-indigo-200 bg-white rounded-full shadow-sm">arrow_forward</span>
+                                </div>
+
+                                <div class="bg-white rounded-xl shadow-xl border border-indigo-100 overflow-hidden ring-1 ring-indigo-50 relative group">
+                                    <div class="bg-indigo-600 text-white px-4 py-3 flex justify-between items-center">
+                                        <div class="flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-sm">check_circle</span>
+                                            <span class="text-xs font-bold uppercase tracking-wider">Método AGIA (Pro)</span>
+                                        </div>
+                                        <button id="copy-btn" onclick="copyPrompt()" class="flex items-center gap-1 text-[10px] bg-white/20 hover:bg-white/30 text-white px-2 py-1 rounded transition-colors">
+                                            <span class="material-symbols-outlined text-[10px]">content_copy</span> COPIAR
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="p-5 relative">
+                                        <div class="text-[10px] font-bold text-indigo-400 uppercase mb-2 flex justify-between">
+                                            <span>Prompt Estructurado</span>
+                                            <span class="flex items-center gap-1 text-green-600 bg-green-50 px-1.5 rounded"><span class="material-symbols-outlined text-[10px]">bolt</span> Alta Conversión</span>
+                                        </div>
+                                        
+                                        <!-- The AGIA Prompt -->
+                                        <div id="detail-prompt-rendered" class="font-mono text-xs leading-relaxed text-slate-700 whitespace-pre-wrap h-[320px] overflow-y-auto custom-scroll"></div>
+
+                                        <!-- Legend Overlay -->
+                                        <div class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-100 px-4 py-2 flex flex-wrap gap-3 text-[9px] justify-center opacity-90">
+                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400"></span> Rol</span>
+                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Contexto</span>
+                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Meta</span>
+                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-400"></span> Restricciones</span>
+                                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-400"></span> Formato</span>
+                                        </div>
+                                        
+                                        <!-- Premium Overlay -->
+                                        <div id="premium-lock" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center premium-blur text-center p-6 transition-all duration-300">
+                                            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-2xl mb-3 transform rotate-3">
+                                                <span class="material-symbols-outlined text-white text-2xl">lock</span>
+                                            </div>
+                                            <h3 class="text-lg font-black text-slate-900 mb-1">Contenido del Curso</h3>
+                                            <p class="text-xs text-slate-600 mb-4 max-w-[200px]">Aprende a construir prompts como este para cualquier industria.</p>
+                                            <button onclick="openPaywall()" class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-lg font-bold shadow-xl text-xs flex items-center gap-2">
+                                                DESBLOQUEAR FORMULA
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
 
@@ -249,21 +284,21 @@
         <span class="material-symbols-outlined">menu_open</span>
     </button>
 
-    <!-- SOCIAL PROOF TOAST (Fake Sales) -->
+    <!-- SOCIAL PROOF TOAST (Course Sales) -->
     <div id="sales-toast" class="fixed bottom-6 left-6 z-50 transform translate-y-24 opacity-0 transition-all duration-500">
         <div class="bg-white/90 backdrop-blur border border-slate-200 p-3 rounded-lg shadow-xl flex items-center gap-3 max-w-xs">
             <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs relative">
-                J
+                E
                 <span class="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-white"></span>
             </div>
             <div>
-                <p class="text-xs text-slate-800"><span class="font-bold">Juan M.</span> acaba de comprar</p>
-                <p class="text-[10px] text-slate-500">Plan Pro Anual • hace 2 min</p>
+                <p class="text-xs text-slate-800"><span class="font-bold">Estudiante #402</span> se inscribió</p>
+                <p class="text-[10px] text-slate-500">Curso Maestría AGIA • hace 5 min</p>
             </div>
         </div>
     </div>
 
-    <!-- PAYWALL MODAL (High Conversion) -->
+    <!-- PAYWALL MODAL (Course Focused) -->
     <div id="paywall-modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
         <div class="w-full max-w-lg relative">
@@ -273,54 +308,57 @@
                 </button>
                 
                 <!-- Hero Section -->
-                <div class="bg-slate-900 p-8 text-center relative overflow-hidden">
-                    <div class="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-500 via-slate-900 to-black"></div>
-                    <span class="inline-block bg-yellow-400 text-slate-900 text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wide mb-3 relative z-10">Oferta Limitada</span>
-                    <h3 class="text-white font-black text-3xl relative z-10 leading-none mb-2">Desbloquea el Poder <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Generativo</span></h3>
-                    <p class="text-slate-400 text-sm relative z-10 mt-2 max-w-xs mx-auto">Deja de copiar. Empieza a crear sistemas de venta automáticos.</p>
+                <div class="bg-indigo-900 p-8 text-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                    <span class="inline-block bg-yellow-400 text-slate-900 text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wide mb-3 relative z-10">Método Exclusivo</span>
+                    <h3 class="text-white font-black text-2xl relative z-10 leading-tight mb-2">Deja de adivinar.<br>Empieza a <span class="text-cyan-400">Ingenierizar</span>.</h3>
+                    <p class="text-indigo-200 text-xs relative z-10 mt-2 max-w-xs mx-auto">Domina el modelo AGIA y multiplica tu productividad por 10.</p>
                 </div>
                 
                 <div class="p-8">
+                    <div class="text-center mb-6">
+                        <p class="text-sm text-slate-500 font-medium">Lo que obtienes en el curso:</p>
+                    </div>
                     <!-- Features List -->
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3 text-sm text-slate-600">
-                            <span class="material-symbols-outlined text-green-500">check_circle</span>
-                            <span>Acceso a <strong>50+ Estructuras Maestras</strong></span>
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-slate-600">
-                            <span class="material-symbols-outlined text-green-500">check_circle</span>
-                            <span><strong>Generador Dinámico</strong> (Sin editar a mano)</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-slate-600">
-                            <span class="material-symbols-outlined text-green-500">check_circle</span>
-                            <span>Actualizaciones semanales de por vida</span>
-                        </li>
-                    </ul>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-green-500 text-lg">school</span>
+                            <div class="text-xs text-slate-600"><strong>Masterclass</strong> del modelo AGIA paso a paso.</div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-green-500 text-lg">library_books</span>
+                            <div class="text-xs text-slate-600"><strong>Bóveda PDF</strong> con 50+ templates listos.</div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-green-500 text-lg">group</span>
+                            <div class="text-xs text-slate-600"><strong>Comunidad</strong> privada de alumnos.</div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-green-500 text-lg">verified</span>
+                            <div class="text-xs text-slate-600"><strong>Certificado</strong> de finalización.</div>
+                        </div>
+                    </div>
 
                     <!-- Pricing Anchor -->
-                    <div class="flex items-end justify-center gap-2 mb-6 border-t border-b border-slate-100 py-4">
-                        <div class="text-right">
-                            <p class="text-xs text-red-400 line-through font-medium">$49 USD</p>
-                            <p class="text-[10px] text-slate-400">Precio Normal</p>
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-between mb-6">
+                        <div>
+                            <p class="text-[10px] text-slate-400 uppercase font-bold">Inversión Única</p>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-black text-slate-900">$27</span>
+                                <span class="text-xs text-red-400 line-through font-medium">$97</span>
+                            </div>
                         </div>
-                        <div class="text-5xl font-black text-slate-900 tracking-tighter">$19</div>
-                        <div class="text-left pb-1">
-                            <p class="text-sm font-bold text-slate-900">USD</p>
-                            <p class="text-[10px] text-slate-500">Pago único</p>
+                        <div class="text-right">
+                             <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-full">AHORRAS 70%</span>
                         </div>
                     </div>
 
                     <!-- CTA -->
-                    <button class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 transform hover:-translate-y-1 transition-all shadow-xl shadow-indigo-200 flex items-center justify-center gap-2 group">
-                        OBTENER ACCESO TOTAL
+                    <button class="w-full bg-indigo-600 text-white py-3.5 rounded-xl font-bold text-base hover:bg-indigo-700 transform hover:-translate-y-1 transition-all shadow-xl shadow-indigo-200 flex items-center justify-center gap-2 group">
+                        INSCRÍBETE AHORA
                         <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </button>
-                    
-                    <div class="mt-4 flex justify-center gap-4 opacity-50 grayscale hover:grayscale-0 transition-all">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-4" alt="PayPal">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-4" alt="Visa">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-4" alt="Mastercard">
-                    </div>
+                    <p class="text-[10px] text-center text-slate-400 mt-3">Garantía de satisfacción de 30 días.</p>
                 </div>
             </div>
         </div>
@@ -328,145 +366,227 @@
 
     <!-- MAIN LOGIC & DATA -->
     <script>
-        // --- 1. BASE DE DATOS (MOCKUP) ---
-        // Aquí están tus "Productos Digitales"
+        // --- 1. CONFIGURACIÓN Y BASE DE DATOS MAESTRA ---
+        
+        // Función helper para crear casos (tomada de tu DB maestra)
+        const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goodPromptTagged, exampleTip, validationTip, goodResPreview, suggestedAI, locked = false, isTool = false, difficulty = 'beginner') => ({
+            id, 
+            category: cat, 
+            title, 
+            icon, 
+            problem, 
+            badPrompt, // Este es el texto base
+            badPromptDynamic: badPrompt, // Usaremos este para la versión dinámica si no hay una específica definida
+            badResponsePreview: badResPreview, 
+            agiaPromptTagged: goodPromptTagged, 
+            exampleTip, 
+            validationTip,
+            previewResponse: goodResPreview,
+            suggestedAI, 
+            locked, 
+            isTool, 
+            difficulty
+        });
+
+        // ==========================================
+        // 🧠 BÓVEDA DE PROMPTS AGIA 2.0 - DATA
+        // ==========================================
         const allCases = [
-            {
-                id: 1,
-                title: "Generador de Ganchos Virales",
-                category: "sales",
-                icon: "campaign",
-                difficulty: "beginner",
-                locked: false, // GRATIS (Hook)
-                problem: "Tus posts en LinkedIn/Twitter tienen poco alcance y nadie lee la primera línea.",
-                // El prompt usa sintaxis {variable|placeholder} para generar inputs automáticamente
-                agiaPromptTagged: `
-{r}Actúa como un Copywriter Senior experto en viralidad y psicología del consumidor.{/r}
+            
+            // 🚀 PRODUCTIVIDAD 10X
+            createCase(101, 'productivity', 'El Limpiador de Data', 'cleaning_services', 'Excel: Base de datos sucia (Nombres, Mayúsculas).', 
+                'Tengo una lista de nombres en Excel que está horrible, con espacios y mayúsculas mezcladas. Dame una fórmula para arreglarlos.',
+                '<div class="text-xs text-slate-500 italic">"Claro, usa la función =NOMPROPIO(). Aquí tienes el resultado:<br>Juan Perez<br>Maria Gomez"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">error</span> Problema: Solución parcial. No quita espacios dobles ni caracteres ocultos web.</div>', 
+                '{r}Actúa como Experto en Excel y Limpieza de Datos.{/r} {c}Estoy procesando una base de datos crítica ("raw data") copiada de la web con errores de formato: mayúsculas irregulares, espacios dobles internos y espacios fantasmas al inicio/final.{/c} {m}Genera una fórmula maestra anidada infalible para limpiar la celda A2.{/m} {l}No uses VBA. La fórmula debe ser "copiar y pegar" y cubrir todos los errores mencionados.{/l} {f}Bloque de código con la fórmula y breve explicación de las funciones usadas.{/f}', 
+                'Entrada: "  JUAN   perez  (web) ".',
+                'Verifica anidación correcta.',
+                '<div class="font-mono text-xs bg-slate-900 text-green-400 p-3 rounded mb-2 border-l-4 border-green-600 shadow-sm">=NOMPROPIO(ESPACIOS(LIMPIAR(SUSTITUIR(A2,CARACTER(160)," "))))</div><p class="text-[10px] text-slate-600 mt-1"><strong>Lógica:</strong><br>1. <code>SUSTITUIR</code>: Elimina espacios web (ASCII 160).<br>2. <code>LIMPIAR</code>: Quita saltos de línea.<br>3. <code>ESPACIOS</code>: Reduce dobles espacios a uno.<br>4. <code>NOMPROPIO</code>: Capitaliza formato Título.</p>', 
+                'gemini', false, false, 'beginner'),
 
-{c}Estoy promocionando un producto/servicio relacionado con {topic|Productividad para programadores} dirigido a {target|Desarrolladores Junior}. Actualmente, el mayor dolor de mi audiencia es {pain|sentir que no avanzan lo suficientemente rápido}.{/c}
+            createCase(102, 'productivity', 'El "No" Diplomático', 'block', 'Email: Rechazar cambios gratis y cobrar por ellos.', 
+                'Escríbele al cliente que no puedo hacer esos cambios gratis porque no están en el contrato, pero ofrécele cobrarle extra.',
+                '<div class="text-xs text-slate-500 italic">"Estimado, no podemos hacer eso gratis. Si quiere, le mando una cotización. Saludos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">cancel</span> Problema: Tono seco que cierra puertas. Se siente como un rechazo, no una oportunidad.</div>', 
+                '{r}Actúa como Gerente de Cuentas Senior experto en Negociación.{/r} {c}El cliente solicitó funcionalidades fuera del alcance original (Scope Creep). Debo rechazar la gratuidad sin dañar la relación.{/c} {m}Redacta un email respuesta usando la técnica del "Sí condicional": Valida la idea, pero enmárcala inmediatamente como una "Fase 2" o mejora que requiere presupuesto adicional.{/m} {l}Prohibido usar la palabra "No" al inicio. Tono colaborativo.{/l} {f}Estructura de Email Persuasivo.{/f}', 
+                'Técnica: "Me encanta la idea, aquí está el precio".',
+                'Convierte el problema en un proyecto nuevo.',
+                '<div class="bg-white p-3 text-xs text-slate-700 border border-slate-200 shadow-sm rounded"><strong>Asunto:</strong> Estrategia para implementar [Mejora Solicitada]<br><br>"Hola [Cliente],<br><br>Estuve revisando tu solicitud y <strong>me parece brillante</strong>; aportaría mucho valor a la usabilidad.<br><br>Dado que esto excede el alcance técnico actual, lo he estructurado como un \'Módulo de Expansión\'. Te adjunto la estimación de horas para activarlo esta misma semana sin frenar el desarrollo principal.<br><br>¿Te parece si procedemos?"</div>', 
+                'chatgpt', false, false, 'intermediate'),
 
-{m}Tu objetivo es generar 5 ganchos (hooks) virales para el inicio de un post de texto corto. Los ganchos deben detener el scroll (Stop-Scrolling) y provocar curiosidad inmediata.{/m}
+            createCase(103, 'productivity', 'Resumidor de Reuniones', 'groups', 'Gestión: Transcripción a Tareas.',
+                'Resume esta reunión larga y dime qué hay que hacer.',
+                '<div class="text-xs text-slate-500 italic">"Hablaron del presupuesto y de marketing. Juan dijo que iba a ver lo del diseño. Fin."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">do_not_disturb</span> Problema: Narrativa vaga. Nadie sabe qué hacer exactamente ni para cuándo.</div>', 
+                '{r}Actúa como Project Manager (PMP) obsesionado con la eficiencia.{/r} {c}Tengo la transcripción de una reunión desordenada de 1 hora.{/c} {m}Extrae SOLO los "Action Items" (Tareas) y Decisiones Tomadas. Ignora toda la paja y charla social.{/m} {l}Formato estricto: Tarea | Responsable | Deadline.{/l} {f}Tabla Markdown.{/f}',
+                'Input: Texto sucio de Teams/Zoom.',
+                'Busca verbos de acción.',
+                '<table class="w-full text-[10px] border border-slate-300 mt-1"><thead><tr class="bg-indigo-100 text-indigo-800"><th>Tarea</th><th>Owner</th><th>Deadline</th></tr></thead><tbody><tr><td class="p-1 border">Aprobar presupuesto Q4</td><td class="p-1 border font-bold">Sofia</td><td class="p-1 border text-red-600">Viernes 12:00</td></tr><tr><td class="p-1 border">Contactar proveedor AWS</td><td class="p-1 border font-bold">Carlos</td><td class="p-1 border">Hoy PM</td></tr></tbody></table>',
+                'claude', false, false, 'beginner'),
 
-{l}
-- No uses preguntas retóricas clichés como "¿Te gustaría...?".
-- No uses hashtags en el gancho.
-- Mantén el tono {tone|provocativo y directo}.
-- Máximo 2 líneas por gancho.
-{/l}
+            createCase(104, 'productivity', 'Traductor Corporativo', 'translate', 'Email: Inglés de negocios para CEO.', 
+                'Necesito traducir este correo al inglés para mandárselo al CEO de la empresa en Estados Unidos. El texto es: "Hola jefe, le cuento que el proyecto se va a atrasar dos días por un problema técnico con el servidor, pero ya lo estamos arreglando". Que suene profesional y no como Google Translate.',
+                '<div class="text-xs text-slate-500 italic">"Hello boss, I tell you that the project is going to be late two days because of a technical problem with the server, but we are fixing it already."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">translate</span> Problema: Traducción literal y tono demasiado informal ("Hello boss").</div>', 
+                '{r}Actúa como Editor Nativo de Inglés de Negocios (Nivel C-Level).{/r} {c}Tengo un borrador en español informando un retraso de 2 días debido a una caída de servidores, que debo enviar al CEO en Estados Unidos.{/c} {m}Traduce y eleva este texto a un inglés corporativo, sofisticado y directo, que transmita que tenemos control total sobre la situación a pesar del inconveniente.{/m} {l}Evita sonar como una traducción literal. Jamás uses "Hello boss", utiliza "Dear Mr. [Apellido]".{/l} {f}Entrégame el email formal listo para ser enviado.{/f}', 
+                'Contexto: El retraso es de 2 días por caída de servidor.',
+                'El texto debe usar conectores formales como "However", "Regarding".',
+                '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200">"Dear Mr. Smith,<br><br>I am writing to provide an update regarding the project timeline. Due to unforeseen server latency issues encountered yesterday, we are currently navigating a 48-hour adjustment in the delivery schedule. However, the team has already mitigated the root cause, and we are confident in meeting the revised milestone by Thursday."</div>', 
+                'chatgpt', false, false, 'intermediate'),
 
-{f}Entrega el resultado en una lista numerada, explicando brevemente el sesgo psicológico usado en cada uno.{/f}`,
-                
-                exampleTip: "Prueba cambiar el tono a 'Controversial' para ver resultados más agresivos.",
-                validationTip: "Si el gancho no te hace querer leer la siguiente línea inmediatamente, deséchalo.",
-                badPrompt: "Escribe 5 frases para vender mi curso de programación.",
-                badResponsePreview: "1. ¡Compra mi curso hoy!<br>2. Aprende a programar fácil.<br>3. ¿Quieres ser mejor? Entra aquí.",
-                previewResponse: "<strong>1. El Gancho 'Negativo':</strong><br>\"La razón por la que sigues siendo Junior no es tu código, es tu mentalidad.\" (Ataca el ego).<br><br><strong>2. El Gancho 'Insider':</strong><br>\"Lo que los Senior devs de Google no te dicen sobre la productividad...\" (Curiosidad/Secreto)."
-            },
-            {
-                id: 2,
-                title: "Planificador Financiero 80/20",
-                category: "finance",
-                icon: "attach_money",
-                difficulty: "intermediate",
-                locked: true, // PREMIUM
-                problem: "No logras ahorrar y tus gastos hormiga se comen tu sueldo.",
-                agiaPromptTagged: `
-{r}Actúa como un Asesor Financiero experto en el principio de Pareto (80/20) y finanzas conductuales.{/r}
+            createCase(105, 'productivity', 'Resumen Hilos de Email', 'mail_lock', 'Email: Me reenviaron 50 correos.',
+                'Me acaban de reenviar esta cadena de correos eterna sobre el proyecto de marketing y la verdad no entiendo nada de lo que está pasando. Por favor lee todos los mensajes de la cadena y explícame en qué quedó la conversación, cuál es el problema actual y quién se supone que tiene que responder ahora.',
+                '<div class="text-xs text-slate-500 italic">"Parece que están hablando de un proyecto de marketing y discutiendo sobre los colores. Pedro envió el último correo diciendo \'ok, aprobado\', así que creo que ya está listo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">visibility_off</span> Problema: Perdió el detalle crítico de que el "ok" era condicional.</div>', 
+                '{r}Actúa como Asistente Ejecutivo Eficiente y Analítico.{/r} {c}Me acaban de reenviar un hilo de correos largo, desordenado y confuso sobre el estado del proyecto de marketing.{/c} {m}Analiza toda la conversación y genera un resumen ejecutivo cronológico de los hitos clave. Lo más importante: dime cuál es la "Última Acción" pendiente y en la cancha de quién está la pelota (The ball is in whose court).{/m} {f}Preséntalo con Bullets cronológicos y un Estado Actual tipo semáforo.{/f}',
+                'Tip: Pega los correos desde el más antiguo al más nuevo.',
+                'Identifica claramente quién tiene la responsabilidad ahora mismo.',
+                '<p class="text-xs"><strong>Cronología:</strong><br>• 10/Oct: Cliente solicita cambio de color.<br>• 12/Oct: TI rechaza cambio por seguridad.<br>• 13/Oct: Marketing pide revisión.<br><br><strong>Estado Actual:</strong> 🔴 <strong>BLOQUEADO.</strong> La pelota está en el lado de <strong>Pedro (Gerencia)</strong>, quien debe aprobar la excepción de seguridad desde el 14/Oct.</p>',
+                'claude', false, false, 'intermediate'),
 
-{c}Tengo un ingreso mensual de {income|$2000 USD} y mis gastos fijos son aproximadamente el {expenses_percent|60%}. Mi meta principal es {goal|comprar una casa en 5 años}.{/c}
+            createCase(106, 'productivity', 'Nomenclatura Archivos (ISO)', 'folder_zip', 'Gestión: Ordenar el caos digital.',
+                'Mis archivos son un desastre (final, final2, este_si). Dame una forma de nombrarlos.',
+                '<div class="text-xs text-slate-500 italic">"Ponles el nombre del proyecto y la fecha. Ejemplo: Proyecto_Enero.pdf"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">warning</span> Problema: Al ordenar por nombre, Enero quedará lejos de Febrero. No escala.</div>', 
+                '{r}Actúa como Especialista en Gestión Documental.{/r} {c}Tengo múltiples versiones de archivos y es imposible encontrar la actual.{/c} {m}Diseña una convención de nomenclatura (Naming Convention) a prueba de fallos que se ordene cronológicamente sola.{/m} {f}Estructura y 3 ejemplos reales.{/f}',
+                'Usa fecha invertida (YYYY-MM-DD).',
+                'Incluye versión (v01).',
+                '<div class="bg-slate-50 p-2 rounded text-xs border border-slate-200"><p class="font-bold text-indigo-600 mb-1">Estructura ISO 8601:</p><code class="bg-slate-200 px-1 rounded">AAAA-MM-DD_Proyecto_Tipo_vXX</code><br><br><strong>Ejemplos:</strong><br>📂 2024-03-15_BlackFriday_Contrato_v01.pdf<br>📂 2024-03-16_BlackFriday_Contrato_v02_COMENTARIOS.pdf<br>📂 2024-03-20_BlackFriday_Contrato_v03_FINAL.pdf</div>',
+                'chatgpt', false, false, 'beginner'),
 
-{m}Crea un plan de optimización de gastos radical. Identifica el 20% de las acciones que me darán el 80% de los resultados en ahorro.{/m}
+            // 💰 FINANZAS
+            createCase(201, 'finance', 'Analista Financiero (Buffett)', 'trending_up', 'Inversión: Analizar Balance General.',
+                '¿Invierto en esta empresa? Aquí está su balance. Dime si es buena.',
+                '<div class="text-xs text-slate-500 italic">"Parece una empresa sólida con muchos activos. Podría ser una buena inversión a largo plazo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">analytics</span> Problema: Opinión subjetiva basada en "pareceres", sin análisis de ratios de riesgo real.</div>', 
+                '{r}Actúa como Analista de Value Investing (Escuela Warren Buffett).{/r} {c}Adjunto el Balance General y Estado de Resultados.{/c} {m}Realiza un análisis fundamental enfocado en la salud financiera. Calcula: Margen Neto, Ratio de Deuda/Equity y ROE.{/m} {l}Sé escéptico. Busca banderas rojas.{/l} {f}Tabla de Ratios + Veredicto (COMPRAR / VENDER / ESPERAR).{/f}',
+                'Busca el "Moat" (Ventaja competitiva).',
+                'Calcula deuda real.',
+                '<div class="text-xs bg-slate-50 p-2 rounded"><p class="font-bold text-slate-700 border-b mb-1">📊 Análisis Fundamental Rápido</p><div class="grid grid-cols-2 gap-2 mb-2"><div><span class="text-slate-500">ROE:</span> <span class="text-green-600 font-bold">18%</span> ✅</div><div><span class="text-slate-500">Deuda/Equity:</span> <span class="text-red-600 font-bold">2.5</span> ⚠️</div></div><p><strong>Veredicto:</strong> <span class="bg-yellow-100 text-yellow-800 px-1 rounded font-bold">ESPERAR</span>. Aunque es rentable, está peligrosamente endeudada. Esperar a que baje el ratio de deuda a <1.0.</p></div>',
+                'claude', true, false, 'advanced'),
 
-{l}Evita consejos genéricos como 'deja de comprar café'. Dame acciones estructurales.{/l}
+            createCase(202, 'finance', 'Método Bola de Nieve', 'snowboarding', 'Deudas: Salir del hoyo financiero.', 
+                'Debo $5.000 USD en varias tarjetas y créditos. Ayúdame a organizar los pagos.',
+                '<div class="text-xs text-slate-500 italic">"Trata de pagar siempre un poco más del mínimo y ahorra en gastos hormiga."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">calculate</span> Problema: Consejo genérico. No ofrece un plan matemático con fechas de libertad.</div>', 
+                '{r}Actúa como Asesor Financiero experto en Desendeudamiento.{/r} {c}Deudas: Tarjeta A ($1000, 20% interés), Tarjeta B ($500, 15%), Crédito ($3500, 10%). Dispongo de $200 extra al mes.{/c} {m}Genera un Plan "Bola de Nieve" (Snowball Method): Pagar la deuda más pequeña primero para ganar tracción psicológica.{/m} {f}Tabla cronológica exacta de pagos mes a mes hasta llegar a cero.{/f}', 
+                'Ordena por saldo menor.',
+                'Reinvierta el pago liberado.',
+                '<table class="w-full text-[10px] border border-slate-200"><thead><tr class="bg-blue-50"><th>Mes</th><th>Foco</th><th>Acción</th></tr></thead><tbody><tr><td>1-3</td><td>Tarjeta B</td><td>Pagar Mínimos + $200 extra</td></tr><tr><td>4-8</td><td>Tarjeta A</td><td>Usar los $200 + cuota liberada de B ($50)</td></tr></tbody></table><p class="text-[10px] mt-1 text-green-700 font-bold">🎉 Libertad Financiera Estimada: Octubre 2025</p>', 
+                'chatgpt', false, false, 'intermediate'),
 
-{f}Tabla Markdown con columnas: Acción, Impacto Estimado ($), Dificultad de Implementación.{/f}`,
-                badPrompt: "¿Cómo puedo ahorrar dinero?",
-                badResponsePreview: "Deberías gastar menos y ahorrar más. Intenta cocinar en casa.",
-                previewResponse: "| Acción | Impacto | Dificultad |<br>|--------|---------|------------|<br>| Regla 50/30/20 auto | Alto | Media |"
-            },
-            {
-                id: 3,
-                title: "Email de Venta en Frío (Cold Email)",
-                category: "sales",
-                icon: "mail",
-                difficulty: "advanced",
-                locked: true, // PREMIUM
-                problem: "Nadie responde tus correos de prospección B2B.",
-                agiaPromptTagged: `
-{r}Eres un experto en Cold Emailing B2B y redacción persuasiva.{/r}
-{c}Vendo {service|Servicios de SEO} a {target|Dueños de E-commerce}. He notado que su principal problema es {pain|tráfico caro de anuncios pagados}.{/c}
-{m}Redacta un correo de venta en frío que consiga una reunión de 15 minutos.{/m}
-{f}Estructura: Asunto, Cuerpo, CTA claro.{/f}`,
-                badPrompt: "Escribe un correo para vender SEO.",
-                badResponsePreview: "Hola, somos la mejor agencia de SEO. Compra nuestros servicios...",
-                previewResponse: "Asunto: ¿Cansado de pagarle a Zuckerberg?..."
-            },
-            {
-                id: 4,
-                title: "Tutor Personalizado de Programación",
-                category: "education",
-                icon: "school",
-                difficulty: "intermediate",
-                locked: true,
-                problem: "Entiendes la teoría pero te bloqueas al escribir código desde cero.",
-                agiaPromptTagged: `
-{r}Actúa como un Profesor Senior de Informática especializado en Pedagogía Constructivista.{/r}
-{c}Soy un estudiante de nivel {level|intermedio} intentando aprender {tech|React JS}. Mi objetivo específico es entender {concept|el ciclo de vida de los componentes} para poder {application|crear un dashboard dinámico}.{/c}
-{m}Explícame el concepto usando una analogía del mundo real, y luego dame un ejercicio práctico incremental.{/m}
-{l}No me des la solución del código completa, guíame con pistas (Scaffolding).{/l}
-{f}Formato: Analogía -> Concepto Técnico -> Ejercicio Paso a Paso.{/f}`,
-                badPrompt: "Explícame React.",
-                badResponsePreview: "React es una librería de JS para interfaces...",
-                previewResponse: "Imagina que React es como una cocina de restaurante..."
-            },
-            {
-                id: 5,
-                title: "Optimizador de Rutina Matutina",
-                category: "productivity",
-                icon: "alarm_on",
-                difficulty: "beginner",
-                locked: false,
-                problem: "Te levantas cansado y pierdes 2 horas antes de empezar a trabajar.",
-                agiaPromptTagged: `
-{r}Actúa como un Coach de Alto Rendimiento experto en cronobiología.{/r}
-{c}Me despierto a las {wake_time|7:00 AM} y empiezo a trabajar a las {work_start|9:00 AM}. Mi mayor distracción en la mañana es {distraction|ver redes sociales en la cama}.{/c}
-{m}Diseña una rutina de 3 pasos (Protocolo de Activación) para entrar en estado de Flow antes de trabajar.{/m}
-{l}Sin meditación de 30 minutos. Acciones físicas o ambientales.{/l}
-{f}Lista de checklist.{/f}`,
-                badPrompt: "Dime qué hacer en la mañana.",
-                badResponsePreview: "Levántate temprano y haz ejercicio.",
-                previewResponse: "1. Hidratación con luz solar (5 min)..."
-            }
+            // 🔥 VENTAS
+            createCase(301, 'sales', 'FBI Salary Negotiator', 'verified_user', 'Carrera: Pedir aumento de sueldo.', 
+                'Quiero pedir un 20% de aumento. Dame un guion para decirle a mi jefe.',
+                '<div class="text-xs text-slate-500 italic">"Jefe, he trabajado duro y la inflación está alta. Merezco un aumento."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">thumb_down</span> Problema: Argumento centrado en TI ("yo necesito"), no en la empresa ("yo aporto").</div>', 
+                '{r}Actúa como Negociador Experto del FBI (Estilo Chris Voss).{/r} {c}Voy a pedir un aumento. Mis logros: Aumenté ventas un 15% y reduje costos 5%.{/c} {m}Crea un guion de negociación basado en VALOR, no en necesidad. Usa "Preguntas Calibradas" para que el jefe llegue solo a la conclusión de darme el aumento.{/m} {f}Guion paso a paso: Anclaje -> Evidencia -> Cierre.{/f}', 
+                'Usa: "¿Cómo se supone que logre X...?"',
+                'Evita el "Sí/No".',
+                '<div class="bg-white p-2 text-xs italic text-slate-600 border-l-4 border-indigo-500"><p class="mb-1"><strong>Tú:</strong> "En los últimos 12 meses, mis iniciativas han generado $50k adicionales netos a la empresa."</p><p class="mb-1"><strong>Jefe:</strong> "No hay presupuesto."</p><p><strong>Tú (Calibrada):</strong> "¿Cómo podríamos ajustar mi compensación para que sea justo con el valor de mercado actual, sin afectar el presupuesto operativo de otras áreas?"</p></div>', 
+                'chatgpt', false, false, 'advanced'),
+
+            createCase(303, 'sales', 'Cold Email B2B (Rompehielos)', 'ac_unit', 'Ventas: Email en frío que sí abren.',
+                'Escribe un mail para ofrecer mis servicios de diseño web a dentistas.',
+                '<div class="text-xs text-slate-500 italic">"Hola, somos la agencia X y hacemos webs bonitas. Tenemos ofertas. Contáctanos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">delete</span> Problema: Spam genérico centrado en características. Va directo a la papelera.</div>', 
+                '{r}Actúa como Experto en Cold Emailing B2B.{/r} {c}Target: Dueños de clínicas dentales ocupados. Problema: Sus webs viejas no permiten agendar online.{/c} {m}Escribe un email de <75 palabras enfocado 100% en SU dolor (perder pacientes) y una solución específica.{/m} {l}Asunto intrigante. Nada de "Hola, somos...".{/l} {f}Asunto + Cuerpo.{/f}',
+                'Pain Point: Silla vacía.',
+                'Call to Action (CTA) de bajo riesgo.',
+                '<p class="font-bold text-xs mb-1">Asunto: Pacientes perdidos en [Nombre Clínica]</p><div class="bg-white p-2 text-xs italic text-slate-600">"Hola Dr. Soto, intenté agendar hora en su web pero tardó 8 segundos en cargar. El 40% de los pacientes abandona a los 3 segundos.<br><br>Implementé un sistema de "Agenda en 1-Clic" para la Clínica dental X y llenaron su agenda en 2 semanas. ¿Le cuento cómo funciona en una llamada de 5 min?"</div>',
+                'claude', false, false, 'intermediate'),
+
+            // 🎨 ARTE
+            createCase(401, 'art', 'Fotografía de Producto (Cinemática)', 'camera_enhance', 'Midjourney: Foto comercial realista.', 
+                'Quiero una foto de una botella de jugo de naranja que se vea rica. Dame el prompt.',
+                '<div class="text-xs text-slate-500 italic">"Una botella de jugo de naranja en una mesa con frutas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">image_not_supported</span> Problema: Resultado plano, parece dibujo animado o stock barato. Falta dirección de arte.</div>', 
+                '{r}Actúa como Fotógrafo Publicitario y Director de Arte.{/r} {c}Producto: Jugo de Naranja Premium.{/c} {m}Construye un prompt técnico para Midjourney v6.{/m} {l}Incluye: Iluminación, Tipo de Cámara, Lente, Entorno y Parámetros de estilo (--s, --style raw).{/l} {f}Bloque de código listo para copiar.{/f}', 
+                'Usa "Backlighting" para traslucidez.',
+                'Gotas de condensación = frescura.',
+                '<div class="font-mono text-[10px] bg-slate-900 text-purple-300 p-2 rounded border border-purple-900 shadow-lg">/imagine prompt: extreme close-up shot of a glass bottle of orange juice, condensation droplets on glass, cinematic backlighting, sun rays passing through liquid, glowing orange color, surrounded by fresh orange slices and green leaves, wooden rustic table, bokeh orchard background, shot on Sony A7R IV, 85mm lens, f/1.8, photorealistic, 8k, --ar 4:5 --style raw --s 250</div>', 
+                'midjourney', false, false, 'advanced'),
+
+            createCase(405, 'art', 'Logo Minimalista (Paul Rand)', 'architecture', 'Diseño: Logo que escale.',
+                'Necesito un logo para una empresa de envíos con drones. Algo moderno.',
+                '<div class="text-xs text-slate-500 italic">"Un dron llevando una caja azul con letras modernas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">draw</span> Problema: Literalidad. Los logos complejos no funcionan en tamaños pequeños (favicon).</div>', 
+                '{r}Actúa como Diseñador Gráfico Minimalista (Estilo Bauhaus/Paul Rand).{/r} {c}Empresa: "AeroFast" (Logística Drones).{/c} {m}Describe un isotipo abstracto y geométrico que sugiera velocidad y aire, sin mostrar un dron literal.{/m} {f}Prompt descriptivo conceptual.{/f}',
+                'Espacio negativo.',
+                'Geometría simple.',
+                '<p class="text-xs text-slate-700">"Un hexágono equilátero (representando la caja) formado por tres flechas o vectores de velocidad que convergen en el centro, utilizando espacio negativo. Color: Naranja Eléctrico sobre fondo blanco. Estilo plano, vectorial, sin sombras."</p>',
+                'midjourney', false, false, 'intermediate'),
+
+            // 🧠 CEREBRO DIGITAL (TECH)
+            createCase(602, 'tech', 'SQL Query Optimizer', 'database', 'Data: Consultas eficientes.',
+                'Sácame los 10 clientes que más compraron el último mes de la base de datos.',
+                '<div class="text-xs text-slate-500 italic">"SELECT * FROM ventas WHERE fecha = mes_pasado"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">data_array</span> Problema: Query ineficiente (SELECT *), no agrupa por cliente, sintaxis incorrecta.</div>', 
+                '{r}Actúa como Senior Data Engineer.{/r} {c}Tablas: `Users` (id, name), `Orders` (id, user_id, amount, created_at).{/c} {m}Escribe una Query SQL optimizada para obtener el Top 10 Clientes por monto total (SUM) en los últimos 30 días.{/m} {f}Bloque SQL con comentarios.{/f}',
+                'Usa JOIN explícito.',
+                'Filtra fecha antes de agrupar.',
+                '<div class="font-mono text-[10px] bg-slate-900 text-blue-300 p-2 rounded mb-1">SELECT u.name, SUM(o.amount) as total_spent<br>FROM Users u<br>JOIN Orders o ON u.id = o.user_id<br>WHERE o.created_at >= DATE("now", "-30 days")<br>GROUP BY u.id<br>ORDER BY total_spent DESC<br>LIMIT 10;</div>',
+                'chatgpt', false, false, 'advanced'),
+
+            createCase(609, 'tech', 'Diagnóstico IT (Pantalla Azul)', 'bug_report', 'Soporte: Arreglar PC sin formatear.',
+                'Me salió pantalla azul en Windows. ¿Qué hago?',
+                '<div class="text-xs text-slate-500 italic">"Reinicia o formatea el equipo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">dangerous</span> Problema: La solución nuclear (formatear) es el último recurso. Falta diagnóstico.</div>', 
+                '{r}Actúa como Técnico de Soporte Nivel 2.{/r} {c}Síntoma: BSOD (Blue Screen of Death) con código "CRITICAL_PROCESS_DIED".{/c} {m}Provee una lista escalonada de soluciones, desde la menos invasiva (comandos de reparación) hasta la verificación de hardware.{/m} {f}Pasos con comandos CMD.{/f}',
+                'Comandos: sfc, dism.',
+                'Verificar drivers.',
+                '<div class="bg-slate-50 p-2 rounded text-xs"><p class="font-bold mb-1">Paso 1: Reparación de Archivos</p><code class="bg-black text-white px-1">sfc /scannow</code><br><p class="mt-1 font-bold">Paso 2: Imagen de Sistema</p><code class="bg-black text-white px-1">DISM /Online /Cleanup-Image /RestoreHealth</code></div>',
+                'gemini', false, false, 'intermediate'),
+
+            // 🎓 EDUCACIÓN
+            createCase(701, 'education', 'Tutor Socrático', 'psychology', 'Matemáticas: Aprender sin respuesta.', 
+                'Ayúdame a resolver esta ecuación cuadrática x^2 - 5x + 6 = 0, pero no me des la respuesta directa, guíame para que yo la resuelva.',
+                '<div class="text-xs text-slate-500 italic">"Las soluciones son x=2 y x=3. Usa la fórmula general."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">school</span> Problema: La IA "spoilea" el aprendizaje dando el resultado final.</div>', 
+                '{r}Actúa como Profesor Socrático.{/r} {c}Alumno confundido.{/c} {m}Guía con preguntas, NO des respuesta.{/m} {f}Diálogo.{/f}', 
+                'Si equivoca, pregunta.',
+                'Termina con pregunta.',
+                '<p class="text-xs italic text-indigo-700">"¡Hola! Vamos paso a paso. Necesitamos dos números que multiplicados den +6 y sumados den -5. ¿Se te ocurre alguno?"</p>', 
+                'chatgpt', false, false, 'beginner'),
+
+            // 🛠️ INGENIERÍA
+            createCase(902, 'engineering', 'Chain of Thought (CoT)', 'psychology', 'Lógica: Pensar antes de responder.', 
+                'Resuelve este problema lógico complejo rápido.',
+                '<div class="text-xs text-slate-500 italic">"La respuesta es 5."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">psychology</span> Problema: Las IAs alucinan si se les fuerza a dar una respuesta directa sin razonar primero.</div>', 
+                '{r}Actúa como Profesor de Lógica Matemática.{/r} {c}Problema con múltiples variables.{/c} {m}Utiliza la técnica "Chain of Thought" (Cadena de Pensamiento): Desglosa el problema paso a paso, valida cada premisa y SOLO al final entrega la conclusión.{/m} {f}Paso 1, Paso 2, Conclusión.{/f}', 
+                'Pide "Piensa paso a paso".',
+                'Reduce errores un 80%.',
+                '<p class="text-xs text-slate-600"><strong>Paso 1:</strong> Identificamos las variables X e Y...<br><strong>Paso 2:</strong> Calculamos la derivada de...<br><strong>Paso 3:</strong> Verificamos contradicciones...<br><strong>Resultado:</strong> 42.</p>', 
+                'chatgpt', true, false, 'advanced'),
+
+            createCase(906, 'engineering', 'Salida JSON Estructurada', 'data_object', 'Dev: Respuestas para programadores.',
+                'Dame una lista de los países de Sudamérica con sus capitales y monedas.',
+                '<div class="text-xs text-slate-500 italic">"Chile (Santiago, Peso), Argentina (Buenos Aires, Peso), Perú (Lima, Sol)..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">code_off</span> Problema: Texto plano difícil de procesar por código.</div>', 
+                '{r}Actúa como Generador de API.{/r} {c}Datos geográficos de Sudamérica.{/c} {m}Genera un Array de Objetos JSON válido y estricto. Keys: "country", "capital", "iso_code", "currency".{/m} {l}Solo código. Sin texto introductorio.{/l} {f}Bloque JSON.{/f}',
+                'Especifica las keys exactas.',
+                'Pide "Solo JSON".',
+                '<div class="font-mono text-[10px] bg-slate-900 text-green-400 p-2 rounded">[<br>  { "country": "Chile", "capital": "Santiago", "iso": "CL" },<br>  { "country": "Argentina", "capital": "Buenos Aires", "iso": "AR" }<br>]</div>',
+                'gemini', false, false, 'advanced'),
+
+            createCase(910, 'engineering', 'Restricciones Negativas', 'do_not_disturb_on', 'Técnica: Lo que NO quieres.',
+                'Escribe un artículo sobre inteligencia artificial pero que sea fácil de leer.',
+                '<div class="text-xs text-slate-500 italic">"La inteligencia artificial es una tecnología revolucionaria que está transformando paradigmas..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">block</span> Problema: Usa clichés y palabras complejas ("revolucionaria", "paradigmas") que querías evitar.</div>', 
+                '{r}Actúa como Periodista de Tecnología Crítico.{/r} {c}Tema: Impacto real de la IA.{/c} {m}Escribe un párrafo introductorio.{/m} {l}Restricciones Negativas (Lo que NO quiero): NO uses las palabras "revolucionario", "futuro", "paradigma" ni voz pasiva. NO uses frases de más de 20 palabras.{/l} {f}Texto plano.{/f}',
+                'Fuerza simplicidad.',
+                'Control de estilo.',
+                '<p class="text-xs italic text-slate-700">"Los algoritmos ya deciden quién recibe un préstamo. No es ciencia ficción, es contabilidad automatizada. Mientras debatimos sobre robots asesinos, el software silenciosamente reescribe las reglas del mercado laboral."</p>',
+                'chatgpt', false, false, 'intermediate')
         ];
 
         // --- 2. LOGICA DE LA APLICACIÓN ---
         
-        // CONFIG - CATEGORÍAS RESTAURADAS
         const config = {
             categories: {
-                productivity: { label: "🚀 Productividad 10x", color: "emerald", icon: "rocket_launch" },
+                productivity: { label: "🚀 Productividad", color: "emerald", icon: "rocket_launch" },
                 finance: { label: "💰 Finanzas", color: "amber", icon: "monetization_on" }, 
-                sales: { label: "🔥 Ventas & Copy", color: "pink", icon: "campaign" },
-                art: { label: "🎨 Arte Digital", color: "fuchsia", icon: "palette" },
-                life: { label: "🧘 Vida Balanceada", color: "orange", icon: "self_improvement" },
-                tech: { label: "🧠 Cerebro Digital", color: "violet", icon: "memory" },
+                sales: { label: "🔥 Ventas", color: "pink", icon: "campaign" },
+                art: { label: "🎨 Arte", color: "fuchsia", icon: "palette" },
+                life: { label: "🧘 Vida", color: "orange", icon: "self_improvement" },
+                tech: { label: "🧠 Tech", color: "violet", icon: "memory" },
                 education: { label: "🎓 Educación", color: "cyan", icon: "school" },
-                engineering: { label: "🛠️ Ingeniería Prompt", color: "slate", icon: "construction" }
+                engineering: { label: "🛠️ Ingeniería", color: "slate", icon: "construction" }
             }
         };
 
-        // STATE
         let currentPromptTemplate = "";
+        let currentBadPromptTemplate = "";
         let currentVariables = {};
 
-        // INIT
         function init() {
             renderCategories();
             renderCaseList();
             startCountdown();
             startSocialProof();
-            
-            // Auto-load first unlocked case
             const first = allCases[0];
             if(first) loadCase(first.id);
         }
@@ -477,31 +597,32 @@
             const c = allCases.find(x => x.id === id);
             if(!c) return;
 
-            // UI Update
             document.getElementById('detail-title').innerText = c.title;
             document.getElementById('detail-problem').innerText = c.problem;
-            document.getElementById('detail-example-tip').innerText = c.exampleTip || "Sigue las instrucciones del modelo AGIA para mejores resultados.";
             
+            // Populate Bad Result Preview
+            document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview;
+
             // Category Badge
             const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
             const badge = document.getElementById('detail-category-badge');
             badge.innerText = cat.label;
-            // Safe color handling
             const color = cat.color || 'slate';
             badge.className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border bg-${color}-50 text-${color}-700 border-${color}-200`;
 
             // Setup Engine
             currentPromptTemplate = c.agiaPromptTagged;
+            currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt; // Fallback
             currentVariables = {};
             
-            // 1. Detect Variables in Template: {variable_name|default_value}
+            // 1. Detect Variables
             const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
             let match;
             const varsFound = [];
             
             while ((match = regex.exec(currentPromptTemplate)) !== null) {
                 varsFound.push({ key: match[1], default: match[2] });
-                currentVariables[match[1]] = match[2]; // Set default
+                currentVariables[match[1]] = match[2]; 
             }
 
             // 2. Render Inputs
@@ -509,7 +630,7 @@
             varContainer.innerHTML = '';
             
             if (varsFound.length === 0) {
-                varContainer.innerHTML = '<div class="text-xs text-slate-400">Esta herramienta no requiere configuración de variables.</div>';
+                varContainer.innerHTML = '<div class="text-xs text-slate-400">Sin variables configurables.</div>';
             } else {
                 varsFound.forEach(v => {
                     const div = document.createElement('div');
@@ -525,8 +646,8 @@
                 });
             }
 
-            // 3. Render Prompt
-            renderPrompt(c.locked);
+            // 3. Render Prompts
+            renderPrompts(c.locked);
             
             // 4. Handle Lock State
             const lockOverlay = document.getElementById('premium-lock');
@@ -534,7 +655,6 @@
 
             if(c.locked) {
                 lockOverlay.classList.remove('hidden');
-                // Disable inputs for teaser effect
                 inputs.forEach(i => i.disabled = true);
             } else {
                 lockOverlay.classList.add('hidden');
@@ -544,35 +664,38 @@
 
         function updateVariable(key, value) {
             currentVariables[key] = value;
-            // Only re-render if not locked (security/ux)
             const isLocked = !document.getElementById('premium-lock').classList.contains('hidden');
-            if(!isLocked) renderPrompt(false);
+            if(!isLocked) renderPrompts(false);
         }
 
-        function renderPrompt(isLocked) {
-            let rendered = currentPromptTemplate;
-
-            // 1. Inject Variables
-            // Replace {key|default} with the current value wrapped in span
+        function renderPrompts(isLocked) {
+            // RENDER AGIA PROMPT (RIGHT)
+            let renderedAgia = currentPromptTemplate;
             Object.keys(currentVariables).forEach(key => {
                 const val = currentVariables[key] || "___";
                 const regex = new RegExp(`{${key}\\|[^}]+}`, 'g');
-                rendered = rendered.replace(regex, `<span class="var-highlight">${val}</span>`);
+                renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${val}</span>`);
             });
 
-            // 2. Parse AGIA Tags (Colors)
-            // {r}...{/r} -> Role
+            // Parse Colors
             const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
             Object.keys(tags).forEach(t => {
                 const className = `hl-${tags[t]}`;
                 const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
-                rendered = rendered.replace(regex, `<span class="hl-tag ${className}">$1</span>`);
+                renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}">$1</span>`);
             });
+            renderedAgia = renderedAgia.replace(/\n/g, '<br>');
+            document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
 
-            // 3. Clean Newlines
-            rendered = rendered.replace(/\n/g, '<br>');
 
-            document.getElementById('detail-prompt-rendered').innerHTML = rendered;
+            // RENDER BAD PROMPT (LEFT) - Also Dynamic!
+            let renderedBad = currentBadPromptTemplate;
+            Object.keys(currentVariables).forEach(key => {
+                const val = currentVariables[key] || "...";
+                const regex = new RegExp(`{${key}}`, 'g');
+                renderedBad = renderedBad.replace(regex, `<span class="var-highlight-bad">${val}</span>`);
+            });
+            document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
         }
 
         // --- UI UTILS ---
@@ -582,19 +705,36 @@
             if(!nav) return;
             nav.innerHTML = Object.keys(config.categories).map(key => {
                 const conf = config.categories[key];
-                return `<button class="whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-600 transition-colors flex items-center gap-1">
+                return `<button onclick="filterByCategory('${key}')" class="whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-600 transition-colors flex items-center gap-1">
                     <span class="material-symbols-outlined text-sm">${conf.icon}</span> ${conf.label}
                 </button>`;
             }).join('');
         }
 
-        function renderCaseList() {
+        function filterByCategory(cat) {
+            document.getElementById('searchInput').value = ''; // Reset text search
             const list = document.getElementById('case-list');
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            
-            const filtered = allCases.filter(c => c.title.toLowerCase().includes(search));
+            const filtered = allCases.filter(c => c.category === cat);
+            renderList(filtered);
+        }
 
-            list.innerHTML = filtered.map(c => `
+        function filterCases() { 
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allCases.filter(c => 
+                c.title.toLowerCase().includes(search) || 
+                c.problem.toLowerCase().includes(search) ||
+                c.category.toLowerCase().includes(search)
+            );
+            renderList(filtered);
+        }
+
+        function renderList(cases) {
+            const list = document.getElementById('case-list');
+            if(cases.length === 0) {
+                list.innerHTML = '<div class="p-4 text-center text-xs text-slate-400">No se encontraron resultados.</div>';
+                return;
+            }
+            list.innerHTML = cases.map(c => `
                 <div onclick="loadCase(${c.id}); if(window.innerWidth<768) toggleSidebar()" class="group p-3 rounded-xl cursor-pointer hover:bg-white hover:shadow-md transition-all border border-transparent hover:border-slate-100 relative">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-500 group-hover:text-indigo-600 group-hover:border-indigo-100 transition-colors shadow-sm">
@@ -604,7 +744,7 @@
                             <h4 class="text-xs font-bold text-slate-700 truncate">${c.title}</h4>
                             <div class="flex items-center gap-2 mt-0.5">
                                 <span class="w-1.5 h-1.5 rounded-full ${c.difficulty === 'beginner' ? 'bg-green-400' : c.difficulty === 'intermediate' ? 'bg-amber-400' : 'bg-red-400'}"></span>
-                                <span class="text-[10px] text-slate-400 capitalize">${c.difficulty}</span>
+                                <span class="text-[10px] text-slate-400 capitalize truncate">${c.problem.substring(0, 30)}...</span>
                             </div>
                         </div>
                     </div>
@@ -612,58 +752,43 @@
             `).join('');
         }
         
-        function filterCases() { renderCaseList(); }
+        function renderCaseList() {
+            renderList(allCases);
+        }
+        
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
         function openPaywall() { document.getElementById('paywall-modal').classList.remove('hidden'); }
         function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
-        function showWelcome() { alert("Tutorial: Selecciona un caso a la izquierda y edita las variables."); }
+        function showWelcome() { alert("Tutorial: Selecciona un caso. Escribe tus variables a la izquierda y compara el resultado mediocre vs. el método AGIA."); }
 
         function copyPrompt() {
-            // Get text without HTML tags for clipboard
             const rawText = document.getElementById('detail-prompt-rendered').innerText;
             navigator.clipboard.writeText(rawText);
-            
             const btn = document.getElementById('copy-btn');
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<span class="material-symbols-outlined text-sm">check</span> COPIADO`;
-            btn.classList.add('bg-green-500', 'hover:bg-green-600');
-            btn.classList.remove('bg-indigo-500', 'hover:bg-indigo-600');
-            
+            btn.innerHTML = `<span class="material-symbols-outlined text-[10px]">check</span>`;
+            btn.classList.add('bg-green-500');
             setTimeout(() => {
                 btn.innerHTML = originalHTML;
-                btn.classList.remove('bg-green-500', 'hover:bg-green-600');
-                btn.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+                btn.classList.remove('bg-green-500');
             }, 2000);
         }
 
         // --- SALES PSYCHOLOGY ---
-
         function startCountdown() {
-            let minutes = 14;
-            let seconds = 59;
+            let minutes = 14; let seconds = 59;
             const el = document.getElementById('countdown');
             setInterval(() => {
-                if(seconds === 0) {
-                    if(minutes === 0) return;
-                    minutes--;
-                    seconds = 59;
-                } else {
-                    seconds--;
-                }
+                if(seconds === 0) { if(minutes === 0) return; minutes--; seconds = 59; } else { seconds--; }
                 el.innerText = `${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
             }, 1000);
         }
 
         function startSocialProof() {
             const names = ["Carlos R.", "Ana M.", "Empresa Tech", "David L.", "Sofia P."];
-            const plans = ["Plan Pro", "Acceso Total", "Pack Ventas"];
             const toast = document.getElementById('sales-toast');
-            
             setInterval(() => {
-                // Randomize content
                 const name = names[Math.floor(Math.random() * names.length)];
-                const plan = plans[Math.floor(Math.random() * plans.length)];
-                
                 toast.innerHTML = `
                 <div class="bg-white/95 backdrop-blur border border-slate-200 p-3 rounded-lg shadow-2xl flex items-center gap-3 max-w-xs ring-1 ring-slate-900/5">
                     <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs relative">
@@ -672,19 +797,12 @@
                     </div>
                     <div>
                         <p class="text-xs text-slate-800"><span class="font-bold">${name}</span> compró</p>
-                        <p class="text-[10px] text-slate-500 font-medium">${plan} • hace unos segundos</p>
+                        <p class="text-[10px] text-slate-500 font-medium">Curso Maestría AGIA • hace instantes</p>
                     </div>
                 </div>`;
-
-                // Show
                 toast.classList.remove('opacity-0', 'translate-y-24');
-                
-                // Hide after 4s
-                setTimeout(() => {
-                    toast.classList.add('opacity-0', 'translate-y-24');
-                }, 4000);
-
-            }, 15000); // Every 15 seconds
+                setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-24'); }, 4000);
+            }, 20000);
         }
 
         window.onload = init;
