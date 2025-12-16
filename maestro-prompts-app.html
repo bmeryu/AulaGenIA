@@ -151,7 +151,7 @@
                 <!-- Cases JS -->
             </div>
             
-            <!-- RESTORED: User Status & Total Counter -->
+            <!-- User Status & Total Counter -->
             <div class="p-4 border-t border-slate-200 bg-white">
                 <div class="flex justify-between items-center mb-3 text-[10px] text-slate-400">
                     <span>Viendo: <strong id="count-display" class="text-slate-600">0</strong></span>
@@ -194,24 +194,35 @@
                     <!-- THE COMPARISON ENGINE -->
                     <div class="grid lg:grid-cols-12 gap-6">
                         
-                        <!-- Left: Input Variables & TIPS (RESTORED) -->
+                        <!-- Left: Input Variables & TIPS -->
                         <div class="lg:col-span-3 space-y-4">
                             <!-- Variables Panel -->
-                            <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 shadow-sm">
+                            <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
                                 <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-3">
                                     <span class="material-symbols-outlined text-indigo-500">tune</span>
                                     <h3 class="text-sm font-bold text-slate-700 uppercase">Tus Datos</h3>
                                 </div>
-                                <div id="variables-container" class="space-y-4">
-                                    <!-- Inputs generated dynamically -->
-                                    <div class="text-xs text-slate-400 italic">Cargando variables...</div>
+                                
+                                <!-- Container for inputs -->
+                                <div id="variables-container" class="space-y-4 transition-all duration-300">
+                                    <!-- Inputs injected here -->
                                 </div>
-                                <div class="mt-4 pt-4 border-t border-slate-200 text-[10px] text-slate-400 text-center italic">
-                                    Edita los campos y mira cómo cambia el resultado a la derecha.
+
+                                <!-- LOCKED STATE OVERLAY (Default) -->
+                                <div id="variables-locked-overlay" class="absolute inset-0 bg-slate-50/95 backdrop-blur-sm z-10 flex flex-col items-center justify-center text-center p-4">
+                                    <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mb-3">
+                                        <span class="material-symbols-outlined text-indigo-600">lock_person</span>
+                                    </div>
+                                    <h4 class="text-xs font-bold text-slate-800 mb-1">Personalización Avanzada</h4>
+                                    <p class="text-[10px] text-slate-500 mb-3 leading-tight">Aprende a configurar variables dinámicas para adaptar este prompt a tu negocio.</p>
+                                    <button onclick="openVideoModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md flex items-center gap-1 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">play_circle</span>
+                                        Ver Tutorial
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- RESTORED: Interactive Tips Accordion -->
+                            <!-- Tips Accordion -->
                             <div id="tips-accordion" class="space-y-2">
                                 <!-- Tip: Example -->
                                 <div class="bg-yellow-50 border border-yellow-100 rounded-lg overflow-hidden">
@@ -296,7 +307,7 @@
                                         <!-- The AGIA Prompt -->
                                         <div id="detail-prompt-rendered" class="font-mono text-xs leading-relaxed text-slate-700 whitespace-pre-wrap h-[200px] overflow-y-auto custom-scroll"></div>
 
-                                        <!-- RESTORED: Interactive Legend Overlay -->
+                                        <!-- Legend Overlay -->
                                         <div id="interactive-legend" class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-100 px-4 py-2 flex flex-wrap gap-3 text-[9px] justify-center opacity-90">
                                             <span class="legend-item flex items-center gap-1" data-type="r"><span class="w-2 h-2 rounded-full bg-blue-400"></span> Rol</span>
                                             <span class="legend-item flex items-center gap-1" data-type="c"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Contexto</span>
@@ -347,6 +358,37 @@
             <div>
                 <h4 class="font-bold text-sm">¡Copiado al portapapeles!</h4>
                 <p class="text-xs text-slate-300 mt-0.5" id="toast-message">Listo para pegar en ChatGPT</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIDEO TUTORIAL MODAL -->
+    <div id="video-modal" class="fixed inset-0 z-[80] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur transition-opacity" onclick="closeVideoModal()"></div>
+        <div class="w-full max-w-2xl relative bg-black rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in duration-300">
+            <!-- Video Header -->
+            <div class="bg-slate-900 p-4 flex justify-between items-center border-b border-white/10">
+                <h3 class="text-white font-bold text-sm flex items-center gap-2">
+                    <span class="material-symbols-outlined text-indigo-400">school</span> Tutorial: Variables Dinámicas
+                </h3>
+                <button onclick="closeVideoModal()" class="text-white/50 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <!-- Video Placeholder (You can replace iframe src later) -->
+            <div class="aspect-video bg-slate-800 flex items-center justify-center relative group cursor-pointer">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center opacity-50"></div>
+                <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-full flex items-center justify-center border-2 border-white group-hover:scale-110 transition-transform relative z-10">
+                    <span class="material-symbols-outlined text-white text-4xl ml-1">play_arrow</span>
+                </div>
+                <p class="absolute bottom-4 left-0 right-0 text-center text-white/80 text-xs">Video Tutorial (Simulado para Demo)</p>
+            </div>
+            <!-- Action Footer -->
+            <div class="bg-slate-900 p-6 text-center">
+                <p class="text-indigo-200 text-xs mb-4 max-w-md mx-auto">Aprende cómo usar los campos dinámicos para personalizar cualquier prompt AGIA a tu industria en segundos.</p>
+                <button onclick="activateVariables()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold text-sm shadow-lg shadow-indigo-900/50 transition-all transform hover:-translate-y-1">
+                    ¡Entendido! Activar Variables
+                </button>
             </div>
         </div>
     </div>
@@ -546,6 +588,7 @@
         let currentBadPromptTemplate = "";
         let currentVariables = {};
         let casesData = [];
+        let variablesActive = false; // State for Variable Mode
 
         function init() {
             // Verificar si allCases (externo) existe
@@ -608,44 +651,76 @@
             
             while ((match = regex.exec(currentPromptTemplate)) !== null) {
                 varsFound.push({ key: match[1], default: match[2] });
-                currentVariables[match[1]] = match[2]; 
+                currentVariables[match[1]] = match[2]; // Default init
             }
 
-            // 2. Render Inputs
-            const varContainer = document.getElementById('variables-container');
-            varContainer.innerHTML = '';
-            
-            if (varsFound.length === 0) {
-                varContainer.innerHTML = '<div class="text-xs text-slate-400">Sin variables configurables.</div>';
-            } else {
-                varsFound.forEach(v => {
-                    const div = document.createElement('div');
-                    div.innerHTML = `
-                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1 tracking-wide">${v.key.replace(/_/g, ' ')}</label>
-                        <input type="text" 
-                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm"
-                            value="${v.default}"
-                            oninput="updateVariable('${v.key}', this.value)"
-                        >
-                    `;
-                    varContainer.appendChild(div);
-                });
-            }
+            // 2. Render Inputs (Hidden by default now)
+            renderVariables(varsFound);
 
             // 3. Render Prompts
             renderPrompts(c.locked);
             
             // 4. Handle Lock State
             const lockOverlay = document.getElementById('premium-lock');
-            const inputs = varContainer.querySelectorAll('input');
-
+            
+            // Note: We don't disable inputs here anymore, we control visibility via renderVariables
             if(c.locked) {
                 lockOverlay.classList.remove('hidden');
-                inputs.forEach(i => i.disabled = true);
             } else {
                 lockOverlay.classList.add('hidden');
-                inputs.forEach(i => i.disabled = false);
             }
+        }
+
+        // NEW: Render Variables with Lock Logic
+        function renderVariables(varsFound) {
+            const varContainer = document.getElementById('variables-container');
+            const lockOverlay = document.getElementById('variables-locked-overlay');
+            varContainer.innerHTML = '';
+            
+            if (varsFound.length === 0) {
+                varContainer.innerHTML = '<div class="text-xs text-slate-400">Sin variables configurables.</div>';
+                // If no vars, we can hide the lock overlay because there's nothing to unlock
+                if(lockOverlay) lockOverlay.classList.add('hidden');
+                return;
+            }
+
+            // Logic: Show/Hide based on 'variablesActive' state
+            if (!variablesActive) {
+                if(lockOverlay) lockOverlay.classList.remove('hidden'); // Show lock
+                // Render dummy blurred inputs for effect? Or just empty. 
+                // Let's render them but keeping the overlay on top is enough.
+            } else {
+                if(lockOverlay) lockOverlay.classList.add('hidden'); // Hide lock
+            }
+
+            varsFound.forEach(v => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1 tracking-wide">${v.key.replace(/_/g, ' ')}</label>
+                    <input type="text" 
+                        class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm"
+                        value="${v.default}"
+                        oninput="updateVariable('${v.key}', this.value)"
+                    >
+                `;
+                varContainer.appendChild(div);
+            });
+        }
+
+        // NEW: Toggle Variables Logic
+        function openVideoModal() {
+            document.getElementById('video-modal').classList.remove('hidden');
+        }
+        function closeVideoModal() {
+            document.getElementById('video-modal').classList.add('hidden');
+        }
+        function activateVariables() {
+            variablesActive = true;
+            closeVideoModal();
+            // Re-render current case to update UI
+            const title = document.getElementById('detail-title').innerText;
+            const c = casesData.find(x => x.title === title);
+            if(c) loadCase(c.id);
         }
 
         function updateVariable(key, value) {
