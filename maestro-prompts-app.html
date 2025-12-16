@@ -1,720 +1,833 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGIA Generator 3.0 | Bóveda Maestra (UX Premium)</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGIA Generator 3.0 | Bóveda Maestra (UX Premium)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-soft: #eef2ff;
-            --bg-canvas: #f8fafc;
-        }
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-soft: #eef2ff;
+            --bg-canvas: #f8fafc;
+        }
 
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-canvas); color: #334155; }
-        .font-mono { font-family: 'Fira Code', monospace; }
-        
-        /* Custom Scrollbar - Minimalist */
-        .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-canvas); color: #334155; }
+        .font-mono { font-family: 'Fira Code', monospace; }
+        
+        /* Custom Scrollbar - Minimalist */
+        .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        
-        /* Glass Effect */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        /* Glass Effect */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
 
-        /* AGIA Tag Styles - Pill Design */
-        .hl-tag { 
-            transition: all 0.2s; 
-            display: inline-flex; 
-            align-items: center;
-            padding: 1px 6px; 
-            border-radius: 6px; 
-            margin: 0 2px; 
-            font-weight: 600; 
-            font-size: 0.85em; 
-            cursor: default; 
-            letter-spacing: -0.02em;
-            border-bottom: 2px solid rgba(0,0,0,0.05);
-        }
-        
-        .hl-active { transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 10; }
+        /* AGIA Tag Styles - Pill Design */
+        .hl-tag { 
+            transition: all 0.2s; 
+            display: inline-flex; 
+            align-items: center;
+            padding: 1px 6px; 
+            border-radius: 6px; 
+            margin: 0 2px; 
+            font-weight: 600; 
+            font-size: 0.85em; 
+            cursor: default; 
+            letter-spacing: -0.02em;
+            border-bottom: 2px solid rgba(0,0,0,0.05);
+        }
+        
+        .hl-active { transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 10; }
 
-        .hl-rol { color: #1e40af; background: #dbeafe; border-color: #bfdbfe; }
-        .hl-contexto { color: #065f46; background: #d1fae5; border-color: #a7f3d0; }
-        .hl-meta { color: #92400e; background: #fef3c7; border-color: #fde68a; }
-        .hl-restricciones { color: #991b1b; background: #fee2e2; border-color: #fecaca; }
-        .hl-formato { color: #6b21a8; background: #f3e8ff; border-color: #e9d5ff; }
+        .hl-rol { color: #1e40af; background: #dbeafe; border-color: #bfdbfe; }
+        .hl-contexto { color: #065f46; background: #d1fae5; border-color: #a7f3d0; }
+        .hl-meta { color: #92400e; background: #fef3c7; border-color: #fde68a; }
+        .hl-restricciones { color: #991b1b; background: #fee2e2; border-color: #fecaca; }
+        .hl-formato { color: #6b21a8; background: #f3e8ff; border-color: #e9d5ff; }
 
-        /* Variable Input Highlight */
-        .var-highlight { 
-            background-color: #f0f9ff; 
-            border-bottom: 2px solid #0ea5e9; 
-            color: #0369a1; 
-            font-weight: 600;
-            padding: 0 4px;
-            border-radius: 4px;
-        }
-        
-        .var-highlight-bad {
-            background-color: #f1f5f9;
-            border-bottom: 2px dotted #94a3b8;
-            color: #64748b;
-            font-weight: 500;
-            padding: 0 2px;
-        }
+        /* Variable Input Highlight */
+        .var-highlight { 
+            background-color: #f0f9ff; 
+            border-bottom: 2px solid #0ea5e9; 
+            color: #0369a1; 
+            font-weight: 600;
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+        
+        .var-highlight-bad {
+            background-color: #f1f5f9;
+            border-bottom: 2px dotted #94a3b8;
+            color: #64748b;
+            font-weight: 500;
+            padding: 0 2px;
+        }
 
-        /* Utilities */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Selection */
-        ::selection { background: #c7d2fe; color: #1e1b4b; }
-    </style>
+        /* Utilities */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Selection */
+        ::selection { background: #c7d2fe; color: #1e1b4b; }
+    </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-600 bg-slate-50 selection:bg-indigo-100 selection:text-indigo-900">
 
-    <!-- ERROR / EMPTY STATE OVERLAY -->
-    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-slate-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-        <div class="bg-white p-8 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full animate-in zoom-in duration-300">
-            <div id="status-icon" class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-pulse ring-4 ring-indigo-50/50">
-                <span class="material-symbols-rounded text-3xl">cloud_sync</span>
-            </div>
-            <h2 id="status-title" class="text-xl font-bold text-slate-900 mb-2">Sincronizando Bóveda...</h2>
-            <p id="status-desc" class="text-sm text-slate-500 mb-8 leading-relaxed">Conectando con el servidor central para descargar los últimos prompts de ingeniería.</p>
-            
-            <div class="bg-slate-50 p-4 rounded-xl text-left text-xs font-mono text-slate-500 mb-6 overflow-hidden border border-slate-200">
-                <div class="flex items-center gap-2 mb-2 pb-2 border-b border-slate-200">
-                    <span class="w-2 h-2 rounded-full bg-slate-300"></span>
-                    <span class="font-bold text-slate-400">SYSTEM DIAGNOSTIC</span>
-                </div>
-                <p>> Target: <span class="text-indigo-600">aulagenia.cl/db</span></p>
-                <p>> Status: <span id="status-code" class="text-slate-500 font-bold">FETCHING...</span></p>
-            </div>
+    <!-- ERROR / EMPTY STATE OVERLAY -->
+    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-slate-50/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full animate-in zoom-in duration-300">
+            <div id="status-icon" class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-pulse ring-4 ring-indigo-50/50">
+                <span class="material-symbols-rounded text-3xl">cloud_sync</span>
+            </div>
+            <h2 id="status-title" class="text-xl font-bold text-slate-900 mb-2">Sincronizando Bóveda...</h2>
+            <p id="status-desc" class="text-sm text-slate-500 mb-8 leading-relaxed">Conectando con el servidor central para descargar los últimos prompts de ingeniería.</p>
+            
+            <div class="bg-slate-50 p-4 rounded-xl text-left text-xs font-mono text-slate-500 mb-6 overflow-hidden border border-slate-200">
+                <div class="flex items-center gap-2 mb-2 pb-2 border-b border-slate-200">
+                    <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                    <span class="font-bold text-slate-400">SYSTEM DIAGNOSTIC</span>
+                </div>
+                <p>> Target: <span class="text-indigo-600">aulagenia.cl/db</span></p>
+                <p>> Status: <span id="status-code" class="text-slate-500 font-bold">FETCHING...</span></p>
+            </div>
 
-            <button id="retry-btn" onclick="window.location.reload()" class="hidden w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-semibold transition-all shadow-lg shadow-slate-200 hover:shadow-xl flex items-center justify-center gap-2">
-                <span class="material-symbols-rounded text-sm">refresh</span> Reintentar Conexión
-            </button>
-        </div>
-    </div>
+            <button id="retry-btn" onclick="window.location.reload()" class="hidden w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-semibold transition-all shadow-lg shadow-slate-200 hover:shadow-xl flex items-center justify-center gap-2">
+                <span class="material-symbols-rounded text-sm">refresh</span> Reintentar Conexión
+            </button>
+        </div>
+    </div>
 
-    <!-- SALES TRIGGER: Top Sticky Banner (Slimmer) -->
-    <div id="sticky-banner" class="bg-indigo-600 text-white py-1.5 px-4 flex justify-center items-center gap-4 text-xs z-50 shadow-sm flex-none">
-        <div class="flex items-center gap-2 opacity-90">
-            <span class="w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
-            <span class="font-medium">Masterclass de Ingeniería de Prompts</span>
-        </div>
-        <div class="font-mono font-bold text-indigo-600 bg-white px-2 py-0.5 rounded text-[10px]" id="countdown">14:59</div>
-        <button onclick="openPaywall()" class="text-white hover:text-indigo-100 font-bold text-[10px] underline underline-offset-2 decoration-white/30">
-            VER DESCUENTO
-        </button>
-    </div>
+    <!-- SALES TRIGGER: Top Sticky Banner (Slimmer) -->
+    <div id="sticky-banner" class="bg-slate-900 text-white py-1.5 px-4 flex justify-center items-center gap-4 text-xs z-50 shadow-sm flex-none">
+        <div class="flex items-center gap-2 opacity-90">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            <span class="font-medium">Masterclass de Ingeniería de Prompts</span>
+        </div>
+        <div class="font-mono font-bold text-yellow-400 bg-white/10 px-2 py-0.5 rounded text-[10px]" id="countdown">14:59</div>
+        <button onclick="openPaywall()" class="text-yellow-400 hover:text-yellow-300 font-bold text-[10px] underline underline-offset-2 decoration-yellow-400/30">
+            VER DESCUENTO
+        </button>
+    </div>
 
-    <!-- Main Layout Container -->
-    <div class="flex flex-1 overflow-hidden max-w-[100vw] mx-auto w-full relative">
-        
-        <!-- SIDEBAR (DARK MODE NOW) -->
-        <aside class="w-full md:w-64 lg:w-72 flex flex-col bg-slate-900 border-r border-slate-800 flex-none z-20 transition-transform duration-300 absolute md:relative h-full transform -translate-x-full md:translate-x-0 shadow-xl" id="sidebar">
-            
-            <!-- Sidebar Header -->
-            <div class="p-4 bg-slate-900 sticky top-0 z-10 border-b border-slate-800">
-                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-lg shadow-lg shadow-indigo-900/50">
-                        A
-                    </div>
-                    <div>
-                        <h1 class="text-sm font-bold text-white leading-none mb-0.5">AGIA Gen <span class="text-indigo-400">3.0</span></h1>
-                        <p class="text-[10px] text-slate-500 font-medium tracking-wide">AI PROMPT LAB</p>
-                    </div>
-                </div>
+    <!-- Header (Clean) -->
+    <header class="bg-white border-b border-slate-100 z-30 flex-none relative">
+        <div class="max-w-[1920px] mx-auto px-4 sm:px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-lg flex items-center justify-center text-white font-black text-lg shadow-lg shadow-indigo-200">
+                        A
+                    </div>
+                    <div>
+                        <h1 class="text-sm font-bold text-slate-900 leading-none mb-0.5">AGIA Generator <span class="text-indigo-600">3.0</span></h1>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-wide">AI PROMPT ENGINEERING LAB</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="showWelcome()" class="hidden md:flex text-slate-400 hover:text-indigo-600 transition-colors items-center gap-1.5 text-xs font-medium px-2 py-1">
+                        <span class="material-symbols-rounded text-base">help</span> <span class="hidden lg:inline">Cómo funciona</span>
+                    </button>
+                    <button onclick="openPaywall()" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md transition-all flex items-center gap-2 transform hover:-translate-y-0.5">
+                        <span class="material-symbols-rounded text-sm text-yellow-400">lock_open</span>
+                        <span class="hidden sm:inline">Desbloquear Todo</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Category Navigation (Pills) -->
+            <div class="mt-3 flex space-x-2 overflow-x-auto custom-scroll pb-1 no-scrollbar mask-gradient-r" id="category-nav">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </header>
 
-                <div class="relative group">
-                    <span class="material-symbols-rounded absolute left-3 top-2.5 text-slate-500 text-lg group-focus-within:text-indigo-400 transition-colors">search</span>
-                    <input type="text" id="searchInput" placeholder="Buscar..." 
-                        class="w-full pl-9 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-xs font-medium text-slate-200 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none shadow-sm placeholder:text-slate-500"
-                        onkeyup="filterCases()">
-                </div>
-            </div>
-            
-            <!-- Category Nav (Vertical in Dark Sidebar) -->
-            <div class="px-4 py-2 border-b border-slate-800/50">
-                 <div class="flex space-x-2 overflow-x-auto custom-scroll pb-2 no-scrollbar" id="category-nav">
-                    <!-- Injected by JS -->
-                </div>
-            </div>
-            
-            <!-- Case List -->
-            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-0.5" id="case-list">
-                <!-- Cases JS -->
-            </div>
-            
-            <!-- Sidebar Footer -->
-            <div class="p-4 border-t border-slate-800 bg-slate-900 text-slate-400">
-                <button onclick="showWelcome()" class="flex items-center gap-2 text-xs font-medium hover:text-white transition-colors w-full mb-3">
-                    <span class="material-symbols-rounded text-base">help</span> Cómo funciona
-                </button>
-                <div class="flex items-center justify-between text-[10px] font-medium opacity-60">
-                    <span>v3.0.1 Stable</span>
-                    <span class="text-emerald-500 flex items-center gap-1">Online</span>
-                </div>
-            </div>
-        </aside>
+    <!-- Main Layout -->
+    <div class="flex flex-1 overflow-hidden max-w-[1920px] mx-auto w-full relative">
+        
+        <!-- Sidebar (List) -->
+        <aside class="w-full md:w-72 lg:w-80 flex flex-col bg-slate-50 border-r border-slate-200/60 flex-none z-20 transition-transform duration-300 absolute md:relative h-full transform -translate-x-full md:translate-x-0" id="sidebar">
+            <div class="p-3 sticky top-0 bg-slate-50/95 backdrop-blur z-10">
+                <div class="relative group">
+                    <span class="material-symbols-rounded absolute left-3 top-2.5 text-slate-400 text-lg group-focus-within:text-indigo-500 transition-colors">search</span>
+                    <input type="text" id="searchInput" placeholder="Buscar caso..." 
+                        class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 transition-all outline-none shadow-sm placeholder:text-slate-400"
+                        onkeyup="filterCases()">
+                </div>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list">
+                <!-- Cases JS -->
+            </div>
+            
+            <!-- Sidebar Footer -->
+            <div class="p-3 border-t border-slate-200/60 bg-white/50">
+                <div class="flex items-center justify-between text-[10px] font-medium text-slate-400 px-1 mb-2">
+                    <span>DB Status</span>
+                    <span class="text-emerald-500 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Online</span>
+                </div>
+                <div class="flex items-center gap-2 px-1">
+                    <div class="text-[10px] text-slate-400">Casos cargados:</div>
+                    <div class="text-xs font-bold text-slate-700" id="total-display">0</div>
+                </div>
+            </div>
+        </aside>
 
-        <!-- Main Workspace -->
-        <main class="flex-1 flex flex-col bg-slate-50/50 overflow-hidden relative w-full">
-            
-            <!-- Top Bar (Context) -->
-            <header class="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-6 flex-none">
-                <div class="flex items-center gap-2 text-sm text-slate-500">
-                    <span class="material-symbols-rounded text-lg">folder_open</span>
-                    <span id="breadcrumb-category" class="font-medium text-slate-800">Selecciona un caso</span>
-                    <span class="text-slate-300">/</span>
-                    <span id="breadcrumb-title" class="truncate max-w-[200px]">...</span>
-                </div>
-                 <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md shadow-indigo-200 transition-all flex items-center gap-2">
-                    <span class="material-symbols-rounded text-sm">lock_open</span>
-                    <span class="hidden sm:inline">Desbloquear Todo</span>
-                </button>
-            </header>
+        <!-- Main Workspace -->
+        <main class="flex-1 flex flex-col bg-white overflow-hidden relative w-full">
+            <!-- Empty State -->
+            <div id="workspace-empty" class="hidden flex-col items-center justify-center h-full text-center p-8 bg-slate-50/30">
+                <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+                    <span class="material-symbols-rounded text-5xl text-slate-300">compare_arrows</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-700 mb-2">Laboratorio de Prompts</h3>
+                <p class="text-sm text-slate-400 max-w-xs">Selecciona un caso del menú lateral para comparar una instrucción mediocre vs. el método AGIA.</p>
+            </div>
 
-            <!-- Empty State -->
-            <div id="workspace-empty" class="hidden flex-col items-center justify-center h-full text-center p-8 bg-slate-50/30">
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm border border-slate-100">
-                    <span class="material-symbols-rounded text-4xl text-slate-300">dashboard_customize</span>
-                </div>
-                <h3 class="text-lg font-bold text-slate-800 mb-2">Workspace Vacío</h3>
-                <p class="text-sm text-slate-500 max-w-xs">Selecciona un template del panel oscuro para comenzar a editar.</p>
-            </div>
+            <!-- Content Area -->
+            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 lg:p-8 pb-32 bg-slate-50/30">
+                <div class="max-w-6xl mx-auto fade-in">
+                    
+                    <!-- Header Tool -->
+                    <div class="mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border shadow-sm">Categoría</span>
+                            </div>
+                            <h2 id="detail-title" class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">Título del Caso</h2>
+                            <p id="detail-problem" class="text-sm text-slate-500 leading-relaxed max-w-2xl font-medium"></p>
+                        </div>
+                    </div>
 
-            <!-- Content Area (Bento Grid Redefined) -->
-            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 lg:p-6 pb-32">
-                <div class="max-w-7xl mx-auto fade-in h-full flex flex-col">
-                    
-                    <!-- NEW LAYOUT: 2-Column Asymmetric (Settings vs Worktable) -->
-                    <div class="grid lg:grid-cols-12 gap-6 h-full items-start">
-                        
-                        <!-- COLUMN 1: CONFIGURATION (Small, Left) - 3/12 cols -->
-                        <div class="lg:col-span-3 space-y-4">
-                            <!-- Variables Panel -->
-                            <div class="bg-white rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
-                                <div class="px-4 py-3 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-2">
-                                        <span class="material-symbols-rounded text-indigo-500 text-sm">tune</span> Variables
-                                    </h3>
-                                </div>
-                                <div id="variables-container" class="p-4 space-y-3"></div>
-                                
-                                <!-- Locked Overlay -->
-                                <div id="variables-locked-overlay" class="absolute inset-0 bg-white/90 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center text-center p-4">
-                                    <span class="material-symbols-rounded text-slate-400 text-2xl mb-2">lock</span>
-                                    <p class="text-[10px] text-slate-500 mb-2 font-medium">Personalización Pro</p>
-                                    <button onclick="openVideoModal()" class="text-[10px] bg-slate-900 text-white px-3 py-1.5 rounded-md font-bold hover:bg-slate-800">Ver Demo</button>
-                                </div>
-                            </div>
+                    <!-- THE GRID -->
+                    <div class="grid lg:grid-cols-12 gap-6 items-start">
+                        
+                        <!-- Left Col: Controls & Tips -->
+                        <div class="lg:col-span-4 xl:col-span-3 space-y-4">
+                            <!-- Variables Panel -->
+                            <div class="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm relative overflow-hidden group hover:border-indigo-200 transition-colors">
+                                <div class="flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
+                                    <div class="w-6 h-6 rounded bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                        <span class="material-symbols-rounded text-sm">tune</span>
+                                    </div>
+                                    <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Personalizar</h3>
+                                </div>
+                                
+                                <div id="variables-container" class="space-y-3 transition-all duration-300">
+                                    <!-- Inputs injected here -->
+                                </div>
 
-                            <!-- Validation Tip -->
-                            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                                <div class="px-4 py-3 border-b border-slate-100 bg-slate-50/50">
-                                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-2">
-                                        <span class="material-symbols-rounded text-emerald-500 text-sm">check_circle</span> Validación
-                                    </h3>
-                                </div>
-                                <div class="p-4">
-                                     <p id="detail-validation-tip" class="text-xs text-slate-600 leading-relaxed">...</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Pro Tip (Yellow) -->
-                             <div class="bg-amber-50 rounded-xl border border-amber-100 shadow-sm overflow-hidden">
-                                <div class="p-4">
-                                     <div class="flex items-center gap-2 mb-2 text-amber-700 font-bold text-xs uppercase">
-                                        <span class="material-symbols-rounded text-sm">lightbulb</span> Pro Tip
-                                     </div>
-                                     <p id="detail-example-tip" class="text-xs text-amber-900/80 leading-relaxed italic">...</p>
-                                </div>
-                            </div>
-                        </div>
+                                <!-- LOCKED STATE OVERLAY -->
+                                <div id="variables-locked-overlay" class="absolute inset-0 bg-white/80 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center text-center p-4">
+                                    <span class="material-symbols-rounded text-indigo-400 text-3xl mb-2">lock_person</span>
+                                    <h4 class="text-xs font-bold text-slate-800 mb-1">Variables Dinámicas</h4>
+                                    <p class="text-[10px] text-slate-500 mb-3 px-2">Personaliza este prompt para tu industria específica.</p>
+                                    <button onclick="openVideoModal()" class="text-xs bg-slate-900 hover:bg-slate-800 text-white px-4 py-1.5 rounded-lg font-bold shadow-md transition-all">
+                                        Ver Demo
+                                    </button>
+                                </div>
+                            </div>
 
-                        <!-- COLUMN 2: WORKBENCH (Large, Right) - 9/12 cols -->
-                        <div class="lg:col-span-9 flex flex-col gap-4">
-                            
-                            <!-- 1. The Context (Bad Prompt) - Now a Horizontal Strip (Less Visual Weight) -->
-                            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-1 flex flex-col md:flex-row items-stretch">
-                                <div class="bg-slate-100/50 px-4 py-3 rounded-lg md:w-48 flex-none flex items-center gap-2 border-b md:border-b-0 md:border-r border-slate-100">
-                                    <span class="material-symbols-rounded text-slate-400">error</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">Input Original</span>
-                                </div>
-                                <div class="p-3 flex-1 flex items-center">
-                                    <code id="bad-prompt-rendered" class="text-xs text-slate-600 font-mono w-full break-words">...</code>
-                                </div>
-                                <div class="px-4 py-3 border-l border-slate-100 flex items-center justify-center bg-slate-50/30 rounded-r-lg">
-                                    <span class="text-[10px] font-bold text-slate-400 uppercase">Novato</span>
-                                </div>
-                            </div>
+                            <!-- Tips Accordion -->
+                            <div id="tips-accordion" class="space-y-2">
+                                <div class="bg-amber-50/50 border border-amber-100 rounded-xl overflow-hidden">
+                                    <button onclick="toggleTip('example')" class="w-full px-4 py-3 flex items-center justify-between text-amber-900 hover:bg-amber-50 transition-colors">
+                                        <div class="flex items-center gap-2.5">
+                                            <span class="material-symbols-rounded text-sm text-amber-500">lightbulb</span>
+                                            <span class="text-[11px] font-bold uppercase tracking-wide opacity-80">Tip Pro</span>
+                                        </div>
+                                        <span id="icon-tip-example" class="material-symbols-rounded text-sm transition-transform opacity-50">expand_more</span>
+                                    </button>
+                                    <div id="content-tip-example" class="tip-content bg-white/40 px-4">
+                                        <p id="detail-example-tip" class="py-3 text-xs text-slate-600 italic border-t border-amber-100/50 leading-relaxed">...</p>
+                                    </div>
+                                </div>
 
-                            <!-- 2. The Solution (AGIA Prompt) - The HERO Card -->
-                            <div class="bg-white rounded-xl border border-indigo-100 shadow-xl shadow-indigo-100/40 ring-1 ring-indigo-50 overflow-hidden flex-1 flex flex-col">
-                                <!-- Hero Header -->
-                                <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center relative overflow-hidden">
-                                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-20"></div>
-                                    <div class="relative z-10 flex items-center gap-3">
-                                        <div class="p-1.5 bg-white/10 rounded-lg backdrop-blur-sm border border-white/10">
-                                            <span class="material-symbols-rounded text-lg text-indigo-300">auto_awesome</span>
-                                        </div>
-                                        <div>
-                                            <h2 class="text-sm font-bold leading-none mb-0.5">Prompt Optimizado AGIA</h2>
-                                            <p class="text-[10px] text-indigo-200/80 font-mono">FRAMEWORK v3.0 // HIGH-FIDELITY</p>
-                                        </div>
-                                    </div>
-                                    <button id="copy-btn" onclick="copyPrompt()" class="relative z-10 bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-lg shadow-indigo-500/30 flex items-center gap-2 group">
-                                        <span class="material-symbols-rounded text-sm group-hover:scale-110 transition-transform">content_copy</span> 
-                                        Copiar Prompt
-                                    </button>
-                                </div>
+                                <div class="bg-emerald-50/50 border border-emerald-100 rounded-xl overflow-hidden">
+                                    <button onclick="toggleTip('validation')" class="w-full px-4 py-3 flex items-center justify-between text-emerald-900 hover:bg-emerald-50 transition-colors">
+                                        <div class="flex items-center gap-2.5">
+                                            <span class="material-symbols-rounded text-sm text-emerald-500">fact_check</span>
+                                            <span class="text-[11px] font-bold uppercase tracking-wide opacity-80">Validación</span>
+                                        </div>
+                                        <span id="icon-tip-validation" class="material-symbols-rounded text-sm transition-transform opacity-50">expand_more</span>
+                                    </button>
+                                    <div id="content-tip-validation" class="tip-content bg-white/40 px-4">
+                                        <p id="detail-validation-tip" class="py-3 text-xs text-slate-600 leading-relaxed border-t border-emerald-100/50">...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                <!-- Code Editor Look -->
-                                <div class="flex-1 bg-white relative flex flex-col">
-                                    <!-- Legend Strip -->
-                                    <div class="border-b border-slate-100 px-6 py-2 bg-slate-50/50 flex flex-wrap gap-3" id="interactive-legend">
-                                        <span class="legend-item cursor-pointer hover:opacity-100 opacity-70 transition-opacity flex items-center gap-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wide" data-type="r">
-                                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Rol
-                                        </span>
-                                        <span class="legend-item cursor-pointer hover:opacity-100 opacity-70 transition-opacity flex items-center gap-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wide" data-type="c">
-                                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Contexto
-                                        </span>
-                                        <span class="legend-item cursor-pointer hover:opacity-100 opacity-70 transition-opacity flex items-center gap-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wide" data-type="m">
-                                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> Meta
-                                        </span>
-                                        <span class="legend-item cursor-pointer hover:opacity-100 opacity-70 transition-opacity flex items-center gap-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wide" data-type="l">
-                                            <span class="w-2 h-2 rounded-full bg-red-500"></span> Restricciones
-                                        </span>
-                                        <span class="legend-item cursor-pointer hover:opacity-100 opacity-70 transition-opacity flex items-center gap-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wide" data-type="f">
-                                            <span class="w-2 h-2 rounded-full bg-purple-500"></span> Formato
-                                        </span>
-                                    </div>
+                        <!-- Right Col: The Comparison Engine -->
+                        <div class="lg:col-span-8 xl:col-span-9 grid md:grid-cols-2 gap-6 relative">
+                            
+                            <!-- Arrow Connector (Desktop) -->
+                            <div class="hidden md:flex absolute top-[120px] left-1/2 transform -translate-x-1/2 z-10 justify-center">
+                                <div class="bg-white p-1.5 rounded-full shadow-md border border-slate-100 text-slate-300">
+                                    <span class="material-symbols-rounded text-xl">arrow_forward</span>
+                                </div>
+                            </div>
 
-                                    <!-- Main Code Area -->
-                                    <div class="relative flex-1 p-6">
-                                        <div id="detail-prompt-rendered" class="font-mono text-sm leading-7 text-slate-700 whitespace-pre-wrap"></div>
-                                        
-                                        <!-- Premium Lock (Internal) -->
-                                        <div id="premium-lock" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center glass-panel text-center p-6 m-4 rounded-xl border-dashed border-2 border-slate-200">
-                                            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-3">
-                                                <span class="material-symbols-rounded text-slate-400 text-2xl">lock</span>
-                                            </div>
-                                            <h3 class="text-sm font-bold text-slate-800 mb-1">Contenido de la Bóveda</h3>
-                                            <button onclick="openPaywall()" class="mt-3 bg-slate-900 text-white px-5 py-2 rounded-lg text-xs font-bold hover:bg-slate-800 transition-colors">
-                                                Desbloquear Acceso
-                                            </button>
-                                        </div>
-                                    </div>
+                            <!-- 1. THE BAD WAY -->
+                            <div class="flex flex-col gap-4 opacity-70 hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden h-full flex flex-col">
+                                    <div class="bg-slate-100/50 px-5 py-3 border-b border-slate-200 flex justify-between items-center">
+                                        <div class="flex items-center gap-2 text-slate-500">
+                                            <span class="material-symbols-rounded text-sm">cancel</span>
+                                            <span class="text-[10px] font-bold uppercase tracking-widest">Método Común</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-5 flex-1 flex flex-col gap-4">
+                                        <div>
+                                            <label class="text-[10px] font-bold text-slate-400 uppercase mb-1.5 block">Prompt (Novato)</label>
+                                            <div id="bad-prompt-rendered" class="font-mono text-xs text-slate-600 bg-white p-3 rounded-lg border border-slate-200 shadow-sm italic">...</div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <label class="text-[10px] font-bold text-slate-400 uppercase mb-1.5 block">Resultado Pobre</label>
+                                            <div id="bad-result-preview" class="text-xs text-slate-500 leading-relaxed bg-slate-100/50 p-3 rounded-lg border border-slate-200 h-full max-h-40 overflow-y-auto custom-scroll font-medium">...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                    <!-- Footer Result Preview -->
-                                    <div class="bg-indigo-50/50 border-t border-indigo-100 px-6 py-4">
-                                        <div class="flex items-center gap-2 mb-2">
-                                            <span class="material-symbols-rounded text-indigo-500 text-sm">output</span>
-                                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Resultado Esperado</span>
-                                        </div>
-                                        <div id="good-result-preview" class="text-xs text-slate-600/90 leading-relaxed font-medium bg-white/50 p-3 rounded border border-indigo-100/50"></div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- 2. THE AGIA WAY (Hero) -->
+                            <div class="flex flex-col gap-4">
+                                <div class="bg-white rounded-2xl shadow-xl shadow-indigo-100/50 border border-indigo-100 overflow-hidden ring-1 ring-indigo-50 relative group h-full flex flex-col">
+                                    <!-- Header -->
+                                    <div class="bg-indigo-600 text-white px-5 py-3 flex justify-between items-center bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+                                        <div class="flex items-center gap-2">
+                                            <span class="material-symbols-rounded text-base">verified</span>
+                                            <span class="text-[10px] font-bold uppercase tracking-widest">Método AGIA Pro</span>
+                                        </div>
+                                        <button id="copy-btn" onclick="copyPrompt()" class="flex items-center gap-1.5 text-[10px] font-bold bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full transition-all border border-white/20">
+                                            <span class="material-symbols-rounded text-[12px]">content_copy</span> COPIAR
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="p-5 flex-1 flex flex-col gap-5 relative">
+                                        <!-- Prompt Area -->
+                                        <div>
+                                            <div class="flex justify-between items-end mb-2">
+                                                <label class="text-[10px] font-bold text-indigo-400 uppercase">Prompt Estructurado</label>
+                                                <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 flex items-center gap-1">
+                                                    <span class="material-symbols-rounded text-[10px]">bolt</span> High Performance
+                                                </span>
+                                            </div>
+                                            <div class="relative group/code">
+                                                <div id="detail-prompt-rendered" class="font-mono text-[13px] leading-relaxed text-slate-700 whitespace-pre-wrap h-[220px] overflow-y-auto custom-scroll p-1 pr-2"></div>
+                                                <!-- Overlay gradient bottom -->
+                                                <div class="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+                                            </div>
+                                        </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
+                                        <!-- Interactive Legend (Clean Pill Bar) -->
+                                        <div id="interactive-legend" class="flex flex-wrap gap-2 justify-start border-t border-slate-100 pt-4">
+                                            <span class="legend-item flex items-center gap-1.5 text-[10px] font-medium text-slate-500 bg-slate-50 px-2 py-1 rounded hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-100" data-type="r">
+                                                <span class="w-2 h-2 rounded-full bg-blue-500"></span> Rol
+                                            </span>
+                                            <span class="legend-item flex items-center gap-1.5 text-[10px] font-medium text-slate-500 bg-slate-50 px-2 py-1 rounded hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-100" data-type="c">
+                                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Contexto
+                                            </span>
+                                            <span class="legend-item flex items-center gap-1.5 text-[10px] font-medium text-slate-500 bg-slate-50 px-2 py-1 rounded hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-100" data-type="m">
+                                                <span class="w-2 h-2 rounded-full bg-amber-500"></span> Meta
+                                            </span>
+                                            <span class="legend-item flex items-center gap-1.5 text-[10px] font-medium text-slate-500 bg-slate-50 px-2 py-1 rounded hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-100" data-type="l">
+                                                <span class="w-2 h-2 rounded-full bg-red-500"></span> Restricciones
+                                            </span>
+                                            <span class="legend-item flex items-center gap-1.5 text-[10px] font-medium text-slate-500 bg-slate-50 px-2 py-1 rounded hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-100" data-type="f">
+                                                <span class="w-2 h-2 rounded-full bg-purple-500"></span> Formato
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Premium Overlay -->
+                                        <div id="premium-lock" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center glass-panel text-center p-6 transition-all duration-300 m-1 rounded-xl">
+                                            <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center shadow-2xl mb-4 transform rotate-3 ring-4 ring-white">
+                                                <span class="material-symbols-rounded text-white text-2xl">lock</span>
+                                            </div>
+                                            <h3 class="text-base font-extrabold text-slate-900 mb-1">Contenido Exclusivo</h3>
+                                            <p class="text-xs text-slate-500 mb-5 max-w-[200px] leading-relaxed">Aprende la lógica detrás de este prompt maestro en el curso completo.</p>
+                                            <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-indigo-200 text-xs flex items-center gap-2 transform transition-all hover:scale-105">
+                                                DESBLOQUEAR AHORA
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Expected Result Footer -->
+                                    <div class="bg-indigo-50/50 p-4 border-t border-indigo-50">
+                                        <div class="text-[10px] font-bold text-indigo-400 uppercase mb-2 flex gap-2 items-center">
+                                            <span class="material-symbols-rounded text-sm">auto_awesome</span> Resultado Esperado
+                                        </div>
+                                        <div id="good-result-preview" class="text-xs text-slate-600 leading-relaxed max-h-32 overflow-y-auto custom-scroll bg-white p-3 rounded-lg border border-indigo-100/50 shadow-sm"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
 
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed bottom-8 right-8 z-50 transform translate-x-full transition-all duration-300 ease-out">
-        <div class="bg-slate-900 text-white pl-4 pr-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-4 border border-slate-700/50 backdrop-blur-md">
-            <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-slate-900 shadow-lg shadow-emerald-500/20">
-                <span class="material-symbols-rounded text-lg">thumb_up</span>
-            </div>
-            <div>
-                <h4 class="font-bold text-xs text-white">¡Copiado!</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5 font-medium" id="toast-message">Listo para pegar en ChatGPT</p>
-            </div>
-        </div>
-    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
-    <!-- SALES TOAST (Bottom Left) -->
-    <div id="sales-toast" class="fixed bottom-20 left-6 z-40 transform transition-all duration-700 translate-y-24 opacity-0 pointer-events-none md:pointer-events-auto"></div>
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-8 right-8 z-50 transform translate-x-full transition-all duration-300 ease-out">
+        <div class="bg-slate-900 text-white pl-4 pr-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-4 border border-slate-700/50 backdrop-blur-md">
+            <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-slate-900 shadow-lg shadow-emerald-500/20">
+                <span class="material-symbols-rounded text-lg">thumb_up</span>
+            </div>
+            <div>
+                <h4 class="font-bold text-xs text-white">¡Copiado al portapapeles!</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5 font-medium" id="toast-message">Listo para pegar en ChatGPT</p>
+            </div>
+        </div>
+    </div>
 
-    <!-- VIDEO TUTORIAL MODAL -->
-    <div id="video-modal" class="fixed inset-0 z-[80] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closeVideoModal()"></div>
-        <div class="w-full max-w-2xl relative bg-black rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in duration-300 border border-slate-800">
-            <div class="bg-slate-900/50 p-4 flex justify-between items-center border-b border-white/5 absolute top-0 left-0 right-0 z-10 backdrop-blur-md">
-                <h3 class="text-white font-bold text-xs flex items-center gap-2">Tutorial: Variables</h3>
-                <button onclick="closeVideoModal()" class="text-white/50 hover:text-white transition-colors"><span class="material-symbols-rounded">close</span></button>
-            </div>
-            <div class="aspect-video bg-slate-900 flex items-center justify-center relative cursor-pointer group">
-                <div class="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-rounded text-white text-4xl ml-1">play_arrow</span>
-                </div>
-            </div>
-            <div class="bg-slate-900 p-6 text-center border-t border-slate-800">
-                <button onclick="activateVariables()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-lg font-bold text-xs">Activar Variables</button>
-            </div>
-        </div>
-    </div>
+    <!-- SALES TOAST (Bottom Left) -->
+    <div id="sales-toast" class="fixed bottom-20 left-6 z-40 transform transition-all duration-700 translate-y-24 opacity-0 pointer-events-none md:pointer-events-auto"></div>
 
-    <!-- PAYWALL MODAL -->
-    <div id="paywall-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
-        <div class="relative bg-white rounded-3xl shadow-2xl max-w-sm w-full p-8 text-center animate-in zoom-in duration-300 border border-slate-100">
-            <div class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 font-black text-2xl shadow-lg shadow-indigo-200">
-                PRO
-            </div>
-            <h3 class="text-xl font-black text-slate-900 mb-2">Acceso Total</h3>
-            <p class="text-sm text-slate-500 mb-6">Desbloquea la Bóveda Maestra con +100 prompts.</p>
-            <button onclick="closePaywall()" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl font-bold text-sm shadow-xl transition-all">Desbloquear $29</button>
-            <button onclick="closePaywall()" class="text-xs text-slate-400 mt-4 hover:text-slate-600">Cancelar</button>
-        </div>
-    </div>
+    <!-- VIDEO TUTORIAL MODAL -->
+    <div id="video-modal" class="fixed inset-0 z-[80] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closeVideoModal()"></div>
+        <div class="w-full max-w-2xl relative bg-black rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in duration-300 border border-slate-800">
+            <!-- Video Header -->
+            <div class="bg-slate-900/50 p-4 flex justify-between items-center border-b border-white/5 absolute top-0 left-0 right-0 z-10 backdrop-blur-md">
+                <h3 class="text-white font-bold text-xs flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Tutorial: Variables Dinámicas
+                </h3>
+                <button onclick="closeVideoModal()" class="text-white/50 hover:text-white transition-colors bg-black/20 hover:bg-black/40 rounded-full p-1">
+                    <span class="material-symbols-rounded text-lg">close</span>
+                </button>
+            </div>
+            <!-- Video Placeholder -->
+            <div class="aspect-video bg-slate-900 flex items-center justify-center relative group cursor-pointer">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center opacity-30"></div>
+                <div class="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform relative z-10 shadow-2xl">
+                    <span class="material-symbols-rounded text-white text-4xl ml-1">play_arrow</span>
+                </div>
+            </div>
+            <!-- Action Footer -->
+            <div class="bg-slate-900 p-8 text-center border-t border-slate-800">
+                <h4 class="text-white font-bold mb-2">Domina la Personalización</h4>
+                <p class="text-slate-400 text-xs mb-6 max-w-md mx-auto leading-relaxed">Aprende cómo usar los campos dinámicos para adaptar cualquier prompt maestro a tu industria específica en segundos.</p>
+                <button onclick="activateVariables()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold text-xs shadow-lg shadow-indigo-500/20 transition-all transform hover:-translate-y-1">
+                    Entendido, activar variables
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <!-- MAIN LOGIC -->
-    <script type="module">
-        let casesData = [];
-        const externalDBUrl = 'https://aulagenia.cl/prompts_db.js';
-        
-        // UI Elements
-        const statusOverlay = document.getElementById('system-status-overlay');
-        const statusIcon = document.getElementById('status-icon');
-        const statusTitle = document.getElementById('status-title');
-        const statusDesc = document.getElementById('status-desc');
-        const statusCode = document.getElementById('status-code');
-        const retryBtn = document.getElementById('retry-btn');
+    <!-- PAYWALL MODAL -->
+    <div id="paywall-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
+        <div class="relative bg-white rounded-3xl shadow-2xl max-w-sm w-full p-8 text-center animate-in zoom-in duration-300 border border-slate-100">
+            <div class="w-14 h-14 bg-yellow-400 text-slate-900 rounded-2xl flex items-center justify-center mx-auto mb-6 font-black text-2xl shadow-lg shadow-yellow-200 transform -rotate-6">
+                %
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 mb-2">Oferta Flash</h3>
+            <p class="text-sm text-slate-500 mb-8 leading-relaxed">Accede a la Bóveda completa con 105+ prompts y el curso de certificación AGIA.</p>
+            
+            <div class="space-y-3">
+                <button onclick="closePaywall()" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-3.5 rounded-xl font-bold text-sm shadow-xl transition-all">
+                    Desbloquear por $29
+                </button>
+                <button onclick="closePaywall()" class="text-xs text-slate-400 hover:text-slate-600 font-medium py-2">
+                    No gracias, seguir explorando
+                </button>
+            </div>
+        </div>
+    </div>
 
-        function showSystemError(err) {
-            statusOverlay.classList.remove('hidden');
-            statusOverlay.classList.add('flex');
-            statusIcon.innerHTML = '<span class="material-symbols-rounded text-3xl text-red-500">error</span>';
-            statusIcon.className = "w-16 h-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 ring-4 ring-red-50/50";
-            statusTitle.innerText = "Error de Conexión";
-            
-            if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
-                statusDesc.innerText = "No pudimos conectar con el servidor de AulaGenia. Verifica tu conexión o permisos CORS.";
-                statusCode.innerText = "NETWORK_ERROR";
-            } else {
-                statusDesc.innerText = "Error al procesar la base de datos de prompts.";
-                statusCode.innerText = "DATA_ERROR: " + err.message;
-            }
-            statusCode.className = "text-red-500 font-bold";
-            retryBtn.classList.remove('hidden');
-        }
+    <!-- MAIN LOGIC -->
+    <script type="module">
+        let casesData = [];
+        const externalDBUrl = 'https://aulagenia.cl/prompts_db.js';
+        
+        // UI Elements
+        const statusOverlay = document.getElementById('system-status-overlay');
+        const statusIcon = document.getElementById('status-icon');
+        const statusTitle = document.getElementById('status-title');
+        const statusDesc = document.getElementById('status-desc');
+        const statusCode = document.getElementById('status-code');
+        const retryBtn = document.getElementById('retry-btn');
 
-        async function loadDatabase() {
-            try {
-                const module = await import(`${externalDBUrl}?t=${new Date().getTime()}`);
-                if (module && module.default && Array.isArray(module.default)) {
-                    casesData = module.default;
-                    setTimeout(() => {
-                        statusOverlay.classList.add('hidden');
-                        initApp();
-                    }, 800); 
-                } else {
-                    throw new Error("Formato de base de datos inválido.");
-                }
-            } catch (err) {
-                console.error("System Error:", err);
-                showSystemError(err);
-            }
-        }
+        function showSystemError(err) {
+            statusOverlay.classList.remove('hidden');
+            statusOverlay.classList.add('flex');
+            statusIcon.innerHTML = '<span class="material-symbols-rounded text-3xl text-red-500">error</span>';
+            statusIcon.className = "w-16 h-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 ring-4 ring-red-50/50";
+            statusTitle.innerText = "Error de Conexión";
+            
+            if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
+                statusDesc.innerText = "No pudimos conectar con el servidor de AulaGenia. Verifica tu conexión o permisos CORS.";
+                statusCode.innerText = "NETWORK_ERROR";
+            } else {
+                statusDesc.innerText = "Error al procesar la base de datos de prompts.";
+                statusCode.innerText = "DATA_ERROR: " + err.message;
+            }
+            statusCode.className = "text-red-500 font-bold";
+            retryBtn.classList.remove('hidden');
+        }
 
-        loadDatabase();
+        async function loadDatabase() {
+            try {
+                const module = await import(`${externalDBUrl}?t=${new Date().getTime()}`);
+                if (module && module.default && Array.isArray(module.default)) {
+                    casesData = module.default;
+                    setTimeout(() => {
+                        statusOverlay.classList.add('hidden');
+                        initApp();
+                    }, 800); // Small aesthetic delay
+                } else {
+                    throw new Error("Formato de base de datos inválido.");
+                }
+            } catch (err) {
+                console.error("System Error:", err);
+                showSystemError(err);
+            }
+        }
 
-        const config = {
-            categories: {
-                productivity: { label: "Productividad", color: "emerald", icon: "rocket_launch" },
-                finance: { label: "Finanzas", color: "amber", icon: "payments" }, 
-                sales: { label: "Ventas & Copy", color: "rose", icon: "campaign" },
-                art: { label: "Arte Digital", color: "fuchsia", icon: "palette" },
-                life: { label: "Lifestyle", color: "orange", icon: "self_improvement" },
-                tech: { label: "Tecnología", color: "violet", icon: "terminal" },
-                education: { label: "Educación", color: "cyan", icon: "school" },
-                engineering: { label: "Ingeniería", color: "slate", icon: "construction" },
-                debug: { label: "Sistema", color: "gray", icon: "settings" }
-            }
-        };
+        loadDatabase();
 
-        let currentPromptTemplate = "";
-        let currentBadPromptTemplate = "";
-        let currentVariables = {};
-        let variablesActive = false;
+        const config = {
+            categories: {
+                productivity: { label: "Productividad", color: "emerald", icon: "rocket_launch" },
+                finance: { label: "Finanzas", color: "amber", icon: "payments" }, 
+                sales: { label: "Ventas & Copy", color: "rose", icon: "campaign" },
+                art: { label: "Arte Digital", color: "fuchsia", icon: "palette" },
+                life: { label: "Lifestyle", color: "orange", icon: "self_improvement" },
+                tech: { label: "Tecnología", color: "violet", icon: "terminal" },
+                education: { label: "Educación", color: "cyan", icon: "school" },
+                engineering: { label: "Ingeniería", color: "slate", icon: "construction" },
+                debug: { label: "Sistema", color: "gray", icon: "settings" }
+            }
+        };
 
-        function initApp() {
-            window.loadCase = loadCase;
-            window.filterCases = filterCases;
-            window.filterByCategory = filterByCategory;
-            window.updateVariable = updateVariable;
-            window.copyPrompt = copyPrompt;
-            window.openVideoModal = openVideoModal;
-            window.closeVideoModal = closeVideoModal;
-            window.activateVariables = activateVariables;
-            window.openPaywall = openPaywall;
-            window.closePaywall = closePaywall;
-            window.showWelcome = showWelcome;
+        let currentPromptTemplate = "";
+        let currentBadPromptTemplate = "";
+        let currentVariables = {};
+        let variablesActive = false;
 
-            renderCategories();
-            renderList(casesData);
-            startCountdown();
-            startSocialProof();
-            setupLegendInteractions();
+        function initApp() {
+            window.loadCase = loadCase;
+            window.filterCases = filterCases;
+            window.filterByCategory = filterByCategory;
+            window.updateVariable = updateVariable;
+            window.copyPrompt = copyPrompt;
+            window.toggleTip = toggleTip;
+            window.openVideoModal = openVideoModal;
+            window.closeVideoModal = closeVideoModal;
+            window.activateVariables = activateVariables;
+            window.openPaywall = openPaywall;
+            window.closePaywall = closePaywall;
+            window.showWelcome = showWelcome;
 
-            const first = casesData[0];
-            if(first) loadCase(first.id);
-            else document.getElementById('workspace-empty').classList.replace('hidden', 'flex');
-        }
+            renderCategories();
+            renderList(casesData);
+            updateTotalCounter();
+            startCountdown();
+            startSocialProof();
+            setupLegendInteractions();
 
-        function loadCase(id) {
-            const c = casesData.find(x => x.id === id);
-            if(!c) return;
+            const first = casesData[0];
+            if(first) loadCase(first.id);
+            else document.getElementById('workspace-empty').classList.replace('hidden', 'flex');
+        }
 
-            // Breadcrumbs
-            const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
-            document.getElementById('breadcrumb-category').innerText = cat.label;
-            document.getElementById('breadcrumb-title').innerText = c.title;
+        function loadCase(id) {
+            const c = casesData.find(x => x.id === id);
+            if(!c) return;
 
-            // Highlight active sidebar item
-            document.querySelectorAll('.case-item').forEach(el => {
-                el.classList.remove('bg-indigo-600', 'text-white', 'shadow-md');
-                el.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-slate-200');
-            });
-            const activeItem = document.getElementById(`case-item-${id}`);
-            if(activeItem) {
-                activeItem.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-slate-200');
-                activeItem.classList.add('bg-indigo-600', 'text-white', 'shadow-md');
-            }
+            // Highlight active sidebar item
+            document.querySelectorAll('.case-item').forEach(el => {
+                el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
+                el.classList.add('border-transparent', 'text-slate-600');
+            });
+            const activeItem = document.getElementById(`case-item-${id}`);
+            if(activeItem) {
+                activeItem.classList.remove('border-transparent', 'text-slate-600');
+                activeItem.classList.add('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
+            }
 
-            document.getElementById('workspace-empty').classList.add('hidden');
-            document.getElementById('case-detail').classList.remove('hidden');
+            document.getElementById('workspace-empty').classList.add('hidden');
+            document.getElementById('case-detail').classList.remove('hidden');
 
-            // Data population
-            document.getElementById('detail-validation-tip').innerText = c.validationTip || "Verifica output.";
-            document.getElementById('detail-example-tip').innerText = c.exampleTip || "No hay tips adicionales.";
-            
-            document.getElementById('bad-prompt-rendered').innerText = c.badPromptDynamic || c.badPrompt;
-            document.getElementById('good-result-preview').innerHTML = c.previewResponse;
+            document.getElementById('detail-title').innerText = c.title;
+            document.getElementById('detail-problem').innerText = c.problem;
+            
+            document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview;
+            document.getElementById('good-result-preview').innerHTML = c.previewResponse;
 
-            currentPromptTemplate = c.agiaPromptTagged;
-            currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
-            currentVariables = {};
-            
-            const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
-            let match;
-            const varsFound = [];
-            while ((match = regex.exec(currentPromptTemplate)) !== null) {
-                varsFound.push({ key: match[1], default: match[2] });
-                currentVariables[match[1]] = match[2];
-            }
+            document.getElementById('detail-example-tip').innerText = c.exampleTip || "No hay tips adicionales.";
+            document.getElementById('detail-validation-tip').innerText = c.validationTip || "Verifica output.";
+            resetTips();
 
-            renderVariables(varsFound);
-            renderPrompts(c.locked);
-            
-            const lockOverlay = document.getElementById('premium-lock');
-            if(c.locked) lockOverlay.classList.remove('hidden');
-            else lockOverlay.classList.add('hidden');
-        }
+            const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
+            const badge = document.getElementById('detail-category-badge');
+            badge.innerText = cat.label;
+            const color = cat.color || 'slate';
+            // Dynamic badge color classes logic would be complex with pure Tailwind classes concatenation, simplified here:
+            badge.className = `text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border shadow-sm bg-white text-slate-700 border-slate-200`;
 
-        function renderVariables(varsFound) {
-            const varContainer = document.getElementById('variables-container');
-            const lockOverlay = document.getElementById('variables-locked-overlay');
-            varContainer.innerHTML = '';
-            
-            if (varsFound.length === 0) {
-                varContainer.innerHTML = '<div class="text-xs text-slate-400 text-center italic">Sin variables.</div>';
-                if(lockOverlay) lockOverlay.classList.add('hidden');
-                return;
-            }
+            currentPromptTemplate = c.agiaPromptTagged;
+            currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
+            currentVariables = {};
+            
+            const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
+            let match;
+            const varsFound = [];
+            while ((match = regex.exec(currentPromptTemplate)) !== null) {
+                varsFound.push({ key: match[1], default: match[2] });
+                currentVariables[match[1]] = match[2];
+            }
 
-            if (!variablesActive) {
-                if(lockOverlay) lockOverlay.classList.remove('hidden');
-            } else {
-                if(lockOverlay) lockOverlay.classList.add('hidden');
-            }
+            renderVariables(varsFound);
+            renderPrompts(c.locked);
+            
+            const lockOverlay = document.getElementById('premium-lock');
+            if(c.locked) lockOverlay.classList.remove('hidden');
+            else lockOverlay.classList.add('hidden');
+        }
 
-            varsFound.forEach(v => {
-                const div = document.createElement('div');
-                div.innerHTML = `
-                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1 tracking-wide">${v.key.replace(/_/g, ' ')}</label>
-                    <input type="text" 
-                        class="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-2 text-xs text-slate-700 font-medium focus:bg-white focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
-                        value="${v.default}"
-                        oninput="updateVariable('${v.key}', this.value)"
-                    >
-                `;
-                varContainer.appendChild(div);
-            });
-        }
+        function renderVariables(varsFound) {
+            const varContainer = document.getElementById('variables-container');
+            const lockOverlay = document.getElementById('variables-locked-overlay');
+            varContainer.innerHTML = '';
+            
+            if (varsFound.length === 0) {
+                varContainer.innerHTML = '<div class="text-xs text-slate-400 py-2 text-center italic">Este prompt no requiere variables.</div>';
+                if(lockOverlay) lockOverlay.classList.add('hidden');
+                return;
+            }
 
-        function openVideoModal() { document.getElementById('video-modal').classList.remove('hidden'); }
-        function closeVideoModal() { document.getElementById('video-modal').classList.add('hidden'); }
-        
-        function activateVariables() {
-            variablesActive = true;
-            closeVideoModal();
-            const title = document.getElementById('breadcrumb-title').innerText;
-            const c = casesData.find(x => x.title === title);
-            if(c) loadCase(c.id);
-        }
+            if (!variablesActive) {
+                if(lockOverlay) lockOverlay.classList.remove('hidden');
+            } else {
+                if(lockOverlay) lockOverlay.classList.add('hidden');
+            }
 
-        function updateVariable(key, value) {
-            currentVariables[key] = value;
-            const isLocked = !document.getElementById('premium-lock').classList.contains('hidden');
-            if(!isLocked) renderPrompts(false);
-        }
+            varsFound.forEach(v => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 tracking-wide pl-1">${v.key.replace(/_/g, ' ')}</label>
+                    <input type="text" 
+                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-700 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 transition-all shadow-sm outline-none placeholder:text-slate-300"
+                        value="${v.default}"
+                        oninput="updateVariable('${v.key}', this.value)"
+                    >
+                `;
+                varContainer.appendChild(div);
+            });
+        }
 
-        function renderPrompts(isLocked) {
-            let renderedAgia = currentPromptTemplate;
-            Object.keys(currentVariables).forEach(key => {
-                const val = currentVariables[key] || "___";
-                const regex = new RegExp(`{${key}\\|[^}]+}`, 'g');
-                renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${val}</span>`);
-            });
+        function openVideoModal() { document.getElementById('video-modal').classList.remove('hidden'); }
+        function closeVideoModal() { document.getElementById('video-modal').classList.add('hidden'); }
+        
+        function activateVariables() {
+            variablesActive = true;
+            closeVideoModal();
+            const title = document.getElementById('detail-title').innerText;
+            const c = casesData.find(x => x.title === title);
+            if(c) loadCase(c.id);
+        }
 
-            const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
-            Object.keys(tags).forEach(t => {
-                const className = `hl-${tags[t]}`;
-                const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
-                renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
-            });
-            renderedAgia = renderedAgia.replace(/\n/g, '<br>');
-            document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
-        }
+        function updateVariable(key, value) {
+            currentVariables[key] = value;
+            const isLocked = !document.getElementById('premium-lock').classList.contains('hidden');
+            if(!isLocked) renderPrompts(false);
+        }
 
-        function setupLegendInteractions() {
-            const legendContainer = document.getElementById('interactive-legend');
-            if(!legendContainer) return;
-            legendContainer.addEventListener('mouseover', (e) => {
-                const item = e.target.closest('.legend-item');
-                if(!item) return;
-                const type = item.dataset.type;
-                document.querySelectorAll(`.hl-tag[data-tag-type="${type}"]`).forEach(el => el.classList.add('hl-active'));
-            });
-            legendContainer.addEventListener('mouseout', (e) => {
-                const item = e.target.closest('.legend-item');
-                if(!item) return;
-                const type = item.dataset.type;
-                document.querySelectorAll(`.hl-tag[data-tag-type="${type}"]`).forEach(el => el.classList.remove('hl-active'));
-            });
-        }
+        function renderPrompts(isLocked) {
+            let renderedAgia = currentPromptTemplate;
+            Object.keys(currentVariables).forEach(key => {
+                const val = currentVariables[key] || "___";
+                const regex = new RegExp(`{${key}\\|[^}]+}`, 'g');
+                renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${val}</span>`);
+            });
 
-        function copyPrompt() {
-            const rawText = document.getElementById('detail-prompt-rendered').innerText;
-            navigator.clipboard.writeText(rawText);
-            const btn = document.getElementById('copy-btn');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<span class="material-symbols-rounded text-[12px]">check</span> Copiado`;
-            btn.classList.add('bg-emerald-500');
-            const toast = document.getElementById('toast');
-            toast.classList.remove('translate-x-full');
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove('bg-emerald-500');
-                toast.classList.add('translate-x-full');
-            }, 2000);
-        }
+            const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
+            Object.keys(tags).forEach(t => {
+                const className = `hl-${tags[t]}`;
+                const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
+                renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
+            });
+            renderedAgia = renderedAgia.replace(/\n/g, '<br>');
+            document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
 
-        function renderCategories() {
-            const nav = document.getElementById('category-nav');
-            if(!nav) return;
-            nav.innerHTML = Object.keys(config.categories).map(key => {
-                const conf = config.categories[key];
-                return `<button onclick="filterByCategory('${key}')" class="whitespace-nowrap px-3 py-1.5 rounded-md text-[11px] font-bold bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 border border-slate-700 transition-all flex items-center gap-1.5 shadow-sm group">
-                    <span class="material-symbols-rounded text-[14px] text-${conf.color}-400">${conf.icon}</span> ${conf.label}
-                </button>`;
-            }).join('');
-        }
+            let renderedBad = currentBadPromptTemplate;
+            Object.keys(currentVariables).forEach(key => {
+                const val = currentVariables[key] || "...";
+                const regex = new RegExp(`{${key}}`, 'g');
+                renderedBad = renderedBad.replace(regex, `<span class="var-highlight-bad">${val}</span>`);
+            });
+            document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
+        }
 
-        function filterByCategory(cat) {
-            document.getElementById('searchInput').value = ''; 
-            const filtered = casesData.filter(c => c.category === cat);
-            renderList(filtered);
-        }
+        function toggleTip(type) {
+            const content = document.getElementById(`content-tip-${type}`);
+            const icon = document.getElementById(`icon-tip-${type}`);
+            if (content.classList.contains('tip-open')) {
+                content.classList.remove('tip-open');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                resetTips();
+                content.classList.add('tip-open');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
 
-        function filterCases() { 
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = casesData.filter(c => 
-                c.title.toLowerCase().includes(search) || 
-                c.problem.toLowerCase().includes(search) ||
-                c.category.toLowerCase().includes(search)
-            );
-            renderList(filtered);
-        }
+        function resetTips() {
+            document.querySelectorAll('.tip-content').forEach(el => el.classList.remove('tip-open'));
+            document.querySelectorAll('[id^="icon-tip-"]').forEach(el => el.style.transform = 'rotate(0deg)');
+        }
 
-        function renderList(cases) {
-            const list = document.getElementById('case-list');
-            
-            if(cases.length === 0) {
-                list.innerHTML = '<div class="p-4 text-center text-xs text-slate-500 flex flex-col items-center"><span class="material-symbols-rounded text-xl mb-2 opacity-50">search_off</span>Sin resultados.</div>';
-                return;
-            }
-            
-            list.innerHTML = cases.map(c => `
-                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item group p-2.5 rounded-lg cursor-pointer transition-all border border-transparent relative mb-1 text-slate-400 hover:bg-slate-800 hover:text-slate-200">
-                    <div class="flex items-center gap-3">
-                        <div class="flex-none w-1.5 h-1.5 rounded-full ${c.difficulty === 'beginner' ? 'bg-emerald-500' : c.difficulty === 'intermediate' ? 'bg-amber-500' : 'bg-rose-500'}"></div>
-                        <div class="flex-1 min-w-0">
-                            <h4 class="text-xs font-bold truncate">${c.title}</h4>
-                        </div>
-                        ${c.locked ? '<span class="material-symbols-rounded text-[12px] opacity-50">lock</span>' : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function openPaywall() { document.getElementById('paywall-modal').classList.remove('hidden'); }
-        function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
-        function showWelcome() { alert("Bienvenido al Lab AGIA 3.0"); }
+        function setupLegendInteractions() {
+            const legendContainer = document.getElementById('interactive-legend');
+            if(!legendContainer) return;
+            legendContainer.addEventListener('mouseover', (e) => {
+                const item = e.target.closest('.legend-item');
+                if(!item) return;
+                const type = item.dataset.type;
+                document.querySelectorAll(`.hl-tag[data-tag-type="${type}"]`).forEach(el => el.classList.add('hl-active'));
+            });
+            legendContainer.addEventListener('mouseout', (e) => {
+                const item = e.target.closest('.legend-item');
+                if(!item) return;
+                const type = item.dataset.type;
+                document.querySelectorAll(`.hl-tag[data-tag-type="${type}"]`).forEach(el => el.classList.remove('hl-active'));
+            });
+        }
 
-        function startCountdown() {
-            let minutes = 14; let seconds = 59;
-            const el = document.getElementById('countdown');
-            setInterval(() => {
-                if(seconds === 0) { if(minutes === 0) return; minutes--; seconds = 59; } else { seconds--; }
-                el.innerText = `${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
-            }, 1000);
-        }
+        function copyPrompt() {
+            const rawText = document.getElementById('detail-prompt-rendered').innerText;
+            navigator.clipboard.writeText(rawText);
+            const btn = document.getElementById('copy-btn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-rounded text-[12px]">check</span> COPIADO`;
+            btn.classList.replace('bg-white/10', 'bg-emerald-500');
+            btn.classList.add('border-emerald-400');
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerHTML = `Listo para usar.`;
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.replace('bg-emerald-500', 'bg-white/10');
+                btn.classList.remove('border-emerald-400');
+                toast.classList.add('translate-x-full');
+            }, 3000);
+        }
 
-        function startSocialProof() {
-            const names = ["Carlos R.", "Ana M.", "StartUp Inc", "David L.", "Sofia P.", "Agencia X"];
-            const toast = document.getElementById('sales-toast');
-            setInterval(() => {
-                const name = names[Math.floor(Math.random() * names.length)];
-                toast.innerHTML = `
-                <div class="bg-white/95 backdrop-blur border border-slate-100 p-3 rounded-xl shadow-xl shadow-slate-200/50 flex items-center gap-3 max-w-xs ring-1 ring-black/5">
-                    <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">
-                        ${name.charAt(0)}
-                    </div>
-                    <div>
-                        <p class="text-xs text-slate-700"><span class="font-bold text-slate-900">${name}</span> accedió</p>
-                        <p class="text-[9px] text-slate-400 font-medium">Hace instantes</p>
-                    </div>
-                </div>`;
-                toast.classList.remove('opacity-0', 'translate-y-24');
-                setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-24'); }, 4000);
-            }, 15000);
-        }
-    </script>
+        function updateTotalCounter() {
+            const totalEl = document.getElementById('total-display');
+            if(totalEl) totalEl.innerText = casesData.length;
+        }
+
+        function renderCategories() {
+            const nav = document.getElementById('category-nav');
+            if(!nav) return;
+            nav.innerHTML = Object.keys(config.categories).map(key => {
+                const conf = config.categories[key];
+                return `<button onclick="filterByCategory('${key}')" class="whitespace-nowrap px-3 py-1.5 rounded-lg text-[11px] font-bold bg-white border border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600 transition-all flex items-center gap-1.5 shadow-sm group">
+                    <span class="material-symbols-rounded text-[14px] group-hover:scale-110 transition-transform text-${conf.color}-500">${conf.icon}</span> ${conf.label}
+                </button>`;
+            }).join('');
+        }
+
+        function filterByCategory(cat) {
+            document.getElementById('searchInput').value = ''; 
+            const filtered = casesData.filter(c => c.category === cat);
+            renderList(filtered);
+        }
+
+        function filterCases() { 
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = casesData.filter(c => 
+                c.title.toLowerCase().includes(search) || 
+                c.problem.toLowerCase().includes(search) ||
+                c.category.toLowerCase().includes(search)
+            );
+            renderList(filtered);
+        }
+
+        function renderList(cases) {
+            const list = document.getElementById('case-list');
+            document.getElementById('total-display').innerText = casesData.length; // Show total always
+            
+            if(cases.length === 0) {
+                list.innerHTML = '<div class="p-8 text-center text-xs text-slate-400 flex flex-col items-center"><span class="material-symbols-rounded text-2xl mb-2 opacity-50">search_off</span>No hay resultados.</div>';
+                return;
+            }
+            
+            list.innerHTML = cases.map(c => `
+                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item group p-3 rounded-xl cursor-pointer hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-slate-200 relative mb-1">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:border-indigo-100 transition-colors shadow-sm">
+                            <span class="material-symbols-rounded text-[18px]">${c.locked ? 'lock' : c.icon}</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold truncate transition-colors">${c.title}</h4>
+                            <div class="flex items-center gap-1.5 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full ${c.difficulty === 'beginner' ? 'bg-emerald-400' : c.difficulty === 'intermediate' ? 'bg-amber-400' : 'bg-rose-400'}"></span>
+                                <span class="text-[10px] text-slate-400 capitalize truncate">${c.category}</span>
+                            </div>
+                        </div>
+                        ${c.locked ? '<span class="material-symbols-rounded text-[12px] text-slate-300">lock</span>' : '<span class="material-symbols-rounded text-[16px] text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>'}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function openPaywall() { document.getElementById('paywall-modal').classList.remove('hidden'); }
+        function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
+        function showWelcome() { alert("Tutorial Rápido: \n1. Elige un caso de la izquierda.\n2. Personaliza las variables si es necesario.\n3. Compara el prompt malo con el Prompt AGIA.\n4. ¡Copia y úsalo!"); }
+
+        function startCountdown() {
+            let minutes = 14; let seconds = 59;
+            const el = document.getElementById('countdown');
+            setInterval(() => {
+                if(seconds === 0) { if(minutes === 0) return; minutes--; seconds = 59; } else { seconds--; }
+                el.innerText = `${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
+            }, 1000);
+        }
+
+        function startSocialProof() {
+            const names = ["Carlos R.", "Ana M.", "StartUp Inc", "David L.", "Sofia P.", "Agencia X"];
+            const toast = document.getElementById('sales-toast');
+            setInterval(() => {
+                const name = names[Math.floor(Math.random() * names.length)];
+                toast.innerHTML = `
+                <div class="bg-white/95 backdrop-blur border border-slate-100 p-3 rounded-xl shadow-xl shadow-slate-200/50 flex items-center gap-3 max-w-xs ring-1 ring-black/5">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs relative shadow-md">
+                        ${name.charAt(0)}
+                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white"></span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-700"><span class="font-bold text-slate-900">${name}</span> compró</p>
+                        <p class="text-[9px] text-slate-400 font-medium">Hace instantes • <span class="text-green-600">Verificado</span></p>
+                    </div>
+                </div>`;
+                toast.classList.remove('opacity-0', 'translate-y-24');
+                setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-24'); }, 4000);
+            }, 15000);
+        }
+    </script>
 </body>
 </html>
