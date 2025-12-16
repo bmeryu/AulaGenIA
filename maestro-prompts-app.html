@@ -383,7 +383,8 @@
         // 🧠 BÓVEDA DE PROMPTS AGIA 2.0 - DATA (DEMO / FALLBACK)
         // ==========================================
         const demoCases = [
-            // [AQUI IRÍAN LOS CASOS DE DEMO SI FALLA LA DB]
+            
+            // 🚀 PRODUCTIVIDAD 10X
             createCase(101, 'productivity', 'El Limpiador de Data', 'cleaning_services', 'Excel: Base de datos sucia (Nombres, Mayúsculas).', 
                 'Tengo una lista de nombres en Excel que está horrible, con espacios y mayúsculas mezcladas. Dame una fórmula para arreglarlos.',
                 '<div class="text-xs text-slate-500 italic">"Claro, usa la función =NOMPROPIO(). Aquí tienes el resultado:<br>Juan Perez<br>Maria Gomez"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">error</span> Problema: Solución parcial. No quita espacios dobles ni caracteres ocultos web.</div>', 
@@ -392,6 +393,138 @@
                 'Verifica anidación correcta.',
                 '<div class="font-mono text-xs bg-slate-900 text-green-400 p-3 rounded mb-2 border-l-4 border-green-600 shadow-sm">=NOMPROPIO(ESPACIOS(LIMPIAR(SUSTITUIR(A2,CARACTER(160)," "))))</div><p class="text-[10px] text-slate-600 mt-1"><strong>Lógica:</strong><br>1. <code>SUSTITUIR</code>: Elimina espacios web (ASCII 160).<br>2. <code>LIMPIAR</code>: Quita saltos de línea.<br>3. <code>ESPACIOS</code>: Reduce dobles espacios a uno.<br>4. <code>NOMPROPIO</code>: Capitaliza formato Título.</p>', 
                 'gemini', false, false, 'beginner'),
+
+            createCase(102, 'productivity', 'El "No" Diplomático', 'block', 'Email: Rechazar cambios gratis y cobrar por ellos.', 
+                'Escríbele al cliente que no puedo hacer esos cambios gratis porque no están en el contrato, pero ofrécele cobrarle extra.',
+                '<div class="text-xs text-slate-500 italic">"Estimado, no podemos hacer eso gratis. Si quiere, le mando una cotización. Saludos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">cancel</span> Problema: Tono seco que cierra puertas. Se siente como un rechazo, no una oportunidad.</div>', 
+                '{r}Actúa como Gerente de Cuentas Senior experto en Negociación.{/r} {c}El cliente solicitó {client_request|funcionalidades fuera del alcance original} (Scope Creep). Debo rechazar la gratuidad sin dañar la relación.{/c} {m}Redacta un email respuesta usando la técnica del "Sí condicional": Valida la idea, pero enmárcala inmediatamente como una "Fase 2" o mejora que requiere presupuesto adicional.{/m} {l}Prohibido usar la palabra "No" al inicio. Tono colaborativo.{/l} {f}Estructura de Email Persuasivo.{/f}', 
+                'Técnica: "Me encanta la idea, aquí está el precio".',
+                'Convierte el problema en un proyecto nuevo.',
+                '<div class="bg-white p-3 text-xs text-slate-700 border border-slate-200 shadow-sm rounded"><strong>Asunto:</strong> Estrategia para implementar [Mejora Solicitada]<br><br>"Hola [Cliente],<br><br>Estuve revisando tu solicitud y <strong>me parece brillante</strong>; aportaría mucho valor a la usabilidad.<br><br>Dado que esto excede el alcance técnico actual, lo he estructurado como un \'Módulo de Expansión\'. Te adjunto la estimación de horas para activarlo esta misma semana sin frenar el desarrollo principal.<br><br>¿Te parece si procedemos?"</div>', 
+                'chatgpt', false, false, 'intermediate'),
+
+            createCase(103, 'productivity', 'Resumidor de Reuniones', 'groups', 'Gestión: Transcripción a Tareas.',
+                'Resume esta reunión larga y dime qué hay que hacer.',
+                '<div class="text-xs text-slate-500 italic">"Hablaron del presupuesto y de marketing. Juan dijo que iba a ver lo del diseño. Fin."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">do_not_disturb</span> Problema: Narrativa vaga. Nadie sabe qué hacer exactamente ni para cuándo.</div>', 
+                '{r}Actúa como Project Manager (PMP) obsesionado con la eficiencia.{/r} {c}Tengo la transcripción de una reunión desordenada de 1 hora sobre {topic|Presupuesto y Marketing}.{/c} {m}Extrae SOLO los "Action Items" (Tareas) y Decisiones Tomadas. Ignora toda la paja y charla social.{/m} {l}Formato estricto: Tarea | Responsable | Deadline.{/l} {f}Tabla Markdown.{/f}',
+                'Input: Texto sucio de Teams/Zoom.',
+                'Busca verbos de acción.',
+                '<table class="w-full text-[10px] border border-slate-300 mt-1"><thead><tr class="bg-indigo-100 text-indigo-800"><th>Tarea</th><th>Owner</th><th>Deadline</th></tr></thead><tbody><tr><td class="p-1 border">Aprobar presupuesto Q4</td><td class="p-1 border font-bold">Sofia</td><td class="p-1 border text-red-600">Viernes 12:00</td></tr><tr><td class="p-1 border">Contactar proveedor AWS</td><td class="p-1 border font-bold">Carlos</td><td class="p-1 border">Hoy PM</td></tr></tbody></table>',
+                'claude', false, false, 'beginner'),
+
+            createCase(104, 'productivity', 'Traductor Corporativo', 'translate', 'Email: Inglés de negocios para CEO.', 
+                'Necesito traducir este correo al inglés para mandárselo al CEO de la empresa en Estados Unidos.',
+                '<div class="text-xs text-slate-500 italic">"Hello boss, I tell you that the project is going to be late two days because of a technical problem with the server, but we are fixing it already."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">translate</span> Problema: Traducción literal y tono demasiado informal ("Hello boss").</div>', 
+                '{r}Actúa como Editor Nativo de Inglés de Negocios (Nivel C-Level).{/r} {c}Tengo un borrador en español informando {problem|un retraso de 2 días} debido a {cause|una caída de servidores}, que debo enviar al CEO en Estados Unidos.{/c} {m}Traduce y eleva este texto a un inglés corporativo, sofisticado y directo, que transmita que tenemos control total sobre la situación a pesar del inconveniente.{/m} {l}Evita sonar como una traducción literal. Jamás uses "Hello boss", utiliza "Dear Mr. [Apellido]".{/l} {f}Entrégame el email formal listo para ser enviado.{/f}', 
+                'Contexto: El retraso es de 2 días por caída de servidor.',
+                'El texto debe usar conectores formales como "However", "Regarding".',
+                '<div class="bg-white p-3 text-xs italic text-slate-600 border-l-4 border-indigo-200">"Dear Mr. Smith,<br><br>I am writing to provide an update regarding the project timeline. Due to unforeseen server latency issues encountered yesterday, we are currently navigating a 48-hour adjustment in the delivery schedule. However, the team has already mitigated the root cause, and we are confident in meeting the revised milestone by Thursday."</div>', 
+                'chatgpt', false, false, 'intermediate'),
+
+            // 💰 FINANZAS
+            createCase(201, 'finance', 'Analista Financiero (Buffett)', 'trending_up', 'Inversión: Analizar Balance General.',
+                '¿Invierto en esta empresa? Aquí está su balance. Dime si es buena.',
+                '<div class="text-xs text-slate-500 italic">"Parece una empresa sólida con muchos activos. Podría ser una buena inversión a largo plazo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">analytics</span> Problema: Opinión subjetiva basada en "pareceres", sin análisis de ratios de riesgo real.</div>', 
+                '{r}Actúa como Analista de Value Investing (Escuela Warren Buffett).{/r} {c}Adjunto el {docs|Balance General y Estado de Resultados}.{/c} {m}Realiza un análisis fundamental enfocado en la salud financiera. Calcula: Margen Neto, Ratio de Deuda/Equity y ROE.{/m} {l}Sé escéptico. Busca banderas rojas.{/l} {f}Tabla de Ratios + Veredicto (COMPRAR / VENDER / ESPERAR).{/f}',
+                'Busca el "Moat" (Ventaja competitiva).',
+                'Calcula deuda real.',
+                '<div class="text-xs bg-slate-50 p-2 rounded"><p class="font-bold text-slate-700 border-b mb-1">📊 Análisis Fundamental Rápido</p><div class="grid grid-cols-2 gap-2 mb-2"><div><span class="text-slate-500">ROE:</span> <span class="text-green-600 font-bold">18%</span> ✅</div><div><span class="text-slate-500">Deuda/Equity:</span> <span class="text-red-600 font-bold">2.5</span> ⚠️</div></div><p><strong>Veredicto:</strong> <span class="bg-yellow-100 text-yellow-800 px-1 rounded font-bold">ESPERAR</span>. Aunque es rentable, está peligrosamente endeudada. Esperar a que baje el ratio de deuda a <1.0.</p></div>',
+                'claude', false, false, 'advanced'), // Desbloqueado
+
+            // 🔥 VENTAS
+            createCase(301, 'sales', 'FBI Salary Negotiator', 'verified_user', 'Carrera: Pedir aumento de sueldo.', 
+                'Quiero pedir un 20% de aumento. Dame un guion para decirle a mi jefe.',
+                '<div class="text-xs text-slate-500 italic">"Jefe, he trabajado duro y la inflación está alta. Merezco un aumento."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">thumb_down</span> Problema: Argumento centrado en TI ("yo necesito"), no en la empresa ("yo aporto").</div>', 
+                '{r}Actúa como Negociador Experto del FBI (Estilo Chris Voss).{/r} {c}Voy a pedir un aumento. Mis logros: {logros|Aumenté ventas un 15% y reduje costos 5%}.{/c} {m}Crea un guion de negociación basado en VALOR, no en necesidad. Usa "Preguntas Calibradas" para que el jefe llegue solo a la conclusión de darme el aumento.{/m} {f}Guion paso a paso: Anclaje -> Evidencia -> Cierre.{/f}', 
+                'Usa: "¿Cómo se supone que logre X...?"',
+                'Evita el "Sí/No".',
+                '<div class="bg-white p-2 text-xs italic text-slate-600 border-l-4 border-indigo-500"><p class="mb-1"><strong>Tú:</strong> "En los últimos 12 meses, mis iniciativas han generado $50k adicionales netos a la empresa."</p><p class="mb-1"><strong>Jefe:</strong> "No hay presupuesto."</p><p><strong>Tú (Calibrada):</strong> "¿Cómo podríamos ajustar mi compensación para que sea justo con el valor de mercado actual, sin afectar el presupuesto operativo de otras áreas?"</p></div>', 
+                'chatgpt', false, false, 'advanced'),
+
+            createCase(303, 'sales', 'Cold Email B2B (Rompehielos)', 'ac_unit', 'Ventas: Email en frío que sí abren.',
+                'Escribe un mail para ofrecer mis servicios de diseño web a dentistas.',
+                '<div class="text-xs text-slate-500 italic">"Hola, somos la agencia X y hacemos webs bonitas. Tenemos ofertas. Contáctanos."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">delete</span> Problema: Spam genérico centrado en características. Va directo a la papelera.</div>', 
+                '{r}Actúa como Experto en Cold Emailing B2B.{/r} {c}Target: {target|Dueños de clínicas dentales ocupados}. Problema: {pain|Sus webs viejas no permiten agendar online}.{/c} {m}Escribe un email de <75 palabras enfocado 100% en SU dolor ({pain_short|perder pacientes}) y una solución específica.{/m} {l}Asunto intrigante. Nada de "Hola, somos...".{/l} {f}Asunto + Cuerpo.{/f}',
+                'Pain Point: Silla vacía.',
+                'Call to Action (CTA) de bajo riesgo.',
+                '<p class="font-bold text-xs mb-1">Asunto: Pacientes perdidos en [Nombre Clínica]</p><div class="bg-white p-2 text-xs italic text-slate-600">"Hola Dr. Soto, intenté agendar hora en su web pero tardó 8 segundos en cargar. El 40% de los pacientes abandona a los 3 segundos.<br><br>Implementé un sistema de "Agenda en 1-Clic" para la Clínica dental X y llenaron su agenda en 2 semanas. ¿Le cuento cómo funciona en una llamada de 5 min?"</div>',
+                'claude', false, false, 'intermediate'),
+
+            // 🎨 ARTE
+            createCase(401, 'art', 'Fotografía de Producto (Cinemática)', 'camera_enhance', 'Midjourney: Foto comercial realista.', 
+                'Quiero una foto de una botella de jugo de naranja que se vea rica. Dame el prompt.',
+                '<div class="text-xs text-slate-500 italic">"Una botella de jugo de naranja en una mesa con frutas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">image_not_supported</span> Problema: Resultado plano, parece dibujo animado o stock barato. Falta dirección de arte.</div>', 
+                '{r}Actúa como Fotógrafo Publicitario y Director de Arte.{/r} {c}Producto: {product|Jugo de Naranja Premium}.{/c} {m}Construye un prompt técnico para Midjourney v6.{/m} {l}Incluye: Iluminación, Tipo de Cámara, Lente, Entorno y Parámetros de estilo (--s, --style raw).{/l} {f}Bloque de código listo para copiar.{/f}', 
+                'Usa "Backlighting" para traslucidez.',
+                'Gotas de condensación = frescura.',
+                '<div class="font-mono text-[10px] bg-slate-900 text-purple-300 p-2 rounded border border-purple-900 shadow-lg">/imagine prompt: extreme close-up shot of a glass bottle of orange juice, condensation droplets on glass, cinematic backlighting, sun rays passing through liquid, glowing orange color, surrounded by fresh orange slices and green leaves, wooden rustic table, bokeh orchard background, shot on Sony A7R IV, 85mm lens, f/1.8, photorealistic, 8k, --ar 4:5 --style raw --s 250</div>', 
+                'midjourney', false, false, 'advanced'),
+
+            createCase(405, 'art', 'Logo Minimalista (Paul Rand)', 'architecture', 'Diseño: Logo que escale.',
+                'Necesito un logo para una empresa de envíos con drones. Algo moderno.',
+                '<div class="text-xs text-slate-500 italic">"Un dron llevando una caja azul con letras modernas."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">draw</span> Problema: Literalidad. Los logos complejos no funcionan en tamaños pequeños (favicon).</div>', 
+                '{r}Actúa como Diseñador Gráfico Minimalista (Estilo Bauhaus/Paul Rand).{/r} {c}Empresa: {company_name|"AeroFast"} ({company_desc|Logística Drones}).{/c} {m}Describe un isotipo abstracto y geométrico que sugiera velocidad y aire, sin mostrar un dron literal.{/m} {f}Prompt descriptivo conceptual.{/f}',
+                'Espacio negativo.',
+                'Geometría simple.',
+                '<p class="text-xs text-slate-700">"Un hexágono equilátero (representando la caja) formado por tres flechas o vectores de velocidad que convergen en el centro, utilizando espacio negativo. Color: Naranja Eléctrico sobre fondo blanco. Estilo plano, vectorial, sin sombras."</p>',
+                'midjourney', false, false, 'intermediate'),
+
+            // 🧠 CEREBRO DIGITAL (TECH)
+            createCase(602, 'tech', 'SQL Query Optimizer', 'database', 'Data: Consultas eficientes.',
+                'Sácame los 10 clientes que más compraron el último mes de la base de datos.',
+                '<div class="text-xs text-slate-500 italic">"SELECT * FROM ventas WHERE fecha = mes_pasado"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">data_array</span> Problema: Query ineficiente (SELECT *), no agrupa por cliente, sintaxis incorrecta.</div>', 
+                '{r}Actúa como Senior Data Engineer.{/r} {c}Tablas: {tables|`Users` (id, name), `Orders` (id, user_id, amount, created_at)}.{/c} {m}Escribe una Query SQL optimizada para obtener el Top 10 Clientes por monto total (SUM) en los últimos 30 días.{/m} {f}Bloque SQL con comentarios.{/f}',
+                'Usa JOIN explícito.',
+                'Filtra fecha antes de agrupar.',
+                '<div class="font-mono text-[10px] bg-slate-900 text-blue-300 p-2 rounded mb-1">SELECT u.name, SUM(o.amount) as total_spent<br>FROM Users u<br>JOIN Orders o ON u.id = o.user_id<br>WHERE o.created_at >= DATE("now", "-30 days")<br>GROUP BY u.id<br>ORDER BY total_spent DESC<br>LIMIT 10;</div>',
+                'chatgpt', false, false, 'advanced'),
+
+            createCase(609, 'tech', 'Diagnóstico IT (Pantalla Azul)', 'bug_report', 'Soporte: Arreglar PC sin formatear.',
+                'Me salió pantalla azul en Windows. ¿Qué hago?',
+                '<div class="text-xs text-slate-500 italic">"Reinicia o formatea el equipo."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">dangerous</span> Problema: La solución nuclear (formatear) es el último recurso. Falta diagnóstico.</div>', 
+                '{r}Actúa como Técnico de Soporte Nivel 2.{/r} {c}Síntoma: BSOD (Blue Screen of Death) con código "{error_code|CRITICAL_PROCESS_DIED}".{/c} {m}Provee una lista escalonada de soluciones, desde la menos invasiva (comandos de reparación) hasta la verificación de hardware.{/m} {f}Pasos con comandos CMD.{/f}',
+                'Comandos: sfc, dism.',
+                'Verificar drivers.',
+                '<div class="bg-slate-50 p-2 rounded text-xs"><p class="font-bold mb-1">Paso 1: Reparación de Archivos</p><code class="bg-black text-white px-1">sfc /scannow</code><br><p class="mt-1 font-bold">Paso 2: Imagen de Sistema</p><code class="bg-black text-white px-1">DISM /Online /Cleanup-Image /RestoreHealth</code></div>',
+                'gemini', false, false, 'intermediate'),
+
+            // 🎓 EDUCACIÓN
+            createCase(701, 'education', 'Tutor Socrático', 'psychology', 'Matemáticas: Aprender sin respuesta.', 
+                'Ayúdame a resolver esta ecuación cuadrática x^2 - 5x + 6 = 0, pero no me des la respuesta directa, guíame para que yo la resuelva.',
+                '<div class="text-xs text-slate-500 italic">"Las soluciones son x=2 y x=3. Usa la fórmula general."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">school</span> Problema: La IA "spoilea" el aprendizaje dando el resultado final.</div>', 
+                '{r}Actúa como Profesor Socrático.{/r} {c}Alumno confundido con: {problem|Ecuación cuadrática x^2 - 5x + 6 = 0}.{/c} {m}Guía con preguntas, NO des respuesta.{/m} {f}Diálogo.{/f}', 
+                'Si equivoca, pregunta.',
+                'Termina con pregunta.',
+                '<p class="text-xs italic text-indigo-700">"¡Hola! Vamos paso a paso. Necesitamos dos números que multiplicados den +6 y sumados den -5. ¿Se te ocurre alguno?"</p>', 
+                'chatgpt', false, false, 'beginner'),
+
+            // 🛠️ INGENIERÍA
+            createCase(902, 'engineering', 'Chain of Thought (CoT)', 'psychology', 'Lógica: Pensar antes de responder.', 
+                'Resuelve este problema lógico complejo rápido.',
+                '<div class="text-xs text-slate-500 italic">"La respuesta es 5."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">psychology</span> Problema: Las IAs alucinan si se les fuerza a dar una respuesta directa sin razonar primero.</div>', 
+                '{r}Actúa como Profesor de Lógica Matemática.{/r} {c}Problema con múltiples variables: {problem_desc|Juan tiene el doble que Ana, y Ana tiene 3 menos que Pedro...}.{/c} {m}Utiliza la técnica "Chain of Thought" (Cadena de Pensamiento): Desglosa el problema paso a paso, valida cada premisa y SOLO al final entrega la conclusión.{/m} {f}Paso 1, Paso 2, Conclusión.{/f}', 
+                'Pide "Piensa paso a paso".',
+                'Reduce errores un 80%.',
+                '<p class="text-xs text-slate-600"><strong>Paso 1:</strong> Identificamos las variables X e Y...<br><strong>Paso 2:</strong> Calculamos la derivada de...<br><strong>Paso 3:</strong> Verificamos contradicciones...<br><strong>Resultado:</strong> 42.</p>', 
+                'chatgpt', false, false, 'advanced'), // Desbloqueado
+
+            createCase(906, 'engineering', 'Salida JSON Estructurada', 'data_object', 'Dev: Respuestas para programadores.',
+                'Dame una lista de los países de Sudamérica con sus capitales y monedas.',
+                '<div class="text-xs text-slate-500 italic">"Chile (Santiago, Peso), Argentina (Buenos Aires, Peso), Perú (Lima, Sol)..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">code_off</span> Problema: Texto plano difícil de procesar por código.</div>', 
+                '{r}Actúa como Generador de API.{/r} {c}Datos de {data_topic|países de Sudamérica}.{/c} {m}Genera un Array de Objetos JSON válido y estricto. Keys: {json_keys|"country", "capital", "iso_code", "currency"}.{/m} {l}Solo código. Sin texto introductorio.{/l} {f}Bloque JSON.{/f}',
+                'Especifica las keys exactas.',
+                'Pide "Solo JSON".',
+                '<div class="font-mono text-[10px] bg-slate-900 text-green-400 p-2 rounded">[<br>  { "country": "Chile", "capital": "Santiago", "iso": "CL" },<br>  { "country": "Argentina", "capital": "Buenos Aires", "iso": "AR" }<br>]</div>',
+                'gemini', false, false, 'advanced'),
+
+            createCase(910, 'engineering', 'Restricciones Negativas', 'do_not_disturb_on', 'Técnica: Lo que NO quieres.',
+                'Escribe un artículo sobre inteligencia artificial pero que sea fácil de leer.',
+                '<div class="text-xs text-slate-500 italic">"La inteligencia artificial es una tecnología revolucionaria que está transformando paradigmas..."</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1 items-center"><span class="material-symbols-outlined text-[12px]">block</span> Problema: Usa clichés y palabras complejas ("revolucionaria", "paradigmas") que querías evitar.</div>', 
+                '{r}Actúa como Periodista de Tecnología Crítico.{/r} {c}Tema: {topic|Impacto real de la IA}.{/c} {m}Escribe un párrafo introductorio.{/m} {l}Restricciones Negativas (Lo que NO quiero): NO uses las palabras {banned_words|"revolucionario", "futuro", "paradigma"} ni voz pasiva. NO uses frases de más de 20 palabras.{/l} {f}Texto plano.{/f}',
+                'Fuerza simplicidad.',
+                'Control de estilo.',
+                '<p class="text-xs italic text-slate-700">"Los algoritmos ya deciden quién recibe un préstamo. No es ciencia ficción, es contabilidad automatizada. Mientras debatimos sobre robots asesinos, el software silenciosamente reescribe las reglas del mercado laboral."</p>',
+                'chatgpt', false, false, 'intermediate')
         ];
 
         // --- 2. LOGICA DE LA APLICACIÓN ---
