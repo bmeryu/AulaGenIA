@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGIA Generator 3.0 | Bóveda Maestra (Fixed)</title>
+    <title>AGIA Generator 3.0 | Bóveda Maestra (Conectada)</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -90,6 +90,27 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
 
+    <!-- ERROR / EMPTY STATE OVERLAY (Hidden by default, triggered by JS if needed) -->
+    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
+        <div class="bg-white p-8 rounded-2xl shadow-xl border border-slate-200 max-w-md w-full animate-in zoom-in duration-300">
+            <div id="status-icon" class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <span class="material-symbols-outlined text-3xl">cloud_sync</span>
+            </div>
+            <h2 id="status-title" class="text-2xl font-bold text-slate-800 mb-2">Conectando a Bóveda...</h2>
+            <p id="status-desc" class="text-sm text-slate-500 mb-6">Descargando prompts desde aulagenia.cl</p>
+            
+            <div class="bg-slate-100 p-4 rounded-lg text-left text-xs font-mono text-slate-600 mb-6 overflow-x-auto border border-slate-200">
+                <p class="mb-2 text-slate-400">// System Log:</p>
+                <p>> Target: <span class="text-indigo-600">aulagenia.cl/prompts_db.js</span></p>
+                <p>> Status: <span id="status-code" class="text-slate-500 font-bold">FETCHING...</span></p>
+            </div>
+
+            <button id="retry-btn" onclick="window.location.reload()" class="hidden w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-sm">refresh</span> Reintentar Conexión
+            </button>
+        </div>
+    </div>
+
     <!-- SALES TRIGGER: Top Sticky Banner -->
     <div id="sticky-banner" class="sticky-banner text-white py-2 px-4 flex justify-center items-center gap-4 text-xs md:text-sm z-50 shadow-md flex-none">
         <div class="flex items-center gap-2">
@@ -163,7 +184,7 @@
                     </div>
                     <div class="flex-1">
                         <p class="text-xs font-bold text-slate-700">Modo Visitante</p>
-                        <p class="text-[10px] text-green-500 font-bold" id="db-status-text">● Sistema Online</p>
+                        <p class="text-[10px] text-green-500 font-bold" id="db-status-text">● Conectado a Cloud</p>
                     </div>
                 </div>
             </div>
@@ -410,76 +431,67 @@
         </div>
     </div>
 
-    <!-- MAIN LOGIC & DATA (Embedded for Stability) -->
+    <!-- MAIN LOGIC & DATA -->
     <script type="module">
         // ==========================================
-        // 1. DATA DATABASE (EMBEDDED)
+        // 1. LÓGICA DE CARGA EXTERNA (Remoto)
         // ==========================================
-        const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goodPromptTagged, exampleTip, validationTip, goodResPreview, suggestedAI, locked = false, isTool = false, difficulty = 'beginner') => ({
-            id, category: cat, title, icon, problem, 
-            badPrompt, 
-            badResponsePreview: badResPreview,
-            agiaPromptTagged: goodPromptTagged, 
-            exampleTip, validationTip,
-            previewResponse: goodResPreview,
-            suggestedAI, locked, isTool, difficulty
-        });
-
-        const allCases = [
-            createCase(101, 'productivity', 'El Limpiador de Data', 'cleaning_services', 'Excel: Datos sucios y desordenados.', 
-                'Arregla estos nombres que están en mayúsculas y con espacios raros.',
-                '<div class="text-xs text-slate-500 italic">"Juan Perez<br>Maria Gomez"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1"><span class="material-symbols-outlined text-[12px]">error</span> Falla: No te dio la fórmula, solo el texto procesado.</div>', 
-                '{r}Experto Excel.{/r} {c}Tengo datos "sucios" copiados de la web (Celda A2) con espacios extra y mayúsculas irregulares.{/c} {m}Genera una fórmula anidada para limpiar todo.{/m} {f}Bloque de código.{/f}', 
-                'Entrada: "   JUAN   perez ".', 'Verifica espacios.', 
-                '<div class="font-mono text-xs bg-slate-900 text-green-400 p-2 rounded border-l-4 border-green-600">=NOMPROPIO(ESPACIOS(LIMPIAR(A2)))</div>', 'gemini', false, false, 'beginner'),
-
-            createCase(102, 'productivity', 'El "No" Diplomático', 'block', 'Email: Rechazar sin perder cliente.', 
-                'Dile al cliente que no puedo hacer eso gratis.',
-                '<div class="text-xs text-slate-500 italic">"No podemos hacerlo gratis. Saludos."</div>', 
-                '{r}Gerente de Cuentas.{/r} {c}Cliente pide extras fuera de presupuesto (Scope Creep).{/c} {m}Rechaza la gratuidad pero ofrece cotización (Upsell).{/m} {l}No uses la palabra "No" al inicio.{/l} {f}Email empático.{/f}', 
-                'Técnica: Sí condicional.', 'Convierte problema en venta.', 
-                '<div class="bg-white p-2 text-xs border border-slate-200">"Me encanta la idea. Para implementarla sin afectar los plazos, he preparado esta cotización adicional..."</div>', 'chatgpt', false, false, 'intermediate'),
-
-            createCase(103, 'productivity', 'Resumidor Reuniones', 'groups', 'Gestión: De audio a acción.',
-                'Resume esta reunión larga.',
-                '<div class="text-xs text-slate-500 italic">"Hablaron de varios temas..."</div>', 
-                '{r}Project Manager.{/r} {c}Transcripción de reunión desordenada.{/c} {m}Extrae solo Tareas y Responsables.{/m} {f}Tabla Markdown.{/f}',
-                'Busca verbos de acción.', 'Ignora charla social.',
-                '<table class="w-full text-[10px] border"><thead><tr class="bg-blue-50"><th>Tarea</th><th>Owner</th></tr></thead><tbody><tr><td>Enviar presupuesto</td><td>Ana</td></tr></tbody></table>', 'claude', false, false, 'beginner'),
-            
-            // ... (Se han integrado todos los casos proporcionados para asegurar que funcione la carga) ...
-             createCase(201, 'finance', 'Analista Buffett', 'trending_up', 'Inversión: Análisis Balance.',
-                '¿Invierto en esta empresa? Mira los números.',
-                '<div class="text-xs text-slate-500 italic">"Sí, se ve bien."</div>', 
-                '{r}Analista Value.{/r} {c}Balance General.{/c} {m}Calcula ratios clave (Deuda/Equity, ROE) y da veredicto.{/m} {f}Tabla + Conclusión.{/f}',
-                'Busca deuda alta.', 'Veredicto numérico.',
-                '<p class="text-xs"><strong>Veredicto:</strong> <span class="bg-red-100 text-red-800 font-bold">RIESGO</span>. Deuda supera 3x el patrimonio.</p>', 'claude', true, false, 'advanced'),
-
-             createCase(301, 'sales', 'FBI Salary', 'verified_user', 'Negociación: Aumento sueldo.', 
-                'Quiero pedir aumento. Guion.',
-                '<div class="text-xs text-slate-500 italic">"Jefe, necesito plata."</div>', 
-                '{r}Negociador FBI.{/r} {c}Buenos resultados.{/c} {m}Guion basado en Valor y Preguntas Calibradas.{/m} {f}Diálogo.{/f}', 
-                '¿Cómo se supone que...?','Anclaje.', 
-                '<p class="text-xs">"¿Cómo puedo seguir aportando este valor si mi compensación no refleja el mercado?"</p>', 'chatgpt', false, false, 'advanced'),
-                
-            createCase(401, 'art', 'Foto Producto IA', 'camera', 'Midjourney: Realismo.', 
-                'Foto botella jugo naranja.',
-                '<div class="text-xs text-slate-500 italic">"Botella de jugo en mesa."</div>', 
-                '{r}Fotógrafo.{/r} {c}Publicidad.{/c} {m}Prompt técnico con iluminación, lente y estilo.{/m} {f}Prompt MJ.{/f}', 
-                'Backlighting.', 'Gotas agua.', 
-                '<div class="font-mono text-xs bg-slate-900 text-purple-300 p-2">/imagine prompt: cinematic shot, condensation...</div>', 'midjourney', false, false, 'advanced'),
-            
-            createCase(601, 'tech', 'Explicar Código', 'code', 'Dev: Entender Python.',
-                'Explica este script.',
-                '<div class="text-xs text-slate-500 italic">"Es un bucle for."</div>', 
-                '{r}Senior Mentor.{/r} {c}Principiante.{/c} {m}Explica lógica línea por línea en español simple.{/m} {f}Comentarios.{/f}',
-                'Analogías.', 'Paso a paso.',
-                '<code class="text-xs bg-slate-800 text-blue-300">for item in list: # Recorre cada uno</code>', 'chatgpt', false, false, 'intermediate')
-        ];
-
-        // 2. CONFIGURACIÓN Y LOGICA APP
         
-        let casesData = allCases; // Use embedded data directly
+        let casesData = [];
+        const externalDBUrl = 'https://aulagenia.cl/prompts_db.js';
+        
+        // Elementos UI de Estado
+        const statusOverlay = document.getElementById('system-status-overlay');
+        const statusIcon = document.getElementById('status-icon');
+        const statusTitle = document.getElementById('status-title');
+        const statusDesc = document.getElementById('status-desc');
+        const statusCode = document.getElementById('status-code');
+        const retryBtn = document.getElementById('retry-btn');
+
+        function showSystemError(err) {
+            statusOverlay.classList.remove('hidden');
+            statusOverlay.classList.add('flex');
+            statusIcon.innerHTML = '<span class="material-symbols-outlined text-3xl text-red-500">error</span>';
+            statusIcon.className = "w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4";
+            statusTitle.innerText = "Error de Conexión";
+            
+            // Diagnóstico simple de error CORS vs 404
+            if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
+                statusDesc.innerText = "Error CORS o Red: El servidor 'aulagenia.cl' no permite acceso directo o no tiene HTTPS.";
+                statusCode.innerText = "CORS_BLOCK / NETWORK";
+            } else {
+                statusDesc.innerText = "No se pudo cargar la base de datos remota.";
+                statusCode.innerText = "IMPORT_ERROR: " + err.message;
+            }
+            statusCode.className = "text-red-500 font-bold";
+            retryBtn.classList.remove('hidden');
+        }
+
+        async function loadDatabase() {
+            try {
+                // Import dinámico con timestamp para evitar caché agresiva
+                const module = await import(`${externalDBUrl}?t=${new Date().getTime()}`);
+                
+                if (module && module.default && Array.isArray(module.default)) {
+                    casesData = module.default;
+                    statusOverlay.classList.add('hidden'); // Ocultar overlay
+                    initApp();
+                } else {
+                    throw new Error("El archivo JS no tiene un 'export default' válido.");
+                }
+            } catch (err) {
+                console.error("System Error loading External DB:", err);
+                showSystemError(err);
+            }
+        }
+
+        // Iniciar carga
+        loadDatabase();
+
+
+        // ==========================================
+        // 2. CONFIGURACIÓN Y LOGICA APP
+        // ==========================================
         
         const config = {
             categories: {
@@ -502,7 +514,7 @@
 
         function initApp() {
             console.log("Sistema Cargado: " + casesData.length + " casos.");
-
+            
             // EXPOSE GLOBAL FUNCTIONS
             window.loadCase = loadCase;
             window.filterCases = filterCases;
@@ -534,7 +546,6 @@
             const c = casesData.find(x => x.id === id);
             if(!c) return;
 
-            // Ocultar empty state si estaba visible
             document.getElementById('workspace-empty').classList.add('hidden');
             document.getElementById('case-detail').classList.remove('hidden');
 
@@ -793,9 +804,6 @@
                 setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-24'); }, 4000);
             }, 20000);
         }
-
-        // Initialize App
-        initApp();
     </script>
 </body>
 </html>
