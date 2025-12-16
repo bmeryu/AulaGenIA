@@ -338,7 +338,7 @@ const allCases = [
         'gemini',
         true,
         false,
-        'advanced')
+        'advanced'),
 
     // ==========================================
     // 🧠 CEREBRO DIGITAL
