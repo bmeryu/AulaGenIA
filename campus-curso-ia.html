@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v3.9 (Profile UX & Layout)
+  CAMPUS CURSO · AULA GENIA v4.0 (UI/UX Evolution - Sidebar System)
   -------------------------------------------------------------------
-  - UX: Mejorada la validación del formulario de perfil en la página del curso.
-  - FEAT: Se añade validación en tiempo real para nombre, país y RUT.
-  - UI: Se muestran íconos de éxito/error y el botón de guardar se activa
-    solo cuando el formulario es válido.
-  - UI: Se ajusta el layout del modal para evitar el scroll, agrupando campos
-    y reduciendo el espaciado vertical.
-  - DEV: Esta mejora fue implementada por un desarrollador senior para
-    unificar y optimizar la experiencia de usuario.
+  - UX: Arquitectura de información mejorada con nesting de recursos.
+  - UI: Sistema de colores por módulo y badges de alto contraste para Hacks y Quizzes.
+  - FEAT: Iconografía sistemática (🎥, 📥, ⚡, 🏆, 🎓).
+  - DEV: Implementado por Senior Dev & UX Expert siguiendo el Manual de Marca AGIA.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -67,6 +63,11 @@
         .accordion-content.open {
             display: block;
         }
+
+        /* Estilos especiales para el nuevo Sidebar System */
+        .type-badge-hack { background-color: #eab308; color: #000; font-weight: bold; border-radius: 6px; }
+        .type-badge-quiz { background-color: #4c1d95; color: #fff; font-weight: bold; border-radius: 6px; }
+        .type-badge-graduation { background-color: #0d9488; color: #fff; font-weight: bold; border-radius: 6px; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -442,303 +443,75 @@
                   {
                     title: 'Módulo 1: ¿Qué es la Inteligencia Artificial?',
                     badge: 'Explorador Conceptual',
+                    color: '#10b981', // Emerald
                     lessons: [
-                      { 
-                        id: '1-1', 
-                        title: 'Casos de éxito reales', 
-                        type: 'video', 
-                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
-                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
-                        resources: [] 
-                      },
-                      { 
-                        id: 'q-1', 
-                        title: 'Quiz: Módulo 1', 
-                        type: 'quiz', 
-                        questions: [
-                          { 
-                            text: 'Según el video, ¿cuál es la relación entre Inteligencia Artificial (IA), Aprendizaje Automático (AA) y Aprendizaje Profundo (AP)?', 
-                            options: [
-                                'Son tres tecnologías completamente separadas.', 
-                                'Son como muñecas rusas: la IA es la más grande, contiene al AA y este a su vez al AP.', 
-                                'Son pasos de un proceso: se empieza con AP, luego AA y finalmente IA.', 
-                                'La IA es una parte del AA, y el AA es una parte del AP.'
-                            ], 
-                            correctAnswer: 1
-                          },
-                          {
-                            text: 'El video desarma varios mitos sobre la IA. ¿Qué menciona sobre la idea de que "la IA reemplazará todos los trabajos"?',
-                            options: [
-                                'Que es cierto y debemos prepararnos para un mundo sin trabajo.',
-                                'Que es falso; la IA automatiza tareas pero también crea nuevas oportunidades laborales.',
-                                'Que solo reemplazará los trabajos creativos, no los técnicos.',
-                                'Que únicamente reemplazará trabajos en fábricas.'
-                            ],
-                            correctAnswer: 1
-                          },
-                          {
-                            text: '¿Cuál es la recomendación más importante que da el video al recibir información de una IA como ChatGPT?',
-                            options: [
-                                'Confiar siempre en ella, porque la IA es un genio que nunca se equivoca.',
-                                'Usar la información solo si la IA cita sus fuentes.',
-                                'Siempre revisar la información y contrastarla con tu propio conocimiento, ya que puede equivocarse o inventar cosas.',
-                                'Copiar y pegar la información directamente sin leerla.'
-                            ],
-                            correctAnswer: 2
-                          },
-                          {
-                            text: '¿Cuál de los siguientes NO es uno de los tres factores clave que el video menciona como impulsores del auge reciente de la IA?',
-                            options: [
-                                'La existencia de computadoras más potentes y rápidas.',
-                                'La creación de una IA con conciencia y sentimientos propios.',
-                                'La disponibilidad de enormes cantidades de información (datos).',
-                                'El desarrollo de mejores y más eficientes métodos de aprendizaje ("recetas").'
-                            ],
-                            correctAnswer: 1
-                          },
-                          {
-                            text: 'El video explica que la IA aprende de dos formas principales. ¿Cuáles son?',
-                            options: [
-                                'Leyendo libros y viendo películas.',
-                                'Siguiendo instrucciones específicas que le damos y aprendiendo por sí misma mediante ensayo y error.',
-                                'Únicamente copiando lo que hacen otras inteligencias artificiales.',
-                                'Conectándose directamente a un cerebro humano.'
-                            ],
-                            correctAnswer: 1
-                          }
-                        ], 
-                        resources: [] 
-                      }
+                      { id: '1-1', title: '🎥 El Salto de las 10 Horas Libres', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '1-1-t', title: '📥 Taller: Tu Primer Debate con IA', type: 'resource', isNested: true },
+                      { id: '1-2', title: '🎥 Diccionario IA: Hablando con el Genio', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO3-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '1-2-r', title: '📥 Glosario "IA en Servilleta"', type: 'resource', isNested: true },
+                      { id: '1-3', title: '🎥 Desarmando los Mitos de la IA', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO5-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO6-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '1-3-t', title: '📥 Validación Práctica de Mitos', type: 'resource', isNested: true },
+                      { id: '1-h', title: '⚡ Hack: El Costo Real de tus Errores', type: 'hack' },
+                      { id: 'q-1', title: '🏆 Check-point 1: Mide tu Nivel Digital', type: 'quiz', questions: [
+                          { text: '¿Cuál es la relación entre IA, Machine Learning y Deep Learning?', options: ['Sistemas separados', 'Capa sobre capa (Muñecas rusas)', 'Pasos cronológicos', 'IA es parte de ML'], correctAnswer: 1 },
+                          { text: 'Mito del reemplazo laboral:', options: ['Es inevitable', 'Falso: la IA automatiza pero crea oportunidades', 'Solo afecta creativos', 'Solo afecta fábricas'], correctAnswer: 1 },
+                          { text: '¿Qué hacer con la info de ChatGPT?', options: ['Confiar siempre', 'Usar solo con citas', 'Contrastar con conocimiento propio', 'Copiar y pegar'], correctAnswer: 2 }
+                      ]}
                     ]
                   },
                   {
                     title: 'Módulo 2: La IA para ti, en tu día a día',
                     badge: 'Asistente IA Personal',
+                    color: '#3b82f6', // Electric Blue
                     lessons: [
-                      { 
-                        id: '2-1', 
-                        title: 'Crear tu objetivo SMART con IA', 
-                        type: 'video', 
-                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
-                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
-                        resources: [] 
-                      },
-                      { 
-                        id: '2-taller', 
-                        title: 'Taller: Radar de Automatización', 
-                        type: 'taller', 
-                        resources: [] 
-                      },
-                      { 
-                        id: 'q-2', 
-                        title: 'Quiz: Módulo 2', 
-                        type: 'quiz', 
-                        questions: [
-                            { 
-                                text: 'Según el video, ¿cuál es el primer paso para empezar a usar la IA en tu día a día?', 
-                                options: [
-                                    'Aprender a programar en Python.', 
-                                    'Comprar la computadora más potente.', 
-                                    'Identificar tareas repetitivas que te quitan tiempo.', 
-                                    'Diseñar tu propio modelo de inteligencia artificial.'
-                                ], 
-                                correctAnswer: 2
-                            },
-                            {
-                                text: 'El video presenta el caso de María, la diseñadora. ¿Cómo le ayudó la IA a ser más productiva?',
-                                options: [
-                                    'Vendiendo automáticamente sus diseños en línea.',
-                                    'Aprendiendo a programar por ella.',
-                                    'Usando ChatGPT para correos, Midjourney para inspiración y traducción automática.',
-                                    'Creando una versión de su estudio en realidad virtual.'
-                                ],
-                                correctAnswer: 2
-                            },
-                            {
-                                text: '¿Qué herramienta de IA se recomienda en el video para usuarios que trabajan mucho con Google Workspace (Gmail, Drive)?',
-                                options: [
-                                    'ChatGPT',
-                                    'DeepSeek',
-                                    'Midjourney',
-                                    'Gemini'
-                                ],
-                                correctAnswer: 3
-                            },
-                            {
-                                text: 'El video menciona varios ejemplos de cómo la IA ya es parte de nuestras vidas. ¿Cuál de los siguientes es un ejemplo del módulo?',
-                                options: [
-                                    'Robots que cocinan la cena por nosotros.',
-                                    'IA que predice los números de la lotería.',
-                                    'Recomendaciones personalizadas en servicios como Netflix y Spotify.',
-                                    'Autos que pueden volar en el tráfico.'
-                                ],
-                                correctAnswer: 2
-                            },
-                            {
-                                text: 'El video menciona tres "puntos de atasco" comunes donde la IA puede ayudar. ¿Cuál de los siguientes es uno de ellos?',
-                                options: [
-                                    'Ejercicio físico y deportes.',
-                                    'Inversiones financieras.',
-                                    'Bloqueo Creativo.',
-                                    'Aprender a tocar un instrumento musical.'
-                                ],
-                                correctAnswer: 2
-                            }
-                        ], 
-                        resources: [] 
-                      }
+                      { id: '2-1', title: '🎥 Del Uso Superficial al Estratégico', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO1-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '2-1-t', title: '📥 Guía: Crea tus Colaboradores IA', type: 'resource', isNested: true },
+                      { id: '2-2', title: '🎥 Casos de Éxito: María, Carlos y Luis', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO3-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '2-2-r1', title: '📥 Tutorial: Domina Ideogram', type: 'resource', isNested: true },
+                      { id: '2-2-r2', title: '📥 Revisión: Casos Reales para Análisis', type: 'resource', isNested: true },
+                      { id: '2-3', title: '🎥 El Método de Delegación en 3 Pasos', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO5-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO6-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '2-3-r1', title: '📥 Estructura: Tu Idea de Automatización', type: 'resource', isNested: true },
+                      { id: '2-3-r2', title: '📥 Taller: Radar de Automatización Pro', type: 'taller', isNested: true },
+                      { id: '2-h', title: '⚡ Hack: ¿Puede la IA predecir la lotería?', type: 'hack' },
+                      { id: 'q-2', title: '🏆 Desafío 2: Mi Mapa de Delegación', type: 'quiz', questions: [
+                          { text: 'Primer paso para la IA diaria:', options: ['Programar Python', 'Hardware potente', 'Identificar tareas repetitivas', 'Diseñar modelos'], correctAnswer: 2 },
+                          { text: 'Herramienta para Google Workspace:', options: ['ChatGPT', 'DeepSeek', 'Midjourney', 'Gemini'], correctAnswer: 3 }
+                      ]}
                     ]
                   },
                   {
-                    title: 'Módulo 3: Preparando tus herramientas',
+                    title: 'Módulo 3: El Arte de las Instrucciones',
                     badge: 'Creativo IA',
+                    color: '#f97316', // Orange
                     lessons: [
-                      { 
-                        id: '3-1', 
-                        title: 'Prepara tus Asistentes de IA', 
-                        type: 'video', 
-                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
-                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
-                        resources: [] 
-                      },
-                      { 
-                        id: 'q-3', 
-                        title: 'Quiz: Módulo 3', 
-                        type: 'quiz', 
-                        questions: [
-                            { 
-                                text: '¿Cuál es el objetivo principal del Módulo 3?', 
-                                options: [
-                                    'Comparar los precios de las versiones de pago de las herramientas de IA.', 
-                                    'Aprender a programar una inteligencia artificial desde cero.', 
-                                    'Guiarte paso a paso para crear cuentas en ChatGPT, Gemini y DeepSeek.', 
-                                    'Analizar la historia y evolución de los modelos de lenguaje.'
-                                ], 
-                                correctAnswer: 2 
-                            },
-                            {
-                                text: '¿Qué herramienta de IA se destaca en el video por su capacidad de integrarse con tu Google Drive, Calendario y Gmail?',
-                                options: [
-                                    'ChatGPT',
-                                    'DeepSeek',
-                                    'Gemini',
-                                    'Todas las anteriores por igual.'
-                                ],
-                                correctAnswer: 2
-                            },
-                            {
-                                text: 'Según el video, si necesitas entender un tema muy complejo y quieres que la IA te guíe "paso a paso", ¿cuál sería tu mejor opción?',
-                                options: [
-                                    'ChatGPT, porque es el más conversacional.',
-                                    'DeepSeek, porque es descrito como "tu experto para entender lo complejo".',
-                                    'Gemini, porque puede buscar en tus documentos personales.',
-                                    'Cualquiera de las tres, no hay diferencia.'
-                                ],
-                                correctAnswer: 1
-                            },
-                            {
-                                text: '¿Cuál es uno de los consejos clave que se da en el video para que la IA te entienda mejor?',
-                                options: [
-                                    'Usar solo frases cortas y simples.',
-                                    'Darle ejemplos del estilo o tono que quieres para que pueda imitarlo.',
-                                    'Escribir siempre en inglés para obtener mejores resultados.',
-                                    'Nunca guardar las conversaciones para no confundir a la IA.'
-                                ],
-                                correctAnswer: 1
-                            },
-                            {
-                                text: '¿Cuál es la dirección web correcta para crear una cuenta de ChatGPT, según se muestra en el tutorial del video?',
-                                options: [
-                                    'chatgpt.google.com',
-                                    'chat.openai.com',
-                                    'openai.com/chat',
-                                    'getchatgpt.com'
-                                ],
-                                correctAnswer: 1
-                            }
-                        ], 
-                        resources: [] 
-                      }
+                      { id: '3-1', title: '🎥 La Receta WOW: El Arte de Pedir', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO1-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '3-1-r', title: '📥 Infografía: Fórmula WOW', type: 'resource', isNested: true },
+                      { id: '3-2', title: '🎥 Estructura AGIA: Instrucciones Maestras', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO3-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '3-2-r1', title: '📥 Lista: Verbos de Poder AGIA', type: 'resource', isNested: true },
+                      { id: '3-2-r2', title: '📥 Guía: Restricciones para Prompts', type: 'resource', isNested: true },
+                      { id: '3-3', title: '🎥 Persuasión y los 3 Salvavidas', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO5-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO6-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '3-3-r', title: '📥 Biblioteca: +100 Prompts Maestros', type: 'resource', isNested: true },
+                      { id: '3-h', title: '⚡ Hack: Razonamiento y el idioma Inglés', type: 'hack' },
+                      { id: 'q-3', title: '🏆 Evaluación Pro: Aplicando la Fórmula', type: 'quiz', questions: [
+                          { text: 'Objetivo del Módulo 3:', options: ['Comparar precios', 'Aprender Python', 'Cuentas y Prompting', 'Analizar historia'], correctAnswer: 2 },
+                          { text: 'Consejo para que IA entienda mejor:', options: ['Frases cortas', 'Dar ejemplos de estilo', 'Solo inglés', 'Borrar chats'], correctAnswer: 1 }
+                      ]}
                     ]
                   },
                   {
-                    title: 'Módulo 4: El Arte de las Instrucciones',
+                    title: 'Módulo 4: El Arquitecto de Ideas',
                     badge: 'Maestro de Prompts',
+                    color: '#ef4444', // Red
                     lessons: [
-                      { 
-                        id: '4-1', 
-                        title: 'El Arte de las Instrucciones', 
-                        type: 'video', 
-                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
-                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
-                        resources: [] 
-                      },
-                      { 
-                        id: '4-2', 
-                        title: 'Taller Práctico: Tu Plantilla para la IA', 
-                        type: 'video', 
-                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO3-IA-Aplicada-Programa-Esencial.mp4',
-                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt',
-                        resources: [] 
-                      },
-                      { 
-                        id: 'q-4', 
-                        title: 'Quiz: Módulo 4', 
-                        type: 'quiz', 
-                        questions: [
-                            { 
-                                text: '¿Cuál es el principal beneficio de usar la IA para automatizar tareas repetitivas?', 
-                                options: [
-                                    'Hacer que las tareas sean más difíciles.', 
-                                    'Liberar tiempo para enfocarse en actividades más importantes.', 
-                                    'Aumentar la cantidad de correos que envías.', 
-                                    'Comprar cosas por internet automáticamente.'
-                                ], 
-                                correctAnswer: 1 
-                            },
-                            {
-                                text: 'De las siguientes tareas, ¿cuál es un ejemplo perfecto para ser automatizado por la IA en un trabajo?',
-                                options: [
-                                    'Tener una conversación importante con tu jefe.',
-                                    'Responder las mismas preguntas de clientes una y otra vez.',
-                                    'Crear una nueva estrategia de negocio desde cero.',
-                                    'Tomar un café con tus compañeros.'
-                                ],
-                                correctAnswer: 1
-                            },
-                            {
-                                text: 'El objetivo de la automatización con IA es...',
-                                options: [
-                                    'Reemplazar completamente a los humanos en todos los trabajos.',
-                                    'Que las computadoras tomen todas las decisiones por nosotros.',
-                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.',
-                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.'
-                                ],
-                                correctAnswer: 2
-                            },
-                            {
-                                text: 'Al automatizar una tarea, ¿qué es lo primero que deberías identificar?',
-                                options: [
-                                    'Una tarea que te guste mucho hacer.',
-                                    'Una tarea creativa que requiera mucha inspiración.',
-                                    'Una tarea manual, repetitiva y que te quite tiempo.',
-                                    'Una tarea que solo se hace una vez al año.'
-                                ],
-                                correctAnswer: 2
-                            },
-                            {
-                                text: 'Si una empresa automatiza la respuesta a preguntas frecuentes, ¿qué beneficio obtiene el equipo humano?',
-                                options: [
-                                    'Tienen menos trabajo que hacer en general.',
-                                    'Pueden dedicarse a resolver problemas más complejos de los clientes.',
-                                    'Ya no necesitan hablar con los clientes.',
-                                    'Deben revisar cada respuesta automática antes de que se envíe.'
-                                ],
-                                correctAnswer: 1
-                            }
-                        ], 
-                        resources: [] 
-                      }
+                      { id: '4-1', title: '🎥 Método Macro: Proyectos de Escala', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO1-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '4-1-r', title: '📥 Infografía: El Mapa del Arquitecto', type: 'resource', isNested: true },
+                      { id: '4-2', title: '🎥 Ejecución Veloz: Director de Orquesta', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO3-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt' },
+                      { id: '4-2-r', title: '📥 Manual: Rotación de Roles IA', type: 'resource', isNested: true },
+                      { id: '4-h', title: '⚡ Hack: ¿Leyó realmente mi PDF?', type: 'hack' },
+                      { id: 'q-4', title: '🎓 Certificación Final: Graduación AGIA', type: 'quiz', questions: [
+                          { text: 'Beneficio de automatizar:', options: ['Más dificultad', 'Liberar tiempo estratégico', 'Más spam', 'Comprar automático'], correctAnswer: 1 },
+                          { text: '¿Qué es un wireframe?', options: ['Diseño visual final', 'Esquema estructural', 'Código fuente', 'Animación intro'], correctAnswer: 1 }
+                      ]}
                     ]
                   }
                 ]
@@ -857,19 +630,33 @@
                         let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
                         let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
                         
+                        // Aplicar clases de Badges según el tipo
+                        let specialClasses = '';
+                        if (lesson.type === 'hack') specialClasses = 'type-badge-hack px-2 py-1';
+                        if (lesson.type === 'quiz') {
+                             specialClasses = lesson.title.includes('Graduación') ? 'type-badge-graduation px-2 py-1' : 'type-badge-quiz px-2 py-1';
+                        }
+
                         if (isLocked) {
                             linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
                             statusIcon = 'lock';
                             iconColor = 'text-slate-400';
                         } else if (isActive) {
-                            linkClasses = 'bg-teal-50 text-teal-700 font-semibold';
+                            linkClasses = `bg-slate-100 font-semibold border-l-4`;
+                            // Usar el color del módulo para el borde activo
                             statusIcon = 'play-circle';
                             iconColor = '';
                         }
                         
-                        const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
+                        // Determinar indentación para nesting
+                        const nestingClass = lesson.isNested ? 'ml-6 border-l border-slate-200 pl-4' : 'ml-2';
                         
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                        return `<li class="lesson-item ${nestingClass}" data-lesson-id="${lesson.id}">
+                            <a href="#" style="${isActive ? 'border-color:' + module.color : ''}" class="flex items-center p-2 rounded-md ${linkClasses} ${specialClasses}">
+                                <i data-lucide="${isLocked ? 'lock' : statusIcon}" class="h-4 w-4 mr-3 ${isLocked ? 'text-slate-400' : iconColor}"></i>
+                                <span class="flex-1 text-sm">${lesson.title}</span>
+                            </a>
+                        </li>`;
                     }).join('');
 
                     const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
@@ -880,7 +667,15 @@
                         isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id));
                     }
                     
-                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content ${!isModuleLocked ? 'open' : ''} pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
+                    return `<div class="accordion-item">
+                        <button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left">
+                            <span class="font-bold uppercase tracking-tight text-xs" style="color:${module.color}">${module.title}</span>
+                            <i data-lucide="${accordionIcon}" class="h-4 w-4 transition-transform text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content ${!isModuleLocked ? 'open' : ''} pl-2">
+                            <ul class="py-1 space-y-1">${lessonsHtml}</ul>
+                        </div>
+                    </div>`;
                 }).join('');
 
                 addSidebarListeners();
@@ -899,6 +694,19 @@
                 }
 
                 switch(lesson.type) { 
+                    case 'hack':
+                        materialHtml = `
+                        <div class="bg-yellow-50 p-8 rounded-2xl border-2 border-yellow-200 shadow-sm text-center">
+                            <div class="inline-block p-4 bg-yellow-400 rounded-full mb-6">
+                                <i data-lucide="zap" class="h-10 w-10 text-yellow-900"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-yellow-900 mb-4">AulaGenIA Hack: Revelado</h3>
+                            <p class="text-lg text-yellow-800 leading-relaxed mb-8">${lesson.title}</p>
+                            <div class="bg-white p-6 rounded-xl border border-yellow-200 text-left">
+                                <p class="text-gray-700">Este es un truco secreto exclusivo para alumnos de Aula GenIA. Aplícalo en tus prompts para ahorrar tiempo y recursos.</p>
+                            </div>
+                        </div>`;
+                        break;
                     case 'taller':
                         materialHtml = `
                         <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm">
@@ -986,10 +794,10 @@
                             materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`;
                         }
                         break; 
-                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; 
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Este material está disponible en la pestaña superior 'Recursos'.</p></div></div>`; break; 
                     case 'quiz': { 
                         if (!lesson.questions || lesson.questions.length === 0) {
-                            materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
+                            materialHtml = `<p class="text-center text-slate-500">Evaluación teórica en progreso. Prepárate para el desafío final.</p>`;
                             break;
                         }
 
@@ -1206,7 +1014,7 @@
 
                 dom.mainActionBtn.classList.remove('hidden');
                 dom.mainActionBtn.textContent = 'Marcar como completada';
-                dom.mainActionBtn.disabled = (lesson.type === 'quiz'); 
+                dom.mainActionBtn.disabled = (lesson.type === 'quiz' || lesson.type === 'hack'); 
             }
 
             function updateOverallProgress() { const uniqueCompleted = new Set(userProgress.completedLessons); const completedCount = uniqueCompleted.size; const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0; if (dom.progressBar) dom.progressBar.style.width = `${percentage}%`; if (dom.progressText) dom.progressText.textContent = `${percentage}%`; }
