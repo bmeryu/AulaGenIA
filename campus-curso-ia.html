@@ -1,152 +1,2148 @@
-Skip to content
-Navigation Menu
-bmeryu
-AulaGenIA
-
-Type / to search
-Code
-Issues
-Pull requests
-1
-Actions
-Projects
-Security
-Insights
-Settings
-Files
-Go to file
-t
-.github
-CANVA-Logo.png
-CHATGPT-Logo.jpg
-CHATGPT-Logo.png
-DALLE3-Logo.png
-GAMMA-Logo.jpg
-Gemini-Logo.png
-Logo_AGIA.jpg
-Logo_AGIA.png
-Logo_AGIA_big.png
-Logo_AGIA_dark.png
-Logo_SENCE.png
-Logo_SII.png
-Manual_Crear_Cuenta_ChatGPT_AulaGenIA_curso.pdf
-Manual_Crear_Cuenta_Gemini_AulaGenIA_curso.pdf
-Midjourney-Logo.png
-README.md
-acceso.html
-campus-curso-ia.html
-campus-genia-lab.html
-campus.html
-cangurito.html
-cuentos.png
-cursos.html
-eliminacion-cuenta.html
-favicon.ico
-googleab6459ee6d0eff03.html
-index.html
-logo_dark.png
-maestro-prompts-app.html
-maestro-prompts.png
-pago-exitoso.html
-pago-fallido.html
-politica-privacidad.html
-portal-certificacion.html
-prompts_db.js
-prueba.html
-quienes-somos.html
-script.js
-sitio_web_muna.png
-style.css
-terminoscondiciones.html
-AulaGenIA
-/
-campus.html
-in
-main
-
-Edit
-
-Preview
-Indent mode
-
-Spaces
-Indent size
-
-2
-Line wrap mode
-
-No wrap
-Editing campus.html file contents
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
 <!DOCTYPE html>
 <!-- 
-  CAMPUS DASHBOARD · AULA GENIA v8.2 (Access Logic Update)
+  CAMPUS CURSO · AULA GENIA v3.9 (Profile UX & Layout)
   -------------------------------------------------------------------
-  - LOGIC UPDATE: Las "Power Tools" ahora se desbloquean si el usuario
-    tiene acceso al curso "IA Aplicada · Esencial".
-  - REDIRECT: El botón de desbloqueo ahora lleva a "aulagenia.cl/tool.html".
-  - OPTIMIZATION: Verificación de permisos unificada para evitar doble lectura.
+  - UX: Mejorada la validación del formulario de perfil en la página del curso.
+  - FEAT: Se añade validación en tiempo real para nombre, país y RUT.
+  - UI: Se muestran íconos de éxito/error y el botón de guardar se activa
+    solo cuando el formulario es válido.
+  - UI: Se ajusta el layout del modal para evitar el scroll, agrupando campos
+    y reduciendo el espaciado vertical.
+  - DEV: Esta mejora fue implementada por un desarrollador senior para
+    unificar y optimizar la experiencia de usuario.
   -------------------------------------------------------------------
 -->
-<html lang="es-CL" class="scroll-smooth">
+<html lang="es-CL">
 <head>
-  <meta charset="UTF-8" />
-  <title>Campus Virtual – Aula GenIA (Con Acceso)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Dashboard de estudiante para acceder a cursos, recursos y comunidad de Aula GenIA.">
-  <link rel="canonical" href="https://aulagenia.cl/campus.html">
-  <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
+    <meta charset="UTF-8" />
+    <title>Lección del Curso - Aula GenIA (Perfil Unificado)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Continúa tu aprendizaje en el curso de Inteligencia Artificial Aplicada a Negocios.">
+    <link rel="canonical" href="https://aulagenia.cl/campus-curso-ia.html">
+    <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="https://aulagenia.cl/Logo_AGIA.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
+    <style>
+        :root { --brand-teal: #14b8a6; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        #profile-modal, .toast-notification, #completion-modal { transition: all 0.3s ease-in-out; }
+        label span.required { color: #ef4444; }
+        .form-input-error { @apply border-red-500 ring-red-500; }
+        .form-input-success { @apply border-green-500 ring-green-500; }
+        .error-message { @apply text-red-600 text-xs mt-1; }
+        .toast-notification { position: fixed; top: 20px; right: 20px; transform: translateX(120%); z-index: 1000; }
+        .toast-notification.show { transform: translateX(0); }
+        #completion-modal.show > div { transform: scale(1); opacity: 1; }
+        .quiz-option { transition: all 0.2s ease-in-out; }
+        .quiz-option.selected { border-color: var(--brand-teal); background-color: #f0fdfa; box-shadow: 0 0 0 2px var(--brand-teal); }
+        .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
+        .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
+        
+        .ltab.active {
+            color: var(--brand-teal);
+            border-bottom-color: var(--brand-teal);
+        }
+        .ltab-panel {
+            @apply py-4;
+        }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
+        #pdf-modal-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #pdf-modal-content {
+            transition: all 0.3s ease-in-out;
+        }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .arrow-down { transform: rotate(180deg); }
+        .arrow-down { transition: transform 0.2s ease-in-out; }
+        .accordion-content {
+            display: none;
+        }
+        .accordion-content.open {
+            display: block;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
 
-  <style>
-    :root {
-      --brand-teal: #14b8a6;
-      --brand-green: #22c55e;
-      --brand-purple: #7c3aed;
-    }
-    html { font-family: 'Poppins', sans-serif; }
-    body { background-color: #f8fafc; }
-    .card-hover {
-Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+    <div id="app" class="flex flex-col min-h-screen">
+        <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+            <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+                <a href="index.html" class="flex items-center" aria-label="Página de inicio de Aula GenIA">
+                    <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo de Aula GenIA" class="h-20 w-auto">
+                </a>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <a href="quienes-somos.html" class="text-gray-700 font-semibold border-2 border-gray-300 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-gray-100 hover:border-gray-400 transition-colors duration-300 hidden md:flex items-center">
+                        Quiénes Somos
+                    </a>
+                    <a href="cursos.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">
+                        Ver Cursos
+                    </a>
+                    <div id="user-profile-container" class="hidden items-center gap-3 relative">
+                        <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
+                        <div class="relative group">
+                            <button id="avatar-button" aria-label="Abrir menú de perfil">
+                                <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer group-hover:opacity-90 transition-opacity" />
+                            </button>
+                        </div>
+                        <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
+                <div class="p-6">
+                    <a href="./campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
+                    <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                    </div>
+                </div>
+                <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
+            </aside>
+
+            <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
+                <div class="p-6 md:p-8 lg:p-10">
+                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-2">Cargando...</h2>
+                    
+                    <div id="learning-tabs" class="mt-8">
+                        <div class="border-b border-slate-200 mb-4">
+                            <nav class="-mb-px flex gap-6 text-sm font-medium overflow-x-auto">
+                                <button class="ltab active px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-material">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="book-open" class="h-4 w-4"></i>Material</span>
+                                </button>
+                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-notes">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="notebook-pen" class="h-4 w-4"></i>Notas</span>
+                                </button>
+                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-resources">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="folder-down" class="h-4 w-4"></i>Recursos</span>
+                                </button>
+                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-tasks">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="check-square" class="h-4 w-4"></i>Tareas</span>
+                                </button>
+                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-support">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="message-square-heart" class="h-4 w-4"></i>Soporte y Tutoría</span>
+                                </button>
+                            </nav>
+                        </div>
+
+                        <div id="tab-material" class="ltab-panel">
+                             <div id="lesson-material-container" class="mb-6"></div>
+                        </div>
+
+                        <div id="tab-notes" class="ltab-panel hidden">
+                            <div class="grid gap-3">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-gray-900">Tus notas de esta lección</h3>
+                                    <span id="notes-save-status" class="text-xs text-slate-500 transition-opacity">Sin cambios</span>
+                                </div>
+                                <textarea id="notes-textarea" class="w-full min-h-[160px] rounded-lg border border-slate-300 p-3 focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Escribe aquí tus ideas, resúmenes o preguntas..."></textarea>
+                                <div class="flex gap-3 text-xs text-slate-500">
+                                    <span class="inline-flex items-center gap-1"><i data-lucide="cloud" class="h-4 w-4"></i>Guardado automático</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-resources" class="ltab-panel hidden">
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-semibold text-gray-900">Recursos de la lección</h3>
+                                <div id="resources-list" class="space-y-3"></div>
+                                <div class="p-4 border-t border-slate-200 mt-6">
+                                    <h4 class="text-base font-semibold text-gray-800 mb-2">Sube tus propios archivos</h4>
+                                    <div class="flex items-center gap-3">
+                                        <input id="resource-file-input" type="file" class="block w-full text-sm text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100" multiple />
+                                        <button id="upload-resources-btn" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50" disabled>
+                                            <i data-lucide="upload" class="h-4 w-4"></i>
+                                        </button>
+                                    </div>
+                                    <div id="upload-progress" class="hidden text-sm text-slate-600 mt-2"></div>
+                                    <ul id="user-resource-list" class="mt-4 divide-y divide-slate-200 bg-white rounded-lg border border-slate-200"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-tasks" class="ltab-panel hidden">
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-semibold text-gray-900">Checklist de práctica</h3>
+                                <div class="flex gap-2">
+                                    <input id="task-input" type="text" class="flex-1 rounded-lg border border-slate-300 p-2 focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Ej: Probar un prompt en Gemini..." />
+                                    <button id="add-task-btn" class="px-3 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900">Agregar</button>
+                                </div>
+                                <ul id="task-list" class="space-y-2"></ul>
+                                <p class="text-xs text-slate-500">Tus tareas quedan guardadas por lección.</p>
+                            </div>
+                        </div>
+
+                        <div id="tab-support" class="ltab-panel hidden">
+                            <div class="bg-white p-6 rounded-lg border border-slate-200">
+                                <h3 class="text-xl font-bold text-gray-900">Habla con tu Tutor</h3>
+                                <p class="text-gray-600 mt-1 mb-6">Estamos aquí para ayudarte a resolver cualquier duda. Describe tu consulta y un tutor de nuestro equipo te responderá directamente a tu correo en un plazo de 24 a 48 horas hábiles.</p>
+                                
+                                <form id="support-form">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="support-subject" class="block text-sm font-medium text-gray-700 mb-1">Asunto</label>
+                                            <input type="text" id="support-subject" name="subject" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Duda sobre el Módulo 2" required>
+                                        </div>
+                                        <div>
+                                            <label for="support-message" class="block text-sm font-medium text-gray-700 mb-1">Tu mensaje</label>
+                                            <textarea id="support-message" name="message" rows="5" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Describe tu pregunta o el feedback que necesitas aquí..." required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="mt-6 flex justify-end">
+                                        <button type="submit" id="support-submit-btn" class="bg-teal-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2">
+                                            <span id="support-btn-text">Enviar Consulta</span>
+                                            <i id="support-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                                <div id="support-form-status" class="mt-4 text-center"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="navigation-buttons" class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
+                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed">Lección Anterior</button>
+                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">Marcar como completada</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="bg-gray-100 border-t border-gray-200 mt-auto">
+            <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+                <a href="index.html" class="flex items-center justify-center mb-4">
+                    <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo de Aula GenIA al pie de página" class="h-12 w-auto">
+                </a>
+                <div class="flex justify-center items-center gap-6 mb-4">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Aula GenIA" class="text-gray-500 hover:text-gray-800 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.802c-3.116 0-3.483.01-4.71.068-2.69.123-3.996 1.428-4.12 4.12C3.12 9.483 3.11 9.85 3.11 12s.01 2.517.068 3.74c.124 2.692 1.43 3.996 4.12 4.12 1.227.058 1.594.068 4.71.068s3.483-.01 4.71-.068c2.69-.124 3.996-1.428 4.12-4.12.058-1.223.068-1.594.068-4.71s-.01-2.517-.068-3.74c-.124-2.692-1.43-3.996-4.12-4.12C15.483 3.973 15.116 3.965 12 3.965zM12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5zm0 5.698a1.948 1.948 0 110-3.896 1.948 1.948 0 010 3.896zM16.838 7.162a.96.96 0 100 1.92.96.96 0 000-1.92z"/></svg>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Aula GenIA" class="text-gray-500 hover:text-gray-800 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                </div>
+                <div class="text-sm space-x-4">
+                    <button id="open-faq-modal" class="hover:underline">Preguntas Frecuentes</button>
+                    <span>&bull;</span>
+                    <button id="open-cookies-modal" class="hover:underline">Política de Cookies</button>
+                </div>
+                <p class="text-sm mt-4">&copy; 2024 Aula GenIA - Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modales y notificaciones -->
+    <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
+    <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col transform transition-all scale-95 opacity-0">
+            <div class="p-6 flex-shrink-0">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 id="profile-modal-title" class="text-2xl font-bold text-gray-900">Editar Perfil</h3>
+                        <p id="profile-modal-subtitle" class="text-gray-600 mt-1">Mantén tus datos actualizados.</p>
+                    </div>
+                    <button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button>
+                </div>
+            </div>
+            
+            <div class="px-6 pb-2 flex-grow overflow-y-auto">
+                <form id="profile-form" class="space-y-3" novalidate>
+                    <div>
+                        <label for="profile-name-input" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span class="required">*</span></label>
+                        <div class="relative">
+                            <input type="text" id="profile-name-input" name="fullName" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 pr-10" placeholder="Ej: Ada Lovelace">
+                            <span id="name-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Este será el nombre en tu certificado.</p>
+                        <div id="name-error" class="error-message"></div>
+                    </div>
+                    <div>
+                        <label for="profile-rut-input" class="block text-sm font-medium text-gray-700 mb-1">RUT (Chile) <span class="required">*</span></label>
+                        <div class="relative">
+                            <input type="text" id="profile-rut-input" name="rut" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 pr-10" placeholder="Ej: 12345678-9">
+                            <span id="rut-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3"></span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Requerido si tu país es Chile.</p>
+                        <div id="rut-error" class="error-message"></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                         <div>
+                            <label for="profile-country-select" class="block text-sm font-medium text-gray-700 mb-1">País <span class="required">*</span></label>
+                            <div class="relative">
+                                <select id="profile-country-select" name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 appearance-none pr-10">
+                                    <option value="">Selecciona tu país</option>
+                                    <option value="CL">Chile</option>
+                                    <option value="AR">Argentina</option>
+                                    <option value="PE">Perú</option>
+                                    <option value="CO">Colombia</option>
+                                    <option value="MX">México</option>
+                                    <option value="ES">España</option>
+                                    <option value="US">Estados Unidos</option>
+                                    <option value="OT">Otro</option>
+                                </select>
+                                <span id="country-status-icon" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"></span>
+                            </div>
+                            <div id="country-error" class="error-message"></div>
+                        </div>
+                        <div>
+                            <label for="profile-job-input" class="block text-sm font-medium text-gray-700 mb-1">Cargo o Profesión</label>
+                            <input type="text" id="profile-job-input" name="jobTitle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ej: Estudiante">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label for="profile-gender-select" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
+                            <select id="profile-gender-select" name="gender" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                                <option value="">Seleccionar...</option>
+                                <option value="female">Femenino</option>
+                                <option value="male">Masculino</option>
+                                <option value="other">Otro</option>
+                                <option value="prefer_not-to-say">Prefiero no decir</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="profile-birthdate-input" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
+                            <input type="date" id="profile-birthdate-input" name="birthdate" class="w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="profile-email-input" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                        <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed" disabled>
+                    </div>
+                    <div id="form-status" class="text-center p-3 rounded-lg hidden"></div>
+                </form>
+            </div>
+            <div class="p-6 pt-4 flex-shrink-0">
+                 <div class="flex justify-end gap-3 pt-4 border-t">
+                    <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
+                    <button type="submit" form="profile-form" id="save-profile-btn" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="save-btn-text">Guardar Cambios</span>
+                        <i id="save-spinner" data-lucide="loader-2" class="h-5 w-5 animate-spin hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="toast-notification" class="toast-notification bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg flex items-center gap-3"><i data-lucide="check-circle" class="text-teal-400"></i><span id="toast-message"></span></div><div id="badge-toast" class="toast-notification bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-4 rounded-lg shadow-xl flex items-center gap-4"><i data-lucide="award" class="h-12 w-12 text-white"></i><div><h4 class="font-bold">¡Insignia Desbloqueada!</h4><p id="badge-message" class="text-sm"></p></div></div>
+    
+    <div id="completion-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
+    <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300">
+            <i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i>
+            <h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2>
+            <p class="text-gray-600 mt-2">Has completado exitosamente el curso "<span id="modal-course-name"></span>".</p>
+            <div class="space-y-3 mt-6">
+                <a id="certificate-link" href="#" class="hidden items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                    <i data-lucide="award" class="h-5 w-5"></i>
+                    <span>Ver Certificado</span>
+                </a>
+                <button id="review-course-btn" class="block w-full text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center py-2">Repasar Curso</button>
+            </div>
+            <button id="close-modal-btn" class="mt-8 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button>
+        </div>
+    </div>
+
+    <div id="pdf-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
+    <div id="pdf-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
+        <div id="pdf-modal-content" class="bg-white rounded-lg shadow-2xl w-full max-w-4xl h-full max-h-[90vh] flex flex-col transform transition-all scale-95 opacity-0">
+            <header class="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
+                <h3 id="pdf-modal-title" class="text-lg font-semibold text-gray-800">Visor de Documentos</h3>
+                <button id="pdf-modal-close-btn" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-6 w-6"></i>
+                </button>
+            </header>
+            <div class="flex-grow p-2 bg-gray-200">
+                <iframe id="pdf-iframe" class="w-full h-full border-0" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="faq-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative p-6 md:p-8">
+            <button id="close-faq-modal" aria-label="Cerrar modal" class="absolute top-4 right-4 bg-gray-100 rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold">Preguntas Frecuentes</h2>
+                <p class="text-gray-600 text-lg mt-2">Resolvemos tus dudas para que tomes la mejor decisión.</p>
+            </div>
+            <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-4">
+                <details class="bg-gray-50 p-6 rounded-lg group">
+                    <summary class="flex justify-between items-center font-bold text-lg cursor-pointer">
+                        ¿Necesito saber programar o tener experiencia previa?
+                        <svg class="w-5 h-5 text-gray-500 arrow-down" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-600 mt-4">
+                        ¡Para nada! Este curso está diseñado desde cero para principiantes.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </div>
+    
+    <div id="cookies-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full relative p-6 md:p-8">
+            <button id="close-cookies-modal" aria-label="Cerrar modal" class="absolute top-4 right-4 bg-gray-100 rounded-full p-2 text-gray-700 hover:bg-gray-200 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="prose lg:prose-xl max-h-[80vh] overflow-y-auto pr-4">
+                <h1>Política de Cookies</h1>
+                <p class="text-sm text-gray-500">Última actualización: 23 de agosto de 2025</p>
+                <p>En Aula GenIA, utilizamos cookies y tecnologías similares…</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase SDKs (sin defer) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const firebaseConfig = { 
+                apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
+                authDomain: "aulagenia.firebaseapp.com", 
+                projectId: "aulagenia", 
+                storageBucket: "aulagenia.firebasestorage.app",
+                messagingSenderId: "173328075630", 
+                appId: "1:173328075630:web:825606db4271ea1e66cf7f" 
+            };
+            
+            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
+
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            const storage = firebase.storage();
+            
+            const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = urlParams.get('course');
+
+            const ALL_COURSES_DATA = {
+              'ia-aplicada-esencial': {
+                title: 'IA Aplicada · Esencial',
+                hasCertificate: true,
+                modules: [
+                  {
+                    title: 'Módulo 0: Onboarding',
+                    badge: 'Iniciado en IA',
+                    lessons: [
+                      { 
+                        id: '0-1', 
+                        title: 'Tu primer día con IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO0-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO0-IA-Aplicada-Programa-Esencial.srt',
+                        resources: [
+                          { name: 'Accede A ChatGPT.pdf', url: 'http://aulagenia.cl/Manual_Crear_Cuenta_ChatGPT_AulaGenIA_curso.pdf?alt=media' },
+                          { name: 'Accede a Gemini.pdf', url: 'http://aulagenia.cl/Manual_Crear_Cuenta_Gemini_AulaGenIA_curso.pdf?alt=media' }
+                        ]
+                      },
+                      { 
+                        id: 'q-0', 
+                        title: 'Quiz: Módulo 0', 
+                        type: 'quiz', 
+                        questions: [
+                          { 
+                            text: '¿Cuál es el objetivo principal de este curso, según el video de bienvenida?', 
+                            options: [
+                                'Convertirte en un programador experto en IA.', 
+                                'Que la IA se convierta en tu asistente de confianza para simplificar tareas.', 
+                                'Diseñar robots y sistemas complejos.', 
+                                'Entender la historia de la ciencia ficción.'
+                            ], 
+                            correctAnswer: 1 
+                          },
+                          {
+                            text: 'Según el video, ¿qué es lo más importante que necesitas para empezar el curso?',
+                            options: [
+                                'Un título universitario en tecnología.',
+                                'Comprar un software de IA muy caro.',
+                                'Tu curiosidad y ganas de aprender.',
+                                'Saber programar en varios lenguajes.'
+                            ],
+                            correctAnswer: 2
+                          },
+                          {
+                            text: 'De los cuatro objetivos del curso mencionados, ¿cuál se enfoca en liberar tu tiempo?',
+                            options: [
+                                'Crear contenido con ayuda de la IA.',
+                                'Automatizar Tareas Repetitivas.',
+                                'Manejar programas de IA fácilmente.',
+                                'Integrar la IA en tu trabajo.'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: '¿Qué recomendación se da en el video para aprovechar el curso al máximo?',
+                            options: [
+                                'Ver todos los videos en un solo día.',
+                                'Memorizar todos los conceptos teóricos sin practicar.',
+                                'Mirar los videos a tu ritmo y aplicar lo aprendido.',
+                                'Nunca hacer preguntas para no interrumpir.'
+                            ],
+                            correctAnswer: 2
+                          },
+                          {
+                            text: 'El video de bienvenida enfatiza que la Inteligencia Artificial...',
+                            options: [
+                                'Es solo para genios o grandes empresas.',
+                                'Es demasiado complicada para el uso diario.',
+                                'Es un súper ayudante al alcance de todos.',
+                                'Reemplazará todos los trabajos humanos inmediatamente.'
+                            ],
+                            correctAnswer: 2
+                          }
+                        ], 
+                        resources: [] 
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 1: ¿Qué es la Inteligencia Artificial?',
+                    badge: 'Explorador Conceptual',
+                    lessons: [
+                      { 
+                        id: '1-1', 
+                        title: 'Casos de éxito reales', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-IA-Aplicada-Programa-Esencial.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-1', 
+                        title: 'Quiz: Módulo 1', 
+                        type: 'quiz', 
+                        questions: [
+                          { 
+                            text: 'Según el video, ¿cuál es la relación entre Inteligencia Artificial (IA), Aprendizaje Automático (AA) y Aprendizaje Profundo (AP)?', 
+                            options: [
+                                'Son tres tecnologías completamente separadas.', 
+                                'Son como muñecas rusas: la IA es la más grande, contiene al AA y este a su vez al AP.', 
+                                'Son pasos de un proceso: se empieza con AP, luego AA y finalmente IA.', 
+                                'La IA es una parte del AA, y el AA es una parte del AP.'
+                            ], 
+                            correctAnswer: 1
+                          },
+                          {
+                            text: 'El video desarma varios mitos sobre la IA. ¿Qué menciona sobre la idea de que "la IA reemplazará todos los trabajos"?',
+                            options: [
+                                'Que es cierto y debemos prepararnos para un mundo sin trabajo.',
+                                'Que es falso; la IA automatiza tareas pero también crea nuevas oportunidades laborales.',
+                                'Que solo reemplazará los trabajos creativos, no los técnicos.',
+                                'Que únicamente reemplazará trabajos en fábricas.'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: '¿Cuál es la recomendación más importante que da el video al recibir información de una IA como ChatGPT?',
+                            options: [
+                                'Confiar siempre en ella, porque la IA es un genio que nunca se equivoca.',
+                                'Usar la información solo si la IA cita sus fuentes.',
+                                'Siempre revisar la información y contrastarla con tu propio conocimiento, ya que puede equivocarse o inventar cosas.',
+                                'Copiar y pegar la información directamente sin leerla.'
+                            ],
+                            correctAnswer: 2
+                          },
+                          {
+                            text: '¿Cuál de los siguientes NO es uno de los tres factores clave que el video menciona como impulsores del auge reciente de la IA?',
+                            options: [
+                                'La existencia de computadoras más potentes y rápidas.',
+                                'La creación de una IA con conciencia y sentimientos propios.',
+                                'La disponibilidad de enormes cantidades de información (datos).',
+                                'El desarrollo de mejores y más eficientes métodos de aprendizaje ("recetas").'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: 'El video explica que la IA aprende de dos formas principales. ¿Cuáles son?',
+                            options: [
+                                'Leyendo libros y viendo películas.',
+                                'Siguiendo instrucciones específicas que le damos y aprendiendo por sí misma mediante ensayo y error.',
+                                'Únicamente copiando lo que hacen otras inteligencias artificiales.',
+                                'Conectándose directamente a un cerebro humano.'
+                            ],
+                            correctAnswer: 1
+                          }
+                        ], 
+                        resources: [] 
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 2: La IA para ti, en tu día a día',
+                    badge: 'Asistente IA Personal',
+                    lessons: [
+                      { 
+                        id: '2-1', 
+                        title: 'Crear tu objetivo SMART con IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-IA-Aplicada-Programa-Esencial.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: '2-taller', 
+                        title: 'Taller: Radar de Automatización', 
+                        type: 'taller', 
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-2', 
+                        title: 'Quiz: Módulo 2', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: 'Según el video, ¿cuál es el primer paso para empezar a usar la IA en tu día a día?', 
+                                options: [
+                                    'Aprender a programar en Python.', 
+                                    'Comprar la computadora más potente.', 
+                                    'Identificar tareas repetitivas que te quitan tiempo.', 
+                                    'Diseñar tu propio modelo de inteligencia artificial.'
+                                ], 
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'El video presenta el caso de María, la diseñadora. ¿Cómo le ayudó la IA a ser más productiva?',
+                                options: [
+                                    'Vendiendo automáticamente sus diseños en línea.',
+                                    'Aprendiendo a programar por ella.',
+                                    'Usando ChatGPT para correos, Midjourney para inspiración y traducción automática.',
+                                    'Creando una versión de su estudio en realidad virtual.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: '¿Qué herramienta de IA se recomienda en el video para usuarios que trabajan mucho con Google Workspace (Gmail, Drive)?',
+                                options: [
+                                    'ChatGPT',
+                                    'DeepSeek',
+                                    'Midjourney',
+                                    'Gemini'
+                                ],
+                                correctAnswer: 3
+                            },
+                            {
+                                text: 'El video menciona varios ejemplos de cómo la IA ya es parte de nuestras vidas. ¿Cuál de los siguientes es un ejemplo del módulo?',
+                                options: [
+                                    'Robots que cocinan la cena por nosotros.',
+                                    'IA que predice los números de la lotería.',
+                                    'Recomendaciones personalizadas en servicios como Netflix y Spotify.',
+                                    'Autos que pueden volar en el tráfico.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'El video menciona tres "puntos de atasco" comunes donde la IA puede ayudar. ¿Cuál de los siguientes es uno de ellos?',
+                                options: [
+                                    'Ejercicio físico y deportes.',
+                                    'Inversiones financieras.',
+                                    'Bloqueo Creativo.',
+                                    'Aprender a tocar un instrumento musical.'
+                                ],
+                                correctAnswer: 2
+                            }
+                        ], 
+                        resources: [] 
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 3: Preparando tus herramientas',
+                    badge: 'Creativo IA',
+                    lessons: [
+                      { 
+                        id: '3-1', 
+                        title: 'Prepara tus Asistentes de IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-IA-Aplicada-Programa-Esencial.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-3', 
+                        title: 'Quiz: Módulo 3', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: '¿Cuál es el objetivo principal del Módulo 3?', 
+                                options: [
+                                    'Comparar los precios de las versiones de pago de las herramientas de IA.', 
+                                    'Aprender a programar una inteligencia artificial desde cero.', 
+                                    'Guiarte paso a paso para crear cuentas en ChatGPT, Gemini y DeepSeek.', 
+                                    'Analizar la historia y evolución de los modelos de lenguaje.'
+                                ], 
+                                correctAnswer: 2 
+                            },
+                            {
+                                text: '¿Qué herramienta de IA se destaca en el video por su capacidad de integrarse con tu Google Drive, Calendario y Gmail?',
+                                options: [
+                                    'ChatGPT',
+                                    'DeepSeek',
+                                    'Gemini',
+                                    'Todas las anteriores por igual.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Según el video, si necesitas entender un tema muy complejo y quieres que la IA te guíe "paso a paso", ¿cuál sería tu mejor opción?',
+                                options: [
+                                    'ChatGPT, porque es el más conversacional.',
+                                    'DeepSeek, porque es descrito como "tu experto para entender lo complejo".',
+                                    'Gemini, porque puede buscar en tus documentos personales.',
+                                    'Cualquiera de las tres, no hay diferencia.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: '¿Cuál es uno de los consejos clave que se da en el video para que la IA te entienda mejor?',
+                                options: [
+                                    'Usar solo frases cortas y simples.',
+                                    'Darle ejemplos del estilo o tono que quieres para que pueda imitarlo.',
+                                    'Escribir siempre en inglés para obtener mejores resultados.',
+                                    'Nunca guardar las conversaciones para no confundir a la IA.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: '¿Cuál es la dirección web correcta para crear una cuenta de ChatGPT, según se muestra en el tutorial del video?',
+                                options: [
+                                    'chatgpt.google.com',
+                                    'chat.openai.com',
+                                    'openai.com/chat',
+                                    'getchatgpt.com'
+                                ],
+                                correctAnswer: 1
+                            }
+                        ], 
+                        resources: [] 
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 4: El Arte de las Instrucciones',
+                    badge: 'Maestro de Prompts',
+                    lessons: [
+                      { 
+                        id: '4-1', 
+                        title: 'El Arte de las Instrucciones', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-1-IA-Aplicada-Programa-Esencial.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: '4-2', 
+                        title: 'Taller Práctico: Tu Plantilla para la IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-2-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-2-IA-Aplicada-Programa-Esencial.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-4', 
+                        title: 'Quiz: Módulo 4', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: '¿Cuál es el principal beneficio de usar la IA para automatizar tareas repetitivas?', 
+                                options: [
+                                    'Hacer que las tareas sean más difíciles.', 
+                                    'Liberar tiempo para enfocarse en actividades más importantes.', 
+                                    'Aumentar la cantidad de correos que envías.', 
+                                    'Comprar cosas por internet automáticamente.'
+                                ], 
+                                correctAnswer: 1 
+                            },
+                            {
+                                text: 'De las siguientes tareas, ¿cuál es un ejemplo perfecto para ser automatizado por la IA en un trabajo?',
+                                options: [
+                                    'Tener una conversación importante con tu jefe.',
+                                    'Responder las mismas preguntas de clientes una y otra vez.',
+                                    'Crear una nueva estrategia de negocio desde cero.',
+                                    'Tomar un café con tus compañeros.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: 'El objetivo de la automatización con IA es...',
+                                options: [
+                                    'Reemplazar completamente a los humanos en todos los trabajos.',
+                                    'Que las computadoras tomen todas las decisiones por nosotros.',
+                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.',
+                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Al automatizar una tarea, ¿qué es lo primero que deberías identificar?',
+                                options: [
+                                    'Una tarea que te guste mucho hacer.',
+                                    'Una tarea creativa que requiera mucha inspiración.',
+                                    'Una tarea manual, repetitiva y que te quite tiempo.',
+                                    'Una tarea que solo se hace una vez al año.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Si una empresa automatiza la respuesta a preguntas frecuentes, ¿qué beneficio obtiene el equipo humano?',
+                                options: [
+                                    'Tienen menos trabajo que hacer en general.',
+                                    'Pueden dedicarse a resolver problemas más complejos de los clientes.',
+                                    'Ya no necesitan hablar con los clientes.',
+                                    'Deben revisar cada respuesta automática antes de que se envíe.'
+                                ],
+                                correctAnswer: 1
+                            }
+                        ], 
+                        resources: [] 
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 5: Crea y publica tu primer proyecto',
+                    badge: 'Creador IA',
+                    lessons: [
+                      { 
+                        id: '5-1', 
+                        title: 'De la Idea a la Publicación: Tu Primer Proyecto', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO5-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO5-IA-Aplicada-Programa-Esencial.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-5', 
+                        title: 'Quiz: Módulo 5', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: 'Según el módulo, ¿cuál de los siguientes NO es un principio básico de la Experiencia de Usuario (UX)?', 
+                                options: [
+                                    'Claridad.', 
+                                    'Simplicidad.', 
+                                    'Coherencia.', 
+                                    'Complejidad.'
+                                ], 
+                                correctAnswer: 3 
+                            },
+                            {
+                                text: '¿Qué herramienta de IA se recomienda en el curso para generar imágenes artísticas y conceptuales?',
+                                options: [
+                                    'Google Sites.',
+                                    'Netlify.',
+                                    'Midjourney.',
+                                    'Google Forms.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Después de crear tu proyecto, ¿cuál es el paso final y más importante para recibir feedback y seguir mejorando?',
+                                options: [
+                                    'Guardarlo en tu computador y no mostrarlo.',
+                                    'Borrarlo para empezar uno nuevo.',
+                                    'Publicarlo y compartirlo.',
+                                    'Imprimirlo.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: '¿Qué es un "wireframe" en el contexto del diseño de una página web?',
+                                options: [
+                                    'El diseño visual final con colores y fotos.',
+                                    'Un esquema básico o "esqueleto" de la estructura de la página.',
+                                    'El código de programación del sitio.',
+                                    'Una animación para la página de inicio.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: 'El curso recomienda Netlify para publicar un proyecto. ¿Cuál es una de sus ventajas mencionadas?',
+                                options: [
+                                    'Es la plataforma más cara del mercado.',
+                                    'Es ideal por su facilidad de uso y tiene un plan gratuito.',
+                                    'Requiere conocimientos avanzados de programación.',
+                                    'Solo funciona para publicar blogs.'
+                                ],
+                                correctAnswer: 1
+                            }
+                        ], 
+                        resources: [] 
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 6: Repaso y Próximos Pasos',
+                    badge: 'Graduado en IA',
+                    lessons: [
+                      { 
+                        id: '6-1', 
+                        title: 'Repaso de lo Aprendido y Logros Alcanzados', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO6-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO6-IA-Aplicada-Programa-Esencial.srt',
+                        resources: [] 
+                      }
+                    ]
+                  }
+                ]
+              }
+            };
+
+            const courseData = ALL_COURSES_DATA[courseId];
+            const allLessons = courseData.modules.flatMap(m => m.lessons);
+            let currentUser = null;
+            let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null, unlockedBadges: [] };
+            let notesSaveTimer = null;
+            let currentLessonVideo = null;
+            let hasShownCompletionModal = false;
+
+            const dom = {
+                userName: document.getElementById('user-name'),
+                userAvatar: document.getElementById('user-avatar'),
+                userProfile: document.getElementById('user-profile-container'),
+                logoutButton: document.getElementById('logout-button'),
+                courseTitle: document.getElementById('course-title'),
+                progressBar: document.getElementById('progress-bar'),
+                progressText: document.getElementById('progress-text'),
+                modulesContainer: document.getElementById('modules-container'),
+                lessonTitle: document.getElementById('lesson-title'),
+                lessonMaterialContainer: document.getElementById('lesson-material-container'),
+                navigationButtons: document.getElementById('navigation-buttons'),
+                prevBtn: document.getElementById('prev-lesson-btn'),
+                mainActionBtn: document.getElementById('main-action-btn'),
+                toast: document.getElementById('toast-notification'),
+                toastMessage: document.getElementById('toast-message'),
+                badgeToast: document.getElementById('badge-toast'),
+                badgeMessage: document.getElementById('badge-message'),
+                completionModalOverlay: document.getElementById('completion-modal-overlay'),
+                completionModal: document.getElementById('completion-modal'),
+                modalUserName: document.getElementById('modal-user-name'),
+                modalCourseName: document.getElementById('modal-course-name'),
+                certificateLink: document.getElementById('certificate-link'),
+                reviewCourseBtn: document.getElementById('review-course-btn'),
+                closeModalBtn: document.getElementById('close-modal-btn'),
+                learningTabs: document.getElementById('learning-tabs'),
+                notesTextarea: document.getElementById('notes-textarea'),
+                notesSaveStatus: document.getElementById('notes-save-status'),
+                resourceFileInput: document.getElementById('resource-file-input'),
+                uploadResourcesBtn: document.getElementById('upload-resources-btn'),
+                uploadProgress: document.getElementById('upload-progress'),
+                resourcesList: document.getElementById('resources-list'),
+                userResourceList: document.getElementById('user-resource-list'),
+                taskInput: document.getElementById('task-input'),
+                addTaskBtn: document.getElementById('add-task-btn'),
+                taskList: document.getElementById('task-list'),
+                tabMaterialPanel: document.getElementById('tab-material'),
+                pdfModalOverlay: document.getElementById('pdf-modal-overlay'),
+                pdfModal: document.getElementById('pdf-modal'),
+                pdfModalContent: document.getElementById('pdf-modal-content'),
+                pdfModalTitle: document.getElementById('pdf-modal-title'),
+                pdfModalCloseBtn: document.getElementById('pdf-modal-close-btn'),
+                pdfIframe: document.getElementById('pdf-iframe'),
+                supportForm: document.getElementById('support-form'),
+                supportSubmitBtn: document.getElementById('support-submit-btn'),
+                supportBtnText: document.getElementById('support-btn-text'),
+                supportSpinner: document.getElementById('support-spinner'),
+                supportFormStatus: document.getElementById('support-form-status'),
+            };
+
+            function getIsCourseComplete() {
+                if (allLessons.length === 0) return false;
+                const uniqueCompleted = new Set(userProgress.completedLessons);
+                return uniqueCompleted.size >= allLessons.length;
+            }
+
+            function getLessonInfo(lessonId) { for (let i = 0; i < courseData.modules.length; i++) { const module = courseData.modules[i]; const lessonIndex = module.lessons.findIndex(l => l.id === lessonId); if (lessonIndex !== -1) { return { lesson: module.lessons[lessonIndex], moduleIndex: i, module: module }; } } return null; }
+            
+            function refreshUI() { 
+                if (!userProgress.currentLessonId && allLessons.length > 0) {
+                    userProgress.currentLessonId = allLessons[0].id;
+                }
+                dom.courseTitle.textContent = courseData.title; 
+                renderSidebar(); 
+                const lessonInfo = getLessonInfo(userProgress.currentLessonId); 
+                if (lessonInfo) { 
+                    dom.lessonTitle.textContent = lessonInfo.lesson.title; 
+                    renderLessonContent(lessonInfo.lesson); 
+                    if (dom.prevBtn) dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.lesson.id) === 0; 
+                } 
+                updateOverallProgress(); 
+                updateMainActionButton(); 
+                lucide.createIcons();
+                lockPostCompletionActions();
+            }
+
+            function renderSidebar() {
+                const isCourseComplete = getIsCourseComplete();
+                let isPreviousModuleComplete = true;
+                if (!dom.modulesContainer) return;
+
+                dom.modulesContainer.innerHTML = courseData.modules.map((module, moduleIndex) => {
+                    const isModuleLocked = isCourseComplete ? false : (moduleIndex > 0 && !isPreviousModuleComplete);
+                    
+                    const lessonsHtml = module.lessons.map(lesson => {
+                        const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const isActive = userProgress.currentLessonId === lesson.id;
+                    
+                        let isLocked = false;
+                        if (!isCourseComplete) {
+                            if (isModuleLocked) {
+                                isLocked = true;
+                            } else if (lesson.type === 'quiz') {
+                                const otherLessonsInModule = module.lessons.filter(l => l.type !== 'quiz');
+                                if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(l.id))) {
+                                    isLocked = true;
+                                }
+                            }
+                        }
+                        
+                        let linkClasses = 'text-gray-600 hover:bg-slate-100';
+                        let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
+                        let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        
+                        if (isLocked) {
+                            linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
+                            statusIcon = 'lock';
+                            iconColor = 'text-slate-400';
+                        } else if (isActive) {
+                            linkClasses = 'bg-teal-50 text-teal-700 font-semibold';
+                            statusIcon = 'play-circle';
+                            iconColor = '';
+                        }
+                        
+                        const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
+                        
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center p-2 ml-2 rounded-md ${linkClasses}"><i data-lucide="${statusIcon}" class="h-5 w-5 mr-3 ${iconColor}"></i><span class="flex-1 text-sm">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-4 w-4 ml-2 ${isLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                    }).join('');
+
+                    const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
+                    const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down';
+                    
+                    const moduleLessonIds = module.lessons.map(l => l.id);
+                    if (!isCourseComplete) {
+                        isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id));
+                    }
+                    
+                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left"><span class="font-semibold ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-5 w-5 transition-transform text-gray-500"></i></button><div class="accordion-content ${!isModuleLocked ? 'open' : ''} pl-4"><ul class="border-l border-slate-200 py-2 space-y-1">${lessonsHtml}</ul></div></div>`;
+                }).join('');
+
+                addSidebarListeners();
+            }
+            
+            function renderLessonContent(lesson) {
+                const isCourseComplete = getIsCourseComplete();
+                let materialHtml = ''; 
+                if (currentLessonVideo) { currentLessonVideo.pause(); currentLessonVideo = null; }
+                
+                if (window.currentQuizHandler) {
+                    const checkBtn = document.getElementById('check-quiz-btn');
+                    if (checkBtn) {
+                        checkBtn.removeEventListener('click', window.currentQuizHandler);
+                    }
+                }
+
+                switch(lesson.type) { 
+                    case 'taller':
+                        materialHtml = `
+                        <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                                <h3 class="text-2xl font-bold text-gray-800">El Radar de Automatización</h3>
+                                <span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">Taller Práctico</span>
+                            </div>
+                            
+                            <p class="mb-6 text-gray-600">Completa este radar para identificar qué delegar a la IA. Al final, copia el resultado para tu Mentor.</p>
+
+                            <div class="mb-6 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-teal-700 mb-3">1. EL RADAR (Tareas Mecánicas > 30 min)</h4>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t1" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 1 (Ej: Facturas)">
+                                        <input type="text" id="taller-m1" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t2" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 2">
+                                        <input type="text" id="taller-m2" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t3" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 3">
+                                        <input type="text" id="taller-m3" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="font-bold text-teal-700 mb-2">2. EL CUELLO DE BOTELLA</h4>
+                                <p class="text-xs text-gray-500 mb-2">¿Cuál te frustra más y por qué?</p>
+                                <textarea id="taller-bottleneck" class="w-full p-3 border rounded-lg h-24 focus:ring-2 focus:ring-teal-500" placeholder="Lo que más me traba es..."></textarea>
+                            </div>
+
+                            <div class="mb-8">
+                                <h4 class="font-bold text-teal-700 mb-2">3. EL OBSTÁCULO MENTAL</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Perfeccionismo"> Perfeccionismo ("Nadie lo hará como yo")</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Tecnología"> Tecnología ("No sé configurar")</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Tiempo"> Tiempo ("No tengo tiempo para automatizar")</label>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-900 text-white p-6 rounded-lg text-center">
+                                <p class="mb-4 font-semibold text-teal-400">¿Listo para automatizar?</p>
+                                <button onclick="window.copyTallerPrompt()" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-full transition-transform hover:scale-105 flex items-center justify-center gap-2 mx-auto">
+                                    <i data-lucide="copy" class="w-5 h-5"></i> Copiar Respuestas como Prompt
+                                </button>
+                                <p class="text-xs text-gray-400 mt-2">Copia y pégalo en el chat de tu Mentor IA</p>
+                            </div>
+                        </div>
+                        `;
+                        break;
+                    case 'video':
+                        if (lesson.videoUrl) {
+                            materialHtml = `<div class="flex flex-col gap-4">
+                                <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden">
+                                    <video id="course-video" controls class="w-full h-full object-cover">
+                                        <source id="course-video-source" data-src="${lesson.videoUrl || ''}" type="video/mp4">
+                                        ${lesson.transcriptionUrl ? `<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>` : ''}
+                                        Tu navegador no soporta el elemento de video.
+                                    </video>
+                                </div>
+                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                ${lesson.transcriptionUrl ? `
+                                    <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">
+                                        <i data-lucide="captions" class="h-5 w-5"></i>
+                                        <span>Desactivar Subtítulos</span>
+                                    </button>
+                                    <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">
+                                        <i data-lucide="download" class="h-5 w-5"></i>
+                                        <span>Descargar Transcripción</span>
+                                    </button>
+                                ` : `
+                                    <div class="sm:col-span-2">
+                                        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled>
+                                            <i data-lucide="captions-off" class="h-5 w-5"></i>
+                                            <span>Subtítulos No Disponibles</span>
+                                        </button>
+                                    </div>
+                                `}
+                                </div>
+                            </div>`;
+                        } else {
+                            materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`;
+                        }
+                        break; 
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; 
+                    case 'quiz': { 
+                        if (!lesson.questions || lesson.questions.length === 0) {
+                            materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
+                            break;
+                        }
+
+                        const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
+                        const inReviewMode = isCourseComplete || isQuizCompleted;
+
+                        let quizHtml = lesson.questions.map((question, qIndex) => {
+                            const optionsHtml = question.options.map((opt, index) => {
+                                if (inReviewMode) {
+                                    const isCorrect = index === question.correctAnswer;
+                                    const optionClasses = isCorrect ? 'quiz-option correct' : 'quiz-option opacity-60';
+                                    return `<div class="${optionClasses} border-2 p-4 rounded-lg cursor-default">${opt}</div>`;
+                                } else {
+                                    const questionId = `quiz-${lesson.id}-q-${qIndex}`;
+                                    return `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}" data-question-id="${questionId}">${opt}</div>`;
+                                }
+                            }).join('');
+                            
+                            const questionContainerAttributes = inReviewMode ? '' : `id="quiz-${lesson.id}-q-${qIndex}"`;
+                            return `<div class="space-y-4 mb-8 p-4 border-b border-slate-200" ${questionContainerAttributes}><h3 class="text-xl font-semibold">${qIndex + 1}. ${question.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
+                        }).join('');
+
+                        if (inReviewMode) {
+                            const reviewMessage = isQuizCompleted 
+                                ? 'Ya has completado este quiz. Puedes revisar las respuestas correctas.'
+                                : 'Curso completado. Solo puedes revisar las respuestas.';
+                            materialHtml = `${quizHtml}<p class="text-sm text-slate-500 mt-4 font-semibold text-center p-4 bg-slate-100 rounded-md">${reviewMessage}</p>`;
+                        } else {
+                             materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
+                        }
+                        break;
+                    }
+                    default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
+                } 
+                if (dom.tabMaterialPanel) dom.tabMaterialPanel.innerHTML = materialHtml; 
+                
+                if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
+                    const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
+                    if (!isQuizCompleted) {
+                      dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
+                          opt.addEventListener('click', () => {
+                              const questionId = opt.dataset.questionId;
+                              dom.tabMaterialPanel.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
+                              opt.classList.add('selected');
+                          });
+                      });
+
+                      const checkBtn = document.getElementById('check-quiz-btn');
+                      if (checkBtn) {
+                          window.currentQuizHandler = () => checkQuizAnswers(lesson);
+                          checkBtn.addEventListener('click', window.currentQuizHandler);
+                      }
+                    }
+                }
+
+                const videoEl = document.getElementById('course-video');
+                if (videoEl) currentLessonVideo = videoEl;
+
+                const toggleSubtitlesBtn = document.getElementById('toggle-subtitles-btn');
+                if (toggleSubtitlesBtn && videoEl) {
+                    toggleSubtitlesBtn.addEventListener('click', () => {
+                        if (!videoEl.textTracks || videoEl.textTracks.length === 0) return;
+                        const track = videoEl.textTracks[0];
+                        const btnText = toggleSubtitlesBtn.querySelector('span');
+                        const btnIcon = toggleSubtitlesBtn.querySelector('i');
+                        
+                        const isShowing = track.mode === 'showing';
+                        track.mode = isShowing ? 'hidden' : 'showing';
+
+                        if (track.mode === 'showing') {
+                            if (btnText) btnText.textContent = 'Desactivar Subtítulos';
+                            if (btnIcon) btnIcon.setAttribute('data-lucide', 'captions');
+                        } else {
+                            if (btnText) btnText.textContent = 'Activar Subtítulos';
+                            if (btnIcon) btnIcon.setAttribute('data-lucide', 'captions-off');
+                        }
+                        lucide.createIcons();
+                    });
+                }
+
+                const transcriptionBtn = document.getElementById('transcription-button');
+                if (transcriptionBtn && lesson.transcriptionUrl) { 
+                    transcriptionBtn.addEventListener('click', () => downloadTranscription(lesson.transcriptionUrl, lesson.title));
+                }
+
+                (async () => {
+                    if (!videoEl) return;
+                    try {
+                        await attachMediaAndCaptions({
+                            storage,
+                            videoEl,
+                            videoSrc: (lesson && lesson.videoUrl) || '',
+                            srtOrVttSrc: (lesson && lesson.transcriptionUrl) || ''
+                        });
+                    } catch (err) {
+                        console.error('No se pudieron adjuntar medios/subtítulos:', err);
+                    } finally {
+                        lockPostCompletionActions();
+                    }
+                })();
+            }
+
+            async function advanceToNextLesson() {
+                const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId);
+                if (currentIndex < allLessons.length - 1) {
+                    showToast('¡Excelente! Cargando siguiente lección...');
+                    setTimeout(() => {
+                        navigateToLesson(allLessons[currentIndex + 1].id);
+                    }, 1500);
+                } else {
+                    if (!hasShownCompletionModal) {
+                        await showCompletionModal();
+                        hasShownCompletionModal = true;
+                    }
+                }
+            }
+
+            async function checkQuizAnswers(lesson) {
+                const totalQuestions = lesson.questions.length;
+                let correctAnswers = 0;
+                let allAnswered = true;
+
+                lesson.questions.forEach((question, qIndex) => {
+                    const questionId = `quiz-${lesson.id}-q-${qIndex}`;
+                    const questionContainer = document.getElementById(questionId);
+                    const selectedOption = questionContainer.querySelector('.quiz-option.selected');
+
+                    if (!selectedOption) {
+                        allAnswered = false;
+                        return;
+                    }
+
+                    const selectedIndex = parseInt(selectedOption.dataset.index);
+                    const correctIndex = question.correctAnswer;
+                    
+                    if (selectedIndex === correctIndex) {
+                        correctAnswers++;
+                    }
+                });
+
+                if (!allAnswered) {
+                    showToast('Por favor, responde todas las preguntas.');
+                    return;
+                }
+
+                lesson.questions.forEach((question, qIndex) => {
+                    const questionId = `quiz-${lesson.id}-q-${qIndex}`;
+                    const questionContainer = document.getElementById(questionId);
+                    const selectedOption = questionContainer.querySelector('.quiz-option.selected');
+                    const correctIndex = question.correctAnswer;
+                    
+                    questionContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.style.pointerEvents = 'none';
+                        opt.classList.remove('selected');
+                    });
+
+                    const selectedIndex = parseInt(selectedOption.dataset.index);
+                    if (selectedIndex === correctIndex) {
+                        selectedOption.classList.add('correct');
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        questionContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
+                    }
+                });
+
+                if (correctAnswers === totalQuestions) {
+                    showToast('¡Todas las respuestas son correctas!');
+                    
+                    if (!userProgress.completedLessons.includes(lesson.id)) {
+                        userProgress.completedLessons = [...new Set([...userProgress.completedLessons, lesson.id])];
+                        await saveProgress();
+                        checkForBadgeUnlock(lesson.id);
+                        refreshUI();
+                    }
+                    
+                    advanceToNextLesson();
+                } else {
+                    showToast(`Revisa tus respuestas. ${correctAnswers} de ${totalQuestions} son correctas.`);
+                    const firstIncorrect = dom.tabMaterialPanel.querySelector('.quiz-option.incorrect');
+                    if (firstIncorrect) {
+                        const questionContainer = firstIncorrect.closest('.space-y-4.mb-8');
+                        if (questionContainer) {
+                            questionContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                    setTimeout(() => {
+                        dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('incorrect', 'correct');
+                            opt.style.pointerEvents = 'auto';
+                        });
+                    }, 5000);
+                }
+            }
+            
+            function updateMainActionButton() {
+                if (!dom.navigationButtons || !dom.mainActionBtn) return;
+
+                const isCourseComplete = getIsCourseComplete();
+                if (isCourseComplete) {
+                    dom.navigationButtons.classList.add('hidden');
+                    return;
+                }
+                
+                dom.navigationButtons.classList.remove('hidden');
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                if (!lesson) return;
+
+                const isCompleted = userProgress.completedLessons.includes(lesson.id);
+
+                if (isCompleted) {
+                    dom.mainActionBtn.classList.add('hidden');
+                    return;
+                }
+
+                dom.mainActionBtn.classList.remove('hidden');
+                dom.mainActionBtn.textContent = 'Marcar como completada';
+                dom.mainActionBtn.disabled = (lesson.type === 'quiz'); 
+            }
+
+            function updateOverallProgress() { const uniqueCompleted = new Set(userProgress.completedLessons); const completedCount = uniqueCompleted.size; const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0; if (dom.progressBar) dom.progressBar.style.width = `${percentage}%`; if (dom.progressText) dom.progressText.textContent = `${percentage}%`; }
+            
+            async function navigateToLesson(lessonId) {
+                const isCourseComplete = getIsCourseComplete();
+                const targetLessonInfo = getLessonInfo(lessonId);
+                if (!targetLessonInfo) return;
+
+                if (!isCourseComplete) {
+                    const targetModuleIndex = targetLessonInfo.moduleIndex;
+                    if (targetModuleIndex > 0) {
+                        const previousModule = courseData.modules[targetModuleIndex - 1];
+                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
+                        if (!previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id))) {
+                            showToast(`Debes completar el "${previousModule.title}" para acceder.`);
+                            return;
+                        }
+                    }
+                    
+                    const { lesson, module } = targetLessonInfo;
+                    if (lesson.type === 'quiz') {
+                        const otherLessonsInModule = module.lessons.filter(l => l.type !== 'quiz');
+                        if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(l.id))) {
+                            showToast(`Completa las lecciones del "${module.title}" para desbloquear el quiz.`);
+                            return;
+                        }
+                    }
+                }
+                
+                userProgress = { ...userProgress, currentLessonId: lessonId };
+                await saveProgress();
+                refreshUI();
+                loadLessonTabData();
+            }
+
+            async function saveProgress() { if (!currentUser) return; try { const progressRef = db.collection('userProgress').doc(currentUser.uid); await progressRef.set({ [courseId]: userProgress }, { merge: true }); } catch (error) { console.error("Error al guardar el progreso:", error); } }
+            
+            async function loadProgressAndInitialize() { const docRef = db.collection('userProgress').doc(currentUser.uid); try { const doc = await docRef.get(); if (doc.exists) { const courseProgress = doc.data()[courseId]; if (courseProgress) { userProgress = { completedLessons: Array.isArray(courseProgress.completedLessons) ? courseProgress.completedLessons : [], currentLessonId: allLessons.some(l => l.id === courseProgress.currentLessonId) ? courseProgress.currentLessonId : allLessons[0].id, unlockedBadges: Array.isArray(courseProgress.unlockedBadges) ? courseProgress.unlockedBadges : [] }; } } } catch (error) { console.error("Error al cargar el progreso.", error); } refreshUI(); loadLessonTabData(); }
+            
+            function addSidebarListeners() {
+                if (!dom.modulesContainer) return;
+                
+                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => {
+                    link.addEventListener('click', e => {
+                        e.preventDefault();
+                        const li = e.currentTarget.closest('.lesson-item');
+                        if (li && !e.currentTarget.classList.contains('cursor-not-allowed')) {
+                            navigateToLesson(li.dataset.lessonId);
+                        }
+                    });
+                });
+
+                dom.modulesContainer.querySelectorAll('.accordion-item').forEach(item => {
+                    const header = item.querySelector('.accordion-header');
+                    const icon = header ? header.querySelector('i') : null;
+                    if (header && icon && icon.getAttribute('data-lucide') !== 'lock') {
+                        header.addEventListener('click', () => {
+                            const content = header.nextElementSibling;
+                            const iconEl = header.querySelector('i[data-lucide="chevron-down"]');
+                            const isOpen = content.classList.toggle('open');
+                            if(iconEl) iconEl.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                        });
+                    }
+                });
+            }
+            
+            if (dom.mainActionBtn) dom.mainActionBtn.addEventListener('click', async () => {
+                const lessonId = userProgress.currentLessonId;
+                const isCompleted = userProgress.completedLessons.includes(lessonId);
+
+                if (!isCompleted) {
+                    userProgress = { ...userProgress, completedLessons: [...new Set([...userProgress.completedLessons, lessonId])] };
+                    await saveProgress();
+                    checkForBadgeUnlock(lessonId);
+                    refreshUI();
+
+                    const isLastLesson = allLessons.findIndex(l => l.id === lessonId) === allLessons.length - 1;
+                    if (getIsCourseComplete() || isLastLesson) {
+                        if (!hasShownCompletionModal) {
+                            await showCompletionModal();
+                            hasShownCompletionModal = true;
+                        }
+                    } else {
+                        advanceToNextLesson();
+                    }
+                }
+            });
+
+            if (dom.prevBtn) dom.prevBtn.addEventListener('click', () => { const currentIndex = allLessons.findIndex(l => l.id === userProgress.currentLessonId); if (currentIndex > 0) navigateToLesson(allLessons[currentIndex - 1].id); });
+            
+            function showToast(message, type = 'generic') { const toastEl = type === 'badge' ? dom.badgeToast : dom.toast; const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage; if (!toastEl || !msgEl) return; msgEl.textContent = message; toastEl.classList.add('show'); setTimeout(() => toastEl.classList.remove('show'), 4000); }
+            function checkForBadgeUnlock(completedLessonId) { const lessonInfo = getLessonInfo(completedLessonId); if (!lessonInfo || !lessonInfo.module.badge) return; const lastLessonOfModule = lessonInfo.module.lessons[lessonInfo.module.lessons.length - 1].id; if (completedLessonId !== lastLessonOfModule) return; const moduleLessonIds = lessonInfo.module.lessons.map(l => l.id); if (moduleLessonIds.every(id => userProgress.completedLessons.includes(id))) { if (!userProgress.unlockedBadges.includes(lessonInfo.module.badge)) { userProgress.unlockedBadges.push(lessonInfo.module.badge); saveProgress(); showToast(`Has ganado la insignia: "${lessonInfo.module.badge}"`, 'badge'); } } }
+            
+            async function generateCertificateRecord() {
+                if (!currentUser || !courseData.hasCertificate) {
+                    return null;
+                }
+                const certificateId = `${currentUser.uid}_${courseId}`;
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'aulagenia-app';
+
+                const certRef = db.collection('artifacts').doc(appId)
+                                  .collection('public').doc('data')
+                                  .collection('certificates').doc(certificateId);
+
+                try {
+                    const certDoc = await certRef.get();
+                    if (!certDoc.exists) {
+                        console.log('Generating new certificate record...');
+                        await certRef.set({
+                            userId: currentUser.uid,
+                            userName: currentUser.name,
+                            courseId: courseId,
+                            courseName: courseData.title,
+                            issuedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            appId: appId
+                        });
+                        console.log('Certificate record created:', certificateId);
+                    } else {
+                        console.log('Certificate record already exists.');
+                    }
+                    return certificateId;
+                } catch (error) {
+                    console.error("Error creating or checking certificate record:", error);
+                    return null;
+                }
+            }
+
+            async function showCompletionModal() {
+                if (!dom.completionModal || !dom.completionModalOverlay) return;
+                if (dom.modalUserName) dom.modalUserName.textContent = currentUser ? currentUser.name : '';
+                if (dom.modalCourseName) dom.modalCourseName.textContent = courseData.title;
+                
+                if (courseData.hasCertificate && dom.certificateLink) {
+                    const certificateId = await generateCertificateRecord();
+                    if (certificateId) {
+                        dom.certificateLink.href = `./portal-certificacion.html?id=${certificateId}`;
+                        dom.certificateLink.classList.remove('hidden');
+                        dom.certificateLink.classList.add('flex');
+                    } else {
+                        dom.certificateLink.classList.add('hidden');
+                        dom.certificateLink.classList.remove('flex');
+                    }
+                } else if (dom.certificateLink) {
+                    dom.certificateLink.classList.add('hidden');
+                    dom.certificateLink.classList.remove('flex');
+                }
+
+                dom.completionModalOverlay.classList.remove('hidden');
+                dom.completionModal.classList.remove('hidden');
+                setTimeout(() => {
+                    dom.completionModalOverlay.classList.add('opacity-100');
+                    dom.completionModal.classList.add('show');
+                }, 10);
+            }
+
+            function hideCompletionModal() {
+                if (!dom.completionModal || !dom.completionModalOverlay) return;
+                dom.completionModalOverlay.classList.remove('opacity-100');
+                dom.completionModal.classList.remove('show');
+                const inner = dom.completionModal.querySelector('div');
+                if (inner) inner.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    dom.completionModal.classList.add('hidden');
+                    dom.completionModalOverlay.classList.add('hidden');
+                    if (inner) inner.classList.remove('scale-95', 'opacity-0');
+                }, 300);
+            }
+
+            if (dom.closeModalBtn) dom.closeModalBtn.addEventListener('click', () => window.location.href = `${baseUrl}/campus.html`);
+            if (dom.reviewCourseBtn) dom.reviewCourseBtn.addEventListener('click', hideCompletionModal);
+            
+            // --- INICIO: LÓGICA DE PERFIL CON VALIDACIÓN MEJORADA ---
+            const profileModalOverlay = document.getElementById('profile-modal-overlay');
+            const profileModal = document.getElementById('profile-modal');
+            const avatarButton = document.getElementById('avatar-button');
+            const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+            const closeProfileBtn = document.getElementById('close-profile-modal-btn');
+            const profileForm = document.getElementById('profile-form');
+            const profileNameInput = document.getElementById('profile-name-input');
+            const profileRutInput = document.getElementById('profile-rut-input');
+            const profileEmailInput = document.getElementById('profile-email-input');
+            const profileJobInput = document.getElementById('profile-job-input');
+            const profileCountrySelect = document.getElementById('profile-country-select');
+            const profileGenderSelect = document.getElementById('profile-gender-select');
+            const profileBirthdateInput = document.getElementById('profile-birthdate-input');
+            const formStatus = document.getElementById('form-status');
+            const saveBtn = document.getElementById('save-profile-btn');
+            const saveBtnText = document.getElementById('save-btn-text');
+            const saveSpinner = document.getElementById('save-spinner');
+            
+             async function showProfileModal() {
+                if (!profileForm || !profileEmailInput || !profileModalOverlay || !profileModal) return;
+                profileForm.reset();
+                
+                const user = auth.currentUser;
+                if (!user) return;
+                
+                profileEmailInput.value = user.email || '';
+                
+                const userDocRef = db.collection('users').doc(user.uid);
+                try {
+                    const doc = await userDocRef.get();
+                    const dbData = doc.exists ? doc.data() : {};
+                    const isProfileCompleted = dbData.profileCompleted === true;
+
+                    if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : (user.displayName || '');
+                    if (profileRutInput) profileRutInput.value = dbData.rut || '';
+                    if (profileJobInput) profileJobInput.value = dbData.jobTitle || '';
+                    if (profileCountrySelect) profileCountrySelect.value = dbData.country || '';
+                    if (profileGenderSelect) profileGenderSelect.value = dbData.gender || '';
+                    if (profileBirthdateInput) profileBirthdateInput.value = dbData.birthdate || '';
+                } catch (error) {
+                    console.error("Error al cargar datos del perfil:", error);
+                }
+                
+                checkAllFieldsAndToggleButtonState();
+                formStatus.classList.add('hidden');
+                profileModalOverlay.classList.remove('hidden');
+                profileModal.classList.remove('hidden');
+                setTimeout(() => {
+                    const inner = profileModal.querySelector('div.bg-white');
+                    if(inner) inner.classList.remove('scale-95', 'opacity-0');
+                }, 10);
+            }
+
+            function hideProfileModal() { if (!profileModalOverlay || !profileModal) return; const inner = profileModal.querySelector('div.bg-white'); if (inner) inner.classList.add('scale-95', 'opacity-0'); setTimeout(() => { profileModalOverlay.classList.add('hidden'); profileModal.classList.add('hidden'); if (inner) inner.classList.remove('scale-95', 'opacity-0'); }, 300); }
+            if (avatarButton) avatarButton.addEventListener('click', () => showProfileModal()); if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', hideProfileModal); if (closeProfileBtn) closeProfileBtn.addEventListener('click', hideProfileModal); if (profileModalOverlay) profileModalOverlay.addEventListener('click', (e) => { if (e.target === profileModalOverlay) hideProfileModal(); });
+            
+            function validateRut(rut) { rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); const rutBody = rut.slice(0, -1); let dv = rut.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; let sum = 0, multiple = 2; for (let i = rutBody.length - 1; i >= 0; i--) { sum += rutBody.charAt(i) * multiple; if (multiple < 7) multiple++; else multiple = 2; } const calculatedDv = 11 - (sum % 11); const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); return dv === expectedDv; }
+
+            function setFieldState(field, state, message = '') {
+                const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
+                const errorEl = document.getElementById(`${field}-error`);
+                const iconEl = document.getElementById(`${field}-status-icon`);
+                if (!inputEl) return;
+                inputEl.classList.remove('form-input-error', 'form-input-success');
+                if (errorEl) errorEl.textContent = '';
+                if (iconEl) iconEl.innerHTML = '';
+                if (state === 'error') {
+                    inputEl.classList.add('form-input-error');
+                    if (errorEl) errorEl.textContent = message;
+                    if (iconEl) iconEl.innerHTML = `<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>`;
+                } else if (state === 'success') {
+                    inputEl.classList.add('form-input-success');
+                    if (iconEl) iconEl.innerHTML = `<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>`;
+                }
+                if (iconEl && iconEl.innerHTML) {
+                    lucide.createIcons({ nodes: [iconEl.querySelector('i')] });
+                }
+            }
+
+            function validateName() { if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) { setFieldState('name', 'error', 'Ingresa tu nombre y apellido completo.'); return false; } setFieldState('name', 'success'); return true; }
+            function validateCountry() { if (profileCountrySelect.value === '') { setFieldState('country', 'error', 'Selecciona tu país de residencia.'); return false; } setFieldState('country', 'success'); return true; }
+            function validateRutField() { if (profileCountrySelect.value === 'CL') { if (!validateRut(profileRutInput.value)) { setFieldState('rut', 'error', 'El RUT ingresado no es válido.'); return false; } setFieldState('rut', 'success'); } else { setFieldState('rut', 'neutral'); } return true; }
+
+            function checkAllFieldsAndToggleButtonState() {
+                const isNameValid = validateName();
+                const isCountryValid = validateCountry();
+                const isRutValid = validateRutField();
+                const isFormValid = isNameValid && isCountryValid && (profileCountrySelect.value !== 'CL' || isRutValid);
+                if(saveBtn) saveBtn.disabled = !isFormValid;
+            }
+
+            if(profileNameInput) profileNameInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+            if(profileRutInput) profileRutInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+            if(profileCountrySelect) profileCountrySelect.addEventListener('change', checkAllFieldsAndToggleButtonState);
+
+            if (profileForm) profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                checkAllFieldsAndToggleButtonState();
+                if (saveBtn && saveBtn.disabled) { 
+                    if(formStatus) {
+                      formStatus.className = 'text-center p-3 rounded-lg bg-yellow-100 text-yellow-700';
+                      formStatus.textContent = 'Por favor, corrige los campos marcados en rojo.';
+                      formStatus.classList.remove('hidden');
+                    }
+                    return; 
+                }
+                if (saveBtn) saveBtn.disabled = true;
+                if (saveBtnText) saveBtnText.textContent = 'Guardando...';
+                if (saveSpinner) saveSpinner.classList.remove('hidden');
+                if(formStatus) formStatus.classList.add('hidden');
+                const user = auth.currentUser;
+                const newName = profileNameInput ? profileNameInput.value.trim() : '';
+                const userDocRef = db.collection('users').doc(user.uid);
+                try {
+                    if (newName && user && newName !== user.displayName) {
+                        await user.updateProfile({ displayName: newName });
+                    }
+                    await userDocRef.set({
+                        displayName: newName,
+                        email: user.email,
+                        rut: profileRutInput ? profileRutInput.value.trim() : '',
+                        jobTitle: profileJobInput ? profileJobInput.value.trim() : '',
+                        country: profileCountrySelect ? profileCountrySelect.value : '',
+                        gender: profileGenderSelect ? profileGenderSelect.value : '',
+                        birthdate: profileBirthdateInput ? profileBirthdateInput.value : '',
+                        profileCompleted: true
+                    }, { merge: true });
+                    if (dom.userName) dom.userName.textContent = newName;
+                    if(formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700';
+                        formStatus.textContent = '¡Perfil actualizado con éxito!';
+                        formStatus.classList.remove('hidden');
+                    }
+                    showToast('¡Perfil actualizado con éxito!');
+                    setTimeout(hideProfileModal, 1500);
+                } catch (error) {
+                    console.error("Error al guardar perfil:", error);
+                    if(formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
+                        formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.';
+                        formStatus.classList.remove('hidden');
+                    }
+                } finally {
+                    if (saveBtnText) saveBtnText.textContent = 'Guardar Cambios';
+                    if (saveSpinner) saveSpinner.classList.add('hidden');
+                }
+            });
+            // --- FIN: LÓGICA DE PERFIL ---
+
+            
+            function activateTab(tabId) {
+                if (!dom.learningTabs) return;
+                dom.learningTabs.querySelectorAll('.ltab').forEach(b => {
+                    const active = b.dataset.tab === tabId;
+                    b.classList.toggle('active', active);
+                    b.classList.toggle('text-teal-600', active);
+                    b.classList.toggle('border-teal-500', active);
+                    b.classList.toggle('text-slate-500', !active);
+                    b.classList.toggle('border-transparent', !active);
+                });
+                dom.learningTabs.querySelectorAll('.ltab-panel').forEach(p => p.classList.toggle('hidden', p.id !== tabId));
+            }
+
+            if (dom.learningTabs) dom.learningTabs.addEventListener('click', (e) => {
+                const button = e.target.closest('.ltab');
+                if (button) activateTab(button.dataset.tab);
+            });
+
+            function loadLessonTabData() {
+                if (!currentUser) return;
+                const lessonId = userProgress.currentLessonId;
+                const lessonInfo = getLessonInfo(lessonId);
+                if (!lessonInfo) return;
+
+                loadNotes(lessonId);
+                renderCourseResources(lessonInfo.lesson);
+                loadUserResources(lessonId);
+                loadTasks(lessonId);
+                activateTab('tab-material');
+            }
+
+            async function loadNotes(lessonId) {
+                if (!currentUser || !dom.notesTextarea || !dom.notesSaveStatus) return;
+                dom.notesTextarea.value = '';
+                const noteRef = db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${lessonId}`);
+                try {
+                    const doc = await noteRef.get();
+                    if (doc.exists) dom.notesTextarea.value = doc.data().content || '';
+                    dom.notesSaveStatus.textContent = 'Sin cambios';
+                } catch (error) {
+                    console.error("Error al cargar las notas:", error);
+                    dom.notesSaveStatus.textContent = 'Error al cargar';
+                }
+            }
+
+            async function saveNotes(lessonId) {
+                if (!currentUser || !dom.notesTextarea || !dom.notesSaveStatus) return;
+                dom.notesSaveStatus.textContent = 'Guardando...';
+                const noteRef = db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${lessonId}`);
+                try {
+                    await noteRef.set({ uid: currentUser.uid, content: dom.notesTextarea.value, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+                    dom.notesSaveStatus.textContent = 'Guardado';
+                } catch (error) {
+                    console.error("Error al guardar las notas:", error);
+                    dom.notesSaveStatus.textContent = 'Error al guardar';
+                } finally {
+                    setTimeout(() => { if (dom.notesSaveStatus.textContent === 'Guardado') dom.notesSaveStatus.textContent = 'Sin cambios'; }, 2000);
+                }
+            }
+            if (dom.notesTextarea) dom.notesTextarea.addEventListener('input', () => { if (!dom.notesSaveStatus) return; dom.notesSaveStatus.textContent = 'Editando...'; clearTimeout(notesSaveTimer); notesSaveTimer = setTimeout(() => saveNotes(userProgress.currentLessonId), 1500); });
+
+            function renderCourseResources(lesson) {
+                if (!dom.resourcesList) return;
+                const resources = lesson.resources || [];
+                if (resources.length > 0) {
+                    dom.resourcesList.innerHTML = resources.map(resource => {
+                        const isPdf = !resource.external && resource.url.includes('.pdf');
+                        const icon = resource.external ? 'link' : (isPdf ? 'file-text' : 'download-cloud');
+                        const actionAttr = isPdf ? `data-pdf-url="${resource.url}" data-pdf-title="${resource.name}"` : `href="${resource.url}"`;
+                        const targetAttr = resource.external ? 'target="_blank" rel="noopener noreferrer"' : '';
+                        const tagName = isPdf ? 'button' : 'a';
+                        return `<${tagName} ${actionAttr} ${targetAttr} class="resource-item flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-teal-500 transition-all duration-200 group w-full text-left"><i data-lucide="${icon}" class="h-6 w-6 text-teal-500 mr-4"></i><span class="flex-1 font-medium text-gray-700 group-hover:text-teal-600">${resource.name}</span><i data-lucide="arrow-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i></${tagName}>`;
+                    }).join('');
+                } else {
+                    dom.resourcesList.innerHTML = `<div class="text-center py-5 px-4 bg-gray-100 rounded-lg"><p class="text-gray-500 text-sm">No hay recursos del instructor para esta lección.</p></div>`;
+                }
+                lucide.createIcons();
+            }
+
+            function openPdfModal(url, title) {
+                if (!dom.pdfModal || !dom.pdfModalOverlay || !dom.pdfModalContent || !dom.pdfIframe) return;
+                dom.pdfModalTitle && (dom.pdfModalTitle.textContent = title);
+                const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+                dom.pdfIframe.src = viewerUrl;
+                dom.pdfModal.classList.remove('hidden');
+                dom.pdfModalOverlay.classList.remove('hidden');
+                setTimeout(() => { dom.pdfModalOverlay.classList.add('opacity-100'); dom.pdfModalContent.classList.remove('scale-95', 'opacity-0'); }, 10);
+            }
+
+            function closePdfModal() {
+                if (!dom.pdfModal || !dom.pdfModalOverlay || !dom.pdfModalContent || !dom.pdfIframe) return;
+                dom.pdfModalOverlay.classList.remove('opacity-100');
+                dom.pdfModalContent.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => { dom.pdfModal.classList.add('hidden'); dom.pdfModalOverlay.classList.add('hidden'); dom.pdfIframe.src = ''; }, 300);
+            }
+
+            if (dom.resourcesList) dom.resourcesList.addEventListener('click', (e) => {
+                const button = e.target.closest('.resource-item[data-pdf-url]');
+                if (button) openPdfModal(button.dataset.pdfUrl, button.dataset.pdfTitle);
+            });
+            if (dom.pdfModalCloseBtn) dom.pdfModalCloseBtn.addEventListener('click', closePdfModal);
+            if (dom.pdfModalOverlay) dom.pdfModalOverlay.addEventListener('click', closePdfModal);
+
+            async function downloadTranscription(transcriptionUrl, lessonTitle) {
+                if (!transcriptionUrl) {
+                    showToast('No hay transcripción disponible para descargar.');
+                    return;
+                }
+                
+                const btn = document.getElementById('transcription-button');
+                if (!btn) return;
+                
+                const btnSpan = btn.querySelector('span');
+                const originalText = btnSpan ? btnSpan.textContent : 'Descargar Transcripción';
+                
+                if (btnSpan) btnSpan.textContent = 'Preparando...';
+                btn.disabled = true;
+
+                try {
+                    const resolvedUrl = await resolveStorageDownloadURL(storage, transcriptionUrl);
+                    const response = await fetch(resolvedUrl);
+                    if (!response.ok) throw new Error('Respuesta de red no fue OK');
+                    
+                    const srtText = await response.text();
+                    
+                    const plainText = srtText
+                        .split(/\r?\n/)
+                        .filter(line => !/^\d+$/.test(line.trim()) && !line.includes('-->'))
+                        .join('\n')
+                        .replace(/(\n\s*){2,}/g, '\n\n')
+                        .trim();
+
+                    const blob = new Blob([plainText], { type: 'text/plain;charset=utf-8' });
+                    
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    
+                    const sanitizedTitle = lessonTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                    link.download = `transcripcion_${sanitizedTitle}.txt`;
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    URL.revokeObjectURL(link.href);
+                    showToast('Descarga iniciada.');
+
+                } catch (error) {
+                    console.error('Error al descargar la transcripción:', error);
+                    showToast('No se pudo descargar la transcripción.');
+                } finally {
+                    if (btnSpan) btnSpan.textContent = originalText;
+                    btn.disabled = false;
+                }
+            }
+
+            async function loadUserResources(lessonId) {
+                if (!currentUser || !dom.userResourceList) return;
+                dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
+                try {
+                    const snap = await db.collection('userResources').where('uid', '==', currentUser.uid).where('courseId', '==', courseId).where('lessonId', '==', lessonId).get();
+                    if (snap.empty) { dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">No has subido archivos.</p></li>'; return; }
+                    const docs = snap.docs.sort((a, b) => { const timeA = a.data().createdAt?.toDate() || 0; const timeB = b.data().createdAt?.toDate() || 0; return timeB - timeA; });
+                    dom.userResourceList.innerHTML = '';
+                    docs.forEach(doc => renderUserResourceItem(doc));
+                } catch (err) {
+                    console.error('Error listando recursos:', err);
+                    dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos. Revisa los permisos de Firestore.</p></li>';
+                }
+            }
+            function renderUserResourceItem(doc) {
+                if (!dom.userResourceList) return;
+                const data = doc.data();
+                const li = document.createElement('li');
+                li.className = 'px-4 py-3 flex items-center justify-between';
+                li.innerHTML = `<div class="min-w-0 flex-1"><p class="text-sm font-medium text-slate-900 truncate">${data.name}</p><p class="text-xs text-slate-500 truncate">${data.contentType || ''} - ${Math.round(data.size / 1024)} KB</p></div><div class="flex items-center gap-3"><a href="${data.downloadURL}" target="_blank" class="text-teal-700 text-sm font-semibold hover:underline">Abrir</a><button class="delete-resource-btn text-red-600 text-sm font-semibold hover:underline">Eliminar</button></div>`;
+                li.querySelector('.delete-resource-btn').addEventListener('click', async () => {
+                    if (!confirm(`¿Seguro que quieres eliminar "${data.name}"?`)) return;
+                    try { await storage.ref(data.storagePath).delete(); await doc.ref.delete(); li.remove(); showToast('Archivo eliminado.'); } 
+                    catch (err) { console.error('Error eliminando:', err); showToast('No se pudo eliminar el archivo.'); }
+                });
+                dom.userResourceList.prepend(li);
+            }
+            
+            if (dom.resourceFileInput) dom.resourceFileInput.addEventListener('change', () => { if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.disabled = dom.resourceFileInput.files.length === 0; });
+            if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.addEventListener('click', async () => {
+                const files = dom.resourceFileInput ? dom.resourceFileInput.files : null;
+                if (!files || !files.length || !currentUser || !dom.uploadProgress) return;
+                const lessonId = userProgress.currentLessonId;
+                dom.uploadProgress.classList.remove('hidden');
+                for (const file of files) {
+                    dom.uploadProgress.textContent = `Subiendo ${file.name}...`;
+                    const storagePath = `user_uploads/${currentUser.uid}/${courseId}/${lessonId}/${Date.now()}_${file.name}`;
+                    const fileRef = storage.ref(storagePath);
+                    try {
+                        const uploadTask = await fileRef.put(file);
+                        const downloadURL = await uploadTask.ref.getDownloadURL();
+                        const docRef = await db.collection('userResources').add({ uid: currentUser.uid, courseId, lessonId, name: file.name, size: file.size, contentType: file.type, storagePath, downloadURL, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                        const newDoc = await docRef.get();
+                        if (dom.userResourceList && dom.userResourceList.querySelector('p.text-slate-500')) dom.userResourceList.innerHTML = '';
+                        renderUserResourceItem(newDoc);
+                    } catch (err) { console.error('Error en subida:', err); dom.uploadProgress.textContent = `Error al subir ${file.name}.`; return; }
+                }
+                dom.uploadProgress.textContent = '¡Archivos subidos!';
+                if (dom.resourceFileInput) dom.resourceFileInput.value = '';
+                if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.disabled = true;
+                setTimeout(() => dom.uploadProgress && dom.uploadProgress.classList.add('hidden'), 3000);
+            });
+
+            async function loadTasks(lessonId) {
+                if (!currentUser || !dom.taskList) return;
+                const key = `${currentUser.uid}_${courseId}_${lessonId}`;
+                dom.taskList.innerHTML = '';
+                try {
+                    const docRef = db.collection('userTasks').doc(key);
+                    const doc = await docRef.get();
+                    if (doc.exists) { const items = doc.data().items || []; items.forEach(task => renderTaskItem(task, docRef)); }
+                } catch (err) { console.error('Error cargando tareas:', err); }
+            }
+
+            function renderTaskItem(task, docRef) {
+                if (!dom.taskList) return;
+                const li = document.createElement('li');
+                li.className = 'bg-white border border-slate-200 rounded-lg p-3 flex items-center justify-between group';
+                li.innerHTML = `<label class="flex-1 flex items-center gap-3 cursor-pointer"><input type="checkbox" class="task-toggle h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500" ${task.done ? 'checked' : ''}/><span class="text-sm ${task.done ? 'line-through text-slate-400' : 'text-slate-800'}">${task.text}</span></label><button class="task-delete text-slate-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="h-4 w-4"></i></button>`;
+                const toggle = li.querySelector('.task-toggle');
+                toggle.addEventListener('change', async () => { await updateTask(docRef, task, { done: toggle.checked }); const span = li.querySelector('span'); if (span) { span.classList.toggle('line-through', toggle.checked); span.classList.toggle('text-slate-400', toggle.checked); } });
+                li.querySelector('.task-delete').addEventListener('click', async () => { await deleteTask(docRef, task); li.remove(); });
+                dom.taskList.append(li);
+                lucide.createIcons();
+            }
+            async function updateTask(docRef, oldTask, updates) { const doc = await docRef.get(); const items = doc.exists ? doc.data().items || [] : []; const itemIndex = items.findIndex(item => item.text === oldTask.text); if (itemIndex > -1) { items[itemIndex] = { ...items[itemIndex], ...updates }; await docRef.set({ items }, { merge: true }); } }
+            async function deleteTask(docRef, taskToDelete) { const doc = await docRef.get(); const items = doc.exists ? doc.data().items || [] : []; const newItems = items.filter(item => item.text !== taskToDelete.text); await docRef.set({ items: newItems }, { merge: true }); }
+            async function addTask() { if (!currentUser || !dom.taskInput) return; const text = dom.taskInput.value.trim(); if (!text) return; const lessonId = userProgress.currentLessonId; const key = `${currentUser.uid}_${courseId}_${lessonId}`; const task = { text, done: false }; try { const docRef = db.collection('userTasks').doc(key); await docRef.set({ uid: currentUser.uid, items: firebase.firestore.FieldValue.arrayUnion(task) }, { merge: true }); renderTaskItem(task, docRef); dom.taskInput.value = ''; } catch (err) { console.error('Error agregando tarea:', err); } }
+            if (dom.addTaskBtn) dom.addTaskBtn.addEventListener('click', addTask);
+            if (dom.taskInput) dom.taskInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addTask(); }});
+            
+            if (dom.supportForm) dom.supportForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(dom.supportForm);
+                const lessonInfo = getLessonInfo(userProgress.currentLessonId);
+                const dataToSend = { email: auth.currentUser.email, curso: courseData.title, fecha: new Date().toLocaleString('es-CL'), asunto: formData.get('subject'), mensaje: formData.get('message'), leccion: lessonInfo ? lessonInfo.lesson.title : 'Lección no especificada', nombreAlumno: currentUser ? currentUser.name : '' };
+                if (dom.supportSubmitBtn) dom.supportSubmitBtn.disabled = true;
+                if (dom.supportBtnText) dom.supportBtnText.textContent = 'Enviando...';
+                if (dom.supportSpinner) dom.supportSpinner.classList.remove('hidden');
+                if (dom.supportFormStatus) dom.supportFormStatus.innerHTML = '';
+                try {
+                    const webhookUrl = 'https://muna.auto.hostybee.com/webhook/soporte';
+                    const response = await fetch(webhookUrl, { method: 'POST', body: JSON.stringify(dataToSend), headers: { 'Content-Type': 'application/json' } });
+                    if (response.ok) { if (dom.supportFormStatus) dom.supportFormStatus.innerHTML = `<p class="text-green-600 font-semibold">¡Consulta enviada con éxito!</p>`; dom.supportForm.reset(); }
+                    else { throw new Error('Error en la respuesta del servidor de n8n'); }
+                } catch (error) {
+                    console.error('Error al enviar al webhook de n8n:', error);
+                    if (dom.supportFormStatus) dom.supportFormStatus.innerHTML = `<p class="text-red-600 font-semibold">Hubo un error al enviar tu consulta. Por favor, intenta más tarde.</p>`;
+                } finally {
+                    if (dom.supportSubmitBtn) dom.supportSubmitBtn.disabled = false;
+                    if (dom.supportBtnText) dom.supportBtnText.textContent = 'Enviar Consulta';
+                    if (dom.supportSpinner) dom.supportSpinner.classList.add('hidden');
+                }
+            });
+
+            function srtToVtt(srt) {
+                const cleaned = srt.replace(/\r+/g, '').replace(/^\s*\d+\s*$/gm, '').replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, '$1:$2:$3.$4');
+                return 'WEBVTT\n\n' + cleaned.trim();
+            }
+            async function resolveStorageDownloadURL(storage, maybeGsOrHttpsUrl) {
+                if (!maybeGsOrHttpsUrl) return null;
+                try { const ref = storage.refFromURL(maybeGsOrHttpsUrl); return await ref.getDownloadURL(); }
+                catch (e) { if (/^https?:\/\//i.test(maybeGsOrHttpsUrl)) return maybeGsOrHttpsUrl; throw e; }
+            }
+            async function attachMediaAndCaptions({ storage, videoEl, videoSrc, srtOrVttSrc }) {
+                const srcEl = videoEl.querySelector('#course-video-source');
+                const resolvedVideo = await resolveStorageDownloadURL(storage, videoSrc);
+                if (srcEl && resolvedVideo) srcEl.src = resolvedVideo;
+
+                const trackEl = videoEl.querySelector('#caption-track');
+                if (!trackEl || !srtOrVttSrc) { videoEl.load(); return; }
+
+                const resolvedTrack = await resolveStorageDownloadURL(storage, srtOrVttSrc);
+                if (!resolvedTrack) { videoEl.load(); return; }
+
+                const isSrt = /(\.srt)(\?|$)/i.test(resolvedTrack);
+                if (isSrt) {
+                    const resp = await fetch(resolvedTrack);
+                    const srtTxt = await resp.text();
+                    const vttTxt = srtToVtt(srtTxt);
+                    const blobUrl = URL.createObjectURL(new Blob([vttTxt], { type: 'text/vtt' }));
+                    trackEl.src = blobUrl;
+                } else {
+                    trackEl.src = resolvedTrack;
+                }
+                trackEl.default = true;
+                const [t] = videoEl.textTracks; if (t) t.mode = 'showing';
+                videoEl.load();
+            }
+
+            // --- Código del parche aquí ---
+            const BLOCK_SELECTORS_ON_COMPLETE = [
+              '#main-action-btn',
+              'button[id*="encuesta"]',
+              '[id*="btn-encuesta"]',
+              '[data-action="complete"]',
+              '[data-action="encuesta"]',
+              '.btn-completar-modulo',
+              '.btn-encuesta',
+              'a[href*="encuesta"]'
+            ];
+            
+            function isInsideVideo(el) {
+              return !!el.closest('video, .plyr, .video-js, .video-container');
+            }
+
+            function hardDisable(el, reason = 'Curso finalizado: acción deshabilitada') {
+              if (!el || isInsideVideo(el)) return;
+              el.setAttribute('aria-disabled', 'true');
+              el.setAttribute('tabindex', '-1');
+              el.title = reason;
+              el.classList.add('opacity-60', 'cursor-not-allowed');
+              if (el.tagName === 'BUTTON') el.disabled = true;
+
+              const blocker = (e) => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                return false;
+              };
+              el.addEventListener('click', blocker, true);
+              el.addEventListener('pointerdown', blocker, true);
+              el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') blocker(e);
+              }, true);
+            }
+
+            function lockPostCompletionActions() {
+              const courseIsDone = getIsCourseComplete();
+              if (!courseIsDone) return;
+
+              if (dom && dom.navigationButtons) {
+                dom.navigationButtons.classList.add('hidden');
+              }
+
+              BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
+                document.querySelectorAll(sel).forEach((el) => hardDisable(el));
+              });
+
+              if (!window.__postCompleteObserver__) {
+                window.__postCompleteObserver__ = new MutationObserver(() => {
+                  BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
+                    document.querySelectorAll(sel).forEach((el) => hardDisable(el));
+                  });
+                });
+                window.__postCompleteObserver__.observe(document.body, { childList: true, subtree: true });
+              }
+            }
+            // --- Fin del código del parche ---
+
+            if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
+
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
+                    if (dom.userName) dom.userName.textContent = currentUser.name;
+                    if (dom.userAvatar) dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
+                    if (dom.userProfile) { dom.userProfile.classList.remove('hidden'); dom.userProfile.classList.add('flex'); }
+                    loadProgressAndInitialize();
+                } else {
+                    window.location.href = `${baseUrl}/acceso.html`;
+                }
+            });
+        });
+    </script>
+
+    <!-- === START: Scripts de Sincronización y Medios === -->
+    <script>
+    (function(){
+      const FIRESTORE_SYNC = true;
+
+      function getCourseId() {
+        try {
+          const p = new URLSearchParams(location.search);
+          return p.get('course') || (window.COURSE_ID || 'ia-aplicada-esencial');
+        } catch(e) { return 'ia-aplicada-esencial'; }
+      }
+      
+      function countLessonsInDOM() {
+          try {
+              const allCourseData = window.ALL_COURSES_DATA;
+              if (allCourseData && allCourseData[getCourseId()]) {
+                  return allCourseData[getCourseId()].modules.flatMap(m => m.lessons).length;
+              }
+              const nodes = document.querySelectorAll('[data-lesson-id]');
+              return nodes ? nodes.length : 0;
+          } catch(e){ return 0; }
+      }
+
+      function whenFirebaseReady(fn, tries){
+        tries = tries || 0;
+        if (window.firebase && firebase.apps && firebase.apps.length > 0) return fn();
+        if (tries > 100) return console.warn('Firebase no está listo para la sincronización.');
+        setTimeout(function(){ whenFirebaseReady(fn, tries+1); }, 100);
+      }
+      
+      function syncTotalLessons(){
+        if (!FIRESTORE_SYNC) { console.log('[sync] Sincronización de total de lecciones deshabilitada.'); return; }
+        try {
+          const total = countLessonsInDOM();
+          if (!total || !(total > 0)) return;
+          const courseId = getCourseId();
+          const db = firebase.firestore();
+          db.collection('courses').doc(courseId)
+            .set({ totalLessons: total }, { merge: true })
+            .then(() => console.log(`[sync] Total de lecciones actualizado para ${courseId}: ${total}`))
+            .catch(err => console.warn('[sync] Falló la actualización de total de lecciones:', err));
+        } catch(e){ console.warn('[sync] Excepción en syncTotalLessons:', e); }
+      }
+      
+      whenFirebaseReady(syncTotalLessons);
+      document.addEventListener('DOMContentLoaded', syncTotalLessons);
+    })();
+
+    window.copyTallerPrompt = function() {
+        const t1 = document.getElementById('taller-t1')?.value || 'N/A';
+        const m1 = document.getElementById('taller-m1')?.value || '0';
+        const t2 = document.getElementById('taller-t2')?.value || 'N/A';
+        const m2 = document.getElementById('taller-m2')?.value || '0';
+        const t3 = document.getElementById('taller-t3')?.value || 'N/A';
+        const m3 = document.getElementById('taller-m3')?.value || '0';
+        const bottleneck = document.getElementById('taller-bottleneck')?.value || 'No especificado';
+        
+        let obstacles = [];
+        document.querySelectorAll('.taller-chk:checked').forEach(cb => obstacles.push(cb.value));
+        
+        const promptText = `Hola Mentor IA. Mis respuestas del Radar de Automatización:\n\n` +
+            `1. TAREAS:\n- ${t1} (${m1} mins)\n- ${t2} (${m2} mins)\n- ${t3} (${m3} mins)\n\n` +
+            `2. FRUSTRACIÓN PRINCIPAL:\n"${bottleneck}"\n\n` +
+            `3. OBSTÁCULOS:\n${obstacles.join(', ') || 'Ninguno'}\n\n` +
+            `Dame un plan paso a paso para automatizar la tarea más crítica.`;
+
+        navigator.clipboard.writeText(promptText).then(() => {
+            const btn = document.querySelector('button[onclick="window.copyTallerPrompt()"]');
+            if(btn) { 
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> ¡Copiado!';
+                setTimeout(() => btn.innerHTML = original, 3000);
+                lucide.createIcons();
+            }
+            if(typeof showToast === 'function') showToast('Prompt copiado al portapapeles');
+            else alert('Prompt copiado. Pégalo en tu GPT.');
+        });
+    };
+    </script>
+    <!-- === END: Scripts de Sincronización y Medios === -->
+
+</body>
+</html>
