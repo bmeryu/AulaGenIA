@@ -6,7 +6,6 @@
   - FEAT: Sidebar colapsable (Toggle) para modo enfoque.
   - LAYOUT: Max-width en video (1200px) y espaciado optimizado (Gap 32px).
   - TYPO: Ajuste de jerarquía visual (Factor 0.85) en encabezados y menú.
-  - CONTENT: Actualización de etiquetas del Sidebar según requerimiento.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -111,6 +110,30 @@
 
         #sidebar-toggle-desktop {
             display: none;
+        }
+
+        /* AJUSTES DE REPRODUCTOR DE VIDEO SOLICITADOS */
+        .video-wrapper-optimized {
+            width: 100%;
+            max-width: 1200px;
+            max-height: 65vh; /* Restricción crítica de altura */
+            aspect-ratio: 16 / 9; /* Relación de aspecto forzada */
+            margin: 0 auto; /* Centrado horizontal */
+            overflow: hidden;
+            background-color: #000;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #course-video {
+            width: 100%;
+            height: 100%;
+            max-height: 65vh;
+            object-fit: contain; /* Evita deformaciones */
         }
         /* --- FIN OPTIMIZACIONES --- */
     </style>
@@ -494,57 +517,305 @@
                 hasCertificate: true,
                 modules: [
                   {
-                    title: 'Módulo 1: Los Cimientos de la IA',
+                    title: 'Módulo 1: ¿Qué es la Inteligencia Artificial?',
                     badge: 'Explorador Conceptual',
                     lessons: [
-                      { id: '1-1', title: '🎥 Video 1: El Salto de las 10 Horas Libres', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial.mp4' },
-                      { id: '1-t1', title: '📥 Taller: Debate con una IA (Práctica inicial)', type: 'taller' },
-                      { id: '1-2', title: '🎥 Video 2: Diccionario IA: Hablando con el Genio', type: 'video' },
-                      { id: '1-r1', title: '📥 Recurso: Glosario "IA en Servilleta"', type: 'resource' },
-                      { id: '1-3', title: '🎥 Video 3: Desarmando los Mitos de la IA', type: 'video' },
-                      { id: '1-t2', title: '📥 Taller: Validación de Mitos', type: 'taller' },
-                      { id: '1-h1', title: '⚡ Hack: ¿Gasto más tokens si escribo mal?', type: 'resource' },
-                      { id: 'q-1', title: '🏆 Check-point 1: Mide tu Nivel Digital', type: 'quiz', questions: [{ text: 'Pregunta de evaluación...', options: ['Opción A', 'Opción B'], correctAnswer: 0 }] }
+                      { 
+                        id: '1-1', 
+                        title: 'Casos de éxito reales', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-1', 
+                        title: 'Quiz: Módulo 1', 
+                        type: 'quiz', 
+                        questions: [
+                          { 
+                            text: 'Según el video, ¿cuál es la relación entre Inteligencia Artificial (IA), Aprendizaje Automático (AA) y Aprendizaje Profundo (AP)?', 
+                            options: [
+                                'Son tres tecnologías completamente separadas.', 
+                                'Son como muñecas rusas: la IA es la más grande, contiene al AA y este a su vez al AP.', 
+                                'Son pasos de un proceso: se empieza con AP, luego AA and finalmente IA.', 
+                                'La IA es una parte del AA, y el AA es una parte del AP.'
+                            ], 
+                            correctAnswer: 1
+                          },
+                          {
+                            text: 'El video desarma varios mitos sobre la IA. ¿Qué menciona sobre la idea de que "la IA reemplazará todos los trabajos"?',
+                            options: [
+                                'Que es cierto y debemos prepararnos para un mundo sin trabajo.',
+                                'Que es falso; la IA automatiza tareas pero también crea nuevas oportunidades laborales.',
+                                'Que solo reemplazará los trabajos creativos, no los técnicos.',
+                                'Que únicamente reemplazará trabajos en fábricas.'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: '¿Cuál es la recomendación más importante que da el video al recibir información de una IA como ChatGPT?',
+                            options: [
+                                'Confiar siempre en ella, porque la IA es un genio que nunca se equivoca.',
+                                'Usar la información solo si la IA cita sus fuentes.',
+                                'Siempre revisar la información y contrastarla con tu propio conocimiento, ya que puede equivocarse o inventar cosas.',
+                                'Copiar y pegar la información directamente sin leerla.'
+                            ],
+                            correctAnswer: 2
+                          },
+                          {
+                            text: '¿Cuál de los siguientes NO es uno de los tres factores clave que el video menciona como impulsores del auge reciente de la IA?',
+                            options: [
+                                'La existencia de computadoras más potentes y rápidas.',
+                                'La creación de una IA con conciencia y sentimientos propios.',
+                                'La disponibilidad de enormes cantidades de información (datos).',
+                                'El desarrollo de mejores y más eficientes métodos de aprendizaje ("recetas").'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: 'El video explica que la IA aprende de dos formas principales. ¿Cuáles son?',
+                            options: [
+                                'Leyendo libros y viendo películas.',
+                                'Siguiendo instrucciones específicas que le damos y aprendiendo por sí misma mediante ensayo y error.',
+                                'Únicamente copiando lo que hacen otras inteligencias artificiales.',
+                                'Conectándose directamente a un cerebro humano.'
+                            ],
+                            correctAnswer: 1
+                          }
+                        ], 
+                        resources: [] 
+                      }
                     ]
                   },
                   {
-                    title: 'Módulo 2: Tu Rutina con IA',
+                    title: 'Módulo 2: La IA para ti, en tu día a día',
                     badge: 'Asistente IA Personal',
                     lessons: [
-                      { id: '2-1', title: '🎥 Video 1: Uso Superficial vs. Estratégico', type: 'video' },
-                      { id: '2-t1', title: '📥 Taller: Guía de Colaboradores IA', type: 'taller' },
-                      { id: '2-2', title: '🎥 Video 2: Casos de Éxito: María, Carlos y Luis', type: 'video' },
-                      { id: '2-r1', title: '📥 Recurso: Guía Paso a Paso de Ideogram', type: 'resource' },
-                      { id: '2-3', title: '🎥 Video 3: Delegación en 3 Pasos', type: 'video' },
-                      { id: '2-t2', title: '📥 Taller: Radar de Automatización', type: 'taller' },
-                      { id: '2-h1', title: '⚡ Hack: ¿La IA puede predecir la lotería?', type: 'resource' },
-                      { id: 'q-2', title: '🏆 Desafío 2: Mi Mapa de Delegación', type: 'quiz', questions: [{ text: 'Pregunta sobre automatización...', options: ['Opción A', 'Opción B'], correctAnswer: 0 }] }
+                      { 
+                        id: '2-1', 
+                        title: 'Crear tu objetivo SMART con IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: '2-taller', 
+                        title: 'Taller: Radar de Automatización', 
+                        type: 'taller', 
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-2', 
+                        title: 'Quiz: Módulo 2', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: 'Según el video, ¿cuál es el primer paso para empezar a usar la IA en tu día a día?', 
+                                options: [
+                                    'Aprender a programar en Python.', 
+                                    'Comprar la computadora más potente.', 
+                                    'Identificar tareas repetitivas que te quitan tiempo.', 
+                                    'Diseñar tu propio modelo de inteligencia artificial.'
+                                ], 
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'El video presenta el caso de María, la diseñadora. ¿Cómo le ayudó la IA a ser más productiva?',
+                                options: [
+                                    'Vendiendo automáticamente sus diseños en línea.',
+                                    'Aprendiendo a programar por ella.',
+                                    'Usando ChatGPT para correos, Midjourney para inspiración y traducción automática.',
+                                    'Creando una versión de su estudio en realidad virtual.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: '¿Qué herramienta de IA se recomienda en el video para usuarios que trabajan mucho con Google Workspace (Gmail, Drive)?',
+                                options: [
+                                    'ChatGPT',
+                                    'DeepSeek',
+                                    'Midjourney',
+                                    'Gemini'
+                                ],
+                                correctAnswer: 3
+                            },
+                            {
+                                text: 'El video menciona varios ejemplos de cómo la IA ya es parte de nuestras vidas. ¿Cuál de los siguientes es un ejemplo del módulo?',
+                                options: [
+                                    'Robots que cocinan la cena por nosotros.',
+                                    'IA que predice los números de la lotería.',
+                                    'Recomendaciones personalizadas en servicios como Netflix y Spotify.',
+                                    'Autos que pueden volar en el tráfico.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'El video menciona tres "puntos de atasco" comunes donde la IA puede ayudar. ¿Cuál de los siguientes es uno de ellos?',
+                                options: [
+                                    'Ejercicio físico y deportes.',
+                                    'Inversiones financieras.',
+                                    'Bloqueo Creativo.',
+                                    'Aprender a tocar un instrumento musical.'
+                                ],
+                                correctAnswer: 2
+                            }
+                        ], 
+                        resources: [] 
+                      }
                     ]
                   },
                   {
-                    title: 'Módulo 3: El Arte de las Instrucciones',
+                    title: 'Módulo 3: Preparando tus herramientas',
+                    badge: 'Creativo IA',
+                    lessons: [
+                      { 
+                        id: '3-1', 
+                        title: 'Prepara tus Asistentes de IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-3', 
+                        title: 'Quiz: Módulo 3', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: '¿Cuál es el objetivo principal del Módulo 3?', 
+                                options: [
+                                    'Comparar los precios de las versiones de pago de las herramientas de IA.', 
+                                    'Aprender a programar una inteligencia artificial desde cero.', 
+                                    'Guiarte paso a paso para crear cuentas en ChatGPT, Gemini y DeepSeek.', 
+                                    'Analizar la historia y evolución de los modelos de lenguaje.'
+                                ], 
+                                correctAnswer: 2 
+                            },
+                            {
+                                text: '¿Qué herramienta de IA se destaca en el video por su capacidad de integrarse con tu Google Drive, Calendario y Gmail?',
+                                options: [
+                                    'ChatGPT',
+                                    'DeepSeek',
+                                    'Gemini',
+                                    'Todas las anteriores por igual.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Según el video, si necesitas entender un tema muy complejo y quieres que la IA te guíe "paso a paso", ¿cuál sería tu mejor opción?',
+                                options: [
+                                    'ChatGPT, porque es el más conversacional.',
+                                    'DeepSeek, porque es descrito como "tu experto para entender lo complejo".',
+                                    'Gemini, porque puede buscar en tus documentos personales.',
+                                    'Cualquiera de las tres, no hay diferencia.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: '¿Cuál es uno de los consejos clave que se da en el video para que la IA te entienda mejor?',
+                                options: [
+                                    'Usar solo frases cortas y simples.',
+                                    'Darle ejemplos del estilo o tono que quieres para que pueda imitarlo.',
+                                    'Escribir siempre en inglés para obtener mejores resultados.',
+                                    'Nunca guardar las conversaciones para no confundir a la IA.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: '¿Cuál es la dirección web correcta para crear una cuenta de ChatGPT, según se muestra en el tutorial del video?',
+                                options: [
+                                    'chatgpt.google.com',
+                                    'chat.openai.com',
+                                    'openai.com/chat',
+                                    'getchatgpt.com'
+                                ],
+                                correctAnswer: 1
+                            }
+                        ], 
+                        resources: [] 
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 4: El Arte de las Instrucciones',
                     badge: 'Maestro de Prompts',
                     lessons: [
-                      { id: '3-1', title: '🎥 Video 1: La Receta WOW: El Arte de Saber Pedir', type: 'video' },
-                      { id: '3-r1', title: '📥 Infografía: Los 3 Ingredientes', type: 'resource' },
-                      { id: '3-2', title: '🎥 Video 2: Estructura AGIA: Instrucciones Maestras', type: 'video' },
-                      { id: '3-r2', title: '📥 Recurso: Verbos de Poder y Restricciones', type: 'resource' },
-                      { id: '3-3', title: '🎥 Video 3: Persuasión y los 3 Salvavidas', type: 'video' },
-                      { id: '3-r3', title: '📥 Biblioteca: Los +100 Prompts Maestros', type: 'resource' },
-                      { id: '3-h1', title: '⚡ Hack: ¿Por qué la IA razona mejor en Inglés?', type: 'resource' },
-                      { id: 'q-3', title: '🏆 Evaluación Pro: Aplicando la Fórmula AGIA', type: 'quiz', questions: [{ text: 'Pregunta de fórmula AGIA...', options: ['Opción A', 'Opción B'], correctAnswer: 0 }] }
-                    ]
-                  },
-                  {
-                    title: 'Módulo 4: El Arquitecto de Ideas',
-                    badge: 'Maestro Arquitecto',
-                    lessons: [
-                      { id: '4-1', title: '🎥 Video 1: Método Macro para Grandes Proyectos', type: 'video' },
-                      { id: '4-r1', title: '📥 Infografía: Mapa del Arquitecto', type: 'resource' },
-                      { id: '4-2', title: '🎥 Video 2: Ejecución: El Director de Orquesta', type: 'video' },
-                      { id: '4-r2', title: '📥 Manual: Rotación de Roles', type: 'resource' },
-                      { id: '4-h1', title: '⚡ Hack: ¿Realmente se leyó mi PDF?', type: 'resource' },
-                      { id: 'q-final', title: '🎓 Certificación Final: Graduación AulaGen IA', type: 'quiz', questions: [{ text: 'Evaluación final...', options: ['Finalizar', 'Atras'], correctAnswer: 0 }] }
+                      { 
+                        id: '4-1', 
+                        title: 'El Arte de las Instrucciones', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: '4-2', 
+                        title: 'Taller Práctico: Tu Plantilla para la IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO3-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-4', 
+                        title: 'Quiz: Módulo 4', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: '¿Cuál es el principal beneficio de usar la IA para automatizar tareas repetitivas?', 
+                                options: [
+                                    'Hacer que las tareas sean más difíciles.', 
+                                    'Liberar tiempo para enfocarse en actividades más importantes.', 
+                                    'Aumentar la cantidad de correos que envías.', 
+                                    'Comprar cosas por internet automáticamente.'
+                                ], 
+                                correctAnswer: 1 
+                            },
+                            {
+                                text: 'De las siguientes tareas, ¿cuál es un ejemplo perfecto para ser automatizado por la IA en un trabajo?',
+                                options: [
+                                    'Tener una conversación importante con tu jefe.',
+                                    'Responder las mismas preguntas de clientes una y otra vez.',
+                                    'Crear una nueva estrategia de negocio desde cero.',
+                                    'Tomar un café con tus compañeros.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: 'El objetivo de la automatización con IA es...',
+                                options: [
+                                    'Reemplazar completamente a los humanos en todos los trabajos.',
+                                    'Que las computadoras tomen todas las decisiones por nosotros.',
+                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.',
+                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Al automatizar una tarea, ¿qué es lo primero que deberías identificar?',
+                                options: [
+                                    'Una tarea que te guste mucho hacer.',
+                                    'Una tarea creativa que requiera mucha inspiración.',
+                                    'Una tarea manual, repetitiva y que te quite tiempo.',
+                                    'Una tarea que solo se hace una vez al año.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Si una empresa automatiza la respuesta a preguntas frecuentes, ¿qué beneficio obtiene el equipo humano?',
+                                options: [
+                                    'Tienen menos trabajo que hacer en general.',
+                                    'Pueden dedicarse a resolver problemas más complejos de los clientes.',
+                                    'Ya no necesitan hablar con los clientes.',
+                                    'Deben revisar cada respuesta automática antes de que se envíe.'
+                                ],
+                                correctAnswer: 1
+                            }
+                        ], 
+                        resources: [] 
+                      }
                     ]
                   }
                 ]
@@ -728,28 +999,66 @@
                         materialHtml = `
                         <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm">
                             <div class="flex justify-between items-center mb-6 border-b pb-4">
-                                <h3 class="text-2xl font-bold text-gray-800">${lesson.title}</h3>
+                                <h3 class="text-2xl font-bold text-gray-800">El Radar de Automatización</h3>
                                 <span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">Taller Práctico</span>
                             </div>
                             
-                            <p class="mb-6 text-gray-600">Este es un espacio de práctica interactiva. Sigue las instrucciones y utiliza las herramientas proporcionadas.</p>
-                            <div class="bg-slate-50 p-6 rounded-lg border border-dashed border-slate-300 text-center">
-                                <p class="text-slate-500 font-medium">Contenido de práctica en desarrollo...</p>
+                            <p class="mb-6 text-gray-600">Completa este radar para identificar qué delegar a la IA. Al final, copia el resultado para tu Mentor.</p>
+
+                            <div class="mb-6 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-teal-700 mb-3">1. EL RADAR (Tareas Mecánicas > 30 min)</h4>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t1" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 1 (Ej: Facturas)">
+                                        <input type="text" id="taller-m1" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t2" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 2">
+                                        <input type="text" id="taller-m2" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t3" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 3">
+                                        <input type="text" id="taller-m3" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="font-bold text-teal-700 mb-2">2. EL CUELLO DE BOTELLA</h4>
+                                <p class="text-xs text-gray-500 mb-2">¿Cuál te frustra más y por qué?</p>
+                                <textarea id="taller-bottleneck" class="w-full p-3 border rounded-lg h-24 focus:ring-2 focus:ring-teal-500" placeholder="Lo que más me traba es..."></textarea>
+                            </div>
+
+                            <div class="mb-8">
+                                <h4 class="font-bold text-teal-700 mb-2">3. EL OBSTÁCULO MENTAL</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Perfeccionismo"> Perfeccionismo ("Nadie lo hará como yo")</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Tecnología"> Tecnología ("No sé configurar")</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Tiempo"> Tiempo ("No tengo tiempo para automatizar")</label>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-900 text-white p-6 rounded-lg text-center">
+                                <p class="mb-4 font-semibold text-teal-400">¿Listo para automatizar?</p>
+                                <button onclick="window.copyTallerPrompt()" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-full transition-transform hover:scale-105 flex items-center justify-center gap-2 mx-auto">
+                                    <i data-lucide="copy" class="w-5 h-5"></i> Copiar Respuestas como Prompt
+                                </button>
+                                <p class="text-xs text-gray-400 mt-2">Copia y pégalo en el chat de tu Mentor IA</p>
                             </div>
                         </div>
                         `;
                         break;
                     case 'video':
                         if (lesson.videoUrl) {
-                            materialHtml = `<div class="flex flex-col gap-4">
-                                <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden shadow-lg border border-slate-200 bg-black">
-                                    <video id="course-video" controls class="w-full h-full object-cover">
+                            materialHtml = `<div class="flex flex-col gap-4 mt-8">
+                                <div class="video-wrapper-optimized">
+                                    <video id="course-video" controls>
                                         <source id="course-video-source" data-src="${lesson.videoUrl || ''}" type="video/mp4">
                                         ${lesson.transcriptionUrl ? `<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>` : ''}
                                         Tu navegador no soporta el elemento de video.
                                     </video>
                                 </div>
-                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-[1200px] mx-auto w-full">
                                 ${lesson.transcriptionUrl ? `
                                     <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">
                                         <i data-lucide="captions" class="h-5 w-5"></i>
@@ -770,28 +1079,97 @@
                                 </div>
                             </div>`;
                         } else {
-                            materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Video disponible próximamente</p></div></div>`;
+                            materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`;
                         }
                         break; 
-                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y materiales en la pestaña 'Recursos'.</p></div></div>`; break; 
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; 
                     case 'quiz': { 
+                        if (!lesson.questions || lesson.questions.length === 0) {
+                            materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
+                            break;
+                        }
+
                         const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
                         const inReviewMode = isCourseComplete || isQuizCompleted;
-                        materialHtml = `
-                            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-center">
-                                <h3 class="text-xl font-bold mb-4">${lesson.title}</h3>
-                                <p class="text-slate-600 mb-6">Completa esta evaluación para validar tus conocimientos del módulo.</p>
-                                ${inReviewMode ? '<p class="text-green-600 font-semibold">Quiz ya completado.</p>' : '<button id="check-quiz-btn" class="bg-teal-500 text-white px-6 py-2 rounded-lg font-bold">Iniciar Quiz</button>'}
-                            </div>
-                        `;
+
+                        let quizHtml = lesson.questions.map((question, qIndex) => {
+                            const optionsHtml = question.options.map((opt, index) => {
+                                if (inReviewMode) {
+                                    const isCorrect = index === question.correctAnswer;
+                                    const optionClasses = isCorrect ? 'quiz-option correct' : 'quiz-option opacity-60';
+                                    return `<div class="${optionClasses} border-2 p-4 rounded-lg cursor-default">${opt}</div>`;
+                                } else {
+                                    const questionId = `quiz-${lesson.id}-q-${qIndex}`;
+                                    return `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}" data-question-id="${questionId}">${opt}</div>`;
+                                }
+                            }).join('');
+                            
+                            const questionContainerAttributes = inReviewMode ? '' : `id="quiz-${lesson.id}-q-${qIndex}"`;
+                            return `<div class="space-y-4 mb-8 p-4 border-b border-slate-200" ${questionContainerAttributes}><h3 class="text-xl font-semibold">${qIndex + 1}. ${question.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
+                        }).join('');
+
+                        if (inReviewMode) {
+                            const reviewMessage = isQuizCompleted 
+                                ? 'Ya has completado este quiz. Puedes revisar las respuestas correctas.'
+                                : 'Curso completado. Solo puedes revisar las respuestas.';
+                            materialHtml = `${quizHtml}<p class="text-sm text-slate-500 mt-4 font-semibold text-center p-4 bg-slate-100 rounded-md">${reviewMessage}</p>`;
+                        } else {
+                             materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
+                        }
                         break;
                     }
                     default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
                 } 
                 if (dom.tabMaterialPanel) dom.tabMaterialPanel.innerHTML = materialHtml; 
                 
+                if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
+                    const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
+                    if (!isQuizCompleted) {
+                      dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
+                          opt.addEventListener('click', () => {
+                              const questionId = opt.dataset.questionId;
+                              dom.tabMaterialPanel.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
+                              opt.classList.add('selected');
+                          });
+                      });
+
+                      const checkBtn = document.getElementById('check-quiz-btn');
+                      if (checkBtn) {
+                          window.currentQuizHandler = () => checkQuizAnswers(lesson);
+                          checkBtn.addEventListener('click', window.currentQuizHandler);
+                      }
+                    }
+                }
+
                 const videoEl = document.getElementById('course-video');
                 if (videoEl) currentLessonVideo = videoEl;
+
+                const toggleSubtitlesBtn = document.getElementById('toggle-subtitles-btn');
+                if (toggleSubtitlesBtn && videoEl) {
+                    toggleSubtitlesBtn.addEventListener('click', () => {
+                        if (!videoEl.textTracks || videoEl.textTracks.length === 0) return;
+                        const track = videoEl.textTracks[0];
+                        const btnText = toggleSubtitlesBtn.querySelector('span');
+                        const btnIcon = toggleSubtitlesBtn.querySelector('i');
+                        
+                        const isShowing = track.mode === 'showing';
+                        track.mode = isShowing ? 'hidden' : 'showing';
+
+                        if (track.mode === 'showing') {
+                            if (btnText) btnText.textContent = 'Desactivar Subtítulos';
+                            if (btnIcon) btnIcon.setAttribute('data-lucide', 'captions');
+                        } else {
+                            if (btnText) btnText.textContent = 'Activar Subtítulos';
+                            if (btnIcon) btnIcon.setAttribute('data-lucide', 'captions-off');
+                        }
+                        lucide.createIcons();
+                    });
+                }
+
+                const transcriptionBtn = document.getElementById('transcription-button');
+                if (transcriptionBtn && lesson.transcriptionUrl) { 
+                    transcriptionBtn.addEventListener('click', () => downloadTranscription(lesson.transcriptionUrl, lesson.title));
+                }
 
                 (async () => {
                     if (!videoEl) return;
@@ -826,32 +1204,102 @@
             }
 
             async function checkQuizAnswers(lesson) {
-                // Simulación de validación para esta demo
-                showToast('¡Respuestas correctas!');
-                if (!userProgress.completedLessons.includes(lesson.id)) {
-                    userProgress.completedLessons = [...new Set([...userProgress.completedLessons, lesson.id])];
-                    await saveProgress();
-                    checkForBadgeUnlock(lesson.id);
-                    refreshUI();
+                const totalQuestions = lesson.questions.length;
+                let correctAnswers = 0;
+                let allAnswered = true;
+
+                lesson.questions.forEach((question, qIndex) => {
+                    const questionId = `quiz-${lesson.id}-q-${qIndex}`;
+                    const questionContainer = document.getElementById(questionId);
+                    const selectedOption = questionContainer.querySelector('.quiz-option.selected');
+
+                    if (!selectedOption) {
+                        allAnswered = false;
+                        return;
+                    }
+
+                    const selectedIndex = parseInt(selectedOption.dataset.index);
+                    const correctIndex = question.correctAnswer;
+                    
+                    if (selectedIndex === correctIndex) {
+                        correctAnswers++;
+                    }
+                });
+
+                if (!allAnswered) {
+                    showToast('Por favor, responde todas las preguntas.');
+                    return;
                 }
-                advanceToNextLesson();
+
+                lesson.questions.forEach((question, qIndex) => {
+                    const questionId = `quiz-${lesson.id}-q-${qIndex}`;
+                    const questionContainer = document.getElementById(questionId);
+                    const selectedOption = questionContainer.querySelector('.quiz-option.selected');
+                    const correctIndex = question.correctAnswer;
+                    
+                    questionContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.style.pointerEvents = 'none';
+                        opt.classList.remove('selected');
+                    });
+
+                    const selectedIndex = parseInt(selectedOption.dataset.index);
+                    if (selectedIndex === correctIndex) {
+                        selectedOption.classList.add('correct');
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        questionContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
+                    }
+                });
+
+                if (correctAnswers === totalQuestions) {
+                    showToast('¡Todas las respuestas son correctas!');
+                    
+                    if (!userProgress.completedLessons.includes(lesson.id)) {
+                        userProgress.completedLessons = [...new Set([...userProgress.completedLessons, lesson.id])];
+                        await saveProgress();
+                        checkForBadgeUnlock(lesson.id);
+                        refreshUI();
+                    }
+                    
+                    advanceToNextLesson();
+                } else {
+                    showToast(`Revisa tus respuestas. ${correctAnswers} de ${totalQuestions} son correctas.`);
+                    const firstIncorrect = dom.tabMaterialPanel.querySelector('.quiz-option.incorrect');
+                    if (firstIncorrect) {
+                        const questionContainer = firstIncorrect.closest('.space-y-4.mb-8');
+                        if (questionContainer) {
+                            questionContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                    setTimeout(() => {
+                        dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('incorrect', 'correct');
+                            opt.style.pointerEvents = 'auto';
+                        });
+                    }, 5000);
+                }
             }
             
             function updateMainActionButton() {
                 if (!dom.navigationButtons || !dom.mainActionBtn) return;
+
                 const isCourseComplete = getIsCourseComplete();
                 if (isCourseComplete) {
                     dom.navigationButtons.classList.add('hidden');
                     return;
                 }
+                
                 dom.navigationButtons.classList.remove('hidden');
                 const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
                 if (!lesson) return;
+
                 const isCompleted = userProgress.completedLessons.includes(lesson.id);
+
                 if (isCompleted) {
                     dom.mainActionBtn.classList.add('hidden');
                     return;
                 }
+
                 dom.mainActionBtn.classList.remove('hidden');
                 dom.mainActionBtn.textContent = 'Marcar como completada';
                 dom.mainActionBtn.disabled = (lesson.type === 'quiz'); 
@@ -863,16 +1311,28 @@
                 const isCourseComplete = getIsCourseComplete();
                 const targetLessonInfo = getLessonInfo(lessonId);
                 if (!targetLessonInfo) return;
+
                 if (!isCourseComplete) {
                     const targetModuleIndex = targetLessonInfo.moduleIndex;
                     if (targetModuleIndex > 0) {
                         const previousModule = courseData.modules[targetModuleIndex - 1];
-                        if (!previousModule.lessons.every(l => userProgress.completedLessons.includes(l.id))) {
+                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
+                        if (!previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id))) {
                             showToast(`Debes completar el "${previousModule.title}" para acceder.`);
                             return;
                         }
                     }
+                    
+                    const { lesson, module } = targetLessonInfo;
+                    if (lesson.type === 'quiz') {
+                        const otherLessonsInModule = module.lessons.filter(l => l.type !== 'quiz');
+                        if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(id))) {
+                            showToast(`Completa las lecciones del "${module.title}" para desbloquear el quiz.`);
+                            return;
+                        }
+                    }
                 }
+                
                 userProgress = { ...userProgress, currentLessonId: lessonId };
                 await saveProgress();
                 refreshUI();
@@ -885,6 +1345,7 @@
             
             function addSidebarListeners() {
                 if (!dom.modulesContainer) return;
+                
                 dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => {
                     link.addEventListener('click', e => {
                         e.preventDefault();
@@ -894,9 +1355,11 @@
                         }
                     });
                 });
+
                 dom.modulesContainer.querySelectorAll('.accordion-item').forEach(item => {
                     const header = item.querySelector('.accordion-header');
-                    if (header) {
+                    const icon = header ? header.querySelector('i') : null;
+                    if (header && icon && icon.getAttribute('data-lucide') !== 'lock') {
                         header.addEventListener('click', () => {
                             const content = header.nextElementSibling;
                             const iconEl = header.querySelector('i');
@@ -911,13 +1374,20 @@
             
             if (dom.mainActionBtn) dom.mainActionBtn.addEventListener('click', async () => {
                 const lessonId = userProgress.currentLessonId;
-                if (!userProgress.completedLessons.includes(lessonId)) {
-                    userProgress.completedLessons = [...new Set([...userProgress.completedLessons, lessonId])];
+                const isCompleted = userProgress.completedLessons.includes(lessonId);
+
+                if (!isCompleted) {
+                    userProgress = { ...userProgress, completedLessons: [...new Set([...userProgress.completedLessons, lessonId])] };
                     await saveProgress();
                     checkForBadgeUnlock(lessonId);
                     refreshUI();
-                    if (getIsCourseComplete()) {
-                        await showCompletionModal();
+
+                    const isLastLesson = allLessons.findIndex(l => l.id === lessonId) === allLessons.length - 1;
+                    if (getIsCourseComplete() || isLastLesson) {
+                        if (!hasShownCompletionModal) {
+                            await showCompletionModal();
+                            hasShownCompletionModal = true;
+                        }
                     } else {
                         advanceToNextLesson();
                     }
@@ -929,10 +1399,60 @@
             function showToast(message, type = 'generic') { const toastEl = type === 'badge' ? dom.badgeToast : dom.toast; const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage; if (!toastEl || !msgEl) return; msgEl.textContent = message; toastEl.classList.add('show'); setTimeout(() => toastEl.classList.remove('show'), 4000); }
             function checkForBadgeUnlock(completedLessonId) { const lessonInfo = getLessonInfo(completedLessonId); if (!lessonInfo || !lessonInfo.module.badge) return; const lastLessonOfModule = lessonInfo.module.lessons[lessonInfo.module.lessons.length - 1].id; if (completedLessonId !== lastLessonOfModule) return; const moduleLessonIds = lessonInfo.module.lessons.map(l => l.id); if (moduleLessonIds.every(id => userProgress.completedLessons.includes(id))) { if (!userProgress.unlockedBadges.includes(lessonInfo.module.badge)) { userProgress.unlockedBadges.push(lessonInfo.module.badge); saveProgress(); showToast(`Has ganado la insignia: "${lessonInfo.module.badge}"`, 'badge'); } } }
             
+            async function generateCertificateRecord() {
+                if (!currentUser || !courseData.hasCertificate) {
+                    return null;
+                }
+                const certificateId = `${currentUser.uid}_${courseId}`;
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'aulagenia-app';
+
+                const certRef = db.collection('artifacts').doc(appId)
+                                  .collection('public').doc('data')
+                                  .collection('certificates').doc(certificateId);
+
+                try {
+                    const certDoc = await certRef.get();
+                    if (!certDoc.exists) {
+                        console.log('Generating new certificate record...');
+                        await certRef.set({
+                            userId: currentUser.uid,
+                            userName: currentUser.name,
+                            courseId: courseId,
+                            courseName: courseData.title,
+                            issuedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            appId: appId
+                        });
+                        console.log('Certificate record created:', certificateId);
+                    } else {
+                        console.log('Certificate record already exists.');
+                    }
+                    return certificateId;
+                } catch (error) {
+                    console.error("Error creating or checking certificate record:", error);
+                    return null;
+                }
+            }
+
             async function showCompletionModal() {
                 if (!dom.completionModal || !dom.completionModalOverlay) return;
                 if (dom.modalUserName) dom.modalUserName.textContent = currentUser ? currentUser.name : '';
                 if (dom.modalCourseName) dom.modalCourseName.textContent = courseData.title;
+                
+                if (courseData.hasCertificate && dom.certificateLink) {
+                    const certificateId = await generateCertificateRecord();
+                    if (certificateId) {
+                        dom.certificateLink.href = `./portal-certificacion.html?id=${certificateId}`;
+                        dom.certificateLink.classList.remove('hidden');
+                        dom.certificateLink.classList.add('flex');
+                    } else {
+                        dom.certificateLink.classList.add('hidden');
+                        dom.certificateLink.classList.remove('flex');
+                    }
+                } else if (dom.certificateLink) {
+                    dom.certificateLink.classList.add('hidden');
+                    dom.certificateLink.classList.remove('flex');
+                }
+
                 dom.completionModalOverlay.classList.remove('hidden');
                 dom.completionModal.classList.remove('hidden');
                 setTimeout(() => {
@@ -945,16 +1465,19 @@
                 if (!dom.completionModal || !dom.completionModalOverlay) return;
                 dom.completionModalOverlay.classList.remove('opacity-100');
                 dom.completionModal.classList.remove('show');
+                const inner = dom.completionModal.querySelector('div');
+                if (inner) inner.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => {
                     dom.completionModal.classList.add('hidden');
                     dom.completionModalOverlay.classList.add('hidden');
+                    if (inner) inner.classList.remove('scale-95', 'opacity-0');
                 }, 300);
             }
 
             if (dom.closeModalBtn) dom.closeModalBtn.addEventListener('click', () => window.location.href = `${baseUrl}/campus.html`);
             if (dom.reviewCourseBtn) dom.reviewCourseBtn.addEventListener('click', hideCompletionModal);
             
-            // --- LÓGICA DE PERFIL ---
+            // --- INICIO: LÓGICA DE PERFIL CON VALIDACIÓN MEJORADA ---
             const profileModalOverlay = document.getElementById('profile-modal-overlay');
             const profileModal = document.getElementById('profile-modal');
             const avatarButton = document.getElementById('avatar-button');
@@ -964,24 +1487,42 @@
             const profileNameInput = document.getElementById('profile-name-input');
             const profileRutInput = document.getElementById('profile-rut-input');
             const profileEmailInput = document.getElementById('profile-email-input');
+            const profileJobInput = document.getElementById('profile-job-input');
             const profileCountrySelect = document.getElementById('profile-country-select');
+            const profileGenderSelect = document.getElementById('profile-gender-select');
+            const profileBirthdateInput = document.getElementById('profile-birthdate-input');
+            const formStatus = document.getElementById('form-status');
             const saveBtn = document.getElementById('save-profile-btn');
+            const saveBtnText = document.getElementById('save-btn-text');
+            const saveSpinner = document.getElementById('save-spinner');
             
              async function showProfileModal() {
                 if (!profileForm || !profileEmailInput || !profileModalOverlay || !profileModal) return;
                 profileForm.reset();
+                
                 const user = auth.currentUser;
                 if (!user) return;
+                
                 profileEmailInput.value = user.email || '';
+                
                 const userDocRef = db.collection('users').doc(user.uid);
                 try {
                     const doc = await userDocRef.get();
-                    const d = doc.exists ? doc.data() : {};
-                    if (profileNameInput) profileNameInput.value = d.displayName || user.displayName || '';
-                    if (profileRutInput) profileRutInput.value = d.rut || '';
-                    if (profileCountrySelect) profileCountrySelect.value = d.country || '';
-                } catch (error) { console.error(error); }
+                    const dbData = doc.exists ? doc.data() : {};
+                    const isProfileCompleted = dbData.profileCompleted === true;
+
+                    if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : (user.displayName || '');
+                    if (profileRutInput) profileRutInput.value = dbData.rut || '';
+                    if (profileJobInput) profileJobInput.value = dbData.jobTitle || '';
+                    if (profileCountrySelect) profileCountrySelect.value = dbData.country || '';
+                    if (profileGenderSelect) profileGenderSelect.value = dbData.gender || '';
+                    if (profileBirthdateInput) profileBirthdateInput.value = dbData.birthdate || '';
+                } catch (error) {
+                    console.error("Error al cargar datos del perfil:", error);
+                }
+                
                 checkAllFieldsAndToggleButtonState();
+                formStatus.classList.add('hidden');
                 profileModalOverlay.classList.remove('hidden');
                 profileModal.classList.remove('hidden');
                 setTimeout(() => {
@@ -990,48 +1531,103 @@
                 }, 10);
             }
 
-            function hideProfileModal() { if (!profileModalOverlay || !profileModal) return; const inner = profileModal.querySelector('div.bg-white'); if (inner) inner.classList.add('scale-95', 'opacity-0'); setTimeout(() => { profileModalOverlay.classList.add('hidden'); profileModal.classList.add('hidden'); }, 300); }
-            if (avatarButton) avatarButton.addEventListener('click', () => showProfileModal());
-            if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', hideProfileModal);
-            if (closeProfileBtn) closeProfileBtn.addEventListener('click', hideProfileModal);
-
+            function hideProfileModal() { if (!profileModalOverlay || !profileModal) return; const inner = profileModal.querySelector('div.bg-white'); if (inner) inner.classList.add('scale-95', 'opacity-0'); setTimeout(() => { profileModalOverlay.classList.add('hidden'); profileModal.classList.add('hidden'); if (inner) inner.classList.remove('scale-95', 'opacity-0'); }, 300); }
+            if (avatarButton) avatarButton.addEventListener('click', () => showProfileModal()); if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', hideProfileModal); if (closeProfileBtn) closeProfileBtn.addEventListener('click', hideProfileModal); if (profileModalOverlay) profileModalOverlay.addEventListener('click', (e) => { if (e.target === profileModalOverlay) hideProfileModal(); });
+            
             function validateRut(rut) { rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); const rutBody = rut.slice(0, -1); let dv = rut.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; let sum = 0, multiple = 2; for (let i = rutBody.length - 1; i >= 0; i--) { sum += rutBody.charAt(i) * multiple; if (multiple < 7) multiple++; else multiple = 2; } const calculatedDv = 11 - (sum % 11); const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); return dv === expectedDv; }
+
             function setFieldState(field, state, message = '') {
                 const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
                 const errorEl = document.getElementById(`${field}-error`);
+                const iconEl = document.getElementById(`${field}-status-icon`);
                 if (!inputEl) return;
                 inputEl.classList.remove('form-input-error', 'form-input-success');
-                if (state === 'error') { inputEl.classList.add('form-input-error'); if (errorEl) errorEl.textContent = message; }
-                else if (state === 'success') { inputEl.classList.add('form-input-success'); if (errorEl) errorEl.textContent = ''; }
+                if (errorEl) errorEl.textContent = '';
+                if (iconEl) iconEl.innerHTML = '';
+                if (state === 'error') {
+                    inputEl.classList.add('form-input-error');
+                    if (errorEl) errorEl.textContent = message;
+                    if (iconEl) iconEl.innerHTML = `<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>`;
+                } else if (state === 'success') {
+                    inputEl.classList.add('form-input-success');
+                    if (iconEl) iconEl.innerHTML = `<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>`;
+                }
+                if (iconEl && iconEl.innerHTML) {
+                    lucide.createIcons({ nodes: [iconEl.querySelector('i')] });
+                }
             }
+
+            function validateName() { if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) { setFieldState('name', 'error', 'Ingresa tu nombre y apellido completo.'); return false; } setFieldState('name', 'success'); return true; }
+            function validateCountry() { if (profileCountrySelect.value === '') { setFieldState('country', 'error', 'Selecciona tu país de residencia.'); return false; } setFieldState('country', 'success'); return true; }
+            function validateRutField() { if (profileCountrySelect.value === 'CL') { if (!validateRut(profileRutInput.value)) { setFieldState('rut', 'error', 'El RUT ingresado no es válido.'); return false; } setFieldState('rut', 'success'); } else { setFieldState('rut', 'neutral'); } return true; }
+
             function checkAllFieldsAndToggleButtonState() {
-                const isNameValid = profileNameInput.value.trim().length >= 3 && profileNameInput.value.includes(' ');
-                const isCountryValid = profileCountrySelect.value !== '';
-                let isRutValid = true;
-                if (profileCountrySelect.value === 'CL') { isRutValid = validateRut(profileRutInput.value); }
-                if(saveBtn) saveBtn.disabled = !(isNameValid && isCountryValid && isRutValid);
-                setFieldState('name', isNameValid ? 'success' : 'error', 'Nombre y apellido requeridos.');
-                setFieldState('country', isCountryValid ? 'success' : 'error', 'País requerido.');
+                const isNameValid = validateName();
+                const isCountryValid = validateCountry();
+                const isRutValid = validateRutField();
+                const isFormValid = isNameValid && isCountryValid && (profileCountrySelect.value !== 'CL' || isRutValid);
+                if(saveBtn) saveBtn.disabled = !isFormValid;
             }
-            [profileNameInput, profileRutInput, profileCountrySelect].forEach(el => el && el.addEventListener('input', checkAllFieldsAndToggleButtonState));
+
+            if(profileNameInput) profileNameInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+            if(profileRutInput) profileRutInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+            if(profileCountrySelect) profileCountrySelect.addEventListener('change', checkAllFieldsAndToggleButtonState);
 
             if (profileForm) profileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                if (saveBtn && saveBtn.disabled) return;
+                checkAllFieldsAndToggleButtonState();
+                if (saveBtn && saveBtn.disabled) { 
+                    if(formStatus) {
+                      formStatus.className = 'text-center p-3 rounded-lg bg-yellow-100 text-yellow-700';
+                      formStatus.textContent = 'Por favor, corrige los campos marcados en rojo.';
+                      formStatus.classList.remove('hidden');
+                    }
+                    return; 
+                }
+                if (saveBtn) saveBtn.disabled = true;
+                if (saveBtnText) saveBtnText.textContent = 'Guardando...';
+                if (saveSpinner) saveSpinner.classList.remove('hidden');
+                if(formStatus) formStatus.classList.add('hidden');
                 const user = auth.currentUser;
+                const newName = profileNameInput ? profileNameInput.value.trim() : '';
+                const userDocRef = db.collection('users').doc(user.uid);
                 try {
-                    await db.collection('users').doc(user.uid).set({
-                        displayName: profileNameInput.value.trim(),
-                        rut: profileRutInput.value.trim(),
-                        country: profileCountrySelect.value,
+                    if (newName && user && newName !== user.displayName) {
+                        await user.updateProfile({ displayName: newName });
+                    }
+                    await userDocRef.set({
+                        displayName: newName,
+                        email: user.email,
+                        rut: profileRutInput ? profileRutInput.value.trim() : '',
+                        jobTitle: profileJobInput ? profileJobInput.value.trim() : '',
+                        country: profileCountrySelect ? profileCountrySelect.value : '',
+                        gender: profileGenderSelect ? profileGenderSelect.value : '',
+                        birthdate: profileBirthdateInput ? profileBirthdateInput.value : '',
                         profileCompleted: true
                     }, { merge: true });
-                    if (dom.userName) dom.userName.textContent = profileNameInput.value.trim();
-                    showToast('Perfil actualizado.');
+                    if (dom.userName) dom.userName.textContent = newName;
+                    if(formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700';
+                        formStatus.textContent = '¡Perfil actualizado con éxito!';
+                        formStatus.classList.remove('hidden');
+                    }
+                    showToast('¡Perfil actualizado con éxito!');
                     setTimeout(hideProfileModal, 1500);
-                } catch (error) { console.error(error); }
+                } catch (error) {
+                    console.error("Error al guardar perfil:", error);
+                    if(formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
+                        formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.';
+                        formStatus.classList.remove('hidden');
+                    }
+                } finally {
+                    if (saveBtnText) saveBtnText.textContent = 'Guardar Cambios';
+                    if (saveSpinner) saveSpinner.classList.add('hidden');
+                }
             });
+            // --- FIN: LÓGICA DE PERFIL ---
 
+            
             function activateTab(tabId) {
                 if (!dom.learningTabs) return;
                 dom.learningTabs.querySelectorAll('.ltab').forEach(b => {
@@ -1039,9 +1635,12 @@
                     b.classList.toggle('active', active);
                     b.classList.toggle('text-teal-600', active);
                     b.classList.toggle('border-teal-500', active);
+                    b.classList.toggle('text-slate-500', !active);
+                    b.classList.toggle('border-transparent', !active);
                 });
                 dom.learningTabs.querySelectorAll('.ltab-panel').forEach(p => p.classList.toggle('hidden', p.id !== tabId));
             }
+
             if (dom.learningTabs) dom.learningTabs.addEventListener('click', (e) => {
                 const button = e.target.closest('.ltab');
                 if (button) activateTab(button.dataset.tab);
@@ -1050,35 +1649,250 @@
             function loadLessonTabData() {
                 if (!currentUser) return;
                 const lessonId = userProgress.currentLessonId;
+                const lessonInfo = getLessonInfo(lessonId);
+                if (!lessonInfo) return;
+
                 loadNotes(lessonId);
-                renderCourseResources(getLessonInfo(lessonId).lesson);
+                renderCourseResources(lessonInfo.lesson);
                 loadUserResources(lessonId);
                 loadTasks(lessonId);
                 activateTab('tab-material');
             }
 
             async function loadNotes(lessonId) {
-                if (!currentUser || !dom.notesTextarea) return;
+                if (!currentUser || !dom.notesTextarea || !dom.notesSaveStatus) return;
                 dom.notesTextarea.value = '';
+                const noteRef = db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${lessonId}`);
                 try {
-                    const doc = await db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${lessonId}`).get();
+                    const doc = await noteRef.get();
                     if (doc.exists) dom.notesTextarea.value = doc.data().content || '';
-                } catch (error) { console.error(error); }
+                    dom.notesSaveStatus.textContent = 'Sin cambios';
+                } catch (error) {
+                    console.error("Error al cargar las notas:", error);
+                    dom.notesSaveStatus.textContent = 'Error al cargar';
+                }
             }
-            if (dom.notesTextarea) dom.notesTextarea.addEventListener('input', () => {
-                clearTimeout(notesSaveTimer);
-                notesSaveTimer = setTimeout(async () => {
-                    await db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${userProgress.currentLessonId}`).set({ content: dom.notesTextarea.value }, { merge: true });
-                }, 1500);
-            });
+
+            async function saveNotes(lessonId) {
+                if (!currentUser || !dom.notesTextarea || !dom.notesSaveStatus) return;
+                dom.notesSaveStatus.textContent = 'Guardando...';
+                const noteRef = db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${lessonId}`);
+                try {
+                    await noteRef.set({ uid: currentUser.uid, content: dom.notesTextarea.value, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+                    dom.notesSaveStatus.textContent = 'Guardado';
+                } catch (error) {
+                    console.error("Error al guardar las notas:", error);
+                    dom.notesSaveStatus.textContent = 'Error al guardar';
+                } finally {
+                    setTimeout(() => { if (dom.notesSaveStatus.textContent === 'Guardado') dom.notesSaveStatus.textContent = 'Sin cambios'; }, 2000);
+                }
+            }
+            if (dom.notesTextarea) dom.notesTextarea.addEventListener('input', () => { if (!dom.notesSaveStatus) return; dom.notesSaveStatus.textContent = 'Editando...'; clearTimeout(notesSaveTimer); notesSaveTimer = setTimeout(() => saveNotes(userProgress.currentLessonId), 1500); });
 
             function renderCourseResources(lesson) {
                 if (!dom.resourcesList) return;
                 const resources = lesson.resources || [];
-                dom.resourcesList.innerHTML = resources.length ? resources.map(r => `<a href="${r.url}" target="_blank" class="resource-item flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:border-teal-500 transition-all"><i data-lucide="download-cloud" class="h-5 w-5 text-teal-500 mr-4"></i><span class="text-sm font-medium">${r.name}</span></a>`).join('') : '<p class="text-slate-400 text-sm py-4">No hay recursos del instructor.</p>';
+                if (resources.length > 0) {
+                    dom.resourcesList.innerHTML = resources.map(resource => {
+                        const isPdf = !resource.external && resource.url.includes('.pdf');
+                        const icon = resource.external ? 'link' : (isPdf ? 'file-text' : 'download-cloud');
+                        const actionAttr = isPdf ? `data-pdf-url="${resource.url}" data-pdf-title="${resource.name}"` : `href="${resource.url}"`;
+                        const targetAttr = resource.external ? 'target="_blank" rel="noopener noreferrer"' : '';
+                        const tagName = isPdf ? 'button' : 'a';
+                        return `<${tagName} ${actionAttr} ${targetAttr} class="resource-item flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-teal-500 transition-all duration-200 group w-full text-left"><i data-lucide="${icon}" class="h-6 w-6 text-teal-500 mr-4"></i><span class="flex-1 font-medium text-gray-700 group-hover:text-teal-600">${resource.name}</span><i data-lucide="arrow-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i></${tagName}>`;
+                    }).join('');
+                } else {
+                    dom.resourcesList.innerHTML = `<div class="text-center py-5 px-4 bg-gray-100 rounded-lg"><p class="text-gray-500 text-sm">No hay recursos del instructor para esta lección.</p></div>`;
+                }
                 lucide.createIcons();
             }
 
+            function openPdfModal(url, title) {
+                if (!dom.pdfModal || !dom.pdfModalOverlay || !dom.pdfModalContent || !dom.pdfIframe) return;
+                dom.pdfModalTitle && (dom.pdfModalTitle.textContent = title);
+                const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+                dom.pdfIframe.src = viewerUrl;
+                dom.pdfModal.classList.remove('hidden');
+                dom.pdfModalOverlay.classList.remove('hidden');
+                setTimeout(() => { dom.pdfModalOverlay.classList.add('opacity-100'); dom.pdfModalContent.classList.remove('scale-95', 'opacity-0'); }, 10);
+            }
+
+            function closePdfModal() {
+                if (!dom.pdfModal || !dom.pdfModalOverlay || !dom.pdfModalContent || !dom.pdfIframe) return;
+                dom.pdfModalOverlay.classList.remove('opacity-100');
+                dom.pdfModalContent.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => { dom.pdfModal.classList.add('hidden'); dom.pdfModalOverlay.classList.add('hidden'); dom.pdfIframe.src = ''; }, 300);
+            }
+
+            if (dom.resourcesList) dom.resourcesList.addEventListener('click', (e) => {
+                const button = e.target.closest('.resource-item[data-pdf-url]');
+                if (button) openPdfModal(button.dataset.pdfUrl, button.dataset.pdfTitle);
+            });
+            if (dom.pdfModalCloseBtn) dom.pdfModalCloseBtn.addEventListener('click', closePdfModal);
+            if (dom.pdfModalOverlay) dom.pdfModalOverlay.addEventListener('click', closePdfModal);
+
+            async function downloadTranscription(transcriptionUrl, lessonTitle) {
+                if (!transcriptionUrl) {
+                    showToast('No hay transcripción disponible para descargar.');
+                    return;
+                }
+                
+                const btn = document.getElementById('transcription-button');
+                if (!btn) return;
+                
+                const btnSpan = btn.querySelector('span');
+                const originalText = btnSpan ? btnSpan.textContent : 'Descargar Transcripción';
+                
+                if (btnSpan) btnSpan.textContent = 'Preparando...';
+                btn.disabled = true;
+
+                try {
+                    const resolvedUrl = await resolveStorageDownloadURL(storage, transcriptionUrl);
+                    const response = await fetch(resolvedUrl);
+                    if (!response.ok) throw new Error('Respuesta de red no fue OK');
+                    
+                    const srtText = await response.text();
+                    
+                    const plainText = srtText
+                        .split(/\r?\n/)
+                        .filter(line => !/^\d+$/.test(line.trim()) && !line.includes('-->'))
+                        .join('\n')
+                        .replace(/(\n\s*){2,}/g, '\n\n')
+                        .trim();
+
+                    const blob = new Blob([plainText], { type: 'text/plain;charset=utf-8' });
+                    
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    
+                    const sanitizedTitle = lessonTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                    link.download = `transcripcion_${sanitizedTitle}.txt`;
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    URL.revokeObjectURL(link.href);
+                    showToast('Descarga iniciada.');
+
+                } catch (error) {
+                    console.error('Error al descargar la transcripción:', error);
+                    showToast('No se pudo descargar la transcripción.');
+                } finally {
+                    if (btnSpan) btnSpan.textContent = originalText;
+                    btn.disabled = false;
+                }
+            }
+
+            async function loadUserResources(lessonId) {
+                if (!currentUser || !dom.userResourceList) return;
+                dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
+                try {
+                    const snap = await db.collection('userResources').where('uid', '==', currentUser.uid).where('courseId', '==', courseId).where('lessonId', '==', lessonId).get();
+                    if (snap.empty) { dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">No has subido archivos.</p></li>'; return; }
+                    const docs = snap.docs.sort((a, b) => { const timeA = a.data().createdAt?.toDate() || 0; const timeB = b.data().createdAt?.toDate() || 0; return timeB - timeA; });
+                    dom.userResourceList.innerHTML = '';
+                    docs.forEach(doc => renderUserResourceItem(doc));
+                } catch (err) {
+                    console.error('Error listando recursos:', err);
+                    dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos. Revisa los permisos de Firestore.</p></li>';
+                }
+            }
+            function renderUserResourceItem(doc) {
+                if (!dom.userResourceList) return;
+                const data = doc.data();
+                const li = document.createElement('li');
+                li.className = 'px-4 py-3 flex items-center justify-between';
+                li.innerHTML = `<div class="min-w-0 flex-1"><p class="text-sm font-medium text-slate-900 truncate">${data.name}</p><p class="text-xs text-slate-500 truncate">${data.contentType || ''} - ${Math.round(data.size / 1024)} KB</p></div><div class="flex items-center gap-3"><a href="${data.downloadURL}" target="_blank" class="text-teal-700 text-sm font-semibold hover:underline">Abrir</a><button class="delete-resource-btn text-red-600 text-sm font-semibold hover:underline">Eliminar</button></div>`;
+                li.querySelector('.delete-resource-btn').addEventListener('click', async () => {
+                    if (!confirm(`¿Seguro que quieres eliminar "${data.name}"?`)) return;
+                    try { await storage.ref(data.storagePath).delete(); await doc.ref.delete(); li.remove(); showToast('Archivo eliminado.'); } 
+                    catch (err) { console.error('Error eliminando:', err); showToast('No se pudo eliminar el archivo.'); }
+                });
+                dom.userResourceList.prepend(li);
+            }
+            
+            if (dom.resourceFileInput) dom.resourceFileInput.addEventListener('change', () => { if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.disabled = dom.resourceFileInput.files.length === 0; });
+            if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.addEventListener('click', async () => {
+                const files = dom.resourceFileInput ? dom.resourceFileInput.files : null;
+                if (!files || !files.length || !currentUser || !dom.uploadProgress) return;
+                const lessonId = userProgress.currentLessonId;
+                dom.uploadProgress.classList.remove('hidden');
+                for (const file of files) {
+                    dom.uploadProgress.textContent = `Subiendo ${file.name}...`;
+                    const storagePath = `user_uploads/${currentUser.uid}/${courseId}/${lessonId}/${Date.now()}_${file.name}`;
+                    const fileRef = storage.ref(storagePath);
+                    try {
+                        const uploadTask = await fileRef.put(file);
+                        const downloadURL = await uploadTask.ref.getDownloadURL();
+                        const docRef = await db.collection('userResources').add({ uid: currentUser.uid, courseId, lessonId, name: file.name, size: file.size, contentType: file.type, storagePath, downloadURL, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                        const newDoc = await docRef.get();
+                        if (dom.userResourceList && dom.userResourceList.querySelector('p.text-slate-500')) dom.userResourceList.innerHTML = '';
+                        renderUserResourceItem(newDoc);
+                    } catch (err) { console.error('Error en subida:', err); dom.uploadProgress.textContent = `Error al subir ${file.name}.`; return; }
+                }
+                dom.uploadProgress.textContent = '¡Archivos subidos!';
+                if (dom.resourceFileInput) dom.resourceFileInput.value = '';
+                if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.disabled = true;
+                setTimeout(() => dom.uploadProgress && dom.uploadProgress.classList.add('hidden'), 3000);
+            });
+
+            async function loadTasks(lessonId) {
+                if (!currentUser || !dom.taskList) return;
+                const key = `${currentUser.uid}_${courseId}_${lessonId}`;
+                dom.taskList.innerHTML = '';
+                try {
+                    const docRef = db.collection('userTasks').doc(key);
+                    const doc = await docRef.get();
+                    if (doc.exists) { const items = doc.data().items || []; items.forEach(task => renderTaskItem(task, docRef)); }
+                } catch (err) { console.error('Error cargando tareas:', err); }
+            }
+
+            function renderTaskItem(task, docRef) {
+                if (!dom.taskList) return;
+                const li = document.createElement('li');
+                li.className = 'bg-white border border-slate-200 rounded-lg p-3 flex items-center justify-between group';
+                li.innerHTML = `<label class="flex-1 flex items-center gap-3 cursor-pointer"><input type="checkbox" class="task-toggle h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500" ${task.done ? 'checked' : ''}/><span class="text-sm ${task.done ? 'line-through text-slate-400' : 'text-slate-800'}">${task.text}</span></label><button class="task-delete text-slate-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="h-4 w-4"></i></button>`;
+                const toggle = li.querySelector('.task-toggle');
+                toggle.addEventListener('change', async () => { await updateTask(docRef, task, { done: toggle.checked }); const span = li.querySelector('span'); if (span) { span.classList.toggle('line-through', toggle.checked); span.classList.toggle('text-slate-400', toggle.checked); } });
+                li.querySelector('.task-delete').addEventListener('click', async () => { await deleteTask(docRef, task); li.remove(); });
+                dom.taskList.append(li);
+                lucide.createIcons();
+            }
+            async function updateTask(docRef, oldTask, updates) { const doc = await docRef.get(); const items = doc.exists ? doc.data().items || [] : []; const itemIndex = items.findIndex(item => item.text === oldTask.text); if (itemIndex > -1) { items[itemIndex] = { ...items[itemIndex], ...updates }; await docRef.set({ items }, { merge: true }); } }
+            async function deleteTask(docRef, taskToDelete) { const doc = await docRef.get(); const items = doc.exists ? doc.data().items || [] : []; const newItems = items.filter(item => item.text !== taskToDelete.text); await docRef.set({ items: newItems }, { merge: true }); }
+            async function addTask() { if (!currentUser || !dom.taskInput) return; const text = dom.taskInput.value.trim(); if (!text) return; const lessonId = userProgress.currentLessonId; const key = `${currentUser.uid}_${courseId}_${lessonId}`; const task = { text, done: false }; try { const docRef = db.collection('userTasks').doc(key); await docRef.set({ uid: currentUser.uid, items: firebase.firestore.FieldValue.arrayUnion(task) }, { merge: true }); renderTaskItem(task, docRef); dom.taskInput.value = ''; } catch (err) { console.error('Error agregando tarea:', err); } }
+            if (dom.addTaskBtn) dom.addTaskBtn.addEventListener('click', addTask);
+            if (dom.taskInput) dom.taskInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addTask(); }});
+            
+            if (dom.supportForm) dom.supportForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(dom.supportForm);
+                const lessonInfo = getLessonInfo(userProgress.currentLessonId);
+                const dataToSend = { email: auth.currentUser.email, curso: courseData.title, fecha: new Date().toLocaleString('es-CL'), asunto: formData.get('subject'), mensaje: formData.get('message'), leccion: lessonInfo ? lessonInfo.lesson.title : 'Lección no especificada', nombreAlumno: currentUser ? currentUser.name : '' };
+                if (dom.supportSubmitBtn) dom.supportSubmitBtn.disabled = true;
+                if (dom.supportBtnText) dom.supportBtnText.textContent = 'Enviando...';
+                if (dom.supportSpinner) dom.supportSpinner.classList.remove('hidden');
+                if (dom.supportFormStatus) dom.supportFormStatus.innerHTML = '';
+                try {
+                    const webhookUrl = 'https://muna.auto.hostybee.com/webhook/soporte';
+                    const response = await fetch(webhookUrl, { method: 'POST', body: JSON.stringify(dataToSend), headers: { 'Content-Type': 'application/json' } });
+                    if (response.ok) { if (dom.supportFormStatus) dom.supportFormStatus.innerHTML = `<p class="text-green-600 font-semibold">¡Consulta enviada con éxito!</p>`; dom.supportForm.reset(); }
+                    else { throw new Error('Error en la respuesta del servidor de n8n'); }
+                } catch (error) {
+                    console.error('Error al enviar al webhook de n8n:', error);
+                    if (dom.supportFormStatus) dom.supportFormStatus.innerHTML = `<p class="text-red-600 font-semibold">Hubo un error al enviar tu consulta. Por favor, intenta más tarde.</p>`;
+                } finally {
+                    if (dom.supportSubmitBtn) dom.supportSubmitBtn.disabled = false;
+                    if (dom.supportBtnText) dom.supportBtnText.textContent = 'Enviar Consulta';
+                    if (dom.supportSpinner) dom.supportSpinner.classList.add('hidden');
+                }
+            });
+
+            function srtToVtt(srt) {
+                const cleaned = srt.replace(/\r+/g, '').replace(/^\s*\d+\s*$/gm, '').replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, '$1:$2:$3.$4');
+                return 'WEBVTT\n\n' + cleaned.trim();
+            }
             async function resolveStorageDownloadURL(storage, maybeGsOrHttpsUrl) {
                 if (!maybeGsOrHttpsUrl) return null;
                 try { const ref = storage.refFromURL(maybeGsOrHttpsUrl); return await ref.getDownloadURL(); }
@@ -1088,13 +1902,84 @@
                 const srcEl = videoEl.querySelector('#course-video-source');
                 const resolvedVideo = await resolveStorageDownloadURL(storage, videoSrc);
                 if (srcEl && resolvedVideo) srcEl.src = resolvedVideo;
+
+                const trackEl = videoEl.querySelector('#caption-track');
+                if (!trackEl || !srtOrVttSrc) { videoEl.load(); return; }
+
+                const resolvedTrack = await resolveStorageDownloadURL(storage, srtOrVttSrc);
+                if (!resolvedTrack) { videoEl.load(); return; }
+
+                const isSrt = /(\.srt)(\?|$)/i.test(resolvedTrack);
+                if (isSrt) {
+                    const resp = await fetch(resolvedTrack);
+                    const srtTxt = await resp.text();
+                    const vttTxt = srtToVtt(srtTxt);
+                    const blobUrl = URL.createObjectURL(new Blob([vttTxt], { type: 'text/vtt' }));
+                    trackEl.src = blobUrl;
+                } else {
+                    trackEl.src = resolvedTrack;
+                }
+                trackEl.default = true;
+                const [t] = videoEl.textTracks; if (t) t.mode = 'showing';
                 videoEl.load();
             }
 
+            const BLOCK_SELECTORS_ON_COMPLETE = [
+              '#main-action-btn',
+              'button[id*="encuesta"]',
+              '[id*="btn-encuesta"]',
+              '[data-action="complete"]',
+              '[data-action="encuesta"]',
+              '.btn-completar-modulo',
+              '.btn-encuesta',
+              'a[href*="encuesta"]'
+            ];
+            
+            function isInsideVideo(el) {
+              return !!el.closest('video, .plyr, .video-js, .video-container');
+            }
+
+            function hardDisable(el, reason = 'Curso finalizado: acción deshabilitada') {
+              if (!el || isInsideVideo(el)) return;
+              el.setAttribute('aria-disabled', 'true');
+              el.setAttribute('tabindex', '-1');
+              el.title = reason;
+              el.classList.add('opacity-60', 'cursor-not-allowed');
+              if (el.tagName === 'BUTTON') el.disabled = true;
+
+              const blocker = (e) => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                return false;
+              };
+              el.addEventListener('click', blocker, true);
+              el.addEventListener('pointerdown', blocker, true);
+              el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') blocker(e);
+              }, true);
+            }
+
             function lockPostCompletionActions() {
-                if (getIsCourseComplete() && dom.navigationButtons) {
-                    dom.navigationButtons.classList.add('hidden');
-                }
+              const courseIsDone = getIsCourseComplete();
+              if (!courseIsDone) return;
+
+              if (dom && dom.navigationButtons) {
+                dom.navigationButtons.classList.add('hidden');
+              }
+
+              BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
+                document.querySelectorAll(sel).forEach((el) => hardDisable(el));
+              });
+
+              if (!window.__postCompleteObserver__) {
+                window.__postCompleteObserver__ = new MutationObserver(() => {
+                  BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
+                    document.querySelectorAll(sel).forEach((el) => hardDisable(el));
+                  });
+                });
+                window.__postCompleteObserver__.observe(document.body, { childList: true, subtree: true });
+              }
             }
 
             if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
@@ -1104,41 +1989,95 @@
                     currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
                     if (dom.userName) dom.userName.textContent = currentUser.name;
                     if (dom.userAvatar) dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
-                    if (dom.userProfile) dom.userProfile.classList.remove('hidden');
+                    if (dom.userProfile) { dom.userProfile.classList.remove('hidden'); dom.userProfile.classList.add('flex'); }
                     loadProgressAndInitialize();
                 } else {
                     window.location.href = `${baseUrl}/acceso.html`;
                 }
             });
-            
-            async function loadUserResources(l) {}
-            async function loadTasks(l) {}
         });
     </script>
 
-    <!-- Scripts de Sincronización y Medios -->
+    <!-- === START: Scripts de Sincronización y Medios === -->
     <script>
     (function(){
       const FIRESTORE_SYNC = true;
-      function getCourseId() { const p = new URLSearchParams(location.search); return p.get('course') || 'ia-aplicada-esencial'; }
-      function syncTotalLessons(){
-        if (!FIRESTORE_SYNC) return;
+
+      function getCourseId() {
         try {
-          const total = document.querySelectorAll('[data-lesson-id]').length;
-          if (total > 0) {
-            firebase.firestore().collection('courses').doc(getCourseId()).set({ totalLessons: total }, { merge: true });
-          }
-        } catch(e){}
+          const p = new URLSearchParams(location.search);
+          return p.get('course') || (window.COURSE_ID || 'ia-aplicada-esencial');
+        } catch(e) { return 'ia-aplicada-esencial'; }
       }
+      
+      function countLessonsInDOM() {
+          try {
+              const allCourseData = window.ALL_COURSES_DATA;
+              if (allCourseData && allCourseData[getCourseId()]) {
+                  return allCourseData[getCourseId()].modules.flatMap(m => m.lessons).length;
+              }
+              const nodes = document.querySelectorAll('[data-lesson-id]');
+              return nodes ? nodes.length : 0;
+          } catch(e){ return 0; }
+      }
+
+      function whenFirebaseReady(fn, tries){
+        tries = tries || 0;
+        if (window.firebase && firebase.apps && firebase.apps.length > 0) return fn();
+        if (tries > 100) return console.warn('Firebase no está listo para la sincronización.');
+        setTimeout(function(){ whenFirebaseReady(fn, tries+1); }, 100);
+      }
+      
+      function syncTotalLessons(){
+        if (!FIRESTORE_SYNC) { console.log('[sync] Sincronización de total de lecciones deshabilitada.'); return; }
+        try {
+          const total = countLessonsInDOM();
+          if (!total || !(total > 0)) return;
+          const courseId = getCourseId();
+          const db = firebase.firestore();
+          db.collection('courses').doc(courseId)
+            .set({ totalLessons: total }, { merge: true })
+            .then(() => console.log(`[sync] Total de lecciones actualizado para ${courseId}: ${total}`))
+            .catch(err => console.warn('[sync] Falló la actualización de total de lecciones:', err));
+        } catch(e){ console.warn('[sync] Excepción en syncTotalLessons:', e); }
+      }
+      
+      whenFirebaseReady(syncTotalLessons);
       document.addEventListener('DOMContentLoaded', syncTotalLessons);
     })();
 
     window.copyTallerPrompt = function() {
-        const promptText = `Hola Mentor IA. Mis respuestas del Radar de Automatización...`;
+        const t1 = document.getElementById('taller-t1')?.value || 'N/A';
+        const m1 = document.getElementById('taller-m1')?.value || '0';
+        const t2 = document.getElementById('taller-t2')?.value || 'N/A';
+        const m2 = document.getElementById('taller-m2')?.value || '0';
+        const t3 = document.getElementById('taller-t3')?.value || 'N/A';
+        const m3 = document.getElementById('taller-m3')?.value || '0';
+        const bottleneck = document.getElementById('taller-bottleneck')?.value || 'No especificado';
+        
+        let obstacles = [];
+        document.querySelectorAll('.taller-chk:checked').forEach(cb => obstacles.push(cb.value));
+        
+        const promptText = `Hola Mentor IA. Mis respuestas del Radar de Automatización:\n\n` +
+            `1. TAREAS:\n- ${t1} (${m1} mins)\n- ${t2} (${m2} mins)\n- ${t3} (${m3} mins)\n\n` +
+            `2. FRUSTRACIÓN PRINCIPAL:\n"${bottleneck}"\n\n` +
+            `3. OBSTÁCULOS:\n${obstacles.join(', ') || 'Ninguno'}\n\n` +
+            `Dame un plan paso a paso para automatizar la tarea más crítica.`;
+
         navigator.clipboard.writeText(promptText).then(() => {
-            showToast('Prompt copiado al portapapeles');
+            const btn = document.querySelector('button[onclick="window.copyTallerPrompt()"]');
+            if(btn) { 
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> ¡Copiado!';
+                setTimeout(() => btn.innerHTML = original, 3000);
+                lucide.createIcons();
+            }
+            if(typeof showToast === 'function') showToast('Prompt copiado al portapapeles');
+            else alert('Prompt copiado. Pégalo en tu GPT.');
         });
     };
     </script>
+    <!-- === END: Scripts de Sincronización y Medios === -->
+
 </body>
 </html>
