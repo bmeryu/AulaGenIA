@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v4.0 (UI/UX Evolution - Sidebar System)
+  CAMPUS CURSO · AULA GENIA v4.0 (Professional Dashboard Refactor)
   -------------------------------------------------------------------
-  - UX: Arquitectura de información mejorada con nesting de recursos.
-  - UI: Sistema de colores por módulo y badges de alto contraste para Hacks y Quizzes.
-  - FEAT: Iconografía sistemática (🎥, 📥, ⚡, 🏆, 🎓).
-  - DEV: Implementado por Senior Dev & UX Expert siguiendo el Manual de Marca AGIA.
+  - UI/UX: Refactorización de escala y densidad de información.
+  - FEAT: Sidebar colapsable (Toggle) para modo enfoque.
+  - LAYOUT: Max-width en video (1200px) y espaciado optimizado (Gap 32px).
+  - TYPO: Ajuste de jerarquía visual (Factor 0.85) en encabezados y menú.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -64,10 +64,54 @@
             display: block;
         }
 
-        /* Estilos especiales para el nuevo Sidebar System */
-        .type-badge-hack { background-color: #eab308; color: #000; font-weight: bold; border-radius: 6px; }
-        .type-badge-quiz { background-color: #4c1d95; color: #fff; font-weight: bold; border-radius: 6px; }
-        .type-badge-graduation { background-color: #0d9488; color: #fff; font-weight: bold; border-radius: 6px; }
+        /* --- NUEVAS OPTIMIZACIONES DASHBOARD PROFESIONAL (DESKTOP) --- */
+        @media (min-width: 1024px) {
+            /* Sidebar Refactor */
+            #course-sidebar {
+                width: 280px !important;
+                flex-basis: 280px !important;
+                transition: margin-left 0.3s ease, opacity 0.3s ease;
+            }
+            #course-sidebar.collapsed {
+                margin-left: -280px;
+                opacity: 0;
+                pointer-events: none;
+            }
+            
+            /* Font Scaling (Factor 0.85) */
+            #course-title { font-size: 1.25rem !important; } /* Aprox 0.85 de 2xl */
+            #lesson-title { font-size: 1.6rem !important; } /* Aprox 0.85 de 3xl */
+            .accordion-header span { font-size: 0.85rem !important; }
+            .lesson-item span { font-size: 0.78rem !important; } /* -15% aprox de text-sm */
+            .lesson-item i { width: 1.1rem; height: 1.1rem; } /* Escala de iconos */
+            
+            /* Densidad de Información */
+            .lesson-item a { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; }
+            .accordion-header { padding: 0.6rem 0.75rem !important; }
+            
+            /* Layout & Spacing */
+            #lesson-content {
+                gap: 32px;
+                display: flex;
+                flex-direction: column;
+            }
+            .content-max-container {
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+            }
+
+            /* Toggle Button Styling */
+            #sidebar-toggle-desktop {
+                display: flex !important;
+            }
+        }
+
+        #sidebar-toggle-desktop {
+            display: none;
+        }
+        /* --- FIN OPTIMIZACIONES --- */
     </style>
 </head>
 <body class="text-gray-800">
@@ -75,9 +119,15 @@
     <div id="app" class="flex flex-col min-h-screen">
         <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
             <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-                <a href="index.html" class="flex items-center" aria-label="Página de inicio de Aula GenIA">
-                    <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo de Aula GenIA" class="h-20 w-auto">
-                </a>
+                <div class="flex items-center gap-4">
+                    <!-- Botón Toggle Sidebar (Desktop) -->
+                    <button id="sidebar-toggle-desktop" class="p-2 hover:bg-slate-100 rounded-lg text-gray-500 transition-colors" title="Alternar menú">
+                        <i data-lucide="panel-left-close" class="h-5 w-5" id="toggle-icon"></i>
+                    </button>
+                    <a href="index.html" class="flex items-center" aria-label="Página de inicio de Aula GenIA">
+                        <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo de Aula GenIA" class="h-16 w-auto">
+                    </a>
+                </div>
                 <div class="flex items-center gap-2 sm:gap-4">
                     <a href="quienes-somos.html" class="text-gray-700 font-semibold border-2 border-gray-300 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-gray-100 hover:border-gray-400 transition-colors duration-300 hidden md:flex items-center">
                         Quiénes Somos
@@ -98,24 +148,26 @@
             </nav>
         </header>
 
-        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-            <aside id="course-sidebar" class="w-full lg:w-80 xl:w-96 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
-                <div class="p-6">
-                    <a href="./campus.html" class="text-sm text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4"><i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Volver a Mis Cursos</a>
-                    <h1 id="course-title" class="text-2xl font-bold text-gray-900">Cargando...</h1>
+        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden bg-slate-50">
+            <!-- Sidebar (Ancho ajustado a 280px en desktop) -->
+            <aside id="course-sidebar" class="w-full lg:w-80 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
+                <div class="p-5">
+                    <a href="./campus.html" class="text-xs text-teal-600 hover:text-teal-700 font-semibold flex items-center mb-4 uppercase tracking-wider"><i data-lucide="arrow-left" class="h-3 w-3 mr-2"></i>Mis Cursos</a>
+                    <h1 id="course-title" class="text-xl font-bold text-gray-900 leading-tight">Cargando...</h1>
                     <div class="mt-4">
-                        <div class="flex justify-between text-sm font-medium text-gray-600 mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
-                        <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                        <div class="flex justify-between text-[10px] font-bold text-gray-400 uppercase mb-1"><span>Progreso</span><span id="progress-text">0%</span></div>
+                        <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="progress-bar" class="bg-teal-500 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
                     </div>
                 </div>
                 <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
             </aside>
 
-            <section id="lesson-content" class="flex-1 bg-slate-50 overflow-y-auto">
-                <div class="p-6 md:p-8 lg:p-10">
-                    <h2 id="lesson-title" class="text-3xl font-bold text-gray-900 mb-2">Cargando...</h2>
+            <!-- Área de Contenido (Centrada y con Max-width) -->
+            <section id="lesson-content" class="flex-1 overflow-y-auto lg:p-8">
+                <div class="content-max-container p-6 md:p-0">
+                    <h2 id="lesson-title" class="text-2xl font-bold text-gray-900 mb-2">Cargando...</h2>
                     
-                    <div id="learning-tabs" class="mt-8">
+                    <div id="learning-tabs" class="mt-6">
                         <div class="border-b border-slate-200 mb-4">
                             <nav class="-mb-px flex gap-6 text-sm font-medium overflow-x-auto">
                                 <button class="ltab active px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-material">
@@ -441,77 +493,305 @@
                 hasCertificate: true,
                 modules: [
                   {
-                    title: '🟢 Módulo 1: ¿Qué es la Inteligencia Artificial?',
+                    title: 'Módulo 1: ¿Qué es la Inteligencia Artificial?',
                     badge: 'Explorador Conceptual',
-                    color: '#10b981', // Emerald
                     lessons: [
-                      { id: '1-1', title: '🎥 Masterclass: El Salto de las 10 Horas Libres', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '1-1-t', title: '📥 Taller: Tu Primer Debate con una IA', type: 'resource', isNested: true },
-                      { id: '1-2', title: '🎥 Diccionario IA: Hablando con el Genio', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO3-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '1-2-r', title: '📥 Glosario "IA en Servilleta" y Analogías', type: 'resource', isNested: true },
-                      { id: '1-3', title: '🎥 Desarmando los Mitos de la IA', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO5-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO6-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '1-3-t', title: '📥 Taller: Validación Práctica de Mitos', type: 'resource', isNested: true },
-                      { id: '1-h', title: '⚡ Hack: El Costo Real de tus Errores', type: 'hack' },
-                      { id: 'q-1', title: '🏆 Check-point 1: Mide tu Nivel Digital', type: 'quiz', questions: [
-                          { text: '¿Cuál es la relación entre IA, Machine Learning y Deep Learning?', options: ['Sistemas separados', 'Capa sobre capa (Muñecas rusas)', 'Pasos cronológicos', 'IA es parte de ML'], correctAnswer: 1 },
-                          { text: 'Mito del reemplazo laboral:', options: ['Es inevitable', 'Falso: la IA automatiza pero crea oportunidades', 'Solo afecta creativos', 'Solo afecta fábricas'], correctAnswer: 1 },
-                          { text: '¿Qué hacer con la info de ChatGPT?', options: ['Confiar siempre', 'Usar solo con citas', 'Contrastar con conocimiento propio', 'Copiar y pegar'], correctAnswer: 2 }
-                      ]}
+                      { 
+                        id: '1-1', 
+                        title: 'Casos de éxito reales', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-1', 
+                        title: 'Quiz: Módulo 1', 
+                        type: 'quiz', 
+                        questions: [
+                          { 
+                            text: 'Según el video, ¿cuál es la relación entre Inteligencia Artificial (IA), Aprendizaje Automático (AA) y Aprendizaje Profundo (AP)?', 
+                            options: [
+                                'Son tres tecnologías completamente separadas.', 
+                                'Son como muñecas rusas: la IA es la más grande, contiene al AA y este a su vez al AP.', 
+                                'Son pasos de un proceso: se empieza con AP, luego AA y finalmente IA.', 
+                                'La IA es una parte del AA, y el AA es una parte del AP.'
+                            ], 
+                            correctAnswer: 1
+                          },
+                          {
+                            text: 'El video desarma varios mitos sobre la IA. ¿Qué menciona sobre la idea de que "la IA reemplazará todos los trabajos"?',
+                            options: [
+                                'Que es cierto y debemos prepararnos para un mundo sin trabajo.',
+                                'Que es falso; la IA automatiza tareas pero también crea nuevas oportunidades laborales.',
+                                'Que solo reemplazará los trabajos creativos, no los técnicos.',
+                                'Que únicamente reemplazará trabajos en fábricas.'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: '¿Cuál es la recomendación más importante que da el video al recibir información de una IA como ChatGPT?',
+                            options: [
+                                'Confiar siempre en ella, porque la IA es un genio que nunca se equivoca.',
+                                'Usar la información solo si la IA cita sus fuentes.',
+                                'Siempre revisar la información y contrastarla con tu propio conocimiento, ya que puede equivocarse o inventar cosas.',
+                                'Copiar y pegar la información directamente sin leerla.'
+                            ],
+                            correctAnswer: 2
+                          },
+                          {
+                            text: '¿Cuál de los siguientes NO es uno de los tres factores clave que el video menciona como impulsores del auge reciente de la IA?',
+                            options: [
+                                'La existencia de computadoras más potentes y rápidas.',
+                                'La creación de una IA con conciencia y sentimientos propios.',
+                                'La disponibilidad de enormes cantidades de información (datos).',
+                                'El desarrollo de mejores y más eficientes métodos de aprendizaje ("recetas").'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: 'El video explica que la IA aprende de dos formas principales. ¿Cuáles son?',
+                            options: [
+                                'Leyendo libros y viendo películas.',
+                                'Siguiendo instrucciones específicas que le damos y aprendiendo por sí misma mediante ensayo y error.',
+                                'Únicamente copiando lo que hacen otras inteligencias artificiales.',
+                                'Conectándose directamente a un cerebro humano.'
+                            ],
+                            correctAnswer: 1
+                          }
+                        ], 
+                        resources: [] 
+                      }
                     ]
                   },
                   {
-                    title: '🔵 Módulo 2: La IA para ti, en tu día a día',
+                    title: 'Módulo 2: La IA para ti, en tu día a día',
                     badge: 'Asistente IA Personal',
-                    color: '#3b82f6', // Electric Blue
                     lessons: [
-                      { id: '2-1', title: '🎥 Del Uso Superficial al Estratégico', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO1-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '2-1-t', title: '📥 Taller: Guía para crear tus Colaboradores', type: 'resource', isNested: true },
-                      { id: '2-2', title: '🎥 Casos de Éxito: María, Carlos y Luis', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO3-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '2-2-r1', title: '📥 Recurso: Tutorial Paso a Paso Ideogram', type: 'resource', isNested: true },
-                      { id: '2-2-r2', title: '📥 Taller: Análisis de Casos Carlos', type: 'resource', isNested: true },
-                      { id: '2-3', title: '🎥 El Método de Delegación en 3 Pasos', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO5-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO6-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '2-3-r1', title: '📥 Herramienta: Detalla tu Idea de Automatización', type: 'resource', isNested: true },
-                      { id: '2-3-r2', title: '📥 Taller: Radar de Automatización Pro', type: 'taller', isNested: true },
-                      { id: '2-h', title: '⚡ Hack: ¿Puede la IA predecir la lotería?', type: 'hack' },
-                      { id: 'q-2', title: '🏆 Desafío 2: Mi Mapa de Delegación', type: 'quiz', questions: [
-                          { text: 'Primer paso para la IA diaria:', options: ['Programar Python', 'Hardware potente', 'Identificar tareas repetitivas', 'Diseñar modelos'], correctAnswer: 2 },
-                          { text: 'Herramienta para Google Workspace:', options: ['ChatGPT', 'DeepSeek', 'Midjourney', 'Gemini'], correctAnswer: 3 }
-                      ]}
+                      { 
+                        id: '2-1', 
+                        title: 'Crear tu objetivo SMART con IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: '2-taller', 
+                        title: 'Taller: Radar de Automatización', 
+                        type: 'taller', 
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-2', 
+                        title: 'Quiz: Módulo 2', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: 'Según el video, ¿cuál es el primer paso para empezar a usar la IA en tu día a día?', 
+                                options: [
+                                    'Aprender a programar en Python.', 
+                                    'Comprar la computadora más potente.', 
+                                    'Identificar tareas repetitivas que te quitan tiempo.', 
+                                    'Diseñar tu propio modelo de inteligencia artificial.'
+                                ], 
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'El video presenta el caso de María, la diseñadora. ¿Cómo le ayudó la IA a ser más productiva?',
+                                options: [
+                                    'Vendiendo automáticamente sus diseños en línea.',
+                                    'Aprendiendo a programar por ella.',
+                                    'Usando ChatGPT para correos, Midjourney para inspiración y traducción automática.',
+                                    'Creando una versión de su estudio en realidad virtual.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: '¿Qué herramienta de IA se recomienda en el video para usuarios que trabajan mucho con Google Workspace (Gmail, Drive)?',
+                                options: [
+                                    'ChatGPT',
+                                    'DeepSeek',
+                                    'Midjourney',
+                                    'Gemini'
+                                ],
+                                correctAnswer: 3
+                            },
+                            {
+                                text: 'El video menciona varios ejemplos de cómo la IA ya es parte de nuestras vidas. ¿Cuál de los siguientes es un ejemplo del módulo?',
+                                options: [
+                                    'Robots que cocinan la cena por nosotros.',
+                                    'IA que predice los números de la lotería.',
+                                    'Recomendaciones personalizadas en servicios como Netflix y Spotify.',
+                                    'Autos que pueden volar en el tráfico.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'El video menciona tres "puntos de atasco" comunes donde la IA puede ayudar. ¿Cuál de los siguientes es uno de ellos?',
+                                options: [
+                                    'Ejercicio físico y deportes.',
+                                    'Inversiones financieras.',
+                                    'Bloqueo Creativo.',
+                                    'Aprender a tocar un instrumento musical.'
+                                ],
+                                correctAnswer: 2
+                            }
+                        ], 
+                        resources: [] 
+                      }
                     ]
                   },
                   {
-                    title: '🟠 Módulo 3: El Arte de las Instrucciones',
+                    title: 'Módulo 3: Preparando tus herramientas',
                     badge: 'Creativo IA',
-                    color: '#f97316', // Orange
                     lessons: [
-                      { id: '3-1', title: '🎥 La Receta WOW: El Arte de Pedir', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO1-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '3-1-r', title: '📥 Infografía: Fórmula WOW AGIA', type: 'resource', isNested: true },
-                      { id: '3-2', title: '🎥 Estructura AGIA: Instrucciones Maestras', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO3-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '3-2-r1', title: '📥 Recurso: Lista de Verbos de Poder', type: 'resource', isNested: true },
-                      { id: '3-2-r2', title: '📥 Recurso: Guía de Restricciones Maestro', type: 'resource', isNested: true },
-                      { id: '3-3', title: '🎥 Persuasión y los 3 Salvavidas', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO5-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO6-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '3-3-r', title: '📥 Biblioteca: +100 Prompts Maestros AGIA', type: 'resource', isNested: true },
-                      { id: '3-h', title: '⚡ Hack: Razonamiento y el idioma Inglés', type: 'hack' },
-                      { id: 'q-3', title: '🏆 Evaluación Pro: Aplicando la Fórmula', type: 'quiz', questions: [
-                          { text: 'Objetivo del Módulo 3:', options: ['Comparar precios', 'Aprender Python', 'Cuentas y Prompting', 'Analizar historia'], correctAnswer: 2 },
-                          { text: 'Consejo para que IA entienda mejor:', options: ['Frases cortas', 'Dar ejemplos de estilo', 'Solo inglés', 'Borrar chats'], correctAnswer: 1 }
-                      ]}
+                      { 
+                        id: '3-1', 
+                        title: 'Prepara tus Asistentes de IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-3', 
+                        title: 'Quiz: Módulo 3', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: '¿Cuál es el objetivo principal del Módulo 3?', 
+                                options: [
+                                    'Comparar los precios de las versiones de pago de las herramientas de IA.', 
+                                    'Aprender a programar una inteligencia artificial desde cero.', 
+                                    'Guiarte paso a paso para crear cuentas en ChatGPT, Gemini y DeepSeek.', 
+                                    'Analizar la historia y evolución de los modelos de lenguaje.'
+                                ], 
+                                correctAnswer: 2 
+                            },
+                            {
+                                text: '¿Qué herramienta de IA se destaca en el video por su capacidad de integrarse con tu Google Drive, Calendario y Gmail?',
+                                options: [
+                                    'ChatGPT',
+                                    'DeepSeek',
+                                    'Gemini',
+                                    'Todas las anteriores por igual.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Según el video, si necesitas entender un tema muy complejo y quieres que la IA te guíe "paso a paso", ¿cuál sería tu mejor opción?',
+                                options: [
+                                    'ChatGPT, porque es el más conversacional.',
+                                    'DeepSeek, porque es descrito como "tu experto para entender lo complejo".',
+                                    'Gemini, porque puede buscar en tus documentos personales.',
+                                    'Cualquiera de las tres, no hay diferencia.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: '¿Cuál es uno de los consejos clave que se da en el video para que la IA te entienda mejor?',
+                                options: [
+                                    'Usar solo frases cortas y simples.',
+                                    'Darle ejemplos del estilo o tono que quieres para que pueda imitarlo.',
+                                    'Escribir siempre en inglés para obtener mejores resultados.',
+                                    'Nunca guardar las conversaciones para no confundir a la IA.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: '¿Cuál es la dirección web correcta para crear una cuenta de ChatGPT, según se muestra en el tutorial del video?',
+                                options: [
+                                    'chatgpt.google.com',
+                                    'chat.openai.com',
+                                    'openai.com/chat',
+                                    'getchatgpt.com'
+                                ],
+                                correctAnswer: 1
+                            }
+                        ], 
+                        resources: [] 
+                      }
                     ]
                   },
                   {
-                    title: '🔴 Módulo 4: El Arquitecto de Ideas',
+                    title: 'Módulo 4: El Arte de las Instrucciones',
                     badge: 'Maestro de Prompts',
-                    color: '#ef4444', // Red
                     lessons: [
-                      { id: '4-1', title: '🎥 Método Macro: Proyectos de Gran Escala', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO1-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '4-1-r', title: '📥 Infografía: El Mapa del Arquitecto', type: 'resource', isNested: true },
-                      { id: '4-2', title: '🎥 Ejecución Veloz: El Director de Orquesta', type: 'video', videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO3-IA-Aplicada-Programa-Esencial.mp4', transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt' },
-                      { id: '4-2-r', title: '📥 Manual: Fórmula de Rotación de Roles', type: 'resource', isNested: true },
-                      { id: '4-h', title: '⚡ Hack: ¿Leyó realmente mi PDF de 200 páginas?', type: 'hack' },
-                      { id: 'q-4', title: '🎓 Certificación Final: Graduación AGIA', type: 'quiz', questions: [
-                          { text: 'Beneficio de automatizar:', options: ['Más dificultad', 'Liberar tiempo estratégico', 'Más spam', 'Comprar automático'], correctAnswer: 1 },
-                          { text: '¿Qué es un wireframe?', options: ['Diseño visual final', 'Esquema estructural', 'Código fuente', 'Animación intro'], correctAnswer: 1 }
-                      ]}
+                      { 
+                        id: '4-1', 
+                        title: 'El Arte de las Instrucciones', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: '4-2', 
+                        title: 'Taller Práctico: Tu Plantilla para la IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO3-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-4', 
+                        title: 'Quiz: Módulo 4', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: '¿Cuál es el principal beneficio de usar la IA para automatizar tareas repetitivas?', 
+                                options: [
+                                    'Hacer que las tareas sean más difíciles.', 
+                                    'Liberar tiempo para enfocarse en actividades más importantes.', 
+                                    'Aumentar la cantidad de correos que envías.', 
+                                    'Comprar cosas por internet automáticamente.'
+                                ], 
+                                correctAnswer: 1 
+                            },
+                            {
+                                text: 'De las siguientes tareas, ¿cuál es un ejemplo perfecto para ser automatizado por la IA en un trabajo?',
+                                options: [
+                                    'Tener una conversación importante con tu jefe.',
+                                    'Responder las mismas preguntas de clientes una y otra vez.',
+                                    'Crear una nueva estrategia de negocio desde cero.',
+                                    'Tomar un café con tus compañeros.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: 'El objetivo de la automatización con IA es...',
+                                options: [
+                                    'Reemplazar completamente a los humanos en todos los trabajos.',
+                                    'Que las computadoras tomen todas las decisiones por nosotros.',
+                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.',
+                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Al automatizar una tarea, ¿qué es lo primero que deberías identificar?',
+                                options: [
+                                    'Una tarea que te guste mucho hacer.',
+                                    'Una tarea creativa que requiera mucha inspiración.',
+                                    'Una tarea manual, repetitiva y que te quite tiempo.',
+                                    'Una tarea que solo se hace una vez al año.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Si una empresa automatiza la respuesta a preguntas frecuentes, ¿qué beneficio obtiene el equipo humano?',
+                                options: [
+                                    'Tienen menos trabajo que hacer en general.',
+                                    'Pueden dedicarse a resolver problemas más complejos de los clientes.',
+                                    'Ya no necesitan hablar con los clientes.',
+                                    'Deben revisar cada respuesta automática antes de que se envíe.'
+                                ],
+                                correctAnswer: 1
+                            }
+                        ], 
+                        resources: [] 
+                      }
                     ]
                   }
                 ]
@@ -574,7 +854,26 @@
                 supportBtnText: document.getElementById('support-btn-text'),
                 supportSpinner: document.getElementById('support-spinner'),
                 supportFormStatus: document.getElementById('support-form-status'),
+                // Dashboard específicos
+                sidebar: document.getElementById('course-sidebar'),
+                sidebarToggle: document.getElementById('sidebar-toggle-desktop')
             };
+
+            // --- Lógica de Toggle Sidebar (Desktop) ---
+            if (dom.sidebarToggle && dom.sidebar) {
+                dom.sidebarToggle.addEventListener('click', () => {
+                    dom.sidebar.classList.toggle('collapsed');
+                    const icon = document.getElementById('toggle-icon');
+                    if (dom.sidebar.classList.contains('collapsed')) {
+                        icon.setAttribute('data-lucide', 'panel-left-open');
+                        dom.sidebarToggle.title = "Mostrar menú";
+                    } else {
+                        icon.setAttribute('data-lucide', 'panel-left-close');
+                        dom.sidebarToggle.title = "Ocultar menú";
+                    }
+                    lucide.createIcons();
+                });
+            }
 
             function getIsCourseComplete() {
                 if (allLessons.length === 0) return false;
@@ -626,36 +925,23 @@
                             }
                         }
                         
-                        let linkClasses = 'text-gray-600 hover:bg-slate-100';
+                        let linkClasses = 'text-gray-600 hover:bg-slate-50';
                         let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : 'circle');
                         let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
                         
-                        // Aplicar clases de Badges según el tipo
-                        let specialClasses = '';
-                        if (lesson.type === 'hack') specialClasses = 'type-badge-hack px-2 py-1';
-                        if (lesson.type === 'quiz') {
-                             specialClasses = lesson.title.includes('Graduación') ? 'type-badge-graduation px-2 py-1' : 'type-badge-quiz px-2 py-1';
-                        }
-
                         if (isLocked) {
                             linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
                             statusIcon = 'lock';
                             iconColor = 'text-slate-400';
                         } else if (isActive) {
-                            linkClasses = `bg-slate-100 font-semibold border-l-4`;
+                            linkClasses = 'bg-teal-50 text-teal-700 font-semibold';
                             statusIcon = 'play-circle';
                             iconColor = '';
                         }
                         
-                        // Determinar indentación para nesting
-                        const nestingClass = lesson.isNested ? 'ml-6 border-l border-slate-200 pl-4' : 'ml-2';
+                        const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
                         
-                        return `<li class="lesson-item ${nestingClass}" data-lesson-id="${lesson.id}">
-                            <a href="#" style="${isActive ? 'border-color:' + module.color : ''}" class="flex items-center p-2 rounded-md ${linkClasses} ${specialClasses}">
-                                <i data-lucide="${isLocked ? 'lock' : statusIcon}" class="h-4 w-4 mr-3 ${isLocked ? 'text-slate-400' : iconColor}"></i>
-                                <span class="flex-1 text-sm">${lesson.title}</span>
-                            </a>
-                        </li>`;
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${iconColor}"></i><span class="flex-1 text-xs truncate">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-3.5 w-3.5 ml-2 opacity-40 ${isLocked ? 'text-slate-400' : ''}"></i></a></li>`;
                     }).join('');
 
                     const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
@@ -666,15 +952,7 @@
                         isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id));
                     }
                     
-                    return `<div class="accordion-item">
-                        <button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-100 text-left">
-                            <span class="font-bold uppercase tracking-tight text-xs" style="color:${module.color}">${module.title}</span>
-                            <i data-lucide="${accordionIcon}" class="h-4 w-4 transition-transform text-gray-400"></i>
-                        </button>
-                        <div class="accordion-content ${!isModuleLocked ? 'open' : ''} pl-2">
-                            <ul class="py-1 space-y-1">${lessonsHtml}</ul>
-                        </div>
-                    </div>`;
+                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-4 w-4 transition-transform text-gray-400"></i></button><div class="accordion-content ${!isModuleLocked ? 'open' : ''}"><ul class="py-1 space-y-0.5">${lessonsHtml}</ul></div></div>`;
                 }).join('');
 
                 addSidebarListeners();
@@ -693,19 +971,6 @@
                 }
 
                 switch(lesson.type) { 
-                    case 'hack':
-                        materialHtml = `
-                        <div class="bg-yellow-50 p-8 rounded-2xl border-2 border-yellow-200 shadow-sm text-center">
-                            <div class="inline-block p-4 bg-yellow-400 rounded-full mb-6">
-                                <i data-lucide="zap" class="h-10 w-10 text-yellow-900"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold text-yellow-900 mb-4">AulaGenIA Hack: Revelado</h3>
-                            <p class="text-lg text-yellow-800 leading-relaxed mb-8">${lesson.title}</p>
-                            <div class="bg-white p-6 rounded-xl border border-yellow-200 text-left">
-                                <p class="text-gray-700">Este es un truco secreto exclusivo para alumnos de Aula GenIA. Aplícalo en tus prompts para ahorrar tiempo y recursos.</p>
-                            </div>
-                        </div>`;
-                        break;
                     case 'taller':
                         materialHtml = `
                         <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm">
@@ -725,7 +990,7 @@
                                     </div>
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                                         <input type="text" id="taller-t2" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 2">
-                                        <input type="text" id="taller-m1" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                        <input type="text" id="taller-m2" class="w-full p-2 border rounded" placeholder="Mins/semana">
                                     </div>
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                                         <input type="text" id="taller-t3" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 3">
@@ -762,7 +1027,7 @@
                     case 'video':
                         if (lesson.videoUrl) {
                             materialHtml = `<div class="flex flex-col gap-4">
-                                <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden">
+                                <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden shadow-lg border border-slate-200 bg-black">
                                     <video id="course-video" controls class="w-full h-full object-cover">
                                         <source id="course-video-source" data-src="${lesson.videoUrl || ''}" type="video/mp4">
                                         ${lesson.transcriptionUrl ? `<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>` : ''}
@@ -793,10 +1058,10 @@
                             materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`;
                         }
                         break; 
-                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Este material está disponible en la pestaña superior 'Recursos'.</p></div></div>`; break; 
+                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; 
                     case 'quiz': { 
                         if (!lesson.questions || lesson.questions.length === 0) {
-                            materialHtml = `<p class="text-center text-slate-500">Evaluación teórica en progreso. Prepárate para el desafío final.</p>`;
+                            materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
                             break;
                         }
 
@@ -1013,7 +1278,7 @@
 
                 dom.mainActionBtn.classList.remove('hidden');
                 dom.mainActionBtn.textContent = 'Marcar como completada';
-                dom.mainActionBtn.disabled = (lesson.type === 'quiz' || lesson.type === 'hack'); 
+                dom.mainActionBtn.disabled = (lesson.type === 'quiz'); 
             }
 
             function updateOverallProgress() { const uniqueCompleted = new Set(userProgress.completedLessons); const completedCount = uniqueCompleted.size; const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0; if (dom.progressBar) dom.progressBar.style.width = `${percentage}%`; if (dom.progressText) dom.progressText.textContent = `${percentage}%`; }
@@ -1073,9 +1338,11 @@
                     if (header && icon && icon.getAttribute('data-lucide') !== 'lock') {
                         header.addEventListener('click', () => {
                             const content = header.nextElementSibling;
-                            const iconEl = header.querySelector('i[data-lucide="chevron-down"]');
+                            const iconEl = header.querySelector('i');
                             const isOpen = content.classList.toggle('open');
-                            if(iconEl) iconEl.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                            if(iconEl && iconEl.getAttribute('data-lucide') === 'chevron-down') {
+                                iconEl.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                            }
                         });
                     }
                 });
@@ -1633,7 +1900,6 @@
                 videoEl.load();
             }
 
-            // --- Código del parche aquí ---
             const BLOCK_SELECTORS_ON_COMPLETE = [
               '#main-action-btn',
               'button[id*="encuesta"]',
@@ -1691,7 +1957,6 @@
                 window.__postCompleteObserver__.observe(document.body, { childList: true, subtree: true });
               }
             }
-            // --- Fin del código del parche ---
 
             if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
 
