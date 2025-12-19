@@ -6,7 +6,7 @@
   - FEAT: Sidebar colapsable (Toggle) para modo enfoque.
   - LAYOUT: Max-width en video (1200px) y espaciado optimizado (Gap 32px).
   - TYPO: Ajuste de jerarquía visual (Factor 0.85) en encabezados y menú.
-  - UX UPDATE: Pestaña "Materiales" consolidada y reubicación de subida de archivos.
+  - UX UPDATE: Separación de pestañas "Clases" y "Materiales".
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -204,7 +204,10 @@
                     <div id="learning-tabs" class="mt-6">
                         <div class="border-b border-slate-200 mb-4">
                             <nav class="-mb-px flex gap-6 text-sm font-medium overflow-x-auto">
-                                <button class="ltab active px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-material">
+                                <button class="ltab active px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-clases">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="play-circle" class="h-4 w-4"></i>Clases</span>
+                                </button>
+                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-material">
                                     <span class="inline-flex items-center gap-2"><i data-lucide="library" class="h-4 w-4"></i>Materiales</span>
                                 </button>
                                 <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-notes">
@@ -219,11 +222,18 @@
                             </nav>
                         </div>
 
-                        <div id="tab-material" class="ltab-panel">
+                        <!-- PANEL CLASES: Video, Quizzes, Talleres -->
+                        <div id="tab-clases" class="ltab-panel">
                              <div id="lesson-material-container" class="mb-6"></div>
-                             <!-- Espacio para recursos integrados: Aparecerá debajo del video/quiz -->
-                             <div id="integrated-resources-container" class="mt-12 pt-8 border-t border-slate-200">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Recursos para esta clase</h3>
+                        </div>
+
+                        <!-- PANEL MATERIALES: Descargables y PDFs -->
+                        <div id="tab-material" class="ltab-panel hidden">
+                             <div id="integrated-resources-container" class="pt-4">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <i data-lucide="file-down" class="h-5 w-5 text-teal-500"></i>
+                                    Material de la clase para descargar
+                                </h3>
                                 <div id="resources-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
                              </div>
                         </div>
@@ -941,7 +951,7 @@
                         materialHtml = `<div class="bg-white p-12 border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 text-center">
                             <i data-lucide="library-big" class="h-16 w-16 text-teal-500 mb-4"></i>
                             <h3 class="text-xl font-bold text-gray-900">Lección de Consulta</h3>
-                            <p class="mt-2 text-gray-600 max-w-md">Esta lección se compone de recursos teóricos y enlaces externos que puedes consultar a continuación.</p>
+                            <p class="mt-2 text-gray-600 max-w-md">Esta lección se compone de recursos teóricos y enlaces externos que puedes consultar en la pestaña "Materiales".</p>
                         </div>`; 
                         break; 
                     case 'quiz': { 
@@ -981,18 +991,22 @@
                     }
                     default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
                 } 
-                if (dom.tabMaterialPanel) dom.tabMaterialPanel.innerHTML = materialHtml; 
                 
-                // INTEGRACIÓN DE RECURSOS: Los mostramos siempre debajo del contenido principal
+                // Cargar contenido de la Clase
+                const materialContainer = document.getElementById('lesson-material-container');
+                if (materialContainer) materialContainer.innerHTML = materialHtml; 
+                
+                // INTEGRACIÓN DE RECURSOS: Se renderizan en su propia pestaña
                 renderCourseResources(lesson);
 
                 if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
                     const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
                     if (!isQuizCompleted) {
-                      dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
+                      const quizWrapper = document.getElementById('tab-clases');
+                      quizWrapper.querySelectorAll('.quiz-option').forEach(opt => {
                           opt.addEventListener('click', () => {
                               const questionId = opt.dataset.questionId;
-                              dom.tabMaterialPanel.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
+                              quizWrapper.querySelectorAll(`.quiz-option[data-question-id="${questionId}"]`).forEach(o => o.classList.remove('selected'));
                               opt.classList.add('selected');
                           });
                       });
@@ -1128,7 +1142,7 @@
                     advanceToNextLesson();
                 } else {
                     showToast(`Revisa tus respuestas. ${correctAnswers} de ${totalQuestions} son correctas.`);
-                    const firstIncorrect = dom.tabMaterialPanel.querySelector('.quiz-option.incorrect');
+                    const firstIncorrect = document.querySelector('.quiz-option.incorrect');
                     if (firstIncorrect) {
                         const questionContainer = firstIncorrect.closest('.space-y-4.mb-8');
                         if (questionContainer) {
@@ -1136,7 +1150,7 @@
                         }
                     }
                     setTimeout(() => {
-                        dom.tabMaterialPanel.querySelectorAll('.quiz-option').forEach(opt => {
+                        document.querySelectorAll('.quiz-option').forEach(opt => {
                             opt.classList.remove('incorrect', 'correct');
                             opt.style.pointerEvents = 'auto';
                         });
@@ -1519,7 +1533,7 @@
                 loadNotes(lessonId);
                 loadUserResources(lessonId);
                 loadTasks(lessonId);
-                activateTab('tab-material');
+                activateTab('tab-clases'); // Iniciamos siempre en clases
             }
 
             async function loadNotes(lessonId) {
@@ -1609,10 +1623,14 @@
                 setTimeout(() => { dom.pdfModal.classList.add('hidden'); dom.pdfModalOverlay.classList.add('hidden'); dom.pdfIframe.src = ''; }, 300);
             }
 
-            if (dom.tabMaterialPanel) dom.tabMaterialPanel.addEventListener('click', (e) => {
-                const button = e.target.closest('.resource-item[data-pdf-url]');
-                if (button) openPdfModal(button.dataset.pdfUrl, button.dataset.pdfTitle);
-            });
+            // Los PDFs se abren desde la pestaña Materiales
+            const materialTab = document.getElementById('tab-material');
+            if (materialTab) {
+                materialTab.addEventListener('click', (e) => {
+                    const button = e.target.closest('.resource-item[data-pdf-url]');
+                    if (button) openPdfModal(button.dataset.pdfUrl, button.dataset.pdfTitle);
+                });
+            }
 
             if (dom.pdfModalCloseBtn) dom.pdfModalCloseBtn.addEventListener('click', closePdfModal);
             if (dom.pdfModalOverlay) dom.pdfModalOverlay.addEventListener('click', closePdfModal);
