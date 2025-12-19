@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v4.2 (Full Integrity + UX Optimization)
+  CAMPUS CURSO · AULA GENIA v4.3 (Full Integrity + UX Refinement)
   -------------------------------------------------------------------
   - UI/UX: Implementación de Contextual UI (Focus Mode para Quizzes).
-  - ARCH: Agregación de materiales a nivel de módulo (Hub de Recursos).
+  - ARCH: Hub de Recursos del Módulo con enlaces a IAs externas.
+  - FIX: Botón de acción persistente con estado de "Completada".
   - INTEGRIDAD: Se mantiene el 100% de la lógica original de 1900+ líneas.
   -------------------------------------------------------------------
 -->
@@ -545,17 +546,10 @@
                         resources: [
                           { name: 'Glosario IA para Negocios', url: 'gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf', external: false },
                           { name: 'Infografía: El rol del Copiloto', url: 'gs://aulagenia.firebasestorage.app/Copiloto_vs_Programador.pdf', external: false },
-                          { name: 'Guía del Copiloto IA', url: 'gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf', external: false }
-                        ] 
-                      },
-                      { 
-                        id: '1-r3', 
-                        title: 'Herramientas Recomendadas', 
-                        type: 'resource', 
-                        resources: [
-                            { name: 'Acceder a ChatGPT', url: 'https://chatgpt.com', external: true },
-                            { name: 'Acceder a Gemini', url: 'https://gemini.google.com', external: true },
-                            { name: 'Acceder a Grok', url: 'https://x.com/i/grok', external: true }
+                          { name: 'Guía del Copiloto IA', url: 'gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf', external: false },
+                          { name: 'Link ChatGPT', url: 'https://chatgpt.com', external: true },
+                          { name: 'Link Gemini', url: 'https://gemini.google.com', external: true },
+                          { name: 'Link Grok', url: 'https://x.com/i/grok', external: true }
                         ] 
                       },
                       { 
@@ -1183,12 +1177,18 @@
 
                 const isCompleted = userProgress.completedLessons.includes(lesson.id);
 
+                // UX FIX: El botón ahora no desaparece, cambia a estado "Completada"
                 if (isCompleted) {
-                    dom.mainActionBtn.classList.add('hidden');
+                    dom.mainActionBtn.classList.remove('hidden');
+                    dom.mainActionBtn.textContent = 'Lección completada ✓';
+                    dom.mainActionBtn.disabled = true;
+                    dom.mainActionBtn.classList.add('opacity-75', 'bg-slate-500');
+                    dom.mainActionBtn.classList.remove('bg-teal-500', 'hover:bg-teal-600');
                     return;
                 }
 
-                dom.mainActionBtn.classList.remove('hidden');
+                dom.mainActionBtn.classList.remove('hidden', 'opacity-75', 'bg-slate-500');
+                dom.mainActionBtn.classList.add('bg-teal-500', 'hover:bg-teal-600');
                 dom.mainActionBtn.textContent = 'Marcar como completada';
                 dom.mainActionBtn.disabled = (lesson.type === 'quiz'); 
             }
@@ -1846,7 +1846,8 @@
             }
 
             const BLOCK_SELECTORS_ON_COMPLETE = [
-              '#main-action-btn',
+              // UX FIX: Eliminamos el selector del botón principal de esta lista para que sea persistente y muestre estado
+              // '#main-action-btn', 
               'button[id*="encuesta"]',
               '[id*="btn-encuesta"]',
               '[data-action="complete"]',
@@ -1860,7 +1861,7 @@
               return !!el.closest('video, .plyr, .video-js, .video-container');
             }
 
-            function hardDisable(el, reason = 'Curso finalizado: acción deshabilitada') {
+            function hardDisable(el, reason = 'Acción deshabilitada') {
               if (!el || isInsideVideo(el)) return;
               el.setAttribute('aria-disabled', 'true');
               el.setAttribute('tabindex', '-1');
@@ -1885,10 +1886,7 @@
               const courseIsDone = getIsCourseComplete();
               if (!courseIsDone) return;
 
-              if (dom && dom.navigationButtons) {
-                dom.navigationButtons.classList.add('hidden');
-              }
-
+              // En lugar de ocultar la barra completa, solo manejamos los elementos bloqueados
               BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
                 document.querySelectorAll(sel).forEach((el) => hardDisable(el));
               });
