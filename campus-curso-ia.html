@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v4.1 (UX Optimization)
+  CAMPUS CURSO · AULA GENIA v4.0 (Professional Dashboard Refactor)
   -------------------------------------------------------------------
-  - REFACTOR: Estructura de lección lineal (Stage -> Recursos -> Herramientas).
-  - UX: Eliminación de pestañas redundantes para el contenido core.
-  - INTEGRITY: Se mantiene el 100% de la lógica Firebase y ALL_COURSES_DATA.
+  - UI/UX: Refactorización de escala y densidad de información.
+  - FEAT: Sidebar colapsable (Toggle) para modo enfoque.
+  - LAYOUT: Max-width en video (1200px) y espaciado optimizado (Gap 32px).
+  - TYPO: Ajuste de jerarquía visual (Factor 0.85) en encabezados y menú.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -38,22 +39,34 @@
         .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
         .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
         
-        /* Estilos de herramientas de estudio (Tabs simplificados) */
-        .study-tab.active {
+        .ltab.active {
             color: var(--brand-teal);
-            border-bottom: 2px solid var(--brand-teal);
+            border-bottom-color: var(--brand-teal);
+        }
+        .ltab-panel {
+            @apply py-4;
         }
 
-        #pdf-modal-overlay { transition: opacity 0.3s ease-in-out; }
-        #pdf-modal-content { transition: all 0.3s ease-in-out; }
+        #pdf-modal-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #pdf-modal-content {
+            transition: all 0.3s ease-in-out;
+        }
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
         details[open] summary .arrow-down { transform: rotate(180deg); }
         .arrow-down { transition: transform 0.2s ease-in-out; }
-        .accordion-content { display: none; }
-        .accordion-content.open { display: block; }
+        .accordion-content {
+            display: none;
+        }
+        .accordion-content.open {
+            display: block;
+        }
 
+        /* --- NUEVAS OPTIMIZACIONES DASHBOARD PROFESIONAL (DESKTOP) --- */
         @media (min-width: 1024px) {
+            /* Sidebar Refactor */
             #course-sidebar {
                 width: 280px !important;
                 flex-basis: 280px !important;
@@ -64,34 +77,75 @@
                 opacity: 0;
                 pointer-events: none;
             }
-            #course-title { font-size: 1.25rem !important; }
-            #lesson-title { font-size: 1.6rem !important; line-height: 1.2; }
+            
+            /* Font Scaling (Factor 0.85) */
+            #course-title { font-size: 1.25rem !important; } /* Aprox 0.85 de 2xl */
+            #lesson-title { font-size: 1.6rem !important; line-height: 1.2; } /* Aprox 0.85 de 3xl */
             .accordion-header span { font-size: 0.85rem !important; }
-            .lesson-item span { font-size: 0.78rem !important; line-height: 1.3; }
-            .lesson-item i { width: 1.1rem; height: 1.1rem; }
+            .lesson-item span { font-size: 0.78rem !important; line-height: 1.3; } /* Ajuste para evitar que se corte */
+            .lesson-item i { width: 1.1rem; height: 1.1rem; } /* Escala de iconos */
+            
+            /* Densidad de Información */
             .lesson-item a { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; }
             .accordion-header { padding: 0.6rem 0.75rem !important; }
-            .content-max-container { max-width: 1200px; margin: 0 auto; width: 100%; }
+            
+            /* Layout & Spacing */
+            #lesson-content {
+                gap: 32px;
+                display: flex;
+                flex-direction: column;
+            }
+            .content-max-container {
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+            }
+
+            /* Toggle Button Styling */
+            #sidebar-toggle-desktop {
+                display: flex !important;
+            }
         }
 
+        #sidebar-toggle-desktop {
+            display: none;
+        }
+
+        /* AJUSTES DE REPRODUCTOR DE VIDEO OPTIMIZADOS */
         .video-wrapper-optimized {
-            width: 100%;
+            width: fit-content; /* Se ajusta al ancho real del video */
             max-width: 1200px;
-            max-height: 65vh;
-            margin: 0 auto;
+            max-height: 65vh; /* Restricción crítica de altura */
+            margin: 0 auto; /* Centrado horizontal */
             overflow: hidden;
-            background-color: #000; 
+            background-color: #000; /* Fondo para evitar saltos visuales */
             border-radius: 0.75rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             border: 1px solid #e2e8f0;
             display: flex;
             align-items: center;
             justify-content: center;
-            aspect-ratio: 16 / 9;
+            min-height: 300px; /* Asegura un área mínima visible */
         }
 
-        #course-video { width: 100%; height: 100%; max-height: 65vh; object-fit: contain; display: block; }
-        video::cue { background-color: rgba(0, 0, 0, 0.7); color: #ffffff; font-size: 1.25rem; }
+        #course-video {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 65vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Estilo estético para subtítulos */
+        video::cue {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            font-size: 1.25rem; /* Aumentado en 50% para mejor legibilidad */
+            font-family: 'Poppins', sans-serif;
+        }
+        /* --- FIN OPTIMIZACIONES --- */
     </style>
 </head>
 <body class="text-gray-800">
@@ -100,19 +154,28 @@
         <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
             <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
                 <div class="flex items-center gap-4">
+                    <!-- Botón Toggle Sidebar (Desktop) -->
                     <button id="sidebar-toggle-desktop" class="p-2 hover:bg-slate-100 rounded-lg text-gray-500 transition-colors" title="Alternar menú">
                         <i data-lucide="panel-left-close" class="h-5 w-5" id="toggle-icon"></i>
                     </button>
-                    <a href="index.html" class="flex items-center">
+                    <a href="index.html" class="flex items-center" aria-label="Página de inicio de Aula GenIA">
                         <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo de Aula GenIA" class="h-16 w-auto">
                     </a>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-4">
-                    <a href="quienes-somos.html" class="text-gray-700 font-semibold border-2 border-gray-300 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-gray-100 transition-colors duration-300 hidden md:flex items-center">Quiénes Somos</a>
-                    <a href="cursos.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">Ver Cursos</a>
+                    <a href="quienes-somos.html" class="text-gray-700 font-semibold border-2 border-gray-300 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-gray-100 hover:border-gray-400 transition-colors duration-300 hidden md:flex items-center">
+                        Quiénes Somos
+                    </a>
+                    <a href="cursos.html" class="text-teal-600 font-semibold border-2 border-teal-500 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-teal-500 hover:text-white transition-colors duration-300 flex items-center">
+                        Ver Cursos
+                    </a>
                     <div id="user-profile-container" class="hidden items-center gap-3 relative">
                         <span class="font-semibold text-gray-700 hidden sm:block" id="user-name"></span>
-                        <button id="avatar-button"><img id="user-avatar" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer" /></button>
+                        <div class="relative group">
+                            <button id="avatar-button" aria-label="Abrir menú de perfil">
+                                <img id="user-avatar" alt="Avatar del usuario" class="w-10 h-10 rounded-full border-2 border-teal-500 cursor-pointer group-hover:opacity-90 transition-opacity" />
+                            </button>
+                        </div>
                         <button id="logout-button" class="text-sm text-gray-500 hover:text-red-600 font-medium transition-colors">Cerrar sesión</button>
                     </div>
                 </div>
@@ -133,130 +196,123 @@
                 <nav id="modules-container" class="space-y-1 px-2 pb-6"></nav>
             </aside>
 
-            <!-- Área de Contenido Optimizada -->
-            <section id="lesson-content-area" class="flex-1 overflow-y-auto p-4 lg:p-8">
-                <div class="content-max-container flex flex-col gap-8">
+            <!-- Área de Contenido -->
+            <section id="lesson-content" class="flex-1 overflow-y-auto lg:p-8">
+                <div class="content-max-container p-6 md:p-0">
+                    <h2 id="lesson-title" class="text-2xl font-bold text-gray-900 mb-2 break-words">Cargando...</h2>
                     
-                    <!-- Encabezado de Lección -->
-                    <header>
-                        <h2 id="lesson-title" class="text-2xl font-bold text-gray-900 break-words">Cargando...</h2>
-                        <div id="module-path" class="text-xs font-medium text-slate-500 uppercase tracking-widest mt-1">Módulo 1 / Lección 1</div>
-                    </header>
+                    <div id="learning-tabs" class="mt-6">
+                        <div class="border-b border-slate-200 mb-4">
+                            <nav class="-mb-px flex gap-6 text-sm font-medium overflow-x-auto">
+                                <button class="ltab active px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-material">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="book-open" class="h-4 w-4"></i>Material</span>
+                                </button>
+                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-notes">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="notebook-pen" class="h-4 w-4"></i>Notas</span>
+                                </button>
+                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-tasks">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="check-square" class="h-4 w-4"></i>Tareas</span>
+                                </button>
+                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-support">
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="message-square-heart" class="h-4 w-4"></i>Soporte y Tutoría</span>
+                                </button>
+                            </nav>
+                        </div>
 
-                    <!-- Escenario Principal (Video o Quiz siempre visible) -->
-                    <div id="main-stage">
-                        <div id="lesson-material-container">
-                            <!-- Aquí se inyecta el video o el quiz directamente -->
+                        <div id="tab-material" class="ltab-panel">
+                             <div id="lesson-material-container" class="mb-6 flex flex-col gap-6">
+                                 <!-- Aquí se inyecta el video y los archivos debajo -->
+                             </div>
+                        </div>
+
+                        <div id="tab-notes" class="ltab-panel hidden">
+                            <div class="grid gap-3">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-gray-900">Tus notas de esta lección</h3>
+                                    <span id="notes-save-status" class="text-xs text-slate-500 transition-opacity">Sin cambios</span>
+                                </div>
+                                <textarea id="notes-textarea" class="w-full min-h-[160px] rounded-lg border border-slate-300 p-3 focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Escribe aquí tus ideas, resúmenes o preguntas..."></textarea>
+                                <div class="flex gap-3 text-xs text-slate-500">
+                                    <span class="inline-flex items-center gap-1"><i data-lucide="cloud" class="h-4 w-4"></i>Guardado automático</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-tasks" class="ltab-panel hidden">
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-semibold text-gray-900">Checklist de práctica</h3>
+                                <div class="flex gap-2">
+                                    <input id="task-input" type="text" class="flex-1 rounded-lg border border-slate-300 p-2 focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Ej: Probar un prompt en Gemini..." />
+                                    <button id="add-task-btn" class="px-3 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900">Agregar</button>
+                                </div>
+                                <ul id="task-list" class="space-y-2"></ul>
+                            </div>
+                        </div>
+
+                        <div id="tab-support" class="ltab-panel hidden">
+                            <div class="bg-white p-6 rounded-lg border border-slate-200">
+                                <h3 class="text-xl font-bold text-gray-900">Habla con tu Tutor</h3>
+                                <form id="support-form" class="space-y-4 mt-4">
+                                    <input type="text" id="support-subject" name="subject" class="w-full rounded-md border-gray-300" placeholder="Asunto" required>
+                                    <textarea id="support-message" name="message" rows="5" class="w-full rounded-md border-gray-300" placeholder="Tu mensaje..." required></textarea>
+                                    <div class="flex justify-end">
+                                        <button type="submit" id="support-submit-btn" class="bg-teal-500 text-white px-6 py-2 rounded-lg font-bold">Enviar Consulta</button>
+                                    </div>
+                                </form>
+                                <div id="support-form-status" class="mt-4 text-center"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Grid de soporte y herramientas -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        
-                        <!-- Columna Izquierda: Recursos y Navegación -->
-                        <div class="lg:col-span-2 space-y-8">
-                            <!-- Recursos de la Lección -->
-                            <section id="lesson-resources-block" class="bg-white p-6 rounded-xl border border-slate-200">
-                                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                    <i data-lucide="folder-open" class="h-4 w-4 text-teal-500"></i> Material Descargable
-                                </h3>
-                                <div id="resources-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <!-- Aquí se inyectan los recursos -->
-                                </div>
-                            </section>
-
-                            <!-- Navegación -->
-                            <div id="navigation-buttons" class="pt-6 border-t border-slate-200 flex justify-between items-center">
-                                <button id="prev-lesson-btn" class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50 transition-all">Anterior</button>
-                                <button id="main-action-btn" class="px-8 py-3 text-sm font-bold text-white bg-teal-500 rounded-lg shadow-lg hover:bg-teal-600 focus:ring-2 focus:ring-teal-500 disabled:opacity-50 transition-all">Marcar como completada</button>
-                            </div>
-                        </div>
-
-                        <!-- Columna Derecha: Herramientas de Estudio -->
-                        <div class="lg:col-span-1 space-y-6">
-                            <div class="bg-white rounded-xl border border-slate-200 shadow-sm sticky top-4">
-                                <div class="flex border-b border-slate-100">
-                                    <button class="study-tab active flex-1 py-3 text-xs font-bold uppercase tracking-wider text-center" data-tab="tab-notes">Mis Notas</button>
-                                    <button class="study-tab flex-1 py-3 text-xs font-bold uppercase tracking-wider text-center" data-tab="tab-tasks">Mis Tareas</button>
-                                </div>
-                                
-                                <div class="p-5">
-                                    <!-- Notas -->
-                                    <div id="tab-notes" class="tool-panel space-y-3">
-                                        <textarea id="notes-textarea" class="w-full h-40 text-sm border-none focus:ring-0 p-0 resize-none" placeholder="Tus ideas clave de esta clase..."></textarea>
-                                        <div class="flex justify-between items-center text-[10px] text-slate-400 pt-3 border-t">
-                                            <span id="notes-save-status">Sin cambios</span>
-                                            <span class="flex items-center gap-1"><i data-lucide="cloud-off" class="h-3 w-3"></i> Guardado Auto</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Tareas -->
-                                    <div id="tab-tasks" class="tool-panel hidden space-y-4">
-                                        <div class="flex gap-2">
-                                            <input id="task-input" type="text" class="flex-1 text-xs border-slate-200 rounded-lg" placeholder="Nueva tarea...">
-                                            <button id="add-task-btn" class="bg-slate-800 text-white p-2 rounded-lg"><i data-lucide="plus" class="h-4 w-4"></i></button>
-                                        </div>
-                                        <ul id="task-list" class="space-y-2 max-h-48 overflow-y-auto pr-2"></ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Bloque Soporte Discreto -->
-                            <div class="p-5 bg-teal-50 rounded-xl border border-teal-100">
-                                <h4 class="text-xs font-bold text-teal-700 uppercase mb-2">¿Necesitas ayuda?</h4>
-                                <p class="text-[11px] text-teal-600 mb-3">Si tienes dudas sobre el contenido, contacta a tu tutor.</p>
-                                <button id="open-support-trigger" class="w-full py-2 bg-white text-teal-600 text-xs font-bold rounded-lg border border-teal-200 hover:bg-teal-500 hover:text-white transition-all">Enviar Mensaje</button>
-                            </div>
-                        </div>
+                    <div id="navigation-buttons" class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
+                        <button id="prev-lesson-btn" class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 disabled:opacity-50">Lección Anterior</button>
+                        <button id="main-action-btn" class="px-6 py-3 text-sm font-semibold text-white bg-teal-500 rounded-lg shadow-sm hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50">Marcar como completada</button>
                     </div>
                 </div>
             </section>
         </main>
         
         <footer class="bg-gray-100 border-t border-gray-200 mt-auto">
-            <div class="container mx-auto px-6 py-6 text-center text-gray-600">
-                <p class="text-xs">&copy; 2024 Aula GenIA - Todos los derechos reservados.</p>
+            <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+                <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="Logo" class="h-12 w-auto mx-auto mb-4">
+                <p class="text-sm">&copy; 2024 Aula GenIA - Todos los derechos reservados.</p>
             </div>
         </footer>
     </div>
 
-    <!-- Modales permanecen iguales para no romper funcionalidad -->
+    <!-- Modales -->
     <div id="profile-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40"></div>
     <div id="profile-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col transform transition-all scale-95 opacity-0">
-            <div class="p-6">
-                <div class="flex justify-between items-start">
-                    <h3 class="text-2xl font-bold">Editar Perfil</h3>
-                    <button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button>
-                </div>
-                <form id="profile-form" class="space-y-3 mt-4">
-                    <input type="text" id="profile-name-input" class="w-full rounded-md border-gray-300" placeholder="Nombre completo">
-                    <input type="text" id="profile-rut-input" class="w-full rounded-md border-gray-300" placeholder="RUT (Chile)">
-                    <select id="profile-country-select" class="w-full rounded-md border-gray-300">
-                        <option value="">País</option>
-                        <option value="CL">Chile</option>
-                        <option value="OT">Otro</option>
-                    </select>
-                    <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 bg-gray-100" disabled>
-                    <button type="submit" id="save-profile-btn" class="w-full bg-teal-500 text-white py-2 rounded-lg font-bold">Guardar Cambios</button>
+            <div class="p-6 flex-shrink-0 border-b flex justify-between items-center">
+                <h3 class="text-2xl font-bold">Perfil</h3>
+                <button id="close-profile-modal-btn" class="text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+            <div class="p-6 flex-grow overflow-y-auto">
+                <form id="profile-form" class="space-y-4">
+                    <input type="text" id="profile-name-input" class="w-full rounded-md border-gray-300 shadow-sm" placeholder="Nombre completo">
+                    <input type="text" id="profile-rut-input" class="w-full rounded-md border-gray-300 shadow-sm" placeholder="RUT">
+                    <select id="profile-country-select" class="w-full rounded-md border-gray-300 shadow-sm"><option value="">País...</option><option value="CL">Chile</option><option value="OT">Otro</option></select>
+                    <input type="email" id="profile-email-input" class="w-full rounded-md border-gray-300 shadow-sm bg-gray-100" disabled>
                 </form>
+            </div>
+            <div class="p-6 pt-4 flex-shrink-0 border-t flex justify-end gap-3">
+                <button type="button" id="cancel-profile-btn" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg">Cancelar</button>
+                <button type="submit" form="profile-form" id="save-profile-btn" class="bg-teal-500 text-white py-2 px-4 rounded-lg">Guardar</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Soporte (Anterior pestaña ahora como modal) -->
-    <div id="support-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-lg w-full p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Habla con tu Tutor</h3>
-                <button onclick="document.getElementById('support-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">&times;</button>
+    <div id="pdf-modal-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-40 opacity-0"></div>
+    <div id="pdf-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
+        <div id="pdf-modal-content" class="bg-white rounded-lg shadow-2xl w-full max-w-4xl h-full max-h-[90vh] flex flex-col transform transition-all scale-95 opacity-0">
+            <header class="flex items-center justify-between p-4 border-b">
+                <h3 id="pdf-modal-title" class="text-lg font-semibold text-gray-800">Visor de Documentos</h3>
+                <button id="pdf-modal-close-btn"><i data-lucide="x" class="h-6 w-6"></i></button>
+            </header>
+            <div class="flex-grow p-2 bg-gray-200">
+                <iframe id="pdf-iframe" class="w-full h-full border-0" src=""></iframe>
             </div>
-            <form id="support-form" class="space-y-4">
-                <input type="text" name="subject" class="w-full border-slate-200 rounded-lg" placeholder="Asunto" required>
-                <textarea name="message" class="w-full border-slate-200 rounded-lg h-32" placeholder="Describe tu duda aquí..." required></textarea>
-                <button type="submit" id="support-submit-btn" class="w-full py-3 bg-teal-500 text-white font-bold rounded-lg">Enviar Consulta</button>
-                <div id="support-form-status"></div>
-            </form>
         </div>
     </div>
 
@@ -280,16 +336,14 @@
             };
             
             try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
-
             const auth = firebase.auth();
             const db = firebase.firestore();
             const storage = firebase.storage();
             
             const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
             const urlParams = new URLSearchParams(window.location.search);
-            const courseId = urlParams.get('course');
+            const courseId = urlParams.get('course') || 'ia-aplicada-esencial';
 
-            // --- DATA 100% PRESERVADA ---
             const ALL_COURSES_DATA = {
               'ia-aplicada-esencial': {
                 title: 'IA Aplicada · Esencial',
@@ -324,7 +378,7 @@
                             options: [
                                 'Son tres tecnologías completamente separadas.', 
                                 'Son como muñecas rusas: la IA es la más grande, contiene al AA y este a su vez al AP.', 
-                                'Son pasos de un proceso: se empieza con AP, luego AA and finalmente IA.', 
+                                'Son pasos de un proceso: se empieza con AP, luego AA y finalmente IA.', 
                                 'La IA es una parte del AA, y el AA es una parte del AP.'
                             ], 
                             correctAnswer: 1
@@ -336,6 +390,36 @@
                                 'Que es falso; la IA automatiza tareas pero también crea nuevas oportunidades laborales.',
                                 'Que solo reemplazará los trabajos creativos, no los técnicos.',
                                 'Que únicamente reemplazará trabajos en fábricas.'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: '¿Cuál es la recomendación más importante que da el video al recibir información de una IA como ChatGPT?',
+                            options: [
+                                'Confiar siempre en ella, porque la IA es un genio que nunca se equivoca.',
+                                'Usar la información solo si la IA cita sus fuentes.',
+                                'Siempre revisar la información y contrastarla con tu propio conocimiento, ya que puede equivocarse o inventar cosas.',
+                                'Copiar y pegar la información directamente sin leerla.'
+                            ],
+                            correctAnswer: 2
+                          },
+                          {
+                            text: '¿Cuál de los siguientes NO es uno de los tres factores clave que el video menciona como impulsores del auge reciente de la IA?',
+                            options: [
+                                'La existencia de computadoras más potentes y rápidas.',
+                                'La creación de una IA con conciencia y sentimientos propios.',
+                                'La disponibilidad de enormes cantidades de información (datos).',
+                                'El desarrollo de mejores y más eficientes métodos de aprendizaje ("recetas").'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: 'El video explica que la IA aprende de dos formas principales. ¿Cuáles son?',
+                            options: [
+                                'Leyendo libros y viendo películas.',
+                                'Siguiendo instrucciones específicas que le damos y aprendiendo por sí misma mediante ensayo y error.',
+                                'Únicamente copiando lo que hacen otras inteligencias artificiales.',
+                                'Conectándose directamente a un cerebro humano.'
                             ],
                             correctAnswer: 1
                           }
@@ -357,6 +441,12 @@
                         resources: [] 
                       },
                       { 
+                        id: '2-taller', 
+                        title: 'Taller: Radar de Automatización', 
+                        type: 'taller', 
+                        resources: [] 
+                      },
+                      { 
                         id: 'q-2', 
                         title: 'Quiz: Módulo 2', 
                         type: 'quiz', 
@@ -370,6 +460,198 @@
                                     'Diseñar tu propio modelo de inteligencia artificial.'
                                 ], 
                                 correctAnswer: 2
+                            },
+                            {
+                                text: 'El video presenta el caso de María, la diseñadora. ¿Cómo le ayudó la IA a ser más productiva?',
+                                options: [
+                                    'Vendiendo automáticamente sus diseños en línea.',
+                                    'Aprendiendo a programar por ella.',
+                                    'Usando ChatGPT para correos, Midjourney para inspiración y traducción automática.',
+                                    'Creando una versión de su estudio en realidad virtual.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: '¿Qué herramienta de IA se recomienda en el video para usuarios que trabajan mucho con Google Workspace (Gmail, Drive)?',
+                                options: [
+                                    'ChatGPT',
+                                    'DeepSeek',
+                                    'Midjourney',
+                                    'Gemini'
+                                ],
+                                correctAnswer: 3
+                            },
+                            {
+                                text: 'El video menciona varios ejemplos de cómo la IA ya es parte de nuestras vidas. ¿Cuál de los siguientes es un ejemplo del módulo?',
+                                options: [
+                                    'Robots que cocinan la cena por nosotros.',
+                                    'IA que predice los números de la lotería.',
+                                    'Recomendaciones personalizadas en servicios como Netflix y Spotify.',
+                                    'Autos que pueden volar en el tráfico.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'El video menciona tres "puntos de atasco" comunes donde la IA puede ayudar. ¿Cuál de los siguientes es uno de ellos?',
+                                options: [
+                                    'Ejercicio físico y deportes.',
+                                    'Inversiones financieras.',
+                                    'Bloqueo Creativo.',
+                                    'Aprender a tocar un instrumento musical.'
+                                ],
+                                correctAnswer: 2
+                            }
+                        ], 
+                        resources: [] 
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 3: Preparando tus herramientas',
+                    badge: 'Creativo IA',
+                    lessons: [
+                      { 
+                        id: '3-1', 
+                        title: 'Prepara tus Asistentes de IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO3-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-3', 
+                        title: 'Quiz: Módulo 3', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: '¿Cuál es el objetivo principal del Módulo 3?', 
+                                options: [
+                                    'Comparar los precios de las versiones de pago de las herramientas de IA.', 
+                                    'Aprender a programar una inteligencia artificial desde cero.', 
+                                    'Guiarte paso a paso para crear cuentas en ChatGPT, Gemini y DeepSeek.', 
+                                    'Analizar la historia y evolución de los modelos de lenguaje.'
+                                ], 
+                                correctAnswer: 2 
+                            },
+                            {
+                                text: '¿Qué herramienta de IA se destaca en el video por su capacidad de integrarse con tu Google Drive, Calendario y Gmail?',
+                                options: [
+                                    'ChatGPT',
+                                    'DeepSeek',
+                                    'Gemini',
+                                    'Todas las anteriores por igual.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Según el video, si necesitas entender un tema muy complejo y quieres que la IA te guíe "paso a paso", ¿cuál sería tu mejor opción?',
+                                options: [
+                                    'ChatGPT, porque es el más conversacional.',
+                                    'DeepSeek, porque es descrito como "tu experto para entender lo complejo".',
+                                    'Gemini, porque puede buscar en tus documentos personales.',
+                                    'Cualquiera de las tres, no hay diferencia.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: '¿Cuál es uno de los consejos clave que se da en el video para que la IA te entienda mejor?',
+                                options: [
+                                    'Usar solo frases cortas y simples.',
+                                    'Darle ejemplos del estilo o tono que quieres para que pueda imitarlo.',
+                                    'Escribir siempre en inglés para obtener mejores resultados.',
+                                    'Nunca guardar las conversaciones para no confundir a la IA.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: '¿Cuál es la dirección web correcta para crear una cuenta de ChatGPT, según se muestra en el tutorial del video?',
+                                options: [
+                                    'chatgpt.google.com',
+                                    'chat.openai.com',
+                                    'openai.com/chat',
+                                    'getchatgpt.com'
+                                ],
+                                correctAnswer: 1
+                            }
+                        ], 
+                        resources: [] 
+                      }
+                    ]
+                  },
+                  {
+                    title: 'Módulo 4: El Arte de las Instrucciones',
+                    badge: 'Maestro de Prompts',
+                    lessons: [
+                      { 
+                        id: '4-1', 
+                        title: 'El Arte de las Instrucciones', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: '4-2', 
+                        title: 'Taller Práctico: Tu Plantilla para la IA', 
+                        type: 'video', 
+                        videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO3-IA-Aplicada-Programa-Esencial.mp4',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO4-VIDEO4-IA-Aplicada-Programa-Esencial-caption.srt',
+                        resources: [] 
+                      },
+                      { 
+                        id: 'q-4', 
+                        title: 'Quiz: Módulo 4', 
+                        type: 'quiz', 
+                        questions: [
+                            { 
+                                text: '¿Cuál es el principal beneficio de usar la IA para automatizar tareas repetitivas?', 
+                                options: [
+                                    'Hacer que las tareas sean más difíciles.', 
+                                    'Liberar tiempo para enfocarse en actividades más importantes.', 
+                                    'Aumentar la cantidad de correos que envías.', 
+                                    'Comprar cosas por internet automáticamente.'
+                                ], 
+                                correctAnswer: 1 
+                            },
+                            {
+                                text: 'De las siguientes tareas, ¿cuál es un ejemplo perfecto para ser automatizado por la IA en un trabajo?',
+                                options: [
+                                    'Tener una conversación importante con tu jefe.',
+                                    'Responder las mismas preguntas de clientes una y otra vez.',
+                                    'Crear una nueva estrategia de negocio desde cero.',
+                                    'Tomar un café con tus compañeros.'
+                                ],
+                                correctAnswer: 1
+                            },
+                            {
+                                text: 'El objetivo de la automatización con IA es...',
+                                options: [
+                                    'Reemplazar completamente a los humanos en todos los trabajos.',
+                                    'Que las computadoras tomen todas las decisiones por nosotros.',
+                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.',
+                                    'Ayudarnos a ser más eficientes y creativos en nuestro trabajo.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Al automatizar una tarea, ¿qué es lo primero que deberías identificar?',
+                                options: [
+                                    'Una tarea que te guste mucho hacer.',
+                                    'Una tarea creativa que requiera mucha inspiración.',
+                                    'Una tarea manual, repetitiva y que te quite tiempo.',
+                                    'Una tarea que solo se hace una vez al año.'
+                                ],
+                                correctAnswer: 2
+                            },
+                            {
+                                text: 'Si una empresa automatiza la respuesta a preguntas frecuentes, ¿qué beneficio obtiene el equipo humano?',
+                                options: [
+                                    'Tienen menos trabajo que hacer en general.',
+                                    'Pueden dedicarse a resolver problemas más complejos de los clientes.',
+                                    'Ya no necesitan hablar con los clientes.',
+                                    'Deben revisar cada respuesta automática antes de que se envíe.'
+                                ],
+                                correctAnswer: 1
                             }
                         ], 
                         resources: [] 
@@ -383,260 +665,181 @@
             const courseData = ALL_COURSES_DATA[courseId];
             const allLessons = courseData.modules.flatMap(m => m.lessons);
             let currentUser = null;
-            let userProgress = { completedLessons: [], currentLessonId: allLessons.length > 0 ? allLessons[0].id : null, unlockedBadges: [] };
-            let notesSaveTimer = null;
+            let userProgress = { completedLessons: [], currentLessonId: allLessons[0].id };
             let currentLessonVideo = null;
 
             const dom = {
-                userName: document.getElementById('user-name'),
-                userAvatar: document.getElementById('user-avatar'),
-                userProfile: document.getElementById('user-profile-container'),
-                logoutButton: document.getElementById('logout-button'),
                 courseTitle: document.getElementById('course-title'),
                 progressBar: document.getElementById('progress-bar'),
                 progressText: document.getElementById('progress-text'),
                 modulesContainer: document.getElementById('modules-container'),
                 lessonTitle: document.getElementById('lesson-title'),
                 lessonMaterialContainer: document.getElementById('lesson-material-container'),
-                resourcesContainer: document.getElementById('resources-list-container'),
-                prevBtn: document.getElementById('prev-lesson-btn'),
                 mainActionBtn: document.getElementById('main-action-btn'),
+                prevBtn: document.getElementById('prev-lesson-btn'),
                 toast: document.getElementById('toast-notification'),
                 toastMessage: document.getElementById('toast-message'),
-                notesTextarea: document.getElementById('notes-textarea'),
-                notesSaveStatus: document.getElementById('notes-save-status'),
-                taskInput: document.getElementById('task-input'),
-                addTaskBtn: document.getElementById('add-task-btn'),
-                taskList: document.getElementById('task-list'),
                 sidebar: document.getElementById('course-sidebar'),
                 sidebarToggle: document.getElementById('sidebar-toggle-desktop')
             };
 
-            // --- LOGICA UI REFACTORIZADA ---
+            // Toggle Sidebar
+            if (dom.sidebarToggle) {
+                dom.sidebarToggle.addEventListener('click', () => {
+                    dom.sidebar.classList.toggle('collapsed');
+                    const icon = document.getElementById('toggle-icon');
+                    icon.setAttribute('data-lucide', dom.sidebar.classList.contains('collapsed') ? 'panel-left-open' : 'panel-left-close');
+                    lucide.createIcons();
+                });
+            }
 
+            function getIsCourseComplete() { return (new Set(userProgress.completedLessons)).size >= allLessons.length; }
+
+            function getLessonInfo(lessonId) { 
+                for (let i = 0; i < courseData.modules.length; i++) { 
+                    const m = courseData.modules[i];
+                    const l = m.lessons.find(ls => ls.id === lessonId);
+                    if (l) return { lesson: l, moduleIndex: i, module: m };
+                }
+                return null;
+            }
+            
             function refreshUI() { 
-                if (!userProgress.currentLessonId && allLessons.length > 0) userProgress.currentLessonId = allLessons[0].id;
                 dom.courseTitle.textContent = courseData.title; 
                 renderSidebar(); 
-                const lessonInfo = getLessonInfo(userProgress.currentLessonId); 
-                if (lessonInfo) { 
-                    dom.lessonTitle.textContent = lessonInfo.lesson.title; 
-                    document.getElementById('module-path').textContent = `${lessonInfo.module.title} / Lección ${lessonInfo.lesson.id}`;
-                    renderLessonContent(lessonInfo.lesson); 
-                    if (dom.prevBtn) dom.prevBtn.disabled = allLessons.findIndex(l => l.id === lessonInfo.lesson.id) === 0; 
+                const info = getLessonInfo(userProgress.currentLessonId); 
+                if (info) { 
+                    dom.lessonTitle.textContent = info.lesson.title; 
+                    renderLessonContent(info.lesson); 
+                    dom.prevBtn.disabled = allLessons.findIndex(l => l.id === info.lesson.id) === 0; 
                 } 
                 updateOverallProgress(); 
                 updateMainActionButton(); 
                 lucide.createIcons();
             }
 
-            async function renderLessonContent(lesson) {
-                if (currentLessonVideo) { currentLessonVideo.pause(); currentLessonVideo = null; }
-                
-                // 1. Limpiar contenedores
-                dom.lessonMaterialContainer.innerHTML = '';
-                dom.resourcesContainer.innerHTML = '';
-
-                // 2. Inyectar escenario principal
-                if (lesson.type === 'video') {
-                    dom.lessonMaterialContainer.innerHTML = `
-                        <div class="video-wrapper-optimized">
-                            <video id="course-video" controls playsinline>
-                                <source id="course-video-source" src="" type="video/mp4">
-                                ${lesson.transcriptionUrl ? `<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>` : ''}
-                            </video>
-                        </div>`;
-                    
-                    const videoEl = document.getElementById('course-video');
-                    currentLessonVideo = videoEl;
-                    await attachMediaAndCaptions({
-                        storage, videoEl,
-                        videoSrc: lesson.videoUrl,
-                        srtOrVttSrc: lesson.transcriptionUrl
-                    });
-                } else if (lesson.type === 'quiz') {
-                    // Reutilizamos la lógica de quiz original, inyectada en el escenario principal
-                    renderQuiz(lesson);
-                }
-
-                // 3. Inyectar Recursos de forma contextual (sin pestañas)
-                if (lesson.resources && lesson.resources.length > 0) {
-                    const resItems = await Promise.all(lesson.resources.map(async (res) => {
-                        let resolvedUrl = res.url;
-                        if (res.url.startsWith('gs://')) {
-                            try { resolvedUrl = await resolveStorageDownloadURL(storage, res.url); } catch(e) {}
-                        }
-                        const icon = res.external ? 'link' : 'download-cloud';
-                        return `<a href="${resolvedUrl}" target="_blank" class="flex items-center p-3 bg-slate-50 border border-slate-200 rounded-lg hover:bg-white hover:border-teal-500 transition-all group">
-                            <i data-lucide="${icon}" class="h-4 w-4 text-teal-500 mr-3"></i>
-                            <span class="text-xs font-semibold text-slate-700 truncate flex-1">${res.name}</span>
-                        </a>`;
-                    }));
-                    dom.resourcesContainer.innerHTML = resItems.join('');
-                    lucide.createIcons();
-                } else {
-                    dom.resourcesContainer.innerHTML = '<p class="text-[11px] text-slate-400 italic">No hay material adicional para esta lección.</p>';
-                }
-            }
-
-            function renderQuiz(lesson) {
-                const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
-                let quizHtml = lesson.questions.map((question, qIndex) => {
-                    const optionsHtml = question.options.map((opt, index) => {
-                        return `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${index}" data-question-id="q-${qIndex}">${opt}</div>`;
-                    }).join('');
-                    return `<div class="space-y-4 mb-8 bg-white p-6 rounded-xl border border-slate-200" id="q-${qIndex}"><h3 class="text-lg font-semibold">${qIndex + 1}. ${question.text}</h3><div class="space-y-3">${optionsHtml}</div></div>`;
-                }).join('');
-                dom.lessonMaterialContainer.innerHTML = `<div id="quiz-container" class="max-w-3xl mx-auto">${quizHtml}<button id="check-quiz-btn" class="w-full bg-slate-800 text-white font-bold py-4 rounded-xl hover:bg-slate-900 transition-all">Verificar Evaluación</button></div>`;
-                
-                // Listeners de Quiz (Misma lógica original)
-                dom.lessonMaterialContainer.querySelectorAll('.quiz-option').forEach(opt => {
-                    opt.addEventListener('click', () => {
-                        const qId = opt.dataset.questionId;
-                        dom.lessonMaterialContainer.querySelectorAll(`.quiz-option[data-question-id="${qId}"]`).forEach(o => o.classList.remove('selected'));
-                        opt.classList.add('selected');
-                    });
-                });
-                document.getElementById('check-quiz-btn').addEventListener('click', () => checkQuizAnswers(lesson));
-            }
-
-            // --- HERRAMIENTAS DE ESTUDIO ---
-            document.querySelectorAll('.study-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.study-tab').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tool-panel').forEach(p => p.classList.add('hidden'));
-                    tab.classList.add('active');
-                    document.getElementById(tab.dataset.tab).classList.remove('hidden');
-                });
-            });
-
-            document.getElementById('open-support-trigger').addEventListener('click', () => {
-                document.getElementById('support-modal').classList.remove('hidden');
-            });
-
-            // --- LOGICA ORIGINAL PRESERVADA ---
-            function getLessonInfo(lessonId) { for (let i = 0; i < courseData.modules.length; i++) { const module = courseData.modules[i]; const lessonIndex = module.lessons.findIndex(l => l.id === lessonId); if (lessonIndex !== -1) { return { lesson: module.lessons[lessonIndex], moduleIndex: i, module: module }; } } return null; }
-            
             function renderSidebar() {
-                dom.modulesContainer.innerHTML = courseData.modules.map((module, moduleIndex) => {
+                dom.modulesContainer.innerHTML = courseData.modules.map((module, mIdx) => {
                     const lessonsHtml = module.lessons.map(lesson => {
                         const isCompleted = userProgress.completedLessons.includes(lesson.id);
                         const isActive = userProgress.currentLessonId === lesson.id;
+                        let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'video' ? 'play' : 'edit-3');
+                        let iconColor = isCompleted ? 'text-green-500' : (lesson.type === 'video' ? 'text-teal-500' : 'text-amber-500');
                         let linkClasses = isActive ? 'bg-teal-50 text-teal-700 font-semibold' : 'text-gray-600 hover:bg-slate-50';
-                        let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'edit-3' : 'play');
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${isCompleted ? 'text-green-500' : 'text-teal-500'}"></i><span class="flex-1 text-[11px] leading-tight">${lesson.title}</span></a></li>`;
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${iconColor}"></i><span class="flex-1 text-[11px] leading-tight">${lesson.title}</span></a></li>`;
                     }).join('');
-                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide text-gray-800">${module.title}</span><i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i></button><div class="accordion-content open"><ul class="py-1 space-y-0.5">${lessonsHtml}</ul></div></div>`;
+                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide">${module.title}</span><i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i></button><div class="accordion-content open"><ul class="py-1 space-y-0.5">${lessonsHtml}</ul></div></div>`;
                 }).join('');
                 addSidebarListeners();
             }
-
-            function addSidebarListeners() {
-                dom.modulesContainer.querySelectorAll('.lesson-item a').forEach(link => {
-                    link.addEventListener('click', e => {
-                        e.preventDefault();
-                        const li = e.currentTarget.closest('.lesson-item');
-                        navigateToLesson(li.dataset.lessonId);
-                    });
-                });
-            }
-
-            async function navigateToLesson(lessonId) {
-                userProgress = { ...userProgress, currentLessonId: lessonId };
-                await saveProgress();
-                refreshUI();
-                loadLessonTabData();
-            }
-
-            async function saveProgress() { if (!currentUser) return; await db.collection('userProgress').doc(currentUser.uid).set({ [courseId]: userProgress }, { merge: true }); }
-            function updateOverallProgress() { const uniqueCompleted = new Set(userProgress.completedLessons); const percentage = allLessons.length > 0 ? Math.round((uniqueCompleted.size / allLessons.length) * 100) : 0; dom.progressBar.style.width = `${percentage}%`; dom.progressText.textContent = `${percentage}%`; }
-            function updateMainActionButton() { const lesson = allLessons.find(l => l.id === userProgress.currentLessonId); if (userProgress.completedLessons.includes(lesson.id)) dom.mainActionBtn.classList.add('hidden'); else dom.mainActionBtn.classList.remove('hidden'); }
-
-            async function loadLessonTabData() {
-                if (!currentUser) return;
-                const lessonId = userProgress.currentLessonId;
-                // Cargar notas
-                const noteDoc = await db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${lessonId}`).get();
-                dom.notesTextarea.value = noteDoc.exists ? noteDoc.data().content : '';
-                // Cargar tareas
-                loadTasks(lessonId);
-            }
-
-            // --- FIREBASE ATTACH ---
-            async function resolveStorageDownloadURL(storage, url) { if (!url) return null; try { return await storage.refFromURL(url).getDownloadURL(); } catch (e) { return url.startsWith('http') ? url : null; } }
-            async function attachMediaAndCaptions({ storage, videoEl, videoSrc, srtOrVttSrc }) {
-                const resVideo = await resolveStorageDownloadURL(storage, videoSrc);
-                if (resVideo) videoEl.src = resVideo;
-                const trackEl = videoEl.querySelector('#caption-track');
-                if (trackEl && srtOrVttSrc) {
-                    const resTrack = await resolveStorageDownloadURL(storage, srtOrVttSrc);
-                    trackEl.src = resTrack;
-                    trackEl.default = true;
+            
+            async function renderLessonContent(lesson) {
+                // Estado de carga inicial para evitar saltos
+                dom.lessonMaterialContainer.innerHTML = '<div class="text-center py-20"><div class="animate-spin inline-block w-8 h-8 border-4 border-teal-500 border-t-transparent rounded-full mb-4"></div><p class="text-slate-500">Cargando material...</p></div>';
+                
+                let resourcesHtml = '';
+                if (lesson.resources && lesson.resources.length > 0) {
+                    const resItems = await Promise.all(lesson.resources.map(async (res) => {
+                        let url = res.url;
+                        if (url.startsWith('gs://')) { try { url = await resolveStorageDownloadURL(storage, url); } catch(e) {} }
+                        const isPdf = !res.external && url && url.toLowerCase().includes('.pdf');
+                        const actionAttr = isPdf ? `data-pdf-url="${url}" data-pdf-title="${res.name}"` : `href="${url}"`;
+                        const tagName = isPdf ? 'button' : 'a';
+                        return `<${tagName} ${actionAttr} ${res.external ? 'target="_blank" rel="noopener"' : (isPdf ? '' : 'download')} class="resource-item flex items-center p-4 bg-white border border-slate-200 rounded-xl hover:border-teal-500 hover:shadow-sm transition-all duration-300 group text-left">
+                            <i data-lucide="${isPdf ? 'file-text' : (res.external ? 'link' : 'download-cloud')}" class="h-5 w-5 text-teal-500 mr-4"></i>
+                            <span class="flex-1 font-semibold text-slate-700 group-hover:text-teal-600 text-xs">${res.name}</span>
+                        </${tagName}>`;
+                    }));
+                    resourcesHtml = `<div class="mt-8 pt-8 border-t border-slate-200"><h4 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2"><i data-lucide="package-plus" class="h-4 w-4 text-teal-600"></i>Material complementario</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-3">${resItems.join('')}</div></div>`;
                 }
-                videoEl.load();
+
+                if (lesson.type === 'video') {
+                    dom.lessonMaterialContainer.innerHTML = `<div class="flex flex-col gap-4">
+                        <div class="video-wrapper-optimized">
+                            <video id="course-video" controls class="w-full h-full">
+                                <source id="course-video-source" src="" type="video/mp4">
+                            </video>
+                        </div>
+                        ${resourcesHtml}
+                    </div>`;
+                    const videoEl = document.getElementById('course-video');
+                    if (videoEl) await attachMediaAndCaptions({ storage, videoEl, videoSrc: lesson.videoUrl, srtOrVttSrc: lesson.transcriptionUrl });
+                } else if (lesson.type === 'quiz') {
+                    dom.lessonMaterialContainer.innerHTML = `<div class="bg-white p-6 rounded-xl border border-slate-200"><h3 class="font-bold text-lg mb-4">${lesson.title}</h3><button id="check-quiz-btn" class="mt-6 bg-gray-800 text-white px-6 py-2 rounded-lg">Verificar Respuestas</button></div>${resourcesHtml}`;
+                } else {
+                    dom.lessonMaterialContainer.innerHTML = `<div class="bg-white p-6 rounded-xl border border-slate-200"><h3 class="font-bold text-lg mb-4">${lesson.title}</h3></div>${resourcesHtml}`;
+                }
+                lucide.createIcons();
             }
 
-            // Sidebar Toggle
-            dom.sidebarToggle.addEventListener('click', () => {
-                dom.sidebar.classList.toggle('collapsed');
-                lucide.createIcons();
-            });
+            async function resolveStorageDownloadURL(storage, url) {
+                if (!url || !url.startsWith('gs://')) return url;
+                try { return await storage.refFromURL(url).getDownloadURL(); } catch (e) { return null; }
+            }
 
-            // Auth State
-            auth.onAuthStateChanged(user => {
+            async function attachMediaAndCaptions({ storage, videoEl, videoSrc, srtOrVttSrc }) {
+                if (!videoEl) return;
+                const source = videoEl.querySelector('#course-video-source');
+                const resolvedVideo = await resolveStorageDownloadURL(storage, videoSrc);
+                if (resolvedVideo) { 
+                    source.src = resolvedVideo; 
+                    videoEl.load(); // Forzar carga del video tras setear src
+                }
+            }
+
+            function openPdfModal(url, title) {
+                document.getElementById('pdf-modal-title').textContent = title;
+                document.getElementById('pdf-iframe').src = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+                document.getElementById('pdf-modal').classList.remove('hidden');
+                document.getElementById('pdf-modal-overlay').classList.remove('hidden');
+                setTimeout(() => { document.getElementById('pdf-modal-overlay').classList.add('opacity-100'); document.getElementById('pdf-modal-content').classList.remove('scale-95', 'opacity-0'); }, 10);
+            }
+
+            function closePdfModal() {
+                document.getElementById('pdf-modal-overlay').classList.remove('opacity-100');
+                document.getElementById('pdf-modal-content').classList.add('scale-95', 'opacity-0');
+                setTimeout(() => { document.getElementById('pdf-modal').classList.add('hidden'); document.getElementById('pdf-modal-overlay').classList.add('hidden'); document.getElementById('pdf-iframe').src = ''; }, 300);
+            }
+            document.getElementById('pdf-modal-close-btn').addEventListener('click', closePdfModal);
+            
+            function updateMainActionButton() {
+                const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
+                const isCompleted = userProgress.completedLessons.includes(lesson.id);
+                dom.mainActionBtn.classList.toggle('hidden', isCompleted || lesson.type === 'quiz');
+            }
+
+            function updateOverallProgress() {
+                const perc = Math.round(((new Set(userProgress.completedLessons)).size / allLessons.length) * 100);
+                dom.progressBar.style.width = perc + '%';
+                dom.progressText.textContent = perc + '%';
+            }
+
+            async function navigateToLesson(lessonId) { userProgress.currentLessonId = lessonId; await saveProgress(); refreshUI(); }
+            async function saveProgress() { if (currentUser) await db.collection('userProgress').doc(currentUser.uid).set({ [courseId]: userProgress }, { merge: true }); }
+            function addSidebarListeners() { dom.modulesContainer.querySelectorAll('.lesson-item').forEach(li => { li.addEventListener('click', e => { e.preventDefault(); navigateToLesson(li.dataset.lessonId); }); }); }
+
+            auth.onAuthStateChanged(async user => {
                 if (user) {
                     currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
-                    dom.userName.textContent = currentUser.name;
-                    dom.userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${currentUser.name}&background=14b8a6&color=fff`;
-                    dom.userProfile.classList.remove('hidden');
-                    db.collection('userProgress').doc(user.uid).get().then(doc => {
-                        if (doc.exists && doc.data()[courseId]) userProgress = doc.data()[courseId];
-                        refreshUI();
-                        loadLessonTabData();
-                    });
-                } else { window.location.href = `${baseUrl}/acceso.html`; }
+                    document.getElementById('user-name').textContent = currentUser.name;
+                    const doc = await db.collection('userProgress').doc(user.uid).get();
+                    if (doc.exists && doc.data()[courseId]) userProgress = doc.data()[courseId];
+                    refreshUI();
+                } else { window.location.href = './acceso.html'; }
             });
 
-            // Tareas y Notas
-            dom.notesTextarea.addEventListener('input', () => {
-                clearTimeout(notesSaveTimer);
-                notesSaveTimer = setTimeout(async () => {
-                    dom.notesSaveStatus.textContent = 'Guardando...';
-                    await db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${userProgress.currentLessonId}`).set({ uid: currentUser.uid, content: dom.notesTextarea.value, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-                    dom.notesSaveStatus.textContent = 'Guardado';
-                }, 1000);
+            // Listener global para recursos
+            dom.lessonMaterialContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('.resource-item[data-pdf-url]');
+                if (button) openPdfModal(button.dataset.pdfUrl, button.dataset.pdfTitle);
             });
-
-            async function loadTasks(lessonId) {
-                dom.taskList.innerHTML = '';
-                const doc = await db.collection('userTasks').doc(`${currentUser.uid}_${courseId}_${lessonId}`).get();
-                if (doc.exists) (doc.data().items || []).forEach(t => renderTaskItem(t, db.collection('userTasks').doc(`${currentUser.uid}_${courseId}_${lessonId}`)));
-            }
-
-            function renderTaskItem(task, docRef) {
-                const li = document.createElement('li');
-                li.className = 'flex items-center gap-2 bg-slate-50 p-2 rounded text-[11px]';
-                li.innerHTML = `<input type="checkbox" ${task.done ? 'checked' : ''} class="h-3 w-3 text-teal-600 rounded"> <span class="${task.done ? 'line-through text-slate-400' : ''}">${task.text}</span>`;
-                dom.taskList.append(li);
-            }
-
-            dom.addTaskBtn.addEventListener('click', async () => {
-                const text = dom.taskInput.value.trim();
-                if (!text) return;
-                const docRef = db.collection('userTasks').doc(`${currentUser.uid}_${courseId}_${userProgress.currentLessonId}`);
-                await docRef.set({ items: firebase.firestore.FieldValue.arrayUnion({text, done: false}) }, { merge: true });
-                renderTaskItem({text, done: false}, docRef);
-                dom.taskInput.value = '';
-            });
-
-            dom.mainActionBtn.addEventListener('click', async () => {
-                userProgress.completedLessons.push(userProgress.currentLessonId);
-                await saveProgress();
-                refreshUI();
-            });
-
-            if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
         });
+
+        function showToast(message) {
+            document.getElementById('toast-message').textContent = message;
+            document.getElementById('toast-notification').classList.add('show');
+            setTimeout(() => document.getElementById('toast-notification').classList.remove('show'), 3000);
+        }
     </script>
 </body>
 </html>
