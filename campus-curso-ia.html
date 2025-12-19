@@ -6,7 +6,7 @@
   - FEAT: Sidebar colapsable (Toggle) para modo enfoque.
   - LAYOUT: Max-width en video (1200px) y espaciado optimizado (Gap 32px).
   - TYPO: Ajuste de jerarquía visual (Factor 0.85) en encabezados y menú.
-  - UX UPDATE: Consolidación de pestañas (Material + Recursos) y reubicación de subida de archivos.
+  - UX UPDATE: Pestaña "Materiales" consolidada y reubicación de subida de archivos.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -205,7 +205,7 @@
                         <div class="border-b border-slate-200 mb-4">
                             <nav class="-mb-px flex gap-6 text-sm font-medium overflow-x-auto">
                                 <button class="ltab active px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-material">
-                                    <span class="inline-flex items-center gap-2"><i data-lucide="clapperboard" class="h-4 w-4"></i>Clase</span>
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="library" class="h-4 w-4"></i>Materiales</span>
                                 </button>
                                 <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-notes">
                                     <span class="inline-flex items-center gap-2"><i data-lucide="notebook-pen" class="h-4 w-4"></i>Notas</span>
@@ -221,9 +221,9 @@
 
                         <div id="tab-material" class="ltab-panel">
                              <div id="lesson-material-container" class="mb-6"></div>
-                             <!-- Espacio para recursos integrados -->
+                             <!-- Espacio para recursos integrados: Aparecerá debajo del video/quiz -->
                              <div id="integrated-resources-container" class="mt-12 pt-8 border-t border-slate-200">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Material Descargable</h3>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Recursos para esta clase</h3>
                                 <div id="resources-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
                              </div>
                         </div>
@@ -1587,7 +1587,6 @@
                     
                     dom.resourcesList.innerHTML = resourcesHtmlArray.join('');
                 } else {
-                    // Si no hay recursos, ocultamos la sección completa de recursos integrados
                     dom.integratedResourcesArea.classList.add('hidden');
                 }
                 lucide.createIcons();
@@ -1610,7 +1609,6 @@
                 setTimeout(() => { dom.pdfModal.classList.add('hidden'); dom.pdfModalOverlay.classList.add('hidden'); dom.pdfIframe.src = ''; }, 300);
             }
 
-            // Listener para los botones de PDF dentro de la pestaña principal
             if (dom.tabMaterialPanel) dom.tabMaterialPanel.addEventListener('click', (e) => {
                 const button = e.target.closest('.resource-item[data-pdf-url]');
                 if (button) openPdfModal(button.dataset.pdfUrl, button.dataset.pdfTitle);
