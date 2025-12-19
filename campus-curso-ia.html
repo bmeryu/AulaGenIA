@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v4.6 (Full Integrity + Updated Syllabus)
+  CAMPUS CURSO · AULA GENIA v4.7 (Full Integrity + Content Unlocked)
   -------------------------------------------------------------------
   - UI/UX: Implementación de Contextual UI (Focus Mode para Quizzes).
-  - ARCH: Nombres de lecciones actualizados según nueva malla curricular.
+  - ARCH: Nombres de lecciones actualizados y CONTENIDO DESBLOQUEADO.
   - ARCH: Hub de Recursos del Módulo con versiones 1.0 y 2.0 de documentos.
   - FIX: Botón de acción persistente y visibilidad de footer corregida.
   - FEAT: Autocompletado de lección al finalizar el video.
@@ -806,39 +806,28 @@
             }
 
             function renderSidebar() {
-                const isCourseComplete = getIsCourseComplete();
+                // DESBLOQUEO TOTAL: Ignoramos el estado de progreso para permitir navegación libre
+                const isCourseComplete = true; // Forzamos para que nada se vea bloqueado visualmente
                 let isPreviousModuleComplete = true;
                 if (!dom.modulesContainer) return;
 
                 dom.modulesContainer.innerHTML = courseData.modules.map((module, moduleIndex) => {
-                    const isModuleLocked = isCourseComplete ? false : (moduleIndex > 0 && !isPreviousModuleComplete);
+                    // DESBLOQUEO: Todos los módulos están siempre abiertos
+                    const isModuleLocked = false; 
                     
                     const lessonsHtml = module.lessons.map(lesson => {
                         const isCompleted = userProgress.completedLessons.includes(lesson.id);
                         const isActive = userProgress.currentLessonId === lesson.id;
                     
+                        // DESBLOQUEO: Ninguna lección está bloqueada
                         let isLocked = false;
-                        if (!isCourseComplete) {
-                            if (isModuleLocked) {
-                                isLocked = true;
-                            } else if (lesson.type === 'quiz') {
-                                const otherLessonsInModule = module.lessons.filter(l => l.type !== 'quiz');
-                                if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(l.id))) {
-                                    isLocked = true;
-                                }
-                            }
-                        }
                         
                         let linkClasses = 'text-gray-600 hover:bg-slate-50';
                         // Iconos específicos según el tipo para diferenciación visual
                         let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'edit-3' : (lesson.type === 'video' ? 'play' : 'file-text'));
                         let iconColor = isCompleted ? 'text-green-500' : (lesson.type === 'quiz' ? 'text-amber-500' : (lesson.type === 'video' ? 'text-teal-500' : 'text-slate-400'));
                         
-                        if (isLocked) {
-                            linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
-                            statusIcon = 'lock';
-                            iconColor = 'text-slate-400';
-                        } else if (isActive) {
+                        if (isActive) {
                             linkClasses = 'bg-teal-50 text-teal-700 font-semibold';
                             statusIcon = lesson.type === 'video' ? 'play-circle' : (lesson.type === 'quiz' ? 'help-circle' : 'file-text');
                             iconColor = 'text-teal-600';
@@ -846,18 +835,13 @@
                         
                         const typeIcon = { video: 'video', resource: 'book-open', quiz: 'edit-3' }[lesson.type] || 'file';
                         
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${iconColor}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-3.5 w-3.5 ml-2 opacity-30 ${isLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${iconColor}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
                     }).join('');
 
-                    const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
-                    const accordionIcon = isModuleLocked ? 'lock' : 'chevron-down';
+                    const accordionButtonClasses = 'text-gray-800';
+                    const accordionIcon = 'chevron-down';
                     
-                    const moduleLessonIds = module.lessons.map(l => l.id);
-                    if (!isCourseComplete) {
-                        isPreviousModuleComplete = moduleLessonIds.every(id => userProgress.completedLessons.includes(id));
-                    }
-                    
-                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-4 w-4 transition-transform text-gray-400"></i></button><div class="accordion-content ${!isModuleLocked ? 'open' : ''}"><ul class="py-1 space-y-0.5">${lessonsHtml}</ul></div></div>`;
+                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-4 w-4 transition-transform text-gray-400"></i></button><div class="accordion-content open"><ul class="py-1 space-y-0.5">${lessonsHtml}</ul></div></div>`;
                 }).join('');
 
                 addSidebarListeners();
@@ -988,7 +972,7 @@
                         }
 
                         const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
-                        const inReviewMode = isCourseComplete || isQuizCompleted;
+                        const inReviewMode = isQuizCompleted; // Simplificamos lógica para que no dependa de isCourseComplete
 
                         let quizHtml = lesson.questions.map((question, qIndex) => {
                             const optionsHtml = question.options.map((opt, index) => {
@@ -1007,9 +991,7 @@
                         }).join('');
 
                         if (inReviewMode) {
-                            const reviewMessage = isQuizCompleted 
-                                ? 'Ya has completado este quiz. Puedes revisar las respuestas correctas.'
-                                : 'Curso completado. Solo puedes revisar las respuestas.';
+                            const reviewMessage = 'Ya has completado este quiz. Puedes revisar las respuestas correctas.';
                             materialHtml = `${quizHtml}<p class="text-sm text-slate-500 mt-4 font-semibold text-center p-4 bg-slate-100 rounded-md">${reviewMessage}</p>`;
                         } else {
                              materialHtml = `<div id="quiz-container">${quizHtml}<button id="check-quiz-btn" class="mt-4 bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-900">Verificar Respuestas</button></div>`;
@@ -1026,7 +1008,7 @@
                 // INTEGRACIÓN DE RECURSOS: Se renderizan en su propia pestaña
                 renderCourseResources(lesson);
 
-                if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
+                if (lesson.type === 'quiz' && lesson.questions && lesson.questions.length > 0) {
                     const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
                     if (!isQuizCompleted) {
                       const quizWrapper = document.getElementById('tab-clases');
@@ -1200,7 +1182,7 @@
             function updateMainActionButton() {
                 if (!dom.navigationButtons || !dom.mainActionBtn) return;
 
-                // FIX: El footer de navegación debe estar visible siempre que el curso no esté TOTALMENTE terminado.
+                // FIX: El footer de navegación debe estar visible siempre.
                 dom.navigationButtons.classList.remove('hidden');
                 
                 const lesson = allLessons.find(l => l.id === userProgress.currentLessonId);
@@ -1225,31 +1207,10 @@
             function updateOverallProgress() { const uniqueCompleted = new Set(userProgress.completedLessons); const completedCount = uniqueCompleted.size; const percentage = allLessons.length > 0 ? Math.round((completedCount / allLessons.length) * 100) : 0; if (dom.progressBar) dom.progressBar.style.width = `${percentage}%`; if (dom.progressText) dom.progressText.textContent = `${percentage}%`; }
             
             async function navigateToLesson(lessonId) {
-                const isCourseComplete = getIsCourseComplete();
+                // DESBLOQUEO TOTAL: Eliminamos todas las validaciones de "debes completar previo"
                 const targetLessonInfo = getLessonInfo(lessonId);
                 if (!targetLessonInfo) return;
 
-                if (!isCourseComplete) {
-                    const targetModuleIndex = targetLessonInfo.moduleIndex;
-                    if (targetModuleIndex > 0) {
-                        const previousModule = courseData.modules[targetModuleIndex - 1];
-                        const previousModuleLessonIds = previousModule.lessons.map(l => l.id);
-                        if (!previousModuleLessonIds.every(id => userProgress.completedLessons.includes(id))) {
-                            showToast(`Debes completar el "${previousModule.title}" para acceder.`);
-                            return;
-                        }
-                    }
-                    
-                    const { lesson, module } = targetLessonInfo;
-                    if (lesson.type === 'quiz') {
-                        const otherLessonsInModule = module.lessons.filter(l => l.type !== 'quiz');
-                        if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(id))) {
-                            showToast(`Completa las lecciones del "${module.title}" para desbloquear el quiz.`);
-                            return;
-                        }
-                    }
-                }
-                
                 userProgress = { ...userProgress, currentLessonId: lessonId };
                 await saveProgress();
                 refreshUI();
@@ -1267,7 +1228,7 @@
                     link.addEventListener('click', e => {
                         e.preventDefault();
                         const li = e.currentTarget.closest('.lesson-item');
-                        if (li && !e.currentTarget.classList.contains('cursor-not-allowed')) {
+                        if (li) {
                             navigateToLesson(li.dataset.lessonId);
                         }
                     });
@@ -1275,8 +1236,7 @@
 
                 dom.modulesContainer.querySelectorAll('.accordion-item').forEach(item => {
                     const header = item.querySelector('.accordion-header');
-                    const icon = header ? header.querySelector('i') : null;
-                    if (header && icon && icon.getAttribute('data-lucide') !== 'lock') {
+                    if (header) {
                         header.addEventListener('click', () => {
                             const content = header.nextElementSibling;
                             const iconEl = header.querySelector('i');
