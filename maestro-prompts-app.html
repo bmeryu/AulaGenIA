@@ -239,7 +239,7 @@
                             <!-- Actions -->
                             <div class="flex gap-1.5">
                                 <button onclick="toggleTip('example')" class="text-[10px] font-bold text-zinc-500 hover:text-indigo-600 flex items-center gap-1.5 transition-all px-3 py-1.5 hover:bg-white rounded-lg border border-transparent hover:border-zinc-200">
-                                    <span class="material-symbols-rounded text-[16px]">lightbulb</span> Estrategia
+                                    <span class="material-symbols-rounded text-[16px]">psychology</span> Estrategia Pro
                                 </button>
                                 <button onclick="openVideoModal()" class="text-[10px] font-bold text-zinc-500 hover:text-indigo-600 flex items-center gap-1.5 transition-all px-3 py-1.5 hover:bg-white rounded-lg border border-transparent hover:border-zinc-200">
                                     <span class="material-symbols-rounded text-[16px]">smart_display</span> Tutorial
@@ -263,15 +263,15 @@
                             </div>
                         </div>
 
-                        <!-- TIPS DRAWER -->
-                        <div id="content-tip-example" class="hidden border-t border-subtle bg-indigo-50/30 p-6 animate-in slide-in-from-top-2 duration-300">
+                        <!-- TIPS DRAWER (Estrategia) -->
+                        <div id="content-tip-example" class="hidden border-t-2 border-indigo-100 bg-indigo-50/40 p-6 animate-in slide-in-from-top-2 duration-300">
                             <div class="flex gap-4">
                                 <div class="w-10 h-10 bg-white rounded-xl shadow-sm border border-indigo-100 flex items-center justify-center flex-none">
-                                    <span class="material-symbols-rounded text-indigo-600">psychology</span>
+                                    <span class="material-symbols-rounded text-indigo-600">lightbulb</span>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-black text-indigo-900 uppercase tracking-widest mb-1">Guía del Experto</h4>
-                                    <p id="detail-example-tip" class="text-sm text-zinc-600 leading-relaxed"></p>
+                                    <h4 class="text-xs font-black text-indigo-900 uppercase tracking-widest mb-1">Estrategia de Ingeniería</h4>
+                                    <p id="detail-example-tip" class="text-sm text-zinc-600 leading-relaxed italic"></p>
                                 </div>
                             </div>
                         </div>
@@ -448,7 +448,6 @@
         let casesData = [];
         const externalDBUrl = 'https://aulagenia.cl/prompts_db.js';
         
-        // UI Elements
         const statusOverlay = document.getElementById('system-status-overlay');
         const statusDesc = document.getElementById('status-desc');
         const statusCode = document.getElementById('status-code');
@@ -456,7 +455,6 @@
 
         async function loadDatabase() {
             try {
-                // Cache busting para asegurar datos frescos
                 const module = await import(`${externalDBUrl}?t=${new Date().getTime()}`);
                 if (module && module.default && Array.isArray(module.default)) {
                     casesData = module.default;
@@ -500,7 +498,6 @@
         let variablesActive = false;
 
         function initApp() {
-            // Bind global functions para acceso desde HTML
             window.loadCase = loadCase;
             window.filterCases = filterCases;
             window.filterByCategory = filterByCategory;
@@ -519,7 +516,6 @@
             startCountdown();
             setupLegendInteractions();
 
-            // Cargar primer caso por defecto
             if(casesData.length > 0) {
                 loadCase(casesData[0].id);
             } else {
@@ -531,24 +527,23 @@
             const c = casesData.find(x => x.id === id);
             if(!c) return;
 
-            // Highlight Sidebar Item
+            // Reset panel Estrategia al cambiar de caso para evitar confusión
+            document.getElementById('content-tip-example').classList.add('hidden');
+
             document.querySelectorAll('.case-item').forEach(el => {
                 el.classList.remove('case-item-active');
             });
             const activeItem = document.getElementById(`case-item-${id}`);
             if(activeItem) activeItem.classList.add('case-item-active');
 
-            // Preparar Workspace
             document.getElementById('workspace-empty').classList.add('hidden');
             document.getElementById('case-detail').classList.remove('hidden');
             
-            // Animación de entrada
             const container = document.getElementById('detail-animation-container');
             container.classList.remove('fade-in');
-            void container.offsetWidth; // Force reflow
+            void container.offsetWidth; 
             container.classList.add('fade-in');
 
-            // Poblar contenido
             document.getElementById('detail-title').innerText = c.title;
             document.getElementById('detail-problem').innerText = c.problem;
             document.getElementById('prompt-id-display').innerText = `PR-${c.id.toString().padStart(3, '0')}`;
@@ -556,9 +551,9 @@
             document.getElementById('bad-result-preview').innerText = c.badResponsePreview || "Generación sin estructura...";
             document.getElementById('good-result-preview').innerText = c.previewResponse || "Esperando input...";
 
-            document.getElementById('detail-example-tip').innerText = c.exampleTip || "Utiliza este prompt para maximizar la consistencia en los resultados.";
+            // Inyección del tip en el panel correcto
+            document.getElementById('detail-example-tip').innerText = c.exampleTip || "Este prompt optimiza la salida utilizando el framework de contexto avanzado de AGIA.";
 
-            // Categoría
             const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
             const badge = document.getElementById('detail-category-badge');
             badge.innerText = cat.label;
@@ -570,7 +565,6 @@
             currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt || "";
             currentVariables = {};
             
-            // Extracción de variables dinámicas: {nombre_variable|Default}
             const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
             let match;
             const varsFound = [];
@@ -624,7 +618,6 @@
         function activateVariables() {
             variablesActive = true;
             closeVideoModal();
-            // Re-renderizar el caso actual para aplicar cambios visuales
             const currentTitle = document.getElementById('detail-title').innerText;
             const c = casesData.find(x => x.title === currentTitle);
             if(c) loadCase(c.id);
@@ -632,13 +625,11 @@
 
         function updateVariable(key, value) {
             currentVariables[key] = value;
-            // No renderizar si el caso está bloqueado por premium
             const isLocked = !document.getElementById('premium-lock').classList.contains('hidden');
             if(!isLocked) renderPrompts(false);
         }
 
         function renderPrompts(isLocked) {
-            // 1. Procesar Prompt AGIA
             let renderedAgia = currentPromptTemplate;
             Object.keys(currentVariables).forEach(key => {
                 const val = currentVariables[key] || "___";
@@ -646,7 +637,6 @@
                 renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${val}</span>`);
             });
 
-            // Reemplazar Tags de Ingeniería
             const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
             Object.keys(tags).forEach(t => {
                 const className = `hl-${tags[t]}`;
@@ -656,7 +646,6 @@
             renderedAgia = renderedAgia.replace(/\n/g, '<br>');
             document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
 
-            // 2. Procesar Prompt Malo
             let renderedBad = currentBadPromptTemplate;
             Object.keys(currentVariables).forEach(key => {
                 const val = currentVariables[key] || "...";
@@ -668,7 +657,13 @@
 
         function toggleTip(type) {
             const content = document.getElementById(`content-tip-${type}`);
-            content.classList.toggle('hidden');
+            if(content) {
+                content.classList.toggle('hidden');
+                // Scroll suave hacia el panel de estrategia si se abre
+                if(!content.classList.contains('hidden')) {
+                    content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
         }
 
         function setupLegendInteractions() {
