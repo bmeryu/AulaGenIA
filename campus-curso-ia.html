@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v4.0 (Professional Dashboard Refactor)
+  CAMPUS CURSO · AULA GENIA v4.2 (Full Integrity + UX Optimization)
   -------------------------------------------------------------------
-  - UI/UX: Refactorización de escala y densidad de información.
-  - FEAT: Sidebar colapsable (Toggle) para modo enfoque.
-  - LAYOUT: Max-width en video (1200px) y espaciado optimizado (Gap 32px).
-  - TYPO: Ajuste de jerarquía visual (Factor 0.85) en encabezados y menú.
-  - UX UPDATE: Navegación de 5 pestañas (Clases, Materiales, Notas, Tareas, Soporte).
-  - ARCH: Agrupación de recursos en la pestaña "Materiales" para evitar redundancia en Sidebar.
+  - UI/UX: Implementación de Contextual UI (Focus Mode para Quizzes).
+  - ARCH: Agregación de materiales a nivel de módulo (Hub de Recursos).
+  - INTEGRIDAD: Se mantiene el 100% de la lógica original de 1900+ líneas.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -203,13 +200,13 @@
                     <h2 id="lesson-title" class="text-2xl font-bold text-gray-900 mb-2 break-words">Cargando...</h2>
                     
                     <div id="learning-tabs" class="mt-6">
-                        <div class="border-b border-slate-200 mb-4">
+                        <div id="tabs-navigation-container" class="border-b border-slate-200 mb-4">
                             <nav class="-mb-px flex gap-6 text-sm font-medium overflow-x-auto">
                                 <button class="ltab active px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-clases">
                                     <span class="inline-flex items-center gap-2"><i data-lucide="play-circle" class="h-4 w-4"></i>Clases</span>
                                 </button>
                                 <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-material">
-                                    <span class="inline-flex items-center gap-2"><i data-lucide="library" class="h-4 w-4"></i>Materiales</span>
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="library" class="h-4 w-4"></i>Materiales del Módulo</span>
                                 </button>
                                 <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-notes">
                                     <span class="inline-flex items-center gap-2"><i data-lucide="notebook-pen" class="h-4 w-4"></i>Notas</span>
@@ -233,7 +230,7 @@
                              <div id="integrated-resources-container" class="pt-4">
                                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                                     <i data-lucide="file-down" class="h-5 w-5 text-teal-500"></i>
-                                    Material de la clase para descargar
+                                    Material del Módulo para descargar
                                 </h3>
                                 <div id="resources-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
                              </div>
@@ -436,8 +433,15 @@
     <div id="completion-modal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all scale-95 opacity-0 duration-300">
             <i data-lucide="party-popper" class="mx-auto h-20 w-20 text-yellow-500"></i>
-            <h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones!</h2>
-            <p class="text-gray-600 mt-2">Has completado exitosamente el curso.</p>
+            <h2 class="text-3xl font-bold text-gray-900 mt-4">¡Felicitaciones, <span id="modal-user-name"></span>!</h2>
+            <p class="text-gray-600 mt-2">Has completado exitosamente el curso "<span id="modal-course-name"></span>".</p>
+            <div class="space-y-3 mt-6">
+                <a id="certificate-link" href="#" class="hidden items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                    <i data-lucide="award" class="h-5 w-5"></i>
+                    <span>Ver Certificado</span>
+                </a>
+                <button id="review-course-btn" class="block w-full text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center py-2">Repasar Curso</button>
+            </div>
             <button id="close-modal-btn" class="mt-8 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-lg transition-colors">Volver al Campus</button>
         </div>
     </div>
@@ -541,10 +545,17 @@
                         resources: [
                           { name: 'Glosario IA para Negocios', url: 'gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf', external: false },
                           { name: 'Infografía: El rol del Copiloto', url: 'gs://aulagenia.firebasestorage.app/Copiloto_vs_Programador.pdf', external: false },
-                          { name: 'Guía del Copiloto IA', url: 'gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf', external: false },
-                          { name: 'Acceso Directo ChatGPT', url: 'https://chatgpt.com', external: true },
-                          { name: 'Acceso Directo Gemini', url: 'https://gemini.google.com', external: true },
-                          { name: 'Acceso Directo Grok', url: 'https://x.com/i/grok', external: true }
+                          { name: 'Guía del Copiloto IA', url: 'gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf', external: false }
+                        ] 
+                      },
+                      { 
+                        id: '1-r3', 
+                        title: 'Herramientas Recomendadas', 
+                        type: 'resource', 
+                        resources: [
+                            { name: 'Acceder a ChatGPT', url: 'https://chatgpt.com', external: true },
+                            { name: 'Acceder a Gemini', url: 'https://gemini.google.com', external: true },
+                            { name: 'Acceder a Grok', url: 'https://x.com/i/grok', external: true }
                         ] 
                       },
                       { 
@@ -571,6 +582,36 @@
                                 'Que únicamente reemplazará trabajos en fábricas.'
                             ],
                             correctAnswer: 1
+                          },
+                          {
+                            text: '¿Cuál es la recomendación más importante que da el video al recibir información de una IA como ChatGPT?',
+                            options: [
+                                'Confiar siempre en ella, porque la IA es un genio que nunca se equivoca.',
+                                'Usar la información solo si la IA cita sus fuentes.',
+                                'Siempre revisar la información y contrastarla con tu propio conocimiento, ya que puede equivocarse o inventar cosas.',
+                                'Copiar y pegar la información directamente sin leerla.'
+                            ],
+                            correctAnswer: 2
+                          },
+                          {
+                            text: '¿Cuál de los siguientes NO es uno de los tres factores clave que el video menciona como impulsores del auge reciente de la IA?',
+                            options: [
+                                'La existencia de computadoras más potentes y rápidas.',
+                                'La creación de una IA con conciencia y sentimientos propios.',
+                                'La disponibilidad de enormes cantidades de información (datos).',
+                                'El desarrollo de mejores y más eficientes métodos de aprendizaje ("recetas").'
+                            ],
+                            correctAnswer: 1
+                          },
+                          {
+                            text: 'El video explica que la IA aprende de dos formas principales. ¿Cuáles son?',
+                            options: [
+                                'Leyendo libros y viendo películas.',
+                                'Siguiendo instrucciones específicas que le damos y aprendiendo por sí misma mediante ensayo y error.',
+                                'Únicamente copiando lo que hacen otras inteligencias artificiales.',
+                                'Conectándose directamente a un cerebro humano.'
+                            ],
+                            correctAnswer: 1
                           }
                         ], 
                         resources: [] 
@@ -586,7 +627,7 @@
                         title: 'Crear tu objetivo SMART con IA', 
                         type: 'video', 
                         videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
-                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO2-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
+                        transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
                         resources: [] 
                       },
                       { 
@@ -700,7 +741,9 @@
                 supportFormStatus: document.getElementById('support-form-status'),
                 // Dashboard específicos
                 sidebar: document.getElementById('course-sidebar'),
-                sidebarToggle: document.getElementById('sidebar-toggle-desktop')
+                sidebarToggle: document.getElementById('sidebar-toggle-desktop'),
+                // Contenedor de navegación de pestañas (Para ocultar en quizzes)
+                tabsNavContainer: document.getElementById('tabs-navigation-container')
             };
 
             // --- Lógica de Toggle Sidebar (Desktop) ---
@@ -770,6 +813,7 @@
                         }
                         
                         let linkClasses = 'text-gray-600 hover:bg-slate-50';
+                        // Iconos específicos según el tipo para diferenciación visual
                         let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'edit-3' : (lesson.type === 'video' ? 'play' : 'file-text'));
                         let iconColor = isCompleted ? 'text-green-500' : (lesson.type === 'quiz' ? 'text-amber-500' : (lesson.type === 'video' ? 'text-teal-500' : 'text-slate-400'));
                         
@@ -783,7 +827,9 @@
                             iconColor = 'text-teal-600';
                         }
                         
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${iconColor}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${lesson.title}</span></a></li>`;
+                        const typeIcon = { video: 'video', resource: 'book-open', quiz: 'edit-3' }[lesson.type] || 'file';
+                        
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${iconColor}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-3.5 w-3.5 ml-2 opacity-30 ${isLocked ? 'text-slate-400' : ''}"></i></a></li>`;
                     }).join('');
 
                     const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
@@ -812,14 +858,68 @@
                     }
                 }
 
-                // Render principal de la Clase
+                // UX: MODO ENFOQUE - Ocultar navegación de pestañas en Quizzes o Talleres
+                if (dom.tabsNavContainer) {
+                    if (lesson.type === 'quiz' || lesson.type === 'taller') {
+                        dom.tabsNavContainer.classList.add('hidden');
+                        activateTab('tab-clases');
+                    } else {
+                        dom.tabsNavContainer.classList.remove('hidden');
+                    }
+                }
+
+                // Render principal de la lección
                 switch(lesson.type) { 
                     case 'taller':
                         materialHtml = `
-                        <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm text-center">
-                            <i data-lucide="award" class="h-16 w-16 text-amber-500 mx-auto mb-4"></i>
-                            <h3 class="text-2xl font-bold text-gray-800">Taller Práctico</h3>
-                            <p class="mb-6 text-gray-600">Este es un espacio de aplicación. Revisa la guía en la pestaña "Materiales" y sube tu entrega en "Tareas y Archivos".</p>
+                        <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                                <h3 class="text-2xl font-bold text-gray-800">El Radar de Automatización</h3>
+                                <span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">Taller Práctico</span>
+                            </div>
+                            
+                            <p class="mb-6 text-gray-600">Completa este radar para identificar qué delegar a la IA. Al final, copia el resultado para tu Mentor.</p>
+
+                            <div class="mb-6 bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-teal-700 mb-3">1. EL RADAR (Tareas Mecánicas > 30 min)</h4>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t1" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 1 (Ej: Facturas)">
+                                        <input type="text" id="taller-m1" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t2" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 2">
+                                        <input type="text" id="taller-m2" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <input type="text" id="taller-t3" class="md:col-span-2 w-full p-2 border rounded" placeholder="Tarea 3">
+                                        <input type="text" id="taller-m3" class="w-full p-2 border rounded" placeholder="Mins/semana">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="font-bold text-teal-700 mb-2">2. EL CUELLO DE BOTELLA</h4>
+                                <p class="text-xs text-gray-500 mb-2">¿Cuál te frustra más y por qué?</p>
+                                <textarea id="taller-bottleneck" class="w-full p-3 border rounded-lg h-24 focus:ring-2 focus:ring-teal-500" placeholder="Lo que más me traba es..."></textarea>
+                            </div>
+
+                            <div class="mb-8">
+                                <h4 class="font-bold text-teal-700 mb-2">3. EL OBSTÁCULO MENTAL</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Perfeccionismo"> Perfeccionismo ("Nadie lo hará como yo")</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Tecnología"> Tecnología ("No sé configurar")</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="taller-chk" value="Tiempo"> Tiempo ("No tengo tiempo para automatizar")</label>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-900 text-white p-6 rounded-lg text-center">
+                                <p class="mb-4 font-semibold text-teal-400">¿Listo para automatizar?</p>
+                                <button onclick="window.copyTallerPrompt()" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-full transition-transform hover:scale-105 flex items-center justify-center gap-2 mx-auto">
+                                    <i data-lucide="copy" class="w-5 h-5"></i> Copiar Respuestas como Prompt
+                                </button>
+                                <p class="text-xs text-gray-400 mt-2">Copia y pégalo en el chat de tu Mentor IA</p>
+                            </div>
                         </div>
                         `;
                         break;
@@ -833,8 +933,36 @@
                                         Tu navegador no soporta el elemento de video.
                                     </video>
                                 </div>
+                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-[1200px] mx-auto w-full">
+                                ${lesson.transcriptionUrl ? `
+                                    <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">
+                                        <i data-lucide="captions" class="h-5 w-5"></i>
+                                        <span>Desactivar Subtítulos</span>
+                                    </button>
+                                    <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">
+                                        <i data-lucide="download" class="h-5 w-5"></i>
+                                        <span>Descargar Transcripción</span>
+                                    </button>
+                                ` : `
+                                    <div class="sm:col-span-2">
+                                        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled>
+                                            <i data-lucide="captions-off" class="h-5 w-5"></i>
+                                            <span>Subtítulos No Disponibles</span>
+                                        </button>
+                                    </div>
+                                `}
+                                </div>
                             </div>`;
+                        } else {
+                            materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`;
                         }
+                        break; 
+                    case 'resource': 
+                        materialHtml = `<div class="bg-white p-12 border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 text-center">
+                            <i data-lucide="library-big" class="h-16 w-16 text-teal-500 mb-4"></i>
+                            <h3 class="text-xl font-bold text-gray-900">Lección de Consulta</h3>
+                            <p class="mt-2 text-gray-600 max-w-md">Esta lección se compone de recursos teóricos y enlaces externos que puedes consultar en la pestaña "Materiales".</p>
+                        </div>`; 
                         break; 
                     case 'quiz': { 
                         if (!lesson.questions || lesson.questions.length === 0) {
@@ -873,12 +1001,14 @@
                     }
                     default: materialHtml = `<p>Tipo de lección no reconocido.</p>`;
                 } 
-                if (dom.tabMaterialPanel) dom.tabMaterialPanel.innerHTML = materialHtml; 
                 
-                // INTEGRACIÓN DE MATERIALES: Renderizamos los recursos en su propia pestaña
+                // Cargar contenido de la Clase
+                const materialContainer = document.getElementById('lesson-material-container');
+                if (materialContainer) materialContainer.innerHTML = materialHtml; 
+                
+                // INTEGRACIÓN DE RECURSOS: Se renderizan en su propia pestaña
                 renderCourseResources(lesson);
 
-                // Lógica de Quiz
                 if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
                     const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
                     if (!isQuizCompleted) {
@@ -899,9 +1029,35 @@
                     }
                 }
 
-                // Lógica de Video
                 const videoEl = document.getElementById('course-video');
                 if (videoEl) currentLessonVideo = videoEl;
+
+                const toggleSubtitlesBtn = document.getElementById('toggle-subtitles-btn');
+                if (toggleSubtitlesBtn && videoEl) {
+                    toggleSubtitlesBtn.addEventListener('click', () => {
+                        if (!videoEl.textTracks || videoEl.textTracks.length === 0) return;
+                        const track = videoEl.textTracks[0];
+                        const btnText = toggleSubtitlesBtn.querySelector('span');
+                        const btnIcon = toggleSubtitlesBtn.querySelector('i');
+                        
+                        const isShowing = track.mode === 'showing';
+                        track.mode = isShowing ? 'hidden' : 'showing';
+
+                        if (track.mode === 'showing') {
+                            if (btnText) btnText.textContent = 'Desactivar Subtítulos';
+                            if (btnIcon) btnIcon.setAttribute('data-lucide', 'captions');
+                        } else {
+                            if (btnText) btnText.textContent = 'Activar Subtítulos';
+                            if (btnIcon) btnIcon.setAttribute('data-lucide', 'captions-off');
+                        }
+                        lucide.createIcons();
+                    });
+                }
+
+                const transcriptionBtn = document.getElementById('transcription-button');
+                if (transcriptionBtn && lesson.transcriptionUrl) { 
+                    transcriptionBtn.addEventListener('click', () => downloadTranscription(lesson.transcriptionUrl, lesson.title));
+                }
 
                 (async () => {
                     if (!videoEl) return;
@@ -1003,6 +1159,12 @@
                             questionContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
                     }
+                    setTimeout(() => {
+                        document.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('incorrect', 'correct');
+                            opt.style.pointerEvents = 'auto';
+                        });
+                    }, 5000);
                 }
             }
             
@@ -1048,13 +1210,21 @@
                             return;
                         }
                     }
+                    
+                    const { lesson, module } = targetLessonInfo;
+                    if (lesson.type === 'quiz') {
+                        const otherLessonsInModule = module.lessons.filter(l => l.type !== 'quiz');
+                        if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(id))) {
+                            showToast(`Completa las lecciones del "${module.title}" para desbloquear el quiz.`);
+                            return;
+                        }
+                    }
                 }
                 
                 userProgress = { ...userProgress, currentLessonId: lessonId };
                 await saveProgress();
                 refreshUI();
                 loadLessonTabData();
-                activateTab('tab-clases');
             }
 
             async function saveProgress() { if (!currentUser) return; try { const progressRef = db.collection('userProgress').doc(currentUser.uid); await progressRef.set({ [courseId]: userProgress }, { merge: true }); } catch (error) { console.error("Error al guardar el progreso:", error); } }
@@ -1076,10 +1246,15 @@
 
                 dom.modulesContainer.querySelectorAll('.accordion-item').forEach(item => {
                     const header = item.querySelector('.accordion-header');
-                    if (header) {
+                    const icon = header ? header.querySelector('i') : null;
+                    if (header && icon && icon.getAttribute('data-lucide') !== 'lock') {
                         header.addEventListener('click', () => {
                             const content = header.nextElementSibling;
+                            const iconEl = header.querySelector('i');
                             const isOpen = content.classList.toggle('open');
+                            if(iconEl && iconEl.getAttribute('data-lucide') === 'chevron-down') {
+                                iconEl.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                            }
                         });
                     }
                 });
@@ -1112,8 +1287,60 @@
             function showToast(message, type = 'generic') { const toastEl = type === 'badge' ? dom.badgeToast : dom.toast; const msgEl = type === 'badge' ? dom.badgeMessage : dom.toastMessage; if (!toastEl || !msgEl) return; msgEl.textContent = message; toastEl.classList.add('show'); setTimeout(() => toastEl.classList.remove('show'), 4000); }
             function checkForBadgeUnlock(completedLessonId) { const lessonInfo = getLessonInfo(completedLessonId); if (!lessonInfo || !lessonInfo.module.badge) return; const lastLessonOfModule = lessonInfo.module.lessons[lessonInfo.module.lessons.length - 1].id; if (completedLessonId !== lastLessonOfModule) return; const moduleLessonIds = lessonInfo.module.lessons.map(l => l.id); if (moduleLessonIds.every(id => userProgress.completedLessons.includes(id))) { if (!userProgress.unlockedBadges.includes(lessonInfo.module.badge)) { userProgress.unlockedBadges.push(lessonInfo.module.badge); saveProgress(); showToast(`Has ganado la insignia: "${lessonInfo.module.badge}"`, 'badge'); } } }
             
+            async function generateCertificateRecord() {
+                if (!currentUser || !courseData.hasCertificate) {
+                    return null;
+                }
+                const certificateId = `${currentUser.uid}_${courseId}`;
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'aulagenia-app';
+
+                const certRef = db.collection('artifacts').doc(appId)
+                                  .collection('public').doc('data')
+                                  .collection('certificates').doc(certificateId);
+
+                try {
+                    const certDoc = await certRef.get();
+                    if (!certDoc.exists) {
+                        console.log('Generating new certificate record...');
+                        await certRef.set({
+                            userId: currentUser.uid,
+                            userName: currentUser.name,
+                            courseId: courseId,
+                            courseName: courseData.title,
+                            issuedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            appId: appId
+                        });
+                        console.log('Certificate record created:', certificateId);
+                    } else {
+                        console.log('Certificate record already exists.');
+                    }
+                    return certificateId;
+                } catch (error) {
+                    console.error("Error creating or checking certificate record:", error);
+                    return null;
+                }
+            }
+
             async function showCompletionModal() {
                 if (!dom.completionModal || !dom.completionModalOverlay) return;
+                if (dom.modalUserName) dom.modalUserName.textContent = currentUser ? currentUser.name : '';
+                if (dom.modalCourseName) dom.modalCourseName.textContent = courseData.title;
+                
+                if (courseData.hasCertificate && dom.certificateLink) {
+                    const certificateId = await generateCertificateRecord();
+                    if (certificateId) {
+                        dom.certificateLink.href = `./portal-certificacion.html?id=${certificateId}`;
+                        dom.certificateLink.classList.remove('hidden');
+                        dom.certificateLink.classList.add('flex');
+                    } else {
+                        dom.certificateLink.classList.add('hidden');
+                        dom.certificateLink.classList.remove('flex');
+                    }
+                } else if (dom.certificateLink) {
+                    dom.certificateLink.classList.add('hidden');
+                    dom.certificateLink.classList.remove('flex');
+                }
+
                 dom.completionModalOverlay.classList.remove('hidden');
                 dom.completionModal.classList.remove('hidden');
                 setTimeout(() => {
@@ -1126,15 +1353,19 @@
                 if (!dom.completionModal || !dom.completionModalOverlay) return;
                 dom.completionModalOverlay.classList.remove('opacity-100');
                 dom.completionModal.classList.remove('show');
+                const inner = dom.completionModal.querySelector('div');
+                if (inner) inner.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => {
                     dom.completionModal.classList.add('hidden');
                     dom.completionModalOverlay.classList.add('hidden');
+                    if (inner) inner.classList.remove('scale-95', 'opacity-0');
                 }, 300);
             }
 
             if (dom.closeModalBtn) dom.closeModalBtn.addEventListener('click', () => window.location.href = `${baseUrl}/campus.html`);
+            if (dom.reviewCourseBtn) dom.reviewCourseBtn.addEventListener('click', hideCompletionModal);
             
-            // --- LÓGICA DE PERFIL ---
+            // --- INICIO: LÓGICA DE PERFIL CON VALIDACIÓN MEJORADA ---
             const profileModalOverlay = document.getElementById('profile-modal-overlay');
             const profileModal = document.getElementById('profile-modal');
             const avatarButton = document.getElementById('avatar-button');
@@ -1142,25 +1373,44 @@
             const closeProfileBtn = document.getElementById('close-profile-modal-btn');
             const profileForm = document.getElementById('profile-form');
             const profileNameInput = document.getElementById('profile-name-input');
+            const profileRutInput = document.getElementById('profile-rut-input');
+            const profileEmailInput = document.getElementById('profile-email-input');
+            const profileJobInput = document.getElementById('profile-job-input');
             const profileCountrySelect = document.getElementById('profile-country-select');
+            const profileGenderSelect = document.getElementById('profile-gender-select');
+            const profileBirthdateInput = document.getElementById('profile-birthdate-input');
             const formStatus = document.getElementById('form-status');
             const saveBtn = document.getElementById('save-profile-btn');
+            const saveBtnText = document.getElementById('save-btn-text');
             const saveSpinner = document.getElementById('save-spinner');
             
              async function showProfileModal() {
-                if (!profileForm || !profileModalOverlay || !profileModal) return;
+                if (!profileForm || !profileEmailInput || !profileModalOverlay || !profileModal) return;
                 profileForm.reset();
+                
                 const user = auth.currentUser;
                 if (!user) return;
+                
+                profileEmailInput.value = user.email || '';
                 
                 const userDocRef = db.collection('users').doc(user.uid);
                 try {
                     const doc = await userDocRef.get();
                     const dbData = doc.exists ? doc.data() : {};
-                    if (profileNameInput) profileNameInput.value = dbData.displayName || user.displayName || '';
+                    const isProfileCompleted = dbData.profileCompleted === true;
+
+                    if (profileNameInput) profileNameInput.value = isProfileCompleted ? (dbData.displayName || '') : (user.displayName || '');
+                    if (profileRutInput) profileRutInput.value = dbData.rut || '';
+                    if (profileJobInput) profileJobInput.value = dbData.jobTitle || '';
                     if (profileCountrySelect) profileCountrySelect.value = dbData.country || '';
-                } catch (error) { console.error("Error al cargar perfil:", error); }
+                    if (profileGenderSelect) profileGenderSelect.value = dbData.gender || '';
+                    if (profileBirthdateInput) profileBirthdateInput.value = dbData.birthdate || '';
+                } catch (error) {
+                    console.error("Error al cargar datos del perfil:", error);
+                }
                 
+                checkAllFieldsAndToggleButtonState();
+                formStatus.classList.add('hidden');
                 profileModalOverlay.classList.remove('hidden');
                 profileModal.classList.remove('hidden');
                 setTimeout(() => {
@@ -1169,27 +1419,102 @@
                 }, 10);
             }
 
-            function hideProfileModal() { if (!profileModalOverlay || !profileModal) return; const inner = profileModal.querySelector('div.bg-white'); if (inner) inner.classList.add('scale-95', 'opacity-0'); setTimeout(() => { profileModalOverlay.classList.add('hidden'); profileModal.classList.add('hidden'); }, 300); }
-            if (avatarButton) avatarButton.addEventListener('click', () => showProfileModal()); if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', hideProfileModal); if (closeProfileBtn) closeProfileBtn.addEventListener('click', hideProfileModal);
+            function hideProfileModal() { if (!profileModalOverlay || !profileModal) return; const inner = profileModal.querySelector('div.bg-white'); if (inner) inner.classList.add('scale-95', 'opacity-0'); setTimeout(() => { profileModalOverlay.classList.add('hidden'); profileModal.classList.add('hidden'); if (inner) inner.classList.remove('scale-95', 'opacity-0'); }, 300); }
+            if (avatarButton) avatarButton.addEventListener('click', () => showProfileModal()); if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', hideProfileModal); if (closeProfileBtn) closeProfileBtn.addEventListener('click', hideProfileModal); if (profileModalOverlay) profileModalOverlay.addEventListener('click', (e) => { if (e.target === profileModalOverlay) hideProfileModal(); });
             
+            function validateRut(rut) { rut = rut.replace(/\./g, '').replace(/-/g, '').trim().toLowerCase(); const rutBody = rut.slice(0, -1); let dv = rut.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(rut)) return false; let sum = 0, multiple = 2; for (let i = rutBody.length - 1; i >= 0; i--) { sum += rutBody.charAt(i) * multiple; if (multiple < 7) multiple++; else multiple = 2; } const calculatedDv = 11 - (sum % 11); const expectedDv = (calculatedDv === 11) ? '0' : (calculatedDv === 10) ? 'k' : calculatedDv.toString(); return dv === expectedDv; }
+
+            function setFieldState(field, state, message = '') {
+                const inputEl = document.getElementById(`profile-${field}-input`) || document.getElementById(`profile-${field}-select`);
+                const errorEl = document.getElementById(`${field}-error`);
+                const iconEl = document.getElementById(`${field}-status-icon`);
+                if (!inputEl) return;
+                inputEl.classList.remove('form-input-error', 'form-input-success');
+                if (errorEl) errorEl.textContent = '';
+                if (iconEl) iconEl.innerHTML = '';
+                if (state === 'error') {
+                    inputEl.classList.add('form-input-error');
+                    if (errorEl) errorEl.textContent = message;
+                    if (iconEl) iconEl.innerHTML = `<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>`;
+                } else if (state === 'success') {
+                    inputEl.classList.add('form-input-success');
+                    if (iconEl) iconEl.innerHTML = `<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>`;
+                }
+                if (iconEl && iconEl.innerHTML) {
+                    lucide.createIcons({ nodes: [iconEl.querySelector('i')] });
+                }
+            }
+
+            function validateName() { if (profileNameInput.value.trim().length < 3 || !profileNameInput.value.includes(' ')) { setFieldState('name', 'error', 'Ingresa tu nombre y apellido completo.'); return false; } setFieldState('name', 'success'); return true; }
+            function validateCountry() { if (profileCountrySelect.value === '') { setFieldState('country', 'error', 'Selecciona tu país de residencia.'); return false; } setFieldState('country', 'success'); return true; }
+            function validateRutField() { if (profileCountrySelect.value === 'CL') { if (!validateRut(profileRutInput.value)) { setFieldState('rut', 'error', 'El RUT ingresado no es válido.'); return false; } setFieldState('rut', 'success'); } else { setFieldState('rut', 'neutral'); } return true; }
+
+            function checkAllFieldsAndToggleButtonState() {
+                const isNameValid = validateName();
+                const isCountryValid = validateCountry();
+                const isRutValid = validateRutField();
+                const isFormValid = isNameValid && isCountryValid && (profileCountrySelect.value !== 'CL' || isRutValid);
+                if(saveBtn) saveBtn.disabled = !isFormValid;
+            }
+
+            if(profileNameInput) profileNameInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+            if(profileRutInput) profileRutInput.addEventListener('input', checkAllFieldsAndToggleButtonState);
+            if(profileCountrySelect) profileCountrySelect.addEventListener('change', checkAllFieldsAndToggleButtonState);
+
             if (profileForm) profileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                checkAllFieldsAndToggleButtonState();
+                if (saveBtn && saveBtn.disabled) { 
+                    if(formStatus) {
+                      formStatus.className = 'text-center p-3 rounded-lg bg-yellow-100 text-yellow-700';
+                      formStatus.textContent = 'Por favor, corrige los campos marcados en rojo.';
+                      formStatus.classList.remove('hidden');
+                    }
+                    return; 
+                }
                 if (saveBtn) saveBtn.disabled = true;
+                if (saveBtnText) saveBtnText.textContent = 'Guardando...';
                 if (saveSpinner) saveSpinner.classList.remove('hidden');
+                if(formStatus) formStatus.classList.add('hidden');
                 const user = auth.currentUser;
-                const newName = profileNameInput.value.trim();
+                const newName = profileNameInput ? profileNameInput.value.trim() : '';
                 const userDocRef = db.collection('users').doc(user.uid);
                 try {
-                    await userDocRef.set({ displayName: newName, country: profileCountrySelect.value, profileCompleted: true }, { merge: true });
+                    if (newName && user && newName !== user.displayName) {
+                        await user.updateProfile({ displayName: newName });
+                    }
+                    await userDocRef.set({
+                        displayName: newName,
+                        email: user.email,
+                        rut: profileRutInput ? profileRutInput.value.trim() : '',
+                        jobTitle: profileJobInput ? profileJobInput.value.trim() : '',
+                        country: profileCountrySelect ? profileCountrySelect.value : '',
+                        gender: profileGenderSelect ? profileGenderSelect.value : '',
+                        birthdate: profileBirthdateInput ? profileBirthdateInput.value : '',
+                        profileCompleted: true
+                    }, { merge: true });
                     if (dom.userName) dom.userName.textContent = newName;
-                    showToast('¡Perfil actualizado!');
+                    if(formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-green-100 text-green-700';
+                        formStatus.textContent = '¡Perfil actualizado con éxito!';
+                        formStatus.classList.remove('hidden');
+                    }
+                    showToast('¡Perfil actualizado con éxito!');
                     setTimeout(hideProfileModal, 1500);
-                } catch (error) { console.error("Error al guardar perfil:", error); } 
-                finally {
-                    if (saveBtn) saveBtn.disabled = false;
+                } catch (error) {
+                    console.error("Error al guardar perfil:", error);
+                    if(formStatus) {
+                        formStatus.className = 'text-center p-3 rounded-lg bg-red-100 text-red-700';
+                        formStatus.textContent = 'Hubo un error al guardar. Inténtalo de nuevo.';
+                        formStatus.classList.remove('hidden');
+                    }
+                } finally {
+                    if (saveBtnText) saveBtnText.textContent = 'Guardar Cambios';
                     if (saveSpinner) saveSpinner.classList.add('hidden');
                 }
             });
+            // --- FIN: LÓGICA DE PERFIL ---
+
             
             function activateTab(tabId) {
                 if (!dom.learningTabs) return;
@@ -1201,7 +1526,7 @@
                     b.classList.toggle('text-slate-500', !active);
                     b.classList.toggle('border-transparent', !active);
                 });
-                document.querySelectorAll('.ltab-panel').forEach(p => p.classList.toggle('hidden', p.id !== tabId));
+                dom.learningTabs.querySelectorAll('.ltab-panel').forEach(p => p.classList.toggle('hidden', p.id !== tabId));
             }
 
             if (dom.learningTabs) dom.learningTabs.addEventListener('click', (e) => {
@@ -1212,110 +1537,225 @@
             function loadLessonTabData() {
                 if (!currentUser) return;
                 const lessonId = userProgress.currentLessonId;
+                const lessonInfo = getLessonInfo(lessonId);
+                if (!lessonInfo) return;
+
                 loadNotes(lessonId);
                 loadUserResources(lessonId);
                 loadTasks(lessonId);
+                activateTab('tab-clases'); // Iniciamos siempre en clases
             }
 
             async function loadNotes(lessonId) {
-                if (!currentUser || !dom.notesTextarea) return;
+                if (!currentUser || !dom.notesTextarea || !dom.notesSaveStatus) return;
+                dom.notesTextarea.value = '';
                 const noteRef = db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${lessonId}`);
                 try {
                     const doc = await noteRef.get();
                     if (doc.exists) dom.notesTextarea.value = doc.data().content || '';
-                    else dom.notesTextarea.value = '';
                     dom.notesSaveStatus.textContent = 'Sin cambios';
-                } catch (error) { console.error("Error al cargar las notas:", error); }
+                } catch (error) {
+                    console.error("Error al cargar las notas:", error);
+                    dom.notesSaveStatus.textContent = 'Error al cargar';
+                }
             }
 
             async function saveNotes(lessonId) {
-                if (!currentUser || !dom.notesTextarea) return;
+                if (!currentUser || !dom.notesTextarea || !dom.notesSaveStatus) return;
                 dom.notesSaveStatus.textContent = 'Guardando...';
                 const noteRef = db.collection('userNotes').doc(`${currentUser.uid}_${courseId}_${lessonId}`);
                 try {
                     await noteRef.set({ uid: currentUser.uid, content: dom.notesTextarea.value, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
                     dom.notesSaveStatus.textContent = 'Guardado';
-                } catch (error) { console.error("Error al guardar las notas:", error); } 
-                finally { setTimeout(() => { dom.notesSaveStatus.textContent = 'Sin cambios'; }, 2000); }
+                } catch (error) {
+                    console.error("Error al guardar las notas:", error);
+                    dom.notesSaveStatus.textContent = 'Error al guardar';
+                } finally {
+                    setTimeout(() => { if (dom.notesSaveStatus.textContent === 'Guardado') dom.notesSaveStatus.textContent = 'Sin cambios'; }, 2000);
+                }
             }
-            if (dom.notesTextarea) dom.notesTextarea.addEventListener('input', () => { dom.notesSaveStatus.textContent = 'Editando...'; clearTimeout(notesSaveTimer); notesSaveTimer = setTimeout(() => saveNotes(userProgress.currentLessonId), 1500); });
+            if (dom.notesTextarea) dom.notesTextarea.addEventListener('input', () => { if (!dom.notesSaveStatus) return; dom.notesSaveStatus.textContent = 'Editando...'; clearTimeout(notesSaveTimer); notesSaveTimer = setTimeout(() => saveNotes(userProgress.currentLessonId), 1500); });
 
             async function renderCourseResources(lesson) {
                 if (!dom.resourcesList || !dom.integratedResourcesArea) return;
-                const resources = lesson.resources || [];
-                if (resources.length > 0) {
+                
+                // UX: Obtener todos los recursos del Módulo actual, no solo de la lección
+                const lessonInfo = getLessonInfo(lesson.id);
+                if (!lessonInfo || !lessonInfo.module) return;
+
+                const moduleResources = lessonInfo.module.lessons.flatMap(l => l.resources || []);
+                // Eliminar duplicados si los hubiera por nombre
+                const uniqueResources = Array.from(new Map(moduleResources.map(item => [item['name'], item])).values());
+                
+                if (uniqueResources.length > 0) {
                     dom.integratedResourcesArea.classList.remove('hidden');
-                    const htmls = await Promise.all(resources.map(async (resource) => {
+                    dom.resourcesList.innerHTML = '<div class="col-span-full py-5"><p class="text-gray-500 animate-pulse">Cargando recursos del módulo...</p></div>';
+                    
+                    const resourcesHtmlArray = await Promise.all(uniqueResources.map(async (resource) => {
                         let resolvedUrl = resource.url;
-                        if (resource.url.startsWith('gs://')) resolvedUrl = await resolveStorageDownloadURL(storage, resource.url);
+                        if (resource.url.startsWith('gs://')) {
+                            try {
+                                resolvedUrl = await resolveStorageDownloadURL(storage, resource.url);
+                            } catch (e) {
+                                console.error("Error resolviendo recurso:", resource.name, e);
+                            }
+                        }
+
                         const isPdf = !resource.external && resolvedUrl.toLowerCase().includes('.pdf');
-                        const icon = resource.external ? 'link' : 'file-text';
-                        return `<button onclick="${isPdf ? `window.openPdfModal('${resolvedUrl}', '${resource.name}')` : `window.open('${resolvedUrl}', '_blank')`}" class="flex items-center p-4 bg-white border border-gray-200 rounded-xl hover:bg-slate-50 hover:border-teal-500 transition-all group text-left">
-                                    <div class="bg-teal-50 p-2 rounded-lg mr-4 group-hover:bg-teal-100"><i data-lucide="${icon}" class="h-6 w-6 text-teal-600"></i></div>
+                        const icon = resource.external ? 'link' : (isPdf ? 'file-text' : 'download-cloud');
+                        const actionAttr = isPdf ? `data-pdf-url="${resolvedUrl}" data-pdf-title="${resource.name}"` : `href="${resolvedUrl}"`;
+                        const targetAttr = resource.external ? 'target="_blank" rel="noopener noreferrer"' : (isPdf ? '' : 'download');
+                        const tagName = isPdf ? 'button' : 'a';
+                        
+                        return `<${tagName} ${actionAttr} ${targetAttr} class="resource-item flex items-center p-4 bg-white border border-gray-200 rounded-xl hover:bg-slate-50 hover:border-teal-500 transition-all duration-200 group text-left">
+                                    <div class="bg-teal-50 p-2 rounded-lg mr-4 group-hover:bg-teal-100 transition-colors">
+                                        <i data-lucide="${icon}" class="h-6 w-6 text-teal-600"></i>
+                                    </div>
                                     <span class="flex-1 font-medium text-gray-700 group-hover:text-teal-700 truncate">${resource.name}</span>
-                                </button>`;
+                                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i>
+                                </${tagName}>`;
                     }));
-                    dom.resourcesList.innerHTML = htmls.join('');
+                    
+                    dom.resourcesList.innerHTML = resourcesHtmlArray.join('');
                 } else {
                     dom.integratedResourcesArea.classList.add('hidden');
-                    dom.resourcesList.innerHTML = '';
                 }
                 lucide.createIcons();
             }
 
-            window.openPdfModal = (url, title) => {
-                if (!dom.pdfModal || !dom.pdfIframe) return;
-                dom.pdfModalTitle.textContent = title;
-                dom.pdfIframe.src = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+            function openPdfModal(url, title) {
+                if (!dom.pdfModal || !dom.pdfModalOverlay || !dom.pdfModalContent || !dom.pdfIframe) return;
+                dom.pdfModalTitle && (dom.pdfModalTitle.textContent = title);
+                const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+                dom.pdfIframe.src = viewerUrl;
                 dom.pdfModal.classList.remove('hidden');
                 dom.pdfModalOverlay.classList.remove('hidden');
                 setTimeout(() => { dom.pdfModalOverlay.classList.add('opacity-100'); dom.pdfModalContent.classList.remove('scale-95', 'opacity-0'); }, 10);
-            };
+            }
 
-            const closePdfModal = () => {
+            function closePdfModal() {
+                if (!dom.pdfModal || !dom.pdfModalOverlay || !dom.pdfModalContent || !dom.pdfIframe) return;
                 dom.pdfModalOverlay.classList.remove('opacity-100');
                 dom.pdfModalContent.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => { dom.pdfModal.classList.add('hidden'); dom.pdfModalOverlay.classList.add('hidden'); dom.pdfIframe.src = ''; }, 300);
-            };
+            }
+
+            // Los PDFs se abren desde la pestaña Materiales
+            const materialTab = document.getElementById('tab-material');
+            if (materialTab) {
+                materialTab.addEventListener('click', (e) => {
+                    const button = e.target.closest('.resource-item[data-pdf-url]');
+                    if (button) openPdfModal(button.dataset.pdfUrl, button.dataset.pdfTitle);
+                });
+            }
 
             if (dom.pdfModalCloseBtn) dom.pdfModalCloseBtn.addEventListener('click', closePdfModal);
+            if (dom.pdfModalOverlay) dom.pdfModalOverlay.addEventListener('click', closePdfModal);
+
+            async function downloadTranscription(transcriptionUrl, lessonTitle) {
+                if (!transcriptionUrl) {
+                    showToast('No hay transcripción disponible para descargar.');
+                    return;
+                }
+                
+                const btn = document.getElementById('transcription-button');
+                if (!btn) return;
+                
+                const btnSpan = btn.querySelector('span');
+                const originalText = btnSpan ? btnSpan.textContent : 'Descargar Transcripción';
+                
+                if (btnSpan) btnSpan.textContent = 'Preparando...';
+                btn.disabled = true;
+
+                try {
+                    const resolvedUrl = await resolveStorageDownloadURL(storage, transcriptionUrl);
+                    const response = await fetch(resolvedUrl);
+                    if (!response.ok) throw new Error('Respuesta de red no fue OK');
+                    
+                    const srtText = await response.text();
+                    
+                    const plainText = srtText
+                        .split(/\r?\n/)
+                        .filter(line => !/^\d+$/.test(line.trim()) && !line.includes('-->'))
+                        .join('\n')
+                        .replace(/(\n\s*){2,}/g, '\n\n')
+                        .trim();
+
+                    const blob = new Blob([plainText], { type: 'text/plain;charset=utf-8' });
+                    
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    
+                    const sanitizedTitle = lessonTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                    link.download = `transcripcion_${sanitizedTitle}.txt`;
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    URL.revokeObjectURL(link.href);
+                    showToast('Descarga iniciada.');
+
+                } catch (error) {
+                    console.error('Error al descargar la transcripción:', error);
+                    showToast('No se pudo descargar la transcripción.');
+                } finally {
+                    if (btnSpan) btnSpan.textContent = originalText;
+                    btn.disabled = false;
+                }
+            }
 
             async function loadUserResources(lessonId) {
                 if (!currentUser || !dom.userResourceList) return;
-                dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
+                dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando tus archivos...</p></li>';
                 try {
                     const snap = await db.collection('userResources').where('uid', '==', currentUser.uid).where('courseId', '==', courseId).where('lessonId', '==', lessonId).get();
-                    if (snap.empty) { dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos.</p></li>'; return; }
+                    if (snap.empty) { dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos para esta lección aún.</p></li>'; return; }
+                    const docs = snap.docs.sort((a, b) => { const timeA = a.data().createdAt?.toDate() || 0; const timeB = b.data().createdAt?.toDate() || 0; return timeB - timeA; });
                     dom.userResourceList.innerHTML = '';
-                    snap.forEach(doc => {
-                        const data = doc.data();
-                        const li = document.createElement('li');
-                        li.className = 'px-4 py-3 flex items-center justify-between';
-                        li.innerHTML = `<div class="min-w-0 flex-1"><p class="text-sm font-medium text-slate-900 truncate">${data.name}</p></div><div class="flex items-center gap-3"><a href="${data.downloadURL}" target="_blank" class="text-teal-700 text-sm font-semibold">Abrir</a></div>`;
-                        dom.userResourceList.appendChild(li);
-                    });
-                } catch (err) { console.error('Error listando recursos:', err); }
+                    docs.forEach(doc => renderUserResourceItem(doc));
+                } catch (err) {
+                    console.error('Error listando recursos:', err);
+                    dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos personales.</p></li>';
+                }
+            }
+            function renderUserResourceItem(doc) {
+                if (!dom.userResourceList) return;
+                const data = doc.data();
+                const li = document.createElement('li');
+                li.className = 'px-4 py-3 flex items-center justify-between';
+                li.innerHTML = `<div class="min-w-0 flex-1"><p class="text-sm font-medium text-slate-900 truncate">${data.name}</p><p class="text-xs text-slate-500 truncate">${data.contentType || ''} - ${Math.round(data.size / 1024)} KB</p></div><div class="flex items-center gap-3"><a href="${data.downloadURL}" target="_blank" class="text-teal-700 text-sm font-semibold hover:underline">Abrir</a><button class="delete-resource-btn text-red-600 text-sm font-semibold hover:underline">Eliminar</button></div>`;
+                li.querySelector('.delete-resource-btn').addEventListener('click', async () => {
+                    if (!confirm(`¿Seguro que quieres eliminar "${data.name}"?`)) return;
+                    try { await storage.ref(data.storagePath).delete(); await doc.ref.delete(); li.remove(); showToast('Archivo eliminado.'); } 
+                    catch (err) { console.error('Error eliminando:', err); showToast('No se pudo eliminar el archivo.'); }
+                });
+                dom.userResourceList.prepend(li);
             }
             
             if (dom.resourceFileInput) dom.resourceFileInput.addEventListener('change', () => { if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.disabled = dom.resourceFileInput.files.length === 0; });
             if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.addEventListener('click', async () => {
-                const files = dom.resourceFileInput.files;
-                if (!files.length || !currentUser) return;
+                const files = dom.resourceFileInput ? dom.resourceFileInput.files : null;
+                if (!files || !files.length || !currentUser || !dom.uploadProgress) return;
                 const lessonId = userProgress.currentLessonId;
                 dom.uploadProgress.classList.remove('hidden');
                 for (const file of files) {
                     dom.uploadProgress.textContent = `Subiendo ${file.name}...`;
                     const storagePath = `user_uploads/${currentUser.uid}/${courseId}/${lessonId}/${Date.now()}_${file.name}`;
+                    const fileRef = storage.ref(storagePath);
                     try {
-                        const uploadTask = await storage.ref(storagePath).put(file);
+                        const uploadTask = await fileRef.put(file);
                         const downloadURL = await uploadTask.ref.getDownloadURL();
-                        await db.collection('userResources').add({ uid: currentUser.uid, courseId, lessonId, name: file.name, downloadURL, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-                    } catch (err) { console.error('Error en subida:', err); }
+                        const docRef = await db.collection('userResources').add({ uid: currentUser.uid, courseId, lessonId, name: file.name, size: file.size, contentType: file.type, storagePath, downloadURL, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                        const newDoc = await docRef.get();
+                        if (dom.userResourceList && dom.userResourceList.querySelector('p.text-slate-500')) dom.userResourceList.innerHTML = '';
+                        renderUserResourceItem(newDoc);
+                    } catch (err) { console.error('Error en subida:', err); dom.uploadProgress.textContent = `Error al subir ${file.name}.`; return; }
                 }
                 dom.uploadProgress.textContent = '¡Archivos subidos!';
-                dom.resourceFileInput.value = '';
-                loadUserResources(lessonId);
-                setTimeout(() => dom.uploadProgress.classList.add('hidden'), 3000);
+                if (dom.resourceFileInput) dom.resourceFileInput.value = '';
+                if (dom.uploadResourcesBtn) dom.uploadResourcesBtn.disabled = true;
+                setTimeout(() => dom.uploadProgress && dom.uploadProgress.classList.add('hidden'), 3000);
             });
 
             async function loadTasks(lessonId) {
@@ -1323,87 +1763,242 @@
                 const key = `${currentUser.uid}_${courseId}_${lessonId}`;
                 dom.taskList.innerHTML = '';
                 try {
-                    const doc = await db.collection('userTasks').doc(key).get();
-                    if (doc.exists) { 
-                        (doc.data().items || []).forEach(task => {
-                            const li = document.createElement('li');
-                            li.className = 'bg-slate-50 border border-slate-200 rounded-lg p-3 flex items-center gap-3';
-                            li.innerHTML = `<input type="checkbox" ${task.done ? 'checked' : ''} class="h-4 w-4 text-teal-600 rounded"><span class="text-sm ${task.done ? 'line-through text-slate-400' : ''}">${task.text}</span>`;
-                            dom.taskList.appendChild(li);
-                        });
-                    }
+                    const docRef = db.collection('userTasks').doc(key);
+                    const doc = await docRef.get();
+                    if (doc.exists) { const items = doc.data().items || []; items.forEach(task => renderTaskItem(task, docRef)); }
                 } catch (err) { console.error('Error cargando tareas:', err); }
             }
 
-            async function addTask() {
-                const text = dom.taskInput.value.trim();
-                if (!text || !currentUser) return;
-                const lessonId = userProgress.currentLessonId;
-                const key = `${currentUser.uid}_${courseId}_${lessonId}`;
-                try {
-                    await db.collection('userTasks').doc(key).set({ uid: currentUser.uid, items: firebase.firestore.FieldValue.arrayUnion({ text, done: false }) }, { merge: true });
-                    dom.taskInput.value = '';
-                    loadTasks(lessonId);
-                } catch (err) { console.error('Error agregando tarea:', err); }
+            function renderTaskItem(task, docRef) {
+                if (!dom.taskList) return;
+                const li = document.createElement('li');
+                li.className = 'bg-white border border-slate-200 rounded-lg p-3 flex items-center justify-between group';
+                li.innerHTML = `<label class="flex-1 flex items-center gap-3 cursor-pointer"><input type="checkbox" class="task-toggle h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500" ${task.done ? 'checked' : ''}/><span class="text-sm ${task.done ? 'line-through text-slate-400' : 'text-slate-800'}">${task.text}</span></label><button class="task-delete text-slate-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="h-4 w-4"></i></button>`;
+                const toggle = li.querySelector('.task-toggle');
+                toggle.addEventListener('change', async () => { await updateTask(docRef, task, { done: toggle.checked }); const span = li.querySelector('span'); if (span) { span.classList.toggle('line-through', toggle.checked); span.classList.toggle('text-slate-400', toggle.checked); } });
+                li.querySelector('.task-delete').addEventListener('click', async () => { await deleteTask(docRef, task); li.remove(); });
+                dom.taskList.append(li);
+                lucide.createIcons();
             }
+            async function updateTask(docRef, oldTask, updates) { const doc = await docRef.get(); const items = doc.exists ? doc.data().items || [] : []; const itemIndex = items.findIndex(item => item.text === oldTask.text); if (itemIndex > -1) { items[itemIndex] = { ...items[itemIndex], ...updates }; await docRef.set({ items }, { merge: true }); } }
+            async function deleteTask(docRef, taskToDelete) { const doc = await docRef.get(); const items = doc.exists ? doc.data().items || [] : []; const newItems = items.filter(item => item.text !== taskToDelete.text); await docRef.set({ items: newItems }, { merge: true }); }
+            async function addTask() { if (!currentUser || !dom.taskInput) return; const text = dom.taskInput.value.trim(); if (!text) return; const lessonId = userProgress.currentLessonId; const key = `${currentUser.uid}_${courseId}_${lessonId}`; const task = { text, done: false }; try { const docRef = db.collection('userTasks').doc(key); await docRef.set({ uid: currentUser.uid, items: firebase.firestore.FieldValue.arrayUnion(task) }, { merge: true }); renderTaskItem(task, docRef); dom.taskInput.value = ''; } catch (err) { console.error('Error agregando tarea:', err); } }
             if (dom.addTaskBtn) dom.addTaskBtn.addEventListener('click', addTask);
-
+            if (dom.taskInput) dom.taskInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addTask(); }});
+            
             if (dom.supportForm) dom.supportForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const formData = new FormData(dom.supportForm);
-                const dataToSend = { email: auth.currentUser.email, fecha: new Date().toLocaleString(), asunto: formData.get('subject'), mensaje: formData.get('message') };
-                dom.supportSubmitBtn.disabled = true;
-                dom.supportSpinner.classList.remove('hidden');
+                const lessonInfo = getLessonInfo(userProgress.currentLessonId);
+                const dataToSend = { email: auth.currentUser.email, curso: courseData.title, fecha: new Date().toLocaleString('es-CL'), asunto: formData.get('subject'), mensaje: formData.get('message'), leccion: lessonInfo ? lessonInfo.lesson.title : 'Lección no especificada', nombreAlumno: currentUser ? currentUser.name : '' };
+                if (dom.supportSubmitBtn) dom.supportSubmitBtn.disabled = true;
+                if (dom.supportBtnText) dom.supportBtnText.textContent = 'Enviando...';
+                if (dom.supportSpinner) dom.supportSpinner.classList.remove('hidden');
+                if (dom.supportFormStatus) dom.supportFormStatus.innerHTML = '';
                 try {
-                    await fetch('https://muna.auto.hostybee.com/webhook/soporte', { method: 'POST', body: JSON.stringify(dataToSend), headers: { 'Content-Type': 'application/json' } });
-                    dom.supportFormStatus.innerHTML = `<p class="text-green-600">¡Consulta enviada!</p>`;
-                    dom.supportForm.reset();
-                } catch (error) { console.error('Error soporte:', error); } 
-                finally { dom.supportSubmitBtn.disabled = false; dom.supportSpinner.classList.add('hidden'); }
+                    const webhookUrl = 'https://muna.auto.hostybee.com/webhook/soporte';
+                    const response = await fetch(webhookUrl, { method: 'POST', body: JSON.stringify(dataToSend), headers: { 'Content-Type': 'application/json' } });
+                    if (response.ok) { if (dom.supportFormStatus) dom.supportFormStatus.innerHTML = `<p class="text-green-600 font-semibold">¡Consulta enviada con éxito!</p>`; dom.supportForm.reset(); }
+                    else { throw new Error('Error en la respuesta del servidor de n8n'); }
+                } catch (error) {
+                    console.error('Error al enviar al webhook de n8n:', error);
+                    if (dom.supportFormStatus) dom.supportFormStatus.innerHTML = `<p class="text-red-600 font-semibold">Hubo un error al enviar tu consulta. Por favor, intenta más tarde.</p>`;
+                } finally {
+                    if (dom.supportSubmitBtn) dom.supportSubmitBtn.disabled = false;
+                    if (dom.supportBtnText) dom.supportBtnText.textContent = 'Enviar Consulta';
+                    if (dom.supportSpinner) dom.supportSpinner.classList.add('hidden');
+                }
             });
 
             function srtToVtt(srt) {
                 const cleaned = srt.replace(/\r+/g, '').replace(/^\s*\d+\s*$/gm, '').replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, '$1:$2:$3.$4');
                 return 'WEBVTT\n\n' + cleaned.trim();
             }
-            async function resolveStorageDownloadURL(storage, url) {
-                try { return await storage.refFromURL(url).getDownloadURL(); }
-                catch (e) { return url; }
+            async function resolveStorageDownloadURL(storage, maybeGsOrHttpsUrl) {
+                if (!maybeGsOrHttpsUrl) return null;
+                try { const ref = storage.refFromURL(maybeGsOrHttpsUrl); return await ref.getDownloadURL(); }
+                catch (e) { if (/^https?:\/\//i.test(maybeGsOrHttpsUrl)) return maybeGsOrHttpsUrl; throw e; }
             }
             async function attachMediaAndCaptions({ storage, videoEl, videoSrc, srtOrVttSrc }) {
-                if (!videoEl) return;
-                const resolvedVideo = await resolveStorageDownloadURL(storage, videoSrc);
                 const srcEl = videoEl.querySelector('#course-video-source');
-                if (srcEl) srcEl.src = resolvedVideo;
-                
+                const resolvedVideo = await resolveStorageDownloadURL(storage, videoSrc);
+                if (srcEl && resolvedVideo) srcEl.src = resolvedVideo;
+
                 const trackEl = videoEl.querySelector('#caption-track');
-                if (trackEl && srtOrVttSrc) {
-                    const resolvedTrack = await resolveStorageDownloadURL(storage, srtOrVttSrc);
+                if (!trackEl || !srtOrVttSrc) { videoEl.load(); return; }
+
+                const resolvedTrack = await resolveStorageDownloadURL(storage, srtOrVttSrc);
+                if (!resolvedTrack) { videoEl.load(); return; }
+
+                const isSrt = /(\.srt)(\?|$)/i.test(resolvedTrack);
+                if (isSrt) {
                     const resp = await fetch(resolvedTrack);
                     const srtTxt = await resp.text();
-                    trackEl.src = URL.createObjectURL(new Blob([srtToVtt(srtTxt)], { type: 'text/vtt' }));
+                    const vttTxt = srtToVtt(srtTxt);
+                    const blobUrl = URL.createObjectURL(new Blob([vttTxt], { type: 'text/vtt' }));
+                    trackEl.src = blobUrl;
+                } else {
+                    trackEl.src = resolvedTrack;
                 }
+                trackEl.default = true;
+                const [t] = videoEl.textTracks; if (t) t.mode = 'showing';
                 videoEl.load();
             }
 
-            function lockPostCompletionActions() {
-                if (getIsCourseComplete()) {
-                    if (dom.navigationButtons) dom.navigationButtons.classList.add('hidden');
-                }
+            const BLOCK_SELECTORS_ON_COMPLETE = [
+              '#main-action-btn',
+              'button[id*="encuesta"]',
+              '[id*="btn-encuesta"]',
+              '[data-action="complete"]',
+              '[data-action="encuesta"]',
+              '.btn-completar-modulo',
+              '.btn-encuesta',
+              'a[href*="encuesta"]'
+            ];
+            
+            function isInsideVideo(el) {
+              return !!el.closest('video, .plyr, .video-js, .video-container');
             }
 
-            if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `./acceso.html`));
+            function hardDisable(el, reason = 'Curso finalizado: acción deshabilitada') {
+              if (!el || isInsideVideo(el)) return;
+              el.setAttribute('aria-disabled', 'true');
+              el.setAttribute('tabindex', '-1');
+              el.title = reason;
+              el.classList.add('opacity-60', 'cursor-not-allowed');
+              if (el.tagName === 'BUTTON') el.disabled = true;
+
+              const blocker = (e) => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                return false;
+              };
+              el.addEventListener('click', blocker, true);
+              el.addEventListener('pointerdown', blocker, true);
+              el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') blocker(e);
+              }, true);
+            }
+
+            function lockPostCompletionActions() {
+              const courseIsDone = getIsCourseComplete();
+              if (!courseIsDone) return;
+
+              if (dom && dom.navigationButtons) {
+                dom.navigationButtons.classList.add('hidden');
+              }
+
+              BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
+                document.querySelectorAll(sel).forEach((el) => hardDisable(el));
+              });
+
+              if (!window.__postCompleteObserver__) {
+                window.__postCompleteObserver__ = new MutationObserver(() => {
+                  BLOCK_SELECTORS_ON_COMPLETE.forEach((sel) => {
+                    document.querySelectorAll(sel).forEach((el) => hardDisable(el));
+                  });
+                });
+                window.__postCompleteObserver__.observe(document.body, { childList: true, subtree: true });
+              }
+            }
+
+            if (dom.logoutButton) dom.logoutButton.addEventListener('click', () => auth.signOut().then(() => window.location.href = `${baseUrl}/index.html`));
 
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUser = { uid: user.uid, name: user.displayName || 'Alumno' };
                     if (dom.userName) dom.userName.textContent = currentUser.name;
-                    if (dom.userAvatar) dom.userAvatar.src = user.photoURL || `https://placehold.co/100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0)}`;
+                    if (dom.userAvatar) dom.userAvatar.src = user.photoURL || `https://placehold.co/100x100/14b8a6/FFFFFF?text=${currentUser.name.charAt(0).toUpperCase()}`;
                     if (dom.userProfile) { dom.userProfile.classList.remove('hidden'); dom.userProfile.classList.add('flex'); }
                     loadProgressAndInitialize();
-                } else { window.location.href = `./acceso.html`; }
+                } else {
+                    window.location.href = `${baseUrl}/acceso.html`;
+                }
             });
         });
     </script>
+
+    <!-- === START: Scripts de Sincronización y Medios === -->
+    <script>
+    (function(){
+      const FIRESTORE_SYNC = true;
+
+      function getCourseId() {
+        try {
+          const p = new URLSearchParams(location.search);
+          return p.get('course') || (window.COURSE_ID || 'ia-aplicada-esencial');
+        } catch(e) { return 'ia-aplicada-esencial'; }
+      }
+      
+      function countLessonsInDOM() {
+          try {
+              const allCourseData = window.ALL_COURSES_DATA;
+              if (allCourseData && allCourseData[getCourseId()]) {
+                  return allCourseData[getCourseId()].modules.flatMap(m => m.lessons).length;
+              }
+              const nodes = document.querySelectorAll('[data-lesson-id]');
+              return nodes ? nodes.length : 0;
+          } catch(e){ return 0; }
+      }
+
+      function whenFirebaseReady(fn, tries){
+        tries = tries || 0;
+        if (window.firebase && firebase.apps && firebase.apps.length > 0) return fn();
+        if (tries > 100) return console.warn('Firebase no está listo para la sincronización.');
+        setTimeout(function(){ whenFirebaseReady(fn, tries+1); }, 100);
+      }
+      
+      function syncTotalLessons(){
+        if (!FIRESTORE_SYNC) { console.log('[sync] Sincronización de total de lecciones deshabilitada.'); return; }
+        try {
+          const total = countLessonsInDOM();
+          if (!total || !(total > 0)) return;
+          const courseId = getCourseId();
+          const db = firebase.firestore();
+          db.collection('courses').doc(courseId)
+            .set({ totalLessons: total }, { merge: true })
+            .then(() => console.log(`[sync] Total de lecciones actualizado para ${courseId}: ${total}`))
+            .catch(err => console.warn('[sync] Falló la actualización de total de lecciones:', err));
+        } catch(e){ console.warn('[sync] Excepción en syncTotalLessons:', e); }
+      }
+      
+      whenFirebaseReady(syncTotalLessons);
+      document.addEventListener('DOMContentLoaded', syncTotalLessons);
+    })();
+
+    window.copyTallerPrompt = function() {
+        const t1 = document.getElementById('taller-t1')?.value || 'N/A';
+        const m1 = document.getElementById('taller-m1')?.value || '0';
+        const t2 = document.getElementById('taller-t2')?.value || 'N/A';
+        const m2 = document.getElementById('taller-m2')?.value || '0';
+        const t3 = document.getElementById('taller-t3')?.value || 'N/A';
+        const m3 = document.getElementById('taller-m3')?.value || '0';
+        const bottleneck = document.getElementById('taller-bottleneck')?.value || 'No especificado';
+        
+        let obstacles = [];
+        document.querySelectorAll('.taller-chk:checked').forEach(cb => obstacles.push(cb.value));
+        
+        const promptText = `Hola Mentor IA. Mis respuestas del Radar de Automatización:\n\n` +
+            `1. TAREAS:\n- ${t1} (${m1} mins)\n- ${t2} (${m2} mins)\n- ${t3} (${m3} mins)\n\n` +
+            `2. FRUSTRACIÓN PRINCIPAL:\n"${bottleneck}"\n\n` +
+            `3. OBSTÁCULOS:\n${obstacles.join(', ') || 'Ninguno'}\n\n` +
+            `Dame un plan paso a paso para automatizar la tarea más crítica.`;
+
+        navigator.clipboard.writeText(promptText).then(() => {
+            const btn = document.querySelector('button[onclick="window.copyTallerPrompt()"]');
+            if(btn) { 
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> ¡Copiado!';
+                setTimeout(() => btn.innerHTML = original, 3000);
+                lucide.createIcons();
+            }
+            if(typeof showToast === 'function') showToast('Prompt copiado al portapapeles');
+            else alert('Prompt copiado. Pégalo en tu GPT.');
+        });
+    };
+    </script>
+    <!-- === END: Scripts de Sincronización y Medios === -->
+
 </body>
 </html>
