@@ -6,6 +6,7 @@
   - FEAT: Sidebar colapsable (Toggle) para modo enfoque.
   - LAYOUT: Max-width en video (1200px) y espaciado optimizado (Gap 32px).
   - TYPO: Ajuste de jerarquía visual (Factor 0.85) en encabezados y menú.
+  - UX UPDATE: Consolidación de pestañas (Material + Recursos) y reubicación de subida de archivos.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -204,16 +205,13 @@
                         <div class="border-b border-slate-200 mb-4">
                             <nav class="-mb-px flex gap-6 text-sm font-medium overflow-x-auto">
                                 <button class="ltab active px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-material">
-                                    <span class="inline-flex items-center gap-2"><i data-lucide="book-open" class="h-4 w-4"></i>Material</span>
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="clapperboard" class="h-4 w-4"></i>Clase</span>
                                 </button>
                                 <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-notes">
                                     <span class="inline-flex items-center gap-2"><i data-lucide="notebook-pen" class="h-4 w-4"></i>Notas</span>
                                 </button>
-                                <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-resources">
-                                    <span class="inline-flex items-center gap-2"><i data-lucide="folder-down" class="h-4 w-4"></i>Recursos</span>
-                                </button>
                                 <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-tasks">
-                                    <span class="inline-flex items-center gap-2"><i data-lucide="check-square" class="h-4 w-4"></i>Tareas</span>
+                                    <span class="inline-flex items-center gap-2"><i data-lucide="check-square" class="h-4 w-4"></i>Tareas y Archivos</span>
                                 </button>
                                 <button class="ltab px-2 py-2 border-b-2 border-transparent text-slate-500 hover:text-teal-600 whitespace-nowrap" data-tab="tab-support">
                                     <span class="inline-flex items-center gap-2"><i data-lucide="message-square-heart" class="h-4 w-4"></i>Soporte y Tutoría</span>
@@ -223,6 +221,11 @@
 
                         <div id="tab-material" class="ltab-panel">
                              <div id="lesson-material-container" class="mb-6"></div>
+                             <!-- Espacio para recursos integrados -->
+                             <div id="integrated-resources-container" class="mt-12 pt-8 border-t border-slate-200">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Material Descargable</h3>
+                                <div id="resources-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                             </div>
                         </div>
 
                         <div id="tab-notes" class="ltab-panel hidden">
@@ -238,33 +241,29 @@
                             </div>
                         </div>
 
-                        <div id="tab-resources" class="ltab-panel hidden">
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-900">Recursos de la lección</h3>
-                                <div id="resources-list" class="space-y-3"></div>
-                                <div class="p-4 border-t border-slate-200 mt-6">
-                                    <h4 class="text-base font-semibold text-gray-800 mb-2">Sube tus propios archivos</h4>
+                        <div id="tab-tasks" class="ltab-panel hidden">
+                            <div class="space-y-8">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Checklist de práctica</h3>
+                                    <div class="flex gap-2 mb-4">
+                                        <input id="task-input" type="text" class="flex-1 rounded-lg border border-slate-300 p-2 focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Ej: Probar un prompt en Gemini..." />
+                                        <button id="add-task-btn" class="px-3 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900">Agregar</button>
+                                    </div>
+                                    <ul id="task-list" class="space-y-2"></ul>
+                                </div>
+                                
+                                <div class="pt-6 border-t border-slate-200">
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Entregas y Archivos Personales</h3>
+                                    <p class="text-sm text-gray-600 mb-4">Sube aquí tus capturas de pantalla, documentos o cualquier archivo que desees guardar para esta lección.</p>
                                     <div class="flex items-center gap-3">
                                         <input id="resource-file-input" type="file" class="block w-full text-sm text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100" multiple />
-                                        <button id="upload-resources-btn" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50" disabled>
+                                        <button id="upload-resources-btn" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50" disabled title="Subir archivos">
                                             <i data-lucide="upload" class="h-4 w-4"></i>
                                         </button>
                                     </div>
                                     <div id="upload-progress" class="hidden text-sm text-slate-600 mt-2"></div>
                                     <ul id="user-resource-list" class="mt-4 divide-y divide-slate-200 bg-white rounded-lg border border-slate-200"></ul>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div id="tab-tasks" class="ltab-panel hidden">
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-900">Checklist de práctica</h3>
-                                <div class="flex gap-2">
-                                    <input id="task-input" type="text" class="flex-1 rounded-lg border border-slate-300 p-2 focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Ej: Probar un prompt en Gemini..." />
-                                    <button id="add-task-btn" class="px-3 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900">Agregar</button>
-                                </div>
-                                <ul id="task-list" class="space-y-2"></ul>
-                                <p class="text-xs text-slate-500">Tus tareas quedan guardadas por lección.</p>
                             </div>
                         </div>
 
@@ -518,7 +517,6 @@
             
             const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
             const urlParams = new URLSearchParams(window.location.search);
-            // CORRECCIÓN: Definimos courseId una sola vez con su valor por defecto aquí
             const courseId = urlParams.get('course') || 'ia-aplicada-esencial';
 
             const ALL_COURSES_DATA = {
@@ -536,43 +534,21 @@
                         type: 'video', 
                         videoUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial.mp4',
                         transcriptionUrl: 'gs://aulagenia.firebasestorage.app/MODULO1-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt',
-                        resources: [] 
-                      },
-                      { 
-                        id: '1-r1', 
-                        title: 'Glosario', 
-                        type: 'resource', 
-                        resources: [{ name: 'Glosario IA para Negocios', url: 'gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf', external: false }] 
-                      },
-                      { 
-                        id: '1-r2', 
-                        title: 'Copiloto vs. Programador', 
-                        type: 'resource', 
-                        resources: [{ name: 'Infografía: El rol del Copiloto', url: 'gs://aulagenia.firebasestorage.app/Copiloto_vs_Programador.pdf', external: false }] 
+                        resources: [
+                          { name: 'Glosario IA para Negocios', url: 'gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf', external: false },
+                          { name: 'Infografía: El rol del Copiloto', url: 'gs://aulagenia.firebasestorage.app/Copiloto_vs_Programador.pdf', external: false },
+                          { name: 'Guía del Copiloto IA', url: 'gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf', external: false }
+                        ] 
                       },
                       { 
                         id: '1-r3', 
-                        title: 'Acceso ChatGPT', 
+                        title: 'Herramientas Recomendadas', 
                         type: 'resource', 
-                        resources: [{ name: 'Ir a ChatGPT', url: 'https://chatgpt.com', external: true }] 
-                      },
-                      { 
-                        id: '1-r4', 
-                        title: 'Acceso Gemini', 
-                        type: 'resource', 
-                        resources: [{ name: 'Ir a Gemini', url: 'https://gemini.google.com', external: true }, { name: 'Guía Acceso Gemini', url: 'gs://aulagenia.firebasestorage.app/AccesoGemini.pdf', external: false }] 
-                      },
-                      { 
-                        id: '1-r5', 
-                        title: 'Acceso Grok', 
-                        type: 'resource', 
-                        resources: [{ name: 'Ir a Grok', url: 'https://x.com/i/grok', external: true }, { name: 'Guía Acceso Grok', url: 'gs://aulagenia.firebasestorage.app/AccesoGrok.pdf', external: false }] 
-                      },
-                      { 
-                        id: '1-r6', 
-                        title: '¿Qué hay dentro del Copiloto?', 
-                        type: 'resource', 
-                        resources: [{ name: 'Guía del Copiloto IA', url: 'gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf', external: false }] 
+                        resources: [
+                            { name: 'Acceder a ChatGPT', url: 'https://chatgpt.com', external: true },
+                            { name: 'Acceder a Gemini', url: 'https://gemini.google.com', external: true },
+                            { name: 'Acceder a Grok', url: 'https://x.com/i/grok', external: true }
+                        ] 
                       },
                       { 
                         id: 'q-1', 
@@ -743,6 +719,7 @@
                 addTaskBtn: document.getElementById('add-task-btn'),
                 taskList: document.getElementById('task-list'),
                 tabMaterialPanel: document.getElementById('tab-material'),
+                integratedResourcesArea: document.getElementById('integrated-resources-container'),
                 pdfModalOverlay: document.getElementById('pdf-modal-overlay'),
                 pdfModal: document.getElementById('pdf-modal'),
                 pdfModalContent: document.getElementById('pdf-modal-content'),
@@ -871,6 +848,7 @@
                     }
                 }
 
+                // Render principal de la lección
                 switch(lesson.type) { 
                     case 'taller':
                         materialHtml = `
@@ -959,7 +937,13 @@
                             materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>`;
                         }
                         break; 
-                    case 'resource': materialHtml = `<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-white border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 p-8"><i data-lucide="package-check" class="h-20 w-20 text-slate-400 mb-4"></i><p class="text-center mb-4">Recursos y entregas en la pestaña 'Recursos'.</p></div></div>`; break; 
+                    case 'resource': 
+                        materialHtml = `<div class="bg-white p-12 border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 text-center">
+                            <i data-lucide="library-big" class="h-16 w-16 text-teal-500 mb-4"></i>
+                            <h3 class="text-xl font-bold text-gray-900">Lección de Consulta</h3>
+                            <p class="mt-2 text-gray-600 max-w-md">Esta lección se compone de recursos teóricos y enlaces externos que puedes consultar a continuación.</p>
+                        </div>`; 
+                        break; 
                     case 'quiz': { 
                         if (!lesson.questions || lesson.questions.length === 0) {
                             materialHtml = `<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>`;
@@ -999,6 +983,9 @@
                 } 
                 if (dom.tabMaterialPanel) dom.tabMaterialPanel.innerHTML = materialHtml; 
                 
+                // INTEGRACIÓN DE RECURSOS: Los mostramos siempre debajo del contenido principal
+                renderCourseResources(lesson);
+
                 if (lesson.type === 'quiz' && !isCourseComplete && lesson.questions && lesson.questions.length > 0) {
                     const isQuizCompleted = userProgress.completedLessons.includes(lesson.id);
                     if (!isQuizCompleted) {
@@ -1203,7 +1190,7 @@
                     const { lesson, module } = targetLessonInfo;
                     if (lesson.type === 'quiz') {
                         const otherLessonsInModule = module.lessons.filter(l => l.type !== 'quiz');
-                        if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(lesson.id))) {
+                        if (!otherLessonsInModule.every(l => userProgress.completedLessons.includes(id))) {
                             showToast(`Completa las lecciones del "${module.title}" para desbloquear el quiz.`);
                             return;
                         }
@@ -1530,7 +1517,6 @@
                 if (!lessonInfo) return;
 
                 loadNotes(lessonId);
-                renderCourseResources(lessonInfo.lesson);
                 loadUserResources(lessonId);
                 loadTasks(lessonId);
                 activateTab('tab-material');
@@ -1567,14 +1553,14 @@
             if (dom.notesTextarea) dom.notesTextarea.addEventListener('input', () => { if (!dom.notesSaveStatus) return; dom.notesSaveStatus.textContent = 'Editando...'; clearTimeout(notesSaveTimer); notesSaveTimer = setTimeout(() => saveNotes(userProgress.currentLessonId), 1500); });
 
             async function renderCourseResources(lesson) {
-                if (!dom.resourcesList) return;
+                if (!dom.resourcesList || !dom.integratedResourcesArea) return;
                 const resources = lesson.resources || [];
+                
                 if (resources.length > 0) {
-                    // Limpiamos primero
-                    dom.resourcesList.innerHTML = '<div class="text-center py-5"><p class="text-gray-500 animate-pulse">Cargando recursos...</p></div>';
+                    dom.integratedResourcesArea.classList.remove('hidden');
+                    dom.resourcesList.innerHTML = '<div class="col-span-full py-5"><p class="text-gray-500 animate-pulse">Cargando recursos...</p></div>';
                     
                     const resourcesHtmlArray = await Promise.all(resources.map(async (resource) => {
-                        // Resolvemos la URL si es de Firebase Storage (gs://)
                         let resolvedUrl = resource.url;
                         if (resource.url.startsWith('gs://')) {
                             try {
@@ -1590,16 +1576,19 @@
                         const targetAttr = resource.external ? 'target="_blank" rel="noopener noreferrer"' : (isPdf ? '' : 'download');
                         const tagName = isPdf ? 'button' : 'a';
                         
-                        return `<${tagName} ${actionAttr} ${targetAttr} class="resource-item flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-teal-500 transition-all duration-200 group w-full text-left">
-                                    <i data-lucide="${icon}" class="h-6 w-6 text-teal-500 mr-4"></i>
-                                    <span class="flex-1 font-medium text-gray-700 group-hover:text-teal-600">${resource.name}</span>
-                                    <i data-lucide="arrow-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i>
+                        return `<${tagName} ${actionAttr} ${targetAttr} class="resource-item flex items-center p-4 bg-white border border-gray-200 rounded-xl hover:bg-slate-50 hover:border-teal-500 transition-all duration-200 group text-left">
+                                    <div class="bg-teal-50 p-2 rounded-lg mr-4 group-hover:bg-teal-100 transition-colors">
+                                        <i data-lucide="${icon}" class="h-6 w-6 text-teal-600"></i>
+                                    </div>
+                                    <span class="flex-1 font-medium text-gray-700 group-hover:text-teal-700 truncate">${resource.name}</span>
+                                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i>
                                 </${tagName}>`;
                     }));
                     
                     dom.resourcesList.innerHTML = resourcesHtmlArray.join('');
                 } else {
-                    dom.resourcesList.innerHTML = `<div class="text-center py-5 px-4 bg-gray-100 rounded-lg"><p class="text-gray-500 text-sm">No hay recursos del instructor para esta lección.</p></div>`;
+                    // Si no hay recursos, ocultamos la sección completa de recursos integrados
+                    dom.integratedResourcesArea.classList.add('hidden');
                 }
                 lucide.createIcons();
             }
@@ -1621,10 +1610,12 @@
                 setTimeout(() => { dom.pdfModal.classList.add('hidden'); dom.pdfModalOverlay.classList.add('hidden'); dom.pdfIframe.src = ''; }, 300);
             }
 
-            if (dom.resourcesList) dom.resourcesList.addEventListener('click', (e) => {
+            // Listener para los botones de PDF dentro de la pestaña principal
+            if (dom.tabMaterialPanel) dom.tabMaterialPanel.addEventListener('click', (e) => {
                 const button = e.target.closest('.resource-item[data-pdf-url]');
                 if (button) openPdfModal(button.dataset.pdfUrl, button.dataset.pdfTitle);
             });
+
             if (dom.pdfModalCloseBtn) dom.pdfModalCloseBtn.addEventListener('click', closePdfModal);
             if (dom.pdfModalOverlay) dom.pdfModalOverlay.addEventListener('click', closePdfModal);
 
@@ -1683,16 +1674,16 @@
 
             async function loadUserResources(lessonId) {
                 if (!currentUser || !dom.userResourceList) return;
-                dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando...</p></li>';
+                dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">Cargando tus archivos...</p></li>';
                 try {
                     const snap = await db.collection('userResources').where('uid', '==', currentUser.uid).where('courseId', '==', courseId).where('lessonId', '==', lessonId).get();
-                    if (snap.empty) { dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500">No has subido archivos.</p></li>'; return; }
+                    if (snap.empty) { dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos para esta lección aún.</p></li>'; return; }
                     const docs = snap.docs.sort((a, b) => { const timeA = a.data().createdAt?.toDate() || 0; const timeB = b.data().createdAt?.toDate() || 0; return timeB - timeA; });
                     dom.userResourceList.innerHTML = '';
                     docs.forEach(doc => renderUserResourceItem(doc));
                 } catch (err) {
                     console.error('Error listando recursos:', err);
-                    dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos. Revisa los permisos de Firestore.</p></li>';
+                    dom.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos personales.</p></li>';
                 }
             }
             function renderUserResourceItem(doc) {
