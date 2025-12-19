@@ -541,7 +541,7 @@
                         id: '1-r1', 
                         title: 'Glosario', 
                         type: 'resource', 
-                        resources: [{ name: 'Glosario IA para Negocios', url: 'gs://aulagenia.firebasestorage.app/Glosario_IA_Aula_GenIA.pdf', external: false }] 
+                        resources: [{ name: 'Glosario IA para Negocios', url: 'gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf', external: false }] 
                       },
                       { 
                         id: '1-r2', 
@@ -559,19 +559,19 @@
                         id: '1-r4', 
                         title: 'Acceso Gemini', 
                         type: 'resource', 
-                        resources: [{ name: 'Ir a Gemini', url: 'https://gemini.google.com', external: true }] 
+                        resources: [{ name: 'Ir a Gemini', url: 'https://gemini.google.com', external: true }, { name: 'Guía Acceso Gemini', url: 'gs://aulagenia.firebasestorage.app/AccesoGemini.pdf', external: false }] 
                       },
                       { 
                         id: '1-r5', 
                         title: 'Acceso Grok', 
                         type: 'resource', 
-                        resources: [{ name: 'Ir a Grok', url: 'https://x.com/i/grok', external: true }] 
+                        resources: [{ name: 'Ir a Grok', url: 'https://x.com/i/grok', external: true }, { name: 'Guía Acceso Grok', url: 'gs://aulagenia.firebasestorage.app/AccesoGrok.pdf', external: false }] 
                       },
                       { 
                         id: '1-r6', 
                         title: '¿Qué hay dentro del Copiloto?', 
                         type: 'resource', 
-                        resources: [{ name: 'Guía del Copiloto IA', url: 'gs://aulagenia.firebasestorage.app/Que_hay_dentro_del_Copiloto.pdf', external: false }] 
+                        resources: [{ name: 'Guía del Copiloto IA', url: 'gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf', external: false }] 
                       },
                       { 
                         id: 'q-1', 
@@ -583,7 +583,7 @@
                             options: [
                                 'Son tres tecnologías completamente separadas.', 
                                 'Son como muñecas rusas: la IA es la más grande, contiene al AA y este a su vez al AP.', 
-                                'Son pasos de un proceso: se empieza con AP, luego AA y finalmente IA.', 
+                                'Son pasos de un proceso: se empieza con AP, luego AA and finalmente IA.', 
                                 'La IA es una parte del AA, y el AA es una parte del AP.'
                             ], 
                             correctAnswer: 1
@@ -995,8 +995,9 @@
                         }
                         
                         let linkClasses = 'text-gray-600 hover:bg-slate-50';
-                        let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'help-circle' : (lesson.type === 'resource' ? 'file-text' : 'circle'));
-                        let iconColor = isCompleted ? 'text-green-500' : 'text-slate-300';
+                        // Iconos específicos según el tipo para diferenciación visual
+                        let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'edit-3' : (lesson.type === 'video' ? 'play' : 'file-text'));
+                        let iconColor = isCompleted ? 'text-green-500' : (lesson.type === 'quiz' ? 'text-amber-500' : (lesson.type === 'video' ? 'text-teal-500' : 'text-slate-400'));
                         
                         if (isLocked) {
                             linkClasses = 'text-gray-400 cursor-not-allowed opacity-70';
@@ -1004,13 +1005,13 @@
                             iconColor = 'text-slate-400';
                         } else if (isActive) {
                             linkClasses = 'bg-teal-50 text-teal-700 font-semibold';
-                            statusIcon = 'play-circle';
-                            iconColor = '';
+                            statusIcon = lesson.type === 'video' ? 'play-circle' : (lesson.type === 'quiz' ? 'help-circle' : 'file-text');
+                            iconColor = 'text-teal-600';
                         }
                         
-                        const typeIcon = { video: 'video', resource: 'file-text', quiz: 'edit-3' }[lesson.type] || 'file';
+                        const typeIcon = { video: 'video', resource: 'book-open', quiz: 'edit-3' }[lesson.type] || 'file';
                         
-                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${iconColor}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-3.5 w-3.5 ml-2 opacity-40 ${isLocked ? 'text-slate-400' : ''}"></i></a></li>`;
+                        return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${iconColor}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-3.5 w-3.5 ml-2 opacity-30 ${isLocked ? 'text-slate-400' : ''}"></i></a></li>`;
                     }).join('');
 
                     const accordionButtonClasses = isModuleLocked ? 'text-gray-400' : 'text-gray-800';
@@ -1752,7 +1753,7 @@
                             }
                         }
 
-                        const isPdf = !resource.external && resolvedUrl.includes('.pdf');
+                        const isPdf = !resource.external && resolvedUrl.toLowerCase().includes('.pdf');
                         const icon = resource.external ? 'link' : (isPdf ? 'file-text' : 'download-cloud');
                         const actionAttr = isPdf ? `data-pdf-url="${resolvedUrl}" data-pdf-title="${resource.name}"` : `href="${resolvedUrl}"`;
                         const targetAttr = resource.external ? 'target="_blank" rel="noopener noreferrer"' : (isPdf ? '' : 'download');
