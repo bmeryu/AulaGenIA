@@ -8,7 +8,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts: Inter & JetBrains Mono (Industry Standard for Dev Tools) -->
+    <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -28,12 +28,13 @@
                             600: '#4f46e5',
                         },
                         zinc: {
-                            850: '#1f2023', // Linear-like dark
+                            850: '#1f2023',
                             900: '#18181b',
                         }
                     },
                     boxShadow: {
                         'glow': '0 0 20px rgba(99, 102, 241, 0.15)',
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
                     }
                 }
             }
@@ -43,15 +44,15 @@
     <style>
         /* Base Reset & Scrollbar */
         :root { --bg-app: #f4f4f5; }
-        body { background-color: var(--bg-app); color: #27272a; }
+        body { background-color: var(--bg-app); color: #27272a; -webkit-font-smoothing: antialiased; }
         
-        /* Custom Scrollbar - The "Linear" Look */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #e4e4e7; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4d4d8; }
 
-        /* Syntax Highlighting Tags - Chips Style */
+        /* Syntax Highlighting Tags */
         .hl-tag { 
             display: inline-flex; 
             align-items: center;
@@ -68,17 +69,17 @@
         
         .hl-active { 
             transform: scale(1.02); 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); 
             z-index: 10; 
             font-weight: 600;
         }
 
-        /* Syntax Colors - Subdued yet clear */
-        .hl-rol { color: #0369a1; background: #e0f2fe; border-color: #bae6fd; } /* Sky */
-        .hl-contexto { color: #15803d; background: #dcfce7; border-color: #bbf7d0; } /* Green */
-        .hl-meta { color: #b45309; background: #fef3c7; border-color: #fde68a; } /* Amber */
-        .hl-restricciones { color: #be123c; background: #ffe4e6; border-color: #fecdd3; } /* Rose */
-        .hl-formato { color: #7e22ce; background: #f3e8ff; border-color: #e9d5ff; } /* Purple */
+        /* Syntax Colors */
+        .hl-rol { color: #0369a1; background: #e0f2fe; border-color: #bae6fd; }
+        .hl-contexto { color: #15803d; background: #dcfce7; border-color: #bbf7d0; }
+        .hl-meta { color: #b45309; background: #fef3c7; border-color: #fde68a; }
+        .hl-restricciones { color: #be123c; background: #ffe4e6; border-color: #fecdd3; }
+        .hl-formato { color: #7e22ce; background: #f3e8ff; border-color: #e9d5ff; }
 
         /* Variable Inputs Highlight */
         .var-highlight { 
@@ -91,63 +92,82 @@
         }
         
         .var-highlight-bad {
-            background-color: #e4e4e7;
+            background-color: #f4f4f5;
             text-decoration: line-through;
-            text-decoration-color: #a1a1aa;
+            text-decoration-color: #d4d4d8;
             color: #71717a;
             padding: 0 2px;
         }
 
         /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
+        .case-item-active {
+            background-color: #f4f4f5;
+            border-color: #e4e4e7 !important;
+            color: #09090b !important;
+            position: relative;
+        }
+        .case-item-active::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 20%;
+            height: 60%;
+            width: 3px;
+            background-color: #4f46e5;
+            border-radius: 0 4px 4px 0;
+        }
+
         /* Utilities */
         .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); }
         .border-subtle { border-color: #e4e4e7; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .mask-gradient-r { -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%); }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-sm selection:bg-indigo-100 selection:text-indigo-900">
 
     <!-- CONNECTION OVERLAY -->
-    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-zinc-50 flex flex-col items-center justify-center p-6 text-center">
-        <div class="flex flex-col items-center animate-pulse">
-            <div class="w-12 h-12 bg-white border border-zinc-200 rounded-xl flex items-center justify-center mb-4 shadow-sm">
-                <span class="material-symbols-rounded text-indigo-600 animate-spin">sync</span>
+    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 text-center">
+        <div class="flex flex-col items-center">
+            <div class="w-14 h-14 bg-white border border-zinc-200 rounded-2xl flex items-center justify-center mb-5 shadow-soft">
+                <span class="material-symbols-rounded text-indigo-600 animate-spin text-3xl">sync</span>
             </div>
-            <h2 class="font-semibold text-zinc-900 mb-1">Inicializando Consola AGIA</h2>
-            <p class="text-zinc-500 text-xs font-mono" id="status-desc">Estableciendo conexión segura...</p>
+            <h2 class="font-bold text-zinc-900 text-lg mb-1">Cargando Bóveda AGIA</h2>
+            <p class="text-zinc-500 text-xs font-mono" id="status-desc">Conectando con prompts_db...</p>
             <div id="status-code" class="mt-2 text-[10px] text-zinc-400 font-mono hidden"></div>
-            <button id="retry-btn" onclick="window.location.reload()" class="hidden mt-6 px-4 py-2 bg-zinc-900 text-white rounded-md text-xs font-medium hover:bg-zinc-800 transition">Reintentar</button>
+            <button id="retry-btn" onclick="window.location.reload()" class="hidden mt-6 px-5 py-2.5 bg-zinc-900 text-white rounded-lg text-xs font-semibold hover:bg-zinc-800 transition-all">Reintentar Conexión</button>
         </div>
     </div>
 
     <!-- HEADER / NAV -->
-    <header class="h-14 bg-white border-b border-subtle flex-none z-30 flex items-center px-4 justify-between">
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-gradient-to-tr from-zinc-900 to-zinc-700 text-white rounded-lg flex items-center justify-center font-bold font-mono shadow-md">
+    <header class="h-14 bg-white border-b border-subtle flex-none z-30 flex items-center px-6 justify-between">
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 bg-zinc-900 text-white rounded-lg flex items-center justify-center font-bold font-mono shadow-md">
                     A
                 </div>
                 <div>
-                    <h1 class="font-bold text-zinc-900 leading-none">AGIA Generator <span class="text-zinc-400 font-normal">3.0</span></h1>
+                    <h1 class="font-bold text-zinc-900 leading-none tracking-tight">AGIA Console <span class="text-zinc-400 font-normal ml-1">v3.0</span></h1>
                 </div>
             </div>
-            <div class="h-6 w-px bg-zinc-200 mx-2"></div>
+            <div class="h-6 w-px bg-zinc-200 hidden md:block"></div>
             <!-- Category Pills Container -->
-            <div class="flex items-center gap-1 overflow-x-auto no-scrollbar max-w-[400px] mask-gradient-r" id="category-nav">
-                <!-- Categories injected via JS -->
+            <div class="hidden md:flex items-center gap-1.5 overflow-x-auto no-scrollbar max-w-[500px] mask-gradient-r" id="category-nav">
+                <!-- Inyectado por JS -->
             </div>
         </div>
 
-        <div class="flex items-center gap-3">
-             <div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-md">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="text-[10px] font-mono font-medium text-zinc-500">SYSTEM ONLINE</span>
+        <div class="flex items-center gap-4">
+             <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-tight">Live DB Connection</span>
             </div>
-            <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-sm shadow-indigo-200 transition-all flex items-center gap-2">
-                <span class="material-symbols-rounded text-[14px]">lock_open</span>
-                <span class="hidden sm:inline">Desbloquear PRO</span>
+            <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm shadow-indigo-100 transition-all flex items-center gap-2">
+                <span class="material-symbols-rounded text-[18px]">workspace_premium</span>
+                <span class="hidden sm:inline">Desbloquear Todo</span>
             </button>
         </div>
     </header>
@@ -157,27 +177,26 @@
         
         <!-- SIDEBAR -->
         <aside class="w-72 bg-white border-r border-subtle flex flex-col z-20 hidden md:flex">
-            <!-- Search -->
-            <div class="p-3 border-b border-subtle sticky top-0 bg-white z-10">
-                <div class="relative group">
-                    <span class="material-symbols-rounded absolute left-2.5 top-2 text-zinc-400 text-[18px]">search</span>
-                    <input type="text" id="searchInput" placeholder="Buscar ingeniería..." 
-                        class="w-full pl-9 pr-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-md text-xs font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all placeholder:text-zinc-400"
+            <!-- Search Container -->
+            <div class="p-4 border-b border-subtle sticky top-0 bg-white z-10">
+                <div class="relative">
+                    <span class="material-symbols-rounded absolute left-3 top-2.5 text-zinc-400 text-[18px]">search</span>
+                    <input type="text" id="searchInput" placeholder="Buscar prompt..." 
+                        class="w-full pl-10 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500 focus:bg-white transition-all placeholder:text-zinc-400"
                         onkeyup="filterCases()">
-                    <div class="absolute right-2 top-1.5 px-1.5 py-0.5 bg-zinc-100 border border-zinc-200 rounded text-[10px] text-zinc-400 font-mono">/</div>
                 </div>
             </div>
 
             <!-- List -->
-            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-0.5" id="case-list">
-                <!-- Cases injected via JS -->
+            <div class="flex-1 overflow-y-auto custom-scroll p-3 space-y-1" id="case-list">
+                <!-- Inyectado por JS -->
             </div>
 
-            <!-- Footer Stats -->
-            <div class="p-3 bg-zinc-50 border-t border-subtle">
-                <div class="flex justify-between items-center text-[10px] text-zinc-500 font-mono">
-                    <span>V 3.0.2 Stable</span>
-                    <span>DB: <span id="total-display" class="font-bold text-zinc-900">0</span> Items</span>
+            <!-- Sidebar Footer Stats -->
+            <div class="p-4 bg-zinc-50 border-t border-subtle">
+                <div class="flex justify-between items-center text-[10px] text-zinc-400 font-mono font-bold uppercase tracking-widest">
+                    <span>Indexado</span>
+                    <span class="text-zinc-900 bg-white border border-zinc-200 px-1.5 py-0.5 rounded"><span id="total-display">0</span> Items</span>
                 </div>
             </div>
         </aside>
@@ -186,144 +205,150 @@
         <main class="flex-1 flex flex-col bg-zinc-50/50 relative overflow-hidden">
             
             <!-- EMPTY STATE -->
-            <div id="workspace-empty" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-zinc-50 z-0">
-                <div class="w-16 h-16 bg-white border border-dashed border-zinc-300 rounded-xl flex items-center justify-center mb-4">
-                    <span class="material-symbols-rounded text-3xl text-zinc-300">dataset</span>
+            <div id="workspace-empty" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-zinc-50/80 backdrop-blur-sm z-[5]">
+                <div class="w-20 h-20 bg-white border border-zinc-200 rounded-3xl flex items-center justify-center mb-6 shadow-soft">
+                    <span class="material-symbols-rounded text-4xl text-zinc-300">terminal</span>
                 </div>
-                <h3 class="font-semibold text-zinc-900">Selecciona un módulo</h3>
-                <p class="text-xs text-zinc-500 max-w-xs mt-1">Explora la base de datos de ingeniería de prompts desde el panel lateral.</p>
+                <h3 class="text-lg font-bold text-zinc-900 mb-2">Consola Lista</h3>
+                <p class="text-sm text-zinc-500 max-w-xs leading-relaxed">Selecciona un módulo de ingeniería en el panel izquierdo para comenzar a generar.</p>
             </div>
 
             <!-- CONTENT -->
-            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-6 lg:p-8 relative">
-                <div class="max-w-7xl mx-auto fade-in pb-20">
+            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-6 lg:p-10 relative hidden">
+                <div id="detail-animation-container" class="max-w-7xl mx-auto pb-24">
                     
-                    <!-- Title & Meta -->
-                    <div class="mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-                        <div>
-                            <div class="flex items-center gap-2 mb-2">
-                                <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-white">Category</span>
-                                <span class="text-[10px] font-mono text-zinc-400 px-2 py-0.5">ID: <span class="text-zinc-600">PROMPT-001</span></span>
-                            </div>
-                            <h2 id="detail-title" class="text-2xl font-bold text-zinc-900 tracking-tight">Título del Caso</h2>
-                            <p id="detail-problem" class="text-sm text-zinc-500 mt-1 max-w-3xl leading-relaxed"></p>
+                    <!-- Title & Header Section -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border bg-white shadow-sm">Category</span>
+                            <span class="text-[10px] font-mono text-zinc-400 bg-zinc-100 px-2 py-1 rounded uppercase">Engineering ID: <span id="prompt-id-display" class="text-zinc-700 font-bold">...</span></span>
                         </div>
+                        <h2 id="detail-title" class="text-3xl font-extrabold text-zinc-900 tracking-tight mb-2">Título del Caso</h2>
+                        <p id="detail-problem" class="text-base text-zinc-500 max-w-4xl leading-relaxed"></p>
                     </div>
 
-                    <!-- CONTROL DECK (New Layout Element) -->
-                    <!-- Moves variables to top for better flow: Input -> Output -->
-                    <div class="bg-white border border-subtle rounded-xl shadow-sm mb-6 p-1">
-                        <div class="px-4 py-2 border-b border-subtle flex justify-between items-center bg-zinc-50/50 rounded-t-lg">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-rounded text-indigo-500 text-sm">tune</span>
-                                <h3 class="text-xs font-bold text-zinc-700 uppercase tracking-wide">Variables de Entrada</h3>
+                    <!-- CONTROL DECK: Inputs & Variables -->
+                    <div class="bg-white border border-subtle rounded-2xl shadow-soft mb-8 overflow-hidden">
+                        <div class="px-5 py-3.5 border-b border-subtle flex justify-between items-center bg-zinc-50/50">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-6 h-6 bg-indigo-50 text-indigo-600 rounded flex items-center justify-center">
+                                    <span class="material-symbols-rounded text-base">tune</span>
+                                </div>
+                                <h3 class="text-[11px] font-bold text-zinc-600 uppercase tracking-widest">Configuración de Variables</h3>
                             </div>
                             <!-- Actions -->
-                            <div class="flex gap-2">
-                                <button onclick="toggleTip('example')" class="text-[10px] font-medium text-zinc-500 hover:text-indigo-600 flex items-center gap-1 transition-colors px-2 py-1 hover:bg-indigo-50 rounded">
-                                    <span class="material-symbols-rounded text-[14px]">lightbulb</span> Tips
+                            <div class="flex gap-1.5">
+                                <button onclick="toggleTip('example')" class="text-[10px] font-bold text-zinc-500 hover:text-indigo-600 flex items-center gap-1.5 transition-all px-3 py-1.5 hover:bg-white rounded-lg border border-transparent hover:border-zinc-200">
+                                    <span class="material-symbols-rounded text-[16px]">lightbulb</span> Estrategia
                                 </button>
-                                <button onclick="openVideoModal()" class="text-[10px] font-medium text-zinc-500 hover:text-indigo-600 flex items-center gap-1 transition-colors px-2 py-1 hover:bg-indigo-50 rounded">
-                                    <span class="material-symbols-rounded text-[14px]">play_circle</span> Demo
+                                <button onclick="openVideoModal()" class="text-[10px] font-bold text-zinc-500 hover:text-indigo-600 flex items-center gap-1.5 transition-all px-3 py-1.5 hover:bg-white rounded-lg border border-transparent hover:border-zinc-200">
+                                    <span class="material-symbols-rounded text-[16px]">smart_display</span> Tutorial
                                 </button>
                             </div>
                         </div>
                         
-                        <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative">
+                        <div class="p-6 relative">
                             <!-- Injected Inputs -->
-                            <div id="variables-container" class="contents"></div>
+                            <div id="variables-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                             
                             <!-- LOCKED OVERLAY FOR VARIABLES -->
-                            <div id="variables-locked-overlay" class="absolute inset-0 bg-white/60 backdrop-blur-sm z-10 flex items-center justify-center rounded-b-lg">
-                                <div class="bg-white border border-zinc-200 shadow-lg px-4 py-2 rounded-full flex items-center gap-3">
-                                    <span class="material-symbols-rounded text-zinc-400 text-sm">lock</span>
-                                    <span class="text-xs font-medium text-zinc-600">Personalización bloqueada</span>
-                                    <button onclick="openVideoModal()" class="text-xs font-bold text-indigo-600 hover:underline">Ver Demo</button>
+                            <div id="variables-locked-overlay" class="absolute inset-0 bg-white/70 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-b-2xl hidden">
+                                <div class="bg-white border border-zinc-200 shadow-xl px-6 py-3 rounded-full flex items-center gap-4 transition-transform hover:scale-105">
+                                    <div class="w-6 h-6 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center">
+                                        <span class="material-symbols-rounded text-sm">lock</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-zinc-600">Personalización bloqueada en Demo</span>
+                                    <button onclick="openVideoModal()" class="text-xs font-black text-indigo-600 hover:text-indigo-700 underline underline-offset-4">Activar Panel</button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- TIPS DRAWER (Hidden by default) -->
-                        <div id="content-tip-example" class="hidden border-t border-subtle bg-amber-50/30 p-4">
-                            <div class="flex gap-3">
-                                <span class="material-symbols-rounded text-amber-500 text-lg mt-0.5">lightbulb</span>
+                        <!-- TIPS DRAWER -->
+                        <div id="content-tip-example" class="hidden border-t border-subtle bg-indigo-50/30 p-6 animate-in slide-in-from-top-2 duration-300">
+                            <div class="flex gap-4">
+                                <div class="w-10 h-10 bg-white rounded-xl shadow-sm border border-indigo-100 flex items-center justify-center flex-none">
+                                    <span class="material-symbols-rounded text-indigo-600">psychology</span>
+                                </div>
                                 <div>
-                                    <h4 class="text-xs font-bold text-amber-700 uppercase mb-1">Estrategia Pro</h4>
-                                    <p id="detail-example-tip" class="text-xs text-zinc-600 leading-relaxed"></p>
+                                    <h4 class="text-xs font-black text-indigo-900 uppercase tracking-widest mb-1">Guía del Experto</h4>
+                                    <p id="detail-example-tip" class="text-sm text-zinc-600 leading-relaxed"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- COMPARISON GRID -->
-                    <div class="grid lg:grid-cols-12 gap-6 items-stretch">
+                    <!-- PROMPT COMPARISON AREA -->
+                    <div class="grid lg:grid-cols-12 gap-8 items-stretch">
                         
-                        <!-- LEFT: The Old Way (Visual Downgrade) -->
-                        <div class="lg:col-span-4 flex flex-col gap-4 opacity-80 hover:opacity-100 transition-opacity">
-                            <div class="flex items-center justify-between px-1">
-                                <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Método Estándar (Ineficiente)</span>
+                        <!-- LEFT: The Standard Method -->
+                        <div class="lg:col-span-4 flex flex-col gap-4 opacity-70 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500">
+                            <div class="flex items-center gap-2 px-1">
+                                <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Prompt Estándar</span>
+                                <span class="h-px bg-zinc-200 flex-1"></span>
                             </div>
                             
-                            <div class="bg-zinc-100 border border-zinc-200 rounded-xl overflow-hidden flex flex-col h-full">
-                                <div class="p-4 border-b border-zinc-200/50">
-                                    <div class="font-mono text-xs text-zinc-500 italic leading-relaxed" id="bad-prompt-rendered">Loading...</div>
+                            <div class="bg-zinc-100 border border-zinc-200 rounded-2xl overflow-hidden flex flex-col h-full shadow-sm">
+                                <div class="p-6 border-b border-zinc-200/50 bg-zinc-50">
+                                    <div class="font-mono text-xs text-zinc-500 italic leading-relaxed" id="bad-prompt-rendered">Cargando...</div>
                                 </div>
-                                <div class="flex-1 p-4 bg-zinc-50">
-                                    <div class="text-[10px] font-bold text-zinc-400 mb-2 flex items-center gap-1">
-                                        <span class="material-symbols-rounded text-[14px]">output</span> Resultado Pobre
+                                <div class="flex-1 p-6 bg-zinc-100/50">
+                                    <div class="text-[10px] font-black text-zinc-400 mb-4 flex items-center gap-2">
+                                        <span class="material-symbols-rounded text-[16px]">error_outline</span> Resultado Común
                                     </div>
-                                    <div id="bad-result-preview" class="text-xs text-zinc-500 leading-relaxed font-mono"></div>
+                                    <div id="bad-result-preview" class="text-xs text-zinc-400 leading-relaxed font-mono italic"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- RIGHT: The AGIA Way (Hero) -->
+                        <!-- RIGHT: The AGIA Engineering Method -->
                         <div class="lg:col-span-8 flex flex-col gap-4">
-                             <div class="flex items-center justify-between px-1">
-                                <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> Método AGIA (Ingeniería)
+                             <div class="flex items-center gap-2 px-1">
+                                <span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]"></span> Estructura AGIA
                                 </span>
+                                <span class="h-px bg-indigo-100 flex-1"></span>
                             </div>
 
-                            <div class="bg-white border border-indigo-100 rounded-xl shadow-xl shadow-indigo-100/50 ring-1 ring-indigo-50 relative overflow-hidden flex flex-col h-full group">
+                            <div class="bg-white border border-indigo-100 rounded-2xl shadow-xl shadow-indigo-100/30 ring-1 ring-indigo-50/50 relative overflow-hidden flex flex-col h-full">
                                 
                                 <!-- Toolbar -->
-                                <div class="border-b border-subtle px-4 py-2 bg-white flex justify-between items-center sticky top-0 z-10">
+                                <div class="border-b border-subtle px-5 py-3.5 bg-white flex justify-between items-center sticky top-0 z-10">
                                     <div class="flex gap-2" id="interactive-legend">
-                                        <!-- Legend items injected via JS logic -->
-                                        <span class="legend-item cursor-pointer px-2 py-0.5 rounded text-[10px] font-medium bg-zinc-50 text-zinc-500 border border-zinc-100 hover:border-zinc-300 transition-colors" data-type="r">Rol</span>
-                                        <span class="legend-item cursor-pointer px-2 py-0.5 rounded text-[10px] font-medium bg-zinc-50 text-zinc-500 border border-zinc-100 hover:border-zinc-300 transition-colors" data-type="c">Contexto</span>
-                                        <span class="legend-item cursor-pointer px-2 py-0.5 rounded text-[10px] font-medium bg-zinc-50 text-zinc-500 border border-zinc-100 hover:border-zinc-300 transition-colors" data-type="m">Meta</span>
+                                        <span class="legend-item cursor-pointer px-2.5 py-1 rounded-md text-[10px] font-bold bg-zinc-50 text-zinc-500 border border-zinc-200 hover:border-indigo-300 hover:text-indigo-600 transition-all" data-type="r">Rol</span>
+                                        <span class="legend-item cursor-pointer px-2.5 py-1 rounded-md text-[10px] font-bold bg-zinc-50 text-zinc-500 border border-zinc-200 hover:border-emerald-300 hover:text-emerald-600 transition-all" data-type="c">Contexto</span>
+                                        <span class="legend-item cursor-pointer px-2.5 py-1 rounded-md text-[10px] font-bold bg-zinc-50 text-zinc-500 border border-zinc-200 hover:border-amber-300 hover:text-amber-600 transition-all" data-type="m">Meta</span>
                                     </div>
-                                    <button id="copy-btn" onclick="copyPrompt()" class="bg-zinc-900 hover:bg-black text-white px-3 py-1.5 rounded text-[11px] font-medium transition-all flex items-center gap-1.5 shadow-sm">
-                                        <span class="material-symbols-rounded text-[14px]">content_copy</span> Copiar
+                                    <button id="copy-btn" onclick="copyPrompt()" class="bg-zinc-900 hover:bg-black text-white px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-zinc-200 active:scale-95">
+                                        <span class="material-symbols-rounded text-[18px]">content_copy</span> Copiar Prompt
                                     </button>
                                 </div>
 
                                 <!-- Code Editor Area -->
-                                <div class="p-6 relative bg-white flex-1">
-                                    <div id="detail-prompt-rendered" class="font-mono text-[13px] leading-7 text-zinc-700 whitespace-pre-wrap"></div>
+                                <div class="p-8 relative bg-white flex-1">
+                                    <div id="detail-prompt-rendered" class="font-mono text-[14px] leading-8 text-zinc-700 whitespace-pre-wrap"></div>
                                     
                                     <!-- Premium Lock Overlay -->
-                                    <div id="premium-lock" class="absolute inset-0 bg-white/80 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center text-center p-6 hidden">
-                                        <div class="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center shadow-lg mb-3">
-                                            <span class="material-symbols-rounded text-white text-xl">lock_open_right</span>
+                                    <div id="premium-lock" class="absolute inset-0 bg-white/90 backdrop-blur-[3px] z-20 flex flex-col items-center justify-center text-center p-8 hidden animate-in fade-in duration-500">
+                                        <div class="w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center shadow-2xl mb-5">
+                                            <span class="material-symbols-rounded text-white text-3xl">lock</span>
                                         </div>
-                                        <h3 class="text-sm font-bold text-zinc-900">Ingeniería Avanzada</h3>
-                                        <p class="text-xs text-zinc-500 mb-4 max-w-[220px]">La lógica de construcción de este prompt es parte del curso certificado.</p>
-                                        <button onclick="openPaywall()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition shadow-md shadow-indigo-200">
-                                            Desbloquear Prompt
+                                        <h3 class="text-lg font-black text-zinc-900 mb-2">Contenido Premium</h3>
+                                        <p class="text-sm text-zinc-500 mb-6 max-w-[280px]">Este framework de ingeniería avanzado está reservado para miembros certificados de la academia.</p>
+                                        <button onclick="openPaywall()" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-black transition-all shadow-xl shadow-indigo-100 hover:-translate-y-0.5 active:translate-y-0">
+                                            Desbloquear Acceso
                                         </button>
                                     </div>
                                 </div>
 
                                 <!-- Expected Output Footer -->
-                                <div class="bg-zinc-50 border-t border-subtle p-4">
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <span class="material-symbols-rounded text-emerald-500 text-[16px]">check_circle</span>
-                                        <span class="text-[10px] font-bold text-zinc-500 uppercase">Resultado Esperado</span>
+                                <div class="bg-zinc-50 border-t border-subtle p-6">
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center">
+                                            <span class="material-symbols-rounded text-sm">check</span>
+                                        </div>
+                                        <span class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Resultado de Ingeniería</span>
                                     </div>
-                                    <div id="good-result-preview" class="text-xs text-zinc-600 font-mono leading-relaxed pl-6 border-l-2 border-zinc-200"></div>
+                                    <div id="good-result-preview" class="text-xs text-zinc-600 font-mono leading-relaxed pl-6 border-l-2 border-emerald-200"></div>
                                 </div>
 
                             </div>
@@ -336,75 +361,89 @@
     </div>
 
     <!-- SALES TRIGGER: Bottom Sticky Banner -->
-    <div id="sticky-banner" class="fixed bottom-0 w-full bg-zinc-900 text-white py-2 px-4 flex justify-between md:justify-center items-center gap-4 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-t border-zinc-800">
-        <div class="flex items-center gap-3">
-            <span class="flex h-2 w-2 relative">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+    <div id="sticky-banner" class="fixed bottom-0 w-full bg-zinc-900 text-white py-3 px-6 flex justify-between md:justify-center items-center gap-8 z-50 shadow-2xl border-t border-zinc-800">
+        <div class="flex items-center gap-4">
+            <span class="flex h-2.5 w-2.5 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
             </span>
-            <div class="text-xs">
-                <span class="font-medium text-zinc-300">Oferta Flash:</span> <span class="font-bold text-white">Certificación AGIA + Bóveda</span>
+            <div class="text-xs md:text-sm">
+                <span class="font-medium text-zinc-400">Oferta Activa:</span> <span class="font-black text-white">Full Bóveda + Curso Ingeniería</span>
             </div>
         </div>
-        <div class="flex items-center gap-3">
-             <div class="font-mono font-bold text-yellow-400 bg-white/10 px-2 py-0.5 rounded text-xs" id="countdown">14:59</div>
-            <button onclick="openPaywall()" class="text-xs bg-white text-zinc-900 hover:bg-zinc-200 px-3 py-1 rounded font-bold transition">
-                Ver Descuento
+        <div class="flex items-center gap-5">
+             <div class="font-mono font-bold text-yellow-400 bg-white/5 px-3 py-1 rounded-md text-xs border border-white/10" id="countdown">14:59</div>
+            <button onclick="openPaywall()" class="text-xs bg-white text-zinc-900 hover:bg-zinc-100 px-5 py-1.5 rounded-lg font-black transition-all active:scale-95 shadow-lg">
+                Ver Beneficios
             </button>
         </div>
     </div>
 
     <!-- VIDEO MODAL -->
     <div id="video-modal" class="fixed inset-0 z-[80] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm transition-opacity" onclick="closeVideoModal()"></div>
-        <div class="w-full max-w-2xl relative bg-black rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in duration-300 border border-zinc-800">
-            <div class="p-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-            <div class="bg-zinc-900 p-8 text-center">
-                <div class="aspect-video bg-zinc-800 rounded-lg mb-6 flex items-center justify-center relative overflow-hidden group cursor-pointer border border-zinc-700">
-                     <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center opacity-40"></div>
-                    <span class="material-symbols-rounded text-white text-5xl opacity-80 group-hover:scale-110 transition-transform z-10">play_circle</span>
+        <div class="absolute inset-0 bg-zinc-900/70 backdrop-blur-md transition-opacity" onclick="closeVideoModal()"></div>
+        <div class="w-full max-w-3xl relative bg-black rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-zinc-800">
+            <div class="p-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500"></div>
+            <div class="bg-zinc-950 p-10 text-center">
+                <div class="aspect-video bg-zinc-900 rounded-2xl mb-8 flex items-center justify-center relative overflow-hidden group cursor-pointer border border-zinc-800 shadow-inner">
+                     <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-30 group-hover:opacity-40 transition-opacity"></div>
+                    <span class="material-symbols-rounded text-white text-7xl opacity-90 group-hover:scale-110 transition-transform z-10 drop-shadow-2xl">play_circle</span>
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center text-white/50 text-[10px] font-mono tracking-tighter uppercase">
+                        <span>Buffer: 100%</span>
+                        <span>AGIA_PRO_DEMO.MP4</span>
+                    </div>
                 </div>
-                <h3 class="text-white font-bold text-lg mb-2">Dominando Variables Dinámicas</h3>
-                <p class="text-zinc-400 text-sm mb-6">Aprende a inyectar contexto específico en prompts maestros.</p>
-                <button onclick="activateVariables()" class="bg-white text-black hover:bg-zinc-200 px-6 py-2.5 rounded-lg font-bold text-sm transition-all w-full md:w-auto">
-                    Activar Panel de Control
-                </button>
+                <h3 class="text-white font-black text-2xl mb-3 tracking-tight">Potencia tus Prompts con Variables</h3>
+                <p class="text-zinc-500 text-base mb-8 max-w-lg mx-auto leading-relaxed">Configura el panel de control para inyectar datos reales y ver la magia de la ingeniería dinámica.</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="activateVariables()" class="bg-white text-black hover:bg-zinc-100 px-8 py-3.5 rounded-xl font-black text-sm transition-all shadow-xl">
+                        Activar Panel de Control
+                    </button>
+                    <button onclick="closeVideoModal()" class="bg-zinc-800 text-zinc-400 hover:bg-zinc-700 px-8 py-3.5 rounded-xl font-bold text-sm transition-all">
+                        Tal vez luego
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- PAYWALL MODAL -->
     <div id="paywall-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-zinc-900/80 backdrop-blur-md transition-opacity" onclick="closePaywall()"></div>
-        <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-0 overflow-hidden animate-in zoom-in duration-200">
-            <div class="h-2 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
-            <div class="p-8 text-center">
-                <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-                    <span class="material-symbols-rounded text-3xl">workspace_premium</span>
+        <div class="absolute inset-0 bg-zinc-950/80 backdrop-blur-lg transition-opacity" onclick="closePaywall()"></div>
+        <div class="relative bg-white rounded-[2.5rem] shadow-2xl max-w-md w-full p-0 overflow-hidden animate-in zoom-in-95 duration-200">
+            <div class="h-2.5 bg-gradient-to-r from-indigo-500 to-indigo-700"></div>
+            <div class="p-10 text-center">
+                <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner">
+                    <span class="material-symbols-rounded text-4xl">verified</span>
                 </div>
-                <h3 class="text-xl font-bold text-zinc-900 mb-2">Bóveda de Ingeniería</h3>
-                <ul class="text-left text-sm text-zinc-600 space-y-3 mb-8 bg-zinc-50 p-4 rounded-xl border border-zinc-100">
-                    <li class="flex gap-2"><span class="material-symbols-rounded text-emerald-500 text-sm">check</span> 105+ Prompts Estructurados</li>
-                    <li class="flex gap-2"><span class="material-symbols-rounded text-emerald-500 text-sm">check</span> Desglose de Lógica (Tags)</li>
-                    <li class="flex gap-2"><span class="material-symbols-rounded text-emerald-500 text-sm">check</span> Actualizaciones Semanales</li>
+                <h3 class="text-2xl font-black text-zinc-900 mb-3 tracking-tight">Acceso Ilimitado</h3>
+                <p class="text-zinc-500 text-sm mb-8 leading-relaxed">Únete a más de 5,000 expertos que utilizan nuestra bóveda para dominar la IA.</p>
+                
+                <ul class="text-left text-sm text-zinc-600 space-y-4 mb-10 bg-zinc-50 p-6 rounded-3xl border border-zinc-100">
+                    <li class="flex gap-3"><span class="material-symbols-rounded text-indigo-500 text-lg">check_circle</span> <span class="font-medium">100+ Frameworks de Ingeniería</span></li>
+                    <li class="flex gap-3"><span class="material-symbols-rounded text-indigo-500 text-lg">check_circle</span> <span class="font-medium">Desglose Técnico de Tags</span></li>
+                    <li class="flex gap-3"><span class="material-symbols-rounded text-indigo-500 text-lg">check_circle</span> <span class="font-medium">Soporte y Actualizaciones Mensuales</span></li>
                 </ul>
-                <button onclick="closePaywall()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white py-3 rounded-xl font-bold text-sm shadow-lg transition-all mb-3">
-                    Obtener Acceso Total ($29)
+                
+                <button onclick="closePaywall()" class="w-full bg-zinc-900 hover:bg-black text-white py-4 rounded-2xl font-black text-base shadow-2xl shadow-zinc-200 transition-all mb-4 active:scale-95">
+                    Suscribirse Ahora ($29)
                 </button>
-                <button onclick="closePaywall()" class="text-xs text-zinc-400 hover:text-zinc-600">Continuar con versión gratuita</button>
+                <button onclick="closePaywall()" class="text-[11px] font-bold text-zinc-400 hover:text-zinc-600 uppercase tracking-widest transition-colors">Continuar como invitado</button>
             </div>
         </div>
     </div>
 
     <!-- TOAST -->
-    <div id="toast" class="fixed bottom-16 right-6 z-50 transform translate-x-40 opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="bg-zinc-900 text-white px-4 py-3 rounded-lg shadow-xl flex items-center gap-3 border border-zinc-700">
-            <span class="material-symbols-rounded text-emerald-400">check_circle</span>
-            <span class="text-xs font-medium" id="toast-message">Copiado</span>
+    <div id="toast" class="fixed bottom-20 right-8 z-50 transform translate-x-40 opacity-0 transition-all duration-500 pointer-events-none">
+        <div class="bg-zinc-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-4 border border-zinc-700/50 backdrop-blur-md">
+            <div class="w-6 h-6 bg-emerald-500 text-white rounded-full flex items-center justify-center">
+                <span class="material-symbols-rounded text-sm">check</span>
+            </div>
+            <span class="text-xs font-black uppercase tracking-widest" id="toast-message">Copiado al Portapapeles</span>
         </div>
     </div>
 
-    <!-- LOGIC (PRESERVED) -->
+    <!-- LOGIC -->
     <script type="module">
         let casesData = [];
         const externalDBUrl = 'https://aulagenia.cl/prompts_db.js';
@@ -417,21 +456,23 @@
 
         async function loadDatabase() {
             try {
+                // Cache busting para asegurar datos frescos
                 const module = await import(`${externalDBUrl}?t=${new Date().getTime()}`);
                 if (module && module.default && Array.isArray(module.default)) {
                     casesData = module.default;
                     setTimeout(() => {
-                        statusOverlay.classList.add('hidden'); // Hide on success
+                        statusOverlay.classList.add('opacity-0');
+                        setTimeout(() => statusOverlay.classList.add('hidden'), 500);
                         initApp();
-                    }, 600);
+                    }, 800);
                 } else {
-                    throw new Error("Invalid DB Format");
+                    throw new Error("Formato de base de datos no reconocido.");
                 }
             } catch (err) {
-                console.error("System Error:", err);
-                statusDesc.innerText = "Error de conexión con el servidor.";
-                statusDesc.classList.add("text-red-500");
-                statusCode.innerText = "ERR_FETCH_TIMEOUT";
+                console.error("Critical System Failure:", err);
+                statusDesc.innerText = "Error en la conexión con el servidor.";
+                statusDesc.classList.add("text-rose-500");
+                statusCode.innerText = "INTERNAL_AUTH_ERROR_503";
                 statusCode.classList.remove("hidden");
                 retryBtn.classList.remove("hidden");
             }
@@ -459,7 +500,7 @@
         let variablesActive = false;
 
         function initApp() {
-            // Bind global functions
+            // Bind global functions para acceso desde HTML
             window.loadCase = loadCase;
             window.filterCases = filterCases;
             window.filterByCategory = filterByCategory;
@@ -478,49 +519,58 @@
             startCountdown();
             setupLegendInteractions();
 
-            const first = casesData[0];
-            if(first) loadCase(first.id);
-            else document.getElementById('workspace-empty').classList.replace('hidden', 'flex');
+            // Cargar primer caso por defecto
+            if(casesData.length > 0) {
+                loadCase(casesData[0].id);
+            } else {
+                document.getElementById('workspace-empty').classList.replace('hidden', 'flex');
+            }
         }
 
         function loadCase(id) {
             const c = casesData.find(x => x.id === id);
             if(!c) return;
 
-            // Sidebar highlight logic
+            // Highlight Sidebar Item
             document.querySelectorAll('.case-item').forEach(el => {
-                el.classList.remove('bg-zinc-100', 'border-zinc-300', 'text-zinc-900');
-                el.classList.add('border-transparent', 'text-zinc-500');
+                el.classList.remove('case-item-active');
             });
             const activeItem = document.getElementById(`case-item-${id}`);
-            if(activeItem) {
-                activeItem.classList.remove('border-transparent', 'text-zinc-500');
-                activeItem.classList.add('bg-zinc-100', 'border-zinc-300', 'text-zinc-900');
-            }
+            if(activeItem) activeItem.classList.add('case-item-active');
 
+            // Preparar Workspace
             document.getElementById('workspace-empty').classList.add('hidden');
             document.getElementById('case-detail').classList.remove('hidden');
+            
+            // Animación de entrada
+            const container = document.getElementById('detail-animation-container');
+            container.classList.remove('fade-in');
+            void container.offsetWidth; // Force reflow
+            container.classList.add('fade-in');
 
+            // Poblar contenido
             document.getElementById('detail-title').innerText = c.title;
             document.getElementById('detail-problem').innerText = c.problem;
+            document.getElementById('prompt-id-display').innerText = `PR-${c.id.toString().padStart(3, '0')}`;
             
-            document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview;
-            document.getElementById('good-result-preview').innerHTML = c.previewResponse;
+            document.getElementById('bad-result-preview').innerText = c.badResponsePreview || "Generación sin estructura...";
+            document.getElementById('good-result-preview').innerText = c.previewResponse || "Esperando input...";
 
-            document.getElementById('detail-example-tip').innerText = c.exampleTip || "No hay tips adicionales.";
+            document.getElementById('detail-example-tip').innerText = c.exampleTip || "Utiliza este prompt para maximizar la consistencia en los resultados.";
 
-            // Reset UI states
-            document.getElementById('content-tip-example').classList.add('hidden');
-
+            // Categoría
             const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
             const badge = document.getElementById('detail-category-badge');
             badge.innerText = cat.label;
-            
+            badge.style.color = `var(--tw-color-${cat.color}-700)`;
+            badge.style.backgroundColor = `var(--tw-color-${cat.color}-50)`;
+            badge.style.borderColor = `var(--tw-color-${cat.color}-100)`;
+
             currentPromptTemplate = c.agiaPromptTagged;
-            currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
+            currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt || "";
             currentVariables = {};
             
-            // Extract variables
+            // Extracción de variables dinámicas: {nombre_variable|Default}
             const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
             let match;
             const varsFound = [];
@@ -543,7 +593,7 @@
             varContainer.innerHTML = '';
             
             if (varsFound.length === 0) {
-                varContainer.innerHTML = '<div class="col-span-full text-xs text-zinc-400 py-1 italic">No requiere variables de entrada.</div>';
+                varContainer.innerHTML = '<div class="col-span-full text-[10px] text-zinc-400 py-2 font-mono uppercase tracking-widest text-center border-2 border-dashed border-zinc-100 rounded-xl">Este módulo no requiere variables externas.</div>';
                 if(lockOverlay) lockOverlay.classList.add('hidden');
                 return;
             }
@@ -557,9 +607,9 @@
             varsFound.forEach(v => {
                 const div = document.createElement('div');
                 div.innerHTML = `
-                    <label class="block text-[10px] font-bold uppercase text-zinc-400 mb-1">${v.key.replace(/_/g, ' ')}</label>
+                    <label class="block text-[10px] font-black uppercase text-zinc-400 mb-2 tracking-widest">${v.key.replace(/_/g, ' ')}</label>
                     <input type="text" 
-                        class="w-full bg-zinc-50 border border-zinc-200 rounded px-2 py-1.5 text-xs text-zinc-800 font-mono focus:bg-white focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                        class="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-900 font-mono font-bold focus:bg-white focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none placeholder:text-zinc-300"
                         value="${v.default}"
                         oninput="updateVariable('${v.key}', this.value)"
                     >
@@ -574,18 +624,21 @@
         function activateVariables() {
             variablesActive = true;
             closeVideoModal();
-            const title = document.getElementById('detail-title').innerText;
-            const c = casesData.find(x => x.title === title);
+            // Re-renderizar el caso actual para aplicar cambios visuales
+            const currentTitle = document.getElementById('detail-title').innerText;
+            const c = casesData.find(x => x.title === currentTitle);
             if(c) loadCase(c.id);
         }
 
         function updateVariable(key, value) {
             currentVariables[key] = value;
+            // No renderizar si el caso está bloqueado por premium
             const isLocked = !document.getElementById('premium-lock').classList.contains('hidden');
             if(!isLocked) renderPrompts(false);
         }
 
         function renderPrompts(isLocked) {
+            // 1. Procesar Prompt AGIA
             let renderedAgia = currentPromptTemplate;
             Object.keys(currentVariables).forEach(key => {
                 const val = currentVariables[key] || "___";
@@ -593,6 +646,7 @@
                 renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${val}</span>`);
             });
 
+            // Reemplazar Tags de Ingeniería
             const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
             Object.keys(tags).forEach(t => {
                 const className = `hl-${tags[t]}`;
@@ -602,6 +656,7 @@
             renderedAgia = renderedAgia.replace(/\n/g, '<br>');
             document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
 
+            // 2. Procesar Prompt Malo
             let renderedBad = currentBadPromptTemplate;
             Object.keys(currentVariables).forEach(key => {
                 const val = currentVariables[key] || "...";
@@ -637,15 +692,14 @@
             const rawText = document.getElementById('detail-prompt-rendered').innerText;
             navigator.clipboard.writeText(rawText);
             const toast = document.getElementById('toast');
-            toast.classList.remove('opacity-0', 'translate-x-40');
+            toast.classList.remove('opacity-0', 'translate-x-40', 'pointer-events-none');
             setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-x-40');
-            }, 2000);
+                toast.classList.add('opacity-0', 'translate-x-40', 'pointer-events-none');
+            }, 3000);
         }
 
         function updateTotalCounter() {
-            const totalEl = document.getElementById('total-display');
-            if(totalEl) totalEl.innerText = casesData.length;
+            document.getElementById('total-display').innerText = casesData.length;
         }
 
         function renderCategories() {
@@ -653,7 +707,7 @@
             if(!nav) return;
             nav.innerHTML = Object.keys(config.categories).map(key => {
                 const conf = config.categories[key];
-                return `<button onclick="filterByCategory('${key}')" class="whitespace-nowrap px-3 py-1 text-[11px] font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 rounded-full transition-colors border border-transparent hover:border-zinc-200">
+                return `<button onclick="filterByCategory('${key}')" class="whitespace-nowrap px-3.5 py-1 text-[11px] font-bold text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 rounded-full transition-all border border-transparent hover:border-zinc-200">
                     ${conf.label}
                 </button>`;
             }).join('');
@@ -677,23 +731,21 @@
 
         function renderList(cases) {
             const list = document.getElementById('case-list');
-            document.getElementById('total-display').innerText = casesData.length;
-            
             if(cases.length === 0) {
-                list.innerHTML = '<div class="p-4 text-center text-xs text-zinc-400">Sin resultados</div>';
+                list.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 font-mono italic">Sin coincidencias...</div>';
                 return;
             }
             
             list.innerHTML = cases.map(c => `
-                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item p-2 rounded-md cursor-pointer border border-transparent hover:bg-zinc-50 transition-all flex items-start gap-3 group">
-                    <div class="mt-0.5 min-w-[20px] h-[20px] rounded bg-zinc-50 border border-zinc-200 flex items-center justify-center text-zinc-400 group-hover:border-zinc-300">
-                        <span class="material-symbols-rounded text-[14px]">${c.locked ? 'lock' : 'code'}</span>
+                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item p-3 rounded-xl cursor-pointer border border-transparent hover:bg-zinc-50 transition-all flex items-start gap-4 group">
+                    <div class="mt-0.5 min-w-[24px] h-[24px] rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-center text-zinc-400 group-hover:bg-white group-hover:border-zinc-300 group-hover:text-indigo-600 transition-all">
+                        <span class="material-symbols-rounded text-[16px]">${c.locked ? 'lock' : 'data_object'}</span>
                     </div>
                     <div class="overflow-hidden">
-                        <h4 class="text-xs font-semibold truncate leading-tight mb-0.5">${c.title}</h4>
-                        <div class="flex items-center gap-1.5">
+                        <h4 class="text-[12px] font-bold truncate leading-tight mb-1 text-zinc-700 group-hover:text-zinc-950">${c.title}</h4>
+                        <div class="flex items-center gap-2">
                             <span class="w-1.5 h-1.5 rounded-full ${c.difficulty === 'beginner' ? 'bg-emerald-400' : 'bg-orange-400'}"></span>
-                            <span class="text-[10px] text-zinc-400 uppercase tracking-wider">${c.category.substring(0,4)}</span>
+                            <span class="text-[9px] text-zinc-400 font-black uppercase tracking-widest">${c.category}</span>
                         </div>
                     </div>
                 </div>
@@ -706,8 +758,11 @@
         function startCountdown() {
             let minutes = 14; let seconds = 59;
             const el = document.getElementById('countdown');
-            setInterval(() => {
-                if(seconds === 0) { if(minutes === 0) return; minutes--; seconds = 59; } else { seconds--; }
+            const timer = setInterval(() => {
+                if(seconds === 0) { 
+                    if(minutes === 0) { clearInterval(timer); return; }
+                    minutes--; seconds = 59; 
+                } else { seconds--; }
                 el.innerText = `${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
             }, 1000);
         }
