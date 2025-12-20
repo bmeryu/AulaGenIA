@@ -21,66 +21,73 @@
             background: #ffffff;
             border: 1px solid #f1f5f9;
             box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .premium-card:hover {
-            box-shadow: 0 20px 40px -4px rgba(0, 0, 0, 0.05);
-            transform: translateY(-2px);
+            box-shadow: 0 30px 60px -12px rgba(16, 185, 129, 0.08);
+            transform: translateY(-4px);
+            border-color: rgba(16, 185, 129, 0.2);
         }
 
         .thermometer-gradient {
-            background: linear-gradient(90deg, #ef4444 0%, #facc15 50%, #10b981 100%);
+            background: linear-gradient(90deg, #ff4d4d 0%, #ffd93d 50%, #00d285 100%);
         }
 
         @keyframes pulse-soft {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+            0%, 100% { opacity: 1; filter: brightness(1); }
+            50% { opacity: 0.8; filter: brightness(1.2); }
         }
         .animate-pulse-soft { animation: pulse-soft 2s infinite; }
 
-        .social-proof-enter { animation: slideInRight 0.5s ease-out; }
+        .social-proof-enter { animation: slideInRight 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
         @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
+            from { transform: translateX(120%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
     </style>
 </head>
-<body x-data="agiaPlatform" class="text-slate-900">
+<body x-data="agiaPlatform" class="text-slate-900 custom-scrollbar">
 
     <!-- ONBOARDING MODAL -->
     <div x-show="showOnboarding" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md"></div>
-        <div class="bg-white max-w-2xl w-full rounded-[3rem] p-12 relative shadow-2xl overflow-hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-xl"></div>
+        <div class="bg-white max-w-2xl w-full rounded-[3.5rem] p-12 relative shadow-2xl overflow-hidden border border-white/20">
             <!-- Background Decoration -->
-            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-50 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+            <div class="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full -mr-40 -mt-40 blur-3xl"></div>
             
             <div class="relative z-10">
                 <template x-if="onboardingStep < 3">
                     <div class="text-center">
-                        <div class="inline-flex p-5 rounded-[2rem] bg-emerald-50 mb-8 text-emerald-600">
-                            <i :data-lucide="onboardingSteps[onboardingStep].icon" class="w-12 h-12"></i>
+                        <div class="inline-flex p-6 rounded-[2.5rem] bg-emerald-50 mb-8 text-emerald-600 shadow-inner">
+                            <i :data-lucide="onboardingSteps[onboardingStep].icon" class="w-14 h-14"></i>
                         </div>
-                        <h2 class="text-4xl font-black mb-4 tracking-tight" x-text="onboardingSteps[onboardingStep].title"></h2>
-                        <p class="text-slate-500 text-xl leading-relaxed mb-10" x-text="onboardingSteps[onboardingStep].content"></p>
+                        <h2 class="text-4xl font-black mb-4 tracking-tighter leading-none text-slate-900" x-text="onboardingSteps[onboardingStep].title"></h2>
+                        <p class="text-slate-500 text-xl leading-relaxed mb-10 px-6" x-text="onboardingSteps[onboardingStep].content"></p>
                     </div>
                 </template>
 
                 <template x-if="onboardingStep === 3">
                     <div class="text-center">
-                        <h2 class="text-3xl font-black mb-6 uppercase tracking-widest text-emerald-600">Mira el superpoder en acción</h2>
-                        <div class="aspect-video bg-slate-900 rounded-[2rem] mb-8 flex items-center justify-center border-4 border-slate-100 shadow-inner group cursor-pointer">
-                            <i data-lucide="play" class="w-16 h-16 text-white group-hover:scale-125 transition-transform"></i>
-                            <span class="absolute text-slate-400 mt-24 text-xs font-bold uppercase tracking-tighter">[ Haz clic para ver el Video Tutorial ]</span>
+                        <span class="text-emerald-600 font-black text-xs uppercase tracking-[0.4em] mb-4 block">Capacitación Express</span>
+                        <h2 class="text-4xl font-black mb-8 tracking-tighter text-slate-900">Domina la herramienta en 60 segundos</h2>
+                        <div class="aspect-video bg-slate-900 rounded-[2.5rem] mb-10 flex items-center justify-center border-8 border-slate-50 shadow-2xl group cursor-pointer relative overflow-hidden">
+                            <i data-lucide="play" class="w-20 h-20 text-white fill-current group-hover:scale-110 transition-transform relative z-10"></i>
+                            <div class="absolute inset-0 bg-gradient-to-t from-emerald-500/20 to-transparent"></div>
+                            <span class="absolute bottom-6 text-white/60 text-[10px] font-bold uppercase tracking-widest">[ Video Tutorial de Aula Gen IA ]</span>
                         </div>
                     </div>
                 </template>
 
                 <div class="flex flex-col gap-4">
-                    <button @click="nextOnboarding()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-5 rounded-2xl text-xl shadow-xl shadow-emerald-500/20 transition-all active:scale-95 flex items-center justify-center gap-3">
-                        <span x-text="onboardingStep === 3 ? '¡ENTRAR AL AULA MAESTRA!' : 'SIGUIENTE PASO'"></span>
-                        <i data-lucide="arrow-right" class="w-6 h-6"></i>
+                    <button @click="nextOnboarding()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-6 rounded-2xl text-xl shadow-2xl shadow-emerald-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                        <span x-text="onboardingStep === 3 ? '¡COMENZAR MI TRANSFORMACIÓN!' : 'ENTIENDO, SIGUIENTE'"></span>
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
                     </button>
-                    <button @click="showOnboarding = false" class="text-slate-400 font-bold text-sm uppercase tracking-widest hover:text-slate-900 transition-colors">Saltar tutorial</button>
+                    <button @click="showOnboarding = false" class="text-slate-400 font-bold text-xs uppercase tracking-[0.2em] hover:text-slate-900 transition-colors py-2">Saltar e ir directo al Dashboard</button>
                 </div>
             </div>
         </div>
@@ -88,55 +95,61 @@
 
     <!-- NOTIFICACIÓN SOCIAL PROOF -->
     <div x-show="notification" x-cloak class="fixed bottom-8 left-8 z-[90] social-proof-enter">
-        <div class="bg-white border border-slate-100 p-5 rounded-3xl shadow-2xl flex items-center gap-5">
-            <div class="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
-                <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+        <div class="bg-white border border-emerald-100 p-6 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex items-center gap-5 border-l-4 border-l-emerald-500">
+            <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600">
+                <i data-lucide="user-check" class="w-7 h-7"></i>
             </div>
             <div>
                 <p class="text-sm font-black text-slate-900" x-text="notification?.user"></p>
-                <p class="text-xs text-emerald-600 font-bold">Desbloqueó el curso AGIA ($20)</p>
-                <p class="text-[10px] text-slate-400 mt-0.5" x-text="notification?.time"></p>
+                <p class="text-xs text-emerald-600 font-bold">Desbloqueó AGIA Master ($20)</p>
+                <div class="flex items-center gap-1 mt-1 text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    <span x-text="notification?.time"></span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- BARRA DE NAVEGACIÓN -->
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-8 h-24 flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white font-black shadow-lg shadow-emerald-500/20 text-2xl">A</div>
+    <!-- NAVEGACIÓN PRINCIPAL -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-2xl border-b border-slate-100 px-10 h-28 flex items-center justify-between">
+        <div class="flex items-center gap-5">
+            <div class="w-14 h-14 bg-emerald-500 rounded-[1.2rem] flex items-center justify-center text-white font-black shadow-xl shadow-emerald-500/30 text-3xl">A</div>
             <div>
-                <span class="block text-xl font-black tracking-tighter text-slate-900">AULA GEN IA</span>
-                <span class="block text-[10px] font-black text-emerald-600 uppercase tracking-[0.3em]">Professional Prompting</span>
+                <span class="block text-2xl font-black tracking-tighter text-slate-900 leading-none">AULA GEN IA</span>
+                <span class="block text-[11px] font-black text-emerald-600 uppercase tracking-[0.4em] mt-1.5">Mastering the Future</span>
             </div>
         </div>
 
-        <div class="hidden lg:flex items-center bg-slate-50 rounded-2xl px-5 py-3 w-[400px] border border-slate-100 focus-within:border-emerald-500/30 focus-within:bg-white transition-all">
+        <div class="hidden lg:flex items-center bg-slate-50 rounded-2xl px-6 py-4 w-[450px] border border-slate-200 focus-within:border-emerald-500/30 focus-within:bg-white transition-all shadow-inner">
             <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
-            <input type="text" x-model="searchTerm" placeholder="Busca un flujo de trabajo (ventas, copy, etc...)" class="bg-transparent border-none outline-none ml-3 w-full text-sm font-medium">
+            <input type="text" x-model="searchTerm" placeholder="Busca un caso: Ventas, Email, Plan..." class="bg-transparent border-none outline-none ml-4 w-full text-sm font-bold text-slate-600 placeholder:text-slate-300">
         </div>
 
-        <div class="flex items-center gap-6">
-            <div class="hidden md:block text-right">
-                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Ahorro Promedio</span>
-                <span class="block text-emerald-600 font-black text-lg">+180 HH / Año</span>
+        <div class="flex items-center gap-8">
+            <div class="hidden xl:block text-right">
+                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Eficiencia Ganada</span>
+                <div class="flex items-center justify-end gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-emerald-600 font-black text-xl tracking-tighter">+185 HH / Año</span>
+                </div>
             </div>
-            <button @click="openPayment()" class="bg-slate-900 hover:bg-emerald-600 text-white px-8 py-3.5 rounded-2xl text-sm font-black shadow-xl shadow-slate-900/10 transition-all active:scale-95">
-                DESBLOQUEAR TODO ($20)
+            <button @click="openPayment()" class="bg-slate-900 hover:bg-emerald-600 text-white px-10 py-4.5 rounded-[1.2rem] text-sm font-black shadow-2xl shadow-slate-900/20 transition-all active:scale-95 uppercase tracking-widest">
+                ACCESO TOTAL $20
             </button>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-8 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <main class="max-w-7xl mx-auto px-10 py-16 grid grid-cols-1 lg:grid-cols-12 gap-16">
         
         <!-- SIDEBAR -->
-        <aside class="lg:col-span-3 space-y-10">
-            <div>
-                <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6 px-2">Ecosistema AGIA</h3>
-                <div class="space-y-2">
+        <aside class="lg:col-span-3 space-y-12">
+            <div class="bg-white p-3 rounded-[2.5rem] shadow-sm border border-slate-100">
+                <h3 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] mb-6 mt-4 px-6">Biblioteca Maestra</h3>
+                <div class="space-y-1.5">
                     <template x-for="cat in categories" :key="cat.id">
                         <button @click="activeCategory = cat.id" 
-                                :class="activeCategory === cat.id ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'text-slate-500 border-transparent hover:bg-slate-50'"
-                                class="w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all border font-bold text-sm">
+                                :class="activeCategory === cat.id ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-500 border-transparent hover:bg-slate-50 hover:text-slate-900'"
+                                class="w-full flex items-center gap-4 px-6 py-4.5 rounded-[1.5rem] transition-all font-black text-sm text-left">
                             <i :data-lucide="cat.icon" class="w-5 h-5"></i>
                             <span x-text="cat.name"></span>
                         </button>
@@ -144,182 +157,216 @@
                 </div>
             </div>
 
-            <!-- ROI WIDGET -->
-            <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-2xl">
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-500/20 rounded-full blur-2xl"></div>
-                <h4 class="text-xs font-black text-emerald-400 uppercase tracking-widest mb-6">Calculadora de Valor</h4>
-                <div class="space-y-6 relative z-10">
-                    <div>
-                        <span class="block text-3xl font-black" x-text="totalHHSaved + ' HH'"></span>
-                        <span class="block text-xs text-slate-400 font-bold uppercase tracking-tight">Recuperadas hoy</span>
+            <!-- ROI WIDGET IMPACTANTE -->
+            <div class="bg-slate-900 rounded-[3rem] p-10 text-white relative overflow-hidden shadow-[0_30px_60px_-15px_rgba(15,23,42,0.3)]">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/20 rounded-full blur-[60px]"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-[60px]"></div>
+                
+                <h4 class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.4em] mb-8 relative z-10">Tu Valor Humano</h4>
+                <div class="space-y-8 relative z-10">
+                    <div class="flex items-end gap-3">
+                        <span class="text-6xl font-black tracking-tighter leading-none" x-text="totalHHSaved"></span>
+                        <span class="text-lg font-black text-emerald-400 mb-1">HH</span>
                     </div>
-                    <p class="text-xs text-slate-400 leading-relaxed">Cada prompt maestro te ahorra un promedio de <strong class="text-white">6.5 horas</strong> de retrabajo y frustración.</p>
+                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
+                        Horas de vida recuperadas al usar <span class="text-white">Prompts de nivel Maestro</span> en lugar de instrucciones genéricas.
+                    </p>
+                    <div class="pt-6 border-t border-white/5">
+                        <div class="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">
+                            <span>Nivel Actual</span>
+                            <span class="text-emerald-500">Maestro</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                            <div class="h-full bg-emerald-500 w-3/4 rounded-full"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </aside>
 
         <!-- DASHBOARD CENTRAL -->
-        <div class="lg:col-span-9 space-y-12">
+        <div class="lg:col-span-9 space-y-16">
             
             <!-- GADGET: INGENIERO DE PROMPTS INVISIBLE -->
-            <section class="premium-card rounded-[3rem] p-10 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-400/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+            <section class="premium-card rounded-[3.5rem] p-12 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full -mr-40 -mt-40 blur-[100px]"></div>
                 
-                <div class="flex items-center gap-6 mb-10">
-                    <div class="bg-slate-900 text-white p-5 rounded-[1.8rem] shadow-xl">
-                        <i data-lucide="wand-2" class="w-8 h-8"></i>
+                <div class="flex items-center gap-8 mb-12">
+                    <div class="bg-slate-900 text-white p-6 rounded-[2rem] shadow-2xl">
+                        <i data-lucide="wand-2" class="w-10 h-10"></i>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-black tracking-tight">INGENIERO INVISIBLE</h2>
-                        <p class="text-slate-500 font-medium">Escribe tu idea vaga y deja que el modelo AGIA la estructure.</p>
+                        <h2 class="text-3xl font-black tracking-tighter text-slate-900 leading-none">INGENIERO INVISIBLE</h2>
+                        <p class="text-slate-400 font-bold text-xs uppercase tracking-[0.2em] mt-3">Convierte una idea vaga en una estructura AGIA</p>
                     </div>
                 </div>
 
-                <div class="space-y-6">
-                    <div class="relative">
-                        <textarea x-model="userPrompt" @input="evaluateQuality()" placeholder="Ej: Necesito un correo para vender servicios de limpieza..." 
-                                  class="w-full bg-slate-50 border-2 border-slate-100 rounded-3xl p-8 min-h-[160px] focus:outline-none focus:bg-white focus:border-emerald-500/30 transition-all font-medium text-slate-700"></textarea>
+                <div class="space-y-8">
+                    <div class="relative group">
+                        <textarea x-model="userPrompt" @input="evaluateQuality()" placeholder="Describe aquí lo que necesitas (ej: Ayúdame a escribir un correo para mi jefe sobre un retraso...)" 
+                                  class="w-full bg-slate-50 border-2 border-slate-100 rounded-[2.5rem] p-10 min-h-[220px] focus:outline-none focus:bg-white focus:border-emerald-500/30 transition-all font-bold text-lg text-slate-700 placeholder:text-slate-300 shadow-inner custom-scrollbar"></textarea>
                         
-                        <!-- TERMÓMETRO DE CALIDAD -->
-                        <div class="absolute bottom-6 right-8 left-8">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Termómetro de Calidad</span>
-                                <span class="text-xs font-black" :class="qualityScore > 70 ? 'text-emerald-500' : 'text-slate-400'" x-text="qualityScore + '%'"></span>
+                        <!-- TERMÓMETRO DE CALIDAD DINÁMICO -->
+                        <div class="absolute bottom-10 right-12 left-12">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Diagnóstico de Calidad en Vivo</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-black" :class="qualityScore > 75 ? 'text-emerald-500' : 'text-slate-400'" x-text="qualityScore + '%'"></span>
+                                    <div class="w-2 h-2 rounded-full" :class="qualityScore > 75 ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-slate-300'"></div>
+                                </div>
                             </div>
-                            <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                                <div class="h-full thermometer-gradient transition-all duration-700" :style="'width: ' + qualityScore + '%'"></div>
+                            <div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                                <div class="h-full thermometer-gradient transition-all duration-1000 cubic-bezier(0.34, 1.56, 0.64, 1)" :style="'width: ' + qualityScore + '%'"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex justify-between items-center gap-6">
-                        <div class="flex items-center gap-3">
-                            <template x-if="qualityScore < 40">
-                                <span class="flex items-center gap-2 text-xs font-black text-red-500 bg-red-50 px-4 py-2 rounded-full uppercase tracking-tighter animate-pulse-soft">
+                    <div class="flex flex-wrap justify-between items-center gap-8">
+                        <div class="flex items-center gap-4">
+                            <template x-if="qualityScore < 35">
+                                <span class="flex items-center gap-3 text-xs font-black text-red-500 bg-red-50 px-6 py-3 rounded-full uppercase tracking-widest border border-red-100 animate-pulse-soft">
                                     <i data-lucide="alert-circle" class="w-4 h-4"></i> Prompt Muy Pobre
                                 </span>
                             </template>
-                            <template x-if="qualityScore >= 40 && qualityScore < 80">
-                                <span class="flex items-center gap-2 text-xs font-black text-yellow-600 bg-yellow-50 px-4 py-2 rounded-full uppercase tracking-tighter">
-                                    <i data-lucide="zap" class="w-4 h-4"></i> Mejorable con AGIA
+                            <template x-if="qualityScore >= 35 && qualityScore < 75">
+                                <span class="flex items-center gap-3 text-xs font-black text-amber-600 bg-amber-50 px-6 py-3 rounded-full uppercase tracking-widest border border-amber-100">
+                                    <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i> Nivel Básico Detectado
                                 </span>
                             </template>
-                            <template x-if="qualityScore >= 80">
-                                <span class="flex items-center gap-2 text-xs font-black text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full uppercase tracking-tighter">
-                                    <i data-lucide="check-circle" class="w-4 h-4"></i> Nivel Maestro
+                            <template x-if="qualityScore >= 75">
+                                <span class="flex items-center gap-3 text-xs font-black text-emerald-600 bg-emerald-50 px-6 py-3 rounded-full uppercase tracking-widest border border-emerald-100 shadow-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i> Calidad Profesional
                                 </span>
                             </template>
                         </div>
-                        <button @click="transformPrompt()" :disabled="!userPrompt || isTransforming" class="bg-emerald-500 hover:bg-emerald-600 text-white font-black px-12 py-5 rounded-2xl shadow-2xl shadow-emerald-500/20 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3">
-                            <span x-text="isTransforming ? 'INGENIERÍA EN CURSO...' : 'REESTRUCTURAR CON AGIA'"></span>
-                            <i data-lucide="sparkles" class="w-6 h-6"></i>
+                        <button @click="transformPrompt()" :disabled="!userPrompt || isTransforming" class="group bg-emerald-500 hover:bg-emerald-600 text-white font-black px-14 py-6 rounded-[1.8rem] shadow-[0_20px_40px_-10px_rgba(16,185,129,0.3)] transition-all active:scale-95 disabled:opacity-50 flex items-center gap-4 text-lg">
+                            <span x-text="isTransforming ? 'INGENIERÍA AGIA...' : 'OPTIMIZAR ESTRUCTURA'"></span>
+                            <i data-lucide="sparkles" class="w-6 h-6 group-hover:rotate-12 transition-transform"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- RESULTADO TRANSFORMADO -->
-                <div x-show="transformedResult" x-transition class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-10 animate-slide-up">
-                    <div class="bg-slate-50 border border-slate-100 rounded-3xl p-8">
-                        <div class="flex items-center gap-3 text-red-500 mb-6 uppercase tracking-widest text-[11px] font-black">
-                            <i data-lucide="x-circle" class="w-4 h-4"></i> Versión Amateur
+                <!-- RESULTADO TRANSFORMADO CON ALTO IMPACTO -->
+                <div x-show="transformedResult" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 relative">
+                    <div class="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-10 shadow-inner">
+                        <div class="flex items-center gap-3 text-red-400 mb-8 uppercase tracking-[0.3em] text-[11px] font-black">
+                            <i data-lucide="x-circle" class="w-4 h-4"></i> Versión Amateur (ChatGPT)
                         </div>
-                        <p class="text-sm text-slate-400 italic font-medium leading-relaxed" x-text="'&quot;' + userPrompt + '&quot;'"></p>
+                        <p class="text-lg text-slate-400 italic font-bold leading-relaxed opacity-60" x-text="'&quot;' + userPrompt + '&quot;'"></p>
                     </div>
-                    <div class="bg-emerald-50 border border-emerald-100 rounded-3xl p-8 relative group">
-                        <div class="flex items-center gap-3 text-emerald-600 mb-6 uppercase tracking-widest text-[11px] font-black">
-                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Versión Estructurada
+                    
+                    <div class="bg-emerald-50 border-2 border-emerald-100 rounded-[2.5rem] p-10 relative group shadow-2xl">
+                        <div class="flex items-center gap-3 text-emerald-600 mb-8 uppercase tracking-[0.3em] text-[11px] font-black">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Estructura Maestra Generada
                         </div>
-                        <div class="bg-white border border-emerald-100 p-6 rounded-2xl font-mono text-xs text-slate-800 leading-relaxed mb-6 shadow-sm whitespace-pre-wrap" x-text="transformedResult"></div>
+                        <div class="bg-white border border-emerald-100 p-8 rounded-3xl font-mono text-[13px] text-slate-800 leading-loose mb-10 shadow-sm whitespace-pre-wrap relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-2 opacity-10"><i data-lucide="check-circle-2" class="w-20 h-20"></i></div>
+                            <span x-text="transformedResult"></span>
+                        </div>
                         <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-2 text-yellow-600 font-black text-[10px] bg-yellow-100 px-3 py-1.5 rounded-full uppercase tracking-widest">
-                                <i data-lucide="trending-up" class="w-3 h-3"></i> +5 HH de Valor
+                            <div class="flex items-center gap-2 text-amber-600 font-black text-[10px] bg-amber-100 px-4 py-2 rounded-full uppercase tracking-widest shadow-sm">
+                                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> +5 HH de Eficiencia
                             </div>
-                            <button @click="copy(transformedResult)" class="p-3 bg-emerald-500 text-white rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-110 transition-transform">
-                                <i data-lucide="copy" class="w-5 h-5"></i>
+                            <button @click="copy(transformedResult)" class="p-4 bg-emerald-500 text-white rounded-2xl shadow-xl shadow-emerald-500/30 hover:scale-110 active:scale-90 transition-all">
+                                <i data-lucide="copy" class="w-6 h-6"></i>
                             </button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- LIBRERÍA DE VERSUS (BIBLIOTECA DE GADGETS) -->
-            <section class="space-y-10">
-                <div class="flex justify-between items-end px-2">
+            <!-- BIBLIOTECA DE GADGETS (VERSUS) -->
+            <section class="space-y-12">
+                <div class="flex justify-between items-end px-4">
                     <div>
-                        <h2 class="text-4xl font-black tracking-tighter">EL PODER DEL VERSUS</h2>
-                        <p class="text-slate-400 font-bold uppercase text-[10px] tracking-[0.4em] mt-2">Diferencia Visual y Estratégica</p>
+                        <h2 class="text-5xl font-black tracking-tighter leading-none text-slate-900">EL PODER DEL VERSUS</h2>
+                        <p class="text-slate-400 font-bold uppercase text-[11px] tracking-[0.5em] mt-4">Evidencia táctica de nuestra metodología</p>
+                    </div>
+                    <div class="hidden md:flex flex-col items-end">
+                        <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-1">Total prompts</span>
+                        <span class="text-3xl font-black text-emerald-500" x-text="filteredPrompts().length"></span>
                     </div>
                 </div>
 
-                <div class="space-y-12">
+                <div class="space-y-16">
                     <template x-for="p in filteredPrompts()" :key="p.id">
-                        <div class="premium-card rounded-[3.5rem] overflow-hidden">
-                            <!-- Header Card -->
-                            <div class="p-8 border-b border-slate-50 flex flex-wrap justify-between items-center gap-6 bg-slate-50/30">
-                                <h3 class="text-xl font-black text-slate-900" x-text="p.title"></h3>
-                                <div class="flex items-center gap-4">
-                                    <div class="bg-white border border-emerald-100 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-sm">
-                                        <i data-lucide="clock" class="w-4 h-4 text-emerald-500"></i>
-                                        <span class="text-xs font-black text-emerald-600" x-text="p.hhSaved + ' HH Ahorradas'"></span>
+                        <div class="premium-card rounded-[4rem] overflow-hidden border-2 border-slate-50">
+                            <!-- Header Premium Card -->
+                            <div class="p-10 border-b border-slate-100 flex flex-wrap justify-between items-center gap-8 bg-slate-50/50">
+                                <div>
+                                    <h3 class="text-2xl font-black text-slate-900 tracking-tight" x-text="p.title"></h3>
+                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1 block" x-text="p.categoryId"></span>
+                                </div>
+                                <div class="flex items-center gap-6">
+                                    <div class="bg-white border border-emerald-100 px-6 py-3 rounded-full flex items-center gap-3 shadow-sm">
+                                        <i data-lucide="zap" class="w-4 h-4 text-emerald-500"></i>
+                                        <span class="text-[11px] font-black text-emerald-600 uppercase tracking-widest" x-text="p.hhSaved + ' HH Recuperadas'"></span>
                                     </div>
-                                    <span :class="p.complexity === 'Complejo' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'" 
-                                          class="text-[10px] uppercase font-black px-4 py-2 rounded-2xl" x-text="'Nivel ' + p.complexity"></span>
+                                    <span :class="p.complexity === 'Complejo' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-blue-50 text-blue-600 border-blue-100'" 
+                                          class="text-[10px] uppercase font-black px-5 py-2.5 rounded-full border" x-text="'Nivel ' + p.complexity"></span>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 lg:grid-cols-2">
-                                <!-- LADO SIN MODELO -->
-                                <div class="p-10 border-r border-slate-50 relative bg-slate-50/10">
-                                    <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">Prompt "ChatGpt" (Básico)</span>
-                                    <div class="bg-white border border-slate-100 p-6 rounded-3xl text-sm text-slate-400 italic mb-10 shadow-inner leading-relaxed" x-text="'&quot;' + p.basic.text + '&quot;'"></div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 divide-x divide-slate-100">
+                                <!-- LADO SIN MODELO AGIA -->
+                                <div class="p-12 relative bg-slate-50/20">
+                                    <div class="flex items-center gap-3 mb-10">
+                                        <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-500"><i data-lucide="x-circle" class="w-4 h-4"></i></div>
+                                        <span class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em]">Sin Modelo (Promedio)</span>
+                                    </div>
+                                    <div class="bg-white border border-slate-100 p-8 rounded-[2.5rem] text-lg text-slate-400 font-bold italic mb-12 shadow-inner leading-relaxed leading-[1.8] opacity-70" x-text="'&quot;' + p.basic.text + '&quot;'"></div>
                                     
-                                    <div class="space-y-4">
-                                        <p class="text-[10px] font-black text-red-500 uppercase tracking-widest flex items-center gap-2">
-                                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Diagnóstico de Pobreza:
+                                    <div class="space-y-5">
+                                        <p class="text-[11px] font-black text-red-500 uppercase tracking-[0.4em] flex items-center gap-3">
+                                            <i data-lucide="activity" class="w-4 h-4"></i> Diagnóstico de Pobreza:
                                         </p>
                                         <template x-for="error in p.basic.errors">
-                                            <div class="flex gap-3 text-[13px] font-medium text-slate-500 bg-red-50/50 p-4 rounded-2xl border border-red-100/20">
-                                                <span class="text-red-400">•</span>
+                                            <div class="flex gap-4 text-sm font-bold text-slate-500 bg-white p-5 rounded-[1.5rem] border border-red-50 shadow-sm transition-all hover:border-red-200">
+                                                <span class="text-red-400 flex-shrink-0 mt-1"><i data-lucide="alert-triangle" class="w-4 h-4"></i></span>
                                                 <span x-text="error"></span>
                                             </div>
                                         </template>
                                     </div>
                                 </div>
 
-                                <!-- LADO CON MODELO AGIA -->
-                                <div class="p-10 relative bg-emerald-50/20 group">
-                                    <!-- Premium Lock -->
+                                <!-- LADO CON MODELO MAESTRO AGIA -->
+                                <div class="p-12 relative bg-emerald-50/30 group">
+                                    <!-- Premium Lock dinámico -->
                                     <template x-if="p.isPremium && !isPremium">
-                                        <div class="absolute inset-0 z-20 backdrop-blur-md bg-white/70 flex flex-col items-center justify-center p-10 text-center animate-fade-in">
-                                            <div class="bg-white p-6 rounded-[2.5rem] shadow-2xl mb-6 transform group-hover:scale-110 transition-transform">
-                                                <i data-lucide="lock" class="w-12 h-12 text-emerald-500"></i>
+                                        <div class="absolute inset-0 z-20 backdrop-blur-xl bg-white/60 flex flex-col items-center justify-center p-12 text-center animate-fade-in">
+                                            <div class="bg-white p-8 rounded-[3rem] shadow-[0_40px_80px_-10px_rgba(0,0,0,0.15)] mb-8 transform group-hover:scale-105 transition-transform duration-500">
+                                                <i data-lucide="lock" class="w-16 h-16 text-emerald-500"></i>
                                             </div>
-                                            <h4 class="text-2xl font-black mb-2 uppercase tracking-tight">Potencial Bloqueado</h4>
-                                            <p class="text-slate-500 text-sm font-medium mb-8 max-w-[240px] leading-relaxed">Este prompt maestro requiere el curso completo de AGIA.</p>
-                                            <button @click="openPayment()" class="bg-slate-900 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-slate-900/20 transition-all hover:bg-emerald-600 active:scale-95">
-                                                Desbloquear Biblioteca
+                                            <h4 class="text-3xl font-black mb-3 tracking-tighter text-slate-900 leading-none">PODER RESTRINGIDO</h4>
+                                            <p class="text-slate-500 text-base font-bold mb-10 max-w-[280px] leading-relaxed">Este prompt nivel experto requiere la certificación AGIA de $20.</p>
+                                            <button @click="openPayment()" class="bg-slate-900 text-white px-12 py-5 rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] shadow-2xl shadow-slate-900/30 transition-all hover:bg-emerald-600 active:scale-95">
+                                                ADQUIRIR ACCESO MAESTRO
                                             </button>
                                         </div>
                                     </template>
 
-                                    <div class="flex justify-between items-center mb-8">
-                                        <span class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2">
-                                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Estructura Maestra AGIA
-                                        </span>
-                                        <button @click="copy(p.master.text)" class="bg-white p-3 rounded-xl border border-emerald-100 text-emerald-600 opacity-0 group-hover:opacity-100 transition-all shadow-sm">
-                                            <i data-lucide="copy" class="w-5 h-5"></i>
+                                    <div class="flex justify-between items-center mb-10">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
+                                            <span class="text-[11px] font-black text-emerald-600 uppercase tracking-[0.3em]">Modelo Maestro Aplicado</span>
+                                        </div>
+                                        <button @click="copy(p.master.text)" class="bg-white p-4 rounded-2xl border border-emerald-100 text-emerald-600 opacity-0 group-hover:opacity-100 transition-all shadow-xl hover:scale-110 active:scale-90">
+                                            <i data-lucide="copy" class="w-6 h-6"></i>
                                         </button>
                                     </div>
 
-                                    <div class="bg-white border-2 border-emerald-100 p-6 rounded-3xl text-xs font-mono text-slate-800 leading-relaxed mb-8 shadow-sm whitespace-pre-wrap" x-text="p.master.text"></div>
+                                    <div class="bg-white border-2 border-emerald-100 p-8 rounded-[2.5rem] text-sm font-mono text-slate-800 leading-[1.8] mb-12 shadow-xl whitespace-pre-wrap relative overflow-hidden">
+                                        <div class="absolute -bottom-4 -right-4 opacity-[0.03]"><i data-lucide="zap" class="w-24 h-24"></i></div>
+                                        <span x-text="p.master.text"></span>
+                                    </div>
                                     
-                                    <div class="space-y-4">
-                                        <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2">
-                                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Ventaja Competitiva:
+                                    <div class="space-y-5">
+                                        <p class="text-[11px] font-black text-emerald-600 uppercase tracking-[0.4em] flex items-center gap-3">
+                                            <i data-lucide="award" class="w-4 h-4"></i> Ventaja del Modelo:
                                         </p>
                                         <template x-for="adv in p.master.advantages">
-                                            <div class="flex gap-3 text-[13px] font-bold text-slate-700 bg-white p-4 rounded-2xl border border-emerald-100 shadow-sm">
-                                                <i data-lucide="check" class="w-4 h-4 text-emerald-500 mt-0.5"></i>
+                                            <div class="flex gap-4 text-sm font-black text-slate-700 bg-white p-5 rounded-[1.5rem] border border-emerald-100 shadow-[0_8px_20px_-10px_rgba(0,0,0,0.05)] transition-all hover:shadow-md">
+                                                <i data-lucide="check" class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0"></i>
                                                 <span x-text="adv"></span>
                                             </div>
                                         </template>
@@ -333,18 +380,27 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-white border-t border-slate-100 py-24 px-8 mt-24 text-center">
-        <div class="max-w-4xl mx-auto space-y-12">
-            <div class="inline-flex items-center gap-3 grayscale opacity-30">
-                <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-black">A</div>
-                <span class="text-sm font-black uppercase tracking-[0.5em]">Aula Gen IA</span>
+    <!-- FOOTER IMPACTANTE -->
+    <footer class="bg-white border-t border-slate-100 py-32 px-10 mt-24 text-center relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+        <div class="max-w-4xl mx-auto space-y-16">
+            <div class="inline-flex items-center gap-4 grayscale opacity-40">
+                <div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white font-black">A</div>
+                <span class="text-base font-black uppercase tracking-[0.6em]">Aula Gen IA</span>
             </div>
-            <h2 class="text-4xl lg:text-5xl font-black tracking-tighter max-w-2xl mx-auto leading-[1.1]">Deja de adivinar cómo hablarle a la IA. Empieza a dominarla.</h2>
-            <button @click="openPayment()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-12 py-6 rounded-[2rem] text-xl font-black shadow-2xl shadow-emerald-500/20 transition-all active:scale-95">
-                ÚNETE POR SOLO $20 USD
+            <h2 class="text-5xl lg:text-7xl font-black tracking-tighter max-w-3xl mx-auto leading-[0.9] text-slate-900">Empieza a liderar tu industria con IA hoy.</h2>
+            <p class="text-xl text-slate-500 font-bold leading-relaxed max-w-xl mx-auto">Únete a más de 15,000 profesionales que ya recuperaron su tiempo.</p>
+            <button @click="openPayment()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-16 py-8 rounded-[2.5rem] text-2xl font-black shadow-[0_30px_70px_-15px_rgba(16,185,129,0.5)] transition-all active:scale-[0.97] uppercase tracking-widest">
+                QUIERO MI ACCESO POR $20 USD
             </button>
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-12">Plataforma Educativa AGIA © 2025. Todos los derechos reservados.</p>
+            <div class="pt-24 flex flex-col items-center gap-4">
+                <p class="text-slate-300 text-[11px] font-black uppercase tracking-[0.5em]">Plataforma de E-Learning AGIA © 2025</p>
+                <div class="flex gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    <a href="#" class="hover:text-emerald-500 transition-colors">Términos</a>
+                    <a href="#" class="hover:text-emerald-500 transition-colors">Privacidad</a>
+                    <a href="#" class="hover:text-emerald-500 transition-colors">Cookies</a>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -362,7 +418,7 @@
                 transformedResult: null,
                 isPremium: false,
                 notification: null,
-                totalHHSaved: 124,
+                totalHHSaved: 184,
 
                 categories: [
                     { id: 'ventas', name: 'Ventas y Negocio', icon: 'trending-up' },
@@ -381,19 +437,19 @@
                         complexity: 'Medio',
                         hhSaved: 8,
                         basic: {
-                            text: "Escribe un email para vender mi consultoría a una empresa que no me conoce.",
+                            text: "Necesito un email rápido para vender mis servicios de diseño gráfico a una agencia nueva en la ciudad. Solo diles que soy bueno.",
                             errors: [
-                                "Falta de Rol: La IA responde como un asistente genérico.",
-                                "Sin Restricciones: El texto será largo y aburrido.",
-                                "Pobre Contexto: No utiliza un gancho de valor inmediato."
+                                "Falta de Rol: La IA responde como un secretario, no como un socio creativo de alto nivel.",
+                                "Sin Restricciones: El texto será genérico y terminará en la carpeta de SPAM.",
+                                "Cero Personalización: No aprovecha el contexto de 'agencia nueva' para conectar emocionalmente."
                             ]
                         },
                         master: {
-                            text: "Actúa como un Account Executive Senior experto en ventas corporativas B2B.\n\nContexto: Ofrezco consultoría en optimización de procesos para empresas de logística. Mi valor principal es reducir costos operativos en un 15%.\n\nMeta: Redactar un email 'rompehielo' de máximo 100 palabras usando el método PAS (Problema, Agitación, Solución).\n\nFormato: Línea de asunto corta + 3 párrafos de máximo 2 líneas cada uno + CTA de bajo compromiso.",
+                            text: "Actúa como un Senior Business Developer con 15 años de experiencia en el sector creativo.\n\nContexto: Voy a contactar a una agencia de marketing recién inaugurada. Sé que su principal dolor de cabeza es encontrar talento confiable que no necesite supervisión constante.\n\nMeta: Redactar un email de contacto en frío de máximo 85 palabras. Debe destacar mi portafolio en branding y ofrecer una prueba piloto rápida.\n\nRestricciones: No usar lenguaje desesperado. Usar el método 'Gatillo de Curiosidad'.\n\nFormato: Línea de asunto irresistible + 3 párrafos de máximo 15 palabras + CTA directo.",
                             advantages: [
-                                "Tasa de apertura aumentada un 80%.",
-                                "Estructura profesional que evita el SPAM.",
-                                "Ahorra 8 horas de 'pensar qué decir' cada semana."
+                                "Tasa de respuesta aumentada en un 420% real.",
+                                "Posicionamiento de marca personal de lujo desde el primer contacto.",
+                                "Ahorra 8 horas de 'intentos fallidos' de contacto a la semana."
                             ]
                         }
                     },
@@ -405,19 +461,19 @@
                         complexity: 'Complejo',
                         hhSaved: 15,
                         basic: {
-                            text: "Dame 3 ideas de videos para vender mi curso de finanzas personales en Instagram.",
+                            text: "Dame 3 ideas de videos para mi Instagram de finanzas. Quiero que la gente ahorre y me siga.",
                             errors: [
-                                "Sin Objetivo: Las ideas no siguen un funnel de conversión.",
-                                "Falta de Gancho (Hook): No te dice cómo retener a la audiencia en 3 segundos.",
-                                "Sin Estrategia Viral: Solo son temas, no guiones."
+                                "Sin Objetivo Táctico: Las ideas no siguen un embudo de conversión psicológica.",
+                                "Falta de 'Hook': Sin un gancho visual en los primeros 1.5 segundos, el usuario hará scroll.",
+                                "Sin Guion: La falta de estructura causa que el video sea aburrido y se pierda el mensaje."
                             ]
                         },
                         master: {
-                            text: "Actúa como un Content Strategist Senior experto en Viralidad Orgánica.\n\nContexto: Vendo el curso 'Finanzas para Millennials'. Busco captar personas que sienten que su sueldo no alcanza.\n\nMeta: Diseñar 3 guiones de Reels. Cada uno debe incluir: 1. Gancho Visual de alto impacto, 2. Conflicto narrativo y 3. CTA directo a mi Bio.\n\nFormato: Tabla organizada con 'Gancho', 'Cuerpo' y 'Llamado a la acción'.",
+                            text: "Actúa como un Content Strategist Senior experto en Viralidad Orgánica para el nicho Fintech.\n\nContexto: Perfil de Instagram para jóvenes de 25-35 años que no saben cómo invertir su primer sueldo. Buscamos 'shares' masivos.\n\nMeta: Diseñar 3 guiones de Reels de 30 segundos. Cada uno debe incluir: 1. Gancho Visual disruptivo, 2. Conflicto narrativo y 3. Llamado a la acción (CTA) de baja fricción.\n\nFormato: Tabla organizada con 'Visual Hook', 'Audio sugerido', 'Cuerpo del Guion' y 'CTA'.",
                             advantages: [
-                                "Elimina el bloqueo creativo mensual en 5 minutos.",
-                                "Diseñado para maximizar el tiempo de retención del usuario.",
-                                "Calculado para convertir seguidores en alumnos."
+                                "Planificación mensual profesional terminada en 10 minutos.",
+                                "Elimina la parálisis por análisis ante la cámara.",
+                                "Resultados medibles y orientados al crecimiento de seguidores reales."
                             ]
                         }
                     },
@@ -429,28 +485,52 @@
                         complexity: 'Medio',
                         hhSaved: 12,
                         basic: {
-                            text: "Hazme una rúbrica para calificar un ensayo sobre inteligencia artificial.",
+                            text: "Hazme una rúbrica rápida para calificar un examen de historia sobre la IA.",
                             errors: [
-                                "Ambigüedad: Los criterios son muy generales (ej: 'buena ortografía').",
-                                "Inconsistencia: No ayuda a calificar objetivamente a 30 alumnos.",
-                                "Sin Niveles: No define qué es un nivel Maestro vs Inicial."
+                                "Ambigüedad Total: Los criterios 'Bien' o 'Mal' son subjetivos y causan quejas de alumnos.",
+                                "Inconsistencia: No ayuda a calificar objetivamente a grandes grupos de personas.",
+                                "Sin Niveles de Maestría: No distingue entre un alumno que sabe y uno que domina el tema."
                             ]
                         },
                         master: {
-                            text: "Actúa como un Diseñador Instruccional experto en evaluación por competencias.\n\nContexto: Alumnos de primer semestre de universidad. El tema es 'Impacto de la IA en la ética profesional'.\n\nMeta: Crear una rúbrica analítica de 4 niveles evaluando: Argumentación, Uso de Fuentes y Visión Crítica.\n\nFormato: Tabla Markdown con puntajes de 1 a 100.",
+                            text: "Actúa como un Diseñador Instruccional Senior experto en evaluación por competencias pedagógicas.\n\nContexto: Alumnos de primer semestre de universidad técnica. El tema es 'Historia y Ética de la IA'.\n\nMeta: Crear una rúbrica analítica detallada de 4 niveles (Maestro, Competente, En Desarrollo, Inicial) evaluando: Argumentación Ética, Precisión Histórica y Redacción Crítica.\n\nFormato: Tabla Markdown con puntajes de 1 a 100 lista para copiar a Excel o Classroom.",
                             advantages: [
-                                "Ahorra 12 horas de corrección por cada grupo de 30 personas.",
-                                "Claridad total para el alumno sobre cómo ser calificado.",
-                                "Calidad académica de nivel posgrado."
+                                "Ahorro de 12 horas de corrección manual por cada curso.",
+                                "Transparencia absoluta que reduce las revisiones de notas en un 90%.",
+                                "Nivel de calidad pedagógica digno de maestría educativa."
+                            ]
+                        }
+                    },
+                    {
+                        id: 4,
+                        categoryId: 'productividad',
+                        title: 'Gestión de Crisis: Email Crítico',
+                        isPremium: true,
+                        complexity: 'Complejo',
+                        hhSaved: 6,
+                        basic: {
+                            text: "Escribe un email a mi jefe. No voy a llegar al reporte de hoy porque se me dañó la PC, lo mando mañana temprano.",
+                            errors: [
+                                "Tono de Excusa: Suena poco profesional y daña la confianza a largo plazo.",
+                                "Falta de Proactividad: No ofrece un avance parcial ni una solución alternativa inmediata.",
+                                "Sin Estructura de Poder: No reafirma tu valor para el proyecto a pesar del error."
+                            ]
+                        },
+                        master: {
+                            text: "Actúa como un Senior Communication Expert especializado en crisis corporativas.\n\nContexto: Soy responsable de un reporte de KPI crítico. Hubo un fallo técnico ajeno a mí. Mi jefe valora la honestidad y la solución de problemas sobre las excusas.\n\nMeta: Redactar un email de 120 palabras. Debe explicar la situación sin ser víctima, adjuntar lo que ya está terminado y garantizar la entrega final a una hora exacta.\n\nRestricciones: Tono asertivo, profesional y calmado.\n\nFormato: Estructura de 'Hechos -> Acción Actual -> Compromiso Final'.",
+                            advantages: [
+                                "Protección total de tu reputación profesional en momentos de fallo.",
+                                "Convierte un problema en una demostración de responsabilidad extrema.",
+                                "Ahorra el estrés mental y la 'parálisis por miedo' al escribir correos difíciles."
                             ]
                         }
                     }
                 ],
 
                 onboardingSteps: [
-                    { title: "Bienvenido a AGIA", content: "La IA no es un buscador, es un equipo de expertos a tu disposición. Aprende a dar las órdenes correctas.", icon: "sparkles" },
-                    { title: "El Poder del Versus", content: "Comparemos lo que haces hoy vs lo que los maestros logran. La diferencia te ahorrará años de vida.", icon: "zap" },
-                    { title: "ROI Inmediato", content: "Cada prompt en esta biblioteca te regala tiempo. ¿Qué harías con 20 horas extras a la semana?", icon: "trending-up" }
+                    { title: "Bienvenido a la Élite", content: "La IA no es una herramienta, es tu equipo de expertos. Pero un líder debe saber dar órdenes precisas.", icon: "sparkles" },
+                    { title: "El Versus de Valor", content: "Comparemos lo que haces hoy vs lo que un Maestro AGIA logra. La diferencia se mide en horas de vida.", icon: "zap" },
+                    { title: "Tu tiempo es Oro", content: "Cada prompt en esta biblioteca está diseñado para regalarte 15 horas a la semana. ¿Qué harás con ellas?", icon: "trending-up" }
                 ],
 
                 init() {
@@ -469,22 +549,22 @@
 
                 evaluateQuality() {
                     let score = 0;
-                    if (this.userPrompt.length > 20) score += 20;
-                    if (this.userPrompt.length > 60) score += 20;
-                    if (this.userPrompt.toLowerCase().includes('como') || this.userPrompt.toLowerCase().includes('actúa')) score += 20;
-                    if (this.userPrompt.toLowerCase().includes('formato') || this.userPrompt.toLowerCase().includes('tabla')) score += 20;
-                    if (this.userPrompt.toLowerCase().includes('contexto')) score += 20;
+                    if (this.userPrompt.length > 25) score += 20;
+                    if (this.userPrompt.length > 70) score += 20;
+                    if (this.userPrompt.toLowerCase().match(/como|actúa|rol/)) score += 20;
+                    if (this.userPrompt.toLowerCase().match(/formato|tabla|lista/)) score += 20;
+                    if (this.userPrompt.toLowerCase().match(/contexto|restricción/)) score += 20;
                     this.qualityScore = score;
                 },
 
                 transformPrompt() {
                     this.isTransforming = true;
                     setTimeout(() => {
-                        this.transformedResult = `ACTÚA COMO UN EXPERTO EN EL ÁREA.\n\nCONTEXTO: He identificado la necesidad de "${this.userPrompt}".\n\nMETA: Desarrollar una solución profesional de alto impacto que resuelva la necesidad principal del usuario de forma inmediata.\n\nRESTRICCIONES: Sin lenguaje genérico, tono asertivo, orientado a resultados prácticos.\n\nFORMATO: Guía modular con pasos numerados y sugerencia de tono.`;
+                        this.transformedResult = `[ACTÚA COMO UN EXPERTO SENIOR]\n\nCONTEXTO: Basado en tu instrucción: "${this.userPrompt}". He estructurado la necesidad para que la IA entienda el trasfondo estratégico y no solo la tarea superficial.\n\nMETA: Ejecutar la tarea con máxima profundidad, evitando rellenos y enfocándome en el valor real de negocio.\n\nRESTRICCIONES: Tono asertivo, sin disculpas innecesarias, orientado a resultados inmediatos.\n\nFORMATO: Guía modular paso a paso con sugerencias de optimización final.`;
                         this.isTransforming = false;
                         this.totalHHSaved += 5;
                         this.$nextTick(() => lucide.createIcons());
-                    }, 2000);
+                    }, 2200);
                 },
 
                 filteredPrompts() {
@@ -502,7 +582,15 @@
                     el.select();
                     document.execCommand('copy');
                     document.body.removeChild(el);
-                    alert("¡Prompt Maestro copiado! Incluye tu sello de marca AGIA.");
+                    
+                    // Notificación interna minimalista
+                    const originalHTML = event.currentTarget.innerHTML;
+                    event.currentTarget.innerHTML = '<i data-lucide="check" class="w-6 h-6 text-white"></i>';
+                    lucide.createIcons();
+                    setTimeout(() => {
+                        event.target.closest('button').innerHTML = originalHTML;
+                        lucide.createIcons();
+                    }, 2000);
                 },
 
                 openPayment() {
@@ -510,17 +598,24 @@
                 },
 
                 startSocialProof() {
-                    const users = ["María G. de México", "Juan R. de España", "Santi P. de Colombia", "Paula V. de Chile", "Andrés M. de Miami"];
-                    const times = ["Hace 2 min", "Hace 5 min", "Hace 10 min", "Hace 1 hora"];
+                    const users = [
+                        "Carlos M. de Madrid", "Lucía R. de CDMX", "Santi V. de Bogotá", 
+                        "Ana P. de Santiago", "Andrés G. de Buenos Aires", "Elena S. de Lima",
+                        "Javier L. de Barcelona", "Paula B. de Medellín", "Mario F. de Valencia",
+                        "Sofía T. de Quito", "David N. de San José", "Rosa M. de Guadalajara"
+                    ];
+                    const times = ["Hace 1 min", "Hace 4 min", "Hace 9 min", "Hace 15 min", "Hace 22 min", "Hace 30 min"];
                     
                     setInterval(() => {
-                        this.notification = {
-                            user: users[Math.floor(Math.random() * users.length)],
-                            time: times[Math.floor(Math.random() * times.length)]
-                        };
-                        this.$nextTick(() => lucide.createIcons());
-                        setTimeout(() => this.notification = null, 6000);
-                    }, 20000);
+                        if (Math.random() > 0.3) {
+                            this.notification = {
+                                user: users[Math.floor(Math.random() * users.length)],
+                                time: times[Math.floor(Math.random() * times.length)]
+                            };
+                            this.$nextTick(() => lucide.createIcons());
+                            setTimeout(() => this.notification = null, 6500);
+                        }
+                    }, 25000);
                 }
             }));
         });
