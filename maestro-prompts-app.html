@@ -16,8 +16,7 @@
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
-            --accent: #06b6d4;
-            --bg-main: #fcfdfe;
+            --bg-main: #f8fafc;
         }
 
         body { 
@@ -29,298 +28,305 @@
 
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-        /* Estilo Premium de Tags AGIA */
+        /* Estilo de Etiquetas del Modelo AGIA */
         .hl-tag { 
             display: inline-flex;
             align-items: center;
-            padding: 2px 8px;
-            border-radius: 6px;
-            margin: 2px;
+            padding: 1px 8px;
+            border-radius: 4px;
+            margin: 0 2px;
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 0.025em;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
             border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
         
         .hl-active { 
-            transform: scale(1.05);
-            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.2);
-            z-index: 10;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+            filter: brightness(1.05);
         }
 
-        .hl-rol { color: #2563eb; background: #eff6ff; border-color: #bfdbfe; }
-        .hl-contexto { color: #059669; background: #ecfdf5; border-color: #a7f3d0; }
-        .hl-meta { color: #d97706; background: #fffbeb; border-color: #fde68a; }
-        .hl-restricciones { color: #dc2626; background: #fef2f2; border-color: #fecaca; }
-        .hl-formato { color: #7c3aed; background: #f5f3ff; border-color: #ddd6fe; }
+        .hl-rol { color: #2563eb; background: #eff6ff; border-color: #dbeafe; }
+        .hl-contexto { color: #059669; background: #ecfdf5; border-color: #d1fae5; }
+        .hl-meta { color: #d97706; background: #fffbeb; border-color: #fef3c7; }
+        .hl-restricciones { color: #dc2626; background: #fef2f2; border-color: #fee2e2; }
+        .hl-formato { color: #7c3aed; background: #f5f3ff; border-color: #ede9fe; }
 
-        /* Variables */
+        /* Variables Dinámicas */
         .var-highlight { 
-            background: linear-gradient(120deg, #e0e7ff 0%, #e0f2fe 100%);
-            border-bottom: 2px solid #6366f1;
-            color: #4338ca;
+            background: #e0f2fe;
+            border-bottom: 2px solid #0ea5e9;
+            color: #0369a1;
             font-weight: 700;
             padding: 0 4px;
             border-radius: 2px;
         }
 
-        /* Glassmorphism Soft */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
+        /* Glassmorphism Efecto Suave */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Mobile Adjustments */
+        /* Ajustes Mobile Drawer */
         @media (max-width: 768px) {
-            .mobile-drawer {
+            .mobile-sidebar {
                 position: fixed;
                 top: 0;
                 left: -100%;
-                width: 85%;
+                width: 280px;
                 height: 100%;
                 z-index: 50;
-                transition: left 0.3s ease;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 20px 0 50px rgba(0,0,0,0.1);
             }
-            .mobile-drawer.open { left: 0; }
+            .mobile-sidebar.open { left: 0; }
         }
 
-        /* Custom Scrollbar */
-        .custom-scroll::-webkit-scrollbar { width: 4px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
         .tip-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            transition: all 0.3s ease;
         }
-        .tip-open {
-            max-height: 200px;
-            padding-bottom: 1rem;
-        }
+        .tip-open { max-height: 300px; padding-bottom: 1rem; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden">
 
-    <!-- OVERLAY DE CARGA / ERROR -->
-    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 text-center">
-        <div class="max-w-xs w-full animate-pulse">
-            <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+    <!-- OVERLAY DE CARGA (Conexión a Bóveda) -->
+    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500">
+        <div class="max-w-xs w-full">
+            <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-6 animate-bounce shadow-xl shadow-indigo-100">
                 <span class="material-symbols-rounded text-4xl">Auto_Awesome</span>
             </div>
-            <h2 id="status-title" class="text-xl font-bold text-slate-900 mb-2">Iniciando Laboratorio...</h2>
-            <p id="status-desc" class="text-sm text-slate-400 mb-6">Sincronizando modelos AGIA con la base de datos central.</p>
-            <div id="status-code" class="text-[10px] font-mono text-slate-300">ESTADO: CONECTANDO...</div>
-            <button id="retry-btn" onclick="window.location.reload()" class="hidden mt-6 w-full py-3 bg-indigo-600 text-white rounded-xl font-bold">Reintentar</button>
+            <h2 id="status-title" class="text-xl font-bold text-slate-900 mb-2 tracking-tight">Accediendo a la Bóveda...</h2>
+            <p id="status-desc" class="text-sm text-slate-400 mb-8 leading-relaxed">Conectando con el servidor central de AulaGenia para descargar prompts de ingeniería.</p>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-[10px] font-mono text-slate-400 text-left mb-6 overflow-hidden">
+                <p>> Target: aulagenia.cl/prompts_db</p>
+                <p id="status-code">> Status: <span class="text-indigo-500 font-bold">CONNECTING...</span></p>
+            </div>
+            <button id="retry-btn" onclick="window.location.reload()" class="hidden w-full py-3.5 bg-slate-900 text-white rounded-2xl font-bold shadow-lg">Reintentar Conexión</button>
         </div>
     </div>
 
-    <!-- HEADER PREMIUM -->
-    <header class="h-16 flex-none bg-white border-b border-slate-100 px-4 md:px-8 flex items-center justify-between z-40">
+    <!-- HEADER -->
+    <header class="h-16 flex-none bg-white/80 backdrop-blur-md border-b border-slate-100 px-4 md:px-8 flex items-center justify-between z-40 relative">
         <div class="flex items-center gap-4">
-            <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500">
+            <button onclick="toggleSidebar()" class="md:hidden w-10 h-10 flex items-center justify-center text-slate-500 bg-slate-50 rounded-xl">
                 <span class="material-symbols-rounded">menu</span>
             </button>
-            <div class="flex items-center gap-2">
-                <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center text-white">
-                    <span class="material-symbols-rounded text-xl">Bolt</span>
+            <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-500 rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center text-white">
+                    <span class="material-symbols-rounded text-2xl font-bold">Bolt</span>
                 </div>
                 <div class="hidden sm:block">
-                    <h1 class="text-sm font-extrabold text-slate-900 leading-none">AGIA <span class="text-indigo-600">Gen</span></h1>
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Prompt Engineering</p>
+                    <h1 class="text-sm font-black text-slate-900 leading-none">AGIA <span class="text-indigo-600 text-xs">V3.5</span></h1>
+                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-0.5">Prompt Engineering Lab</p>
                 </div>
             </div>
         </div>
 
         <div class="flex items-center gap-3">
-            <div class="hidden lg:flex items-center bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-2"></span>
-                <span class="text-[10px] font-bold text-slate-500 uppercase">V3.5 Live</span>
+            <div class="hidden lg:flex items-center gap-4 mr-4 text-[10px] font-bold text-slate-400 uppercase">
+                <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Bóveda Online</div>
+                <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> 105 Casos</div>
             </div>
-            <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-full text-xs font-bold transition-all shadow-lg shadow-indigo-100 flex items-center gap-2">
-                <span class="material-symbols-rounded text-sm">workspace_premium</span>
-                <span>Pro Access</span>
+            <button onclick="openPaywall()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-2xl text-[11px] font-bold transition-all shadow-xl shadow-slate-200 flex items-center gap-2 transform active:scale-95">
+                <span class="material-symbols-rounded text-sm text-yellow-400">workspace_premium</span>
+                <span class="hidden sm:inline italic">DESBLOQUEAR BÓVEDA</span>
             </button>
         </div>
     </header>
 
     <div class="flex flex-1 overflow-hidden relative">
         
-        <!-- SIDEBAR / DRAWER -->
-        <aside id="sidebar" class="mobile-drawer md:relative md:left-0 w-80 bg-white border-r border-slate-100 flex flex-col">
-            <div class="p-4 border-b border-slate-50">
-                <div class="relative">
-                    <span class="material-symbols-rounded absolute left-3 top-2.5 text-slate-400 text-lg">search</span>
-                    <input type="text" id="searchInput" placeholder="Filtrar casos..." 
-                        class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-none rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
+        <!-- SIDEBAR (Navegación de Bóveda) -->
+        <aside id="sidebar" class="mobile-sidebar md:relative md:left-0 w-80 bg-white border-r border-slate-100 flex flex-col z-30">
+            <div class="p-4 bg-white sticky top-0 border-b border-slate-50 z-10">
+                <div class="relative group">
+                    <span class="material-symbols-rounded absolute left-3 top-3 text-slate-400 text-lg group-focus-within:text-indigo-500 transition-colors">search</span>
+                    <input type="text" id="searchInput" placeholder="Buscar en la bóveda..." 
+                        class="w-full pl-10 pr-4 py-3 bg-slate-50 border-none rounded-2xl text-xs font-semibold focus:ring-2 focus:ring-indigo-100 outline-none transition-all placeholder:text-slate-400"
                         onkeyup="filterCases()">
                 </div>
             </div>
             
-            <div id="category-nav" class="p-4 flex gap-2 overflow-x-auto no-scrollbar border-b border-slate-50">
-                <!-- Categorías JS -->
+            <div id="category-nav" class="p-4 flex gap-2 overflow-x-auto no-scrollbar border-b border-slate-50 bg-slate-50/50">
+                <!-- Injected via JS -->
             </div>
 
-            <div id="case-list" class="flex-1 overflow-y-auto custom-scroll p-3 space-y-1 bg-slate-50/30">
-                <!-- Lista JS -->
+            <div id="case-list" class="flex-1 overflow-y-auto custom-scroll p-3 space-y-1.5 bg-white">
+                <!-- Injected via JS -->
             </div>
 
-            <div class="p-4 border-t border-slate-100 bg-white">
-                <div class="flex items-center justify-between">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase">Biblioteca</span>
-                    <span class="text-xs font-bold text-indigo-600" id="total-display">0</span>
+            <div class="p-4 border-t border-slate-100 bg-white flex items-center justify-between">
+                <div class="flex flex-col">
+                    <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Base de Datos</span>
+                    <span class="text-xs font-bold text-slate-700">Total: <span id="total-display" class="text-indigo-600 font-black">0</span></span>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-500">
+                    <span class="material-symbols-rounded text-sm animate-pulse">database</span>
                 </div>
             </div>
         </aside>
 
-        <!-- MAIN WORKSPACE -->
+        <!-- WORKSPACE (Laboratorio de Comparación) -->
         <main class="flex-1 overflow-y-auto bg-slate-50/50 custom-scroll relative">
             
-            <div id="workspace-empty" class="hidden absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-                <div class="w-20 h-20 bg-indigo-50 text-indigo-200 rounded-full flex items-center justify-center mb-4">
-                    <span class="material-symbols-rounded text-5xl">Design_Services</span>
+            <div id="workspace-empty" class="hidden absolute inset-0 flex flex-col items-center justify-center p-12 text-center">
+                <div class="w-24 h-24 bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 flex items-center justify-center mb-6 text-slate-200 border border-slate-50">
+                    <span class="material-symbols-rounded text-6xl">view_quilt</span>
                 </div>
-                <h3 class="text-lg font-bold text-slate-800">Selecciona un Laboratorio</h3>
-                <p class="text-sm text-slate-400 max-w-xs">Elige un caso a la izquierda para ver la diferencia entre un prompt promedio y el Método AGIA.</p>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Selecciona un Prompt Maestro</h3>
+                <p class="text-sm text-slate-400 max-w-sm leading-relaxed">Explora los 105 casos de la bóveda para ver cómo la ingeniería de prompts transforma resultados mediocres en magia.</p>
             </div>
 
-            <div id="case-detail" class="max-w-6xl mx-auto p-4 md:p-8 pb-32">
+            <div id="case-detail" class="max-w-6xl mx-auto p-4 md:p-10 pb-32">
                 <div class="fade-in">
                     
-                    <!-- CASE HEADER -->
-                    <div class="mb-8">
-                        <span id="detail-category-badge" class="inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-indigo-100 text-indigo-600 mb-4">Categoría</span>
-                        <h2 id="detail-title" class="text-2xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Título del Caso</h2>
-                        <p id="detail-problem" class="mt-2 text-slate-500 text-sm md:text-base max-w-3xl leading-relaxed"></p>
+                    <!-- CASE INFO -->
+                    <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div class="max-w-3xl">
+                            <span id="detail-category-badge" class="inline-block px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-indigo-50 text-indigo-500 border border-indigo-100 mb-4 italic">PRODUCTIVIDAD</span>
+                            <h2 id="detail-title" class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">Título</h2>
+                            <p id="detail-problem" class="mt-4 text-slate-500 text-sm md:text-lg font-medium leading-relaxed"></p>
+                        </div>
                     </div>
 
                     <div class="grid lg:grid-cols-12 gap-8 items-start">
                         
-                        <!-- CONTROLES (COL IZQ) -->
+                        <!-- PANEL DE CONTROL (COL IZQ) -->
                         <div class="lg:col-span-4 xl:col-span-3 space-y-6">
                             
-                            <!-- Variables Card -->
-                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 relative overflow-hidden group">
-                                <div class="flex items-center gap-2 mb-6">
-                                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                                        <span class="material-symbols-rounded text-lg">Tune</span>
+                            <!-- Card de Variables -->
+                            <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 relative overflow-hidden group hover:border-indigo-100 transition-colors">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                        <span class="material-symbols-rounded">tune</span>
                                     </div>
-                                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-800">Parámetros</h3>
+                                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-800 italic underline underline-offset-4 decoration-indigo-200">Personalización</h3>
                                 </div>
                                 
                                 <div id="variables-container" class="space-y-4">
-                                    <!-- Inputs dinámicos -->
+                                    <!-- Injected via JS -->
                                 </div>
 
                                 <!-- Lock Variable Overlay -->
-                                <div id="variables-locked-overlay" class="hidden absolute inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 z-10">
-                                    <span class="material-symbols-rounded text-indigo-400 text-4xl mb-2">lock</span>
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-4">Activa edición dinámica</p>
-                                    <button onclick="activateVariables()" class="px-5 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold shadow-xl">Activar Ahora</button>
+                                <div id="variables-locked-overlay" class="hidden absolute inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 z-10 transition-all">
+                                    <div class="w-12 h-12 bg-indigo-50 text-indigo-400 rounded-full flex items-center justify-center mb-4">
+                                        <span class="material-symbols-rounded">lock</span>
+                                    </div>
+                                    <h4 class="text-[10px] font-black uppercase text-slate-400 mb-4 tracking-tighter">Modo de Edición Dinámica</h4>
+                                    <button onclick="activateVariables()" class="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-bold shadow-xl active:scale-95 transition-transform">ACTIVAR EDICIÓN</button>
                                 </div>
                             </div>
 
-                            <!-- Tips Section -->
-                            <div class="space-y-2">
-                                <div class="bg-amber-50/50 border border-amber-100 rounded-2xl overflow-hidden">
-                                    <button onclick="toggleTip('example')" class="w-full px-5 py-4 flex items-center justify-between text-amber-800 hover:bg-amber-100/50 transition-all">
+                            <!-- Tips de Ingeniería -->
+                            <div class="space-y-3">
+                                <div class="bg-amber-50/50 border border-amber-100/50 rounded-2xl overflow-hidden group transition-all hover:shadow-md">
+                                    <button onclick="toggleTip('example')" class="w-full px-5 py-4 flex items-center justify-between text-amber-900 hover:bg-amber-100/40 transition-all">
                                         <div class="flex items-center gap-3">
-                                            <span class="material-symbols-rounded text-amber-500">Lightbulb</span>
-                                            <span class="text-xs font-bold uppercase tracking-wider">Expert Tip</span>
+                                            <span class="material-symbols-rounded text-amber-500">lightbulb</span>
+                                            <span class="text-[10px] font-black uppercase tracking-widest">Tip de Experto</span>
                                         </div>
-                                        <span id="icon-tip-example" class="material-symbols-rounded text-lg transition-transform">expand_more</span>
+                                        <span id="icon-tip-example" class="material-symbols-rounded text-lg transition-transform opacity-40">expand_more</span>
                                     </button>
                                     <div id="content-tip-example" class="tip-content px-5">
-                                        <p id="detail-example-tip" class="text-xs text-slate-600 leading-relaxed italic border-t border-amber-100/30 pt-3">...</p>
+                                        <p id="detail-example-tip" class="text-xs text-slate-600 leading-relaxed font-medium italic border-t border-amber-100/30 pt-3">...</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- MOTOR DE COMPARACIÓN (COL DER) -->
-                        <div class="lg:col-span-8 xl:col-span-9 grid md:grid-cols-2 gap-6 relative">
+                        <div class="lg:col-span-8 xl:col-span-9 grid md:grid-cols-2 gap-8 relative">
                             
-                            <!-- CONECTOR VISUAL (Desktop) -->
+                            <!-- DIVISOR VISUAL (Mobile: Oculto, Desktop: Flecha) -->
                             <div class="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                                <div class="w-10 h-10 bg-white rounded-full shadow-lg border border-slate-100 flex items-center justify-center text-indigo-200">
-                                    <span class="material-symbols-rounded">Keyboard_Double_Arrow_Right</span>
+                                <div class="w-12 h-12 bg-white rounded-2xl shadow-xl border border-slate-100 flex items-center justify-center text-indigo-100 rotate-90 md:rotate-0">
+                                    <span class="material-symbols-rounded font-bold">arrow_forward_ios</span>
                                 </div>
                             </div>
 
-                            <!-- MODO NORMAL (EL "ANTES") -->
-                            <div class="flex flex-col gap-4">
-                                <div class="bg-slate-200/40 rounded-3xl border-2 border-dashed border-slate-200 p-6 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-                                    <div class="flex items-center gap-2 mb-4 text-slate-400">
-                                        <span class="material-symbols-rounded text-sm">Cancel</span>
-                                        <span class="text-[10px] font-black uppercase">Instrucción Básica</span>
-                                    </div>
-                                    <div id="bad-prompt-rendered" class="font-mono text-xs text-slate-500 bg-white/50 p-4 rounded-xl mb-4 italic">...</div>
-                                    <div class="border-t border-slate-200 pt-4">
-                                        <span class="text-[10px] font-bold text-slate-300 uppercase mb-2 block">Resultado Típico</span>
-                                        <div id="bad-result-preview" class="text-xs text-slate-400 leading-relaxed line-clamp-4">...</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- MODO AGIA (EL "DESPUÉS" HERO) -->
-                            <div class="flex flex-col gap-4">
-                                <div class="bg-white rounded-3xl shadow-2xl shadow-indigo-200/30 border border-indigo-100 p-1 relative group overflow-hidden">
-                                    <!-- Header Tool AGIA -->
-                                    <div class="bg-indigo-600 rounded-t-[22px] px-6 py-4 flex justify-between items-center bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-repeat">
-                                        <div class="flex items-center gap-2 text-white">
-                                            <span class="material-symbols-rounded text-lg">Verified</span>
-                                            <span class="text-[10px] font-black uppercase tracking-widest">Método AGIA Pro</span>
+                            <!-- MODO BÁSICO ("EL ANTES") -->
+                            <div class="flex flex-col gap-4 group">
+                                <div class="bg-white rounded-[2.5rem] border border-slate-100 p-8 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500 flex flex-col h-full">
+                                    <div class="flex items-center gap-3 mb-6 text-slate-400">
+                                        <div class="w-8 h-8 rounded-xl bg-slate-50 flex items-center justify-center">
+                                            <span class="material-symbols-rounded text-sm">cancel</span>
                                         </div>
-                                        <button onclick="copyPrompt()" class="bg-white/20 hover:bg-white text-indigo-600 md:text-white md:hover:text-indigo-600 px-4 py-1.5 rounded-full text-[10px] font-black transition-all border border-white/20 flex items-center gap-1.5 shadow-sm">
-                                            <span class="material-symbols-rounded text-sm">Content_Copy</span> COPIAR
+                                        <span class="text-[10px] font-black uppercase tracking-widest">Instrucción Promedio</span>
+                                    </div>
+                                    <div id="bad-prompt-rendered" class="font-mono text-xs text-slate-400 bg-slate-50 p-6 rounded-2xl mb-8 italic flex-none">...</div>
+                                    <div class="mt-auto border-t border-slate-50 pt-6">
+                                        <span class="text-[9px] font-black text-slate-300 uppercase mb-3 block">Resultado Típico de IA</span>
+                                        <div id="bad-result-preview" class="text-xs text-slate-400 leading-relaxed font-medium">...</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- MODO AGIA ("EL DESPUÉS - GOD MODE") -->
+                            <div class="flex flex-col gap-4">
+                                <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-indigo-200/30 border border-indigo-50 p-2 relative group overflow-hidden h-full flex flex-col">
+                                    
+                                    <!-- Header Tool AGIA Premium -->
+                                    <div class="bg-indigo-600 rounded-[2rem] px-6 py-5 flex justify-between items-center shadow-lg shadow-indigo-100">
+                                        <div class="flex items-center gap-2.5 text-white">
+                                            <span class="material-symbols-rounded text-xl">verified</span>
+                                            <span class="text-[10px] font-black uppercase tracking-[0.15em]">Modelo AGIA v2.0</span>
+                                        </div>
+                                        <button onclick="copyPrompt()" id="copy-btn" class="bg-white/10 hover:bg-white text-white hover:text-indigo-600 px-5 py-2 rounded-xl text-[10px] font-black transition-all border border-white/20 flex items-center gap-2 group/copy">
+                                            <span class="material-symbols-rounded text-sm group-active/copy:scale-75 transition-transform">content_copy</span> COPIAR
                                         </button>
                                     </div>
 
-                                    <div class="p-6">
-                                        <div class="flex justify-between items-center mb-4">
-                                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Estructura Maestra</span>
-                                            <span class="flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded text-[9px] font-bold border border-emerald-100">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> 100% OPTIMIZADO
+                                    <div class="p-6 md:p-8 flex flex-col flex-1">
+                                        <div class="flex justify-between items-center mb-6">
+                                            <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest italic underline decoration-indigo-100">Prompt Estructurado</span>
+                                            <span class="flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[9px] font-black border border-emerald-100">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> OPTIMIZACIÓN MÁXIMA
                                             </span>
                                         </div>
 
-                                        <div id="detail-prompt-rendered" class="font-mono text-[13px] leading-relaxed text-slate-700 min-h-[280px] overflow-y-auto custom-scroll pr-2 mb-6"></div>
+                                        <div id="detail-prompt-rendered" class="font-mono text-[14px] leading-[1.7] text-slate-700 min-h-[300px] overflow-y-auto custom-scroll pr-2 mb-8 selection:bg-indigo-100 selection:text-indigo-900"></div>
 
-                                        <!-- Leyenda Interactiva -->
-                                        <div id="interactive-legend" class="flex flex-wrap gap-2 border-t border-slate-50 pt-4">
-                                            <span class="legend-item flex items-center gap-1.5 text-[10px] font-bold text-slate-500 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-indigo-100 cursor-default transition-all" data-type="r">
-                                                <span class="w-2 h-2 rounded-full bg-blue-500"></span> ROL
-                                            </span>
-                                            <span class="legend-item flex items-center gap-1.5 text-[10px] font-bold text-slate-500 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-emerald-100 cursor-default transition-all" data-type="c">
-                                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> CONTEXTO
-                                            </span>
-                                            <span class="legend-item flex items-center gap-1.5 text-[10px] font-bold text-slate-500 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-amber-100 cursor-default transition-all" data-type="m">
-                                                <span class="w-2 h-2 rounded-full bg-amber-500"></span> META
-                                            </span>
+                                        <!-- Leyenda del Modelo -->
+                                        <div id="interactive-legend" class="flex flex-wrap gap-2 border-t border-slate-50 pt-6 mt-auto">
+                                            <span class="legend-item hl-tag hl-rol cursor-pointer hover:hl-active" data-type="r">Rol</span>
+                                            <span class="legend-item hl-tag hl-contexto cursor-pointer hover:hl-active" data-type="c">Contexto</span>
+                                            <span class="legend-item hl-tag hl-meta cursor-pointer hover:hl-active" data-type="m">Meta</span>
+                                            <span class="legend-item hl-tag hl-restricciones cursor-pointer hover:hl-active" data-type="l">Restricciones</span>
+                                            <span class="legend-item hl-tag hl-formato cursor-pointer hover:hl-active" data-type="f">Formato</span>
                                         </div>
                                     </div>
 
-                                    <!-- Premium Guard -->
-                                    <div id="premium-lock" class="hidden absolute inset-0 z-20 glass-card flex flex-col items-center justify-center p-8 text-center m-1 rounded-[22px]">
-                                        <div class="w-14 h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center mb-4 rotate-3 shadow-xl">
-                                            <span class="material-symbols-rounded text-2xl">Lock</span>
+                                    <!-- Protector de Contenido Premium -->
+                                    <div id="premium-lock" class="hidden absolute inset-0 z-20 glass-panel flex flex-col items-center justify-center p-10 text-center m-1 rounded-[2.3rem] transition-all duration-500">
+                                        <div class="w-16 h-16 bg-slate-900 text-white rounded-[1.5rem] flex items-center justify-center mb-6 rotate-6 shadow-2xl ring-4 ring-white">
+                                            <span class="material-symbols-rounded text-3xl font-bold">lock</span>
                                         </div>
-                                        <h4 class="text-lg font-extrabold text-slate-900 mb-2">Contenido Exclusivo</h4>
-                                        <p class="text-xs text-slate-500 mb-6 max-w-[220px]">Este prompt avanzado está reservado para miembros de la Bóveda Maestra.</p>
-                                        <button onclick="openPaywall()" class="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-black text-xs shadow-lg shadow-indigo-200">Desbloquear Ahora</button>
+                                        <h4 class="text-2xl font-black text-slate-900 mb-2 tracking-tighter">Bóveda Protegida</h4>
+                                        <p class="text-sm text-slate-500 mb-8 max-w-[240px] leading-relaxed font-medium">Este prompt de alta ingeniería es exclusivo para miembros de la <b>Bóveda Maestra</b>.</p>
+                                        <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-4 rounded-2xl font-black text-xs shadow-xl shadow-indigo-100 hover:shadow-indigo-200 transition-all transform active:scale-95">DESBLOQUEAR AHORA</button>
                                     </div>
                                 </div>
                                 
-                                <div class="bg-indigo-50/40 border border-indigo-100/50 rounded-3xl p-6">
-                                    <div class="flex items-center gap-2 mb-4">
-                                        <span class="material-symbols-rounded text-indigo-400 text-lg">Auto_Awesome</span>
-                                        <span class="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Resultado Esperado</span>
+                                <div class="bg-emerald-50/40 border border-emerald-100/50 rounded-[2.5rem] p-8 mt-4 group hover:bg-white transition-colors">
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                                            <span class="material-symbols-rounded text-lg font-bold">magic_button</span>
+                                        </div>
+                                        <span class="text-[10px] font-black uppercase text-emerald-500 tracking-widest">Resultado Esperado AGIA</span>
                                     </div>
-                                    <div id="good-result-preview" class="text-xs text-slate-600 leading-relaxed font-medium line-clamp-6">...</div>
+                                    <div id="good-result-preview" class="text-xs text-slate-600 leading-relaxed font-medium italic">...</div>
                                 </div>
                             </div>
                         </div>
@@ -330,60 +336,82 @@
         </main>
     </div>
 
-    <!-- TOASTS & MODALS -->
-    <div id="toast" class="fixed bottom-8 right-8 z-[60] transform translate-x-[150%] transition-all duration-500">
-        <div class="bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4">
-            <span class="material-symbols-rounded text-emerald-400">check_circle</span>
-            <span class="text-xs font-bold uppercase tracking-wider">Copiado al portapapeles</span>
+    <!-- NOTIFICACIONES (TOAST) -->
+    <div id="toast" class="fixed bottom-10 right-10 z-[60] transform translate-x-[200%] transition-all duration-700 ease-[cubic-bezier(0.68,-0.55,0.27,1.55)]">
+        <div class="bg-slate-900 text-white px-8 py-5 rounded-[2rem] shadow-2xl flex items-center gap-4 border border-white/10 backdrop-blur-md">
+            <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-slate-900">
+                <span class="material-symbols-rounded font-bold">check</span>
+            </div>
+            <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Notificación</p>
+                <p class="text-xs font-bold">Copiado al portapapeles</p>
+            </div>
         </div>
     </div>
 
+    <!-- VENTANA DE PAGO (PAYWALL) -->
     <div id="paywall-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onclick="closePaywall()"></div>
-        <div class="relative bg-white rounded-[32px] p-8 max-w-sm w-full shadow-2xl text-center scale-up border border-white">
-            <div class="w-16 h-16 bg-yellow-400 rounded-3xl flex items-center justify-center mx-auto mb-6 -rotate-6 shadow-xl shadow-yellow-200">
-                <span class="material-symbols-rounded text-3xl text-slate-900">Workspace_Premium</span>
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md transition-opacity" onclick="closePaywall()"></div>
+        <div class="relative bg-white rounded-[3rem] p-10 max-w-sm w-full shadow-2xl text-center border border-white transform transition-all duration-500">
+            <div class="w-20 h-20 bg-yellow-400 rounded-[2rem] flex items-center justify-center mx-auto mb-8 -rotate-6 shadow-xl shadow-yellow-100 ring-4 ring-white">
+                <span class="material-symbols-rounded text-4xl text-slate-900 font-bold">workspace_premium</span>
             </div>
-            <h3 class="text-2xl font-black text-slate-900 mb-2">Bóveda AGIA Pro</h3>
-            <p class="text-sm text-slate-500 mb-8">Accede a 100+ casos avanzados, actualizaciones semanales y nuestra certificación de Prompt Engineering.</p>
-            <button class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black shadow-xl shadow-indigo-100 hover:scale-[1.02] transition-transform">Únete por $29</button>
-            <button onclick="closePaywall()" class="mt-4 text-[10px] font-bold text-slate-300 uppercase hover:text-slate-500">Tal vez luego</button>
+            <h3 class="text-3xl font-black text-slate-900 mb-3 tracking-tighter leading-none">Acceso Pro a la Bóveda</h3>
+            <p class="text-sm text-slate-500 mb-10 leading-relaxed font-medium px-4">Consigue los 105 prompts maestros, actualizaciones de por vida y la certificación en Ingeniería de Prompts AGIA.</p>
+            <button class="w-full py-5 bg-indigo-600 text-white rounded-[1.8rem] font-black shadow-2xl shadow-indigo-100 hover:bg-indigo-700 transition-all hover:scale-[1.03] active:scale-95 text-xs">UNIRSE POR $29 USD</button>
+            <button onclick="closePaywall()" class="mt-6 text-[10px] font-black text-slate-300 uppercase hover:text-slate-500 tracking-widest transition-colors">CERRAR BÓVEDA</button>
         </div>
     </div>
 
     <!-- SALES PROOF (Mobile Optimized) -->
-    <div id="sales-toast" class="fixed bottom-6 left-6 z-[60] transform translate-y-32 opacity-0 transition-all duration-700 pointer-events-none"></div>
+    <div id="sales-toast" class="fixed bottom-8 left-8 z-[60] transform translate-y-32 opacity-0 transition-all duration-1000 pointer-events-none"></div>
 
     <script type="module">
         let casesData = [];
         const externalDBUrl = 'https://aulagenia.cl/prompts_db.js';
         
-        // UI Navigation
+        // --- Navegación UI ---
         window.toggleSidebar = () => {
             document.getElementById('sidebar').classList.toggle('open');
         };
 
-        // UI Feedback
+        // --- Copiado ---
         window.copyPrompt = () => {
             const rawText = document.getElementById('detail-prompt-rendered').innerText;
             navigator.clipboard.writeText(rawText);
-            const t = document.getElementById('toast');
-            t.classList.remove('translate-x-[150%]');
-            setTimeout(() => t.classList.add('translate-x-[150%]'), 3000);
+            const btn = document.getElementById('copy-btn');
+            const toast = document.getElementById('toast');
+            
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-rounded text-sm">done_all</span> COPIADO`;
+            btn.classList.add('bg-emerald-500', 'border-emerald-400');
+            
+            toast.classList.remove('translate-x-[200%]');
+            setTimeout(() => {
+                toast.classList.add('translate-x-[200%]');
+                btn.innerHTML = originalText;
+                btn.classList.remove('bg-emerald-500', 'border-emerald-400');
+            }, 3000);
         };
 
+        // --- Carga de la Bóveda Externa ---
         async function loadDatabase() {
             const statusOverlay = document.getElementById('system-status-overlay');
+            const statusCode = document.getElementById('status-code');
             try {
+                // Se conecta a la URL externa solicitada
                 const module = await import(`${externalDBUrl}?t=${Date.now()}`);
                 if (module?.default) {
                     casesData = module.default;
-                    statusOverlay.classList.add('hidden');
+                    statusOverlay.style.opacity = '0';
+                    setTimeout(() => statusOverlay.classList.add('hidden'), 500);
                     initApp();
                 } else throw new Error("Database malformed");
             } catch (err) {
-                document.getElementById('status-title').innerText = "Error Crítico";
-                document.getElementById('status-desc').innerText = "No se pudo conectar con la Bóveda AGIA.";
+                console.error("DB Load Error:", err);
+                document.getElementById('status-title').innerText = "Error en la Bóveda";
+                document.getElementById('status-desc').innerText = "No pudimos conectar con los servidores de AulaGenia.";
+                statusCode.innerHTML = `> Status: <span class="text-red-500 font-bold italic">ERROR: ${err.message}</span>`;
                 document.getElementById('retry-btn').classList.remove('hidden');
             }
         }
@@ -392,12 +420,14 @@
 
         const config = {
             categories: {
-                productivity: { label: "Prod", color: "emerald", icon: "bolt" },
+                productivity: { label: "Productividad", color: "emerald", icon: "rocket_launch" },
                 finance: { label: "Finanzas", color: "amber", icon: "payments" }, 
-                sales: { label: "Ventas", color: "rose", icon: "campaign" },
-                tech: { label: "Tech", color: "violet", icon: "terminal" },
-                education: { label: "Edu", color: "cyan", icon: "school" },
-                engineering: { label: "Eng", color: "slate", icon: "construction" }
+                sales: { label: "Ventas & Copy", color: "rose", icon: "campaign" },
+                art: { label: "Arte Digital", color: "violet", icon: "palette" },
+                life: { label: "Lifestyle", color: "orange", icon: "self_improvement" },
+                tech: { label: "Tecnología", color: "cyan", icon: "terminal" },
+                education: { label: "Educación", color: "blue", icon: "school" },
+                engineering: { label: "Ingeniería", color: "slate", icon: "construction" }
             }
         };
 
@@ -420,14 +450,16 @@
             startSocialProof();
 
             if(casesData[0]) loadCase(casesData[0].id);
+            else document.getElementById('workspace-empty').classList.remove('hidden');
         }
 
         function renderCategories() {
             const nav = document.getElementById('category-nav');
-            nav.innerHTML = Object.keys(config.categories).map(k => {
-                const c = config.categories[k];
-                return `<button onclick="filterByCategory('${k}')" class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase bg-white border border-slate-100 shadow-sm whitespace-nowrap flex items-center gap-1.5 hover:border-indigo-300">
-                    <span class="material-symbols-rounded text-sm text-indigo-500">${c.icon}</span> ${c.label}
+            const cats = [...new Set(casesData.map(c => c.category))];
+            nav.innerHTML = cats.map(k => {
+                const c = config.categories[k] || { label: k, color: 'slate', icon: 'label' };
+                return `<button onclick="filterByCategory('${k}')" class="px-4 py-2 rounded-xl text-[10px] font-black uppercase bg-white border border-slate-100 shadow-sm whitespace-nowrap flex items-center gap-2 hover:border-indigo-300 transition-all hover:bg-indigo-50/20 group">
+                    <span class="material-symbols-rounded text-sm text-indigo-400 group-hover:scale-110 transition-transform">${c.icon}</span> ${c.label}
                 </button>`;
             }).join('');
         }
@@ -436,21 +468,27 @@
             const c = casesData.find(x => x.id === id);
             if(!c) return;
 
-            if(window.innerWidth < 768) toggleSidebar(); // Auto-close on mobile
+            if(window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
 
-            document.querySelectorAll('.case-item').forEach(el => el.classList.remove('ring-2', 'ring-indigo-500', 'bg-white'));
+            document.querySelectorAll('.case-item').forEach(el => el.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-50/10', 'border-indigo-100'));
             const active = document.getElementById(`case-item-${id}`);
-            if(active) active.classList.add('ring-2', 'ring-indigo-500', 'bg-white');
+            if(active) active.classList.add('ring-2', 'ring-indigo-500', 'bg-indigo-50/10', 'border-indigo-100');
 
             document.getElementById('workspace-empty').classList.add('hidden');
             document.getElementById('case-detail').classList.remove('hidden');
             document.getElementById('detail-title').innerText = c.title;
             document.getElementById('detail-problem').innerText = c.problem;
-            document.getElementById('bad-result-preview').innerText = c.badResponsePreview;
-            document.getElementById('good-result-preview').innerText = c.previewResponse;
+            document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview;
+            document.getElementById('good-result-preview').innerHTML = c.previewResponse;
             document.getElementById('detail-example-tip').innerText = c.exampleTip || "No hay tips adicionales.";
 
-            // Variables
+            // Reset de Tips
+            document.getElementById(`content-tip-example`).classList.remove('tip-open');
+            document.getElementById(`icon-tip-example`).classList.remove('rotate-180');
+
+            // Procesar Variables {key|default}
             currentVariables = {};
             const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
             let match;
@@ -470,14 +508,14 @@
 
         function renderVariableInputs(vars) {
             const container = document.getElementById('variables-container');
-            container.innerHTML = vars.length ? '' : '<p class="text-[10px] text-slate-300 italic">No requiere variables dinámicas.</p>';
+            container.innerHTML = vars.length ? '' : '<p class="text-[10px] text-slate-300 italic text-center font-bold">PROMPT ESTÁTICO</p>';
             
             vars.forEach(v => {
                 const div = document.createElement('div');
                 div.innerHTML = `
-                    <label class="block text-[9px] font-black uppercase text-slate-400 mb-1 pl-1 tracking-widest">${v.key.replace(/_/g, ' ')}</label>
+                    <label class="block text-[9px] font-black uppercase text-slate-400 mb-1.5 pl-1 tracking-widest">${v.key.replace(/_/g, ' ')}</label>
                     <input type="text" value="${v.default}" oninput="updateVariable('${v.key}', this.value)" 
-                        class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 text-xs font-bold outline-none focus:bg-white focus:ring-2 focus:ring-indigo-100 transition-all">
+                        class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs font-bold outline-none focus:bg-white focus:ring-2 focus:ring-indigo-100 transition-all text-slate-700">
                 `;
                 container.appendChild(div);
             });
@@ -498,6 +536,7 @@
         }
 
         function renderPrompts(c) {
+            // Renderizar AGIA God Mode
             let agia = c.agiaPromptTagged;
             Object.keys(currentVariables).forEach(k => {
                 const regex = new RegExp(`{${k}\\|[^}]+}`, 'g');
@@ -511,6 +550,7 @@
             });
             document.getElementById('detail-prompt-rendered').innerHTML = agia.replace(/\n/g, '<br>');
 
+            // Renderizar Prompt Básico
             let bad = c.badPromptDynamic || c.badPrompt;
             Object.keys(currentVariables).forEach(k => {
                 const regex = new RegExp(`{${k}}`, 'g');
@@ -546,16 +586,19 @@
             const list = document.getElementById('case-list');
             document.getElementById('total-display').innerText = casesData.length;
             list.innerHTML = cases.map(c => `
-                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item p-3 rounded-2xl cursor-pointer hover:bg-white transition-all border border-transparent flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-400">
-                        <span class="material-symbols-rounded text-[18px]">${c.locked ? 'lock' : (config.categories[c.category]?.icon || 'label')}</span>
+                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item p-3.5 rounded-2xl cursor-pointer hover:bg-slate-50 transition-all border border-transparent flex items-center gap-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-300 group-hover:text-indigo-500 group-hover:bg-white shadow-sm transition-colors flex-none">
+                        <span class="material-symbols-rounded text-[20px]">${c.locked ? 'lock' : (config.categories[c.category]?.icon || 'label')}</span>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h4 class="text-xs font-black text-slate-700 truncate uppercase tracking-tighter">${c.title}</h4>
-                        <div class="flex items-center gap-2 mt-0.5">
-                            <span class="text-[9px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">${c.category}</span>
+                        <h4 class="text-[11px] font-black text-slate-700 truncate uppercase tracking-tighter group-hover:text-indigo-600">${c.title}</h4>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-[8px] font-black text-slate-400 bg-slate-100 px-2 py-0.5 rounded uppercase">${c.category}</span>
+                            <span class="w-1 h-1 rounded-full bg-slate-200"></span>
+                            <span class="text-[8px] font-bold text-slate-400 capitalize">${c.difficulty}</span>
                         </div>
                     </div>
+                    <span class="material-symbols-rounded text-slate-200 group-hover:translate-x-1 transition-transform">chevron_right</span>
                 </div>
             `).join('');
         }
@@ -566,21 +609,23 @@
         }
 
         function startSocialProof() {
-            const names = ["Andrés V.", "Marta L.", "SaaS Agency", "Javier K.", "Elena R."];
+            const names = ["Andrés V.", "Marta L.", "SaaS Agency", "Javier K.", "Elena R.", "Pablo M.", "Carolina F."];
             const toast = document.getElementById('sales-toast');
             setInterval(() => {
                 const n = names[Math.floor(Math.random() * names.length)];
                 toast.innerHTML = `
-                    <div class="bg-white/90 backdrop-blur-xl border border-white p-3 rounded-2xl shadow-2xl flex items-center gap-3 max-w-[200px]">
-                        <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-[10px]">${n.charAt(0)}</div>
-                        <div>
-                            <p class="text-[10px] text-slate-800"><span class="font-black">${n}</span> acaba de unirse</p>
-                            <p class="text-[8px] text-emerald-500 font-black uppercase">Verificado</p>
+                    <div class="bg-white/95 backdrop-blur-2xl border border-white p-4 rounded-[2rem] shadow-2xl flex items-center gap-4 max-w-[240px] ring-1 ring-black/5">
+                        <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-black text-xs shadow-lg shadow-indigo-200">${n.charAt(0)}</div>
+                        <div class="min-w-0">
+                            <p class="text-[11px] text-slate-800 leading-tight"><span class="font-black">${n}</span> acaba de desbloquear la <b>Bóveda</b></p>
+                            <p class="text-[9px] text-emerald-500 font-black uppercase tracking-widest mt-0.5 flex items-center gap-1">
+                                <span class="material-symbols-rounded text-[10px]">verified</span> Verificado
+                            </p>
                         </div>
                     </div>`;
                 toast.classList.remove('translate-y-32', 'opacity-0');
                 setTimeout(() => toast.classList.add('translate-y-32', 'opacity-0'), 4000);
-            }, 12000);
+            }, 14000);
         }
     </script>
 </body>
