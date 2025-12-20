@@ -594,8 +594,12 @@
             currentDifficulty = c.difficulty || 'beginner';
 
             // Reset Social Proof Counter specific to prompt ID
-            // Removed static formula ID * 0.2
-            // Now logic is handled in the text randomizer below
+            const socialCounter = document.getElementById('social-counter');
+            if(socialCounter) {
+                // Formula: ID * 0.2 rounded
+                const count = Math.floor(c.id * 0.2);
+                socialCounter.innerText = count.toLocaleString();
+            }
 
             document.querySelectorAll('.case-item').forEach(el => {
                 el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
@@ -730,6 +734,7 @@
                     <p class="subtitle">Reporte Generado el ${new Date().toLocaleDateString()} | ${unlockedCount}/${total} Desbloqueados</p>
                     
                     ${casesData.map(c => {
+                        // Check if individual case is locked or if global lock is enabled
                         const isLocked = c.locked || globalLockMode;
                         const content = isLocked 
                             ? `<div class="locked-box">🔒 CONTENIDO EXCLUSIVO (PREMIUM) - Desbloquea para acceder a la fórmula.</div>`
