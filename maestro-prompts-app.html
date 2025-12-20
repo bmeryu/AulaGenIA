@@ -1,293 +1,1095 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aula Gen IA - La Estructura Maestra</title>
+
+    <title>Bóveda de Prompts AGIA | Oferta Black Friday</title>
+
+    
+
+    <!-- Tailwind CSS -->
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    
+
+    <!-- Google Fonts & Icons -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+
     <style>
-        :root {
-            --verde-agia: #00D192;
-            --azul-rol: #4A90E2;
-            --verde-contexto: #00D192;
-            --amarillo-meta: #FFC107;
-            --rojo-restriccion: #FF4D4D;
-            --purpura-formato: #A333C8;
-        }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .btn-primary { background-color: var(--verde-agia); transition: all 0.3s ease; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,209,146,0.4); }
-        .termometro-bar { transition: width 0.5s ease-in-out, background-color 0.5s ease; }
-        .step-hidden { display: none; }
-        .notification-toast { animation: slideIn 0.5s ease-out; }
-        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-        .agia-icon { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px; }
-        .prompt-tag { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; color: white; margin-bottom: 4px; display: inline-block; }
+
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+
+        
+
+        /* Custom Scrollbar */
+
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+
+
+        /* Animations */
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+
+        
+
+        .blur-locked { filter: blur(4px); user-select: none; pointer-events: none; }
+
+        
+
+        /* Highlight Classes for Prompts */
+
+        .hl-rol { background-color: #dbeafe; color: #1e40af; border-bottom: 2px solid #60a5fa; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+
+        .hl-contexto { background-color: #d1fae5; color: #065f46; border-bottom: 2px solid #34d399; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+
+        .hl-meta { background-color: #fef3c7; color: #92400e; border-bottom: 2px solid #fbbf24; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+
+        .hl-limites { background-color: #fee2e2; color: #b91c1c; border-bottom: 2px solid #f87171; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+
+        .hl-formato { background-color: #f3e8ff; color: #6b21a8; border-bottom: 2px solid #a855f7; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
+
+
+
+        .prose-sm p { margin-bottom: 0.5em; }
+
+        .prose-sm ul, .prose-sm ol { margin-left: 1.2em; margin-bottom: 0.5em; }
+
+        .prose-sm li { margin-bottom: 0.2em; }
+
     </style>
+
 </head>
-<body class="pb-20">
 
-    <div id="social-proof" class="fixed top-4 right-4 z-50 pointer-events-none"></div>
+<body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
-    <div id="onboarding" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 text-center">
-        <div id="step-1" class="onboarding-step">
-            <img src="https://i.ibb.co/L6M0L3L/Logo-AGIA.jpg" alt="Logo" class="w-48 mb-8">
-            <h1 class="text-3xl font-bold mb-4">Bienvenido a la Era de la Maestría</h1>
-            <p class="text-gray-600 mb-8">La mayoría de la gente cree que la IA es mediocre. Hoy descubrirás que el secreto está en tus palabras.</p>
-            <button onclick="nextStep(2)" class="btn-primary text-white px-8 py-4 rounded-full font-bold w-full">Comenzar Viaje</button>
-        </div>
-        <div id="step-2" class="onboarding-step step-hidden">
-            <div class="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center mb-6 mx-auto text-white text-4xl">💡</div>
-            <h2 class="text-2xl font-bold mb-4">El Termómetro de Calidad</h2>
-            <p class="text-gray-600 mb-8">Verás en tiempo real cómo tu prompt pasa de "Pobre" a "Maestro" usando nuestra metodología AGIA.</p>
-            <button onclick="nextStep(3)" class="btn-primary text-white px-8 py-4 rounded-full font-bold w-full">Siguiente</button>
-        </div>
-        <div id="step-3" class="onboarding-step step-hidden">
-            <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mb-6 mx-auto text-white text-4xl">⏱️</div>
-            <h2 class="text-2xl font-bold mb-4">Calculadora de Ahorro</h2>
-            <p class="text-gray-600 mb-8">Te mostraremos exactamente cuántas horas de trabajo manual te estás ahorrando por cada prompt bien diseñado.</p>
-            <button onclick="nextStep(4)" class="btn-primary text-white px-8 py-4 rounded-full font-bold w-full">¡Entendido!</button>
-        </div>
-        <div id="step-4" class="onboarding-step step-hidden w-full max-w-sm">
-            <h2 class="text-2xl font-bold mb-4">Mira la Magia en Acción</h2>
-            <div class="aspect-video bg-gray-200 rounded-xl mb-6 flex items-center justify-center italic text-gray-500">
-                [Espacio para Video de YouTube]
-            </div>
-            <button onclick="closeOnboarding()" class="btn-primary text-white px-8 py-4 rounded-full font-bold w-full">Entrar al Tablero</button>
-        </div>
+
+
+    <!-- BLACK FRIDAY BANNER -->
+
+    <div class="bg-black text-white text-center py-2 px-4 text-xs md:text-sm font-bold tracking-wide z-50 flex justify-center items-center gap-2">
+
+        <span class="material-symbols-outlined text-sm text-yellow-400">local_fire_department</span>
+
+        <span>BLACK FRIDAY: Desbloquea la Bóveda Completa por solo $9.990</span>
+
+        <a href="#" onclick="openPaywall()" class="underline text-yellow-400 hover:text-yellow-300 ml-2">Ver Oferta</a>
+
     </div>
 
-    <header class="p-4 bg-white shadow-sm flex justify-between items-center sticky top-0 z-40">
-        <img src="https://i.ibb.co/L6M0L3L/Logo-AGIA.jpg" alt="Aula Gen IA" class="h-10">
-        <div class="bg-gray-100 px-3 py-1 rounded-full text-xs font-bold text-gray-600">
-            <i class="fas fa-clock mr-1 text-green-500"></i> <span id="hours-saved">0</span>h Ahorradas
+
+
+    <!-- Header -->
+
+    <header class="bg-white border-b border-slate-200 shadow-sm z-20 flex-none relative">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+
+            <div class="flex items-center justify-between mb-4">
+
+                <div class="flex items-center gap-4">
+
+                    <!-- Logo Placeholder -->
+
+                    <div class="h-10 w-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-xl">AG</div>
+
+                    <div class="border-l border-slate-200 pl-4">
+
+                        <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">Bóveda de Prompts <span class="text-indigo-600">AGIA</span></h1>
+
+                        <p class="text-xs text-slate-500 font-medium">Librería de Copiar & Pegar</p>
+
+                    </div>
+
+                </div>
+
+                <!-- Botón Compra Header -->
+
+                <button onclick="openPaywall()" class="hidden md:flex bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:shadow-lg transition-all items-center gap-2 border border-slate-700">
+
+                    <span class="material-symbols-outlined text-sm text-yellow-400">lock_open</span>
+
+                    DESBLOQUEAR TODO
+
+                </button>
+
+            </div>
+
+
+
+            <!-- Category Navigation -->
+
+            <div class="overflow-x-auto custom-scroll pb-2">
+
+                <div class="flex space-x-2 min-w-max" id="category-nav">
+
+                    <!-- Injected by JS -->
+
+                </div>
+
+            </div>
+
         </div>
+
     </header>
 
-    <main class="p-4 space-y-6">
+
+
+    <!-- Main Layout -->
+
+    <div class="flex flex-1 overflow-hidden max-w-7xl mx-auto w-full relative">
+
         
-        <section class="glass-card p-5">
-            <div class="flex justify-between items-end mb-2">
-                <span class="text-sm font-bold text-gray-500">Calidad del Prompt</span>
-                <span id="termometro-status" class="text-xs font-black uppercase text-red-500">Novato</span>
-            </div>
-            <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
-                <div id="termometro-bar" class="termometro-bar w-[10%] h-full bg-red-500"></div>
-            </div>
-            <textarea id="main-prompt" class="w-full mt-4 p-4 border rounded-xl text-sm focus:ring-2 focus:ring-green-400 outline-none transition-all" rows="4" placeholder="Escribe tu idea aquí (ej: Ayúdame a vender...)"></textarea>
-            <button onclick="transformPrompt()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">
-                <i class="fas fa-magic"></i> Ingeniero Invisible
-            </button>
-        </section>
 
-        <section>
-            <h3 class="font-bold text-lg mb-4 px-1">El Modelo AGIA</h3>
-            <div class="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm overflow-x-auto gap-4">
-                <div class="flex flex-col items-center" onclick="alert('ROL: ¿Quién debe ser la IA? (Ej: Experto Contable, Nutricionista)')">
-                    <div class="agia-icon bg-[#4A90E2] mb-1"><i class="fas fa-robot"></i></div>
-                    <span class="text-[10px] font-bold">ROL</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="agia-icon bg-[#00D192] mb-1"><i class="fas fa-search"></i></div>
-                    <span class="text-[10px] font-bold">CONT.</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="agia-icon bg-[#FFC107] mb-1"><i class="fas fa-bullseye"></i></div>
-                    <span class="text-[10px] font-bold">META</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="agia-icon bg-[#FF4D4D] mb-1"><i class="fas fa-ban"></i></div>
-                    <span class="text-[10px] font-bold">RESTR.</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="agia-icon bg-[#A333C8] mb-1"><i class="fas fa-table"></i></div>
-                    <span class="text-[10px] font-bold">FORM.</span>
-                </div>
-            </div>
-        </section>
+        <!-- Sidebar -->
 
-        <section class="space-y-4">
-            <h3 class="font-bold text-lg px-1">Biblioteca Versus (Realista)</h3>
+        <aside class="w-full md:w-80 flex flex-col bg-white border-r border-slate-200 flex-none z-10 transition-all duration-300 absolute md:relative h-full transform -translate-x-full md:translate-x-0 shadow-xl md:shadow-none" id="sidebar">
+
+            <div class="p-3 border-b border-slate-100">
+
+                <div class="relative">
+
+                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">search</span>
+
+                    <input type="text" id="searchInput" placeholder="Buscar prompt..." 
+
+                        class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 transition-all"
+
+                        onkeyup="filterCases()">
+
+                </div>
+
+            </div>
+
+            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list">
+
+                <!-- Cases injected by JS -->
+
+            </div>
+
+            <div class="p-3 border-t border-slate-100 text-xs text-center text-slate-400 bg-slate-50">
+
+                Bóveda cargada con <span id="count-display" class="font-bold">0</span> prompts
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- Mobile Toggle -->
+
+        <button onclick="toggleSidebar()" class="md:hidden absolute bottom-6 left-6 z-40 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors">
+
+            <span class="material-symbols-outlined">menu_open</span>
+
+        </button>
+
+
+
+        <!-- Main Content -->
+
+        <main class="flex-1 flex flex-col bg-slate-50/50 overflow-hidden relative w-full">
+
             
-            <div class="glass-card overflow-hidden">
-                <div class="bg-red-50 p-3 text-xs border-b border-red-100">
-                    <span class="font-bold text-red-600">PROMPT NOVATO:</span> "Hazme un plan de dieta para bajar de peso."
-                    <p class="mt-1 text-gray-500 italic text-[10px]">Fallo: Demasiado genérico, la IA inventará datos.</p>
-                </div>
-                <div class="p-4">
-                    <span class="prompt-tag bg-green-500">NIVEL MAESTRO</span>
-                    <div class="text-xs leading-relaxed space-y-2" id="prompt-maestro-1">
-                        <span class="text-blue-600 font-bold">[ROL]</span> Actúa como un Nutricionista Deportivo con 15 años de experiencia...<br>
-                        <span class="text-green-600 font-bold">[CONTEXTO]</span> Tengo un cliente de 35 años, pesa 90kg, con poco tiempo para cocinar...<br>
-                        <span class="text-yellow-600 font-bold">[META]</span> Crear un plan de 7 días que priorice proteínas...<br>
-                        <span class="text-red-600 font-bold">[RESTRICCIONES]</span> Evita ingredientes caros o difíciles de conseguir...<br>
-                        <span class="text-purple-600 font-bold">[FORMATO]</span> Entrega una tabla con Lunes a Domingo...
+
+            <!-- Case Detail -->
+
+            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 pb-24">
+
+                <div class="max-w-4xl mx-auto fade-in">
+
+                    
+
+                    <!-- Title Header -->
+
+                    <div class="flex items-center gap-4 mb-6 border-b border-slate-200 pb-6">
+
+                        <div id="detail-icon-bg" class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-md border border-white bg-white">
+
+                            <span id="detail-icon" class="material-symbols-outlined text-3xl"></span>
+
+                        </div>
+
+                        <div class="flex-1">
+
+                            <div class="flex items-center gap-2 mb-1">
+
+                                <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Categoría</span>
+
+                                <span class="text-[10px] font-medium text-slate-400 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-100">
+
+                                    <span class="material-symbols-outlined text-[10px] text-green-500">verified</span> Validado por AGIA
+
+                                </span>
+
+                            </div>
+
+                            <h2 id="detail-title" class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">Título del Caso</h2>
+
+                            <p id="detail-problem" class="text-sm text-slate-500 mt-1 font-medium"></p>
+
+                        </div>
+
                     </div>
-                    <button onclick="personalizePrompt(1)" class="mt-4 w-full border-2 border-green-500 text-green-600 py-2 rounded-lg font-bold text-sm">Personalizar este Prompt</button>
+
+
+
+                    <!-- AGIA LEGEND (BARRA DE COLORES - MOVIDA ARRIBA) -->
+
+                    <div class="mb-4 bg-white rounded-xl border border-slate-200 p-3 overflow-x-auto">
+
+                        <div class="flex justify-between items-center min-w-max gap-4 md:gap-0">
+
+                            <!-- ROL -->
+
+                            <div class="flex items-center gap-2">
+
+                                <div class="w-6 h-6 rounded bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold hl-rol border-none">1</div>
+
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Rol</span>
+
+                            </div>
+
+                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
+
+                            <!-- CONTEXTO -->
+
+                            <div class="flex items-center gap-2">
+
+                                <div class="w-6 h-6 rounded bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold hl-contexto border-none">2</div>
+
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Contexto</span>
+
+                            </div>
+
+                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
+
+                            <!-- META -->
+
+                            <div class="flex items-center gap-2">
+
+                                <div class="w-6 h-6 rounded bg-amber-100 text-amber-600 flex items-center justify-center text-[10px] font-bold hl-meta border-none">3</div>
+
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Meta</span>
+
+                            </div>
+
+                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
+
+                            <!-- LIMITES -->
+
+                            <div class="flex items-center gap-2">
+
+                                <div class="w-6 h-6 rounded bg-red-100 text-red-600 flex items-center justify-center text-[10px] font-bold hl-limites border-none">4</div>
+
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Límites</span>
+
+                            </div>
+
+                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
+
+                            <!-- FORMATO -->
+
+                            <div class="flex items-center gap-2">
+
+                                <div class="w-6 h-6 rounded bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-bold hl-formato border-none">5</div>
+
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Formato</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- PROMPT BOX (HERO) -->
+
+                    <div class="bg-slate-900 rounded-2xl p-1 shadow-2xl mb-8 border border-slate-700 relative group">
+
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500 opacity-20 rounded-full -mr-10 -mt-10 blur-3xl group-hover:opacity-30 transition-opacity"></div>
+
+                        
+
+                        <!-- Header Prompt Box -->
+
+                        <div class="bg-slate-800/50 rounded-t-xl px-4 py-3 flex justify-between items-center border-b border-slate-700">
+
+                            <div class="flex items-center gap-2">
+
+                                <span class="material-symbols-outlined text-yellow-400 text-sm">auto_awesome</span>
+
+                                <span class="text-xs font-bold text-slate-300 tracking-wider">PROMPT MAESTRO</span>
+
+                            </div>
+
+                            <div class="flex gap-2">
+
+                                <button onclick="copyPrompt()" class="flex items-center gap-2 text-xs bg-indigo-600 text-white hover:bg-indigo-500 px-4 py-1.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-indigo-500/25 ring-1 ring-white/10">
+
+                                    <span class="material-symbols-outlined text-sm">content_copy</span> 
+
+                                    <span>COPIAR</span>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Content Prompt Box -->
+
+                        <div class="p-6 relative">
+
+                            <p id="detail-prompt-rendered" class="font-mono text-sm md:text-base text-slate-200 leading-relaxed whitespace-pre-wrap select-all">...</p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- COMPARISON GRID (VISIBLE POR DEFECTO) -->
+
+                    <div class="mb-8">
+
+                        <div id="comparison-container" class="grid md:grid-cols-2 gap-6 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+
+                            <!-- Bad Prompt -->
+
+                            <div>
+
+                                <h3 class="text-xs font-bold text-slate-400 uppercase mb-2 flex items-center gap-1">
+
+                                    <span class="material-symbols-outlined text-sm">close</span> Lo que escribe la mayoría
+
+                                </h3>
+
+                                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 text-sm text-slate-500 italic font-mono">
+
+                                    <p id="detail-bad-prompt">"..."</p>
+
+                                </div>
+
+                                <div class="mt-2 flex flex-wrap gap-2" id="deficiency-badges"></div>
+
+                            </div>
+
+                            <!-- Result Preview -->
+
+                            <div class="border-l border-slate-100 pl-4 md:pl-6">
+
+                                <h3 class="text-xs font-bold text-slate-400 uppercase mb-2 flex items-center gap-2">
+
+                                    <span class="material-symbols-outlined text-sm text-indigo-500">check_circle</span> Resultado en ChatGPT (Real)
+
+                                </h3>
+
+                                <!-- Contenedor con scroll si es muy ancho -->
+
+                                <div class="overflow-x-auto">
+
+                                    <div id="preview-response" class="text-xs text-slate-700 prose-sm bg-indigo-50/50 p-4 rounded-lg border border-indigo-50">
+
+                                        <!-- JS injects preview here -->
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- AGIA MODEL IMAGE (MOVIDA AL FINAL) -->
+
+                    <div class="mb-8 pt-8 border-t border-slate-200 opacity-80 hover:opacity-100 transition-opacity">
+
+                         <h3 class="text-xs font-bold text-slate-400 uppercase mb-4 flex items-center gap-1">
+
+                            <span class="material-symbols-outlined text-sm">schema</span> Referencia: La Estructura Maestra
+
+                         </h3>
+
+                         <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
+
+                             <img src="https://aulagenia.cl/maestro-prompts.png" alt="Modelo AGIA - Estructura Maestra" class="w-full h-auto rounded-lg">
+
+                         </div>
+
+                    </div>
+
+
+
                 </div>
+
             </div>
 
-            <div class="glass-card overflow-hidden">
-                <div class="bg-red-50 p-3 text-xs border-b border-red-100">
-                    <span class="font-bold text-red-600">PROMPT NOVATO:</span> "Escribe un post de venta para Instagram."
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="prompt-tag bg-green-500">NIVEL MAESTRO</span>
-                        <i class="fas fa-lock text-gray-400"></i>
-                    </div>
-                    <div class="text-xs blur-sm select-none">
-                        Este es un contenido premium reservado para los alumnos del curso AGIA...
-                    </div>
-                    <button onclick="showSalesAlert()" class="mt-4 w-full bg-yellow-400 text-black py-2 rounded-lg font-bold text-sm">Desbloquear por $20</button>
-                </div>
-            </div>
-        </section>
+        </main>
 
-    </main>
-
-    <nav class="fixed bottom-0 w-full bg-white border-t p-3 flex justify-around items-center z-40">
-        <button class="flex flex-col items-center text-green-600">
-            <i class="fas fa-home"></i>
-            <span class="text-[10px]">Inicio</span>
-        </button>
-        <button onclick="showSalesAlert()" class="bg-black text-white px-6 py-2 rounded-full font-bold text-sm animate-pulse">
-            Obtener Curso $20
-        </button>
-        <button class="flex flex-col items-center text-gray-400">
-            <i class="fas fa-book"></i>
-            <span class="text-[10px]">Cursos</span>
-        </button>
-    </nav>
-
-    <div id="modal-transform" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full rounded-2xl p-6 max-h-[80vh] overflow-y-auto">
-            <h2 class="text-xl font-bold mb-4">🚀 Ingeniero Invisible</h2>
-            <div id="transformed-result" class="bg-gray-50 p-4 rounded-xl text-sm font-mono border whitespace-pre-wrap mb-6"></div>
-            <div class="flex gap-2">
-                <button onclick="copyPrompt()" class="flex-1 bg-green-500 text-white py-3 rounded-xl font-bold">Copiar Prompt</button>
-                <button onclick="closeModal()" class="px-4 py-3 bg-gray-200 rounded-xl font-bold">Cerrar</button>
-            </div>
-        </div>
     </div>
 
-    <script>
-        // Data para Social Proof
-        const names = ["Andrés de Bogotá", "Marta de Madrid", "Carlos de CDMX", "Lucía de Santiago", "Juan de Lima"];
-        let totalHours = 0;
 
-        function showNotification() {
-            const name = names[Math.floor(Math.random() * names.length)];
-            const toast = document.createElement('div');
-            toast.className = "notification-toast bg-white shadow-xl rounded-lg p-3 mb-2 flex items-center gap-3 border-l-4 border-green-500";
-            toast.innerHTML = `
-                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                    <i class="fas fa-shopping-cart text-xs"></i>
+
+    <!-- PAYWALL MODAL (Bloqueo de Ventas) -->
+
+    <div id="paywall-modal" class="fixed inset-0 z-[60] hidden">
+
+        <!-- Backdrop -->
+
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
+
+        
+
+        <!-- Modal Content -->
+
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in duration-300">
+
+                <button onclick="closePaywall()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 bg-white rounded-full p-1 z-10">
+
+                    <span class="material-symbols-outlined">close</span>
+
+                </button>
+
+                
+
+                <!-- Image/Header -->
+
+                <div class="bg-slate-900 p-8 text-center relative overflow-hidden">
+
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-600 rounded-full blur-3xl opacity-30 -mr-10 -mt-10"></div>
+
+                    <span class="material-symbols-outlined text-5xl text-yellow-400 mb-2 relative z-10">lock</span>
+
+                    <h3 class="text-white font-bold text-xl relative z-10">Contenido Premium</h3>
+
+                    <p class="text-indigo-200 text-sm relative z-10">Este prompt es parte de la Bóveda Privada.</p>
+
                 </div>
-                <div>
-                    <p class="text-[10px] font-bold text-gray-800">${name} acaba de unirse al curso.</p>
-                    <p class="text-[9px] text-gray-500">Hace 2 minutos</p>
+
+
+
+                <!-- Body -->
+
+                <div class="p-6 text-center">
+
+                    <p class="text-slate-600 text-sm mb-6">
+
+                        Estás viendo la versión gratuita. Accede a los <span class="font-bold text-slate-900">100+ casos avanzados</span> y copia mis fórmulas validadas.
+
+                    </p>
+
+                    
+
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6">
+
+                        <p class="text-xs font-bold text-yellow-800 uppercase tracking-wide">🔥 Oferta Black Friday</p>
+
+                        <p class="text-2xl font-black text-slate-900">$9.990 <span class="text-sm font-normal text-slate-500 line-through">$19.990</span></p>
+
+                        <p class="text-[10px] text-slate-500">Pago único. Acceso de por vida.</p>
+
+                    </div>
+
+
+
+                    <a id="payment-btn" href="#" target="_blank" class="block w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-lg shadow-indigo-200 mb-3 flex items-center justify-center gap-2">
+
+                        <span>DESBLOQUEAR BÓVEDA AHORA</span>
+
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+
+                    </a>
+
+                    
+
+                    <p class="text-[10px] text-slate-400">Garantía de satisfacción. Pago seguro vía Mercado Pago.</p>
+
                 </div>
-            `;
-            const container = document.getElementById('social-proof');
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 4000);
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        // ==========================================
+
+        // CONFIGURACIÓN DE VENTA (TU LINK AQUÍ)
+
+        // ==========================================
+
+        const LINK_MERCADO_PAGO = "#"; // <--- PEGA TU LINK ENTRE LAS COMILLAS
+
+        
+
+        // Asignar link al botón
+
+        document.getElementById('payment-btn').href = LINK_MERCADO_PAGO;
+
+
+
+        // --- HELPERS PARA AGIA MARKUP ---
+
+        function renderAGIA(text) {
+
+            let html = text
+
+                .replace(/{r}(.*?){\/r}/g, '<span class="hl-rol" title="ROL: ¿Quién actúa?">$1</span>')
+
+                .replace(/{c}(.*?){\/c}/g, '<span class="hl-contexto" title="CONTEXTO: Antecedentes y detalles">$1</span>')
+
+                .replace(/{m}(.*?){\/m}/g, '<span class="hl-meta" title="META: Objetivo principal">$1</span>')
+
+                .replace(/{l}(.*?){\/l}/g, '<span class="hl-limites" title="LÍMITES: Restricciones y reglas">$1</span>')
+
+                .replace(/{f}(.*?){\/f}/g, '<span class="hl-formato" title="FORMATO: Estructura de salida">$1</span>')
+
+                .replace(/\n/g, '<br>');
+
+            return html;
+
         }
 
-        setInterval(showNotification, 8000);
 
-        // Termómetro Logic
-        const input = document.getElementById('main-prompt');
-        input.addEventListener('input', () => {
-            const val = input.value.toLowerCase();
-            const bar = document.getElementById('termometro-bar');
-            const status = document.getElementById('termometro-status');
-            let score = 10;
 
-            if(val.length > 50) score += 20;
-            if(val.includes("actúa como") || val.includes("experto")) score += 20;
-            if(val.includes("evita") || val.includes("sin")) score += 20;
-            if(val.includes("formato") || val.includes("tabla")) score += 30;
+        function cleanAGIA(text) {
 
-            bar.style.width = score + "%";
-            
-            if(score < 40) {
-                bar.style.backgroundColor = "#FF4D4D";
-                status.innerText = "Novato";
-                status.style.color = "#FF4D4D";
-            } else if(score < 70) {
-                bar.style.backgroundColor = "#FFC107";
-                status.innerText = "Intermedio";
-                status.style.color = "#FFC107";
-            } else {
-                bar.style.backgroundColor = "#00D192";
-                status.innerText = "Nivel Maestro";
-                status.style.color = "#00D192";
-            }
+            return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, '');
+
+        }
+
+
+
+        // --- DATA ENGINE ---
+
+        
+
+        const categoryConfig = {
+
+            office: { label: "Oficina & Excel", color: "emerald", icon: "business_center" },
+
+            finance: { label: "Finanzas (Nuevo)", color: "cyan", icon: "attach_money" }, // NUEVA CATEGORIA
+
+            marketing: { label: "Marketing", color: "pink", icon: "campaign" },
+
+            personal: { label: "Vida Personal", color: "blue", icon: "home" },
+
+            tech: { label: "Tecnología", color: "violet", icon: "code" },
+
+            education: { label: "Educación", color: "amber", icon: "school" }
+
+        };
+
+
+
+        // Función extendida con propiedad LOCKED (Bloqueo)
+
+        const createCase = (id, cat, title, icon, problem, badPrompt, goodPromptTagged, goodResPreview, locked = false, deficiencies = []) => ({
+
+            id, category: cat, title, icon, problem, 
+
+            badPrompt, 
+
+            agiaPromptTagged: goodPromptTagged, 
+
+            previewResponse: goodResPreview,
+
+            locked: locked, // TRUE = Candado, FALSE = Abierto (AHORA TODO FALSE PARA REVISIÓN)
+
+            deficiencies: deficiencies.length ? deficiencies : ["Sin Rol", "Contexto Vago"]
+
         });
 
-        // Onboarding
-        function nextStep(step) {
-            document.querySelectorAll('.onboarding-step').forEach(s => s.classList.add('step-hidden'));
-            document.getElementById('step-' + step).classList.remove('step-hidden');
-        }
 
-        function closeOnboarding() {
-            document.getElementById('onboarding').style.display = 'none';
-        }
 
-        // Ingeniero Invisible / Transform
-        function transformPrompt() {
-            const val = input.value;
-            if(!val) return alert("Escribe algo primero");
+        // --- BASE DE DATOS DE PROMPTS ---
+
+        // NOTA: Para vender, después cambiaremos 'false' a 'true' en los casos Premium.
+
+        const allCases = [
+
             
-            const result = `[ROL] Actúa como un experto consultor estratégico.
-[CONTEXTO] El usuario tiene el siguiente objetivo: "${val}". Su mercado es competitivo y necesita soluciones pragmáticas.
-[META] Desarrollar un plan de acción detallado para lograr el objetivo mencionado, priorizando eficiencia y bajo costo.
-[RESTRICCIONES] No des consejos genéricos, no uses lenguaje técnico innecesario.
-[FORMATO] Lista estructurada con pasos 1 a 5.`;
 
-            document.getElementById('transformed-result').innerText = result;
-            document.getElementById('modal-transform').classList.remove('hidden');
+            // --- OFICINA & EXCEL (EL DOLOR MÁS GRANDE) ---
+
+            createCase(22, 'office', 'El Mago de Excel', 'table_view', 'No sé qué fórmula usar.', 
+
+                'Ayuda con excel para sumar si cumple condición.', 
+
+                '{r}Actúa como un instructor experto de Excel MVP.{/r} {c}Tengo una tabla de Ventas con [Columna A: Vendedores, Columna B: Mes, Columna C: Monto].{/c} {m}Necesito una fórmula para sumar el total vendido por "Juan" en "Enero".{/m} {f}Dame la fórmula SUMAR.SI.CONJUNTO y explica los argumentos.{/f}',
+
+                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2">=SUMAR.SI.CONJUNTO(C:C; A:A; "Juan"; B:B; "Enero")</div><ul class="list-disc ml-4 space-y-1 text-slate-600"><li><strong>C:C</strong> = Rango a sumar (Montos)</li><li><strong>A:A</strong> = Rango criterio 1 (Vendedores)</li><li><strong>B:B</strong> = Rango criterio 2 (Meses)</li></ul>',
+
+                false, 
+
+                ["Sin Contexto de Datos", "Petición Genérica"]),
+
+
+
+            createCase(21, 'office', 'Traductor Corporativo', 'translate', 'Escribir email difícil.', 
+
+                'Redacta un correo para decir que no alcanzo a entregar.', 
+
+                '{r}Actúa como experto en comunicación asertiva.{/r} {c}Estoy atrasado con el informe mensual por falta de datos de Finanzas.{/c} {m}Escribe un correo a mi jefe informando el retraso sin sonar irresponsable.{/m} {l}Propón nueva fecha (Viernes). Tono profesional pero firme.{/l}',
+
+                '<div class="bg-white p-2 rounded border border-slate-200 italic text-slate-600">"Hola [Nombre],<br><br>Te escribo para actualizarte sobre el informe mensual. Debido a una demora en la recepción de la data de Finanzas, no podré cerrarlo hoy como estaba previsto.<br><br>Ya gestioné la entrega de los datos faltantes y podré enviarte el informe completo este <strong>viernes antes del mediodía</strong>.<br><br>Gracias por tu comprensión."</div>',
+
+                false, 
+
+                ["Excusa Vaga", "Sin Propuesta de Solución"]),
+
+
+
+            // --- FINANZAS (NUEVO) ---
+
+            createCase(90, 'finance', 'Negociador de Sueldo', 'payments', 'Pedir aumento da miedo.', 
+
+                'Cómo pido un aumento de sueldo.', 
+
+                '{r}Actúa como un coach de negociación salarial.{/r} {c}Llevo 2 años en la empresa, superé mis KPIs en un 20% y el mercado paga un 15% más.{/c} {m}Dame un guion para la reunión con mi jefe.{/m} {l}Sin ultimatums, enfocado en valor aportado.{/l} {f}Estructura: Apertura, Evidencia, Petición.{/f}',
+
+                '<p class="font-bold mb-1">Guion de la Reunión:</p><ul class="list-disc ml-4 space-y-2"><li><strong>Apertura:</strong> "Gracias por el tiempo. Quería revisar mi trayectoria de estos 2 años..."</li><li><strong>Evidencia:</strong> "Como sabes, logré superar la meta en un 20%, lo que trajo X beneficio..."</li><li><strong>Petición:</strong> "Basado en estos resultados y el mercado actual, solicito un ajuste salarial del 15% para alinear mi compensación con mi aporte."</li></ul>',
+
+                false, 
+
+                ["Sin Datos", "Enfoque en Necesidad Propia"]),
+
+
+
+            createCase(91, 'finance', 'Analista de Gastos', 'pie_chart', 'No sé en qué se me va la plata.', 
+
+                'Ayúdame a ordenar mis gastos.', 
+
+                '{r}Actúa como asesor financiero personal.{/r} {c}Gano $1.5M líquidos y siento que no llego a fin de mes.{/c} {m}Crea una estructura de presupuesto basada en la regla 50/30/20 adaptada a la realidad chilena.{/m} {f}Tabla con montos sugeridos y categorías.{/f}',
+
+                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-cyan-100"><th class="p-1">Regla</th><th class="p-1">Monto</th><th class="p-1">Destino</th></tr></thead><tbody><tr><td>50% Necesidades</td><td>$750.000</td><td>Arriendo, Supermercado, Cuentas</td></tr><tr><td>30% Deseos</td><td>$450.000</td><td>Salidas, Netflix, Rappi</td></tr><tr><td>20% Ahorro/Deuda</td><td>$300.000</td><td>Fondo Emergencia, Pago Tarjeta</td></tr></tbody></table>',
+
+                false, 
+
+                ["Sin Cifras", "Meta Vaga"]),
+
+
+
+            // --- MARKETING (GANCHO FUERTE) ---
+
+            createCase(41, 'marketing', 'Calendario RRSS', 'calendar_month', 'Bloqueo creativo.', 
+
+                'Ideas para posts de Instagram de café.', 
+
+                '{r}Social Media Manager experto en viralidad.{/r} {c}Vendo café de grano online.{/c} {m}Dame 3 ideas de Reels que sean "Edutainment" (Educar + Entretener) para atraer clientes nuevos.{/m} {f}Tabla: Título, Gancho Visual (primeros 3 seg) y CTA.{/f}',
+
+                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-pink-100"><th class="p-1">Título</th><th class="p-1">Gancho Visual</th></tr></thead><tbody><tr><td>Tu café sabe amargo</td><td>Tirar el café al lavaplatos con cara de asco 🤢</td></tr><tr><td>Ahorra $50.000/mes</td><td>Pantallazo de gastos en Starbucks vs. Bolsa de grano 📉</td></tr><tr><td>ASMR Mañanero</td><td>Solo sonido de molienda y agua cayendo (Satisfying) 🎧</td></tr></tbody></table>',
+
+                false, 
+
+                ["Muy Genérico", "Sin Formato Viral"]),
+
+
+
+            // --- PERSONAL ---
+
+            createCase(1, 'personal', 'Menú de Supervivencia', 'restaurant', 'Sobras en la nevera.', 
+
+                'Qué cocino con huevo y arroz.', 
+
+                '{r}Chef Michelin de cocina de aprovechamiento.{/r} {c}Tengo huevos, arroz frío y espinaca.{/c} {m}Receta gourmet en 15 min.{/m}',
+
+                '<p class="font-bold text-indigo-700">Tortilla "Soufflé" Florentina</p>...',
+
+                false, ["Sin Rol", "Sin Límites"]),
+
+
+
+            createCase(3, 'personal', 'Consejero de Regalos', 'card_giftcard', 'Regalo hombre 40 años.', 
+
+                'Qué le regalo a mi marido.', 
+
+                '{r}Personal Shopper.{/r} {c}40 años, tecnológico, parrillero.{/c} {m}5 ideas bajo $30.000.{/m}',
+
+                '1. Termómetro Bluetooth para asado...',
+
+                false, ["Información Insuficiente"]),
+
+
+
+            createCase(4, 'personal', 'Planificador de Viajes', 'flight', 'Viaje express.', 
+
+                'Qué hacer en Buenos Aires 3 días.', 
+
+                '{r}Guía porteño local.{/r} {c}Evitar trampas turísticas.{/c} {m}Itinerario real de comida y paseos.{/m}',
+
+                'Día 1: Pizza en Guerrin y Teatro Colón...',
+
+                false, ["Muy Amplio"]),
+
+
+
+            // --- EDUCATION ---
+
+            createCase(81, 'education', 'Tutor Socrático', 'psychology', 'Estudiar activo.', 
+
+                'Explícame la inflación.', 
+
+                '{r}Profesor de Economía.{/r} {m}Explícalo como si tuviera 10 años usando el ejemplo de las láminas del álbum del mundial.{/m}',
+
+                '"Imagina que todos tienen 10 láminas. Si de pronto el profesor regala 1000 láminas a cada uno, ¿tus láminas valen más o menos?..."',
+
+                false, ["Muy Complejo"])
+
+        ];
+
+
+
+        // --- GENERADOR DE RELLENO (PARA QUE PAREZCAN 100+) ---
+
+        const fillers = [
+
+            {t: 'Crear Logo Midjourney', c: 'marketing'}, {t: 'Resumidor de Papers PDF', c: 'education'}, 
+
+            {t: 'Debuggueador de Python', c: 'tech'}, {t: 'Script de Ventas en Frío', c: 'office'},
+
+            {t: 'Plan de Entrenamiento Maratón', c: 'personal'}, {t: 'Meditación Guiada', c: 'personal'},
+
+            {t: 'Analista de Contratos Legales', c: 'office'}, {t: 'Generador de Quiz', c: 'education'},
+
+            {t: 'Traductor de Código Legacy', c: 'tech'}, {t: 'Estratega de SEO', c: 'marketing'},
+
+            {t: 'Carta de Recomendación', c: 'office'}, {t: 'Planificador de Boda', c: 'personal'}
+
+        ];
+
+        
+
+        let idCounter = 100;
+
+        // Multiplicamos los fillers para que se vea lleno
+
+        for(let i=0; i<3; i++) {
+
+            fillers.forEach(f => {
+
+                allCases.push(createCase(idCounter++, f.c, f.t, 'lock', 'Contenido Premium', 'Ayuda...', '...', '...', false)); // <--- AQUÍ TAMBIÉN DESBLOQUEADO
+
+            });
+
+        }
+
+
+
+        // --- LÓGICA UI ---
+
+        let currentCategory = 'office'; // Empezar en Oficina que es fuerte
+
+        let searchQuery = '';
+
+
+
+        function init() {
+
+            renderCategories();
+
+            renderCaseList();
+
+            selectCase(22); // Seleccionar Excel por defecto
+
+        }
+
+
+
+        function renderCategories() {
+
+            const nav = document.getElementById('category-nav');
+
+            nav.innerHTML = Object.keys(categoryConfig).map(key => {
+
+                const conf = categoryConfig[key];
+
+                const isActive = currentCategory === key;
+
+                const activeClass = isActive 
+
+                    ? `bg-${conf.color}-100 text-${conf.color}-700 border-${conf.color}-200 shadow-sm` 
+
+                    : `bg-white text-slate-500 border-slate-100 hover:bg-slate-50`;
+
+                return `<button onclick="setCategory('${key}')" class="flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold transition-all whitespace-nowrap ${activeClass}"><span class="material-symbols-outlined text-lg">${conf.icon}</span>${conf.label}</button>`;
+
+            }).join('');
+
+        }
+
+
+
+        function renderCaseList() {
+
+            const listEl = document.getElementById('case-list');
+
+            const filtered = allCases.filter(c => (c.category === currentCategory || searchQuery !== '') && (c.title.toLowerCase().includes(searchQuery.toLowerCase()) || c.problem.toLowerCase().includes(searchQuery.toLowerCase())));
+
             
-            // Lógica de horas ahorradas interna
-            totalHours += 3;
-            document.getElementById('hours-saved').innerText = totalHours;
+
+            document.getElementById('count-display').innerText = allCases.length; // Total real
+
+            
+
+            if (filtered.length === 0) {
+
+                listEl.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No hay resultados</div>`;
+
+                return;
+
+            }
+
+
+
+            listEl.innerHTML = filtered.map(c => {
+
+                const config = categoryConfig[c.category];
+
+                // Icon logic: Lock if locked, Category icon if free
+
+                const iconDisplay = c.locked ? 'lock' : c.icon;
+
+                const iconColorClass = c.locked ? 'text-slate-300 bg-slate-50' : `text-${config.color}-500 bg-white`;
+
+                const lockOpacity = c.locked ? 'opacity-70' : '';
+
+                
+
+                return `<button onclick="selectCase(${c.id})" class="w-full text-left p-3 rounded-lg group transition-all mb-2 hover:bg-slate-50 border border-transparent relative overflow-hidden ${lockOpacity}">
+
+                    <div class="flex items-center gap-3 pl-2">
+
+                        <div class="w-8 h-8 rounded-lg border border-slate-100 flex items-center justify-center flex-none shadow-sm ${iconColorClass}">
+
+                            <span class="material-symbols-outlined text-lg">${iconDisplay}</span>
+
+                        </div>
+
+                        <div class="overflow-hidden">
+
+                            <h4 class="text-sm font-semibold text-slate-700 truncate group-hover:text-indigo-700 transition-colors flex items-center gap-2">
+
+                                ${c.title} 
+
+                                ${!c.locked ? '<span class="text-[9px] bg-green-100 text-green-700 px-1.5 rounded-full">GRATIS</span>' : ''}
+
+                            </h4>
+
+                            <p class="text-[10px] text-slate-400 truncate">${c.locked ? 'Solo miembros Premium' : c.problem}</p>
+
+                        </div>
+
+                    </div>
+
+                </button>`;
+
+            }).join('');
+
         }
 
-        function personalizePrompt(id) {
-            const promptBase = document.getElementById('prompt-maestro-'+id).innerText;
-            const userContext = prompt("Describe tu caso específico para adaptarlo (ej: Tengo una tienda de ropa en Panamá):");
-            if(!userContext) return;
 
-            const structured = `[ROL] Actúa como un Experto en el sector...
-[CONTEXTO] Caso específico: ${userContext}.
-[META] Adaptar la estrategia anterior a este contexto...
-[RESTRICCIONES] ...
-[FORMATO] ...`;
 
-            document.getElementById('transformed-result').innerText = structured;
-            document.getElementById('modal-transform').classList.remove('hidden');
-            totalHours += 5;
-            document.getElementById('hours-saved').innerText = totalHours;
+        function selectCase(id) {
+
+            const c = allCases.find(x => x.id === id);
+
+            if(!c) return;
+
+
+
+            // PAYWALL CHECK
+
+            if (c.locked) {
+
+                openPaywall();
+
+                return;
+
+            }
+
+
+
+            const conf = categoryConfig[c.category];
+
+
+
+            // Render Detail
+
+            document.getElementById('detail-title').innerText = c.title;
+
+            document.getElementById('detail-icon').innerText = c.icon;
+
+            document.getElementById('detail-icon-bg').className = `w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg border-2 border-white bg-${conf.color}-50 text-${conf.color}-600`;
+
+            document.getElementById('detail-category-badge').innerText = conf.label;
+
+            document.getElementById('detail-category-badge').className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-${conf.color}-100 text-${conf.color}-700 border border-${conf.color}-200`;
+
+            document.getElementById('detail-problem').innerText = c.problem;
+
+            
+
+            // Render Bad Prompt & Badges
+
+            document.getElementById('detail-bad-prompt').innerText = `"${c.badPrompt}"`;
+
+            document.getElementById('deficiency-badges').innerHTML = c.deficiencies.map(d => 
+
+                `<span class="px-2 py-1 bg-red-50 text-red-600 text-[10px] font-bold rounded-md border border-red-100 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">warning</span>${d}</span>`
+
+            ).join('');
+
+
+
+            // Render Good Prompt
+
+            document.getElementById('detail-prompt-rendered').innerHTML = renderAGIA(c.agiaPromptTagged);
+
+            document.getElementById('preview-response').innerHTML = c.previewResponse;
+
+
+
+            if(window.innerWidth < 768) toggleSidebar();
+
         }
 
-        function closeModal() {
-            document.getElementById('modal-transform').classList.add('hidden');
+
+
+        function setCategory(cat) {
+
+            currentCategory = cat;
+
+            searchQuery = '';
+
+            document.getElementById('searchInput').value = '';
+
+            renderCategories();
+
+            renderCaseList();
+
         }
+
+
+
+        function filterCases() {
+
+            searchQuery = document.getElementById('searchInput').value;
+
+            renderCaseList();
+
+        }
+
+
 
         function copyPrompt() {
-            const text = document.getElementById('transformed-result').innerText;
-            const final = text + "\n\n--- Generado con Aula Gen IA ---";
-            navigator.clipboard.writeText(final);
-            alert("¡Prompt copiado al portapapeles con éxito!");
+
+            const title = document.getElementById('detail-title').innerText;
+
+            const c = allCases.find(x => x.title === title);
+
+            if(!c) return;
+
+
+
+            const rawText = cleanAGIA(c.agiaPromptTagged);
+
+            navigator.clipboard.writeText(rawText);
+
+            
+
+            // Visual feedback
+
+            const btn = document.querySelector('button[onclick="copyPrompt()"]');
+
+            const originalHTML = btn.innerHTML;
+
+            
+
+            btn.innerHTML = `<span class="material-symbols-outlined text-sm">check_circle</span> <span>¡COPIADO!</span>`;
+
+            btn.classList.remove('bg-indigo-600', 'text-white');
+
+            btn.classList.add('bg-green-500', 'text-white', 'shadow-none');
+
+            
+
+            setTimeout(() => {
+
+                btn.innerHTML = originalHTML;
+
+                btn.classList.remove('bg-green-500', 'text-white', 'shadow-none');
+
+                btn.classList.add('bg-indigo-600', 'text-white');
+
+            }, 2000);
+
         }
 
-        function showSalesAlert() {
-            alert("Acceso Restringido: Estás a un paso de la maestría. Por solo $20 USD desbloquearás la biblioteca completa, el transformador avanzado y 10 horas de contenido premium.");
+
+
+        // --- PAYWALL LOGIC ---
+
+        function openPaywall() {
+
+            document.getElementById('paywall-modal').classList.remove('hidden');
+
         }
+
+        function closePaywall() {
+
+            document.getElementById('paywall-modal').classList.add('hidden');
+
+        }
+
+
+
+        function toggleSidebar() {
+
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+
+        }
+
+
+
+        init();
+
     </script>
+
 </body>
+
 </html>
