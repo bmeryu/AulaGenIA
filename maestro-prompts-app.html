@@ -23,23 +23,23 @@
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: var(--bg-canvas); 
-            color: #1e293b; /* Slate-800 para mejor lectura */
+            color: #1e293b;
             -webkit-font-smoothing: antialiased;
         }
         
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* Custom Scrollbar - Modern */
-        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+        /* Custom Scrollbar - Minimalist & Thin for internal panels */
+        .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
         /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
-        /* Glass Effect Premium */
+        /* Glass Effect */
         .glass-panel {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
@@ -47,45 +47,31 @@
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
-        /* Gradient Text */
-        .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
-        }
-
-        /* AGIA Tag Styles - Larger & Bolder */
+        /* Tags Compactas */
         .hl-tag { 
-            transition: all 0.2s; 
             display: inline-flex; 
             align-items: center;
-            padding: 2px 8px; 
-            border-radius: 6px; 
-            margin: 0 3px; 
+            padding: 1px 5px; 
+            border-radius: 4px; 
+            margin: 0 2px; 
             font-weight: 700; 
-            font-size: 0.9em; 
+            font-size: 0.85em; 
             cursor: default; 
-            letter-spacing: -0.01em;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             border: 1px solid transparent;
         }
         
-        .hl-active { transform: translateY(-2px); box-shadow: 0 8px 15px -3px rgba(79, 70, 229, 0.2); z-index: 10; border-color: rgba(79, 70, 229, 0.3); }
-
         .hl-rol { color: #1e40af; background: #eff6ff; border-color: #dbeafe; }
         .hl-contexto { color: #065f46; background: #ecfdf5; border-color: #d1fae5; }
         .hl-meta { color: #854d0e; background: #fffbeb; border-color: #fef3c7; }
         .hl-restricciones { color: #991b1b; background: #fef2f2; border-color: #fee2e2; }
         .hl-formato { color: #6b21a8; background: #faf5ff; border-color: #f3e8ff; }
 
-        /* Variable Highlight */
         .var-highlight { 
             background-color: #e0f2fe; 
             border-bottom: 2px solid #0284c7; 
             color: #0c4a6e; 
             font-weight: 700;
-            padding: 0 6px;
+            padding: 0 4px;
             border-radius: 4px;
         }
         
@@ -94,398 +80,260 @@
             border-bottom: 2px dotted #94a3b8;
             color: #64748b;
             font-weight: 600;
-            padding: 0 4px;
+            padding: 0 2px;
         }
 
-        /* Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
         ::selection { background: #818cf8; color: white; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
 
-    <!-- ERROR/LOADING OVERLAY (REDISEÑADO: CLEAN STYLE) -->
+    <!-- OVERLAY LOADING -->
     <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-white/90 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500">
-        <div class="bg-white p-8 rounded-[2rem] shadow-2xl shadow-slate-200 border border-slate-100 max-w-md w-full animate-in zoom-in duration-300 relative">
-            <div id="status-icon" class="w-16 h-16 bg-white border border-slate-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-                <span class="material-symbols-rounded text-3xl animate-spin">sync</span>
+        <div class="bg-white p-8 rounded-[2rem] shadow-2xl shadow-slate-200 border border-slate-100 max-w-md w-full animate-in zoom-in duration-300">
+            <div id="status-icon" class="w-12 h-12 bg-white border border-slate-100 text-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <span class="material-symbols-rounded text-2xl animate-spin">sync</span>
             </div>
-            <h2 id="status-title" class="text-xl font-extrabold text-slate-900 mb-2 tracking-tight">Sincronizando Bóveda...</h2>
-            <p id="status-desc" class="text-sm text-slate-500 mb-8 font-medium">Estableciendo conexión segura con el servidor.</p>
-            
-            <div class="bg-slate-50 p-4 rounded-xl text-left text-xs font-mono text-slate-500 mb-6 overflow-hidden border border-slate-100">
-                <div class="flex items-center gap-2 mb-2 pb-2 border-b border-slate-200">
-                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
-                    <span class="font-bold text-slate-400 uppercase tracking-wider text-[10px]">System Log</span>
-                </div>
+            <h2 id="status-title" class="text-lg font-extrabold text-slate-900 mb-1">Cargando Bóveda...</h2>
+            <p id="status-desc" class="text-xs text-slate-500 mb-6">Sincronizando recursos.</p>
+            <div class="bg-slate-50 p-3 rounded-lg text-left text-[10px] font-mono text-slate-500 overflow-hidden border border-slate-100">
                 <p>> Target: <span class="text-indigo-600 font-semibold">aulagenia.cl/db</span></p>
                 <p>> Status: <span id="status-code" class="text-slate-600 font-bold">FETCHING...</span></p>
             </div>
-
-            <button id="retry-btn" onclick="window.location.reload()" class="hidden w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-sm transition-all shadow-lg hover:-translate-y-0.5">
-                Reintentar Conexión
-            </button>
+            <button id="retry-btn" onclick="window.location.reload()" class="hidden w-full mt-4 py-2 bg-slate-900 text-white rounded-lg font-bold text-xs">Reintentar</button>
         </div>
     </div>
 
-    <!-- SALES BANNER: Bigger & Bolder -->
-    <div id="sticky-banner" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white py-2 px-4 flex justify-center items-center gap-6 text-sm z-50 shadow-md flex-none border-b border-indigo-500/30">
-        <div class="flex items-center gap-2.5 opacity-100">
-            <span class="flex h-3 w-3 relative">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-            </span>
+    <!-- MINI BANNER (Slim) -->
+    <div id="sticky-banner" class="bg-slate-900 text-white py-1 px-4 flex justify-center items-center gap-4 text-[10px] z-50 flex-none border-b border-indigo-500/30">
+        <div class="flex items-center gap-1.5 opacity-90">
+            <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
             <span class="font-bold tracking-wide">Masterclass Ingeniería de Prompts</span>
         </div>
-        <div class="flex items-center gap-3">
-            <div class="font-mono font-bold text-yellow-300 bg-white/10 px-3 py-1 rounded-md border border-white/10" id="countdown">14:59</div>
-            <button onclick="openPaywall()" class="bg-yellow-400 hover:bg-yellow-300 text-slate-900 px-4 py-1 rounded-full text-xs font-bold transition-colors shadow-[0_0_15px_rgba(250,204,21,0.4)]">
-                VER OFERTA →
-            </button>
+        <div class="flex items-center gap-2">
+            <div class="font-mono font-bold text-yellow-300" id="countdown">14:59</div>
+            <button onclick="openPaywall()" class="text-yellow-300 hover:text-yellow-200 font-bold underline decoration-yellow-500/50">VER OFERTA</button>
         </div>
     </div>
 
-    <!-- Header (Premium) -->
-    <header class="bg-white/80 backdrop-blur-xl border-b border-slate-200 z-30 flex-none relative sticky top-0">
-        <div class="max-w-[1920px] mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-500/30 ring-2 ring-indigo-50">
-                        A
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-extrabold text-slate-900 leading-none mb-0.5 tracking-tight">AGIA Generator <span class="text-indigo-600">3.0</span></h1>
-                        <p class="text-[11px] text-slate-500 font-bold tracking-wider uppercase">AI Prompt Engineering Lab</p>
-                    </div>
-                </div>
-                
-                <div class="flex gap-4">
-                    <button onclick="showTutorial()" class="hidden md:flex text-slate-500 hover:text-indigo-600 transition-colors items-center gap-2 text-sm font-semibold px-2">
-                        <span class="material-symbols-rounded">help</span> <span class="hidden lg:inline">Tutorial</span>
-                    </button>
-                    <button onclick="openPaywall()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-xl shadow-slate-200 transition-all flex items-center gap-2 transform hover:-translate-y-0.5 active:translate-y-0">
-                        <span class="material-symbols-rounded text-lg text-yellow-400">lock_open</span>
-                        <span class="hidden sm:inline">Desbloquear Todo</span>
-                    </button>
+    <!-- COMPACT HEADER -->
+    <header class="bg-white border-b border-slate-200 z-30 flex-none h-14">
+        <div class="h-full px-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-lg flex items-center justify-center text-white font-black text-lg shadow-md shadow-indigo-500/20">A</div>
+                <div>
+                    <h1 class="text-sm font-extrabold text-slate-900 leading-none">AGIA Generator <span class="text-indigo-600">3.0</span></h1>
+                    <p class="text-[9px] text-slate-400 font-bold tracking-widest uppercase">AI Prompt Engineering Lab</p>
                 </div>
             </div>
             
-            <!-- Category Navigation (Larger Pills) -->
-            <div class="mt-4 flex space-x-3 overflow-x-auto custom-scroll pb-2 no-scrollbar mask-gradient-r" id="category-nav">
-                <!-- Injected by JS -->
+            <!-- Category Nav (Compact) -->
+            <div class="hidden md:flex flex-1 mx-6 space-x-1 overflow-x-auto no-scrollbar mask-gradient-r" id="category-nav">
+                <!-- JS Injected -->
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="showTutorial()" class="text-slate-400 hover:text-indigo-600 transition-colors p-1.5">
+                    <span class="material-symbols-rounded text-xl">help</span>
+                </button>
+                <button onclick="openPaywall()" class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md flex items-center gap-1.5 transition-transform hover:-translate-y-0.5">
+                    <span class="material-symbols-rounded text-sm text-yellow-400">lock_open</span>
+                    <span class="hidden sm:inline">Desbloquear</span>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Layout -->
-    <div class="flex flex-1 overflow-hidden max-w-[1920px] mx-auto w-full relative bg-slate-50">
+    <!-- MAIN APP LAYOUT (NO BODY SCROLL) -->
+    <div class="flex flex-1 overflow-hidden w-full relative bg-slate-50">
         
-        <!-- Sidebar (List) -->
-        <aside class="w-full md:w-80 lg:w-96 flex flex-col bg-white border-r border-slate-200 flex-none z-20 transition-transform duration-300 absolute md:relative h-full transform -translate-x-full md:translate-x-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)]" id="sidebar">
-            <div class="p-4 sticky top-0 bg-white/95 backdrop-blur z-10 border-b border-slate-100">
+        <!-- SIDEBAR (Compact) -->
+        <aside class="w-full md:w-64 lg:w-72 flex flex-col bg-white border-r border-slate-200 z-20 flex-none absolute md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300" id="sidebar">
+            <div class="p-3 border-b border-slate-100">
                 <div class="relative group">
-                    <span class="material-symbols-rounded absolute left-3.5 top-3 text-slate-400 text-xl group-focus-within:text-indigo-600 transition-colors">search</span>
-                    <input type="text" id="searchInput" placeholder="Buscar 100+ casos..." 
-                        class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none placeholder:text-slate-400"
+                    <span class="material-symbols-rounded absolute left-2.5 top-2 text-slate-400 text-lg group-focus-within:text-indigo-600 transition-colors">search</span>
+                    <input type="text" id="searchInput" placeholder="Buscar caso..." 
+                        class="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium focus:bg-white focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                         onkeyup="filterCases()">
                 </div>
             </div>
-            
-            <div class="flex-1 overflow-y-auto custom-scroll p-3 space-y-2" id="case-list">
-                <!-- Cases JS -->
-            </div>
-            
-            <!-- Sidebar Footer -->
-            <div class="p-4 border-t border-slate-100 bg-slate-50/50">
-                <div class="flex items-center justify-between text-xs font-semibold text-slate-400 px-1 mb-2">
-                    <span>Estado del Sistema</span>
-                    <span class="text-emerald-600 flex items-center gap-1.5 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online</span>
-                </div>
-                <div class="flex items-center gap-2 px-1">
-                    <div class="text-xs text-slate-500 font-medium">Casos disponibles:</div>
-                    <div class="text-sm font-black text-slate-800" id="total-display">0</div>
-                </div>
+            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list"></div>
+            <div class="p-2 border-t border-slate-100 bg-slate-50/50 text-[10px] text-slate-400 flex justify-between px-3 font-medium">
+                <span>Estado: Online</span>
+                <span>Casos: <span id="total-display" class="text-slate-700 font-bold">0</span></span>
             </div>
         </aside>
 
-        <!-- Main Workspace -->
-        <main class="flex-1 flex flex-col bg-slate-50/50 overflow-hidden relative w-full">
+        <!-- WORKSPACE (DASHBOARD STYLE) -->
+        <main class="flex-1 flex flex-col overflow-hidden relative w-full h-full bg-slate-100/50">
+            
             <!-- Empty State -->
             <div id="workspace-empty" class="hidden flex-col items-center justify-center h-full text-center p-8">
-                <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center mb-8 shadow-2xl shadow-slate-200 ring-8 ring-white">
-                    <span class="material-symbols-rounded text-6xl text-indigo-200">compare_arrows</span>
-                </div>
-                <h3 class="text-2xl font-extrabold text-slate-800 mb-3">Laboratorio de Prompts</h3>
-                <p class="text-base text-slate-500 max-w-md leading-relaxed">Selecciona un caso del menú lateral para comparar la diferencia abismal entre un prompt novato y el Método AGIA.</p>
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-4 shadow-xl text-indigo-200"><span class="material-symbols-rounded text-5xl">compare_arrows</span></div>
+                <h3 class="text-lg font-bold text-slate-800">Selecciona un caso</h3>
+                <p class="text-xs text-slate-500">Comienza tu comparativa en el menú lateral.</p>
             </div>
 
-            <!-- Content Area -->
-            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-6 lg:p-10 pb-40">
-                <div class="max-w-7xl mx-auto fade-in">
+            <!-- CONTENT WRAPPER (Fixes Height) -->
+            <div id="case-detail" class="flex flex-col h-full w-full p-4 gap-4 overflow-hidden">
+                
+                <!-- 1. TOP BAR (Título y Contexto) - Compacto -->
+                <div class="flex-none bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between gap-4">
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <span id="detail-category-badge" class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-slate-50 text-slate-600 border-slate-200">CAT</span>
+                            <!-- AI Badge -->
+                            <div id="ai-suggestion-badge" class="hidden text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-indigo-50 text-indigo-700 border-indigo-100 items-center gap-1">
+                                <span class="material-symbols-rounded text-[10px]">smart_toy</span>
+                                <span id="ai-name">IA</span>
+                            </div>
+                        </div>
+                        <h2 id="detail-title" class="text-lg font-bold text-slate-900 leading-tight truncate">Título del Caso</h2>
+                        <p id="detail-problem" class="text-xs text-slate-500 truncate mt-0.5 font-medium"></p>
+                    </div>
+                    <div class="flex-none hidden lg:block text-right">
+                        <div class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Modo Comparación</div>
+                        <div class="flex items-center gap-1 text-xs font-bold text-slate-700 justify-end">
+                            <span>VS</span> <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. SPLIT VIEW (Ocupa todo el alto restante) -->
+                <div class="flex-1 flex flex-col lg:flex-row gap-4 min-h-0">
                     
-                    <!-- Header Tool -->
-                    <div class="mb-10 flex flex-col md:flex-row md:items-start md:justify-between gap-6 border-b border-slate-200 pb-8">
-                        <div>
-                            <div class="flex items-center gap-3 mb-4">
-                                <span id="detail-category-badge" class="text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border bg-white shadow-sm">Categoría</span>
-                                <!-- IA Suggestion (Nuevo) -->
-                                <div id="ai-suggestion-badge" class="hidden text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border bg-indigo-50 text-indigo-700 border-indigo-100 items-center gap-2">
-                                    <span class="material-symbols-rounded text-sm">smart_toy</span>
-                                    <span>Recomendado: <span id="ai-name">ChatGPT</span></span>
-                                </div>
+                    <!-- LEFT: THE BAD WAY -->
+                    <div class="flex-1 flex flex-col bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm h-full">
+                        <div class="bg-slate-50/80 px-4 py-2 border-b border-slate-100 flex justify-between items-center flex-none h-10">
+                            <div class="flex items-center gap-2 text-slate-500">
+                                <span class="material-symbols-rounded text-base">cancel</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest">Método Común</span>
                             </div>
-                            <h2 id="detail-title" class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">Título del Caso</h2>
-                            <p id="detail-problem" class="text-lg text-slate-600 leading-relaxed max-w-3xl font-medium"></p>
                         </div>
-                    </div>
-
-                    <!-- THE GRID -->
-                    <div class="grid lg:grid-cols-12 gap-8 items-start relative">
                         
-                        <!-- Right Col: The Comparison Engine -->
-                        <div class="lg:col-span-12 grid md:grid-cols-2 gap-8 relative">
-                            
-                            <!-- Arrow Connector (Desktop) -->
-                            <div class="hidden md:flex absolute top-[160px] left-1/2 transform -translate-x-1/2 z-10 justify-center">
-                                <div class="bg-white p-2.5 rounded-full shadow-lg shadow-indigo-100 border border-slate-100 text-indigo-400 ring-4 ring-slate-50">
-                                    <span class="material-symbols-rounded text-2xl font-bold">arrow_forward</span>
-                                </div>
+                        <!-- Contenido Scrolleable -->
+                        <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-4">
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-400 uppercase mb-1.5 block">Prompt (Novato)</label>
+                                <div id="bad-prompt-rendered" class="font-mono text-xs text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-200 italic leading-relaxed"></div>
                             </div>
-
-                            <!-- 1. THE BAD WAY (Visualmente "Débil") -->
-                            <div class="flex flex-col gap-5 opacity-80 hover:opacity-100 transition-opacity duration-300">
-                                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden h-full flex flex-col group">
-                                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-                                        <div class="flex items-center gap-2.5 text-slate-500">
-                                            <span class="material-symbols-rounded text-xl">cancel</span>
-                                            <span class="text-xs font-bold uppercase tracking-widest">Método Común (Amateur)</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 flex-1 flex flex-col gap-6">
-                                        <div>
-                                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block tracking-wider">Prompt Típico</label>
-                                            <div id="bad-prompt-rendered" class="font-mono text-sm text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner italic leading-relaxed">...</div>
-                                        </div>
-                                        <div class="flex-1">
-                                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block tracking-wider">Resultado Pobre</label>
-                                            <div id="bad-result-preview" class="text-sm text-slate-500 leading-relaxed bg-white p-4 rounded-xl border border-dashed border-slate-300 h-full max-h-48 overflow-y-auto custom-scroll font-medium">...</div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="border-t border-dashed border-slate-200 pt-3">
+                                <label class="text-[9px] font-bold text-slate-400 uppercase mb-1.5 block">Resultado Pobre</label>
+                                <div id="bad-result-preview" class="text-xs text-slate-500 leading-relaxed bg-white/50 rounded-lg"></div>
                             </div>
-
-                            <!-- 2. THE AGIA WAY (Visualmente "Potente") -->
-                            <div class="flex flex-col gap-5 relative transform md:-translate-y-4 md:hover:-translate-y-5 transition-transform duration-300">
-                                <div class="bg-white rounded-3xl shadow-2xl shadow-indigo-500/10 border border-indigo-100 overflow-hidden ring-1 ring-indigo-50 relative group h-full flex flex-col">
-                                    <!-- Header Gradient Powerful -->
-                                    <div class="bg-gradient-to-r from-indigo-600 to-violet-700 text-white px-6 py-4 flex justify-between items-center shadow-lg relative overflow-hidden">
-                                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
-                                        <div class="flex items-center gap-3 relative z-10">
-                                            <div class="bg-white/20 p-1.5 rounded-lg backdrop-blur-sm">
-                                                <span class="material-symbols-rounded text-lg">verified</span>
-                                            </div>
-                                            <span class="text-xs font-bold uppercase tracking-[0.2em] text-white">Método AGIA Pro</span>
-                                        </div>
-                                        <button id="copy-btn" onclick="copyPrompt()" class="relative z-10 flex items-center gap-2 text-xs font-bold bg-white text-indigo-700 hover:bg-indigo-50 px-4 py-2 rounded-lg transition-all shadow-lg transform hover:scale-105 active:scale-95">
-                                            <span class="material-symbols-rounded text-sm">content_copy</span> COPIAR
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="p-6 flex-1 flex flex-col gap-6 relative">
-                                        <!-- Prompt Area Big & Clean -->
-                                        <div>
-                                            <div class="flex justify-between items-end mb-3">
-                                                <label class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Prompt Estructurado</label>
-                                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-md border border-emerald-200 flex items-center gap-1.5">
-                                                    <span class="material-symbols-rounded text-sm">bolt</span> High Performance
-                                                </span>
-                                            </div>
-                                            <div class="relative group/code bg-slate-50 rounded-xl border border-indigo-100 p-1">
-                                                <div id="detail-prompt-rendered" class="font-mono text-[15px] leading-relaxed text-slate-800 whitespace-pre-wrap h-[280px] overflow-y-auto custom-scroll p-4"></div>
-                                                <!-- Overlay gradient bottom -->
-                                                <div class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none rounded-b-xl"></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Interactive Legend -->
-                                        <div id="interactive-legend" class="flex flex-wrap gap-3 justify-start pt-2">
-                                            <span class="legend-item cursor-pointer flex items-center gap-2 text-[11px] font-bold text-slate-600 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 hover:border-indigo-300 hover:text-indigo-600 transition-all" data-type="r">
-                                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Rol
-                                            </span>
-                                            <span class="legend-item cursor-pointer flex items-center gap-2 text-[11px] font-bold text-slate-600 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 hover:border-emerald-300 hover:text-emerald-600 transition-all" data-type="c">
-                                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Contexto
-                                            </span>
-                                            <span class="legend-item cursor-pointer flex items-center gap-2 text-[11px] font-bold text-slate-600 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 hover:border-amber-300 hover:text-amber-600 transition-all" data-type="m">
-                                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Meta
-                                            </span>
-                                            <span class="legend-item cursor-pointer flex items-center gap-2 text-[11px] font-bold text-slate-600 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 hover:border-red-300 hover:text-red-600 transition-all" data-type="l">
-                                                <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Restricciones
-                                            </span>
-                                            <span class="legend-item cursor-pointer flex items-center gap-2 text-[11px] font-bold text-slate-600 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 hover:border-purple-300 hover:text-purple-600 transition-all" data-type="f">
-                                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Formato
-                                            </span>
-                                        </div>
-                                        
-                                        <!-- TECH SPECS (Nueva sección recuperada) -->
-                                        <div id="tech-specs" class="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
-                                            <div id="tip-container" class="hidden bg-amber-50 border border-amber-100 rounded-lg p-3 flex gap-3 items-start">
-                                                <span class="material-symbols-rounded text-amber-500 text-lg mt-0.5">lightbulb</span>
-                                                <div>
-                                                    <h5 class="text-[10px] font-bold text-amber-700 uppercase tracking-wide mb-0.5">Tip de Ingeniería</h5>
-                                                    <p id="detail-example-tip" class="text-xs text-amber-900 leading-snug">...</p>
-                                                </div>
-                                            </div>
-                                            <div id="validation-container" class="hidden bg-emerald-50 border border-emerald-100 rounded-lg p-3 flex gap-3 items-start">
-                                                <span class="material-symbols-rounded text-emerald-500 text-lg mt-0.5">fact_check</span>
-                                                <div>
-                                                    <h5 class="text-[10px] font-bold text-emerald-700 uppercase tracking-wide mb-0.5">Criterio de Validación</h5>
-                                                    <p id="detail-validation-tip" class="text-xs text-emerald-900 leading-snug">...</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Premium Overlay -->
-                                        <div id="premium-lock" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center glass-panel text-center p-8 transition-all duration-300 m-1 rounded-2xl">
-                                            <div class="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center shadow-2xl mb-6 transform rotate-6 ring-4 ring-white">
-                                                <span class="material-symbols-rounded text-white text-3xl">lock_person</span>
-                                            </div>
-                                            <h3 class="text-xl font-black text-slate-900 mb-2">Contenido VIP</h3>
-                                            <p class="text-sm text-slate-500 mb-8 max-w-[240px] leading-relaxed font-medium">Este prompt avanzado genera resultados 10x mejores. Disponible solo en la versión completa.</p>
-                                            <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3.5 rounded-xl font-bold shadow-lg shadow-indigo-200 text-sm flex items-center gap-2 transform transition-all hover:scale-105 active:scale-95">
-                                                DESBLOQUEAR AHORA
-                                            </button>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Expected Result Footer -->
-                                    <div class="bg-indigo-50 p-5 border-t border-indigo-100">
-                                        <div class="text-[11px] font-bold text-indigo-500 uppercase mb-3 flex gap-2 items-center tracking-wider">
-                                            <span class="material-symbols-rounded text-base">auto_awesome</span> Resultado Esperado
-                                        </div>
-                                        <div id="good-result-preview" class="text-sm text-slate-700 leading-relaxed max-h-40 overflow-y-auto custom-scroll bg-white p-4 rounded-xl border border-indigo-200 shadow-sm font-medium"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
                         </div>
                     </div>
 
+                    <!-- RIGHT: THE AGIA WAY (Hero) -->
+                    <div class="flex-1 flex flex-col bg-white rounded-xl border border-indigo-200 overflow-hidden shadow-lg shadow-indigo-100 relative h-full ring-1 ring-indigo-50">
+                        <!-- Header Pro -->
+                        <div class="bg-gradient-to-r from-indigo-600 to-violet-700 text-white px-4 py-2 flex justify-between items-center flex-none h-10">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-rounded text-base">verified</span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest">Método AGIA Pro</span>
+                            </div>
+                            <button onclick="copyPrompt()" class="flex items-center gap-1.5 text-[10px] font-bold bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded transition-colors border border-white/20">
+                                <span class="material-symbols-rounded text-xs">content_copy</span> COPIAR
+                            </button>
+                        </div>
+
+                        <!-- Contenido Scrolleable Principal -->
+                        <div class="flex-1 overflow-y-auto custom-scroll p-0 relative flex flex-col">
+                            <!-- Code Area -->
+                            <div class="relative bg-slate-50 p-4 border-b border-indigo-50 flex-1 min-h-[200px]">
+                                <div class="flex justify-between items-end mb-2">
+                                    <label class="text-[9px] font-bold text-indigo-500 uppercase">Estructura Optimizada</label>
+                                    <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 flex items-center gap-1"><span class="material-symbols-rounded text-[10px]">bolt</span> High Performance</span>
+                                </div>
+                                <div id="detail-prompt-rendered" class="font-mono text-sm leading-relaxed text-slate-800 whitespace-pre-wrap"></div>
+                            </div>
+
+                            <!-- Specs & Result -->
+                            <div class="bg-white p-4 space-y-4">
+                                <!-- Legend -->
+                                <div id="interactive-legend" class="flex flex-wrap gap-2">
+                                    <span class="legend-item cursor-pointer text-[10px] px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-slate-500 hover:border-blue-300 hover:text-blue-600 transition-colors" data-type="r">● Rol</span>
+                                    <span class="legend-item cursor-pointer text-[10px] px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-slate-500 hover:border-emerald-300 hover:text-emerald-600 transition-colors" data-type="c">● Contexto</span>
+                                    <span class="legend-item cursor-pointer text-[10px] px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-slate-500 hover:border-amber-300 hover:text-amber-600 transition-colors" data-type="m">● Meta</span>
+                                    <span class="legend-item cursor-pointer text-[10px] px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-slate-500 hover:border-red-300 hover:text-red-600 transition-colors" data-type="l">● Restr.</span>
+                                    <span class="legend-item cursor-pointer text-[10px] px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-slate-500 hover:border-purple-300 hover:text-purple-600 transition-colors" data-type="f">● Formato</span>
+                                </div>
+
+                                <!-- Tech Specs (Recovered) -->
+                                <div id="tech-specs" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t border-slate-100">
+                                    <div id="tip-container" class="hidden bg-amber-50 rounded-lg p-2.5 border border-amber-100">
+                                        <div class="flex items-center gap-1.5 mb-1 text-amber-600"><span class="material-symbols-rounded text-sm">lightbulb</span><span class="text-[9px] font-bold uppercase">Ingeniería</span></div>
+                                        <p id="detail-example-tip" class="text-[11px] text-amber-900 leading-tight"></p>
+                                    </div>
+                                    <div id="validation-container" class="hidden bg-emerald-50 rounded-lg p-2.5 border border-emerald-100">
+                                        <div class="flex items-center gap-1.5 mb-1 text-emerald-600"><span class="material-symbols-rounded text-sm">fact_check</span><span class="text-[9px] font-bold uppercase">Validación</span></div>
+                                        <p id="detail-validation-tip" class="text-[11px] text-emerald-900 leading-tight"></p>
+                                    </div>
+                                </div>
+
+                                <!-- Result -->
+                                <div class="pt-2">
+                                    <div class="text-[9px] font-bold text-indigo-400 uppercase mb-1.5 flex gap-1 items-center"><span class="material-symbols-rounded text-xs">auto_awesome</span> Resultado Esperado</div>
+                                    <div id="good-result-preview" class="text-xs text-slate-600 leading-relaxed font-medium bg-slate-50 p-2.5 rounded-lg border border-slate-100"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lock Overlay -->
+                        <div id="premium-lock" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center glass-panel text-center p-6">
+                            <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center shadow-xl mb-3 rotate-6 text-white"><span class="material-symbols-rounded text-2xl">lock</span></div>
+                            <h3 class="text-lg font-black text-slate-900 mb-1">Contenido VIP</h3>
+                            <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg font-bold shadow-lg text-xs mt-3 transform transition-all hover:scale-105">DESBLOQUEAR</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed bottom-10 right-10 z-50 transform translate-x-full transition-all duration-300 ease-out">
-        <div class="bg-slate-900 text-white pl-5 pr-8 py-4 rounded-2xl shadow-2xl flex items-center gap-5 border border-slate-700 ring-4 ring-slate-900/10">
-            <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-slate-900 shadow-lg shadow-emerald-500/30">
-                <span class="material-symbols-rounded text-2xl">check</span>
-            </div>
-            <div>
-                <h4 class="font-bold text-sm text-white">¡Copiado con éxito!</h4>
-                <p class="text-xs text-slate-400 mt-1 font-medium" id="toast-message">Pégalo ahora en tu IA favorita.</p>
-            </div>
+    <!-- TOAST & MODALS (Same logic, z-index high) -->
+    <div id="toast" class="fixed bottom-8 right-8 z-[60] transform translate-x-full transition-all duration-300">
+        <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700">
+            <span class="material-symbols-rounded text-green-400">check_circle</span>
+            <div><h4 class="font-bold text-xs">¡Copiado!</h4><p class="text-[10px] text-slate-400">Listo para pegar.</p></div>
         </div>
     </div>
+    
+    <div id="sales-toast" class="fixed bottom-16 left-6 z-[50] pointer-events-none md:pointer-events-auto transition-all duration-500 translate-y-24 opacity-0"></div>
 
-    <!-- SALES TOAST (Bottom Left) -->
-    <div id="sales-toast" class="fixed bottom-24 left-8 z-40 transform transition-all duration-700 translate-y-24 opacity-0 pointer-events-none md:pointer-events-auto"></div>
-
-    <!-- TUTORIAL MODAL -->
     <div id="tutorial-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md transition-opacity" onclick="closeTutorial()"></div>
-        <div class="relative bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full overflow-hidden animate-in zoom-in duration-300 border border-slate-100 flex flex-col max-h-[90vh]">
-            
-            <!-- Modal Header -->
-            <div class="bg-white px-8 py-6 border-b border-slate-100 flex justify-between items-center sticky top-0 z-10">
-                <div>
-                    <h3 class="text-2xl font-black text-slate-900">Cómo funciona AGIA</h3>
-                    <p class="text-sm text-slate-500 font-medium">Domina la ingeniería de prompts en 3 pasos</p>
-                </div>
-                <button onclick="closeTutorial()" class="w-10 h-10 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors">
-                    <span class="material-symbols-rounded">close</span>
-                </button>
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closeTutorial()"></div>
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden animate-in zoom-in duration-200">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-bold text-lg">Tutorial Rápido</h3>
+                <button onclick="closeTutorial()" class="text-slate-400 hover:text-slate-600"><span class="material-symbols-rounded">close</span></button>
             </div>
-
-            <!-- Scrollable Content -->
-            <div class="p-8 overflow-y-auto custom-scroll">
-                
-                <!-- Video Placeholder -->
-                <div class="w-full aspect-video bg-slate-900 rounded-2xl mb-8 relative group cursor-pointer overflow-hidden shadow-lg ring-1 ring-slate-900/10">
-                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/40 to-purple-900/40 z-0"></div>
-                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-40 group-hover:opacity-30 transition-opacity duration-500"></div>
-                    
-                    <div class="absolute inset-0 flex items-center justify-center z-10">
-                        <div class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30 shadow-2xl">
-                            <span class="material-symbols-rounded text-white text-5xl ml-2">play_arrow</span>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-4 left-6 z-10">
-                        <span class="bg-black/50 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Video Tutorial</span>
-                    </div>
+            <div class="p-6 overflow-y-auto max-h-[70vh]">
+                <div class="aspect-video bg-slate-100 rounded-xl mb-6 flex items-center justify-center text-slate-300 relative group cursor-pointer overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-50"></div>
+                    <span class="material-symbols-rounded text-5xl relative z-10 bg-white/20 p-4 rounded-full backdrop-blur text-white shadow-xl group-hover:scale-110 transition-transform">play_arrow</span>
                 </div>
-
-                <!-- Steps Grid -->
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 text-center hover:bg-white hover:shadow-md transition-all group">
-                        <div class="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-4 text-indigo-600 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-rounded text-2xl">ads_click</span>
-                        </div>
-                        <h4 class="font-bold text-slate-900 text-sm mb-2">1. Selecciona</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Elige un caso de uso real en el menú lateral. Hay más de 100 situaciones pre-cargadas.</p>
-                    </div>
-                    
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 text-center hover:bg-white hover:shadow-md transition-all group">
-                        <div class="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-4 text-emerald-600 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-rounded text-2xl">compare_arrows</span>
-                        </div>
-                        <h4 class="font-bold text-slate-900 text-sm mb-2">2. Compara</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Analiza por qué el prompt novato falla y cómo la estructura AGIA lo soluciona.</p>
-                    </div>
-
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 text-center hover:bg-white hover:shadow-md transition-all group">
-                        <div class="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-4 text-amber-500 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-rounded text-2xl">content_copy</span>
-                        </div>
-                        <h4 class="font-bold text-slate-900 text-sm mb-2">3. Implementa</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Copia el prompt optimizado y pégalo en ChatGPT, Claude o Gemini para ver la magia.</p>
-                    </div>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="p-4 bg-slate-50 rounded-lg"><div class="font-bold text-indigo-600 text-sm mb-1">1. Elige</div><p class="text-[10px] text-slate-500">Selecciona un caso real del menú.</p></div>
+                    <div class="p-4 bg-slate-50 rounded-lg"><div class="font-bold text-emerald-600 text-sm mb-1">2. Compara</div><p class="text-[10px] text-slate-500">Mira la diferencia técnica.</p></div>
+                    <div class="p-4 bg-slate-50 rounded-lg"><div class="font-bold text-amber-600 text-sm mb-1">3. Copia</div><p class="text-[10px] text-slate-500">Usa el prompt optimizado.</p></div>
                 </div>
-
-            </div>
-
-            <!-- Footer Action -->
-            <div class="p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
-                <button onclick="closeTutorial()" class="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold text-sm shadow-lg transition-all hover:-translate-y-0.5">
-                    Entendido, vamos a probar
-                </button>
             </div>
         </div>
     </div>
 
-    <!-- PAYWALL MODAL -->
     <div id="paywall-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-md transition-opacity" onclick="closePaywall()"></div>
-        <div class="relative bg-white rounded-[2rem] shadow-2xl max-w-md w-full p-10 text-center animate-in zoom-in duration-300 border border-slate-100">
-            <div class="w-16 h-16 bg-yellow-400 text-slate-900 rounded-3xl flex items-center justify-center mx-auto mb-8 font-black text-3xl shadow-xl shadow-yellow-200 transform -rotate-12 ring-8 ring-white">
-                %
-            </div>
-            <h3 class="text-3xl font-black text-slate-900 mb-3 tracking-tight">Oferta Limitada</h3>
-            <p class="text-base text-slate-500 mb-10 leading-relaxed px-4">Accede a la Bóveda completa con 105+ prompts de alto impacto y el curso de certificación AGIA.</p>
-            
-            <div class="space-y-4">
-                <button onclick="closePaywall()" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-2xl font-bold text-base shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]">
-                    Desbloquear Acceso por $29
-                </button>
-                <button onclick="closePaywall()" class="text-sm text-slate-400 hover:text-slate-600 font-semibold py-2">
-                    No gracias, prefiero perder tiempo
-                </button>
-            </div>
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-8 text-center animate-in zoom-in duration-200">
+            <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4 font-black text-xl shadow-lg">%</div>
+            <h3 class="text-xl font-black text-slate-900 mb-2">Oferta Limitada</h3>
+            <p class="text-xs text-slate-500 mb-6">Acceso total a la Bóveda + Curso AGIA.</p>
+            <button onclick="closePaywall()" class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold text-sm shadow-xl hover:scale-105 transition-transform">Desbloquear por $29</button>
+            <button onclick="closePaywall()" class="mt-3 text-xs text-slate-400 hover:text-slate-600">No gracias</button>
         </div>
     </div>
 
-    <!-- MAIN LOGIC -->
     <script type="module">
         let casesData = [];
         const externalDBUrl = 'https://aulagenia.cl/prompts_db.js';
@@ -501,12 +349,8 @@
         function showSystemError(err) {
             statusOverlay.classList.remove('hidden');
             statusOverlay.classList.add('flex');
-            
-            // Clean Style Error Update
             statusIcon.innerHTML = '<span class="material-symbols-rounded text-3xl text-red-500">error</span>';
-            // Override classes to match the new clean style but with red accent
             statusIcon.className = "w-16 h-16 bg-white border border-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm";
-            
             statusTitle.innerText = "Error de Conexión";
             
             if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
@@ -606,20 +450,13 @@
             const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
             const badge = document.getElementById('detail-category-badge');
             badge.innerText = cat.label;
-            badge.className = `text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border shadow-sm bg-white text-${cat.color}-600 border-${cat.color}-100`;
+            badge.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${cat.color}-600 border-${cat.color}-100`;
 
-            // --- RESTORED LOGIC START ---
-            
-            // 1. AI Suggestion Badge
+            // Logic to restore AI & Tech Specs
             const aiBadge = document.getElementById('ai-suggestion-badge');
             const aiName = document.getElementById('ai-name');
             if (c.suggestedAI) {
-                let niceName = c.suggestedAI;
-                if(c.suggestedAI === 'chatgpt') niceName = 'ChatGPT';
-                if(c.suggestedAI === 'claude') niceName = 'Claude';
-                if(c.suggestedAI === 'gemini') niceName = 'Gemini';
-                if(c.suggestedAI === 'midjourney') niceName = 'Midjourney';
-                
+                let niceName = c.suggestedAI.charAt(0).toUpperCase() + c.suggestedAI.slice(1);
                 aiName.innerText = niceName;
                 aiBadge.classList.remove('hidden');
                 aiBadge.classList.add('flex');
@@ -628,14 +465,13 @@
                 aiBadge.classList.remove('flex');
             }
 
-            // 2. Tech Specs (Tips & Validation)
             const tipContainer = document.getElementById('tip-container');
             const validationContainer = document.getElementById('validation-container');
             const tipText = document.getElementById('detail-example-tip');
             const valText = document.getElementById('detail-validation-tip');
 
             if (c.exampleTip) {
-                tipText.innerHTML = c.exampleTip; // InnerHTML to allow bold tags if any
+                tipText.innerHTML = c.exampleTip;
                 tipContainer.classList.remove('hidden');
             } else {
                 tipContainer.classList.add('hidden');
@@ -647,7 +483,6 @@
             } else {
                 validationContainer.classList.add('hidden');
             }
-            // --- RESTORED LOGIC END ---
 
             currentPromptTemplate = c.agiaPromptTagged;
             currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
@@ -716,16 +551,15 @@
             navigator.clipboard.writeText(rawText);
             const btn = document.getElementById('copy-btn');
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<span class="material-symbols-rounded text-[18px]">check</span> COPIADO`;
-            btn.classList.replace('bg-white', 'bg-emerald-500');
-            btn.classList.replace('text-indigo-700', 'text-white');
+            btn.innerHTML = `<span class="material-symbols-rounded text-[18px]">check</span>`;
+            btn.classList.replace('bg-white/10', 'bg-emerald-500');
+            btn.classList.add('text-white');
             const toast = document.getElementById('toast');
-            document.getElementById('toast-message').innerHTML = `Listo para pegar.`;
             toast.classList.remove('translate-x-full');
             setTimeout(() => {
                 btn.innerHTML = originalHTML;
-                btn.classList.replace('bg-emerald-500', 'bg-white');
-                btn.classList.replace('text-white', 'text-indigo-700');
+                btn.classList.replace('bg-emerald-500', 'bg-white/10');
+                btn.classList.remove('text-white');
                 toast.classList.add('translate-x-full');
             }, 3000);
         }
@@ -740,8 +574,8 @@
             if(!nav) return;
             nav.innerHTML = Object.keys(config.categories).map(key => {
                 const conf = config.categories[key];
-                return `<button onclick="filterByCategory('${key}')" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-md transition-all flex items-center gap-2 group">
-                    <span class="material-symbols-rounded text-lg group-hover:scale-110 transition-transform text-${conf.color}-500">${conf.icon}</span> ${conf.label}
+                return `<button onclick="filterByCategory('${key}')" class="whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-50 border border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600 transition-all flex items-center gap-1.5 group">
+                    <span class="material-symbols-rounded text-sm text-${conf.color}-500">${conf.icon}</span> ${conf.label}
                 </button>`;
             }).join('');
         }
@@ -764,27 +598,27 @@
 
         function renderList(cases) {
             const list = document.getElementById('case-list');
-            document.getElementById('total-display').innerText = casesData.length; // Show total always
+            document.getElementById('total-display').innerText = casesData.length;
             
             if(cases.length === 0) {
-                list.innerHTML = '<div class="p-8 text-center text-sm text-slate-400 flex flex-col items-center"><span class="material-symbols-rounded text-3xl mb-3 opacity-50">search_off</span>Sin resultados.</div>';
+                list.innerHTML = '<div class="p-8 text-center text-xs text-slate-400 flex flex-col items-center"><span class="material-symbols-rounded text-2xl mb-2 opacity-50">search_off</span>Sin resultados.</div>';
                 return;
             }
             
             list.innerHTML = cases.map(c => `
-                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item group p-4 rounded-2xl cursor-pointer hover:bg-slate-50 hover:shadow-md transition-all border border-transparent hover:border-indigo-100 relative mb-2">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-colors shadow-sm">
-                            <span class="material-symbols-rounded text-[20px]">${c.locked ? 'lock' : c.icon}</span>
+                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item group p-3 rounded-lg cursor-pointer hover:bg-slate-50 hover:shadow-sm transition-all border border-transparent hover:border-indigo-100 relative mb-1">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-colors shadow-sm shrink-0">
+                            <span class="material-symbols-rounded text-[16px]">${c.locked ? 'lock' : c.icon}</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h4 class="text-sm font-bold truncate transition-colors text-slate-700 group-hover:text-indigo-900">${c.title}</h4>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="w-2 h-2 rounded-full ${c.difficulty === 'beginner' ? 'bg-emerald-400' : c.difficulty === 'intermediate' ? 'bg-amber-400' : 'bg-rose-400'}"></span>
-                                <span class="text-[11px] text-slate-400 capitalize truncate font-medium tracking-wide">${c.category}</span>
+                            <h4 class="text-xs font-bold truncate transition-colors text-slate-700 group-hover:text-indigo-900">${c.title}</h4>
+                            <div class="flex items-center gap-1.5 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full ${c.difficulty === 'beginner' ? 'bg-emerald-400' : c.difficulty === 'intermediate' ? 'bg-amber-400' : 'bg-rose-400'}"></span>
+                                <span class="text-[10px] text-slate-400 capitalize truncate font-medium">${c.category}</span>
                             </div>
                         </div>
-                        ${c.locked ? '<span class="material-symbols-rounded text-sm text-slate-300">lock</span>' : '<span class="material-symbols-rounded text-lg text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity translate-x-2 group-hover:translate-x-0">arrow_forward</span>'}
+                        ${c.locked ? '<span class="material-symbols-rounded text-xs text-slate-300">lock</span>' : ''}
                     </div>
                 </div>
             `).join('');
@@ -805,56 +639,42 @@
         }
 
         function startSocialProof() {
-            // Base de datos de compradores ficticios para credibilidad
             const buyers = [
                 "Carlos R.", "Ana M.", "StartUp Inc", "David L.", "Sofia P.", "Agencia Flow",
                 "Mario B.", "Lucia F.", "TechSolutions", "Javier G.", "Elena T.", "Roberto S.",
-                "Paula N.", "Growth Lab", "Fernando K.", "Valentina D.", "Andres M.", "Camila V.",
-                "Diego H.", "Laura J.", "Ignacio B.", "Catalina R.", "Agencia Vértice", "Martin S.",
-                "Olivia W.", "Bruno C.", "Isabella M.", "Global Trends", "Felipe A.", "Daniela O."
+                "Paula N.", "Growth Lab", "Fernando K.", "Valentina D.", "Andres M.", "Camila V."
             ];
             
             const locations = ["Madrid", "CDMX", "Santiago", "Bogotá", "Lima", "Miami", "Barcelona", "Buenos Aires", "Medellín"];
             const toast = document.getElementById('sales-toast');
 
-            // Función para mostrar notificación
             const showNotification = () => {
                 const name = buyers[Math.floor(Math.random() * buyers.length)];
                 const location = locations[Math.floor(Math.random() * locations.length)];
                 const timeAgo = Math.random() > 0.7 ? "Hace instantes" : `Hace ${Math.floor(Math.random() * 10) + 1} min`;
                 
                 toast.innerHTML = `
-                <div class="bg-white/95 backdrop-blur border border-slate-100 p-4 rounded-2xl shadow-xl shadow-slate-200/50 flex items-center gap-4 max-w-xs ring-1 ring-black/5 transform transition-all hover:scale-105 cursor-pointer" onclick="openPaywall()">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm relative shadow-md shrink-0">
+                <div class="bg-white/95 backdrop-blur border border-slate-100 p-3 rounded-xl shadow-lg flex items-center gap-3 max-w-xs ring-1 ring-black/5 transform transition-all hover:scale-105 cursor-pointer" onclick="openPaywall()">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs relative shadow-md shrink-0">
                         ${name.charAt(0)}
-                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white animate-pulse"></span>
+                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-600 leading-tight"><span class="font-bold text-slate-900 text-sm">${name}</span> compró el Pack</p>
-                        <p class="text-[10px] text-slate-400 font-bold mt-0.5 flex items-center gap-1.5">
-                            ${timeAgo} <span class="w-0.5 h-0.5 rounded-full bg-slate-300"></span> ${location}
+                        <p class="text-xs text-slate-600 leading-tight"><span class="font-bold text-slate-900">${name}</span> compró Pack</p>
+                        <p class="text-[9px] text-slate-400 font-bold mt-0.5 flex items-center gap-1">
+                            ${timeAgo} • ${location}
                         </p>
                     </div>
                 </div>`;
                 
                 toast.classList.remove('opacity-0', 'translate-y-24');
-                
-                // Ocultar después de 5s
-                setTimeout(() => { 
-                    toast.classList.add('opacity-0', 'translate-y-24'); 
-                }, 5000);
+                setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-24'); }, 5000);
             };
 
-            // Primer toast rápido
             setTimeout(showNotification, 4000);
-
-            // Loop orgánico (intervalos irregulares entre 12s y 35s)
             const loop = () => {
                 const nextTime = Math.floor(Math.random() * (35000 - 12000 + 1) + 12000);
-                setTimeout(() => {
-                    showNotification();
-                    loop();
-                }, nextTime);
+                setTimeout(() => { showNotification(); loop(); }, nextTime);
             };
             loop();
         }
