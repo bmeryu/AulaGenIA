@@ -317,7 +317,7 @@
                                 <!-- HIGHLIGHTED SOCIAL PROOF -->
                                 <div class="flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-100 shadow-sm animate-pulse">
                                     <span class="material-symbols-rounded text-orange-500 text-base">local_fire_department</span> 
-                                    <span class="text-[10px] font-bold text-orange-800">Usado <span id="social-counter" class="text-orange-600 text-xs">...</span> veces en la última hora</span>
+                                    <span id="social-proof-text" class="text-[10px] font-bold text-orange-800">Usado <span id="social-counter" class="text-orange-600 text-xs">...</span> veces en la última hora</span>
                                 </div>
                                 <button id="copy-btn" onclick="copyPrompt()" class="bg-indigo-600 hover:bg-indigo-700 text-white pl-5 pr-6 py-2.5 rounded-xl font-bold shadow-lg shadow-indigo-200/50 text-xs flex items-center gap-2 transform transition-all hover:-translate-y-0.5 active:translate-y-0">
                                     <span class="material-symbols-rounded text-lg">content_copy</span> COPIAR PROMPT
@@ -594,12 +594,8 @@
             currentDifficulty = c.difficulty || 'beginner';
 
             // Reset Social Proof Counter specific to prompt ID
-            const socialCounter = document.getElementById('social-counter');
-            if(socialCounter) {
-                // Formula: ID * 0.2 rounded
-                const count = Math.floor(c.id * 0.2);
-                socialCounter.innerText = count.toLocaleString();
-            }
+            // Removed static formula ID * 0.2
+            // Now logic is handled in the text randomizer below
 
             document.querySelectorAll('.case-item').forEach(el => {
                 el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
@@ -685,6 +681,25 @@
             
             setupMagicHover();
             setMode(currentViewMode);
+
+            // Social Proof Randomizer
+            const socialText = document.getElementById('social-proof-text');
+            if(socialText) {
+                // Deterministic Randomness based on ID
+                const base = Math.floor(c.id * 0.8);
+                const variance = ((c.id * 7) % 30) * 5;
+                const count = base + variance + 45; // Minimum ~125 range
+                
+                // Randomize phrasing slightly based on ID parity
+                const templates = [
+                    `Usado <span class="text-orange-600 text-xs">${count}</span> veces en la última hora`,
+                    `<span class="text-orange-600 text-xs">${count}</span> personas lo están usando ahora`,
+                    `Tendencia: <span class="text-orange-600 text-xs">${count}</span> usos recientes`
+                ];
+                const phraseIndex = c.id % templates.length;
+                
+                socialText.innerHTML = templates[phraseIndex];
+            }
         }
 
         function downloadPDF() {
