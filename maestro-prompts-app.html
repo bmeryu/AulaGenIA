@@ -64,6 +64,9 @@
             background: linear-gradient(to bottom, transparent, #f8fafc); pointer-events: none;
         }
         .prompt-expanded { max-height: none; overflow: visible; }
+        
+        /* Search Focus Animation */
+        .search-focused { border-color: #4f46e5; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
@@ -118,24 +121,25 @@
         
         <!-- SIDEBAR -->
         <aside class="w-full md:w-64 lg:w-72 flex flex-col bg-white border-r border-slate-200 z-20 flex-none absolute md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300" id="sidebar">
-            <div class="p-3 border-b border-slate-100">
+            <div class="p-4 border-b border-slate-100">
+                <!-- DESTACADO: BUSCADOR MEJORADO -->
                 <div class="relative group">
-                    <span class="material-symbols-rounded absolute left-2.5 top-2 text-slate-400 text-lg group-focus-within:text-indigo-600 transition-colors">search</span>
-                    <input type="text" id="searchInput" placeholder="Buscar caso..." 
-                        class="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium focus:bg-white focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                    <span class="material-symbols-rounded absolute left-3 top-2.5 text-indigo-500 text-xl group-focus-within:text-indigo-600 transition-colors">manage_search</span>
+                    <input type="text" id="searchInput" placeholder="Buscar en la Bóveda..." 
+                        class="w-full pl-10 pr-3 py-2.5 bg-white border-2 border-indigo-50 rounded-xl text-sm font-medium focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all placeholder:text-slate-400 shadow-sm"
                         onkeyup="filterCases()">
                 </div>
             </div>
             
-            <!-- COMPLEXITY LEGEND (NEW) -->
-            <div class="bg-slate-50 px-3 py-2 border-b border-slate-100 flex justify-between items-center text-[9px] text-slate-500 font-medium">
-                <div class="flex items-center gap-1" title="Simple: Ahorra ~2 HH"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 2h</div>
-                <div class="flex items-center gap-1" title="Medio: Ahorra ~5-10 HH"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> 10h</div>
-                <div class="flex items-center gap-1" title="Complejo: Ahorra ~20+ HH"><span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span> 20h+</div>
+            <!-- COMPLEXITY LEGEND -->
+            <div class="bg-slate-50 px-4 py-2 border-b border-slate-100 flex justify-between items-center text-[9px] text-slate-500 font-medium">
+                <div class="flex items-center gap-1" title="Simple: Ahorra ~2 HH"><span class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-200"></span> 2h</div>
+                <div class="flex items-center gap-1" title="Medio: Ahorra ~5-10 HH"><span class="w-2 h-2 rounded-full bg-amber-400 shadow-sm shadow-amber-200"></span> 10h</div>
+                <div class="flex items-center gap-1" title="Complejo: Ahorra ~20+ HH"><span class="w-2 h-2 rounded-full bg-rose-400 shadow-sm shadow-rose-200"></span> 20h+</div>
             </div>
 
-            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list"></div>
-            <div class="p-2 border-t border-slate-100 bg-slate-50/50 text-[10px] text-slate-400 flex justify-between px-3 font-medium">
+            <div class="flex-1 overflow-y-auto custom-scroll p-3 space-y-1" id="case-list"></div>
+            <div class="p-3 border-t border-slate-100 bg-slate-50/50 text-[10px] text-slate-400 flex justify-between px-4 font-medium">
                 <span>Estado: Online</span>
                 <span>Casos: <span id="total-display" class="text-slate-700 font-bold">0</span></span>
             </div>
@@ -153,11 +157,13 @@
                 <!-- TOP BAR -->
                 <div class="flex-none bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between gap-4">
                     <div class="min-w-0 flex-1">
-                        <div class="flex items-center gap-2 mb-0.5">
+                        <div class="flex items-center gap-2 mb-1">
                             <span id="detail-category-badge" class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-slate-50 text-slate-600 border-slate-200">CAT</span>
-                            <div id="ai-suggestion-badge" class="hidden text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-indigo-50 text-indigo-700 border-indigo-100 items-center gap-1">
-                                <span class="material-symbols-rounded text-[10px]">smart_toy</span>
-                                <span id="ai-name">IA</span>
+                            
+                            <!-- MEJORA: AI SUGGESTION CLARO -->
+                            <div id="ai-suggestion-badge" class="hidden text-[9px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full border bg-slate-900 text-white border-slate-700 items-center gap-1.5 shadow-sm">
+                                <span class="material-symbols-rounded text-[12px] text-yellow-400">star</span>
+                                <span>IA RECOMENDADA: <span id="ai-name" class="text-yellow-400">CHATGPT</span></span>
                             </div>
                         </div>
                         <h2 id="detail-title" class="text-lg font-bold text-slate-900 leading-tight truncate">Título del Caso</h2>
@@ -200,7 +206,7 @@
                                 <span class="material-symbols-rounded text-base">verified</span>
                                 <span class="text-[10px] font-bold uppercase tracking-widest">Método AGIA Pro</span>
                             </div>
-                            <button onclick="copyPrompt()" class="flex items-center gap-1.5 text-[10px] font-bold bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded transition-colors border border-white/20">
+                            <button onclick="copyPrompt()" class="flex items-center gap-1.5 text-[10px] font-bold bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded transition-colors border border-white/20 hover:scale-105 active:scale-95 shadow-sm">
                                 <span class="material-symbols-rounded text-xs">content_copy</span> COPIAR
                             </button>
                         </div>
@@ -264,11 +270,8 @@
     </div>
 
     <!-- MODALS & TOAST -->
-    <div id="toast" class="fixed bottom-8 right-8 z-[60] transform translate-x-full transition-all duration-300">
-        <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700">
-            <span class="material-symbols-rounded text-green-400">check_circle</span>
-            <div><h4 class="font-bold text-xs">¡Copiado!</h4><p class="text-[10px] text-slate-400">Listo para pegar.</p></div>
-        </div>
+    <div id="toast" class="fixed bottom-10 right-10 z-[70] transform translate-x-full transition-all duration-500">
+        <!-- Toast content injected by JS -->
     </div>
     
     <div id="sales-toast" class="fixed bottom-16 left-6 z-[50] pointer-events-none md:pointer-events-auto transition-all duration-500 translate-y-24 opacity-0"></div>
@@ -372,6 +375,7 @@
         let currentPromptTemplate = "";
         let currentBadPromptTemplate = "";
         let currentVariables = {};
+        let currentDifficulty = 'beginner'; // New global for copy logic
 
         function initApp() {
             window.loadCase = loadCase;
@@ -401,6 +405,9 @@
             const c = casesData.find(x => x.id === id);
             if(!c) return;
 
+            // Update Global for Copy
+            currentDifficulty = c.difficulty || 'beginner';
+
             document.querySelectorAll('.case-item').forEach(el => {
                 el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
                 el.classList.add('border-transparent', 'text-slate-600');
@@ -428,7 +435,7 @@
             const aiBadge = document.getElementById('ai-suggestion-badge');
             const aiName = document.getElementById('ai-name');
             if (c.suggestedAI) {
-                let niceName = c.suggestedAI.charAt(0).toUpperCase() + c.suggestedAI.slice(1);
+                let niceName = c.suggestedAI.toUpperCase();
                 aiName.innerText = niceName;
                 aiBadge.classList.remove('hidden');
                 aiBadge.classList.add('flex');
@@ -458,7 +465,7 @@
             }
 
             renderPrompts(c.locked);
-            resetPromptView(); // Reset box size on load
+            resetPromptView(); 
             
             const lockOverlay = document.getElementById('premium-lock');
             if(c.locked) lockOverlay.classList.remove('hidden');
@@ -472,11 +479,10 @@
             container.classList.remove('prompt-expanded');
             container.classList.add('prompt-collapsed');
             
-            // If content is short, hide button
             setTimeout(() => {
                 if(container.scrollHeight <= 200) {
                     btn.classList.add('hidden');
-                    container.classList.remove('prompt-collapsed'); // Remove fade
+                    container.classList.remove('prompt-collapsed'); 
                 } else {
                     btn.classList.remove('hidden');
                     btn.innerHTML = '<span class="material-symbols-rounded text-sm">unfold_more</span> Ver Completo';
@@ -496,13 +502,11 @@
                 container.classList.remove('prompt-expanded');
                 container.classList.add('prompt-collapsed');
                 btn.innerHTML = '<span class="material-symbols-rounded text-sm">unfold_more</span> Ver Completo';
-                // Scroll back to top of section gently
                 document.querySelector('.group\\/expand').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
         function downloadPDF() {
-            // Generates a print-friendly page
             const printContent = `
                 <html>
                 <head>
@@ -583,8 +587,6 @@
 
         function copyPrompt() {
             const rawText = document.getElementById('detail-prompt-rendered').innerText;
-            
-            // Método robusto para copiar (funciona en todos los entornos)
             const textArea = document.createElement("textarea");
             textArea.value = rawText;
             document.body.appendChild(textArea);
@@ -596,19 +598,43 @@
             }
             document.body.removeChild(textArea);
 
-            const btn = document.getElementById('copy-btn');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<span class="material-symbols-rounded text-[18px]">check</span>`;
-            btn.classList.replace('bg-white/10', 'bg-emerald-500');
-            btn.classList.add('text-white');
+            // Dynamic Feedback based on Difficulty
+            let msg = '¡Copiado con éxito!';
+            let subMsg = 'Listo para pegar.';
+            let icon = 'check_circle';
+            let colorClass = 'text-green-400';
+            
+            if (currentDifficulty === 'beginner') {
+                msg = '¡Bien! Ahorraste ~2 horas';
+                subMsg = 'Equivalente a una reunión larga.';
+                colorClass = 'text-emerald-400';
+            } else if (currentDifficulty === 'intermediate') {
+                msg = '¡Excelente! Te ahorraste ~10 horas';
+                subMsg = 'Casi un día y medio de trabajo.';
+                colorClass = 'text-amber-400';
+                icon = 'bolt';
+            } else if (currentDifficulty === 'advanced') {
+                msg = '¡IMPACTO TOTAL! Ahorraste +20 horas';
+                subMsg = 'Nivel de ingeniería de alto rendimiento.';
+                colorClass = 'text-rose-400';
+                icon = 'rocket_launch';
+            }
+
             const toast = document.getElementById('toast');
+            toast.innerHTML = `
+                <div class="bg-slate-900 text-white px-5 py-4 rounded-xl shadow-2xl flex items-center gap-4 border border-slate-700">
+                    <span class="material-symbols-rounded ${colorClass} text-2xl">${icon}</span>
+                    <div>
+                        <h4 class="font-bold text-sm text-white">${msg}</h4>
+                        <p class="text-[11px] text-slate-400 mt-0.5">${subMsg}</p>
+                    </div>
+                </div>
+            `;
+            
             toast.classList.remove('translate-x-full');
             setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.replace('bg-emerald-500', 'bg-white/10');
-                btn.classList.remove('text-white');
                 toast.classList.add('translate-x-full');
-            }, 3000);
+            }, 4000);
         }
 
         function updateTotalCounter() {
@@ -621,8 +647,13 @@
             if(!nav) return;
             nav.innerHTML = Object.keys(config.categories).map(key => {
                 const conf = config.categories[key];
+                // Count cases per category
+                const count = casesData.filter(x => x.category === key).length;
+                
                 return `<button onclick="filterByCategory('${key}')" class="whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-50 border border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600 transition-all flex items-center gap-1.5 group">
-                    <span class="material-symbols-rounded text-sm text-${conf.color}-500">${conf.icon}</span> ${conf.label}
+                    <span class="material-symbols-rounded text-sm text-${conf.color}-500">${conf.icon}</span> 
+                    ${conf.label}
+                    <span class="bg-${conf.color}-100 text-${conf.color}-700 text-[9px] px-1.5 py-0.5 rounded-full ml-1">${count}</span>
                 </button>`;
             }).join('');
         }
@@ -653,7 +684,6 @@
             }
             
             list.innerHTML = cases.map(c => {
-                // Logic to set color and title for complexity
                 let dotColor = 'bg-slate-300';
                 let tooltip = 'Desconocido';
                 if(c.difficulty === 'beginner') { dotColor = 'bg-emerald-400'; tooltip = 'Simple: Ahorra ~2 HH'; }
