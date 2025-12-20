@@ -1,521 +1,450 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  Search, 
-  Zap, 
-  Lock, 
-  Copy, 
-  AlertTriangle, 
-  CheckCircle2, 
-  Clock, 
-  Users, 
-  ArrowRight, 
-  PlayCircle,
-  Sparkles,
-  Info,
-  ChevronRight,
-  TrendingUp,
-  X
-} from 'lucide-react';
-
-// --- CONFIGURACIÓN DE DATOS (CATEGORÍAS Y PROMPTS) ---
-const CATEGORIES = [
-  { id: 'ventas', name: 'Ventas y Cierre', icon: <TrendingUp size={18} /> },
-  { id: 'marketing', name: 'Marketing y Copy', icon: <Sparkles size={18} /> },
-  { id: 'educacion', name: 'Educación y Cursos', icon: <PlayCircle size={18} /> },
-  { id: 'productividad', name: 'Productividad', icon: <Clock size={18} /> },
-  { id: 'analisis', name: 'Análisis de Negocio', icon: <Info size={18} /> }
-];
-
-const PROMPTS_DATA = [
-  {
-    id: 1,
-    categoryId: 'ventas',
-    title: 'Pitch de Ventas para WhatsApp',
-    isPremium: false,
-    complexity: 'medio',
-    hhSaved: 3.5,
-    basic: {
-      text: "Escribe un mensaje para vender mi curso de repostería por WhatsApp a gente que preguntó precio.",
-      errors: [
-        "Falta de Rol: La IA no sabe si hablar como amigo o vendedor experto.",
-        "Sin Contexto: No mencionas los beneficios únicos del curso.",
-        "Sin Formato: El mensaje será un bloque de texto aburrido que nadie leerá."
-      ]
-    },
-    master: {
-      text: "Actúa como un experto en Neuro-ventas y Copywriting para WhatsApp. \n\nContexto: Estoy vendiendo un curso de repostería para principiantes. El cliente ya mostró interés preguntando el precio, pero tiene miedo de que sea difícil.\n\nMeta: Crear una secuencia de 3 mensajes persuasivos (Apertura, Valor, Cierre) usando el método AIDA.\n\nRestricciones: No uses lenguaje técnico, usa emojis de forma profesional y no superes las 80 palabras por mensaje.\n\nFormato: Divide los mensajes claramente y añade sugerencias de qué imagen enviar con cada uno.",
-      advantages: [
-        "Aumenta la tasa de respuesta en un 400% al usar gatillos mentales.",
-        "Estructura profesional que evita que el cliente te deje en 'visto'.",
-        "Ahorra horas de pensar qué decir ante cada objeción."
-      ]
-    }
-  },
-  {
-    id: 2,
-    categoryId: 'marketing',
-    title: 'Estrategia de Reels Semanal',
-    isPremium: true,
-    complexity: 'complejo',
-    hhSaved: 12,
-    basic: {
-      text: "Dame 5 ideas de reels para mi marca de ropa deportiva.",
-      errors: [
-        "Sin Objetivo: Las ideas serán genéricas y no venderán nada.",
-        "Falta de Estructura: No incluye ganchos (hooks) para retener la atención.",
-        "Sin Call to Action: Los usuarios verán el video pero no irán a tu perfil."
-      ]
-    },
-    master: {
-      text: "Actúa como un Content Strategist Senior experto en algoritmos de Instagram y TikTok.\n\nContexto: Marca de ropa deportiva para mujeres que entrenan en casa. Queremos posicionarnos como una marca motivadora y práctica.\n\nMeta: Crea una parrilla de 5 Reels. Cada uno debe incluir: 1. Gancho visual (primeros 3 seg), 2. Guion del cuerpo, 3. Audio en tendencia sugerido y 4. Llamado a la acción (CTA) específico para venta.\n\nRestricciones: Enfoque en 'curiosity gap' y contenido compartible.\n\nFormato: Presenta la información en una tabla comparativa para fácil lectura.",
-      advantages: [
-        "Planificación completa de una semana en segundos.",
-        "Contenido diseñado para ser viral y convertir seguidores en clientes.",
-        "Elimina el bloqueo creativo de 'qué grabar hoy'."
-      ]
-    }
-  },
-  {
-    id: 3,
-    categoryId: 'educacion',
-    title: 'Creación de Rúbrica de Evaluación',
-    isPremium: true,
-    complexity: 'medio',
-    hhSaved: 4,
-    basic: {
-      text: "Haz una rúbrica para calificar un ensayo sobre inteligencia artificial.",
-      errors: [
-        "Falta de Niveles: Los criterios de evaluación serán ambiguos.",
-        "Sin Personalización: No se ajusta al nivel educativo de tus alumnos.",
-        "Inconsistencia: Es difícil calificar objetivamente con prompts simples."
-      ]
-    },
-    master: {
-      text: "Actúa como un Diseñador Instruccional experto en evaluación por competencias.\n\nContexto: Estudiantes de primer año de universidad entregando un ensayo de 1000 palabras sobre la ética en el uso de IA.\n\nMeta: Genera una rúbrica detallada con 5 criterios (Claridad, Argumentación, Citas, Ética, Ortografía) y 4 niveles de desempeño (Excelente, Bueno, Suficiente, Insuficiente).\n\nRestricciones: Usa lenguaje constructivo y escala de 1 a 10.\n\nFormato: Tabla Markdown lista para copiar a Excel o Google Classroom.",
-      advantages: [
-        "Evaluación objetiva y transparente para el alumno.",
-        "Ahorro masivo de tiempo al corregir ensayos.",
-        "Calidad académica de nivel universitario."
-      ]
-    }
-  }
-];
-
-const NAMES = ["Andrés M.", "Lucía R.", "Carlos V.", "María G.", "Santi P.", "Elena F.", "Javier S.", "Paula B."];
-const CITIES = ["México", "España", "Colombia", "Chile", "Argentina", "Perú", "Miami"];
-
-// --- COMPONENTES AUXILIARES ---
-
-const Notification = ({ data }) => (
-  <div className="fixed bottom-4 left-4 z-50 animate-bounce-in">
-    <div className="bg-slate-900 border border-emerald-500/30 text-white p-3 rounded-xl shadow-2xl flex items-center gap-3 backdrop-blur-md">
-      <div className="bg-emerald-500/20 p-2 rounded-full">
-        <Users size={16} className="text-emerald-400" />
-      </div>
-      <div>
-        <p className="text-xs font-semibold">{data.name} de {data.city}</p>
-        <p className="text-[10px] text-emerald-400">Acaba de desbloquear AGIA Full ($20)</p>
-      </div>
-    </div>
-  </div>
-);
-
-const StepModal = ({ step, onNext, onSkip }) => {
-  const steps = [
-    {
-      title: "Bienvenido a la Era Maestra",
-      content: "La mayoría usa la IA como un buscador. Tú vas a aprender a usarla como un equipo de expertos. Aquí aprenderás por qué tus resultados actuales son 'pobres'.",
-      icon: <Sparkles className="text-yellow-400" size={48} />
-    },
-    {
-      title: "El Poder del Versus",
-      content: "Nuestra herramienta te muestra el error exacto que cometes hoy y cómo el Modelo AGIA lo soluciona ahorrándote horas de trabajo manual.",
-      icon: <Zap className="text-emerald-400" size={48} />
-    },
-    {
-      title: "Contenido de Clase Mundial",
-      content: "Tendrás acceso a prompts validados que las empresas pagarían miles de dólares por tener. ¿Listo para dejar de ser un usuario promedio?",
-      icon: <CheckCircle2 className="text-blue-400" size={48} />
-    }
-  ];
-
-  return (
-    <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="bg-slate-900 border border-white/10 max-w-md w-full rounded-3xl p-8 text-center relative overflow-hidden">
-        <div className="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl"></div>
-        <div className="mb-6 flex justify-center">{steps[step].icon}</div>
-        <h2 className="text-2xl font-bold text-white mb-4">{steps[step].title}</h2>
-        <p className="text-slate-400 mb-8 leading-relaxed">{steps[step].content}</p>
-        <div className="flex flex-col gap-3">
-          <button 
-            onClick={onNext}
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold py-3 rounded-xl transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2"
-          >
-            {step === 2 ? "Empezar Ahora" : "Siguiente"} <ArrowRight size={18} />
-          </button>
-          <button onClick={onSkip} className="text-slate-500 text-sm hover:text-white transition-colors">Saltar tutorial</button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- COMPONENTE PRINCIPAL ---
-
-export default function App() {
-  const [activeCategory, setActiveCategory] = useState('ventas');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [onboardingStep, setOnboardingStep] = useState(0);
-  const [showOnboarding, setShowOnboarding] = useState(true);
-  const [isPremiumUser, setIsPremiumUser] = useState(false);
-  const [notification, setNotification] = useState(null);
-  const [userPrompt, setUserPrompt] = useState("");
-  const [generatedMaster, setGeneratedMaster] = useState(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-
-  // Lógica de notificaciones aleatorias
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const name = NAMES[Math.floor(Math.random() * NAMES.length)];
-      const city = CITIES[Math.floor(Math.random() * CITIES.length)];
-      setNotification({ name, city });
-      setTimeout(() => setNotification(null), 4000);
-    }, 15000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const filteredPrompts = useMemo(() => {
-    return PROMPTS_DATA.filter(p => 
-      p.categoryId === activeCategory && 
-      p.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [activeCategory, searchTerm]);
-
-  const copyToClipboard = (text) => {
-    const brandMessage = "\n\n✨ Generado con el Modelo Maestro de Aula Gen IA (AGIA)";
-    const textArea = document.createElement("textarea");
-    textArea.value = text + brandMessage;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-    alert("¡Prompt Maestro copiado con éxito! Incluye el sello de calidad AGIA.");
-  };
-
-  const handleMagicGenerate = () => {
-    if (!userPrompt.trim()) return;
-    setIsGenerating(true);
-    setTimeout(() => {
-      setGeneratedMaster({
-        basic: userPrompt,
-        master: `Actúa como un experto en el área. \n\nContexto: ${userPrompt}\n\nMeta: Ejecutar la tarea con máxima calidad y profundidad estratégica.\n\nRestricciones: Formato profesional, sin rellenos innecesarios, orientado a resultados inmediatos.\n\nFormato: Estructura clara con pasos accionables.`,
-        hh: Math.floor(Math.random() * 5) + 2
-      });
-      setIsGenerating(false);
-    }, 1500);
-  };
-
-  return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-200 font-sans selection:bg-emerald-500/30">
-      
-      {/* Onboarding */}
-      {showOnboarding && (
-        <StepModal 
-          step={onboardingStep} 
-          onNext={() => onboardingStep < 2 ? setOnboardingStep(s => s + 1) : setShowOnboarding(false)}
-          onSkip={() => setShowOnboarding(false)}
-        />
-      )}
-
-      {/* Social Proof */}
-      {notification && <Notification data={notification} />}
-
-      {/* Purchase Modal */}
-      {showPurchaseModal && (
-        <div className="fixed inset-0 z-[110] bg-black/90 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border-2 border-emerald-500 max-w-lg w-full rounded-3xl p-8 relative">
-            <button onClick={() => setShowPurchaseModal(false)} className="absolute top-4 right-4 text-slate-500 hover:text-white"><X /></button>
-            <div className="text-center">
-              <div className="bg-emerald-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Lock className="text-emerald-400" size={32} />
-              </div>
-              <h2 className="text-3xl font-bold text-white mb-2">Desbloquea el Poder Total</h2>
-              <p className="text-slate-400 mb-6">Obtén el Curso Completo de AGIA + Todas las Herramientas y Prompts Premium por un único pago.</p>
-              
-              <div className="bg-slate-800 rounded-2xl p-6 mb-8 text-left border border-white/5">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-slate-300">Precio Especial:</span>
-                  <span className="text-3xl font-bold text-emerald-400">$20 USD</span>
-                </div>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex items-center gap-2 text-slate-300"><CheckCircle2 size={16} className="text-emerald-500" /> Acceso de por vida a la librería</li>
-                  <li className="flex items-center gap-2 text-slate-300"><CheckCircle2 size={16} className="text-emerald-500" /> Certificado de Maestro en Prompts</li>
-                  <li className="flex items-center gap-2 text-slate-300"><CheckCircle2 size={16} className="text-emerald-500" /> Actualizaciones semanales de IA</li>
-                </ul>
-              </div>
-
-              <a 
-                href="https://tu-link-de-pago.com" 
-                target="_blank"
-                className="block w-full bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-black py-4 rounded-xl text-xl transition-all shadow-[0_0_30px_-5px_rgba(16,185,129,0.5)]"
-              >
-                COMPRAR AHORA
-              </a>
-              <p className="mt-4 text-xs text-slate-500 italic">Pago seguro procesado por Stripe/PayPal</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Header */}
-      <header className="border-b border-white/5 bg-slate-900/50 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center font-black text-slate-900 text-xl">A</div>
-            <div>
-              <h1 className="text-lg font-bold tracking-tight text-white leading-none">AULA GEN IA</h1>
-              <span className="text-[10px] text-emerald-400 font-bold tracking-widest uppercase">Maestro de Prompts</span>
-            </div>
-          </div>
-
-          <div className="hidden md:flex flex-1 max-w-md mx-10">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-              <input 
-                type="text" 
-                placeholder="Busca una tarea o categoría..." 
-                className="w-full bg-slate-800/50 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <button 
-            onClick={() => setShowPurchaseModal(true)}
-            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full text-sm font-bold border border-emerald-500/30 transition-all"
-          >
-            Upgrade a Premium
-          </button>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Gen IA - Herramienta Maestra</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js para interactividad -->
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        [x-cloak] { display: none !important; }
         
-        {/* Sidebar Categorías */}
-        <aside className="lg:col-span-3 space-y-6">
-          <div>
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Categorías</h3>
-            <div className="space-y-1">
-              {CATEGORIES.map(cat => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeCategory === cat.id ? 'bg-emerald-500 text-slate-900 font-bold' : 'hover:bg-white/5 text-slate-400'}`}
-                >
-                  {cat.icon}
-                  {cat.name}
-                </button>
-              ))}
-            </div>
-          </div>
+        @keyframes bounce-in {
+            0% { transform: translateY(100%) scale(0.9); opacity: 0; }
+            70% { transform: translateY(-10%) scale(1.02); }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .animate-bounce-in { animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards; }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700" x-data="platformData()" x-init="init()">
 
-          {/* Widget Video Tutorial */}
-          <div className="bg-slate-900 rounded-2xl p-5 border border-white/5 overflow-hidden group">
-            <div className="relative aspect-video bg-slate-800 rounded-lg mb-4 flex items-center justify-center cursor-pointer">
-              <PlayCircle className="text-slate-600 group-hover:text-emerald-400 group-hover:scale-110 transition-all" size={48} />
-              <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+    <!-- ONBOARDING MODAL -->
+    <div x-show="showOnboarding" x-cloak class="fixed inset-0 z-[100] bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-100 max-w-md w-full rounded-3xl p-8 text-center relative overflow-hidden shadow-2xl">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl"></div>
+            
+            <div class="mb-6 flex justify-center text-emerald-500">
+                <template x-if="onboardingStep === 0"><i data-lucide="sparkles" class="w-16 h-16 text-yellow-500"></i></template>
+                <template x-if="onboardingStep === 1"><i data-lucide="zap" class="w-16 h-16"></i></template>
+                <template x-if="onboardingStep === 2"><i data-lucide="check-circle-2" class="w-16 h-16 text-blue-500"></i></template>
             </div>
-            <h4 className="font-bold text-sm mb-1 text-white">¿Cómo funciona AGIA?</h4>
-            <p className="text-xs text-slate-500">Mira el video de 2 min para entender el poder del prompt maestro.</p>
-          </div>
+
+            <h2 class="text-2xl font-bold text-slate-900 mb-4" x-text="onboardingSteps[onboardingStep].title"></h2>
+            <p class="text-slate-500 mb-8 leading-relaxed" x-text="onboardingSteps[onboardingStep].content"></p>
+            
+            <div class="flex flex-col gap-3">
+                <button @click="nextStep()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
+                    <span x-text="onboardingStep === 2 ? 'Empezar Ahora' : 'Siguiente'"></span>
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+                <button @click="showOnboarding = false" class="text-slate-400 text-sm hover:text-slate-600 transition-colors">Saltar tutorial</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PURCHASE MODAL -->
+    <div x-show="showPurchaseModal" x-cloak class="fixed inset-0 z-[110] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-100 max-w-lg w-full rounded-3xl p-8 relative shadow-2xl">
+            <button @click="showPurchaseModal = false" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="text-center">
+                <div class="bg-emerald-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="lock" class="text-emerald-500 w-8 h-8"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 mb-2">Acceso Total AGIA</h2>
+                <p class="text-slate-500 mb-6 font-medium">Desbloquea el Curso Maestro + Todos los Prompts Premium por un único pago.</p>
+                
+                <div class="bg-slate-50 rounded-2xl p-6 mb-8 text-left border border-slate-100 shadow-inner">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-slate-600 font-semibold">Precio Especial Hoy:</span>
+                        <span class="text-3xl font-black text-emerald-600">$20 USD</span>
+                    </div>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-center gap-2 text-slate-600"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i> Acceso de por vida a la librería</li>
+                        <li class="flex items-center gap-2 text-slate-600"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i> Certificado de Maestro en Prompts</li>
+                        <li class="flex items-center gap-2 text-slate-600"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i> Actualizaciones semanales</li>
+                    </ul>
+                </div>
+
+                <a href="https://tu-link-de-pago.com" target="_blank" class="block w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-4 rounded-xl text-xl transition-all shadow-lg shadow-emerald-500/20 text-center">
+                    COMPRAR Y DESBLOQUEAR
+                </a>
+                <p class="mt-4 text-xs text-slate-400 italic font-medium">Garantía de satisfacción de 7 días</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div x-show="notification" x-cloak class="fixed bottom-4 left-4 z-[90] animate-bounce-in">
+        <div class="bg-white border border-emerald-100 text-slate-800 p-3 rounded-xl shadow-xl flex items-center gap-3">
+            <div class="bg-emerald-500/10 p-2 rounded-full">
+                <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i>
+            </div>
+            <div>
+                <p class="text-xs font-bold" x-text="notification?.name + ' de ' + notification?.city"></p>
+                <p class="text-[10px] text-emerald-600 font-medium">Desbloqueó AGIA Full ($20)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center font-black text-white text-xl shadow-lg shadow-emerald-500/20">A</div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-slate-900 leading-none uppercase">AULA GEN IA</h1>
+                    <span class="text-[10px] text-emerald-600 font-bold tracking-widest uppercase">Maestro de Prompts</span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex flex-1 max-w-md mx-10">
+                <div class="relative w-full">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4.5 h-4.5"></i>
+                    <input type="text" x-model="searchTerm" placeholder="Busca una tarea o categoría..." class="w-full bg-slate-100 border border-transparent rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:bg-white focus:border-emerald-500/30 transition-all text-slate-700">
+                </div>
+            </div>
+
+            <button @click="showPurchaseModal = true" class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-full text-sm font-bold transition-all shadow-md shadow-emerald-500/10">
+                Únete a la Comunidad
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- SIDEBAR -->
+        <aside class="lg:col-span-3 space-y-6">
+            <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+                <h3 class="px-4 pt-4 pb-2 text-xs font-bold text-slate-400 uppercase tracking-widest">Categorías</h3>
+                <nav class="space-y-1">
+                    <template x-for="cat in categories" :key="cat.id">
+                        <button @click="activeCategory = cat.id" :class="activeCategory === cat.id ? 'bg-emerald-50 text-emerald-600 font-bold' : 'hover:bg-slate-50 text-slate-500'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all">
+                            <i :data-lucide="cat.iconName" class="w-4.5 h-4.5"></i>
+                            <span x-text="cat.name"></span>
+                        </button>
+                    </template>
+                </nav>
+            </div>
+
+            <!-- VIDEO WIDGET -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm overflow-hidden group">
+                <div class="relative aspect-video bg-slate-100 rounded-lg mb-4 flex items-center justify-center cursor-pointer overflow-hidden">
+                    <i data-lucide="play-circle" class="w-12 h-12 text-slate-300 group-hover:text-emerald-500 group-hover:scale-110 transition-all z-10"></i>
+                    <div class="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+                <h4 class="font-bold text-sm mb-1 text-slate-900">Tutorial de Inicio</h4>
+                <p class="text-xs text-slate-500">Aprende a usar el Modelo AGIA en menos de 2 minutos.</p>
+            </div>
         </aside>
 
-        {/* Contenido Central */}
-        <div className="lg:col-span-9 space-y-8">
-          
-          {/* Herramienta "Magia Única" */}
-          <section className="bg-gradient-to-br from-slate-900 to-slate-800 border border-emerald-500/20 rounded-3xl p-8 shadow-xl">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="bg-emerald-500 p-2 rounded-lg">
-                <Zap size={20} className="text-slate-900" />
-              </div>
-              <h2 className="text-xl font-bold text-white">Generador Magia AGIA <span className="text-xs bg-yellow-400 text-black px-2 py-0.5 rounded ml-2">GRATIS</span></h2>
-            </div>
-            <p className="text-slate-400 text-sm mb-6 italic">"Escribe una tarea simple y la transformaremos en una estructura de alto nivel."</p>
-            <div className="flex flex-col md:flex-row gap-4">
-              <input 
-                type="text" 
-                placeholder="Ej: Ayúdame a escribir un correo para mi jefe..." 
-                className="flex-1 bg-slate-900/50 border border-white/10 rounded-2xl p-4 focus:outline-none focus:border-emerald-500 transition-all"
-                value={userPrompt}
-                onChange={(e) => setUserPrompt(e.target.value)}
-              />
-              <button 
-                onClick={handleMagicGenerate}
-                disabled={isGenerating || !userPrompt}
-                className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold px-8 py-4 rounded-2xl transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                {isGenerating ? "Procesando..." : "Transformar"} <Sparkles size={18} />
-              </button>
-            </div>
-
-            {generatedMaster && (
-              <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
-                <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-6">
-                  <div className="flex items-center gap-2 text-red-400 mb-3 font-bold text-sm">
-                    <AlertTriangle size={16} /> TU IDEA ORIGINAL
-                  </div>
-                  <p className="text-sm text-slate-400 italic">"{generatedMaster.basic}"</p>
-                </div>
-                <div className="bg-emerald-500/5 border border-emerald-500/40 rounded-2xl p-6 relative group">
-                  <div className="flex items-center gap-2 text-emerald-400 mb-3 font-bold text-sm">
-                    <CheckCircle2 size={16} /> VERSIÓN MAESTRA AGIA
-                  </div>
-                  <div className="bg-slate-900/80 p-3 rounded-lg text-xs font-mono text-emerald-200 mb-4 whitespace-pre-wrap">
-                    {generatedMaster.master}
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2 text-yellow-400 text-xs font-bold">
-                      <Clock size={14} /> +{generatedMaster.hh} HH AHORRADAS
+        <!-- CONTENT -->
+        <div class="lg:col-span-9 space-y-8">
+            
+            <!-- MAGIC TRANSFORMER -->
+            <section class="bg-white border border-emerald-500/10 rounded-3xl p-8 shadow-md relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+                <div class="flex items-center gap-3 mb-6 relative z-10">
+                    <div class="bg-emerald-100 p-2 rounded-lg text-emerald-600">
+                        <i data-lucide="zap" class="w-5 h-5"></i>
                     </div>
-                    <button 
-                      onClick={() => copyToClipboard(generatedMaster.master)}
-                      className="bg-emerald-500 text-slate-900 p-2 rounded-lg hover:bg-emerald-400 transition-all"
-                    >
-                      <Copy size={16} />
+                    <h2 class="text-xl font-bold text-slate-900 uppercase">Transformador Maestro <span class="text-[10px] bg-yellow-400 text-slate-900 px-2 py-1 rounded-full ml-2 font-black tracking-widest">Gratis</span></h2>
+                </div>
+                <p class="text-slate-500 text-sm mb-6 leading-relaxed max-w-2xl">Escribe una instrucción simple y mira cómo el Modelo Maestro de AGIA le da superpoderes profesionales de inmediato.</p>
+                
+                <div class="flex flex-col md:flex-row gap-4 relative z-10">
+                    <input type="text" x-model="userPrompt" placeholder="Ej: Escribe un correo para mi jefe..." class="flex-1 bg-slate-50 border border-slate-200 rounded-2xl p-4 focus:outline-none focus:border-emerald-500/50 focus:bg-white transition-all shadow-inner">
+                    <button @click="generateMagic()" :disabled="isGenerating || !userPrompt" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-8 py-4 rounded-2xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-lg shadow-emerald-500/20">
+                        <span x-text="isGenerating ? 'Mejorando...' : 'Optimizar Prompt'"></span>
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
                     </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </section>
-
-          {/* Listado de Prompts Versus */}
-          <section className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                Comparador Versus <span className="text-sm font-normal text-slate-500">({filteredPrompts.length} disponibles)</span>
-              </h2>
-            </div>
-
-            {filteredPrompts.map(prompt => (
-              <div key={prompt.id} className="bg-slate-900/50 border border-white/5 rounded-3xl overflow-hidden">
-                <div className="bg-white/5 p-4 flex justify-between items-center border-b border-white/5">
-                  <h3 className="font-bold text-white flex items-center gap-2">
-                    {prompt.title}
-                    {prompt.isPremium && <Lock size={14} className="text-yellow-500" />}
-                  </h3>
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1 text-xs text-slate-400">
-                      <Clock size={14} className="text-emerald-500" />
-                      Ahorra: <span className="text-emerald-400 font-bold">{prompt.hhSaved} horas</span>
-                    </div>
-                    <span className={`text-[10px] uppercase font-black px-2 py-1 rounded ${prompt.complexity === 'complejo' ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'}`}>
-                      {prompt.complexity}
-                    </span>
-                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2">
-                  {/* Lado Básico */}
-                  <div className="p-6 border-r border-white/5">
-                    <div className="flex items-center gap-2 text-slate-500 mb-4 text-xs font-bold uppercase tracking-widest">
-                      Prompt Realista (Antes de AGIA)
-                    </div>
-                    <div className="bg-slate-950 p-4 rounded-xl border border-white/5 text-sm text-slate-500 italic mb-6">
-                      "{prompt.basic.text}"
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-xs font-bold text-red-400 flex items-center gap-2">
-                        <AlertTriangle size={14} /> DIAGNÓSTICO DE ERRORES:
-                      </p>
-                      {prompt.basic.errors.map((error, i) => (
-                        <div key={i} className="flex gap-2 text-xs text-slate-400 bg-red-500/5 p-2 rounded-lg border border-red-500/10">
-                          <span className="text-red-500 font-bold">•</span>
-                          {error}
+                <!-- Generated Result -->
+                <div x-show="generatedMaster" x-transition class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                    <div class="bg-red-50 border border-red-100 rounded-2xl p-6 shadow-sm">
+                        <div class="flex items-center gap-2 text-red-500 mb-3 font-bold text-xs uppercase tracking-wider">
+                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Tu Prompt Inicial
                         </div>
-                      ))}
+                        <p class="text-sm text-slate-500 italic font-medium leading-relaxed" x-text="'&quot;' + generatedMaster?.basic + '&quot;'"></p>
                     </div>
-                  </div>
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 relative group shadow-sm">
+                        <div class="flex items-center gap-2 text-emerald-600 mb-3 font-bold text-xs uppercase tracking-wider">
+                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Versión Optimizada AGIA
+                        </div>
+                        <div class="bg-white p-3 rounded-lg text-xs font-mono text-slate-700 mb-4 border border-emerald-100 whitespace-pre-wrap" x-text="generatedMaster?.master"></div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2 text-yellow-600 text-xs font-bold bg-yellow-100 px-2 py-1 rounded-full">
+                                <i data-lucide="clock" class="w-3 h-3"></i> <span x-text="'+' + generatedMaster?.hh + ' HH RECUPERADAS'"></span>
+                            </div>
+                            <button @click="copy(generatedMaster.master)" class="bg-emerald-500 text-white p-2 rounded-lg hover:bg-emerald-600 transition-all shadow-md shadow-emerald-500/20">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                  {/* Lado Maestro */}
-                  <div className="p-6 bg-emerald-500/5 relative group">
-                    {prompt.isPremium && !isPremiumUser && (
-                      <div className="absolute inset-0 z-10 backdrop-blur-md bg-slate-900/60 flex flex-col items-center justify-center p-6 text-center">
-                        <Lock className="text-emerald-400 mb-3" size={32} />
-                        <h4 className="font-bold text-white mb-2">Contenido Exclusivo</h4>
-                        <p className="text-xs text-slate-400 mb-4">Este prompt de nivel {prompt.complexity} está reservado para alumnos de AGIA.</p>
-                        <button 
-                          onClick={() => setShowPurchaseModal(true)}
-                          className="bg-emerald-500 text-slate-900 px-6 py-2 rounded-full font-bold text-sm hover:scale-105 transition-all"
-                        >
-                          Desbloquear por $20
-                        </button>
-                      </div>
-                    )}
+            <!-- VERSUS LIBRARY -->
+            <section class="space-y-6">
+                <div class="flex items-center justify-between px-2">
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2 uppercase tracking-tight">
+                        Biblioteca de Versus <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-full ml-2">Explora el Valor</span>
+                    </h2>
+                </div>
+
+                <div class="space-y-6">
+                    <template x-for="prompt in filteredPrompts()" :key="prompt.id">
+                        <div class="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm transition-all hover:shadow-md">
+                            <div class="bg-slate-50/50 p-4 flex justify-between items-center border-b border-slate-100">
+                                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                                    <span x-text="prompt.title"></span>
+                                    <template x-if="prompt.isPremium"><i data-lucide="lock" class="w-3.5 h-3.5 text-amber-500"></i></template>
+                                </h3>
+                                <div class="flex items-center gap-4">
+                                    <div class="flex items-center gap-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                                        <i data-lucide="clock" class="w-3 h-3"></i>
+                                        Ahorra <span x-text="prompt.hhSaved + 'h'"></span>
+                                    </div>
+                                    <span :class="prompt.complexity === 'complejo' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'" class="text-[9px] uppercase font-black px-2 py-0.5 rounded-full" x-text="'Nivel ' + prompt.complexity"></span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2">
+                                <!-- BASIC SIDE -->
+                                <div class="p-6 border-r border-slate-50 bg-slate-50/20">
+                                    <div class="flex items-center gap-2 text-slate-400 mb-4 text-[10px] font-bold uppercase tracking-widest">
+                                        Sin el Modelo AGIA (Genérico)
+                                    </div>
+                                    <div class="bg-white p-4 rounded-xl border border-slate-100 text-sm text-slate-400 italic mb-6 shadow-inner" x-text="'&quot;' + prompt.basic.text + '&quot;'"></div>
+                                    <div class="space-y-2.5">
+                                        <p class="text-[10px] font-bold text-red-500 flex items-center gap-2 uppercase tracking-wider">
+                                            <i data-lucide="alert-triangle" class="w-3 h-3"></i> Errores Críticos Detectados:
+                                        </p>
+                                        <template x-for="error in prompt.basic.errors">
+                                            <div class="flex gap-2 text-[11px] text-slate-500 bg-red-50/50 p-2 rounded-lg border border-red-100/50">
+                                                <span class="text-red-400 font-bold">•</span>
+                                                <span x-text="error"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- MASTER SIDE -->
+                                <div class="p-6 bg-emerald-50/30 relative group">
+                                    <!-- Premium Lock -->
+                                    <template x-if="prompt.isPremium">
+                                        <div class="absolute inset-0 z-10 backdrop-blur-[2px] bg-white/70 flex flex-col items-center justify-center p-6 text-center">
+                                            <div class="bg-white p-4 rounded-full shadow-lg mb-4">
+                                                <i data-lucide="lock" class="w-8 h-8 text-emerald-500"></i>
+                                            </div>
+                                            <h4 class="font-bold text-slate-900 mb-1">Contenido Premium</h4>
+                                            <p class="text-xs text-slate-500 mb-4 max-w-[200px]">Desbloquea este prompt maestro y 100+ más uniéndote a AGIA.</p>
+                                            <button @click="showPurchaseModal = true" class="bg-emerald-500 text-white px-6 py-2 rounded-full font-bold text-xs hover:scale-105 transition-all shadow-lg shadow-emerald-500/20 uppercase tracking-widest">
+                                                Liberar Acceso ($20)
+                                            </button>
+                                        </div>
+                                    </template>
+                                    
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="text-emerald-600 text-[10px] font-bold uppercase tracking-widest">
+                                            Modelo Maestro AGIA Aplicado
+                                        </div>
+                                        <button @click="copy(prompt.master.text)" class="bg-white text-emerald-600 p-2 rounded-lg hover:bg-emerald-500 hover:text-white transition-all shadow-sm border border-emerald-100 opacity-0 group-hover:opacity-100">
+                                            <i data-lucide="copy" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                    <div class="bg-white border border-emerald-200 p-4 rounded-xl text-xs font-mono text-slate-800 mb-6 whitespace-pre-wrap leading-relaxed shadow-sm" x-text="prompt.master.text"></div>
+                                    <div class="space-y-2.5">
+                                        <p class="text-[10px] font-bold text-emerald-600 flex items-center gap-2 uppercase tracking-wider">
+                                            <i data-lucide="check-circle-2" class="w-3 h-3"></i> Resultados Garantizados:
+                                        </p>
+                                        <template x-for="adv in prompt.master.advantages">
+                                            <div class="flex gap-2 text-[11px] text-slate-600 bg-white/80 p-2 rounded-lg border border-emerald-100 shadow-sm">
+                                                <span class="text-emerald-500 font-bold">✓</span>
+                                                <span x-text="adv"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="max-w-7xl mx-auto px-4 py-16 border-t border-slate-200 mt-12 text-center bg-white">
+        <div class="inline-flex items-center gap-3 mb-6">
+            <div class="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center font-black text-slate-400 text-sm">A</div>
+            <h2 class="text-xs font-bold tracking-widest text-slate-400 uppercase">AULA GEN IA PLATFORM</h2>
+        </div>
+        <p class="text-slate-400 text-[11px] max-w-lg mx-auto leading-relaxed uppercase tracking-tighter">
+            © 2025 AGIA. Esta herramienta es propiedad exclusiva de Aula Gen IA. 
+            Está prohibida su reproducción total o parcial sin autorización. 
+            Hecho para transformar el talento humano con Inteligencia Artificial.
+        </p>
+    </footer>
+
+    <script>
+        function platformData() {
+            return {
+                showOnboarding: true,
+                onboardingStep: 0,
+                showPurchaseModal: false,
+                activeCategory: 'ventas',
+                searchTerm: '',
+                userPrompt: '',
+                isGenerating: false,
+                generatedMaster: null,
+                notification: null,
+                
+                categories: [
+                    { id: 'ventas', name: 'Ventas y Cierre', iconName: 'trending-up' },
+                    { id: 'marketing', name: 'Marketing y Copy', iconName: 'sparkles' },
+                    { id: 'educacion', name: 'Educación y Cursos', iconName: 'play-circle' },
+                    { id: 'productividad', name: 'Productividad', iconName: 'clock' },
+                    { id: 'analisis', name: 'Análisis de Negocio', iconName: 'info' }
+                ],
+                
+                promptsData: [
+                    {
+                        id: 1,
+                        categoryId: 'ventas',
+                        title: 'Pitch de Ventas para WhatsApp',
+                        isPremium: false,
+                        complexity: 'medio',
+                        hhSaved: 3.5,
+                        basic: {
+                            text: "Escribe un mensaje para vender mi curso de repostería por WhatsApp a gente que preguntó precio.",
+                            errors: [
+                                "Falta de Rol: La IA no sabe si hablar como amigo o vendedor experto.",
+                                "Sin Contexto: No mencionas los beneficios únicos del curso.",
+                                "Sin Formato: El mensaje será un bloque de texto aburrido que nadie leerá."
+                            ]
+                        },
+                        master: {
+                            text: "Actúa como un experto en Neuro-ventas y Copywriting para WhatsApp. \n\nContexto: Estoy vendiendo un curso de repostería para principiantes. El cliente ya mostró interés preguntando el precio, pero tiene miedo de que sea difícil.\n\nMeta: Crear una secuencia de 3 mensajes persuasivos (Apertura, Valor, Cierre) usando el método AIDA.\n\nRestricciones: No uses lenguaje técnico, usa emojis de forma profesional y no superes las 80 palabras por mensaje.\n\nFormato: Divide los mensajes claramente y añade sugerencias de qué imagen enviar con cada uno.",
+                            advantages: [
+                                "Aumenta la tasa de respuesta en un 400% al usar gatillos mentales.",
+                                "Estructura profesional que evita que el cliente te deje en 'visto'.",
+                                "Ahorra horas de pensar qué decir ante cada objeción."
+                            ]
+                        }
+                    },
+                    {
+                        id: 2,
+                        categoryId: 'marketing',
+                        title: 'Estrategia de Reels Semanal',
+                        isPremium: true,
+                        complexity: 'complejo',
+                        hhSaved: 12,
+                        basic: {
+                            text: "Dame 5 ideas de reels para mi marca de ropa deportiva.",
+                            errors: [
+                                "Sin Objetivo: Las ideas serán genéricas y no venderán nada.",
+                                "Falta de Estructura: No incluye ganchos (hooks) para retener la atención.",
+                                "Sin Call to Action: Los usuarios verán el video pero no irán a tu perfil."
+                            ]
+                        },
+                        master: {
+                            text: "Actúa como un Content Strategist Senior experto en algoritmos de Instagram y TikTok.\n\nContexto: Marca de ropa deportiva para mujeres que entrenan en casa. Queremos posicionarnos como una marca motivadora y práctica.\n\nMeta: Crea una parrilla de 5 Reels. Cada uno debe incluir: 1. Gancho visual (primeros 3 seg), 2. Guion del cuerpo, 3. Audio en tendencia sugerido y 4. Llamado a la acción (CTA) específico para venta.\n\nRestricciones: Enfoque en 'curiosity gap' y contenido compartible.\n\nFormato: Presenta la información en una tabla comparativa para fácil lectura.",
+                            advantages: [
+                                "Planificación completa de una semana en segundos.",
+                                "Contenido diseñado para ser viral y convertir seguidores en clientes.",
+                                "Elimina el bloqueo creativo de 'qué grabar hoy'."
+                            ]
+                        }
+                    }
+                ],
+
+                onboardingSteps: [
+                    { title: "Bienvenido a la Era Maestra", content: "La mayoría usa la IA como un buscador. Tú vas a aprender a usarla como un equipo de expertos." },
+                    { title: "El Poder del Versus", content: "Mira el error exacto que cometes hoy y cómo el Modelo AGIA lo soluciona ahorrándote horas de trabajo." },
+                    { title: "Contenido de Clase Mundial", content: "Tendrás acceso a prompts validados que valen miles de dólares. ¿Listo para el cambio?" }
+                ],
+
+                init() {
+                    lucide.createIcons();
+                    this.startSocialProof();
+                },
+
+                nextStep() {
+                    if (this.onboardingStep < 2) {
+                        this.onboardingStep++;
+                        setTimeout(() => lucide.createIcons(), 10);
+                    } else {
+                        this.showOnboarding = false;
+                    }
+                },
+
+                generateMagic() {
+                    this.isGenerating = true;
+                    setTimeout(() => {
+                        this.generatedMaster = {
+                            basic: this.userPrompt,
+                            master: `Actúa como un experto senior en el área seleccionada.\n\nContexto: ${this.userPrompt}\n\nMeta: Ejecutar la tarea con máxima profundidad estratégica.\n\nRestricciones: Sin lenguaje genérico, orientado a resultados inmediatos.\n\nFormato: Estructura modular y accionable.`,
+                            hh: Math.floor(Math.random() * 5) + 3
+                        };
+                        this.isGenerating = false;
+                        setTimeout(() => lucide.createIcons(), 10);
+                    }, 1500);
+                },
+
+                filteredPrompts() {
+                    return this.promptsData.filter(p => 
+                        p.categoryId === this.activeCategory && 
+                        p.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+                    );
+                },
+
+                copy(text) {
+                    const brand = "\n\n✨ Generado con el Modelo Maestro de Aula Gen IA (AGIA)";
+                    const el = document.createElement('textarea');
+                    el.value = text + brand;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
                     
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-emerald-400 text-xs font-bold uppercase tracking-widest">
-                        Prompt Maestro AGIA
-                      </div>
-                      <button 
-                        onClick={() => copyToClipboard(prompt.master.text)}
-                        className="bg-emerald-500 text-slate-900 p-2 rounded-lg hover:bg-emerald-400 transition-all opacity-0 group-hover:opacity-100"
-                        title="Copiar Prompt Maestro"
-                      >
-                        <Copy size={16} />
-                      </button>
-                    </div>
-                    <div className="bg-slate-900 border border-emerald-500/30 p-4 rounded-xl text-xs font-mono text-emerald-100 mb-6 whitespace-pre-wrap leading-relaxed shadow-lg">
-                      {prompt.master.text}
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-xs font-bold text-emerald-400 flex items-center gap-2">
-                        <CheckCircle2 size={14} /> VENTAJAS COMPETITIVAS:
-                      </p>
-                      {prompt.master.advantages.map((adv, i) => (
-                        <div key={i} className="flex gap-2 text-xs text-slate-300 bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">
-                          <span className="text-emerald-500 font-bold">✓</span>
-                          {adv}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </section>
-        </div>
-      </main>
+                    // Simple modal-less feedback
+                    const originalText = "Copiado";
+                    alert("¡Prompt Maestro copiado con éxito! Incluye el sello de calidad AGIA.");
+                },
 
-      {/* Footer Branding */}
-      <footer className="max-w-7xl mx-auto px-4 py-12 border-t border-white/5 mt-12 text-center">
-        <div className="inline-flex items-center gap-3 mb-6 grayscale opacity-50">
-          <div className="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center font-black text-slate-400 text-sm">A</div>
-          <h2 className="text-sm font-bold tracking-tight text-slate-400">AULA GEN IA</h2>
-        </div>
-        <p className="text-slate-600 text-xs">© 2024 AGIA Platform. Todos los derechos reservados. <br/>Diseñado para convertir usuarios de ChatGPT en Maestros de la Inteligencia Artificial.</p>
-      </footer>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes bounce-in {
-          0% { transform: translateY(100%) scale(0.9); opacity: 0; }
-          70% { transform: translateY(-10%) scale(1.05); }
-          100% { transform: translateY(0) scale(1); opacity: 1; }
+                startSocialProof() {
+                    const names = ["Andrés M.", "Lucía R.", "Carlos V.", "María G.", "Santi P."];
+                    const cities = ["México", "España", "Colombia", "Chile", "Argentina"];
+                    
+                    setInterval(() => {
+                        this.notification = {
+                            name: names[Math.floor(Math.random() * names.length)],
+                            city: cities[Math.floor(Math.random() * cities.length)]
+                        };
+                        setTimeout(() => lucide.createIcons(), 10);
+                        setTimeout(() => this.notification = null, 4000);
+                    }, 12000);
+                }
+            }
         }
-        .animate-bounce-in {
-          animation: bounce-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        .animate-fade-in {
-          animation: fadeIn 0.5s ease-out forwards;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}} />
-    </div>
-  );
-}
+    </script>
+</body>
+</html>
