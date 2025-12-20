@@ -77,6 +77,13 @@
             50% { transform: translateX(3px); }
         }
         .animate-attention { animation: bounce-x 1.5s infinite; }
+
+        /* Search Glow Animation */
+        @keyframes subtle-glow {
+            0%, 100% { box-shadow: 0 0 0 0px rgba(79, 70, 229, 0); border-color: #e2e8f0; }
+            50% { box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); border-color: #818cf8; }
+        }
+        .search-invitation { animation: subtle-glow 3s infinite; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
@@ -111,11 +118,8 @@
             <div class="hidden md:flex flex-1 mx-6 space-x-1 overflow-x-auto no-scrollbar mask-gradient-r" id="category-nav"></div>
 
             <div class="flex gap-2">
-                <!-- DEV TOOL: TOGGLE LOCK -->
-                <button onclick="toggleGlobalLock()" id="lock-toggle-btn" class="hidden md:flex text-slate-400 hover:text-rose-500 transition-colors items-center gap-2 text-xs font-bold px-3 py-1.5 border border-slate-100 rounded-lg hover:bg-rose-50 hover:border-rose-200" title="Simular Bloqueo/Desbloqueo">
-                    <span class="material-symbols-rounded text-lg">lock_open</span>
-                </button>
-
+                <!-- SECURED: Dev Tools Removed -->
+                
                 <button onclick="downloadPDF()" class="hidden md:flex text-slate-500 hover:text-indigo-600 transition-colors items-center gap-2 text-xs font-bold px-3 py-1.5 border border-slate-200 rounded-lg hover:border-indigo-200">
                     <span class="material-symbols-rounded text-base">download</span> <span class="hidden lg:inline">PDF</span>
                 </button>
@@ -134,19 +138,19 @@
     <div class="flex flex-1 overflow-hidden w-full relative bg-slate-50">
         
         <!-- SIDEBAR -->
-        <aside class="w-full md:w-64 lg:w-72 flex flex-col bg-white border-r border-slate-200 z-20 flex-none absolute md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300" id="sidebar">
-            <div class="p-4 border-b border-slate-100">
-                <!-- DESTACADO: BUSCADOR MEJORADO -->
+        <aside class="w-full md:w-72 lg:w-80 flex flex-col bg-white border-r border-slate-200 z-20 flex-none absolute md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300" id="sidebar">
+            <div class="p-5 border-b border-slate-100">
+                <!-- DESTACADO: BUSCADOR IMÁN -->
                 <div class="relative group">
-                    <span class="material-symbols-rounded absolute left-3 top-2.5 text-indigo-500 text-xl group-focus-within:text-indigo-600 transition-colors">manage_search</span>
-                    <input type="text" id="searchInput" placeholder="Buscar en la Bóveda..." 
-                        class="w-full pl-10 pr-3 py-2.5 bg-white border-2 border-indigo-50 rounded-xl text-sm font-medium focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all placeholder:text-slate-400 shadow-sm"
+                    <span class="material-symbols-rounded absolute left-3.5 top-3 text-indigo-500 text-xl group-focus-within:text-indigo-600 transition-colors z-10">search_spark</span>
+                    <input type="text" id="searchInput" placeholder="¿Qué desafío tienes hoy?" 
+                        class="w-full pl-11 pr-4 py-3 bg-white border-2 border-slate-100 rounded-xl text-sm font-medium focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all placeholder:text-slate-400 shadow-sm search-invitation text-slate-700"
                         onkeyup="filterCases()">
                 </div>
             </div>
             
             <!-- COMPLEXITY LEGEND (UPDATED HH) -->
-            <div class="bg-slate-50 px-4 py-3 border-b border-slate-100 flex justify-between items-center text-[10px] text-slate-500 font-medium">
+            <div class="bg-slate-50 px-5 py-3 border-b border-slate-100 flex justify-between items-center text-[10px] text-slate-500 font-medium">
                 <div class="flex items-center gap-1.5 cursor-help" title="Básico: Ahorras 15 min (Correos, Tablas)"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-200"></span> 15m</div>
                 <div class="flex items-center gap-1.5 cursor-help" title="Intermedio: Ahorras 45 min (Análisis, Redacción)"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-200"></span> 45m</div>
                 <div class="flex items-center gap-1.5 cursor-help" title="Avanzado: Ahorras 90-120 min (Estrategia, Código)"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-sm shadow-rose-200"></span> 90m+</div>
@@ -190,7 +194,6 @@
                     
                     <!-- MAGIC SWITCH HEADER -->
                     <div class="bg-slate-50 border-b border-slate-100 p-2 flex justify-center sticky top-0 z-20 items-center relative">
-                        <!-- ELIMINADO: CTA Externo -->
                         <div class="relative bg-white border border-slate-200 rounded-xl p-1 flex items-center shadow-sm">
                             <div id="switch-bg" class="absolute left-1 top-1 bottom-1 w-[140px] bg-slate-400 rounded-lg shadow-md switch-toggle z-0"></div>
                             
@@ -412,8 +415,9 @@
         let currentVariables = {};
         let currentDifficulty = 'beginner'; 
         let currentViewMode = 'basic'; // 'basic' or 'agia'
-        let isGlobalLocked = false; // Estado del bloqueo global (Dev tool)
-
+        
+        // Secured: Removed lock logic from client side toggles
+        
         function initApp() {
             window.loadCase = loadCase;
             window.filterCases = filterCases;
@@ -425,14 +429,14 @@
             window.closeTutorial = closeTutorial;
             window.downloadPDF = downloadPDF;
             window.setMode = setMode;
-            window.toggleGlobalLock = toggleGlobalLock;
+            // Removed toggleGlobalLock exposure
 
             renderCategories();
             renderList(casesData);
             updateTotalCounter();
             startCountdown();
             startSocialProof();
-            setupLegendInteractions(); // Initialize magic hover
+            setupLegendInteractions(); 
 
             const first = casesData[0];
             if(first) loadCase(first.id);
@@ -490,24 +494,6 @@
                 mainCard.classList.remove('border-slate-200');
                 mainCard.classList.add('border-indigo-200', 'shadow-indigo-100');
             }
-        }
-
-        function toggleGlobalLock() {
-            isGlobalLocked = !isGlobalLocked;
-            const btn = document.getElementById('lock-toggle-btn');
-            
-            if(isGlobalLocked) {
-                btn.innerHTML = '<span class="material-symbols-rounded text-lg text-rose-500">lock</span>';
-                btn.classList.add('bg-rose-50', 'border-rose-200');
-            } else {
-                btn.innerHTML = '<span class="material-symbols-rounded text-lg">lock_open</span>';
-                btn.classList.remove('bg-rose-50', 'border-rose-200');
-            }
-            
-            // Refrescar vista actual para aplicar estado
-            const title = document.getElementById('detail-title').innerText;
-            const currentCase = casesData.find(c => c.title === title);
-            if(currentCase) loadCase(currentCase.id);
         }
 
         function loadCase(id) {
@@ -582,18 +568,16 @@
 
             renderPrompts(c.locked);
             
-            // Lógica de Bloqueo
+            // Lógica de Bloqueo Real (Solo DB)
             const lockOverlay = document.getElementById('locked-teaser');
             const blurWrapper = document.getElementById('prompt-blur-wrapper');
             const copyBtn = document.getElementById('copy-btn');
             const resultTeaser = document.getElementById('result-teaser-label');
             
-            // Está bloqueado solo si es premium Y el interruptor global está activo
-            const isReallyLocked = c.locked && isGlobalLocked;
-
-            if(isReallyLocked) {
+            // Bloqueo real basado SOLO en la DB
+            if(c.locked) {
                 lockOverlay.classList.remove('hidden');
-                blurWrapper.classList.add('blur-prompt'); // Use blur-prompt class for cleaner effect
+                blurWrapper.classList.add('blur-prompt'); 
                 copyBtn.disabled = true;
                 copyBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">lock</span> BLOQUEADO';
@@ -607,10 +591,7 @@
                 resultTeaser.classList.add('hidden');
             }
             
-            // Reiniciar efectos de hover
             setupMagicHover();
-
-            // Mantener modo de vista actual o resetear a básico
             setMode(currentViewMode);
         }
 
@@ -662,7 +643,6 @@
             Object.keys(tags).forEach(t => {
                 const className = `hl-${tags[t]}`;
                 const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
-                // Added data-tag-type attribute for hover logic
                 renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
             });
             renderedAgia = renderedAgia.replace(/\n/g, '<br>');
@@ -734,8 +714,6 @@
             }, 100);
         }
 
-        // Renamed from setupLegendInteractions to be clearer, though kept for legacy if needed, 
-        // updated content inside setupMagicHover is more robust.
         function setupLegendInteractions() {
             setupMagicHover(); 
         }
