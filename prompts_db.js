@@ -1,6 +1,6 @@
 // ==========================================
 // 🧠 BÓVEDA DE PROMPTS AGIA 2.0 - MASTER DB
-// Total Casos: 105 | Optimización: God Mode
+// Total Casos: 115 | Optimización: God Mode
 // ==========================================
 
 const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goodPromptTagged, exampleTip, validationTip, goodResPreview, suggestedAI, locked = false, isTool = false, difficulty = 'beginner') => ({
@@ -183,7 +183,7 @@ const allCases = [
         '<p class="text-xs">40% S&P500 (Crecimiento) | 40% Depósitos (Seguridad) | 20% Caja.</p>', 'gemini', false, false, 'intermediate'),
 
     // ==========================================
-    // 🔥 VENTAS (301-313, 406, 502-507)
+    // 🔥 VENTAS & MARKETING (301-323, 406, 502-507)
     // ==========================================
     createCase(301, 'sales', 'FBI Salary', 'verified_user', 'Negociación: Aumento sueldo.', 
         'Quiero pedir aumento. Guion.',
@@ -275,6 +275,79 @@ const allCases = [
         '{r}Guionista.{/r} {c}Curso Excel.{/c} {m}Estructura PAS (Problema-Agitación-Solución) 1er minuto.{/m} {f}Guion.{/f}',
         'Haz que duela.', 'Solución mágica.',
         '<p class="text-xs">"¿Sales a las 8PM por culpa de las planillas?..."</p>', 'chatgpt', false, false, 'advanced'),
+
+    // --- NUEVOS PROMPTS MASTER (314-323) ---
+
+    createCase(314, 'sales', 'El "Rompehielo" B2B', 'mail', 'Ventas: Conseguir reunión.',
+        'Escribe un correo para vender mi software de recursos humanos a gerentes.',
+        '<div class="text-xs text-slate-500 italic">"Estimado Gerente, le escribo para presentarle..."</div>',
+        '{r}Experto Cold Email.{/r} {c}Producto: Software RRHH. Público: Gerentes.{/c} {m}Redactar correo marco PAS (Problema-Agitación-Solución).{/m} {l}Max 100 palabras. Asunto minúsculas.{/l} {f}Texto plano.{/f}',
+        'Chain of Thought + Framework PAS.', 'Asunto casual.',
+        '<div class="bg-white p-2 text-xs">Asunto: dudas con la nómina<br>Hola [Nombre], Gestionar la nómina en Excel funciona bien cuando sois 10 personas...</div>', 'chatgpt', false, false, 'intermediate'),
+
+    createCase(315, 'sales', 'Anuncios Ads', 'campaign', 'Marketing: Stop Scroll.',
+        'Haz un texto para un anuncio de Facebook sobre zapatillas de correr.',
+        '<div class="text-xs text-slate-500 italic">"¡Llegaron las nuevas zapatillas RunPro! 👟..."</div>',
+        '{r}Media Buyer & Copywriter.{/r} {c}Zapatillas amortiguación.{/c} {m}3 variaciones AIDA (Atención, Interés, Deseo, Acción).{/m} {l}Gancho < 40 chars.{/l} {f}Lista variaciones.{/f}',
+        'Iterative Prompting.', 'Gancho fuerte.',
+        '<p class="text-xs">🛑 ¿Tus rodillas crujen al correr?<br>No es tu edad, es el impacto del asfalto...</p>', 'chatgpt', false, false, 'intermediate'),
+
+    createCase(316, 'sales', 'Ficha E-commerce', 'shopping_bag', 'Ecommerce: Conversión.',
+        'Describe esta cafetera para mi tienda online.',
+        '<div class="text-xs text-slate-500 italic">"Cafetera Italiana Modelo X. Capacidad 1 Litro..."</div>',
+        '{r}Experto Neuromarketing.{/r} {c}Cafetera Italiana Lujo.{/c} {m}Convertir características técnicas a Beneficios Emocionales.{/m} {l}Lenguaje sensorial.{/l} {f}Título + Bullet Points.{/f}',
+        'Data to Emotion.', 'Lenguaje sensorial.',
+        '<p class="text-xs"><strong>Tu barista personal, ahora en tu cocina ☕</strong><br>Olvídate del café quemado de las mañanas...</p>', 'chatgpt', false, false, 'intermediate'),
+
+    createCase(317, 'sales', 'Guion Viral TikTok', 'movie', 'RRSS: Retención video.',
+        'Dame ideas para un video de TikTok sobre divorcios.',
+        '<div class="text-xs text-slate-500 italic">"Hola a todos, soy abogado. Hoy hablaremos del divorcio..."</div>',
+        '{r}Guionista Viral.{/r} {c}Divorcio y Bienes.{/c} {m}Guion 30s optimizado para retención máxima.{/m} {l}Gancho visual 0-3s. Sin "Hola".{/l} {f}Tabla Visual | Audio.{/f}',
+        'Output Formatting.', 'Gancho visual.',
+        '<table class="w-full text-[10px] border"><tr><th>Visual</th><th>Audio</th></tr><tr><td>Texto rojo: "¡NO TE VAYAS!"</td><td>"Si te vas de casa..."</td></tr></table>', 'chatgpt', false, false, 'advanced'),
+
+    createCase(318, 'sales', 'Cierre WhatsApp', 'chat', 'Ventas: Chat Closing.',
+        'Responde a un cliente que preguntó precio.',
+        '<div class="text-xs text-slate-500 italic">"Hola, buenas tardes. El precio es $150.000..."</div>',
+        '{r}Closer Ventas.{/r} {c}Curso Inglés. Preguntan precio.{/c} {m}Responder precio y mantener conversación viva.{/m} {l}Termina con pregunta abierta.{/l} {f}Texto chat.{/f}',
+        'Tone Setting.', 'Pregunta final.',
+        '<div class="bg-green-50 p-2 text-xs border border-green-200">"Hola! 👋 Claro que sí. El programa completo... ¿lo necesitas por trabajo o viaje? ✈️"</div>', 'chatgpt', false, false, 'beginner'),
+
+    createCase(319, 'sales', 'Hero Landing Page', 'web', 'Web: Propuesta Valor.',
+        'Pon un título para mi web de marketing.',
+        '<div class="text-xs text-slate-500 italic">"Agencia Digital Creative Minds. Expertos en Marketing..."</div>',
+        '{r}Copywriter CRO.{/r} {c}Agencia Google Ads.{/c} {m}H1 y H2 que prometan transformación clara.{/m} {l}H1 Beneficio, H2 ataca objeción.{/l} {f}3 Opciones.{/f}',
+        'Constraint-Based.', 'Beneficio claro.',
+        '<p class="text-xs"><strong>H1:</strong> Duplicamos el ROAS de tu E-commerce en 90 días o te devolvemos el fee.</p>', 'chatgpt', false, false, 'intermediate'),
+
+    createCase(320, 'sales', 'Artículo SEO', 'article', 'SEO: Blog Post.',
+        'Escribe un artículo sobre implantes dentales.',
+        '<div class="text-xs text-slate-500 italic">"Los implantes dentales son una solución para dientes perdidos..."</div>',
+        '{r}Experto SEO.{/r} {c}Implantes dentales. Keyword: Dolor.{/c} {m}Crear Estructura (Outline) + Intro optimizada.{/m} {l}H2, H3 y FAQ.{/l} {f}Estructura + Intro.{/f}',
+        'Structural Prompting.', 'Jerarquía.',
+        '<div class="bg-white p-2 text-xs">H1: Implantes Dentales: ¿Duelen?...<br>H2: Mito vs Realidad...</div>', 'chatgpt', false, false, 'advanced'),
+
+    createCase(321, 'sales', 'Objeción "Muy Caro"', 'monetization_on', 'Ventas: Negociación.',
+        'Dame respuestas para cuando dicen que es muy caro.',
+        '<div class="text-xs text-slate-500 italic">"No es caro, es que ofrecemos mucha calidad. Lo barato sale caro."</div>',
+        '{r}Negociador Harvard.{/r} {c}Consultoría $1000.{/c} {m}3 guiones de rebatimiento usando Reencuadre.{/m} {l}Nunca contradigas. Costo de inacción.{/l} {f}3 Guiones.{/f}',
+        'Reframing.', 'Validar emoción.',
+        '<p class="text-xs">"Te entiendo... Pero el año pasado pagaste $5,000 en multas. ¿Realmente es caro pagar $1,000 para ahorrar $5,000?"</p>', 'chatgpt', false, false, 'intermediate'),
+
+    createCase(322, 'sales', 'Storytelling Personal', 'history_edu', 'Marca Personal: Conexión.',
+        'Escribe la sección de "quién soy" para mi web.',
+        '<div class="text-xs text-slate-500 italic">"Soy María, nutricionista titulada con distinción máxima..."</div>',
+        '{r}Experto Storytelling.{/r} {c}Nutricionista ex-obesa.{/c} {m}Historia del Héroe (3 actos) donde el cliente se identifique.{/m} {l}Muestra vulnerabilidad.{/l} {f}Narrativa 1ra persona.{/f}',
+        'Narrative Arc.', 'Vulnerabilidad.',
+        '<div class="bg-white p-2 text-xs italic">"No siempre fui la nutricionista saludable que ves... pesaba 20 kilos más..."</div>', 'chatgpt', false, false, 'advanced'),
+
+    createCase(323, 'sales', 'Ideas Lead Magnet', 'lightbulb', 'Marketing: Captación.',
+        'Dame ideas para un ebook gratis.',
+        '<div class="text-xs text-slate-500 italic">"1. Guía de Finanzas. 2. Cómo ahorrar dinero..."</div>',
+        '{r}Estratega Inbound.{/r} {c}Finanzas jóvenes.{/c} {m}5 ideas de Lead Magnets de Alto Valor y Consumo Rápido.{/m} {l}Herramientas prácticas. Títulos clickbait éticos.{/l} {f}Lista.{/f}',
+        'Ideation.', 'Alto valor.',
+        '<p class="text-xs">Plantilla Excel: "Calculadora Kakebo: Descubre en qué se te van los $100.000..."</p>', 'chatgpt', false, false, 'intermediate'),
+
 
     createCase(406, 'sales', 'Gestión Crisis', 'policy', 'RRSS: Hater.',
         'Me dijeron estafador en Instagram.',
@@ -475,7 +548,7 @@ const allCases = [
         'Guardar facturas de email a Drive.',
         '<div class="text-xs text-slate-500 italic">"Usa Zapier."</div>', 
         '{r}Automation Expert.{/r} {c}Gmail a Drive.{/c} {m}Pasos Trigger/Action con filtros.{/m} {f}Lista.{/f}',
-        'Filtro asunto.', 'Mapeo datos.',
+        'Filtro.', 'Mapeo datos.',
         '<p class="text-xs">Trigger: New Attachment. Action: Upload File.</p>', 'chatgpt', false, false, 'intermediate'),
 
     createCase(609, 'tech', 'Pantalla Azul', 'bug_report', 'Soporte: Windows.',
