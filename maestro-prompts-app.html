@@ -703,32 +703,50 @@
         }
 
         function downloadPDF() {
+            // Calculate count of unlocked prompts to show value
+            const total = casesData.length;
+            const unlockedCount = casesData.filter(c => !(c.locked || globalLockMode)).length;
+            
             const printContent = `
                 <html>
                 <head>
                     <title>Bóveda de Prompts AGIA</title>
                     <style>
-                        body { font-family: sans-serif; padding: 40px; color: #333; }
-                        h1 { text-align: center; color: #4f46e5; }
-                        .case { border-bottom: 1px solid #ddd; padding: 20px 0; page-break-inside: avoid; }
-                        .title { font-weight: bold; font-size: 1.2em; margin-bottom: 5px; }
-                        .meta { font-size: 0.8em; color: #666; margin-bottom: 10px; }
-                        .prompt-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; margin-top: 10px; font-size: 0.9em; }
-                        .label { font-weight: bold; font-size: 0.8em; text-transform: uppercase; color: #4f46e5; }
+                        body { font-family: sans-serif; padding: 40px; color: #333; line-height: 1.6; }
+                        h1 { text-align: center; color: #4f46e5; margin-bottom: 5px; }
+                        .subtitle { text-align: center; font-size: 0.9em; color: #666; margin-bottom: 40px; }
+                        .case { border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 20px; page-break-inside: avoid; border-radius: 8px; }
+                        .title { font-weight: 800; font-size: 1.2em; color: #1e293b; }
+                        .meta { font-size: 0.75em; color: #64748b; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+                        .problem { font-style: italic; color: #475569; margin-bottom: 15px; font-size: 0.9em; }
+                        .label { font-weight: bold; font-size: 0.8em; text-transform: uppercase; color: #4f46e5; margin-bottom: 5px; }
+                        .prompt-box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 6px; font-family: 'Courier New', monospace; white-space: pre-wrap; font-size: 0.85em; color: #334155; }
+                        .locked-box { background: #fef2f2; border: 1px dashed #fca5a5; color: #991b1b; text-align: center; font-style: italic; padding: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+                        .watermark { text-align: center; margin-top: 50px; font-size: 0.8em; color: #cbd5e1; }
                     </style>
                 </head>
                 <body>
-                    <h1>Bóveda Maestra AGIA - Reporte Completo</h1>
-                    <p style="text-align:center; font-size:0.9em; color:#666;">Generado el ${new Date().toLocaleDateString()}</p>
-                    ${casesData.map(c => `
-                        <div class="case">
-                            <div class="title">${c.title}</div>
-                            <div class="meta">Categoría: ${c.category.toUpperCase()} | Nivel: ${c.difficulty.toUpperCase()}</div>
-                            <p>${c.problem}</p>
-                            <div class="label">Prompt Optimizado:</div>
-                            <div class="prompt-box">${c.agiaPromptTagged.replace(/{[a-z]+\}|{\/[a-z]+\}/g, '')}</div>
-                        </div>
-                    `).join('')}
+                    <h1>Bóveda Maestra AGIA</h1>
+                    <p class="subtitle">Reporte Generado el ${new Date().toLocaleDateString()} | ${unlockedCount}/${total} Desbloqueados</p>
+                    
+                    ${casesData.map(c => {
+                        const isLocked = c.locked || globalLockMode;
+                        const content = isLocked 
+                            ? `<div class="locked-box">🔒 CONTENIDO EXCLUSIVO (PREMIUM) - Desbloquea para acceder a la fórmula.</div>`
+                            : `<div class="prompt-box">${c.agiaPromptTagged.replace(/{[a-z]+\}|{\/[a-z]+\}/g, '')}</div>`;
+                        
+                        return `
+                            <div class="case">
+                                <div class="title">${c.title}</div>
+                                <div class="meta">${c.category} • ${c.difficulty}</div>
+                                <p class="problem">"${c.problem}"</p>
+                                <div class="label">Prompt Optimizado:</div>
+                                ${content}
+                            </div>
+                        `;
+                    }).join('')}
+                    
+                    <div class="watermark">Generado por AGIA Generator 3.0</div>
                     <script>window.onload = function() { window.print(); }</sc`+`ript>
                 </body>
                 </html>
