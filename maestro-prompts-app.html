@@ -583,7 +583,19 @@
 
         function copyPrompt() {
             const rawText = document.getElementById('detail-prompt-rendered').innerText;
-            navigator.clipboard.writeText(rawText);
+            
+            // Método robusto para copiar (funciona en todos los entornos)
+            const textArea = document.createElement("textarea");
+            textArea.value = rawText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('Error al copiar:', err);
+            }
+            document.body.removeChild(textArea);
+
             const btn = document.getElementById('copy-btn');
             const originalHTML = btn.innerHTML;
             btn.innerHTML = `<span class="material-symbols-rounded text-[18px]">check</span>`;
