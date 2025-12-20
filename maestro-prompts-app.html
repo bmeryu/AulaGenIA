@@ -229,6 +229,11 @@
                         <div>
                             <div class="flex items-center gap-3 mb-4">
                                 <span id="detail-category-badge" class="text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border bg-white shadow-sm">Categoría</span>
+                                <!-- IA Suggestion (Nuevo) -->
+                                <div id="ai-suggestion-badge" class="hidden text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border bg-indigo-50 text-indigo-700 border-indigo-100 items-center gap-2">
+                                    <span class="material-symbols-rounded text-sm">smart_toy</span>
+                                    <span>Recomendado: <span id="ai-name">ChatGPT</span></span>
+                                </div>
                             </div>
                             <h2 id="detail-title" class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">Título del Caso</h2>
                             <p id="detail-problem" class="text-lg text-slate-600 leading-relaxed max-w-3xl font-medium"></p>
@@ -322,6 +327,24 @@
                                             </span>
                                         </div>
                                         
+                                        <!-- TECH SPECS (Nueva sección recuperada) -->
+                                        <div id="tech-specs" class="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
+                                            <div id="tip-container" class="hidden bg-amber-50 border border-amber-100 rounded-lg p-3 flex gap-3 items-start">
+                                                <span class="material-symbols-rounded text-amber-500 text-lg mt-0.5">lightbulb</span>
+                                                <div>
+                                                    <h5 class="text-[10px] font-bold text-amber-700 uppercase tracking-wide mb-0.5">Tip de Ingeniería</h5>
+                                                    <p id="detail-example-tip" class="text-xs text-amber-900 leading-snug">...</p>
+                                                </div>
+                                            </div>
+                                            <div id="validation-container" class="hidden bg-emerald-50 border border-emerald-100 rounded-lg p-3 flex gap-3 items-start">
+                                                <span class="material-symbols-rounded text-emerald-500 text-lg mt-0.5">fact_check</span>
+                                                <div>
+                                                    <h5 class="text-[10px] font-bold text-emerald-700 uppercase tracking-wide mb-0.5">Criterio de Validación</h5>
+                                                    <p id="detail-validation-tip" class="text-xs text-emerald-900 leading-snug">...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <!-- Premium Overlay -->
                                         <div id="premium-lock" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center glass-panel text-center p-8 transition-all duration-300 m-1 rounded-2xl">
                                             <div class="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center shadow-2xl mb-6 transform rotate-6 ring-4 ring-white">
@@ -369,7 +392,7 @@
     <!-- SALES TOAST (Bottom Left) -->
     <div id="sales-toast" class="fixed bottom-24 left-8 z-40 transform transition-all duration-700 translate-y-24 opacity-0 pointer-events-none md:pointer-events-auto"></div>
 
-    <!-- TUTORIAL MODAL (NEW) -->
+    <!-- TUTORIAL MODAL -->
     <div id="tutorial-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md transition-opacity" onclick="closeTutorial()"></div>
         <div class="relative bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full overflow-hidden animate-in zoom-in duration-300 border border-slate-100 flex flex-col max-h-[90vh]">
@@ -391,7 +414,6 @@
                 <!-- Video Placeholder -->
                 <div class="w-full aspect-video bg-slate-900 rounded-2xl mb-8 relative group cursor-pointer overflow-hidden shadow-lg ring-1 ring-slate-900/10">
                     <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/40 to-purple-900/40 z-0"></div>
-                    <!-- Replace the background image URL with your video thumbnail if needed -->
                     <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-40 group-hover:opacity-30 transition-opacity duration-500"></div>
                     
                     <div class="absolute inset-0 flex items-center justify-center z-10">
@@ -463,7 +485,7 @@
         </div>
     </div>
 
-    <!-- MAIN LOGIC (Keep original intact but connected to new classes) -->
+    <!-- MAIN LOGIC -->
     <script type="module">
         let casesData = [];
         const externalDBUrl = 'https://aulagenia.cl/prompts_db.js';
@@ -585,6 +607,47 @@
             const badge = document.getElementById('detail-category-badge');
             badge.innerText = cat.label;
             badge.className = `text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border shadow-sm bg-white text-${cat.color}-600 border-${cat.color}-100`;
+
+            // --- RESTORED LOGIC START ---
+            
+            // 1. AI Suggestion Badge
+            const aiBadge = document.getElementById('ai-suggestion-badge');
+            const aiName = document.getElementById('ai-name');
+            if (c.suggestedAI) {
+                let niceName = c.suggestedAI;
+                if(c.suggestedAI === 'chatgpt') niceName = 'ChatGPT';
+                if(c.suggestedAI === 'claude') niceName = 'Claude';
+                if(c.suggestedAI === 'gemini') niceName = 'Gemini';
+                if(c.suggestedAI === 'midjourney') niceName = 'Midjourney';
+                
+                aiName.innerText = niceName;
+                aiBadge.classList.remove('hidden');
+                aiBadge.classList.add('flex');
+            } else {
+                aiBadge.classList.add('hidden');
+                aiBadge.classList.remove('flex');
+            }
+
+            // 2. Tech Specs (Tips & Validation)
+            const tipContainer = document.getElementById('tip-container');
+            const validationContainer = document.getElementById('validation-container');
+            const tipText = document.getElementById('detail-example-tip');
+            const valText = document.getElementById('detail-validation-tip');
+
+            if (c.exampleTip) {
+                tipText.innerHTML = c.exampleTip; // InnerHTML to allow bold tags if any
+                tipContainer.classList.remove('hidden');
+            } else {
+                tipContainer.classList.add('hidden');
+            }
+
+            if (c.validationTip) {
+                valText.innerHTML = c.validationTip;
+                validationContainer.classList.remove('hidden');
+            } else {
+                validationContainer.classList.add('hidden');
+            }
+            // --- RESTORED LOGIC END ---
 
             currentPromptTemplate = c.agiaPromptTagged;
             currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
