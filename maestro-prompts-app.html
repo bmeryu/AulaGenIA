@@ -70,6 +70,13 @@
         
         /* Magic Switch Animation */
         .switch-toggle { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+        /* Arrow Animation for CTA */
+        @keyframes bounce-x {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+        .animate-bounce-x { animation: bounce-x 1s infinite; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
@@ -179,12 +186,18 @@
                 </div>
 
                 <!-- MAIN CARD WITH MAGIC SWITCH -->
-                <div class="flex-1 bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 flex flex-col overflow-hidden relative ring-1 ring-black/5">
+                <div class="flex-1 bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 flex flex-col overflow-hidden relative ring-1 ring-black/5 transition-all duration-300" id="main-card-container">
                     
                     <!-- MAGIC SWITCH HEADER -->
-                    <div class="bg-slate-50 border-b border-slate-100 p-2 flex justify-center sticky top-0 z-20">
+                    <div class="bg-slate-50 border-b border-slate-100 p-2 flex justify-center sticky top-0 z-20 items-center relative">
+                        <!-- CTA ARROW (Only visible in Basic Mode) -->
+                        <div id="magic-cta" class="absolute left-4 md:left-auto md:right-[60%] flex items-center gap-2 text-indigo-500 animate-bounce-x hidden md:flex">
+                            <span class="text-xs font-bold font-mono">Ver la Magia ✨</span>
+                            <span class="material-symbols-rounded rotate-180">arrow_right_alt</span>
+                        </div>
+
                         <div class="relative bg-white border border-slate-200 rounded-xl p-1 flex items-center shadow-sm">
-                            <div id="switch-bg" class="absolute left-1 top-1 bottom-1 w-[140px] bg-slate-900 rounded-lg shadow-md switch-toggle z-0"></div>
+                            <div id="switch-bg" class="absolute left-1 top-1 bottom-1 w-[140px] bg-slate-400 rounded-lg shadow-md switch-toggle z-0"></div>
                             
                             <button onclick="setMode('basic')" class="relative z-10 w-[140px] py-2 text-xs font-bold text-center transition-colors duration-300 flex items-center justify-center gap-2" id="btn-basic">
                                 <span class="material-symbols-rounded text-base">cancel</span> Modo Básico
@@ -211,11 +224,11 @@
                             </div>
                         </div>
 
-                        <!-- AGIA MASTER CONTENT -->
+                        <!-- AGIA MASTER CONTENT (AULAGENIA COLOR THEME) -->
                         <div id="content-agia" class="hidden p-0 fade-in flex flex-col h-full">
                             
                             <!-- Prompt Box Container -->
-                            <div class="relative bg-[#fcfcfc] p-6 md:p-8 border-b border-indigo-50 flex-none group/expand">
+                            <div class="relative bg-slate-50/50 p-6 md:p-8 border-b border-indigo-100 flex-none group/expand">
                                 <!-- Prompt Text with Blur Wrapper -->
                                 <div id="prompt-blur-wrapper" class="transition-all duration-500 relative">
                                     <div class="flex justify-between items-end mb-4">
@@ -280,11 +293,12 @@
 
                             <!-- ACTION BAR (Fixed Bottom for Master) -->
                             <div class="sticky bottom-0 bg-white border-t border-slate-100 p-4 flex justify-between items-center z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
-                                <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
-                                    <span class="material-symbols-rounded text-orange-500 animate-pulse text-sm">local_fire_department</span> 
-                                    Usado <span id="social-counter" class="text-slate-900 font-bold">...</span> veces hoy
+                                <!-- HIGHLIGHTED SOCIAL PROOF -->
+                                <div class="flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-100 shadow-sm animate-pulse">
+                                    <span class="material-symbols-rounded text-orange-500 text-base">local_fire_department</span> 
+                                    <span class="text-[10px] font-bold text-orange-800">Usado <span id="social-counter" class="text-orange-600 text-xs">...</span> veces hoy</span>
                                 </div>
-                                <button id="copy-btn" onclick="copyPrompt()" class="bg-slate-900 hover:bg-slate-800 text-white pl-5 pr-6 py-2.5 rounded-xl font-bold shadow-lg shadow-slate-300/50 text-xs flex items-center gap-2 transform transition-all hover:-translate-y-0.5 active:translate-y-0">
+                                <button id="copy-btn" onclick="copyPrompt()" class="bg-indigo-600 hover:bg-indigo-700 text-white pl-5 pr-6 py-2.5 rounded-xl font-bold shadow-lg shadow-indigo-200/50 text-xs flex items-center gap-2 transform transition-all hover:-translate-y-0.5 active:translate-y-0">
                                     <span class="material-symbols-rounded text-lg">content_copy</span> COPIAR PROMPT
                                 </button>
                             </div>
@@ -437,6 +451,8 @@
             const contentBasic = document.getElementById('content-basic');
             const contentAgia = document.getElementById('content-agia');
             const switchBg = document.getElementById('switch-bg');
+            const ctaArrow = document.getElementById('magic-cta');
+            const mainCard = document.getElementById('main-card-container');
 
             if (mode === 'basic') {
                 contentBasic.classList.remove('hidden');
@@ -447,7 +463,18 @@
                 btnAgia.classList.add('text-slate-500');
                 btnAgia.classList.remove('text-white');
                 
+                // Switch Background color for basic
+                switchBg.classList.remove('bg-indigo-600');
+                switchBg.classList.add('bg-slate-400');
                 switchBg.style.transform = 'translateX(0)';
+                
+                // Show CTA
+                if(ctaArrow) ctaArrow.classList.remove('hidden');
+                
+                // Reset card border color
+                mainCard.classList.remove('border-indigo-200', 'shadow-indigo-100');
+                mainCard.classList.add('border-slate-200');
+
             } else {
                 contentBasic.classList.add('hidden');
                 contentAgia.classList.remove('hidden');
@@ -457,7 +484,17 @@
                 btnAgia.classList.add('text-white');
                 btnAgia.classList.remove('text-slate-500');
                 
+                // Switch Background color for AGIA (Aulagenia Brand Color)
+                switchBg.classList.remove('bg-slate-400');
+                switchBg.classList.add('bg-indigo-600');
                 switchBg.style.transform = 'translateX(100%)';
+                
+                // Hide CTA
+                if(ctaArrow) ctaArrow.classList.add('hidden');
+
+                // Update card border to brand color
+                mainCard.classList.remove('border-slate-200');
+                mainCard.classList.add('border-indigo-200', 'shadow-indigo-100');
             }
         }
 
