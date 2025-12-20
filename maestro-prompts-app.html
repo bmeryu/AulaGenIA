@@ -6,7 +6,7 @@
     <title>Aula Gen IA - Herramienta Maestra de Prompts</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Alpine.js para interactividad -->
+    <!-- Alpine.js para interactividad (con defer para evitar errores de referencia) -->
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -31,7 +31,7 @@
         .scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800" x-data="platformData()" x-init="init()">
+<body class="bg-slate-50 text-slate-800" x-data="platformData">
 
     <!-- ONBOARDING INTERACTIVO -->
     <div x-show="showOnboarding" x-cloak class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4">
@@ -223,16 +223,16 @@
                         <p class="flex items-center gap-2 text-red-500 font-black text-xs uppercase tracking-widest mb-4">
                             <i data-lucide="alert-circle" class="w-4 h-4"></i> Prompt Básico (Pobre)
                         </p>
-                        <p class="text-slate-500 italic font-medium leading-relaxed" x-text="'&quot;' + generatedMaster?.basic + '&quot;'"></p>
+                        <p class="text-slate-500 italic font-medium leading-relaxed" x-text="'&quot;' + (generatedMaster ? generatedMaster.basic : '') + '&quot;'"></p>
                     </div>
                     <div class="bg-emerald-50/50 border border-emerald-200 rounded-3xl p-8 relative group">
                         <p class="flex items-center gap-2 text-emerald-600 font-black text-xs uppercase tracking-widest mb-4">
                             <i data-lucide="check-circle" class="w-4 h-4"></i> Versión Maestra Sugerida
                         </p>
-                        <div class="bg-white p-5 rounded-2xl text-[13px] font-mono text-slate-700 mb-6 border border-emerald-100 shadow-sm leading-relaxed whitespace-pre-wrap" x-text="generatedMaster?.master"></div>
+                        <div class="bg-white p-5 rounded-2xl text-[13px] font-mono text-slate-700 mb-6 border border-emerald-100 shadow-sm leading-relaxed whitespace-pre-wrap" x-text="generatedMaster ? generatedMaster.master : ''"></div>
                         <div class="flex justify-between items-center">
                             <div class="bg-yellow-400 text-slate-900 px-3 py-1.5 rounded-full text-[10px] font-black uppercase flex items-center gap-2">
-                                <i data-lucide="trending-up" class="w-3 h-3"></i> <span x-text="'+' + generatedMaster?.hh + ' Horas Recuperadas'"></span>
+                                <i data-lucide="trending-up" class="w-3 h-3"></i> <span x-text="'+' + (generatedMaster ? generatedMaster.hh : 0) + ' Horas Recuperadas'"></span>
                             </div>
                             <button @click="copy(generatedMaster.master)" class="bg-emerald-500 text-white p-3 rounded-xl hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/20">
                                 <i data-lucide="copy" class="w-5 h-5"></i>
@@ -349,8 +349,9 @@
     </footer>
 
     <script>
-        function platformData() {
-            return {
+        // Patrón recomendado para Alpine.js v3 para asegurar que los datos estén listos antes de que Alpine se inicialice.
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('platformData', () => ({
                 showOnboarding: true,
                 onboardingStep: 0,
                 showPurchaseModal: false,
@@ -557,8 +558,8 @@
                         setTimeout(() => this.notification = null, 5000);
                     }, 15000);
                 }
-            }
-        }
+            }));
+        });
     </script>
 </body>
 </html>
