@@ -61,22 +61,29 @@
         
         /* Blur Content Logic */
         .blur-prompt { 
-            filter: blur(5px); 
+            filter: blur(8px); 
             user-select: none; 
             pointer-events: none; 
-            opacity: 0.6;
-            transition: all 0.3s ease;
+            opacity: 0.5;
+            transition: all 0.5s ease;
         }
         
         /* Magic Switch Animation */
         .switch-toggle { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-        /* Arrow Animation for Button Attention */
-        @keyframes bounce-x {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(3px); }
+        /* Attention Animation for Magic Switch */
+        @keyframes subtle-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
-        .animate-attention { animation: bounce-x 1.5s infinite; }
+        .motivate-click { animation: subtle-bounce 2s infinite; }
+        
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(79, 70, 229, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+        }
+        .pulse-attention { animation: pulse-ring 2s infinite; }
 
         /* Search Glow Animation */
         @keyframes subtle-glow {
@@ -117,8 +124,13 @@
             
             <div class="hidden md:flex flex-1 mx-6 space-x-1 overflow-x-auto no-scrollbar mask-gradient-r" id="category-nav"></div>
 
-            <div class="flex gap-2">
-                <!-- SECURED: Dev Tools Removed -->
+            <div class="flex gap-2 items-center">
+                <!-- Global Lock Simulator (Test Mode) -->
+                <button onclick="toggleGlobalLock()" id="global-lock-btn" class="text-slate-300 hover:text-red-500 transition-colors p-1.5 rounded-lg border border-transparent hover:bg-red-50" title="Simular Modo Bloqueado (Usuario Gratis)">
+                    <span class="material-symbols-rounded text-xl">lock_open</span>
+                </button>
+
+                <div class="h-4 w-px bg-slate-200 mx-1"></div>
                 
                 <button onclick="downloadPDF()" class="hidden md:flex text-slate-500 hover:text-indigo-600 transition-colors items-center gap-2 text-xs font-bold px-3 py-1.5 border border-slate-200 rounded-lg hover:border-indigo-200">
                     <span class="material-symbols-rounded text-base">download</span> <span class="hidden lg:inline">PDF</span>
@@ -149,11 +161,11 @@
                 </div>
             </div>
             
-            <!-- COMPLEXITY LEGEND (UPDATED HH) -->
+            <!-- COMPLEXITY LEGEND (UPDATED RANGOS HH) -->
             <div class="bg-slate-50 px-5 py-3 border-b border-slate-100 flex justify-between items-center text-[10px] text-slate-500 font-medium">
-                <div class="flex items-center gap-1.5 cursor-help" title="Básico: Ahorras 15 min (Correos, Tablas)"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-200"></span> 15m</div>
-                <div class="flex items-center gap-1.5 cursor-help" title="Intermedio: Ahorras 45 min (Análisis, Redacción)"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-200"></span> 45m</div>
-                <div class="flex items-center gap-1.5 cursor-help" title="Avanzado: Ahorras 90-120 min (Estrategia, Código)"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-sm shadow-rose-200"></span> 90m+</div>
+                <div class="flex items-center gap-1.5 cursor-help" title="Básico: Hasta 15 min"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-200"></span> 15m</div>
+                <div class="flex items-center gap-1.5 cursor-help" title="Intermedio: 15~45 min"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-200"></span> 15-45m</div>
+                <div class="flex items-center gap-1.5 cursor-help" title="Avanzado: 90-120 min"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-sm shadow-rose-200"></span> 90-120m</div>
             </div>
 
             <div class="flex-1 overflow-y-auto custom-scroll p-3 space-y-1" id="case-list"></div>
@@ -200,8 +212,13 @@
                             <button onclick="setMode('basic')" class="relative z-10 w-[140px] py-2 text-xs font-bold text-center transition-colors duration-300 flex items-center justify-center gap-2" id="btn-basic">
                                 <span class="material-symbols-rounded text-base">cancel</span> Modo Básico
                             </button>
-                            <button onclick="setMode('agia')" class="relative z-10 w-[140px] py-2 text-xs font-bold text-center transition-colors duration-300 flex items-center justify-center gap-2" id="btn-agia">
-                                <span class="material-symbols-rounded text-base">verified</span> Modo Maestro
+                            <button onclick="setMode('agia')" class="relative z-10 w-[140px] py-2 text-xs font-bold text-center transition-colors duration-300 flex items-center justify-center gap-2 group" id="btn-agia">
+                                <span class="material-symbols-rounded text-base group-hover:rotate-12 transition-transform">verified</span> Modo Maestro
+                                <!-- Motivation Badge -->
+                                <div id="magic-hint" class="absolute -top-9 right-4 bg-indigo-600 text-white text-[10px] px-3 py-1.5 rounded-full font-bold animate-bounce shadow-lg shadow-indigo-200 hidden z-20 border border-indigo-400">
+                                    ✨ Ver Magia
+                                    <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-indigo-600 rotate-45 border-r border-b border-indigo-400"></div>
+                                </div>
                             </button>
                         </div>
                     </div>
@@ -240,15 +257,15 @@
                                 </div>
 
                                 <!-- BLOCKED TEASER OVERLAY (Centered on prompt) -->
-                                <div id="locked-teaser" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center transition-all duration-500">
-                                    <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-2xl border border-white/50 text-center transform scale-100 hover:scale-105 transition-transform duration-300 ring-1 ring-slate-200">
+                                <div id="locked-teaser" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center transition-all duration-500 backdrop-blur-[2px]">
+                                    <div class="bg-white/95 backdrop-blur-xl p-6 rounded-2xl shadow-2xl border border-white/50 text-center transform scale-100 hover:scale-105 transition-transform duration-300 ring-1 ring-slate-200 max-w-xs">
                                         <div class="w-14 h-14 bg-gradient-to-br from-slate-800 to-black rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4 rotate-3 text-yellow-400">
                                             <span class="material-symbols-rounded text-3xl">lock</span>
                                         </div>
                                         <h3 class="text-lg font-black text-slate-900 mb-1">Fórmula Secreta</h3>
-                                        <p class="text-xs text-slate-500 mb-4 max-w-[200px] leading-relaxed mx-auto">Mira el resultado abajo, pero la lógica exacta es exclusiva.</p>
+                                        <p class="text-xs text-slate-500 mb-4 leading-relaxed mx-auto">La estructura maestra está protegida. Desbloquea para ver el código fuente.</p>
                                         <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-indigo-200/50 text-xs w-full transition-all hover:-translate-y-0.5">
-                                            DESBLOQUEAR AHORA
+                                            DESBLOQUEAR
                                         </button>
                                     </div>
                                 </div>
@@ -280,11 +297,12 @@
                                 <!-- Result (Always Visible even if Locked) -->
                                 <div class="pt-2 relative">
                                     <div class="text-[10px] font-bold text-indigo-400 uppercase mb-2 flex gap-1.5 items-center tracking-wider"><span class="material-symbols-rounded text-sm">auto_awesome</span> Resultado Esperado</div>
+                                    <!-- Result container is kept clean of blurs -->
                                     <div id="good-result-preview" class="text-sm text-slate-600 leading-relaxed font-medium bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-inner"></div>
                                     
                                     <!-- Result Teaser Label if Locked -->
-                                    <div id="result-teaser-label" class="hidden absolute top-2 right-2 bg-yellow-100 text-yellow-800 text-[9px] font-bold px-2 py-0.5 rounded border border-yellow-200">
-                                        MUESTRA GRATIS
+                                    <div id="result-teaser-label" class="hidden absolute top-2 right-2 bg-yellow-100 text-yellow-800 text-[9px] font-bold px-2 py-0.5 rounded border border-yellow-200 shadow-sm flex items-center gap-1">
+                                        <span class="material-symbols-rounded text-[10px]">visibility</span> MUESTRA GRATIS
                                     </div>
                                 </div>
                             </div>
@@ -348,6 +366,9 @@
         let casesData = [];
         // Se asume que el archivo prompts_db.js está en la misma ubicación
         const externalDBUrl = './prompts_db.js';
+        
+        // Global Lock State
+        let globalLockMode = false;
         
         // UI Elements
         const statusOverlay = document.getElementById('system-status-overlay');
@@ -429,7 +450,7 @@
             window.closeTutorial = closeTutorial;
             window.downloadPDF = downloadPDF;
             window.setMode = setMode;
-            // Removed toggleGlobalLock exposure
+            window.toggleGlobalLock = toggleGlobalLock;
 
             renderCategories();
             renderList(casesData);
@@ -443,6 +464,34 @@
             else document.getElementById('workspace-empty').classList.replace('hidden', 'flex');
         }
 
+        function toggleGlobalLock() {
+            globalLockMode = !globalLockMode;
+            const btn = document.getElementById('global-lock-btn');
+            const icon = btn.querySelector('span');
+            
+            if(globalLockMode) {
+                btn.classList.replace('text-slate-300', 'text-red-500');
+                btn.classList.replace('hover:bg-red-50', 'bg-red-50');
+                icon.innerText = 'lock';
+                // Force reload of current case to apply lock state
+                const currentActive = document.querySelector('.case-item.bg-indigo-50');
+                if(currentActive) {
+                    const id = parseInt(currentActive.id.replace('case-item-', ''));
+                    loadCase(id);
+                }
+            } else {
+                btn.classList.replace('text-red-500', 'text-slate-300');
+                btn.classList.replace('bg-red-50', 'hover:bg-red-50');
+                icon.innerText = 'lock_open';
+                // Force reload to remove lock
+                const currentActive = document.querySelector('.case-item.bg-indigo-50');
+                if(currentActive) {
+                    const id = parseInt(currentActive.id.replace('case-item-', ''));
+                    loadCase(id);
+                }
+            }
+        }
+
         function setMode(mode) {
             currentViewMode = mode;
             const btnBasic = document.getElementById('btn-basic');
@@ -451,6 +500,7 @@
             const contentAgia = document.getElementById('content-agia');
             const switchBg = document.getElementById('switch-bg');
             const mainCard = document.getElementById('main-card-container');
+            const magicHint = document.getElementById('magic-hint');
 
             if (mode === 'basic') {
                 contentBasic.classList.remove('hidden');
@@ -461,8 +511,9 @@
                 btnAgia.classList.add('text-slate-500');
                 btnAgia.classList.remove('text-white');
                 
-                // Add attention animation to Agia button
-                btnAgia.classList.add('animate-attention');
+                // Add attention animation to Agia button and show hint
+                btnAgia.classList.add('pulse-attention');
+                magicHint.classList.remove('hidden');
                 
                 // Switch Background color for basic
                 switchBg.classList.remove('bg-indigo-600');
@@ -482,8 +533,9 @@
                 btnAgia.classList.add('text-white');
                 btnAgia.classList.remove('text-slate-500');
                 
-                // Remove attention animation
-                btnAgia.classList.remove('animate-attention');
+                // Remove attention animation and hide hint
+                btnAgia.classList.remove('pulse-attention');
+                magicHint.classList.add('hidden');
                 
                 // Switch Background color for AGIA (Aulagenia Brand Color)
                 switchBg.classList.remove('bg-slate-400');
@@ -499,6 +551,9 @@
         function loadCase(id) {
             const c = casesData.find(x => x.id === id);
             if(!c) return;
+
+            // Determine effective lock state (Database OR Global Toggle)
+            const isLocked = c.locked || globalLockMode;
 
             currentDifficulty = c.difficulty || 'beginner';
 
@@ -566,22 +621,22 @@
                 currentVariables[match[1]] = match[2];
             }
 
-            renderPrompts(c.locked);
+            renderPrompts(isLocked);
             
-            // Lógica de Bloqueo Real (Solo DB)
+            // Lógica de Bloqueo Visual (Teaser)
             const lockOverlay = document.getElementById('locked-teaser');
             const blurWrapper = document.getElementById('prompt-blur-wrapper');
             const copyBtn = document.getElementById('copy-btn');
             const resultTeaser = document.getElementById('result-teaser-label');
             
-            // Bloqueo real basado SOLO en la DB
-            if(c.locked) {
+            if(isLocked) {
                 lockOverlay.classList.remove('hidden');
                 blurWrapper.classList.add('blur-prompt'); 
                 copyBtn.disabled = true;
                 copyBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">lock</span> BLOQUEADO';
                 resultTeaser.classList.remove('hidden');
+                resultTeaser.classList.add('flex');
             } else {
                 lockOverlay.classList.add('hidden');
                 blurWrapper.classList.remove('blur-prompt');
@@ -589,6 +644,7 @@
                 copyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                 copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">content_copy</span> COPIAR PROMPT';
                 resultTeaser.classList.add('hidden');
+                resultTeaser.classList.remove('flex');
             }
             
             setupMagicHover();
