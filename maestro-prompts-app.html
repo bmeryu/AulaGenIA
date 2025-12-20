@@ -37,15 +37,11 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-        }
-
+        /* Interactive Legend Effects */
         .hl-tag { 
-            display: inline-flex; align-items: center; padding: 1px 5px; border-radius: 4px; margin: 0 2px; 
-            font-weight: 700; font-size: 0.85em; cursor: default; border: 1px solid transparent;
+            display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 4px; margin: 0 2px; 
+            font-weight: 700; font-size: 0.9em; cursor: default; border: 1px solid transparent;
+            transition: all 0.2s ease;
         }
         
         .hl-rol { color: #1e40af; background: #eff6ff; border-color: #dbeafe; }
@@ -54,13 +50,23 @@
         .hl-restricciones { color: #991b1b; background: #fef2f2; border-color: #fee2e2; }
         .hl-formato { color: #6b21a8; background: #faf5ff; border-color: #f3e8ff; }
 
+        /* Dimming effect for non-hovered items */
+        .dimmed { opacity: 0.3; filter: grayscale(0.5); }
+        .highlighted { transform: scale(1.05); box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10; position: relative; }
+
         .var-highlight { background-color: #e0f2fe; border-bottom: 2px solid #0284c7; color: #0c4a6e; font-weight: 700; padding: 0 4px; border-radius: 4px; }
         .var-highlight-bad { background-color: #f1f5f9; border-bottom: 2px dotted #94a3b8; color: #64748b; font-weight: 600; padding: 0 2px; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Blur Effect */
-        .blur-content { filter: blur(8px); user-select: none; pointer-events: none; opacity: 0.7; }
+        /* Blur Content Logic */
+        .blur-prompt { 
+            filter: blur(5px); 
+            user-select: none; 
+            pointer-events: none; 
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
         
         /* Magic Switch Animation */
         .switch-toggle { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -75,7 +81,7 @@
                 <span class="material-symbols-rounded text-2xl animate-spin">sync</span>
             </div>
             <h2 id="status-title" class="text-lg font-extrabold text-slate-900 mb-1">Cargando Bóveda...</h2>
-            <p id="status-desc" class="text-xs text-slate-500 mb-6">Conectando con base de datos de prompts.</p>
+            <p id="status-desc" class="text-xs text-slate-500 mb-6">Sincronizando recursos.</p>
             <div class="bg-slate-50 p-3 rounded-lg text-left text-[10px] font-mono text-slate-500 overflow-hidden border border-slate-100">
                 <p>> Source: <span class="text-indigo-600 font-semibold">./prompts_db.js</span></p>
                 <p>> Status: <span id="status-code" class="text-slate-600 font-bold">FETCHING...</span></p>
@@ -99,7 +105,7 @@
 
             <div class="flex gap-2">
                 <!-- DEV TOOL: TOGGLE LOCK -->
-                <button onclick="toggleGlobalLock()" id="lock-toggle-btn" class="hidden md:flex text-slate-400 hover:text-rose-500 transition-colors items-center gap-2 text-xs font-bold px-3 py-1.5 border border-slate-100 rounded-lg hover:bg-rose-50" title="Simular Bloqueo/Desbloqueo">
+                <button onclick="toggleGlobalLock()" id="lock-toggle-btn" class="hidden md:flex text-slate-400 hover:text-rose-500 transition-colors items-center gap-2 text-xs font-bold px-3 py-1.5 border border-slate-100 rounded-lg hover:bg-rose-50 hover:border-rose-200" title="Simular Bloqueo/Desbloqueo">
                     <span class="material-symbols-rounded text-lg">lock_open</span>
                 </button>
 
@@ -123,6 +129,7 @@
         <!-- SIDEBAR -->
         <aside class="w-full md:w-64 lg:w-72 flex flex-col bg-white border-r border-slate-200 z-20 flex-none absolute md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300" id="sidebar">
             <div class="p-4 border-b border-slate-100">
+                <!-- DESTACADO: BUSCADOR MEJORADO -->
                 <div class="relative group">
                     <span class="material-symbols-rounded absolute left-3 top-2.5 text-indigo-500 text-xl group-focus-within:text-indigo-600 transition-colors">manage_search</span>
                     <input type="text" id="searchInput" placeholder="Buscar en la Bóveda..." 
@@ -132,10 +139,10 @@
             </div>
             
             <!-- COMPLEXITY LEGEND (UPDATED HH) -->
-            <div class="bg-slate-50 px-4 py-2 border-b border-slate-100 flex justify-between items-center text-[9px] text-slate-500 font-medium">
-                <div class="flex items-center gap-1" title="Básico: ~15 min"><span class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-200"></span> 15m</div>
-                <div class="flex items-center gap-1" title="Intermedio: ~45 min"><span class="w-2 h-2 rounded-full bg-amber-400 shadow-sm shadow-amber-200"></span> 45m</div>
-                <div class="flex items-center gap-1" title="Avanzado: 90-120 min"><span class="w-2 h-2 rounded-full bg-rose-400 shadow-sm shadow-rose-200"></span> 90m+</div>
+            <div class="bg-slate-50 px-4 py-3 border-b border-slate-100 flex justify-between items-center text-[10px] text-slate-500 font-medium">
+                <div class="flex items-center gap-1.5 cursor-help" title="Básico: Ahorras 15 min (Correos, Tablas)"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-200"></span> 15m</div>
+                <div class="flex items-center gap-1.5 cursor-help" title="Intermedio: Ahorras 45 min (Análisis, Redacción)"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-200"></span> 45m</div>
+                <div class="flex items-center gap-1.5 cursor-help" title="Avanzado: Ahorras 90-120 min (Estrategia, Código)"><span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-sm shadow-rose-200"></span> 90m+</div>
             </div>
 
             <div class="flex-1 overflow-y-auto custom-scroll p-3 space-y-1" id="case-list"></div>
@@ -207,9 +214,10 @@
                         <!-- AGIA MASTER CONTENT -->
                         <div id="content-agia" class="hidden p-0 fade-in flex flex-col h-full">
                             
-                            <!-- Prompt Box -->
+                            <!-- Prompt Box Container -->
                             <div class="relative bg-[#fcfcfc] p-6 md:p-8 border-b border-indigo-50 flex-none group/expand">
-                                <div id="prompt-blur-wrapper" class="transition-all duration-500">
+                                <!-- Prompt Text with Blur Wrapper -->
+                                <div id="prompt-blur-wrapper" class="transition-all duration-500 relative">
                                     <div class="flex justify-between items-end mb-4">
                                         <label class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Estructura Optimizada</label>
                                         <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 flex items-center gap-1.5 shadow-sm">
@@ -220,15 +228,15 @@
                                     <div id="detail-prompt-rendered" class="font-mono text-[15px] leading-relaxed text-slate-800 whitespace-pre-wrap"></div>
                                 </div>
 
-                                <!-- BLOCKED TEASER OVERLAY -->
-                                <div id="locked-teaser" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center backdrop-blur-[2px] bg-white/60 transition-all duration-500">
-                                    <div class="bg-white/90 p-6 rounded-2xl shadow-2xl border border-white/50 text-center transform scale-100 hover:scale-105 transition-transform duration-300">
+                                <!-- BLOCKED TEASER OVERLAY (Centered on prompt) -->
+                                <div id="locked-teaser" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center transition-all duration-500">
+                                    <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-2xl border border-white/50 text-center transform scale-100 hover:scale-105 transition-transform duration-300 ring-1 ring-slate-200">
                                         <div class="w-14 h-14 bg-gradient-to-br from-slate-800 to-black rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4 rotate-3 text-yellow-400">
                                             <span class="material-symbols-rounded text-3xl">lock</span>
                                         </div>
-                                        <h3 class="text-lg font-black text-slate-900 mb-1">Prompt Bloqueado</h3>
-                                        <p class="text-xs text-slate-500 mb-4 max-w-[200px] leading-relaxed mx-auto">Esta técnica avanzada es exclusiva para miembros de la Bóveda.</p>
-                                        <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-indigo-200/50 text-xs w-full">
+                                        <h3 class="text-lg font-black text-slate-900 mb-1">Fórmula Secreta</h3>
+                                        <p class="text-xs text-slate-500 mb-4 max-w-[200px] leading-relaxed mx-auto">Mira el resultado abajo, pero la lógica exacta es exclusiva.</p>
+                                        <button onclick="openPaywall()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-indigo-200/50 text-xs w-full transition-all hover:-translate-y-0.5">
                                             DESBLOQUEAR AHORA
                                         </button>
                                     </div>
@@ -237,8 +245,8 @@
 
                             <!-- Footer Actions & Legend -->
                             <div class="p-6 md:p-8 bg-white flex-1 flex flex-col gap-6">
-                                <!-- Legend -->
-                                <div id="interactive-legend" class="flex flex-wrap gap-2">
+                                <!-- Interactive Legend -->
+                                <div id="interactive-legend" class="flex flex-wrap gap-2 select-none">
                                     <span class="legend-item cursor-pointer text-[10px] px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-slate-500 hover:border-blue-300 hover:text-blue-600 transition-all shadow-sm font-bold" data-type="r">● Rol</span>
                                     <span class="legend-item cursor-pointer text-[10px] px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-slate-500 hover:border-emerald-300 hover:text-emerald-600 transition-all shadow-sm font-bold" data-type="c">● Contexto</span>
                                     <span class="legend-item cursor-pointer text-[10px] px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-slate-500 hover:border-amber-300 hover:text-amber-600 transition-all shadow-sm font-bold" data-type="m">● Meta</span>
@@ -258,10 +266,15 @@
                                     </div>
                                 </div>
 
-                                <!-- Result -->
-                                <div class="pt-2">
+                                <!-- Result (Always Visible even if Locked) -->
+                                <div class="pt-2 relative">
                                     <div class="text-[10px] font-bold text-indigo-400 uppercase mb-2 flex gap-1.5 items-center tracking-wider"><span class="material-symbols-rounded text-sm">auto_awesome</span> Resultado Esperado</div>
                                     <div id="good-result-preview" class="text-sm text-slate-600 leading-relaxed font-medium bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-inner"></div>
+                                    
+                                    <!-- Result Teaser Label if Locked -->
+                                    <div id="result-teaser-label" class="hidden absolute top-2 right-2 bg-yellow-100 text-yellow-800 text-[9px] font-bold px-2 py-0.5 rounded border border-yellow-200">
+                                        MUESTRA GRATIS
+                                    </div>
                                 </div>
                             </div>
 
@@ -269,7 +282,7 @@
                             <div class="sticky bottom-0 bg-white border-t border-slate-100 p-4 flex justify-between items-center z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
                                 <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
                                     <span class="material-symbols-rounded text-orange-500 animate-pulse text-sm">local_fire_department</span> 
-                                    Usado <span id="social-counter" class="text-slate-900 font-bold">342</span> veces hoy
+                                    Usado <span id="social-counter" class="text-slate-900 font-bold">...</span> veces hoy
                                 </div>
                                 <button id="copy-btn" onclick="copyPrompt()" class="bg-slate-900 hover:bg-slate-800 text-white pl-5 pr-6 py-2.5 rounded-xl font-bold shadow-lg shadow-slate-300/50 text-xs flex items-center gap-2 transform transition-all hover:-translate-y-0.5 active:translate-y-0">
                                     <span class="material-symbols-rounded text-lg">content_copy</span> COPIAR PROMPT
@@ -410,13 +423,7 @@
             updateTotalCounter();
             startCountdown();
             startSocialProof();
-            setupLegendInteractions();
-
-            // Inicializar contador social con un número aleatorio realista
-            const socialCounter = document.getElementById('social-counter');
-            if(socialCounter) {
-                socialCounter.innerText = Math.floor(Math.random() * (500 - 200) + 200);
-            }
+            setupLegendInteractions(); // Initialize magic hover
 
             const first = casesData[0];
             if(first) loadCase(first.id);
@@ -477,6 +484,14 @@
             if(!c) return;
 
             currentDifficulty = c.difficulty || 'beginner';
+
+            // Reset Social Proof Counter specific to prompt ID
+            const socialCounter = document.getElementById('social-counter');
+            if(socialCounter) {
+                // Formula: ID * 4.2 rounded
+                const count = Math.floor(c.id * 4.2);
+                socialCounter.innerText = count.toLocaleString();
+            }
 
             document.querySelectorAll('.case-item').forEach(el => {
                 el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
@@ -540,24 +555,30 @@
             const lockOverlay = document.getElementById('locked-teaser');
             const blurWrapper = document.getElementById('prompt-blur-wrapper');
             const copyBtn = document.getElementById('copy-btn');
+            const resultTeaser = document.getElementById('result-teaser-label');
             
             // Está bloqueado solo si es premium Y el interruptor global está activo
             const isReallyLocked = c.locked && isGlobalLocked;
 
             if(isReallyLocked) {
                 lockOverlay.classList.remove('hidden');
-                blurWrapper.classList.add('blur-content');
+                blurWrapper.classList.add('blur-prompt'); // Use blur-prompt class for cleaner effect
                 copyBtn.disabled = true;
                 copyBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">lock</span> BLOQUEADO';
+                resultTeaser.classList.remove('hidden');
             } else {
                 lockOverlay.classList.add('hidden');
-                blurWrapper.classList.remove('blur-content');
+                blurWrapper.classList.remove('blur-prompt');
                 copyBtn.disabled = false;
                 copyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                 copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">content_copy</span> COPIAR PROMPT';
+                resultTeaser.classList.add('hidden');
             }
             
+            // Reiniciar efectos de hover
+            setupMagicHover();
+
             // Mantener modo de vista actual o resetear a básico
             setMode(currentViewMode);
         }
@@ -610,6 +631,7 @@
             Object.keys(tags).forEach(t => {
                 const className = `hl-${tags[t]}`;
                 const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
+                // Added data-tag-type attribute for hover logic
                 renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
             });
             renderedAgia = renderedAgia.replace(/\n/g, '<br>');
@@ -624,21 +646,67 @@
             document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
         }
 
+        // New Logic: Bidirectional Magic Hover
+        function setupMagicHover() {
+            // Wait for DOM update
+            setTimeout(() => {
+                const promptSpans = document.querySelectorAll('#detail-prompt-rendered .hl-tag');
+                const legendItems = document.querySelectorAll('.legend-item');
+
+                // 1. Legend -> Prompt
+                legendItems.forEach(item => {
+                    item.addEventListener('mouseenter', () => {
+                        const type = item.dataset.type;
+                        // Highlight prompt spans
+                        promptSpans.forEach(span => {
+                            if (span.dataset.tagType === type) {
+                                span.classList.add('highlighted');
+                            } else {
+                                span.classList.add('dimmed');
+                            }
+                        });
+                        // Dim other legend items
+                        legendItems.forEach(li => { if (li !== item) li.classList.add('dimmed'); });
+                    });
+
+                    item.addEventListener('mouseleave', () => {
+                        promptSpans.forEach(span => {
+                            span.classList.remove('highlighted', 'dimmed');
+                        });
+                        legendItems.forEach(li => li.classList.remove('dimmed'));
+                    });
+                });
+
+                // 2. Prompt -> Legend
+                promptSpans.forEach(span => {
+                    span.addEventListener('mouseenter', () => {
+                        const type = span.dataset.tagType;
+                        // Highlight legend item
+                        legendItems.forEach(li => {
+                            if (li.dataset.type === type) {
+                                li.classList.add('highlighted');
+                            } else {
+                                li.classList.add('dimmed');
+                            }
+                        });
+                        // Dim other prompt spans
+                        promptSpans.forEach(s => { if (s !== span) s.classList.add('dimmed'); });
+                    });
+
+                    span.addEventListener('mouseleave', () => {
+                        legendItems.forEach(li => {
+                            li.classList.remove('highlighted', 'dimmed');
+                        });
+                        promptSpans.forEach(s => s.classList.remove('dimmed'));
+                    });
+                });
+            }, 100);
+        }
+
+        // Renamed from setupLegendInteractions to be clearer, though kept for legacy if needed, 
+        // updated content inside setupMagicHover is more robust.
         function setupLegendInteractions() {
-            const legendContainer = document.getElementById('interactive-legend');
-            if(!legendContainer) return;
-            legendContainer.addEventListener('mouseover', (e) => {
-                const item = e.target.closest('.legend-item');
-                if(!item) return;
-                const type = item.dataset.type;
-                document.querySelectorAll(`.hl-tag[data-tag-type="${type}"]`).forEach(el => el.classList.add('hl-active'));
-            });
-            legendContainer.addEventListener('mouseout', (e) => {
-                const item = e.target.closest('.legend-item');
-                if(!item) return;
-                const type = item.dataset.type;
-                document.querySelectorAll(`.hl-tag[data-tag-type="${type}"]`).forEach(el => el.classList.remove('hl-active'));
-            });
+            setupMagicHover(); 
         }
 
         function copyPrompt() {
