@@ -254,8 +254,9 @@
                                 <div id="prompt-blur-wrapper" class="transition-all duration-500 relative">
                                     <div class="flex justify-between items-end mb-4">
                                         <label class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Estructura Optimizada</label>
-                                        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 flex items-center gap-1.5 shadow-sm">
-                                            <span class="material-symbols-rounded text-sm">bolt</span> High Performance
+                                        <!-- Dynamic Benefit Badge -->
+                                        <span id="benefit-badge" class="text-[10px] font-bold px-2.5 py-1 rounded-md border flex items-center gap-1.5 shadow-sm">
+                                            <span class="material-symbols-rounded text-sm">bolt</span> Loading...
                                         </span>
                                     </div>
                                     
@@ -596,12 +597,8 @@
             currentDifficulty = c.difficulty || 'beginner';
 
             // Reset Social Proof Counter specific to prompt ID
-            const socialCounter = document.getElementById('social-counter');
-            if(socialCounter) {
-                // Formula: ID * 0.2 rounded
-                const count = Math.floor(c.id * 0.2);
-                socialCounter.innerText = count.toLocaleString();
-            }
+            // Removed static formula ID * 0.2
+            // Now logic is handled in the text randomizer below
 
             document.querySelectorAll('.case-item').forEach(el => {
                 el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
@@ -637,6 +634,21 @@
             } else {
                 aiBadge.classList.add('hidden');
                 aiBadge.classList.remove('flex');
+            }
+
+            // Benefit Badge Logic
+            const benefitBadge = document.getElementById('benefit-badge');
+            if (benefitBadge) {
+                if (currentDifficulty === 'beginner') {
+                    benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">bolt</span> Ahorro: ~15 min';
+                    benefitBadge.className = "text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 flex items-center gap-1.5 shadow-sm";
+                } else if (currentDifficulty === 'intermediate') {
+                    benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">rocket_launch</span> Ahorro: ~45 min';
+                    benefitBadge.className = "text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100 flex items-center gap-1.5 shadow-sm";
+                } else {
+                    benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">diamond</span> Ahorro: +2 Horas';
+                    benefitBadge.className = "text-[10px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-100 flex items-center gap-1.5 shadow-sm";
+                }
             }
 
             const tipContainer = document.getElementById('tip-container');
