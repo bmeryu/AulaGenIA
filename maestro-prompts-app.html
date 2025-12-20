@@ -15,8 +15,6 @@
     <style>
         :root {
             --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --accent: #8b5cf6;
             --bg-canvas: #f8fafc;
         }
 
@@ -29,35 +27,23 @@
         
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* Custom Scrollbar - Minimalist & Thin for internal panels */
         .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* Animations */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
-        /* Glass Effect */
         .glass-panel {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
-        /* Tags Compactas */
         .hl-tag { 
-            display: inline-flex; 
-            align-items: center;
-            padding: 1px 5px; 
-            border-radius: 4px; 
-            margin: 0 2px; 
-            font-weight: 700; 
-            font-size: 0.85em; 
-            cursor: default; 
-            border: 1px solid transparent;
+            display: inline-flex; align-items: center; padding: 1px 5px; border-radius: 4px; margin: 0 2px; 
+            font-weight: 700; font-size: 0.85em; cursor: default; border: 1px solid transparent;
         }
         
         .hl-rol { color: #1e40af; background: #eff6ff; border-color: #dbeafe; }
@@ -66,30 +52,23 @@
         .hl-restricciones { color: #991b1b; background: #fef2f2; border-color: #fee2e2; }
         .hl-formato { color: #6b21a8; background: #faf5ff; border-color: #f3e8ff; }
 
-        .var-highlight { 
-            background-color: #e0f2fe; 
-            border-bottom: 2px solid #0284c7; 
-            color: #0c4a6e; 
-            font-weight: 700;
-            padding: 0 4px;
-            border-radius: 4px;
-        }
-        
-        .var-highlight-bad {
-            background-color: #f1f5f9;
-            border-bottom: 2px dotted #94a3b8;
-            color: #64748b;
-            font-weight: 600;
-            padding: 0 2px;
-        }
+        .var-highlight { background-color: #e0f2fe; border-bottom: 2px solid #0284c7; color: #0c4a6e; font-weight: 700; padding: 0 4px; border-radius: 4px; }
+        .var-highlight-bad { background-color: #f1f5f9; border-bottom: 2px dotted #94a3b8; color: #64748b; font-weight: 600; padding: 0 2px; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        ::selection { background: #818cf8; color: white; }
+        
+        /* Expandable Prompt Logic */
+        .prompt-collapsed { max-height: 200px; overflow: hidden; position: relative; }
+        .prompt-collapsed::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+            background: linear-gradient(to bottom, transparent, #f8fafc); pointer-events: none;
+        }
+        .prompt-expanded { max-height: none; overflow: visible; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
 
-    <!-- OVERLAY LOADING -->
+    <!-- LOADING OVERLAY -->
     <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-white/90 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500">
         <div class="bg-white p-8 rounded-[2rem] shadow-2xl shadow-slate-200 border border-slate-100 max-w-md w-full animate-in zoom-in duration-300">
             <div id="status-icon" class="w-12 h-12 bg-white border border-slate-100 text-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
@@ -105,19 +84,7 @@
         </div>
     </div>
 
-    <!-- MINI BANNER (Slim) -->
-    <div id="sticky-banner" class="bg-slate-900 text-white py-1 px-4 flex justify-center items-center gap-4 text-[10px] z-50 flex-none border-b border-indigo-500/30">
-        <div class="flex items-center gap-1.5 opacity-90">
-            <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-            <span class="font-bold tracking-wide">Masterclass Ingeniería de Prompts</span>
-        </div>
-        <div class="flex items-center gap-2">
-            <div class="font-mono font-bold text-yellow-300" id="countdown">14:59</div>
-            <button onclick="openPaywall()" class="text-yellow-300 hover:text-yellow-200 font-bold underline decoration-yellow-500/50">VER OFERTA</button>
-        </div>
-    </div>
-
-    <!-- COMPACT HEADER -->
+    <!-- HEADER -->
     <header class="bg-white border-b border-slate-200 z-30 flex-none h-14">
         <div class="h-full px-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -128,12 +95,13 @@
                 </div>
             </div>
             
-            <!-- Category Nav (Compact) -->
-            <div class="hidden md:flex flex-1 mx-6 space-x-1 overflow-x-auto no-scrollbar mask-gradient-r" id="category-nav">
-                <!-- JS Injected -->
-            </div>
+            <div class="hidden md:flex flex-1 mx-6 space-x-1 overflow-x-auto no-scrollbar mask-gradient-r" id="category-nav"></div>
 
             <div class="flex gap-2">
+                <!-- NEW DOWNLOAD BUTTON -->
+                <button onclick="downloadPDF()" class="hidden md:flex text-slate-500 hover:text-indigo-600 transition-colors items-center gap-2 text-xs font-bold px-3 py-1.5 border border-slate-200 rounded-lg hover:border-indigo-200">
+                    <span class="material-symbols-rounded text-base">download</span> <span class="hidden lg:inline">Descargar Bóveda</span>
+                </button>
                 <button onclick="showTutorial()" class="text-slate-400 hover:text-indigo-600 transition-colors p-1.5">
                     <span class="material-symbols-rounded text-xl">help</span>
                 </button>
@@ -145,10 +113,10 @@
         </div>
     </header>
 
-    <!-- MAIN APP LAYOUT (NO BODY SCROLL) -->
+    <!-- APP LAYOUT -->
     <div class="flex flex-1 overflow-hidden w-full relative bg-slate-50">
         
-        <!-- SIDEBAR (Compact) -->
+        <!-- SIDEBAR -->
         <aside class="w-full md:w-64 lg:w-72 flex flex-col bg-white border-r border-slate-200 z-20 flex-none absolute md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300" id="sidebar">
             <div class="p-3 border-b border-slate-100">
                 <div class="relative group">
@@ -158,6 +126,14 @@
                         onkeyup="filterCases()">
                 </div>
             </div>
+            
+            <!-- COMPLEXITY LEGEND (NEW) -->
+            <div class="bg-slate-50 px-3 py-2 border-b border-slate-100 flex justify-between items-center text-[9px] text-slate-500 font-medium">
+                <div class="flex items-center gap-1" title="Simple: Ahorra ~2 HH"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 2h</div>
+                <div class="flex items-center gap-1" title="Medio: Ahorra ~5-10 HH"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> 10h</div>
+                <div class="flex items-center gap-1" title="Complejo: Ahorra ~20+ HH"><span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span> 20h+</div>
+            </div>
+
             <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list"></div>
             <div class="p-2 border-t border-slate-100 bg-slate-50/50 text-[10px] text-slate-400 flex justify-between px-3 font-medium">
                 <span>Estado: Online</span>
@@ -165,25 +141,20 @@
             </div>
         </aside>
 
-        <!-- WORKSPACE (DASHBOARD STYLE) -->
+        <!-- WORKSPACE -->
         <main class="flex-1 flex flex-col overflow-hidden relative w-full h-full bg-slate-100/50">
-            
-            <!-- Empty State -->
             <div id="workspace-empty" class="hidden flex-col items-center justify-center h-full text-center p-8">
                 <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-4 shadow-xl text-indigo-200"><span class="material-symbols-rounded text-5xl">compare_arrows</span></div>
                 <h3 class="text-lg font-bold text-slate-800">Selecciona un caso</h3>
                 <p class="text-xs text-slate-500">Comienza tu comparativa en el menú lateral.</p>
             </div>
 
-            <!-- CONTENT WRAPPER (Fixes Height) -->
             <div id="case-detail" class="flex flex-col h-full w-full p-4 gap-4 overflow-hidden">
-                
-                <!-- 1. TOP BAR (Título y Contexto) - Compacto -->
+                <!-- TOP BAR -->
                 <div class="flex-none bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between gap-4">
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center gap-2 mb-0.5">
                             <span id="detail-category-badge" class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-slate-50 text-slate-600 border-slate-200">CAT</span>
-                            <!-- AI Badge -->
                             <div id="ai-suggestion-badge" class="hidden text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-indigo-50 text-indigo-700 border-indigo-100 items-center gap-1">
                                 <span class="material-symbols-rounded text-[10px]">smart_toy</span>
                                 <span id="ai-name">IA</span>
@@ -200,10 +171,9 @@
                     </div>
                 </div>
 
-                <!-- 2. SPLIT VIEW (Ocupa todo el alto restante) -->
+                <!-- SPLIT VIEW -->
                 <div class="flex-1 flex flex-col lg:flex-row gap-4 min-h-0">
-                    
-                    <!-- LEFT: THE BAD WAY -->
+                    <!-- LEFT -->
                     <div class="flex-1 flex flex-col bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm h-full">
                         <div class="bg-slate-50/80 px-4 py-2 border-b border-slate-100 flex justify-between items-center flex-none h-10">
                             <div class="flex items-center gap-2 text-slate-500">
@@ -211,8 +181,6 @@
                                 <span class="text-[10px] font-bold uppercase tracking-widest">Método Común</span>
                             </div>
                         </div>
-                        
-                        <!-- Contenido Scrolleable -->
                         <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-4">
                             <div>
                                 <label class="text-[9px] font-bold text-slate-400 uppercase mb-1.5 block">Prompt (Novato)</label>
@@ -225,9 +193,8 @@
                         </div>
                     </div>
 
-                    <!-- RIGHT: THE AGIA WAY (Hero) -->
+                    <!-- RIGHT (AGIA PRO) -->
                     <div class="flex-1 flex flex-col bg-white rounded-xl border border-indigo-200 overflow-hidden shadow-lg shadow-indigo-100 relative h-full ring-1 ring-indigo-50">
-                        <!-- Header Pro -->
                         <div class="bg-gradient-to-r from-indigo-600 to-violet-700 text-white px-4 py-2 flex justify-between items-center flex-none h-10">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-rounded text-base">verified</span>
@@ -238,20 +205,27 @@
                             </button>
                         </div>
 
-                        <!-- Contenido Scrolleable Principal -->
                         <div class="flex-1 overflow-y-auto custom-scroll p-0 relative flex flex-col">
-                            <!-- Code Area -->
-                            <div class="relative bg-slate-50 p-4 border-b border-indigo-50 flex-1 min-h-[200px]">
+                            <!-- Code Area with Expand Logic -->
+                            <div class="relative bg-slate-50 p-4 border-b border-indigo-50 flex-none group/expand">
                                 <div class="flex justify-between items-end mb-2">
                                     <label class="text-[9px] font-bold text-indigo-500 uppercase">Estructura Optimizada</label>
                                     <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 flex items-center gap-1"><span class="material-symbols-rounded text-[10px]">bolt</span> High Performance</span>
                                 </div>
-                                <div id="detail-prompt-rendered" class="font-mono text-sm leading-relaxed text-slate-800 whitespace-pre-wrap"></div>
+                                
+                                <!-- EXPANDABLE CONTAINER -->
+                                <div id="prompt-container" class="prompt-collapsed transition-all duration-300">
+                                    <div id="detail-prompt-rendered" class="font-mono text-sm leading-relaxed text-slate-800 whitespace-pre-wrap pb-2"></div>
+                                </div>
+                                
+                                <!-- EXPAND BUTTON -->
+                                <button id="expand-btn" onclick="togglePrompt()" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 bg-white border border-slate-200 text-indigo-600 text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-1">
+                                    <span class="material-symbols-rounded text-sm">unfold_more</span> Ver Completo
+                                </button>
                             </div>
 
                             <!-- Specs & Result -->
-                            <div class="bg-white p-4 space-y-4">
-                                <!-- Legend -->
+                            <div class="bg-white p-4 space-y-4 flex-1">
                                 <div id="interactive-legend" class="flex flex-wrap gap-2">
                                     <span class="legend-item cursor-pointer text-[10px] px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-slate-500 hover:border-blue-300 hover:text-blue-600 transition-colors" data-type="r">● Rol</span>
                                     <span class="legend-item cursor-pointer text-[10px] px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-slate-500 hover:border-emerald-300 hover:text-emerald-600 transition-colors" data-type="c">● Contexto</span>
@@ -260,7 +234,6 @@
                                     <span class="legend-item cursor-pointer text-[10px] px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-slate-500 hover:border-purple-300 hover:text-purple-600 transition-colors" data-type="f">● Formato</span>
                                 </div>
 
-                                <!-- Tech Specs (Recovered) -->
                                 <div id="tech-specs" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t border-slate-100">
                                     <div id="tip-container" class="hidden bg-amber-50 rounded-lg p-2.5 border border-amber-100">
                                         <div class="flex items-center gap-1.5 mb-1 text-amber-600"><span class="material-symbols-rounded text-sm">lightbulb</span><span class="text-[9px] font-bold uppercase">Ingeniería</span></div>
@@ -272,7 +245,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Result -->
                                 <div class="pt-2">
                                     <div class="text-[9px] font-bold text-indigo-400 uppercase mb-1.5 flex gap-1 items-center"><span class="material-symbols-rounded text-xs">auto_awesome</span> Resultado Esperado</div>
                                     <div id="good-result-preview" class="text-xs text-slate-600 leading-relaxed font-medium bg-slate-50 p-2.5 rounded-lg border border-slate-100"></div>
@@ -280,7 +252,6 @@
                             </div>
                         </div>
 
-                        <!-- Lock Overlay -->
                         <div id="premium-lock" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center glass-panel text-center p-6">
                             <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center shadow-xl mb-3 rotate-6 text-white"><span class="material-symbols-rounded text-2xl">lock</span></div>
                             <h3 class="text-lg font-black text-slate-900 mb-1">Contenido VIP</h3>
@@ -292,7 +263,7 @@
         </main>
     </div>
 
-    <!-- TOAST & MODALS (Same logic, z-index high) -->
+    <!-- MODALS & TOAST -->
     <div id="toast" class="fixed bottom-8 right-8 z-[60] transform translate-x-full transition-all duration-300">
         <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700">
             <span class="material-symbols-rounded text-green-400">check_circle</span>
@@ -411,6 +382,8 @@
             window.closePaywall = closePaywall;
             window.showTutorial = showTutorial;
             window.closeTutorial = closeTutorial;
+            window.togglePrompt = togglePrompt;
+            window.downloadPDF = downloadPDF;
 
             renderCategories();
             renderList(casesData);
@@ -452,7 +425,6 @@
             badge.innerText = cat.label;
             badge.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${cat.color}-600 border-${cat.color}-100`;
 
-            // Logic to restore AI & Tech Specs
             const aiBadge = document.getElementById('ai-suggestion-badge');
             const aiName = document.getElementById('ai-name');
             if (c.suggestedAI) {
@@ -470,19 +442,8 @@
             const tipText = document.getElementById('detail-example-tip');
             const valText = document.getElementById('detail-validation-tip');
 
-            if (c.exampleTip) {
-                tipText.innerHTML = c.exampleTip;
-                tipContainer.classList.remove('hidden');
-            } else {
-                tipContainer.classList.add('hidden');
-            }
-
-            if (c.validationTip) {
-                valText.innerHTML = c.validationTip;
-                validationContainer.classList.remove('hidden');
-            } else {
-                validationContainer.classList.add('hidden');
-            }
+            if (c.exampleTip) { tipText.innerHTML = c.exampleTip; tipContainer.classList.remove('hidden'); } else { tipContainer.classList.add('hidden'); }
+            if (c.validationTip) { valText.innerHTML = c.validationTip; validationContainer.classList.remove('hidden'); } else { validationContainer.classList.add('hidden'); }
 
             currentPromptTemplate = c.agiaPromptTagged;
             currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
@@ -497,10 +458,84 @@
             }
 
             renderPrompts(c.locked);
+            resetPromptView(); // Reset box size on load
             
             const lockOverlay = document.getElementById('premium-lock');
             if(c.locked) lockOverlay.classList.remove('hidden');
             else lockOverlay.classList.add('hidden');
+        }
+
+        // Logic for Expandable Box
+        function resetPromptView() {
+            const container = document.getElementById('prompt-container');
+            const btn = document.getElementById('expand-btn');
+            container.classList.remove('prompt-expanded');
+            container.classList.add('prompt-collapsed');
+            
+            // If content is short, hide button
+            setTimeout(() => {
+                if(container.scrollHeight <= 200) {
+                    btn.classList.add('hidden');
+                    container.classList.remove('prompt-collapsed'); // Remove fade
+                } else {
+                    btn.classList.remove('hidden');
+                    btn.innerHTML = '<span class="material-symbols-rounded text-sm">unfold_more</span> Ver Completo';
+                }
+            }, 50);
+        }
+
+        function togglePrompt() {
+            const container = document.getElementById('prompt-container');
+            const btn = document.getElementById('expand-btn');
+            
+            if (container.classList.contains('prompt-collapsed')) {
+                container.classList.remove('prompt-collapsed');
+                container.classList.add('prompt-expanded');
+                btn.innerHTML = '<span class="material-symbols-rounded text-sm">unfold_less</span> Ver Menos';
+            } else {
+                container.classList.remove('prompt-expanded');
+                container.classList.add('prompt-collapsed');
+                btn.innerHTML = '<span class="material-symbols-rounded text-sm">unfold_more</span> Ver Completo';
+                // Scroll back to top of section gently
+                document.querySelector('.group\\/expand').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function downloadPDF() {
+            // Generates a print-friendly page
+            const printContent = `
+                <html>
+                <head>
+                    <title>Bóveda de Prompts AGIA</title>
+                    <style>
+                        body { font-family: sans-serif; padding: 40px; color: #333; }
+                        h1 { text-align: center; color: #4f46e5; }
+                        .case { border-bottom: 1px solid #ddd; padding: 20px 0; page-break-inside: avoid; }
+                        .title { font-weight: bold; font-size: 1.2em; margin-bottom: 5px; }
+                        .meta { font-size: 0.8em; color: #666; margin-bottom: 10px; }
+                        .prompt-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; margin-top: 10px; font-size: 0.9em; }
+                        .label { font-weight: bold; font-size: 0.8em; text-transform: uppercase; color: #4f46e5; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Bóveda Maestra AGIA - Reporte Completo</h1>
+                    <p style="text-align:center; font-size:0.9em; color:#666;">Generado el ${new Date().toLocaleDateString()}</p>
+                    ${casesData.map(c => `
+                        <div class="case">
+                            <div class="title">${c.title}</div>
+                            <div class="meta">Categoría: ${c.category.toUpperCase()} | Nivel: ${c.difficulty.toUpperCase()}</div>
+                            <p>${c.problem}</p>
+                            <div class="label">Prompt Optimizado:</div>
+                            <div class="prompt-box">${c.agiaPromptTagged.replace(/{[a-z]+\}|{\/[a-z]+\}/g, '')}</div>
+                        </div>
+                    `).join('')}
+                    <script>window.onload = function() { window.print(); }</sc`+`ript>
+                </body>
+                </html>
+            `;
+            const win = window.open('', '_blank');
+            win.document.write(printContent);
+            win.document.close();
         }
 
         function renderPrompts(isLocked) {
@@ -605,7 +640,15 @@
                 return;
             }
             
-            list.innerHTML = cases.map(c => `
+            list.innerHTML = cases.map(c => {
+                // Logic to set color and title for complexity
+                let dotColor = 'bg-slate-300';
+                let tooltip = 'Desconocido';
+                if(c.difficulty === 'beginner') { dotColor = 'bg-emerald-400'; tooltip = 'Simple: Ahorra ~2 HH'; }
+                else if(c.difficulty === 'intermediate') { dotColor = 'bg-amber-400'; tooltip = 'Medio: Ahorra ~5-10 HH'; }
+                else if(c.difficulty === 'advanced') { dotColor = 'bg-rose-400'; tooltip = 'Complejo: Ahorra ~20+ HH'; }
+
+                return `
                 <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item group p-3 rounded-lg cursor-pointer hover:bg-slate-50 hover:shadow-sm transition-all border border-transparent hover:border-indigo-100 relative mb-1">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-colors shadow-sm shrink-0">
@@ -614,14 +657,14 @@
                         <div class="flex-1 min-w-0">
                             <h4 class="text-xs font-bold truncate transition-colors text-slate-700 group-hover:text-indigo-900">${c.title}</h4>
                             <div class="flex items-center gap-1.5 mt-0.5">
-                                <span class="w-1.5 h-1.5 rounded-full ${c.difficulty === 'beginner' ? 'bg-emerald-400' : c.difficulty === 'intermediate' ? 'bg-amber-400' : 'bg-rose-400'}"></span>
+                                <span class="w-1.5 h-1.5 rounded-full ${dotColor}" title="${tooltip}"></span>
                                 <span class="text-[10px] text-slate-400 capitalize truncate font-medium">${c.category}</span>
                             </div>
                         </div>
                         ${c.locked ? '<span class="material-symbols-rounded text-xs text-slate-300">lock</span>' : ''}
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
         
         function openPaywall() { document.getElementById('paywall-modal').classList.remove('hidden'); }
@@ -639,12 +682,7 @@
         }
 
         function startSocialProof() {
-            const buyers = [
-                "Carlos R.", "Ana M.", "StartUp Inc", "David L.", "Sofia P.", "Agencia Flow",
-                "Mario B.", "Lucia F.", "TechSolutions", "Javier G.", "Elena T.", "Roberto S.",
-                "Paula N.", "Growth Lab", "Fernando K.", "Valentina D.", "Andres M.", "Camila V."
-            ];
-            
+            const buyers = ["Carlos R.", "Ana M.", "StartUp Inc", "David L.", "Sofia P.", "Agencia Flow", "Mario B."];
             const locations = ["Madrid", "CDMX", "Santiago", "Bogotá", "Lima", "Miami", "Barcelona", "Buenos Aires", "Medellín"];
             const toast = document.getElementById('sales-toast');
 
@@ -661,9 +699,7 @@
                     </div>
                     <div>
                         <p class="text-xs text-slate-600 leading-tight"><span class="font-bold text-slate-900">${name}</span> compró Pack</p>
-                        <p class="text-[9px] text-slate-400 font-bold mt-0.5 flex items-center gap-1">
-                            ${timeAgo} • ${location}
-                        </p>
+                        <p class="text-[9px] text-slate-400 font-bold mt-0.5 flex items-center gap-1">${timeAgo} • ${location}</p>
                     </div>
                 </div>`;
                 
