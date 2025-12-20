@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aula Gen IA - Herramienta Maestra de Prompts</title>
+    <title>AGIA - Dashboard de Maestría en Prompts</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Alpine.js para interactividad (con defer para evitar errores de referencia) -->
+    <!-- Alpine.js -->
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -14,227 +14,227 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; }
         [x-cloak] { display: none !important; }
         
-        @keyframes slide-up {
-            0% { transform: translateY(20px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        .premium-card {
+            background: #ffffff;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .animate-slide-up { animation: slide-up 0.4s ease-out forwards; }
-        
-        .premium-shadow {
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05), 0 2px 10px -2px rgba(0, 0, 0, 0.02);
+        .premium-card:hover {
+            box-shadow: 0 20px 40px -4px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
         }
 
-        .scroll-hide::-webkit-scrollbar { display: none; }
-        .scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .thermometer-gradient {
+            background: linear-gradient(90deg, #ef4444 0%, #facc15 50%, #10b981 100%);
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-soft { animation: pulse-soft 2s infinite; }
+
+        .social-proof-enter { animation: slideInRight 0.5s ease-out; }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800" x-data="platformData">
+<body x-data="agiaPlatform" class="text-slate-900">
 
-    <!-- ONBOARDING INTERACTIVO -->
-    <div x-show="showOnboarding" x-cloak class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-white border border-white max-w-xl w-full rounded-[2.5rem] p-10 text-center relative overflow-hidden shadow-2xl animate-slide-up">
-            <div class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
+    <!-- ONBOARDING MODAL -->
+    <div x-show="showOnboarding" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md"></div>
+        <div class="bg-white max-w-2xl w-full rounded-[3rem] p-12 relative shadow-2xl overflow-hidden">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-50 rounded-full -mr-32 -mt-32 blur-3xl"></div>
             
-            <!-- Pasos -->
-            <div x-show="onboardingStep < 3">
-                <div class="mb-8 flex justify-center">
-                    <div class="bg-emerald-50 w-20 h-20 rounded-3xl flex items-center justify-center">
-                        <template x-if="onboardingStep === 0"><i data-lucide="sparkles" class="w-10 h-10 text-yellow-500"></i></template>
-                        <template x-if="onboardingStep === 1"><i data-lucide="zap" class="w-10 h-10 text-emerald-500"></i></template>
-                        <template x-if="onboardingStep === 2"><i data-lucide="clock" class="w-10 h-10 text-blue-500"></i></template>
+            <div class="relative z-10">
+                <template x-if="onboardingStep < 3">
+                    <div class="text-center">
+                        <div class="inline-flex p-5 rounded-[2rem] bg-emerald-50 mb-8 text-emerald-600">
+                            <i :data-lucide="onboardingSteps[onboardingStep].icon" class="w-12 h-12"></i>
+                        </div>
+                        <h2 class="text-4xl font-black mb-4 tracking-tight" x-text="onboardingSteps[onboardingStep].title"></h2>
+                        <p class="text-slate-500 text-xl leading-relaxed mb-10" x-text="onboardingSteps[onboardingStep].content"></p>
                     </div>
-                </div>
+                </template>
 
-                <h2 class="text-3xl font-extrabold text-slate-900 mb-4" x-text="onboardingSteps[onboardingStep].title"></h2>
-                <p class="text-slate-500 text-lg mb-8 leading-relaxed px-4" x-text="onboardingSteps[onboardingStep].content"></p>
-            </div>
+                <template x-if="onboardingStep === 3">
+                    <div class="text-center">
+                        <h2 class="text-3xl font-black mb-6 uppercase tracking-widest text-emerald-600">Mira el superpoder en acción</h2>
+                        <div class="aspect-video bg-slate-900 rounded-[2rem] mb-8 flex items-center justify-center border-4 border-slate-100 shadow-inner group cursor-pointer">
+                            <i data-lucide="play" class="w-16 h-16 text-white group-hover:scale-125 transition-transform"></i>
+                            <span class="absolute text-slate-400 mt-24 text-xs font-bold uppercase tracking-tighter">[ Haz clic para ver el Video Tutorial ]</span>
+                        </div>
+                    </div>
+                </template>
 
-            <!-- Paso de Video -->
-            <div x-show="onboardingStep === 3">
-                <h2 class="text-2xl font-bold text-slate-900 mb-4">Mira la Magia en Acción</h2>
-                <div class="aspect-video bg-slate-100 rounded-2xl mb-6 flex items-center justify-center overflow-hidden border border-slate-200">
-                    <p class="text-slate-400 font-medium">[Espacio para tu Video de YouTube/Vimeo]</p>
+                <div class="flex flex-col gap-4">
+                    <button @click="nextOnboarding()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-5 rounded-2xl text-xl shadow-xl shadow-emerald-500/20 transition-all active:scale-95 flex items-center justify-center gap-3">
+                        <span x-text="onboardingStep === 3 ? '¡ENTRAR AL AULA MAESTRA!' : 'SIGUIENTE PASO'"></span>
+                        <i data-lucide="arrow-right" class="w-6 h-6"></i>
+                    </button>
+                    <button @click="showOnboarding = false" class="text-slate-400 font-bold text-sm uppercase tracking-widest hover:text-slate-900 transition-colors">Saltar tutorial</button>
                 </div>
-            </div>
-            
-            <div class="flex flex-col gap-3">
-                <button @click="nextStep()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-2xl transition-all transform hover:scale-[1.02] flex items-center justify-center gap-3 shadow-xl shadow-emerald-500/20">
-                    <span x-text="onboardingStep === 3 ? 'Comenzar a Dominar la IA' : 'Siguiente Paso'"></span>
-                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                </button>
-                <button @click="showOnboarding = false" class="text-slate-400 text-sm font-semibold hover:text-slate-600 transition-colors">Omitir e ir a la herramienta</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE COMPRA / UPGRADE -->
-    <div x-show="showPurchaseModal" x-cloak class="fixed inset-0 z-[110] bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white max-w-lg w-full rounded-[3rem] p-10 relative shadow-2xl animate-slide-up">
-            <button @click="showPurchaseModal = false" class="absolute top-6 right-6 text-slate-300 hover:text-slate-900 transition-colors">
-                <i data-lucide="x" class="w-8 h-8"></i>
-            </button>
-            <div class="text-center">
-                <div class="bg-emerald-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i data-lucide="lock" class="text-emerald-500 w-10 h-10"></i>
-                </div>
-                <h2 class="text-3xl font-black text-slate-900 mb-2">Desbloquea el Nivel Maestro</h2>
-                <p class="text-slate-500 mb-8 font-medium">No dejes que el 90% de tu tiempo se pierda en resultados mediocres. Obtén la biblioteca completa por un precio ridículo.</p>
-                
-                <div class="bg-slate-50 rounded-3xl p-8 mb-8 text-left border border-slate-100 shadow-inner">
-                    <div class="flex justify-between items-end mb-6">
-                        <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Oferta de Lanzamiento</p>
-                            <p class="text-4xl font-black text-emerald-600 leading-none mt-1">$20 <span class="text-sm font-bold text-slate-400">USD</span></p>
-                        </div>
-                        <div class="text-right">
-                            <span class="bg-yellow-400 text-slate-900 text-[10px] font-black px-3 py-1 rounded-full uppercase">Acceso Vitalicio</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-3 text-slate-600 font-medium">
-                            <i data-lucide="check" class="w-5 h-5 text-emerald-500 mt-0.5"></i>
-                            <span>Acceso a +100 Prompts Maestros de nivel experto.</span>
-                        </li>
-                        <li class="flex items-start gap-3 text-slate-600 font-medium">
-                            <i data-lucide="check" class="w-5 h-5 text-emerald-500 mt-0.5"></i>
-                            <span>Curso Completo: "De Novato a Ingeniero de Prompts".</span>
-                        </li>
-                        <li class="flex items-start gap-3 text-slate-600 font-medium">
-                            <i data-lucide="check" class="w-5 h-5 text-emerald-500 mt-0.5"></i>
-                            <span>Sello de Certificación AGIA para tu LinkedIn.</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <a href="https://tu-link-de-pago.com" target="_blank" class="block w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-5 rounded-2xl text-xl transition-all shadow-2xl shadow-emerald-500/30 text-center transform hover:scale-[1.02]">
-                    ¡QUIERO MI ACCESO AHORA!
-                </a>
-                <p class="mt-6 text-xs text-slate-400 font-bold uppercase tracking-widest">Seguridad Garantizada • Pago Único</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- NOTIFICACIONES DE COMPRA (SOCIAL PROOF) -->
-    <div x-show="notification" x-cloak class="fixed bottom-6 left-6 z-[90] animate-bounce-in">
-        <div class="bg-white border border-emerald-100 p-4 rounded-2xl shadow-2xl flex items-center gap-4">
-            <div class="relative">
-                <div class="bg-emerald-500 w-12 h-12 rounded-xl flex items-center justify-center text-white">
-                    <i data-lucide="users" class="w-6 h-6"></i>
-                </div>
-                <div class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-white"></div>
+    <!-- NOTIFICACIÓN SOCIAL PROOF -->
+    <div x-show="notification" x-cloak class="fixed bottom-8 left-8 z-[90] social-proof-enter">
+        <div class="bg-white border border-slate-100 p-5 rounded-3xl shadow-2xl flex items-center gap-5">
+            <div class="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
+                <i data-lucide="shopping-cart" class="w-6 h-6"></i>
             </div>
             <div>
-                <p class="text-sm font-bold text-slate-900" x-text="notification?.name + ' de ' + notification?.city"></p>
-                <p class="text-[11px] text-emerald-600 font-bold uppercase tracking-tighter">Desbloqueó el Pack Maestro ($20)</p>
+                <p class="text-sm font-black text-slate-900" x-text="notification?.user"></p>
+                <p class="text-xs text-emerald-600 font-bold">Desbloqueó el curso AGIA ($20)</p>
+                <p class="text-[10px] text-slate-400 mt-0.5" x-text="notification?.time"></p>
             </div>
         </div>
     </div>
 
-    <!-- HEADER -->
-    <header class="border-b border-slate-200 bg-white/80 backdrop-blur-xl sticky top-0 z-40 px-4">
-        <div class="max-w-7xl mx-auto h-24 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center font-black text-white text-2xl shadow-lg shadow-emerald-500/20">A</div>
-                <div class="hidden sm:block">
-                    <h1 class="text-xl font-black tracking-tight text-slate-900 leading-none">AULA GEN IA</h1>
-                    <span class="text-[10px] text-emerald-600 font-black tracking-[0.2em] uppercase mt-1 block">Prompt Mastery Tool</span>
-                </div>
-            </div>
-
-            <!-- Buscador -->
-            <div class="flex-1 max-w-lg mx-8 hidden lg:block">
-                <div class="relative group">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-emerald-500 transition-colors"></i>
-                    <input type="text" x-model="searchTerm" placeholder="Busca una tarea (ej: ventas, correos, plan...)" class="w-full bg-slate-100 border-2 border-transparent rounded-2xl py-3 pl-12 pr-4 text-sm font-medium focus:outline-none focus:bg-white focus:border-emerald-500/20 transition-all text-slate-700">
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <button @click="showPurchaseModal = true" class="hidden md:flex items-center gap-2 text-slate-500 font-bold text-sm mr-4 hover:text-emerald-600 transition-colors">
-                    <i data-lucide="info" class="w-4 h-4"></i>
-                    Soporte
-                </button>
-                <button @click="showPurchaseModal = true" class="bg-slate-900 hover:bg-emerald-600 text-white px-7 py-3 rounded-2xl text-sm font-black transition-all shadow-xl shadow-slate-900/10 active:scale-95">
-                    Únete por $20
-                </button>
+    <!-- BARRA DE NAVEGACIÓN -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-8 h-24 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white font-black shadow-lg shadow-emerald-500/20 text-2xl">A</div>
+            <div>
+                <span class="block text-xl font-black tracking-tighter text-slate-900">AULA GEN IA</span>
+                <span class="block text-[10px] font-black text-emerald-600 uppercase tracking-[0.3em]">Professional Prompting</span>
             </div>
         </div>
-    </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div class="hidden lg:flex items-center bg-slate-50 rounded-2xl px-5 py-3 w-[400px] border border-slate-100 focus-within:border-emerald-500/30 focus-within:bg-white transition-all">
+            <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
+            <input type="text" x-model="searchTerm" placeholder="Busca un flujo de trabajo (ventas, copy, etc...)" class="bg-transparent border-none outline-none ml-3 w-full text-sm font-medium">
+        </div>
+
+        <div class="flex items-center gap-6">
+            <div class="hidden md:block text-right">
+                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Ahorro Promedio</span>
+                <span class="block text-emerald-600 font-black text-lg">+180 HH / Año</span>
+            </div>
+            <button @click="openPayment()" class="bg-slate-900 hover:bg-emerald-600 text-white px-8 py-3.5 rounded-2xl text-sm font-black shadow-xl shadow-slate-900/10 transition-all active:scale-95">
+                DESBLOQUEAR TODO ($20)
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-8 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
         
-        <!-- SIDEBAR DE NAVEGACIÓN -->
-        <aside class="lg:col-span-3 space-y-8">
-            <div class="bg-white p-4 rounded-[2rem] shadow-sm border border-slate-100">
-                <p class="px-4 py-3 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Categorías Maestras</p>
-                <nav class="space-y-2">
+        <!-- SIDEBAR -->
+        <aside class="lg:col-span-3 space-y-10">
+            <div>
+                <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6 px-2">Ecosistema AGIA</h3>
+                <div class="space-y-2">
                     <template x-for="cat in categories" :key="cat.id">
-                        <button @click="activeCategory = cat.id" :class="activeCategory === cat.id ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'text-slate-500 border-transparent hover:bg-slate-50'" class="w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all border font-bold text-sm">
-                            <i :data-lucide="cat.iconName" class="w-5 h-5"></i>
+                        <button @click="activeCategory = cat.id" 
+                                :class="activeCategory === cat.id ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'text-slate-500 border-transparent hover:bg-slate-50'"
+                                class="w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all border font-bold text-sm">
+                            <i :data-lucide="cat.icon" class="w-5 h-5"></i>
                             <span x-text="cat.name"></span>
                         </button>
                     </template>
-                </nav>
+                </div>
             </div>
 
-            <!-- Video Widget -->
-            <div class="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm relative overflow-hidden group">
-                <div class="absolute -bottom-10 -right-10 w-24 h-24 bg-emerald-50 rounded-full blur-2xl"></div>
-                <h4 class="font-black text-slate-900 text-sm mb-2">¿Cómo funciona AGIA?</h4>
-                <p class="text-xs text-slate-500 leading-relaxed mb-4">Aprende a hackear la IA para que trabaje por ti, no tú para ella.</p>
-                <button @click="onboardingStep = 3; showOnboarding = true" class="w-full bg-slate-50 group-hover:bg-emerald-500 group-hover:text-white py-3 rounded-xl flex items-center justify-center gap-2 text-xs font-bold text-slate-600 transition-all">
-                    <i data-lucide="play-circle" class="w-4 h-4"></i>
-                    Ver Tutorial
-                </button>
+            <!-- ROI WIDGET -->
+            <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-2xl">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-500/20 rounded-full blur-2xl"></div>
+                <h4 class="text-xs font-black text-emerald-400 uppercase tracking-widest mb-6">Calculadora de Valor</h4>
+                <div class="space-y-6 relative z-10">
+                    <div>
+                        <span class="block text-3xl font-black" x-text="totalHHSaved + ' HH'"></span>
+                        <span class="block text-xs text-slate-400 font-bold uppercase tracking-tight">Recuperadas hoy</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">Cada prompt maestro te ahorra un promedio de <strong class="text-white">6.5 horas</strong> de retrabajo y frustración.</p>
+                </div>
             </div>
         </aside>
 
-        <!-- CONTENIDO PRINCIPAL -->
+        <!-- DASHBOARD CENTRAL -->
         <div class="lg:col-span-9 space-y-12">
             
-            <!-- MAGIC TOOL: GENERADOR DE PROMPT MAESTRO -->
-            <section class="bg-white border-2 border-emerald-500/5 rounded-[2.5rem] p-10 shadow-xl relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-40 h-40 bg-yellow-400/10 rounded-full blur-[60px]"></div>
+            <!-- GADGET: INGENIERO DE PROMPTS INVISIBLE -->
+            <section class="premium-card rounded-[3rem] p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-400/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
                 
-                <div class="flex flex-col md:flex-row md:items-center gap-6 mb-10 relative z-10">
-                    <div class="bg-emerald-500 p-4 rounded-[1.5rem] shadow-lg shadow-emerald-500/20 text-white">
-                        <i data-lucide="zap" class="w-8 h-8"></i>
+                <div class="flex items-center gap-6 mb-10">
+                    <div class="bg-slate-900 text-white p-5 rounded-[1.8rem] shadow-xl">
+                        <i data-lucide="wand-2" class="w-8 h-8"></i>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tight">Generador de Estructura AGIA</h2>
-                        <p class="text-slate-500 font-medium">Escribe tu idea vaga y te daremos el esqueleto de un Prompt Maestro.</p>
+                        <h2 class="text-2xl font-black tracking-tight">INGENIERO INVISIBLE</h2>
+                        <p class="text-slate-500 font-medium">Escribe tu idea vaga y deja que el modelo AGIA la estructure.</p>
                     </div>
-                </div>
-                
-                <div class="flex flex-col md:flex-row gap-4 relative z-10">
-                    <input type="text" x-model="userPrompt" placeholder="Ej: Ayúdame a organizar mi agenda de trabajo..." class="flex-1 bg-slate-50 border-2 border-slate-100 rounded-2xl p-5 focus:outline-none focus:bg-white focus:border-emerald-500/30 transition-all text-slate-700 font-medium shadow-inner">
-                    <button @click="generateMagic()" :disabled="isGenerating || !userPrompt" class="bg-emerald-500 hover:bg-emerald-600 text-white font-black px-10 py-5 rounded-2xl transition-all flex items-center justify-center gap-3 disabled:opacity-50 shadow-2xl shadow-emerald-500/20 active:scale-95">
-                        <span x-text="isGenerating ? 'Estructurando...' : 'Optimizar Ahora'"></span>
-                        <i data-lucide="sparkles" class="w-6 h-6"></i>
-                    </button>
                 </div>
 
-                <!-- Resultado Generado -->
-                <div x-show="generatedMaster" x-transition class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10 animate-slide-up">
-                    <div class="bg-red-50/50 border border-red-100 rounded-3xl p-8">
-                        <p class="flex items-center gap-2 text-red-500 font-black text-xs uppercase tracking-widest mb-4">
-                            <i data-lucide="alert-circle" class="w-4 h-4"></i> Prompt Básico (Pobre)
-                        </p>
-                        <p class="text-slate-500 italic font-medium leading-relaxed" x-text="'&quot;' + (generatedMaster ? generatedMaster.basic : '') + '&quot;'"></p>
-                    </div>
-                    <div class="bg-emerald-50/50 border border-emerald-200 rounded-3xl p-8 relative group">
-                        <p class="flex items-center gap-2 text-emerald-600 font-black text-xs uppercase tracking-widest mb-4">
-                            <i data-lucide="check-circle" class="w-4 h-4"></i> Versión Maestra Sugerida
-                        </p>
-                        <div class="bg-white p-5 rounded-2xl text-[13px] font-mono text-slate-700 mb-6 border border-emerald-100 shadow-sm leading-relaxed whitespace-pre-wrap" x-text="generatedMaster ? generatedMaster.master : ''"></div>
-                        <div class="flex justify-between items-center">
-                            <div class="bg-yellow-400 text-slate-900 px-3 py-1.5 rounded-full text-[10px] font-black uppercase flex items-center gap-2">
-                                <i data-lucide="trending-up" class="w-3 h-3"></i> <span x-text="'+' + (generatedMaster ? generatedMaster.hh : 0) + ' Horas Recuperadas'"></span>
+                <div class="space-y-6">
+                    <div class="relative">
+                        <textarea x-model="userPrompt" @input="evaluateQuality()" placeholder="Ej: Necesito un correo para vender servicios de limpieza..." 
+                                  class="w-full bg-slate-50 border-2 border-slate-100 rounded-3xl p-8 min-h-[160px] focus:outline-none focus:bg-white focus:border-emerald-500/30 transition-all font-medium text-slate-700"></textarea>
+                        
+                        <!-- TERMÓMETRO DE CALIDAD -->
+                        <div class="absolute bottom-6 right-8 left-8">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Termómetro de Calidad</span>
+                                <span class="text-xs font-black" :class="qualityScore > 70 ? 'text-emerald-500' : 'text-slate-400'" x-text="qualityScore + '%'"></span>
                             </div>
-                            <button @click="copy(generatedMaster.master)" class="bg-emerald-500 text-white p-3 rounded-xl hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/20">
+                            <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full thermometer-gradient transition-all duration-700" :style="'width: ' + qualityScore + '%'"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center gap-6">
+                        <div class="flex items-center gap-3">
+                            <template x-if="qualityScore < 40">
+                                <span class="flex items-center gap-2 text-xs font-black text-red-500 bg-red-50 px-4 py-2 rounded-full uppercase tracking-tighter animate-pulse-soft">
+                                    <i data-lucide="alert-circle" class="w-4 h-4"></i> Prompt Muy Pobre
+                                </span>
+                            </template>
+                            <template x-if="qualityScore >= 40 && qualityScore < 80">
+                                <span class="flex items-center gap-2 text-xs font-black text-yellow-600 bg-yellow-50 px-4 py-2 rounded-full uppercase tracking-tighter">
+                                    <i data-lucide="zap" class="w-4 h-4"></i> Mejorable con AGIA
+                                </span>
+                            </template>
+                            <template x-if="qualityScore >= 80">
+                                <span class="flex items-center gap-2 text-xs font-black text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full uppercase tracking-tighter">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i> Nivel Maestro
+                                </span>
+                            </template>
+                        </div>
+                        <button @click="transformPrompt()" :disabled="!userPrompt || isTransforming" class="bg-emerald-500 hover:bg-emerald-600 text-white font-black px-12 py-5 rounded-2xl shadow-2xl shadow-emerald-500/20 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3">
+                            <span x-text="isTransforming ? 'INGENIERÍA EN CURSO...' : 'REESTRUCTURAR CON AGIA'"></span>
+                            <i data-lucide="sparkles" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RESULTADO TRANSFORMADO -->
+                <div x-show="transformedResult" x-transition class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-10 animate-slide-up">
+                    <div class="bg-slate-50 border border-slate-100 rounded-3xl p-8">
+                        <div class="flex items-center gap-3 text-red-500 mb-6 uppercase tracking-widest text-[11px] font-black">
+                            <i data-lucide="x-circle" class="w-4 h-4"></i> Versión Amateur
+                        </div>
+                        <p class="text-sm text-slate-400 italic font-medium leading-relaxed" x-text="'&quot;' + userPrompt + '&quot;'"></p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-3xl p-8 relative group">
+                        <div class="flex items-center gap-3 text-emerald-600 mb-6 uppercase tracking-widest text-[11px] font-black">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Versión Estructurada
+                        </div>
+                        <div class="bg-white border border-emerald-100 p-6 rounded-2xl font-mono text-xs text-slate-800 leading-relaxed mb-6 shadow-sm whitespace-pre-wrap" x-text="transformedResult"></div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2 text-yellow-600 font-black text-[10px] bg-yellow-100 px-3 py-1.5 rounded-full uppercase tracking-widest">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i> +5 HH de Valor
+                            </div>
+                            <button @click="copy(transformedResult)" class="p-3 bg-emerald-500 text-white rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-110 transition-transform">
                                 <i data-lucide="copy" class="w-5 h-5"></i>
                             </button>
                         </div>
@@ -242,88 +242,85 @@
                 </div>
             </section>
 
-            <!-- LIBRERÍA DE COMPARACIÓN (VERSUS) -->
-            <section class="space-y-8">
-                <div class="flex items-center justify-between px-2">
+            <!-- LIBRERÍA DE VERSUS (BIBLIOTECA DE GADGETS) -->
+            <section class="space-y-10">
+                <div class="flex justify-between items-end px-2">
                     <div>
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tight uppercase">El Poder del Versus</h2>
-                        <p class="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">Biblioteca de Casos Reales AGIA</p>
-                    </div>
-                    <div class="hidden sm:block text-right">
-                        <p class="text-[10px] font-black text-slate-400 uppercase">Mostrando</p>
-                        <p class="text-lg font-black text-emerald-500" x-text="filteredPrompts().length + ' Prompts'"></p>
+                        <h2 class="text-4xl font-black tracking-tighter">EL PODER DEL VERSUS</h2>
+                        <p class="text-slate-400 font-bold uppercase text-[10px] tracking-[0.4em] mt-2">Diferencia Visual y Estratégica</p>
                     </div>
                 </div>
 
-                <div class="space-y-10">
-                    <template x-for="prompt in filteredPrompts()" :key="prompt.id">
-                        <div class="bg-white border border-slate-200 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-                            <!-- Cabecera Card -->
-                            <div class="bg-slate-50/80 p-6 flex flex-wrap justify-between items-center border-b border-slate-200 gap-4">
-                                <h3 class="font-black text-slate-900 text-lg flex items-center gap-3">
-                                    <span x-text="prompt.title"></span>
-                                    <template x-if="prompt.isPremium"><i data-lucide="lock" class="w-4 h-4 text-yellow-500"></i></template>
-                                </h3>
+                <div class="space-y-12">
+                    <template x-for="p in filteredPrompts()" :key="p.id">
+                        <div class="premium-card rounded-[3.5rem] overflow-hidden">
+                            <!-- Header Card -->
+                            <div class="p-8 border-b border-slate-50 flex flex-wrap justify-between items-center gap-6 bg-slate-50/30">
+                                <h3 class="text-xl font-black text-slate-900" x-text="p.title"></h3>
                                 <div class="flex items-center gap-4">
-                                    <div class="flex items-center gap-2 text-xs font-black text-emerald-600 bg-white border border-emerald-100 px-3 py-2 rounded-full shadow-sm">
-                                        <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                                        Ahorra <span x-text="prompt.hhSaved + ' Horas'"></span>
+                                    <div class="bg-white border border-emerald-100 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-sm">
+                                        <i data-lucide="clock" class="w-4 h-4 text-emerald-500"></i>
+                                        <span class="text-xs font-black text-emerald-600" x-text="p.hhSaved + ' HH Ahorradas'"></span>
                                     </div>
-                                    <span :class="prompt.complexity === 'Complejo' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'" class="text-[10px] uppercase font-black px-3 py-1.5 rounded-full" x-text="'Nivel ' + prompt.complexity"></span>
+                                    <span :class="p.complexity === 'Complejo' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'" 
+                                          class="text-[10px] uppercase font-black px-4 py-2 rounded-2xl" x-text="'Nivel ' + p.complexity"></span>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 min-h-[400px]">
-                                <!-- LADO BÁSICO -->
-                                <div class="p-8 lg:p-10 border-r border-slate-100 bg-slate-50/30">
-                                    <div class="flex items-center gap-2 text-slate-400 mb-6 text-[11px] font-black uppercase tracking-[0.2em]">
-                                        <i data-lucide="x-circle" class="w-4 h-4 text-red-400"></i> Error Tradicional
-                                    </div>
-                                    <div class="bg-white p-6 rounded-2xl border border-slate-200 text-sm text-slate-400 italic mb-8 shadow-inner leading-relaxed" x-text="'&quot;' + prompt.basic.text + '&quot;'"></div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2">
+                                <!-- LADO SIN MODELO -->
+                                <div class="p-10 border-r border-slate-50 relative bg-slate-50/10">
+                                    <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">Prompt "ChatGpt" (Básico)</span>
+                                    <div class="bg-white border border-slate-100 p-6 rounded-3xl text-sm text-slate-400 italic mb-10 shadow-inner leading-relaxed" x-text="'&quot;' + p.basic.text + '&quot;'"></div>
                                     
                                     <div class="space-y-4">
-                                        <p class="text-[11px] font-black text-red-500 uppercase tracking-widest">Diagnóstico de Fallo:</p>
-                                        <template x-for="error in prompt.basic.errors">
-                                            <div class="flex gap-3 text-xs text-slate-500 bg-red-50/50 p-4 rounded-xl border border-red-100/30">
-                                                <span class="text-red-400 font-black">•</span>
-                                                <span x-text="error" class="font-medium"></span>
+                                        <p class="text-[10px] font-black text-red-500 uppercase tracking-widest flex items-center gap-2">
+                                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Diagnóstico de Pobreza:
+                                        </p>
+                                        <template x-for="error in p.basic.errors">
+                                            <div class="flex gap-3 text-[13px] font-medium text-slate-500 bg-red-50/50 p-4 rounded-2xl border border-red-100/20">
+                                                <span class="text-red-400">•</span>
+                                                <span x-text="error"></span>
                                             </div>
                                         </template>
                                     </div>
                                 </div>
 
-                                <!-- LADO MAESTRO -->
-                                <div class="p-8 lg:p-10 bg-emerald-50/20 relative group">
-                                    <!-- Bloqueo Premium -->
-                                    <template x-if="prompt.isPremium">
-                                        <div class="absolute inset-0 z-10 backdrop-blur-md bg-white/60 flex flex-col items-center justify-center p-10 text-center animate-fade-in">
-                                            <div class="bg-white p-6 rounded-[2rem] shadow-2xl mb-6 transform group-hover:scale-110 transition-transform">
+                                <!-- LADO CON MODELO AGIA -->
+                                <div class="p-10 relative bg-emerald-50/20 group">
+                                    <!-- Premium Lock -->
+                                    <template x-if="p.isPremium && !isPremium">
+                                        <div class="absolute inset-0 z-20 backdrop-blur-md bg-white/70 flex flex-col items-center justify-center p-10 text-center animate-fade-in">
+                                            <div class="bg-white p-6 rounded-[2.5rem] shadow-2xl mb-6 transform group-hover:scale-110 transition-transform">
                                                 <i data-lucide="lock" class="w-12 h-12 text-emerald-500"></i>
                                             </div>
-                                            <h4 class="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">Acceso Bloqueado</h4>
-                                            <p class="text-sm text-slate-500 mb-8 max-w-[250px] font-medium leading-relaxed">Este prompt maestro diseñado para nivel experto requiere el pack de $20.</p>
-                                            <button @click="showPurchaseModal = true" class="bg-emerald-500 text-white px-10 py-4 rounded-2xl font-black text-sm hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-500/20 uppercase tracking-widest active:scale-95">
+                                            <h4 class="text-2xl font-black mb-2 uppercase tracking-tight">Potencial Bloqueado</h4>
+                                            <p class="text-slate-500 text-sm font-medium mb-8 max-w-[240px] leading-relaxed">Este prompt maestro requiere el curso completo de AGIA.</p>
+                                            <button @click="openPayment()" class="bg-slate-900 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-slate-900/20 transition-all hover:bg-emerald-600 active:scale-95">
                                                 Desbloquear Biblioteca
                                             </button>
                                         </div>
                                     </template>
-                                    
-                                    <div class="flex items-center justify-between mb-6">
-                                        <div class="text-emerald-600 text-[11px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Modelo AGIA Aplicado
-                                        </div>
-                                        <button @click="copy(prompt.master.text)" class="bg-white text-emerald-600 p-3 rounded-xl hover:bg-emerald-500 hover:text-white transition-all shadow-sm border border-emerald-100 opacity-0 group-hover:opacity-100">
+
+                                    <div class="flex justify-between items-center mb-8">
+                                        <span class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2">
+                                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Estructura Maestra AGIA
+                                        </span>
+                                        <button @click="copy(p.master.text)" class="bg-white p-3 rounded-xl border border-emerald-100 text-emerald-600 opacity-0 group-hover:opacity-100 transition-all shadow-sm">
                                             <i data-lucide="copy" class="w-5 h-5"></i>
                                         </button>
                                     </div>
-                                    <div class="bg-white border-2 border-emerald-100 p-6 rounded-2xl text-[13px] font-mono text-slate-800 mb-8 whitespace-pre-wrap leading-relaxed shadow-sm" x-text="prompt.master.text"></div>
+
+                                    <div class="bg-white border-2 border-emerald-100 p-6 rounded-3xl text-xs font-mono text-slate-800 leading-relaxed mb-8 shadow-sm whitespace-pre-wrap" x-text="p.master.text"></div>
                                     
                                     <div class="space-y-4">
-                                        <p class="text-[11px] font-black text-emerald-600 uppercase tracking-widest">Ventajas Competitivas:</p>
-                                        <template x-for="adv in prompt.master.advantages">
-                                            <div class="flex gap-3 text-xs text-slate-700 bg-white p-4 rounded-xl border border-emerald-100/50 shadow-sm">
+                                        <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2">
+                                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Ventaja Competitiva:
+                                        </p>
+                                        <template x-for="adv in p.master.advantages">
+                                            <div class="flex gap-3 text-[13px] font-bold text-slate-700 bg-white p-4 rounded-2xl border border-emerald-100 shadow-sm">
                                                 <i data-lucide="check" class="w-4 h-4 text-emerald-500 mt-0.5"></i>
-                                                <span x-text="adv" class="font-bold"></span>
+                                                <span x-text="adv"></span>
                                             </div>
                                         </template>
                                     </div>
@@ -337,166 +334,123 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="max-w-7xl mx-auto px-4 py-20 border-t border-slate-200 mt-20 text-center bg-white">
-        <div class="inline-flex items-center gap-4 mb-8">
-            <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center font-black text-slate-400 text-lg">A</div>
-            <h2 class="text-sm font-black tracking-[0.3em] text-slate-400 uppercase">AULA GEN IA PLATFORM</h2>
+    <footer class="bg-white border-t border-slate-100 py-24 px-8 mt-24 text-center">
+        <div class="max-w-4xl mx-auto space-y-12">
+            <div class="inline-flex items-center gap-3 grayscale opacity-30">
+                <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-black">A</div>
+                <span class="text-sm font-black uppercase tracking-[0.5em]">Aula Gen IA</span>
+            </div>
+            <h2 class="text-4xl lg:text-5xl font-black tracking-tighter max-w-2xl mx-auto leading-[1.1]">Deja de adivinar cómo hablarle a la IA. Empieza a dominarla.</h2>
+            <button @click="openPayment()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-12 py-6 rounded-[2rem] text-xl font-black shadow-2xl shadow-emerald-500/20 transition-all active:scale-95">
+                ÚNETE POR SOLO $20 USD
+            </button>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-12">Plataforma Educativa AGIA © 2025. Todos los derechos reservados.</p>
         </div>
-        <p class="text-slate-400 text-xs max-w-2xl mx-auto leading-relaxed font-medium">
-            © 2025 AGIA Mastery Tool. Diseñado para transformar personas que "usan ChatGPT" en profesionales altamente productivos. 
-            Todas las HH recuperadas son cálculos basados en promedios de productividad corporativa.
-        </p>
     </footer>
 
     <script>
-        // Patrón recomendado para Alpine.js v3 para asegurar que los datos estén listos antes de que Alpine se inicialice.
         document.addEventListener('alpine:init', () => {
-            Alpine.data('platformData', () => ({
+            Alpine.data('agiaPlatform', () => ({
                 showOnboarding: true,
                 onboardingStep: 0,
                 showPurchaseModal: false,
                 activeCategory: 'ventas',
                 searchTerm: '',
                 userPrompt: '',
-                isGenerating: false,
-                generatedMaster: null,
+                qualityScore: 0,
+                isTransforming: false,
+                transformedResult: null,
+                isPremium: false,
                 notification: null,
-                
+                totalHHSaved: 124,
+
                 categories: [
-                    { id: 'ventas', name: 'Ventas y Negocios', iconName: 'trending-up' },
-                    { id: 'marketing', name: 'Marketing y Redes', iconName: 'sparkles' },
-                    { id: 'educacion', name: 'Educación y Cursos', iconName: 'play-circle' },
-                    { id: 'productividad', name: 'Productividad Personal', iconName: 'clock' },
-                    { id: 'analisis', name: 'Análisis Estratégico', iconName: 'bar-chart-3' }
+                    { id: 'ventas', name: 'Ventas y Negocio', icon: 'trending-up' },
+                    { id: 'marketing', name: 'Marketing y Copy', icon: 'zap' },
+                    { id: 'educacion', name: 'Educación y Cursos', icon: 'book-open' },
+                    { id: 'productividad', name: 'Productividad', icon: 'clock' },
+                    { id: 'operaciones', name: 'Operaciones', icon: 'settings' }
                 ],
-                
+
                 promptsData: [
                     {
                         id: 1,
                         categoryId: 'ventas',
-                        title: 'Cierre de Venta por WhatsApp',
+                        title: 'Estrategia de Cierre en Frío',
                         isPremium: false,
                         complexity: 'Medio',
-                        hhSaved: 4,
+                        hhSaved: 8,
                         basic: {
-                            text: "Escribe un mensaje para vender mi curso de cocina a una persona que ya preguntó el precio pero no me respondió más.",
+                            text: "Escribe un email para vender mi consultoría a una empresa que no me conoce.",
                             errors: [
-                                "Falta de Rol: La IA responde como un asistente genérico, no como un vendedor experto.",
-                                "Sin Restricciones: El mensaje puede ser demasiado largo o parecer spam.",
-                                "Sin Formato: No utiliza negritas ni espacios para facilitar la lectura móvil."
+                                "Falta de Rol: La IA responde como un asistente genérico.",
+                                "Sin Restricciones: El texto será largo y aburrido.",
+                                "Pobre Contexto: No utiliza un gancho de valor inmediato."
                             ]
                         },
                         master: {
-                            text: "Actúa como un Experto en Neuroventas y Cierres por WhatsApp.\n\nContexto: Vendo un curso de 'Cocina Express para personas con poco tiempo'. El cliente preguntó precio hace 24h y me dejó en 'visto'. Es una persona interesada pero probablemente con miedos.\n\nMisión: Redactar un mensaje de seguimiento de máximo 60 palabras usando un 'Gatillo Mental' de escasez o curiosidad.\n\nRestricciones: No menciones la palabra 'comprar' de inmediato. Usa máximo 2 emojis.\n\nFormato: Divide el mensaje en 3 párrafos cortos (Gancho, Valor, Pregunta Abierta).",
+                            text: "Actúa como un Account Executive Senior experto en ventas corporativas B2B.\n\nContexto: Ofrezco consultoría en optimización de procesos para empresas de logística. Mi valor principal es reducir costos operativos en un 15%.\n\nMeta: Redactar un email 'rompehielo' de máximo 100 palabras usando el método PAS (Problema, Agitación, Solución).\n\nFormato: Línea de asunto corta + 3 párrafos de máximo 2 líneas cada uno + CTA de bajo compromiso.",
                             advantages: [
-                                "Tasa de respuesta aumentada en un 350%.",
-                                "Evita sonar desesperado por la venta.",
-                                "Ahorra 4 horas de 'pensar qué escribir' a cada cliente."
+                                "Tasa de apertura aumentada un 80%.",
+                                "Estructura profesional que evita el SPAM.",
+                                "Ahorra 8 horas de 'pensar qué decir' cada semana."
                             ]
                         }
                     },
                     {
                         id: 2,
                         categoryId: 'marketing',
-                        title: 'Plan de Contenido Viral Reels',
+                        title: 'Campaña Viral para Reels',
                         isPremium: true,
                         complexity: 'Complejo',
                         hhSaved: 15,
                         basic: {
-                            text: "Dame 5 ideas de reels para mi perfil de consultoría de finanzas personales.",
+                            text: "Dame 3 ideas de videos para vender mi curso de finanzas personales en Instagram.",
                             errors: [
-                                "Sin Meta: Las ideas serán genéricas (ej: 'habla de ahorro').",
-                                "Falta de Gancho (Hook): No te dice cómo capturar la atención en los primeros 3 seg.",
-                                "Sin Estrategia: Son ideas aisladas, no un funnel de ventas."
+                                "Sin Objetivo: Las ideas no siguen un funnel de conversión.",
+                                "Falta de Gancho (Hook): No te dice cómo retener a la audiencia en 3 segundos.",
+                                "Sin Estrategia Viral: Solo son temas, no guiones."
                             ]
                         },
                         master: {
-                            text: "Actúa como un Viral Growth Strategist experto en algoritmos de Instagram y TikTok.\n\nContexto: Perfil de consultoría financiera para parejas jóvenes que quieren comprar su primera casa.\n\nMisión: Crea una parrilla de 5 Reels. Para cada uno define: 1. El 'Hook' Visual, 2. El Guion de 40 seg, 3. El CTA para enviarlos a una asesoría gratuita.\n\nRestricciones: Enfoque en 'Storytelling emocional'. Nada de tecnicismos bancarios.\n\nFormato: Presenta todo en una tabla Markdown con columnas: Idea, Gancho, Guion, CTA.",
+                            text: "Actúa como un Content Strategist Senior experto en Viralidad Orgánica.\n\nContexto: Vendo el curso 'Finanzas para Millennials'. Busco captar personas que sienten que su sueldo no alcanza.\n\nMeta: Diseñar 3 guiones de Reels. Cada uno debe incluir: 1. Gancho Visual de alto impacto, 2. Conflicto narrativo y 3. CTA directo a mi Bio.\n\nFormato: Tabla organizada con 'Gancho', 'Cuerpo' y 'Llamado a la acción'.",
                             advantages: [
-                                "Planificación mensual lista en 10 minutos.",
-                                "Contenido diseñado para ser guardado y compartido.",
-                                "Elimina la parálisis creativa por completo."
+                                "Elimina el bloqueo creativo mensual en 5 minutos.",
+                                "Diseñado para maximizar el tiempo de retención del usuario.",
+                                "Calculado para convertir seguidores en alumnos."
                             ]
                         }
                     },
                     {
                         id: 3,
                         categoryId: 'educacion',
-                        title: 'Rúbrica para Examen con IA',
+                        title: 'Rúbrica de Evaluación con IA',
                         isPremium: false,
                         complexity: 'Medio',
-                        hhSaved: 6,
+                        hhSaved: 12,
                         basic: {
-                            text: "Hazme una rúbrica para calificar un trabajo sobre la historia de la Revolución Industrial.",
+                            text: "Hazme una rúbrica para calificar un ensayo sobre inteligencia artificial.",
                             errors: [
-                                "Ambigüedad: Los criterios 'bien', 'mal' o 'regular' no ayudan a calificar objetivamente.",
-                                "Falta de Niveles: No define qué debe tener un alumno para sacar la nota máxima.",
-                                "Desconexión: No se ajusta al nivel escolar o universitario específico."
+                                "Ambigüedad: Los criterios son muy generales (ej: 'buena ortografía').",
+                                "Inconsistencia: No ayuda a calificar objetivamente a 30 alumnos.",
+                                "Sin Niveles: No define qué es un nivel Maestro vs Inicial."
                             ]
                         },
                         master: {
-                            text: "Actúa como un Diseñador Instruccional Senior experto en evaluación por competencias.\n\nContexto: Estudiantes de secundaria (15 años). El trabajo es un ensayo comparativo entre la Rev. Industrial y la Era de la IA.\n\nMisión: Generar una rúbrica de 4 niveles (Maestro, Competente, En Desarrollo, Inicial) evaluando: Coherencia, Uso de Fuentes y Ética Tecnológica.\n\nRestricciones: Usa lenguaje constructivo para el alumno.\n\nFormato: Tabla organizada por criterios con puntajes de 1 a 10.",
+                            text: "Actúa como un Diseñador Instruccional experto en evaluación por competencias.\n\nContexto: Alumnos de primer semestre de universidad. El tema es 'Impacto de la IA en la ética profesional'.\n\nMeta: Crear una rúbrica analítica de 4 niveles evaluando: Argumentación, Uso de Fuentes y Visión Crítica.\n\nFormato: Tabla Markdown con puntajes de 1 a 100.",
                             advantages: [
-                                "Calificación objetiva en un 90% menos de tiempo.",
-                                "Feedback profesional instantáneo para el alumno.",
-                                "Calidad pedagógica de nivel máster universitario."
-                            ]
-                        }
-                    },
-                    {
-                        id: 4,
-                        categoryId: 'productividad',
-                        title: 'Gestión de Crisis: Email Difícil',
-                        isPremium: true,
-                        complexity: 'Complejo',
-                        hhSaved: 8,
-                        basic: {
-                            text: "Escribe un correo a mi jefe diciéndole que no voy a alcanzar a entregar el reporte hoy pero que lo entrego mañana temprano.",
-                            errors: [
-                                "Falta de Diplomacia: El mensaje suena a excusa y puede dañar tu imagen.",
-                                "Sin Solución: No explicas el porqué ni cómo evitarás que pase de nuevo.",
-                                "Sin Estructura de Poder: No reafirmas tu compromiso con el proyecto."
-                            ]
-                        },
-                        master: {
-                            text: "Actúa como un Experto en Comunicación Corporativa y Resolución de Conflictos.\n\nContexto: Soy Project Manager. El reporte de KPIs se retrasó por una caída en el servidor. Mi jefe es exigente y valora la honestidad y la proactividad.\n\nMisión: Redactar un email profesional explicando el retraso sin sonar como una víctima, ofreciendo un avance parcial hoy y la entrega final a las 9 AM de mañana.\n\nRestricciones: Tono asertivo y calmado. Máximo 120 palabras.\n\nFormato: Estructura de 'Situación - Impacto - Resolución'.",
-                            advantages: [
-                                "Protege tu reputación ante altos mandos.",
-                                "Transforma un error en una muestra de responsabilidad.",
-                                "Ahorra el estrés mental de 'cómo pedir perdón'."
-                            ]
-                        }
-                    },
-                    {
-                        id: 5,
-                        categoryId: 'analisis',
-                        title: 'Análisis de Reporte para No Expertos',
-                        isPremium: true,
-                        complexity: 'Complejo',
-                        hhSaved: 20,
-                        basic: {
-                            text: "Explícame qué significan estos números de mi balance de ventas de este mes.",
-                            errors: [
-                                "Sin Contexto de Negocio: La IA te dará definiciones de diccionario, no consejos de negocio.",
-                                "Falta de Insight: No te dirá qué producto dejar de vender o en cuál invertir más.",
-                                "Lenguaje Técnico: Te confundirá más con términos contables innecesarios."
-                            ]
-                        },
-                        master: {
-                            text: "Actúa como un CFO (Director Financiero) de una Startup exitosa.\n\nContexto: Tengo una tienda online de ropa. Mis ventas subieron 10% pero mis ganancias bajaron 5%. Quiero saber por qué y qué hacer mañana mismo.\n\nMisión: Analizar los datos proporcionados (pega tus datos aquí) y darme 3 'Quick Wins' para recuperar el margen de ganancia.\n\nRestricciones: Explícame como si tuviera 10 años. Usa analogías.\n\nFormato: Resumen ejecutivo con 3 viñetas de acción prioritaria.",
-                            advantages: [
-                                "Decisiones basadas en datos, no en intuición.",
-                                "Ahorro masivo en consultoría externa.",
-                                "Visión clara del futuro de tu negocio en segundos."
+                                "Ahorra 12 horas de corrección por cada grupo de 30 personas.",
+                                "Claridad total para el alumno sobre cómo ser calificado.",
+                                "Calidad académica de nivel posgrado."
                             ]
                         }
                     }
                 ],
 
                 onboardingSteps: [
-                    { title: "Bienvenido a la Era Maestra", content: "La mayoría de las personas se sienten frustradas con la IA porque le hablan como si fuera un buscador. Tú vas a aprender a hablarle como a un experto." },
-                    { title: "El Poder del Versus", content: "Nuestra herramienta te muestra por qué tus prompts actuales fallan y cómo el Modelo AGIA los transforma en oro puro." },
-                    { title: "Recupera tu Tiempo", content: "Cada prompt maestro en esta biblioteca está diseñado para ahorrarte entre 4 y 20 horas de trabajo real a la semana." }
+                    { title: "Bienvenido a AGIA", content: "La IA no es un buscador, es un equipo de expertos a tu disposición. Aprende a dar las órdenes correctas.", icon: "sparkles" },
+                    { title: "El Poder del Versus", content: "Comparemos lo que haces hoy vs lo que los maestros logran. La diferencia te ahorrará años de vida.", icon: "zap" },
+                    { title: "ROI Inmediato", content: "Cada prompt en esta biblioteca te regala tiempo. ¿Qué harías con 20 horas extras a la semana?", icon: "trending-up" }
                 ],
 
                 init() {
@@ -504,7 +458,7 @@
                     this.startSocialProof();
                 },
 
-                nextStep() {
+                nextOnboarding() {
                     if (this.onboardingStep < 3) {
                         this.onboardingStep++;
                         this.$nextTick(() => lucide.createIcons());
@@ -513,15 +467,22 @@
                     }
                 },
 
-                generateMagic() {
-                    this.isGenerating = true;
+                evaluateQuality() {
+                    let score = 0;
+                    if (this.userPrompt.length > 20) score += 20;
+                    if (this.userPrompt.length > 60) score += 20;
+                    if (this.userPrompt.toLowerCase().includes('como') || this.userPrompt.toLowerCase().includes('actúa')) score += 20;
+                    if (this.userPrompt.toLowerCase().includes('formato') || this.userPrompt.toLowerCase().includes('tabla')) score += 20;
+                    if (this.userPrompt.toLowerCase().includes('contexto')) score += 20;
+                    this.qualityScore = score;
+                },
+
+                transformPrompt() {
+                    this.isTransforming = true;
                     setTimeout(() => {
-                        this.generatedMaster = {
-                            basic: this.userPrompt,
-                            master: `Actúa como un Experto Senior en el área.\n\nContexto: ${this.userPrompt}\n\nMeta: Ejecutar la tarea con máxima profundidad y enfoque en resultados de negocio.\n\nRestricciones: Estilo profesional, sin rellenos, lenguaje de alto nivel.\n\nFormato: Guía paso a paso con recomendaciones estratégicas finales.`,
-                            hh: Math.floor(Math.random() * 8) + 4
-                        };
-                        this.isGenerating = false;
+                        this.transformedResult = `ACTÚA COMO UN EXPERTO EN EL ÁREA.\n\nCONTEXTO: He identificado la necesidad de "${this.userPrompt}".\n\nMETA: Desarrollar una solución profesional de alto impacto que resuelva la necesidad principal del usuario de forma inmediata.\n\nRESTRICCIONES: Sin lenguaje genérico, tono asertivo, orientado a resultados prácticos.\n\nFORMATO: Guía modular con pasos numerados y sugerencia de tono.`;
+                        this.isTransforming = false;
+                        this.totalHHSaved += 5;
                         this.$nextTick(() => lucide.createIcons());
                     }, 2000);
                 },
@@ -529,34 +490,37 @@
                 filteredPrompts() {
                     return this.promptsData.filter(p => 
                         p.categoryId === this.activeCategory && 
-                        (p.title.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
-                         p.basic.text.toLowerCase().includes(this.searchTerm.toLowerCase()))
+                        (p.title.toLowerCase().includes(this.searchTerm.toLowerCase()) || p.basic.text.toLowerCase().includes(this.searchTerm.toLowerCase()))
                     );
                 },
 
                 copy(text) {
-                    const brand = "\n\n✨ Generado con el Modelo Maestro de Aula Gen IA (AGIA)";
+                    const brand = "\n\n✨ Generado con la Metodología Maestra de Aula Gen IA (AGIA)";
                     const el = document.createElement('textarea');
                     el.value = text + brand;
                     document.body.appendChild(el);
                     el.select();
                     document.execCommand('copy');
                     document.body.removeChild(el);
-                    alert("¡Prompt Maestro copiado con éxito! Incluye el sello de calidad AGIA.");
+                    alert("¡Prompt Maestro copiado! Incluye tu sello de marca AGIA.");
+                },
+
+                openPayment() {
+                    window.open('https://tu-link-de-pago.com', '_blank');
                 },
 
                 startSocialProof() {
-                    const names = ["Andrés M.", "Lucía R.", "Carlos V.", "María G.", "Santi P.", "Elena F.", "Javier S.", "Paula B."];
-                    const cities = ["CDMX", "Madrid", "Bogotá", "Santiago", "Buenos Aires", "Miami"];
+                    const users = ["María G. de México", "Juan R. de España", "Santi P. de Colombia", "Paula V. de Chile", "Andrés M. de Miami"];
+                    const times = ["Hace 2 min", "Hace 5 min", "Hace 10 min", "Hace 1 hora"];
                     
                     setInterval(() => {
                         this.notification = {
-                            name: names[Math.floor(Math.random() * names.length)],
-                            city: cities[Math.floor(Math.random() * cities.length)]
+                            user: users[Math.floor(Math.random() * users.length)],
+                            time: times[Math.floor(Math.random() * times.length)]
                         };
                         this.$nextTick(() => lucide.createIcons());
-                        setTimeout(() => this.notification = null, 5000);
-                    }, 15000);
+                        setTimeout(() => this.notification = null, 6000);
+                    }, 20000);
                 }
             }));
         });
