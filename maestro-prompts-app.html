@@ -742,24 +742,58 @@
         }
 
         function startSocialProof() {
-            const names = ["Carlos R.", "Ana M.", "StartUp Inc", "David L.", "Sofia P.", "Agencia X"];
+            // Base de datos de compradores ficticios para credibilidad
+            const buyers = [
+                "Carlos R.", "Ana M.", "StartUp Inc", "David L.", "Sofia P.", "Agencia Flow",
+                "Mario B.", "Lucia F.", "TechSolutions", "Javier G.", "Elena T.", "Roberto S.",
+                "Paula N.", "Growth Lab", "Fernando K.", "Valentina D.", "Andres M.", "Camila V.",
+                "Diego H.", "Laura J.", "Ignacio B.", "Catalina R.", "Agencia Vértice", "Martin S.",
+                "Olivia W.", "Bruno C.", "Isabella M.", "Global Trends", "Felipe A.", "Daniela O."
+            ];
+            
+            const locations = ["Madrid", "CDMX", "Santiago", "Bogotá", "Lima", "Miami", "Barcelona", "Buenos Aires", "Medellín"];
             const toast = document.getElementById('sales-toast');
-            setInterval(() => {
-                const name = names[Math.floor(Math.random() * names.length)];
+
+            // Función para mostrar notificación
+            const showNotification = () => {
+                const name = buyers[Math.floor(Math.random() * buyers.length)];
+                const location = locations[Math.floor(Math.random() * locations.length)];
+                const timeAgo = Math.random() > 0.7 ? "Hace instantes" : `Hace ${Math.floor(Math.random() * 10) + 1} min`;
+                
                 toast.innerHTML = `
-                <div class="bg-white/95 backdrop-blur border border-slate-100 p-4 rounded-2xl shadow-xl shadow-slate-200/50 flex items-center gap-4 max-w-xs ring-1 ring-black/5">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm relative shadow-md">
+                <div class="bg-white/95 backdrop-blur border border-slate-100 p-4 rounded-2xl shadow-xl shadow-slate-200/50 flex items-center gap-4 max-w-xs ring-1 ring-black/5 transform transition-all hover:scale-105 cursor-pointer" onclick="openPaywall()">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm relative shadow-md shrink-0">
                         ${name.charAt(0)}
-                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></span>
+                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-600"><span class="font-bold text-slate-900 text-sm">${name}</span> compró acceso</p>
-                        <p class="text-[10px] text-slate-400 font-bold mt-0.5">Hace instantes • <span class="text-green-600">Verificado</span></p>
+                        <p class="text-xs text-slate-600 leading-tight"><span class="font-bold text-slate-900 text-sm">${name}</span> compró el Pack</p>
+                        <p class="text-[10px] text-slate-400 font-bold mt-0.5 flex items-center gap-1.5">
+                            ${timeAgo} <span class="w-0.5 h-0.5 rounded-full bg-slate-300"></span> ${location}
+                        </p>
                     </div>
                 </div>`;
+                
                 toast.classList.remove('opacity-0', 'translate-y-24');
-                setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-24'); }, 4000);
-            }, 15000);
+                
+                // Ocultar después de 5s
+                setTimeout(() => { 
+                    toast.classList.add('opacity-0', 'translate-y-24'); 
+                }, 5000);
+            };
+
+            // Primer toast rápido
+            setTimeout(showNotification, 4000);
+
+            // Loop orgánico (intervalos irregulares entre 12s y 35s)
+            const loop = () => {
+                const nextTime = Math.floor(Math.random() * (35000 - 12000 + 1) + 12000);
+                setTimeout(() => {
+                    showNotification();
+                    loop();
+                }, nextTime);
+            };
+            loop();
         }
     </script>
 </body>
