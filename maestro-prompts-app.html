@@ -105,20 +105,27 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
 
-    <!-- ERROR OVERLAY -->
-    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-slate-900/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
-        <!-- (Mismo contenido de error, solo estilo oscurecido para drama) -->
-        <div class="bg-white p-8 rounded-3xl shadow-2xl border border-slate-700/50 max-w-md w-full animate-in zoom-in duration-300">
-            <div id="status-icon" class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-pulse ring-4 ring-indigo-50/50">
-                <span class="material-symbols-rounded text-3xl">cloud_sync</span>
+    <!-- ERROR/LOADING OVERLAY (REDISEÑADO: CLEAN STYLE) -->
+    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-white/90 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500">
+        <div class="bg-white p-8 rounded-[2rem] shadow-2xl shadow-slate-200 border border-slate-100 max-w-md w-full animate-in zoom-in duration-300 relative">
+            <div id="status-icon" class="w-16 h-16 bg-white border border-slate-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+                <span class="material-symbols-rounded text-3xl animate-spin">sync</span>
             </div>
-            <h2 id="status-title" class="text-xl font-bold text-slate-900 mb-2">Conectando Bóveda...</h2>
-            <p id="status-desc" class="text-sm text-slate-500 mb-8">Sincronizando con el servidor central.</p>
-            <div class="bg-slate-50 p-4 rounded-xl text-left text-xs font-mono text-slate-500 mb-6 overflow-hidden border border-slate-200">
-                <p>> Target: <span class="text-indigo-600">aulagenia.cl/db</span></p>
-                <p>> Status: <span id="status-code" class="text-slate-500 font-bold">FETCHING...</span></p>
+            <h2 id="status-title" class="text-xl font-extrabold text-slate-900 mb-2 tracking-tight">Sincronizando Bóveda...</h2>
+            <p id="status-desc" class="text-sm text-slate-500 mb-8 font-medium">Estableciendo conexión segura con el servidor.</p>
+            
+            <div class="bg-slate-50 p-4 rounded-xl text-left text-xs font-mono text-slate-500 mb-6 overflow-hidden border border-slate-100">
+                <div class="flex items-center gap-2 mb-2 pb-2 border-b border-slate-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                    <span class="font-bold text-slate-400 uppercase tracking-wider text-[10px]">System Log</span>
+                </div>
+                <p>> Target: <span class="text-indigo-600 font-semibold">aulagenia.cl/db</span></p>
+                <p>> Status: <span id="status-code" class="text-slate-600 font-bold">FETCHING...</span></p>
             </div>
-            <button id="retry-btn" onclick="window.location.reload()" class="hidden w-full py-3 bg-slate-900 text-white rounded-xl font-bold">Reintentar</button>
+
+            <button id="retry-btn" onclick="window.location.reload()" class="hidden w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-sm transition-all shadow-lg hover:-translate-y-0.5">
+                Reintentar Conexión
+            </button>
         </div>
     </div>
 
@@ -399,12 +406,16 @@
         function showSystemError(err) {
             statusOverlay.classList.remove('hidden');
             statusOverlay.classList.add('flex');
+            
+            // Clean Style Error Update
             statusIcon.innerHTML = '<span class="material-symbols-rounded text-3xl text-red-500">error</span>';
-            statusIcon.className = "w-16 h-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 ring-4 ring-red-50/50";
+            // Override classes to match the new clean style but with red accent
+            statusIcon.className = "w-16 h-16 bg-white border border-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm";
+            
             statusTitle.innerText = "Error de Conexión";
             
             if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
-                statusDesc.innerText = "No pudimos conectar con el servidor de AulaGenia. Verifica tu conexión o permisos CORS.";
+                statusDesc.innerText = "No pudimos conectar con el servidor de AulaGenia. Verifica tu conexión.";
                 statusCode.innerText = "NETWORK_ERROR";
             } else {
                 statusDesc.innerText = "Error al procesar la base de datos de prompts.";
