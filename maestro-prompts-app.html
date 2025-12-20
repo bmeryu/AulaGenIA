@@ -3,240 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGIA Generator 3.1 | Split-View Lab</title>
+    <title>AGIA Command Center | Studio v4.0</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-soft: #eef2ff;
-            --bg-canvas: #f8fafc;
+            --brand-primary: #6366f1;
+            --brand-secondary: #a855f7;
+            --bg-dark: #09090b;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
         }
 
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-canvas); color: #334155; }
-        .font-mono { font-family: 'Fira Code', monospace; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #fcfcfd; 
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
         
-        /* Custom Scrollbar */
-        .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Premium Shadows & Borders */
+        .premium-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 10px 40px -10px rgba(0,0,0,0.04);
+            border-radius: 24px;
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
 
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        
-        /* Glass Effect */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        /* AGIA Tag Styles */
+        /* AGIA Tag Micro-Architecture */
         .hl-tag { 
-            transition: all 0.2s; 
-            display: inline-flex; 
-            align-items: center;
-            padding: 1px 4px; 
-            border-radius: 4px; 
+            padding: 2px 8px; 
+            border-radius: 6px; 
             margin: 0 1px; 
             font-weight: 600; 
-            font-size: 0.95em; 
-            border-bottom: 2px solid rgba(0,0,0,0.05);
+            font-size: 0.9em; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid transparent;
         }
         
-        .hl-active { transform: scale(1.05); box-shadow: 0 4px 12px -2px rgba(79, 70, 229, 0.2); z-index: 10; outline: 2px solid #4f46e5; }
-        .hl-rol { color: #1e40af; background: #dbeafe; }
-        .hl-contexto { color: #065f46; background: #d1fae5; }
-        .hl-meta { color: #92400e; background: #fef3c7; }
-        .hl-restricciones { color: #991b1b; background: #fee2e2; }
-        .hl-formato { color: #6b21a8; background: #f3e8ff; }
+        .hl-active { 
+            transform: translateY(-1px) scale(1.02); 
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        .hl-rol { color: #2563eb; background: #eff6ff; border-color: #dbeafe; }
+        .hl-contexto { color: #059669; background: #ecfdf5; border-color: #d1fae5; }
+        .hl-meta { color: #d97706; background: #fffbeb; border-color: #fef3c7; }
+        .hl-restricciones { color: #dc2626; background: #fef2f2; border-color: #fee2e2; }
+        .hl-formato { color: #7c3aed; background: #f5f3ff; border-color: #ede9fe; }
 
         .var-highlight { 
-            background-color: #f0f9ff; 
-            border-bottom: 2px solid #0ea5e9; 
-            color: #0369a1; 
+            background: #f0f9ff;
+            color: #0284c7;
+            border-bottom: 2px solid #0ea5e9;
+            padding: 0 4px;
             font-weight: 700;
-            padding: 0 2px;
-        }
-        
-        .var-highlight-bad {
-            border-bottom: 1px dashed #94a3b8;
-            color: #64748b;
+            border-radius: 2px;
         }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Ambient Backgrounds */
+        .bg-grid {
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-soft { animation: pulse-soft 3s infinite; }
     </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden bg-slate-50">
+<body class="h-screen flex flex-col overflow-hidden bg-grid">
 
-    <!-- STATUS OVERLAY (Mantenido por funcionalidad) -->
-    <div id="system-status-overlay" class="fixed inset-0 z-[100] bg-slate-50/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-        <div class="bg-white p-8 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full">
-            <div id="status-icon" class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-pulse">
-                <span class="material-symbols-rounded text-3xl">cloud_sync</span>
-            </div>
-            <h2 id="status-title" class="text-xl font-bold text-slate-900 mb-2">Cargando Laboratorio...</h2>
-            <p id="status-desc" class="text-sm text-slate-500 mb-6">Sincronizando modelos de ingeniería de prompts.</p>
-            <div class="bg-slate-50 p-4 rounded-xl text-left text-[10px] font-mono text-slate-400 border border-slate-200">
-                <p>> Status: <span id="status-code" class="text-indigo-600">CONNECTING...</span></p>
-            </div>
-            <button id="retry-btn" onclick="window.location.reload()" class="hidden mt-6 w-full py-3 bg-slate-900 text-white rounded-xl font-bold">Reintentar</button>
-        </div>
-    </div>
-
-    <!-- Header -->
-    <header class="bg-white border-b border-slate-100 z-30 flex-none relative">
-        <div class="max-w-[1920px] mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-200">A</div>
+    <!-- Global Nav -->
+    <header class="h-16 flex-none bg-white/80 backdrop-blur-xl border-b border-slate-200/60 z-50 flex items-center justify-between px-8">
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg">
+                    <span class="text-white font-black text-sm">A</span>
+                </div>
+                <div class="h-8 w-px bg-slate-200"></div>
                 <div>
-                    <h1 class="text-base font-extrabold text-slate-900 leading-none">AGIA Generator <span class="text-indigo-600">3.1</span></h1>
-                    <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase mt-1">Prompt Engineering Split-View</p>
+                    <h1 class="text-sm font-bold text-slate-900 tracking-tight">AGIA Lab <span class="text-indigo-600">Studio</span></h1>
+                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-[0.2em]">Framework Engineering v4.0</p>
                 </div>
             </div>
-            <div class="flex gap-4">
-                <button onclick="openPaywall()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-full text-xs font-bold shadow-lg transition-all flex items-center gap-2">
-                    <span class="material-symbols-rounded text-sm text-yellow-400">stars</span>
-                    Desbloquear Bóveda
-                </button>
-            </div>
         </div>
-        <!-- Categorías -->
-        <div class="px-6 py-2 bg-slate-50/50 border-t border-slate-100 flex gap-2 overflow-x-auto no-scrollbar" id="category-nav"></div>
+        
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Engine: Gemini 1.5 Pro</span>
+            </div>
+            <button class="bg-indigo-600 hover:bg-indigo-700 text-white h-9 px-4 rounded-xl text-xs font-bold transition-all shadow-lg shadow-indigo-100 flex items-center gap-2">
+                <span class="material-symbols-rounded text-sm">rocket_launch</span>
+                Upgrade to Pro
+            </button>
+        </div>
     </header>
 
-    <div class="flex flex-1 overflow-hidden max-w-[1920px] mx-auto w-full">
+    <div class="flex flex-1 overflow-hidden">
         
-        <!-- Sidebar -->
-        <aside class="w-72 lg:w-80 flex flex-col bg-white border-r border-slate-200/60 flex-none z-20">
-            <div class="p-4">
-                <div class="relative">
-                    <span class="material-symbols-rounded absolute left-3 top-2.5 text-slate-400 text-lg">search</span>
-                    <input type="text" id="searchInput" placeholder="Buscar caso de estudio..." 
-                        class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 transition-all outline-none"
+        <!-- Case Sidebar -->
+        <aside class="w-80 flex flex-col bg-white border-r border-slate-200/60 z-40">
+            <div class="p-6">
+                <div class="relative group">
+                    <span class="material-symbols-rounded absolute left-3.5 top-2.5 text-slate-400 text-lg group-focus-within:text-indigo-600 transition-colors">search</span>
+                    <input type="text" id="searchInput" placeholder="Search prompts..." 
+                        class="w-full pl-11 pr-4 py-2.5 bg-slate-100 border-none rounded-2xl text-xs font-medium focus:ring-2 focus:ring-indigo-500/10 transition-all outline-none"
                         onkeyup="filterCases()">
                 </div>
             </div>
-            <div class="flex-1 overflow-y-auto custom-scroll px-2 pb-4 space-y-1" id="case-list"></div>
-            <div class="p-4 border-t border-slate-100 text-[10px] text-slate-400 flex justify-between font-bold">
-                <span>DATABASE v3.1</span>
-                <span id="total-display">0</span>
+
+            <!-- Categories Filter (Horizontal Pills) -->
+            <div class="px-6 mb-4 overflow-x-auto no-scrollbar flex gap-2" id="category-nav"></div>
+
+            <div class="flex-1 overflow-y-auto custom-scroll px-3 space-y-1" id="case-list"></div>
+            
+            <div class="p-6 border-t border-slate-100">
+                <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-2">
+                    <span>SYSTEM HEALTH</span>
+                    <span class="text-emerald-500">OPTIMAL</span>
+                </div>
+                <div class="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full w-4/5 bg-emerald-500 rounded-full"></div>
+                </div>
             </div>
         </aside>
 
-        <!-- Main Workspace -->
-        <main class="flex-1 flex flex-col bg-slate-50 overflow-hidden relative">
+        <!-- Workbench Main Area -->
+        <main class="flex-1 flex flex-col bg-[#fcfcfd] overflow-hidden">
             
-            <div id="workspace-empty" class="hidden flex-col items-center justify-center h-full text-center p-8">
-                <div class="w-20 h-20 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-4">
-                    <span class="material-symbols-rounded text-4xl text-slate-200">analytics</span>
+            <!-- Empty State -->
+            <div id="workspace-empty" class="hidden flex-col items-center justify-center h-full text-center p-12">
+                <div class="w-24 h-24 bg-white rounded-3xl shadow-xl flex items-center justify-center mb-6">
+                    <span class="material-symbols-rounded text-5xl text-slate-200">dashboard_customize</span>
                 </div>
-                <h3 class="text-slate-400 font-bold text-sm">Selecciona un modelo para comparar</h3>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Workbench Empty</h3>
+                <p class="text-sm text-slate-400 max-w-sm mx-auto">Select a prompt template from the sidebar to begin your architectural analysis.</p>
             </div>
 
-            <!-- Content Area -->
-            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-6 lg:p-10">
-                <div class="max-w-6xl mx-auto fade-in">
+            <!-- Active Workbench -->
+            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-8 lg:p-12">
+                <div class="max-w-[1400px] mx-auto fade-in">
                     
-                    <!-- Top Info -->
-                    <div class="mb-10 text-center md:text-left">
-                        <span id="detail-category-badge" class="inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 mb-4">Categoría</span>
-                        <h2 id="detail-title" class="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">Título</h2>
-                        <p id="detail-problem" class="text-slate-500 text-sm max-w-2xl leading-relaxed"></p>
+                    <!-- Top Workbench Info -->
+                    <div class="flex items-end justify-between mb-10 pb-8 border-b border-slate-200/60">
+                        <div class="space-y-4">
+                            <span id="detail-category-badge" class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-[0.15em] border border-indigo-100">Category</span>
+                            <h2 id="detail-title" class="text-4xl font-extrabold text-slate-900 tracking-tight leading-none">Prompt Case</h2>
+                            <p id="detail-problem" class="text-base text-slate-500 max-w-3xl leading-relaxed"></p>
+                        </div>
+                        
+                        <div class="flex gap-3">
+                            <button class="h-10 px-4 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-white transition-colors flex items-center gap-2">
+                                <span class="material-symbols-rounded text-sm">history</span>
+                                Versions
+                            </button>
+                            <button id="copy-btn" onclick="copyPrompt()" class="h-10 px-6 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-black transition-all shadow-xl shadow-slate-200 flex items-center gap-2">
+                                <span class="material-symbols-rounded text-sm">content_copy</span>
+                                Deploy Code
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Layout: Variables + Comparison -->
-                    <div class="grid lg:grid-cols-12 gap-8 items-start">
+                    <!-- Layout: Customization & Comparison Grid -->
+                    <div class="grid lg:grid-cols-12 gap-10">
                         
-                        <!-- Columna Variables (Se mantiene por funcionalidad) -->
+                        <!-- Columna Variables (Config) -->
                         <div class="lg:col-span-3">
-                            <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm sticky top-0">
-                                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                    <span class="material-symbols-rounded text-base text-indigo-500">settings</span> Personalizar
+                            <div class="premium-card p-6 sticky top-0">
+                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                    <span class="material-symbols-rounded text-base text-indigo-600">tune</span>
+                                    Configuration
                                 </h3>
-                                <div id="variables-container" class="space-y-4"></div>
-                                <div id="variables-locked-overlay" class="hidden mt-4 pt-4 border-t border-slate-100 text-center">
-                                    <button onclick="openVideoModal()" class="text-[10px] font-bold text-indigo-600 hover:text-indigo-700">DESBLOQUEAR VARIABLES</button>
+                                <div id="variables-container" class="space-y-6"></div>
+                                
+                                <!-- Engineer Stats Mockup -->
+                                <div class="mt-8 pt-8 border-t border-slate-100 space-y-4">
+                                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Quality Metrics</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between text-[11px] font-medium">
+                                            <span class="text-slate-500">Syntactic Clarity</span>
+                                            <span class="text-emerald-600">98%</span>
+                                        </div>
+                                        <div class="flex justify-between text-[11px] font-medium">
+                                            <span class="text-slate-500">Hallucination Risk</span>
+                                            <span class="text-rose-500">Low</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Columna Comparación (SPLIT VIEW) -->
-                        <div class="lg:col-span-9 grid md:grid-cols-2 gap-8">
+                        <!-- Columna COMPARISON VIEW -->
+                        <div class="lg:col-span-9 space-y-8">
                             
-                            <!-- TARJETA 1: SIN MODELO -->
-                            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-                                <div class="bg-slate-50 px-6 py-4 border-b border-slate-100 flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center text-slate-500">
-                                        <span class="material-symbols-rounded text-lg">close</span>
-                                    </div>
-                                    <h4 class="text-xs font-black text-slate-700 uppercase tracking-widest">Sin Modelo AGIA</h4>
-                                </div>
-                                <div class="p-6 space-y-6 flex-1 flex flex-col">
-                                    <!-- Input -->
-                                    <div>
-                                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block tracking-widest">Entrada (Prompt)</label>
-                                        <div id="bad-prompt-rendered" class="text-xs text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-100 font-mono leading-relaxed italic"></div>
-                                    </div>
-                                    <!-- Output -->
-                                    <div class="flex-1">
-                                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block tracking-widest">Salida (Resultado IA)</label>
-                                        <div id="bad-result-preview" class="text-xs text-slate-400 leading-relaxed bg-white border border-slate-100 p-4 rounded-xl h-full min-h-[200px] overflow-y-auto custom-scroll"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- TARJETA 2: CON MODELO AGIA -->
-                            <div class="bg-white rounded-3xl border border-indigo-100 shadow-xl shadow-indigo-500/5 overflow-hidden ring-1 ring-indigo-50 flex flex-col relative">
-                                <div class="bg-indigo-600 px-6 py-4 flex items-center justify-between">
-                                    <div class="flex items-center gap-3 text-white">
-                                        <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
-                                            <span class="material-symbols-rounded text-lg">verified</span>
-                                        </div>
-                                        <h4 class="text-xs font-black uppercase tracking-widest">Método AGIA Pro</h4>
-                                    </div>
-                                    <button id="copy-btn" onclick="copyPrompt()" class="bg-white/10 hover:bg-white/20 text-white px-4 py-1.5 rounded-full text-[10px] font-black transition-all border border-white/20">COPIAR</button>
-                                </div>
-                                <div class="p-6 space-y-6 flex-1 flex flex-col">
-                                    <!-- Input -->
-                                    <div>
-                                        <label class="text-[9px] font-black text-indigo-400 uppercase mb-2 block tracking-widest">Entrada Estructurada</label>
-                                        <div class="relative group/code">
-                                            <div id="detail-prompt-rendered" class="font-mono text-[13px] leading-relaxed text-slate-700 bg-indigo-50/30 p-4 rounded-xl border border-indigo-100/50 min-h-[200px] max-h-[300px] overflow-y-auto custom-scroll"></div>
+                            <!-- COMPONENT: THE SPLIT WORKBENCH -->
+                            <div class="grid md:grid-cols-2 gap-6 h-[600px]">
+                                
+                                <!-- LEFT: AMATEUR / LEGACY -->
+                                <div class="flex flex-col bg-white border border-slate-200 rounded-[32px] overflow-hidden group hover:border-slate-300 transition-colors">
+                                    <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-6 h-6 rounded-md bg-slate-200 flex items-center justify-center">
+                                                <span class="material-symbols-rounded text-xs text-slate-500">error_outline</span>
+                                            </div>
+                                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Amateur Method</span>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Leyenda Interactiva -->
-                                    <div id="interactive-legend" class="flex flex-wrap gap-2 pt-2 border-t border-slate-50">
-                                        <span class="legend-item cursor-default flex items-center gap-1.5 text-[9px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded" data-type="r"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> ROL</span>
-                                        <span class="legend-item cursor-default flex items-center gap-1.5 text-[9px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded" data-type="c"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> CONTEXTO</span>
-                                        <span class="legend-item cursor-default flex items-center gap-1.5 text-[9px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded" data-type="m"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> META</span>
-                                        <span class="legend-item cursor-default flex items-center gap-1.5 text-[9px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded" data-type="l"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> RESTRICCIONES</span>
-                                    </div>
-
-                                    <!-- Output -->
-                                    <div class="flex-1">
-                                        <label class="text-[9px] font-black text-indigo-400 uppercase mb-2 block tracking-widest">Salida (Calidad Premium)</label>
-                                        <div id="good-result-preview" class="text-xs text-slate-600 leading-relaxed bg-white border border-indigo-100 p-4 rounded-xl h-full min-h-[150px] overflow-y-auto custom-scroll shadow-inner"></div>
-                                    </div>
-
-                                    <!-- Premium Lock Overlay -->
-                                    <div id="premium-lock" class="hidden absolute inset-0 z-20 glass-panel flex flex-col items-center justify-center p-8 text-center rounded-3xl m-1">
-                                        <span class="material-symbols-rounded text-slate-900 text-4xl mb-4">lock</span>
-                                        <h3 class="font-black text-slate-900 mb-2 uppercase tracking-widest text-sm">Contenido Protegido</h3>
-                                        <button onclick="openPaywall()" class="bg-indigo-600 text-white px-6 py-2.5 rounded-full font-bold text-xs">DESBLOQUEAR AHORA</button>
+                                    <div class="p-6 flex-1 flex flex-col gap-6 overflow-hidden">
+                                        <div>
+                                            <label class="text-[9px] font-black text-slate-400 uppercase mb-3 block tracking-widest">Prompt Input</label>
+                                            <div id="bad-prompt-rendered" class="text-sm text-slate-500 bg-slate-50 p-5 rounded-2xl border border-dashed border-slate-300 italic font-mono leading-relaxed"></div>
+                                        </div>
+                                        <div class="flex-1 flex flex-col overflow-hidden">
+                                            <label class="text-[9px] font-black text-slate-400 uppercase mb-3 block tracking-widest">IA Response Preview</label>
+                                            <div id="bad-result-preview" class="text-xs text-slate-400 leading-relaxed p-5 bg-white border border-slate-100 rounded-2xl flex-1 overflow-y-auto custom-scroll shadow-inner"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
+                                <!-- RIGHT: PROFESSIONAL AGIA -->
+                                <div class="flex flex-col bg-white border-2 border-indigo-600 rounded-[32px] overflow-hidden shadow-[0_20px_60px_-15px_rgba(99,102,241,0.15)] relative">
+                                    <div class="p-6 border-b border-indigo-50 flex items-center justify-between bg-indigo-600">
+                                        <div class="flex items-center gap-2 text-white">
+                                            <div class="w-6 h-6 rounded-md bg-white/20 flex items-center justify-center">
+                                                <span class="material-symbols-rounded text-xs">auto_awesome</span>
+                                            </div>
+                                            <span class="text-[10px] font-black uppercase tracking-widest">Neural Engineering AGIA</span>
+                                        </div>
+                                        <span class="text-[10px] font-bold text-indigo-200 bg-white/10 px-2 py-0.5 rounded uppercase">Mastery High</span>
+                                    </div>
+                                    <div class="p-6 flex-1 flex flex-col gap-6 overflow-hidden">
+                                        <div class="flex-none">
+                                            <label class="text-[9px] font-black text-indigo-400 uppercase mb-3 block tracking-widest">Architectural Matrix</label>
+                                            <div id="detail-prompt-rendered" class="font-mono text-[13px] leading-relaxed text-slate-700 bg-slate-900 text-slate-300 p-6 rounded-2xl min-h-[180px] max-h-[250px] overflow-y-auto custom-scroll shadow-2xl border border-white/5"></div>
+                                        </div>
+
+                                        <!-- Interactive Neural Map (Legend) -->
+                                        <div id="interactive-legend" class="flex flex-wrap gap-2 pt-2 border-t border-slate-50">
+                                            <span class="legend-item cursor-pointer flex items-center gap-1.5 text-[9px] font-bold text-slate-400 hover:text-indigo-600 transition-colors" data-type="r"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Role</span>
+                                            <span class="legend-item cursor-pointer flex items-center gap-1.5 text-[9px] font-bold text-slate-400 hover:text-indigo-600 transition-colors" data-type="c"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Context</span>
+                                            <span class="legend-item cursor-pointer flex items-center gap-1.5 text-[9px] font-bold text-slate-400 hover:text-indigo-600 transition-colors" data-type="m"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Meta</span>
+                                            <span class="legend-item cursor-pointer flex items-center gap-1.5 text-[9px] font-bold text-slate-400 hover:text-indigo-600 transition-colors" data-type="l"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Constraints</span>
+                                        </div>
+
+                                        <div class="flex-1 flex flex-col overflow-hidden mt-2">
+                                            <label class="text-[9px] font-black text-indigo-400 uppercase mb-3 block tracking-widest">Projected Output</label>
+                                            <div id="good-result-preview" class="text-xs text-slate-600 leading-relaxed p-5 bg-white border border-indigo-100/50 rounded-2xl flex-1 overflow-y-auto custom-scroll shadow-inner font-medium"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -244,32 +280,15 @@
         </main>
     </div>
 
-    <!-- Toast -->
-    <div id="toast" class="fixed bottom-8 right-8 z-50 transform translate-x-full transition-all duration-300">
-        <div class="bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4">
-            <span class="material-symbols-rounded text-emerald-400">check_circle</span>
-            <span class="text-xs font-bold uppercase tracking-widest">Copiado con éxito</span>
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 translate-y-24 opacity-0">
+        <div class="bg-black text-white px-8 py-4 rounded-3xl shadow-2xl flex items-center gap-4 border border-white/10 backdrop-blur-md">
+            <span class="material-symbols-rounded text-emerald-400">task_alt</span>
+            <span class="text-xs font-bold uppercase tracking-widest">Code Deployed to Clipboard</span>
         </div>
     </div>
 
-    <!-- Modales (Paywall / Video) -->
-    <div id="paywall-modal" class="hidden fixed inset-0 z-[100] bg-slate-900/90 backdrop-blur-md flex items-center justify-center p-6">
-        <div class="bg-white p-10 rounded-[40px] max-w-sm w-full text-center">
-            <h3 class="text-2xl font-black mb-4">Acceso Completo</h3>
-            <p class="text-slate-500 text-sm mb-8">Obtén la metodología completa y 100+ prompts optimizados.</p>
-            <button onclick="closePaywall()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black text-sm">EMPEZAR AHORA</button>
-        </div>
-    </div>
-
-    <div id="video-modal" class="hidden fixed inset-0 z-[100] bg-slate-900/95 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-[30px] max-w-lg w-full text-center">
-            <h3 class="font-black mb-2">Variables Dinámicas</h3>
-            <p class="text-xs text-slate-500 mb-6">Aprende a personalizar cualquier prompt maestro.</p>
-            <button onclick="activateVariables()" class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold">Activar ahora</button>
-        </div>
-    </div>
-
-    <!-- Logic -->
+    <!-- Logic Engine -->
     <script type="module">
         let casesData = [];
         const externalDBUrl = 'https://aulagenia.cl/prompts_db.js';
@@ -279,12 +298,10 @@
                 const module = await import(`${externalDBUrl}?t=${new Date().getTime()}`);
                 if (module?.default) {
                     casesData = module.default;
-                    document.getElementById('system-status-overlay').classList.add('hidden');
                     initApp();
                 }
             } catch (err) {
-                document.getElementById('status-code').innerText = "ERROR_CONNECTION";
-                document.getElementById('retry-btn').classList.remove('hidden');
+                console.error("Critical Engine Failure:", err);
             }
         }
 
@@ -293,17 +310,12 @@
         let currentPromptTemplate = "";
         let currentBadPromptTemplate = "";
         let currentVariables = {};
-        let variablesActive = false;
 
         function initApp() {
             window.loadCase = loadCase;
             window.filterCases = filterCases;
             window.updateVariable = updateVariable;
             window.copyPrompt = copyPrompt;
-            window.openPaywall = () => document.getElementById('paywall-modal').classList.remove('hidden');
-            window.closePaywall = () => document.getElementById('paywall-modal').classList.add('hidden');
-            window.openVideoModal = () => document.getElementById('video-modal').classList.remove('hidden');
-            window.activateVariables = () => { variablesActive = true; document.getElementById('video-modal').classList.add('hidden'); loadCase(casesData[0].id); };
             window.filterByCategory = (cat) => renderList(casesData.filter(c => c.category === cat));
 
             renderCategories();
@@ -316,8 +328,9 @@
             const c = casesData.find(x => x.id === id);
             if(!c) return;
 
-            document.querySelectorAll('.case-item').forEach(el => el.classList.remove('bg-indigo-50', 'border-indigo-100'));
-            document.getElementById(`case-item-${id}`)?.classList.add('bg-indigo-50', 'border-indigo-100');
+            document.querySelectorAll('.case-item').forEach(el => el.classList.remove('bg-indigo-50', 'border-indigo-100', 'active-case'));
+            const activeEl = document.getElementById(`case-item-${id}`);
+            if(activeEl) activeEl.classList.add('bg-indigo-50', 'border-indigo-100', 'active-case');
 
             document.getElementById('workspace-empty').classList.add('hidden');
             document.getElementById('case-detail').classList.remove('hidden');
@@ -341,26 +354,20 @@
             }
 
             renderVariables(varsFound);
-            renderPrompts(c.locked);
-            
-            const lock = document.getElementById('premium-lock');
-            c.locked ? lock.classList.remove('hidden') : lock.classList.add('hidden');
+            renderPrompts();
         }
 
         function renderVariables(vars) {
             const container = document.getElementById('variables-container');
-            const overlay = document.getElementById('variables-locked-overlay');
-            container.innerHTML = vars.length ? '' : '<p class="text-[10px] text-slate-400 italic">No requiere variables.</p>';
+            container.innerHTML = vars.length ? '' : '<p class="text-[10px] text-slate-400 italic font-medium">Static template. No parameters required.</p>';
             
-            if(!variablesActive && vars.length) overlay.classList.remove('hidden');
-            else overlay.classList.add('hidden');
-
             vars.forEach(v => {
                 const div = document.createElement('div');
+                div.className = "space-y-2";
                 div.innerHTML = `
-                    <label class="block text-[9px] font-black uppercase text-slate-400 mb-1 pl-1">${v.key.replace(/_/g, ' ')}</label>
+                    <label class="block text-[9px] font-black uppercase text-slate-400 pl-1 tracking-widest">${v.key.replace(/_/g, ' ')}</label>
                     <input type="text" value="${v.default}" oninput="updateVariable('${v.key}', this.value)"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold focus:bg-white outline-none">
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-700 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 transition-all outline-none">
                 `;
                 container.appendChild(div);
             });
@@ -368,10 +375,10 @@
 
         function updateVariable(key, val) {
             currentVariables[key] = val;
-            renderPrompts(false);
+            renderPrompts();
         }
 
-        function renderPrompts(isLocked) {
+        function renderPrompts() {
             let renderedAgia = currentPromptTemplate;
             Object.keys(currentVariables).forEach(key => {
                 const val = currentVariables[key] || "...";
@@ -411,28 +418,32 @@
         function copyPrompt() {
             navigator.clipboard.writeText(document.getElementById('detail-prompt-rendered').innerText);
             const toast = document.getElementById('toast');
-            toast.classList.remove('translate-x-full');
-            setTimeout(() => toast.classList.add('translate-x-full'), 2500);
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3000);
         }
 
         function renderCategories() {
             const cats = ["productivity", "finance", "sales", "tech", "education"];
             document.getElementById('category-nav').innerHTML = cats.map(c => `
-                <button onclick="filterByCategory('${c}')" class="px-4 py-1.5 bg-white border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500 hover:border-indigo-500 transition-all">${c}</button>
+                <button onclick="filterByCategory('${c}')" class="px-4 py-1.5 bg-white border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500 hover:border-indigo-500 transition-all flex-none">${c}</button>
             `).join('');
         }
 
         function renderList(cases) {
             const list = document.getElementById('case-list');
-            document.getElementById('total-display').innerText = `${cases.length} CASOS`;
+            document.getElementById('total-display').innerText = `${cases.length} TEMPLATES`;
             list.innerHTML = cases.map(c => `
-                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item p-3 rounded-xl cursor-pointer border border-transparent hover:border-slate-100 transition-all flex items-center gap-3">
-                    <div class="w-8 h-8 rounded bg-slate-50 flex items-center justify-center text-slate-400">
-                        <span class="material-symbols-rounded text-base">${c.locked ? 'lock' : 'check_circle'}</span>
+                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item p-4 rounded-2xl cursor-pointer border border-transparent hover:bg-slate-50 transition-all group flex items-center gap-4 mb-1">
+                    <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:border-indigo-100 shadow-sm transition-all">
+                        <span class="material-symbols-rounded text-xl">token</span>
                     </div>
                     <div class="flex-1 overflow-hidden">
-                        <h4 class="text-[11px] font-bold truncate">${c.title}</h4>
-                        <p class="text-[9px] text-slate-400 uppercase font-black tracking-tighter">${c.category}</p>
+                        <h4 class="text-[12px] font-bold text-slate-700 truncate group-hover:text-slate-900">${c.title}</h4>
+                        <div class="flex items-center gap-2 mt-1">
+                             <span class="text-[9px] text-slate-400 uppercase font-black tracking-widest">${c.category}</span>
+                             <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                             <span class="text-[9px] text-emerald-500 font-bold">READY</span>
+                        </div>
                     </div>
                 </div>
             `).join('');
