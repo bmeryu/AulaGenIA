@@ -1,1095 +1,420 @@
-<!DOCTYPE html>
+},
+  {
+    id: 2,
+    category: 'marketing',
+    title: "Estratega de Reels Viral",
+    difficulty: "Alta",
+    hoursSaved: 9,
+    problem: "Quiero vender mis servicios por Instagram pero nadie ve mis videos.",
+    badPrompt: "Escribe 3 ideas de videos para vender mi curso de cocina.",
+    badError: "Ideas de 'venta directa' que la gente ignora. Falta gancho visual y estructura de retención (hook/body/cta).",
+    agiaPrompt: "{r}Actúa como un Content Strategist experto en algoritmos de retención (TikTok/Reels).{/r} {c}Vendo un curso de cocina saludable para mamás ocupadas.{/c} {m}Genera 3 ganchos psicológicos y guiones de 15 segundos que generen deseo inmediato.{/m} {l}Evita sonar como vendedor; enfócate en resolver el dolor de 'no tengo tiempo para cocinar'.{/l} {f}Formato de tabla: Segundo, Visual, Audio y Texto en pantalla.{/f}",
+    advantage: "Aumenta la tasa de reproducción en un 300% al usar gatillos de curiosidad y estructura de retención profesional.",
+    preview: "**Guion 1: El secreto de los 10 minutos**\n- **0-3s:** Muestra un plato gourmet mientras un reloj corre rápido.\n- **Audio:** 'Si crees que cocinar sano toma horas, este video te va a doler...'\n- **Texto en pantalla:** 'Cena Pro en 10 min'.\n- **CTA:** 'Receta completa en mi link del perfil'."
+  },
+  {
+    id: 3,
+    category: 'finance',
+    title: "Negociador de Salario",
+    difficulty: "Experto",
+    hoursSaved: 25,
+    problem: "Quiero pedir un aumento pero me da miedo sonar exigente o que me digan que no.",
+    badPrompt: "Escribe un correo para pedirle un aumento de sueldo a mi jefe porque trabajo mucho.",
+    badError: "Argumento basado en sentimientos en lugar de datos. Facilita que la empresa responda con 'no hay presupuesto'.",
+    agiaPrompt: "{r}Actúa como un Experto en Negociación Salarial con enfoque en ROI empresarial.{/r} {c}Llevo 2 años en la empresa, aumenté la eficiencia del equipo en un 15% y gestioné 3 proyectos críticos con éxito.{/c} {m}Redacta un guion para una reunión presencial donde solicite un ajuste del 20% basado en el valor que he generado.{/m} {l}Tono profesional, sin ultimátums y enfocado en el crecimiento mutuo.{/l} {f}Estructura: Apertura, Evidencia, Petición de Ajuste y Cierre.{/f}",
+    advantage: "Transforma una 'petición' en una 'propuesta de negocio' que el jefe se sentirá tonto de rechazar.",
+    preview: "**Guion de Negociación:**\n\n- **Apertura:** 'Gracias por el tiempo. Quería revisar los hitos de este año...'\n- **Evidencia:** 'Como sabes, logramos reducir los tiempos en un 15%, lo que ahorró X presupuesto...'\n- **Petición:** 'Basado en este impacto directo, busco alinear mi compensación al mercado...'"
+  }
+];
 
-<html lang="es">
+const NAMES = ["Andrés L.", "María P.", "Cristóbal R.", "Javiera M.", "Roberto S.", "Elena V.", "Ignacio F.", "Camila B.", "Fernando K.", "Paola T."];
+const CITIES = ["Santiago", "Viña del Mar", "Concepción", "Antofagasta", "Lima", "Bogotá", "CDMX", "Madrid"];
 
-<head>
+const App = () => {
+  const [selectedCase, setSelectedCase] = useState(PROMPT_CASES[0]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState('all');
+  const [copyStatus, setCopyStatus] = useState(false);
+  const [showXRay, setShowXRay] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+  const [userPrompt, setUserPrompt] = useState("");
+  const [evaluation, setEvaluation] = useState(null);
+  const [isEvaluating, setIsEvaluating] = useState(false);
+  const [hoursAhorradas, setHoursAhorradas] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    <meta charset="UTF-8">
+  // --- SOCIAL PROOF ENGINE ---
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newNotif = {
+        id: Date.now(),
+        name: NAMES[Math.floor(Math.random() * NAMES.length)],
+        city: CITIES[Math.floor(Math.random() * CITIES.length)],
+      };
+      setNotifications(prev => [newNotif, ...prev].slice(0, 1));
+      setTimeout(() => setNotifications([]), 6000);
+    }, 14000);
+    return () => clearInterval(interval);
+  }, []);
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  const filteredCases = useMemo(() => {
+    return PROMPT_CASES.filter(c => {
+      const matchesSearch = c.title.toLowerCase().includes(search.toLowerCase()) || 
+                          c.problem.toLowerCase().includes(search.toLowerCase());
+      const matchesCat = category === 'all' || c.category === category;
+      return matchesSearch && matchesCat;
+    });
+  }, [search, category]);
 
-    <title>Bóveda de Prompts AGIA | Oferta Black Friday</title>
+  const handleCopy = (text) => {
+    const cleanText = text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, '');
+    const textarea = document.createElement("textarea");
+    textarea.value = cleanText;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      setCopyStatus(true);
+      setHoursAhorradas(prev => prev + selectedCase.hoursSaved);
+      setTimeout(() => setCopyStatus(false), 2000);
+    } catch (err) {
+      console.error("Error al copiar");
+    }
+    document.body.removeChild(textarea);
+  };
 
+  const evaluateWithGemini = async () => {
+    if (!userPrompt || userPrompt.length < 5) return;
+    setIsEvaluating(true);
     
+    const promptSystem = `Eres un experto evaluador del Modelo AGIA de Prompt Engineering.
+    Analiza el prompt del usuario basándote en: {r}Rol, {c}Contexto, {m}Meta, {l}Límites, {f}Formato.
+    Devuelve un JSON con:
+    {
+      "score": número del 0 al 100,
+      "missing": ["lista de etiquetas faltantes del modelo AGIA"],
+      "feedback": "explicación de por qué este prompt daría resultados mediocres",
+      "improved": "versión maestra usando el modelo AGIA con etiquetas",
+      "hoursSaved": número de horas estimadas que ahorraría
+    }`;
 
-    <!-- Tailwind CSS -->
+    // Implementación de reintento con backoff exponencial
+    const fetchWithRetry = async (retries = 5, delay = 1000) => {
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: userPrompt }] }],
+            systemInstruction: { parts: [{ text: promptSystem }] },
+            generationConfig: { responseMimeType: "application/json" }
+          })
+        });
+        if (!response.ok) throw new Error("API Error");
+        return await response.json();
+      } catch (err) {
+        if (retries > 0) {
+          await new Promise(res => setTimeout(res, delay));
+          return fetchWithRetry(retries - 1, delay * 2);
+        }
+        throw err;
+      }
+    };
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    try {
+      const data = await fetchWithRetry();
+      const result = JSON.parse(data.candidates[0].content.parts[0].text);
+      setEvaluation(result);
+    } catch (e) {
+      console.error("Error evaluando:", e);
+    } finally {
+      setIsEvaluating(false);
+    }
+  };
 
+  const renderXRay = (text) => {
+    if (!showXRay) return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, '');
     
+    return text.split(/({[rcmlf]}|{\/[rcmlf]})/).map((part, i) => {
+      if (part === '{r}') return <span key={i} className="bg-indigo-500/30 text-indigo-200 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1 border border-indigo-400/30">ROL</span>;
+      if (part === '{/r}') return "";
+      if (part === '{c}') return <span key={i} className="bg-emerald-500/30 text-emerald-200 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1 border border-emerald-400/30">CONTEXTO</span>;
+      if (part === '{/c}') return "";
+      if (part === '{m}') return <span key={i} className="bg-amber-500/30 text-amber-200 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1 border border-amber-400/30">META</span>;
+      if (part === '{/m}') return "";
+      if (part === '{l}') return <span key={i} className="bg-rose-500/30 text-rose-200 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1 border border-rose-400/30">LÍMITES</span>;
+      if (part === '{/l}') return "";
+      if (part === '{f}') return <span key={i} className="bg-purple-500/30 text-purple-200 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1 border border-purple-400/30">FORMATO</span>;
+      if (part === '{/f}') return "";
+      return <span key={i} className={part.length < 5 ? "" : "text-slate-100"}>{part}</span>;
+    });
+  };
 
-    <!-- Google Fonts & Icons -->
+  return (
+    <div className="min-h-screen bg-[#050810] text-slate-300 font-sans selection:bg-indigo-500/40 overflow-x-hidden">
+      
+      {/* Banner Urgencia */}
+      <div className="bg-black text-white py-2 px-4 text-center text-xs md:text-sm font-black tracking-[0.2em] z-[60] relative flex justify-center items-center gap-4 border-b border-indigo-500/20">
+        <Zap className="w-4 h-4 text-yellow-400 fill-yellow-400 animate-pulse" />
+        <span>OFERTA BLACK FRIDAY: DESBLOQUEA LA BÓVEDA POR SOLO $9.990</span>
+        <button className="bg-white text-black px-3 py-0.5 rounded-full hover:scale-105 transition-transform text-[10px]">PAGAR</button>
+      </div>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-
-
-    <style>
-
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-
-        
-
-        /* Custom Scrollbar */
-
-        .custom-scroll::-webkit-scrollbar { width: 6px; }
-
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-
-        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-
-        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-
-
-        /* Animations */
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
-
-        
-
-        .blur-locked { filter: blur(4px); user-select: none; pointer-events: none; }
-
-        
-
-        /* Highlight Classes for Prompts */
-
-        .hl-rol { background-color: #dbeafe; color: #1e40af; border-bottom: 2px solid #60a5fa; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
-
-        .hl-contexto { background-color: #d1fae5; color: #065f46; border-bottom: 2px solid #34d399; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
-
-        .hl-meta { background-color: #fef3c7; color: #92400e; border-bottom: 2px solid #fbbf24; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
-
-        .hl-limites { background-color: #fee2e2; color: #b91c1c; border-bottom: 2px solid #f87171; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
-
-        .hl-formato { background-color: #f3e8ff; color: #6b21a8; border-bottom: 2px solid #a855f7; padding: 0 4px; border-radius: 4px; cursor: help; font-weight: 600; }
-
-
-
-        .prose-sm p { margin-bottom: 0.5em; }
-
-        .prose-sm ul, .prose-sm ol { margin-left: 1.2em; margin-bottom: 0.5em; }
-
-        .prose-sm li { margin-bottom: 0.2em; }
-
-    </style>
-
-</head>
-
-<body class="h-screen flex flex-col overflow-hidden text-slate-800">
-
-
-
-    <!-- BLACK FRIDAY BANNER -->
-
-    <div class="bg-black text-white text-center py-2 px-4 text-xs md:text-sm font-bold tracking-wide z-50 flex justify-center items-center gap-2">
-
-        <span class="material-symbols-outlined text-sm text-yellow-400">local_fire_department</span>
-
-        <span>BLACK FRIDAY: Desbloquea la Bóveda Completa por solo $9.990</span>
-
-        <a href="#" onclick="openPaywall()" class="underline text-yellow-400 hover:text-yellow-300 ml-2">Ver Oferta</a>
-
-    </div>
-
-
-
-    <!-- Header -->
-
-    <header class="bg-white border-b border-slate-200 shadow-sm z-20 flex-none relative">
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-
-            <div class="flex items-center justify-between mb-4">
-
-                <div class="flex items-center gap-4">
-
-                    <!-- Logo Placeholder -->
-
-                    <div class="h-10 w-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-xl">AG</div>
-
-                    <div class="border-l border-slate-200 pl-4">
-
-                        <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">Bóveda de Prompts <span class="text-indigo-600">AGIA</span></h1>
-
-                        <p class="text-xs text-slate-500 font-medium">Librería de Copiar & Pegar</p>
-
-                    </div>
-
-                </div>
-
-                <!-- Botón Compra Header -->
-
-                <button onclick="openPaywall()" class="hidden md:flex bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:shadow-lg transition-all items-center gap-2 border border-slate-700">
-
-                    <span class="material-symbols-outlined text-sm text-yellow-400">lock_open</span>
-
-                    DESBLOQUEAR TODO
-
-                </button>
-
+      {/* Header Premium */}
+      <header className="bg-slate-950/80 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 text-slate-400">
+              {sidebarOpen ? <X /> : <Menu />}
+            </button>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-xl shadow-indigo-500/30 ring-1 ring-white/10">
+                <BrainCircuit className="text-white w-6 h-6" />
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-black tracking-tighter text-white">
+                  AGIA <span className="text-indigo-500">VAULT</span>
+                </h1>
+                <p className="text-[8px] uppercase tracking-[0.3em] text-slate-500 font-bold">Maestría en Prompts</p>
+              </div>
             </div>
+          </div>
 
-
-
-            <!-- Category Navigation -->
-
-            <div class="overflow-x-auto custom-scroll pb-2">
-
-                <div class="flex space-x-2 min-w-max" id="category-nav">
-
-                    <!-- Injected by JS -->
-
-                </div>
-
+          <div className="flex items-center gap-4 md:gap-8">
+            <div className="flex flex-col items-end">
+              <span className="text-[9px] font-black text-slate-500 uppercase">ROI de Tiempo</span>
+              <div className="flex items-center gap-1.5 text-white font-black">
+                <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="text-base md:text-lg">{hoursAhorradas.toFixed(1)}h</span>
+              </div>
             </div>
-
+            <button className="bg-white text-black px-4 md:px-6 py-2 rounded-xl text-xs font-black hover:bg-slate-200 transition-all flex items-center gap-2">
+              <Lock className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">ACCESO PRO</span>
+            </button>
+          </div>
         </div>
+      </header>
 
-    </header>
-
-
-
-    <!-- Main Layout -->
-
-    <div class="flex flex-1 overflow-hidden max-w-7xl mx-auto w-full relative">
-
+      <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
         
+        {/* Sidebar Móvil y Desktop */}
+        <aside className={`lg:col-span-4 flex flex-col gap-8 lg:block ${sidebarOpen ? 'fixed inset-0 top-[120px] bg-[#050810] z-40 p-6 overflow-y-auto' : 'hidden lg:flex'}`}>
+          
+          <div className="bg-[#0b101b] rounded-[2rem] border border-white/5 p-6 shadow-2xl">
+            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Explorador de Casos</h3>
+            
+            <div className="relative mb-5">
+              <Search className="absolute left-4 top-3 text-slate-500 w-3.5 h-3.5" />
+              <input 
+                type="text" 
+                placeholder="Buscar solución..." 
+                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-xs focus:ring-1 focus:ring-indigo-500/50 outline-none transition-all placeholder:text-slate-700"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
 
-        <!-- Sidebar -->
+            <div className="flex gap-2 overflow-x-auto pb-4 no-scrollbar">
+              <button onClick={() => setCategory('all')} className={`flex-none px-3 py-1.5 rounded-lg text-[10px] font-bold border ${category === 'all' ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-white/5 border-white/10 text-slate-500'}`}>Todos</button>
+              {Object.keys(CATEGORIES).map(k => (
+                <button key={k} onClick={() => setCategory(k)} className={`flex-none px-3 py-1.5 rounded-lg text-[10px] font-bold border ${category === k ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-white/5 border-white/10 text-slate-500'}`}>{CATEGORIES[k].label}</button>
+              ))}
+            </div>
 
-        <aside class="w-full md:w-80 flex flex-col bg-white border-r border-slate-200 flex-none z-10 transition-all duration-300 absolute md:relative h-full transform -translate-x-full md:translate-x-0 shadow-xl md:shadow-none" id="sidebar">
+            <div className="space-y-2.5 mt-2 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar">
+              {filteredCases.map(c => (
+                <button 
+                  key={c.id} 
+                  onClick={() => { setSelectedCase(c); setSidebarOpen(false); }}
+                  className={`w-full p-4 rounded-2xl border transition-all text-left group ${selectedCase.id === c.id ? 'bg-indigo-600/10 border-indigo-500/50' : 'bg-transparent border-white/5 hover:bg-white/5'}`}
+                >
+                  <div className="flex justify-between items-start mb-1.5">
+                    <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full bg-${CATEGORIES[c.category].color}-500/10 text-${CATEGORIES[c.category].color}-400 border border-${CATEGORIES[c.category].color}-500/20`}>{CATEGORIES[c.category].label}</span>
+                    <span className="text-[9px] text-slate-600 font-bold">+{c.hoursSaved}h ROI</span>
+                  </div>
+                  <h4 className="text-xs font-bold text-slate-100 group-hover:text-indigo-400 transition-colors">{c.title}</h4>
+                </button>
+              ))}
+            </div>
+          </div>
 
-            <div class="p-3 border-b border-slate-100">
+          <div className="bg-gradient-to-br from-indigo-950/40 to-slate-900 rounded-[2rem] border border-indigo-500/20 p-6 mt-8 relative overflow-hidden group">
+            <div className="absolute -top-6 -right-6 w-20 h-20 bg-indigo-500/10 rounded-full blur-2xl" />
+            <h2 className="text-lg font-black text-white mb-1 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-yellow-400" /> EVALUADOR AGIA
+            </h2>
+            <p className="text-[10px] text-indigo-300/70 mb-4 font-medium leading-relaxed">Pega tu prompt y descubre por qué tus resultados son básicos.</p>
+            
+            <textarea 
+              className="w-full bg-black/60 border border-white/10 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-700 outline-none focus:ring-1 focus:ring-indigo-500 min-h-[120px] mb-3 transition-all"
+              placeholder="Ej: Dame ideas de nombres para mi empresa..."
+              value={userPrompt}
+              onChange={(e) => setUserPrompt(e.target.value)}
+            />
+            
+            <button 
+              onClick={evaluateWithGemini}
+              disabled={isEvaluating || userPrompt.length < 5}
+              className="w-full bg-indigo-600 disabled:opacity-40 text-white py-3 rounded-xl font-black text-xs hover:bg-indigo-500 transition-all flex items-center justify-center gap-2 shadow-xl"
+            >
+              {isEvaluating ? <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : <><Zap className="w-3.5 h-3.5 fill-white" /> ANALIZAR PROMPT</>}
+            </button>
 
-                <div class="relative">
-
-                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">search</span>
-
-                    <input type="text" id="searchInput" placeholder="Buscar prompt..." 
-
-                        class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 transition-all"
-
-                        onkeyup="filterCases()">
-
+            {evaluation && (
+              <div className="mt-6 bg-black/40 rounded-2xl p-5 border border-white/5 animate-in fade-in duration-500">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Puntaje Maestro</span>
+                  <span className={`text-lg font-black ${evaluation.score > 70 ? 'text-emerald-400' : 'text-amber-400'}`}>{evaluation.score}%</span>
                 </div>
-
-            </div>
-
-            <div class="flex-1 overflow-y-auto custom-scroll p-2 space-y-1" id="case-list">
-
-                <!-- Cases injected by JS -->
-
-            </div>
-
-            <div class="p-3 border-t border-slate-100 text-xs text-center text-slate-400 bg-slate-50">
-
-                Bóveda cargada con <span id="count-display" class="font-bold">0</span> prompts
-
-            </div>
-
+                <div className="w-full bg-slate-900 h-2 rounded-full mb-4 overflow-hidden">
+                  <div className="bg-indigo-500 h-full transition-all duration-1000" style={{ width: `${evaluation.score}%` }} />
+                </div>
+                {evaluation.missing?.length > 0 && (
+                  <div className="mb-4">
+                    <p className="text-[9px] font-black text-rose-400 uppercase mb-1.5 tracking-tighter">Faltan Elementos:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {evaluation.missing.map(m => <span key={m} className="text-[8px] bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded border border-rose-500/20">{m}</span>)}
+                    </div>
+                  </div>
+                )}
+                <p className="text-[10px] text-slate-400 italic mb-4 bg-white/5 p-3 rounded-lg leading-relaxed">"{evaluation.feedback}"</p>
+                <button 
+                  onClick={() => {
+                    setSelectedCase({ ...selectedCase, title: "Optimizado por IA", agiaPrompt: evaluation.improved, problem: "Resultado de tu evaluación personalizada.", preview: "Usa este prompt mejorado para ver la diferencia nivel pro.", hoursSaved: evaluation.hoursSaved || 2 });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="w-full py-2 bg-white hover:bg-slate-200 text-black rounded-lg text-[9px] font-black transition-all uppercase tracking-widest"
+                >
+                  USAR VERSIÓN PRO
+                </button>
+              </div>
+            )}
+          </div>
         </aside>
 
-
-
-        <!-- Mobile Toggle -->
-
-        <button onclick="toggleSidebar()" class="md:hidden absolute bottom-6 left-6 z-40 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors">
-
-            <span class="material-symbols-outlined">menu_open</span>
-
-        </button>
-
-
-
-        <!-- Main Content -->
-
-        <main class="flex-1 flex flex-col bg-slate-50/50 overflow-hidden relative w-full">
-
+        {/* COLUMNA DERECHA: EL VERSUS */}
+        <div className="lg:col-span-8 space-y-8">
+          
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 bg-[#0b101b] p-8 rounded-[2.5rem] border border-white/5 shadow-2xl">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                 <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-inner">
+                   <Award className="w-6 h-6" />
+                 </div>
+                 <h2 className="text-3xl font-black text-white tracking-tighter leading-tight">{selectedCase.title}</h2>
+              </div>
+              <p className="text-slate-400 text-sm font-medium leading-relaxed">{selectedCase.problem}</p>
+            </div>
             
-
-            <!-- Case Detail -->
-
-            <div id="case-detail" class="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 pb-24">
-
-                <div class="max-w-4xl mx-auto fade-in">
-
-                    
-
-                    <!-- Title Header -->
-
-                    <div class="flex items-center gap-4 mb-6 border-b border-slate-200 pb-6">
-
-                        <div id="detail-icon-bg" class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-md border border-white bg-white">
-
-                            <span id="detail-icon" class="material-symbols-outlined text-3xl"></span>
-
-                        </div>
-
-                        <div class="flex-1">
-
-                            <div class="flex items-center gap-2 mb-1">
-
-                                <span id="detail-category-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Categoría</span>
-
-                                <span class="text-[10px] font-medium text-slate-400 flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-slate-100">
-
-                                    <span class="material-symbols-outlined text-[10px] text-green-500">verified</span> Validado por AGIA
-
-                                </span>
-
-                            </div>
-
-                            <h2 id="detail-title" class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">Título del Caso</h2>
-
-                            <p id="detail-problem" class="text-sm text-slate-500 mt-1 font-medium"></p>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- AGIA LEGEND (BARRA DE COLORES - MOVIDA ARRIBA) -->
-
-                    <div class="mb-4 bg-white rounded-xl border border-slate-200 p-3 overflow-x-auto">
-
-                        <div class="flex justify-between items-center min-w-max gap-4 md:gap-0">
-
-                            <!-- ROL -->
-
-                            <div class="flex items-center gap-2">
-
-                                <div class="w-6 h-6 rounded bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold hl-rol border-none">1</div>
-
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Rol</span>
-
-                            </div>
-
-                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
-
-                            <!-- CONTEXTO -->
-
-                            <div class="flex items-center gap-2">
-
-                                <div class="w-6 h-6 rounded bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold hl-contexto border-none">2</div>
-
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Contexto</span>
-
-                            </div>
-
-                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
-
-                            <!-- META -->
-
-                            <div class="flex items-center gap-2">
-
-                                <div class="w-6 h-6 rounded bg-amber-100 text-amber-600 flex items-center justify-center text-[10px] font-bold hl-meta border-none">3</div>
-
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Meta</span>
-
-                            </div>
-
-                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
-
-                            <!-- LIMITES -->
-
-                            <div class="flex items-center gap-2">
-
-                                <div class="w-6 h-6 rounded bg-red-100 text-red-600 flex items-center justify-center text-[10px] font-bold hl-limites border-none">4</div>
-
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Límites</span>
-
-                            </div>
-
-                            <div class="w-8 h-[1px] bg-slate-200 hidden md:block"></div>
-
-                            <!-- FORMATO -->
-
-                            <div class="flex items-center gap-2">
-
-                                <div class="w-6 h-6 rounded bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-bold hl-formato border-none">5</div>
-
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Formato</span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- PROMPT BOX (HERO) -->
-
-                    <div class="bg-slate-900 rounded-2xl p-1 shadow-2xl mb-8 border border-slate-700 relative group">
-
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500 opacity-20 rounded-full -mr-10 -mt-10 blur-3xl group-hover:opacity-30 transition-opacity"></div>
-
-                        
-
-                        <!-- Header Prompt Box -->
-
-                        <div class="bg-slate-800/50 rounded-t-xl px-4 py-3 flex justify-between items-center border-b border-slate-700">
-
-                            <div class="flex items-center gap-2">
-
-                                <span class="material-symbols-outlined text-yellow-400 text-sm">auto_awesome</span>
-
-                                <span class="text-xs font-bold text-slate-300 tracking-wider">PROMPT MAESTRO</span>
-
-                            </div>
-
-                            <div class="flex gap-2">
-
-                                <button onclick="copyPrompt()" class="flex items-center gap-2 text-xs bg-indigo-600 text-white hover:bg-indigo-500 px-4 py-1.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-indigo-500/25 ring-1 ring-white/10">
-
-                                    <span class="material-symbols-outlined text-sm">content_copy</span> 
-
-                                    <span>COPIAR</span>
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <!-- Content Prompt Box -->
-
-                        <div class="p-6 relative">
-
-                            <p id="detail-prompt-rendered" class="font-mono text-sm md:text-base text-slate-200 leading-relaxed whitespace-pre-wrap select-all">...</p>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- COMPARISON GRID (VISIBLE POR DEFECTO) -->
-
-                    <div class="mb-8">
-
-                        <div id="comparison-container" class="grid md:grid-cols-2 gap-6 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-
-                            <!-- Bad Prompt -->
-
-                            <div>
-
-                                <h3 class="text-xs font-bold text-slate-400 uppercase mb-2 flex items-center gap-1">
-
-                                    <span class="material-symbols-outlined text-sm">close</span> Lo que escribe la mayoría
-
-                                </h3>
-
-                                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 text-sm text-slate-500 italic font-mono">
-
-                                    <p id="detail-bad-prompt">"..."</p>
-
-                                </div>
-
-                                <div class="mt-2 flex flex-wrap gap-2" id="deficiency-badges"></div>
-
-                            </div>
-
-                            <!-- Result Preview -->
-
-                            <div class="border-l border-slate-100 pl-4 md:pl-6">
-
-                                <h3 class="text-xs font-bold text-slate-400 uppercase mb-2 flex items-center gap-2">
-
-                                    <span class="material-symbols-outlined text-sm text-indigo-500">check_circle</span> Resultado en ChatGPT (Real)
-
-                                </h3>
-
-                                <!-- Contenedor con scroll si es muy ancho -->
-
-                                <div class="overflow-x-auto">
-
-                                    <div id="preview-response" class="text-xs text-slate-700 prose-sm bg-indigo-50/50 p-4 rounded-lg border border-indigo-50">
-
-                                        <!-- JS injects preview here -->
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- AGIA MODEL IMAGE (MOVIDA AL FINAL) -->
-
-                    <div class="mb-8 pt-8 border-t border-slate-200 opacity-80 hover:opacity-100 transition-opacity">
-
-                         <h3 class="text-xs font-bold text-slate-400 uppercase mb-4 flex items-center gap-1">
-
-                            <span class="material-symbols-outlined text-sm">schema</span> Referencia: La Estructura Maestra
-
-                         </h3>
-
-                         <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
-
-                             <img src="https://aulagenia.cl/maestro-prompts.png" alt="Modelo AGIA - Estructura Maestra" class="w-full h-auto rounded-lg">
-
-                         </div>
-
-                    </div>
-
-
-
+            <div className="flex flex-col items-end gap-2">
+               <div className="flex items-center gap-3 bg-black/40 px-4 py-2 rounded-2xl border border-white/5">
+                 <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Rayos X</span>
+                 <button onClick={() => setShowXRay(!showXRay)} className={`w-11 h-6 rounded-full p-1 transition-all shadow-lg ${showXRay ? 'bg-indigo-600 shadow-indigo-500/50' : 'bg-slate-800'}`}>
+                   <div className={`w-4 h-4 bg-white rounded-full transition-transform transform ${showXRay ? 'translate-x-5' : 'translate-x-0'}`} />
+                 </button>
+               </div>
+               <div className="flex items-center gap-2 text-[10px] font-black text-emerald-400 uppercase tracking-wider bg-emerald-500/5 px-3 py-1 rounded-full border border-emerald-500/10">
+                 <TrendingUp className="w-3 h-3" /> Dificultad: {selectedCase.difficulty}
+               </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+            <div className="bg-[#0b101b] rounded-[2.5rem] border border-white/5 p-8 flex flex-col h-full relative group hover:border-rose-500/20 transition-all duration-500">
+              <div className="absolute top-8 right-8 text-rose-500/5"><AlertTriangle className="w-20 h-20" /></div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-9 h-9 rounded-xl bg-rose-500/10 flex items-center justify-center border border-rose-500/20"><Users className="w-4 h-4 text-rose-500" /></div>
+                <div>
+                  <h4 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-600">Prompt Amateur</h4>
+                  <p className="text-xs font-bold text-slate-300">Lo que escribe el 95%</p>
                 </div>
-
+              </div>
+              <div className="bg-black/60 rounded-[1.5rem] p-6 border border-white/5 text-sm italic text-slate-500 font-mono mb-8 flex-1 leading-relaxed">"{selectedCase.badPrompt}"</div>
+              <div className="bg-rose-500/5 rounded-xl p-4 border border-rose-500/10 flex gap-3">
+                <AlertTriangle className="w-5 h-5 text-rose-500 flex-none" />
+                <p className="text-[10px] text-slate-400 font-medium leading-relaxed"><span className="text-rose-400 font-black uppercase text-[9px] block mb-0.5">Falla Crítica:</span> {selectedCase.badError}</p>
+              </div>
             </div>
 
-        </main>
-
-    </div>
-
-
-
-    <!-- PAYWALL MODAL (Bloqueo de Ventas) -->
-
-    <div id="paywall-modal" class="fixed inset-0 z-[60] hidden">
-
-        <!-- Backdrop -->
-
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closePaywall()"></div>
-
-        
-
-        <!-- Modal Content -->
-
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
-
-            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in duration-300">
-
-                <button onclick="closePaywall()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 bg-white rounded-full p-1 z-10">
-
-                    <span class="material-symbols-outlined">close</span>
-
-                </button>
-
-                
-
-                <!-- Image/Header -->
-
-                <div class="bg-slate-900 p-8 text-center relative overflow-hidden">
-
-                    <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-600 rounded-full blur-3xl opacity-30 -mr-10 -mt-10"></div>
-
-                    <span class="material-symbols-outlined text-5xl text-yellow-400 mb-2 relative z-10">lock</span>
-
-                    <h3 class="text-white font-bold text-xl relative z-10">Contenido Premium</h3>
-
-                    <p class="text-indigo-200 text-sm relative z-10">Este prompt es parte de la Bóveda Privada.</p>
-
-                </div>
-
-
-
-                <!-- Body -->
-
-                <div class="p-6 text-center">
-
-                    <p class="text-slate-600 text-sm mb-6">
-
-                        Estás viendo la versión gratuita. Accede a los <span class="font-bold text-slate-900">100+ casos avanzados</span> y copia mis fórmulas validadas.
-
-                    </p>
-
-                    
-
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6">
-
-                        <p class="text-xs font-bold text-yellow-800 uppercase tracking-wide">🔥 Oferta Black Friday</p>
-
-                        <p class="text-2xl font-black text-slate-900">$9.990 <span class="text-sm font-normal text-slate-500 line-through">$19.990</span></p>
-
-                        <p class="text-[10px] text-slate-500">Pago único. Acceso de por vida.</p>
-
+            <div className="bg-[#121a2e] rounded-[2.5rem] border border-indigo-500/30 p-1 flex flex-col h-full shadow-2xl transform md:scale-[1.03] z-10 transition-all duration-700">
+              <div className="bg-[#080c14] rounded-[2.3rem] p-8 h-full flex flex-col relative overflow-hidden">
+                <div className="absolute -top-32 -right-32 w-80 h-80 bg-indigo-600/10 rounded-full blur-[100px]" />
+                <div className="flex items-center justify-between mb-8 relative z-10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-xl bg-indigo-600 flex items-center justify-center shadow-indigo-600/50"><Zap className="w-5 h-5 text-white fill-white" /></div>
+                    <div>
+                      <h4 className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-400">Modelo AGIA</h4>
+                      <p className="text-sm font-bold text-white">Ingeniería Maestra</p>
                     </div>
-
-
-
-                    <a id="payment-btn" href="#" target="_blank" class="block w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 hover:scale-[1.02] transition-all shadow-lg shadow-indigo-200 mb-3 flex items-center justify-center gap-2">
-
-                        <span>DESBLOQUEAR BÓVEDA AHORA</span>
-
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
-
-                    </a>
-
-                    
-
-                    <p class="text-[10px] text-slate-400">Garantía de satisfacción. Pago seguro vía Mercado Pago.</p>
-
+                  </div>
+                  <div className="flex items-center gap-1 bg-emerald-500/10 px-3 py-1 rounded-full text-[9px] font-black text-emerald-400 border border-emerald-500/20"><ShieldCheck className="w-3.5 h-3.5" /> VALIDADO</div>
                 </div>
-
+                <div className="bg-white/5 rounded-[1.5rem] p-6 border border-white/5 text-sm md:text-base font-medium leading-[1.7] mb-8 flex-1 relative z-10 font-mono text-slate-400">{renderXRay(selectedCase.agiaPrompt)}</div>
+                <div className="space-y-6 relative z-10">
+                   <div className="bg-emerald-500/5 rounded-xl p-4 border border-emerald-500/10 flex gap-3">
+                      <CheckCircle className="w-5 h-5 text-emerald-500 flex-none" />
+                      <p className="text-[10px] text-slate-300 leading-relaxed"><span className="text-emerald-400 font-black uppercase text-[9px] block mb-0.5">Ventaja de Valor:</span> {selectedCase.advantage}</p>
+                   </div>
+                  <button onClick={() => handleCopy(selectedCase.agiaPrompt)} className={`w-full py-4 rounded-[1.2rem] font-black text-sm flex items-center justify-center gap-3 transition-all transform active:scale-95 ${copyStatus ? 'bg-emerald-600 text-white shadow-emerald-500/40' : 'bg-indigo-600 text-white hover:bg-indigo-500 shadow-indigo-600/40'}`}>
+                    {copyStatus ? <><CheckCircle className="w-5 h-5" /> ¡PROMPT COPIADO!</> : <><Copy className="w-5 h-5" /> COPIAR PROMPT MAESTRO</>}
+                  </button>
+                </div>
+              </div>
             </div>
+
+            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-[#050810] border-4 border-[#0b101b] rounded-full items-center justify-center z-20 shadow-2xl">
+              <span className="text-sm font-black text-indigo-500 italic">VS</span>
+            </div>
+          </div>
+
+          <div className="bg-[#0b101b] rounded-[2.5rem] border border-white/5 p-10 shadow-2xl">
+            <h3 className="text-lg font-black text-white mb-6 flex items-center gap-3">
+              <Eye className="w-6 h-6 text-indigo-400" /> Resultado Esperado en ChatGPT
+            </h3>
+            <div className="prose prose-invert max-w-none text-slate-400 text-sm md:text-base leading-relaxed bg-black/40 rounded-[1.5rem] p-8 border border-white/5 whitespace-pre-wrap font-sans shadow-inner">
+              {selectedCase.preview}
+            </div>
+          </div>
 
         </div>
+      </main>
 
+      {/* Social Proof Dinámico */}
+      <div className="fixed bottom-10 left-10 z-50 pointer-events-none">
+        {notifications.map(n => (
+          <div key={n.id} className="bg-white text-slate-950 px-5 py-4 rounded-[1.5rem] shadow-2xl border border-slate-200 flex items-center gap-4 animate-in slide-in-from-left-20 duration-700 pointer-events-auto max-w-sm">
+            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg"><Users className="w-5 h-5" /></div>
+            <div>
+              <p className="text-xs font-black leading-tight tracking-tight">{n.name} de {n.city}</p>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Accedió a la Bóveda Maestra</p>
+              <div className="flex items-center gap-1.5 mt-1.5"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /><p className="text-[8px] text-emerald-600 font-black uppercase tracking-widest">Compra Verificada</p></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <footer className="mt-20 border-t border-white/5 py-16 px-6 bg-black/40">
+        <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
+          <div className="flex items-center gap-3 mb-6">
+             <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-2xl">AG</div>
+             <span className="font-black text-white text-xl tracking-tighter">AULA GENIA <span className="text-slate-700">© 2024</span></span>
+          </div>
+          <p className="text-[10px] text-slate-500 max-w-lg leading-relaxed font-bold uppercase tracking-widest opacity-60">
+            Formación técnica para no-técnicos. La Bóveda AGIA es propiedad intelectual registrada.
+          </p>
+        </div>
+      </footer>
+
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 20px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </div>
+  );
+};
 
-
-
-    <script>
-
-        // ==========================================
-
-        // CONFIGURACIÓN DE VENTA (TU LINK AQUÍ)
-
-        // ==========================================
-
-        const LINK_MERCADO_PAGO = "#"; // <--- PEGA TU LINK ENTRE LAS COMILLAS
-
-        
-
-        // Asignar link al botón
-
-        document.getElementById('payment-btn').href = LINK_MERCADO_PAGO;
-
-
-
-        // --- HELPERS PARA AGIA MARKUP ---
-
-        function renderAGIA(text) {
-
-            let html = text
-
-                .replace(/{r}(.*?){\/r}/g, '<span class="hl-rol" title="ROL: ¿Quién actúa?">$1</span>')
-
-                .replace(/{c}(.*?){\/c}/g, '<span class="hl-contexto" title="CONTEXTO: Antecedentes y detalles">$1</span>')
-
-                .replace(/{m}(.*?){\/m}/g, '<span class="hl-meta" title="META: Objetivo principal">$1</span>')
-
-                .replace(/{l}(.*?){\/l}/g, '<span class="hl-limites" title="LÍMITES: Restricciones y reglas">$1</span>')
-
-                .replace(/{f}(.*?){\/f}/g, '<span class="hl-formato" title="FORMATO: Estructura de salida">$1</span>')
-
-                .replace(/\n/g, '<br>');
-
-            return html;
-
-        }
-
-
-
-        function cleanAGIA(text) {
-
-            return text.replace(/{[rcmlf]}/g, '').replace(/{\/[rcmlf]}/g, '');
-
-        }
-
-
-
-        // --- DATA ENGINE ---
-
-        
-
-        const categoryConfig = {
-
-            office: { label: "Oficina & Excel", color: "emerald", icon: "business_center" },
-
-            finance: { label: "Finanzas (Nuevo)", color: "cyan", icon: "attach_money" }, // NUEVA CATEGORIA
-
-            marketing: { label: "Marketing", color: "pink", icon: "campaign" },
-
-            personal: { label: "Vida Personal", color: "blue", icon: "home" },
-
-            tech: { label: "Tecnología", color: "violet", icon: "code" },
-
-            education: { label: "Educación", color: "amber", icon: "school" }
-
-        };
-
-
-
-        // Función extendida con propiedad LOCKED (Bloqueo)
-
-        const createCase = (id, cat, title, icon, problem, badPrompt, goodPromptTagged, goodResPreview, locked = false, deficiencies = []) => ({
-
-            id, category: cat, title, icon, problem, 
-
-            badPrompt, 
-
-            agiaPromptTagged: goodPromptTagged, 
-
-            previewResponse: goodResPreview,
-
-            locked: locked, // TRUE = Candado, FALSE = Abierto (AHORA TODO FALSE PARA REVISIÓN)
-
-            deficiencies: deficiencies.length ? deficiencies : ["Sin Rol", "Contexto Vago"]
-
-        });
-
-
-
-        // --- BASE DE DATOS DE PROMPTS ---
-
-        // NOTA: Para vender, después cambiaremos 'false' a 'true' en los casos Premium.
-
-        const allCases = [
-
-            
-
-            // --- OFICINA & EXCEL (EL DOLOR MÁS GRANDE) ---
-
-            createCase(22, 'office', 'El Mago de Excel', 'table_view', 'No sé qué fórmula usar.', 
-
-                'Ayuda con excel para sumar si cumple condición.', 
-
-                '{r}Actúa como un instructor experto de Excel MVP.{/r} {c}Tengo una tabla de Ventas con [Columna A: Vendedores, Columna B: Mes, Columna C: Monto].{/c} {m}Necesito una fórmula para sumar el total vendido por "Juan" en "Enero".{/m} {f}Dame la fórmula SUMAR.SI.CONJUNTO y explica los argumentos.{/f}',
-
-                '<div class="font-mono text-xs bg-slate-800 text-green-400 p-3 rounded mb-2">=SUMAR.SI.CONJUNTO(C:C; A:A; "Juan"; B:B; "Enero")</div><ul class="list-disc ml-4 space-y-1 text-slate-600"><li><strong>C:C</strong> = Rango a sumar (Montos)</li><li><strong>A:A</strong> = Rango criterio 1 (Vendedores)</li><li><strong>B:B</strong> = Rango criterio 2 (Meses)</li></ul>',
-
-                false, 
-
-                ["Sin Contexto de Datos", "Petición Genérica"]),
-
-
-
-            createCase(21, 'office', 'Traductor Corporativo', 'translate', 'Escribir email difícil.', 
-
-                'Redacta un correo para decir que no alcanzo a entregar.', 
-
-                '{r}Actúa como experto en comunicación asertiva.{/r} {c}Estoy atrasado con el informe mensual por falta de datos de Finanzas.{/c} {m}Escribe un correo a mi jefe informando el retraso sin sonar irresponsable.{/m} {l}Propón nueva fecha (Viernes). Tono profesional pero firme.{/l}',
-
-                '<div class="bg-white p-2 rounded border border-slate-200 italic text-slate-600">"Hola [Nombre],<br><br>Te escribo para actualizarte sobre el informe mensual. Debido a una demora en la recepción de la data de Finanzas, no podré cerrarlo hoy como estaba previsto.<br><br>Ya gestioné la entrega de los datos faltantes y podré enviarte el informe completo este <strong>viernes antes del mediodía</strong>.<br><br>Gracias por tu comprensión."</div>',
-
-                false, 
-
-                ["Excusa Vaga", "Sin Propuesta de Solución"]),
-
-
-
-            // --- FINANZAS (NUEVO) ---
-
-            createCase(90, 'finance', 'Negociador de Sueldo', 'payments', 'Pedir aumento da miedo.', 
-
-                'Cómo pido un aumento de sueldo.', 
-
-                '{r}Actúa como un coach de negociación salarial.{/r} {c}Llevo 2 años en la empresa, superé mis KPIs en un 20% y el mercado paga un 15% más.{/c} {m}Dame un guion para la reunión con mi jefe.{/m} {l}Sin ultimatums, enfocado en valor aportado.{/l} {f}Estructura: Apertura, Evidencia, Petición.{/f}',
-
-                '<p class="font-bold mb-1">Guion de la Reunión:</p><ul class="list-disc ml-4 space-y-2"><li><strong>Apertura:</strong> "Gracias por el tiempo. Quería revisar mi trayectoria de estos 2 años..."</li><li><strong>Evidencia:</strong> "Como sabes, logré superar la meta en un 20%, lo que trajo X beneficio..."</li><li><strong>Petición:</strong> "Basado en estos resultados y el mercado actual, solicito un ajuste salarial del 15% para alinear mi compensación con mi aporte."</li></ul>',
-
-                false, 
-
-                ["Sin Datos", "Enfoque en Necesidad Propia"]),
-
-
-
-            createCase(91, 'finance', 'Analista de Gastos', 'pie_chart', 'No sé en qué se me va la plata.', 
-
-                'Ayúdame a ordenar mis gastos.', 
-
-                '{r}Actúa como asesor financiero personal.{/r} {c}Gano $1.5M líquidos y siento que no llego a fin de mes.{/c} {m}Crea una estructura de presupuesto basada en la regla 50/30/20 adaptada a la realidad chilena.{/m} {f}Tabla con montos sugeridos y categorías.{/f}',
-
-                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-cyan-100"><th class="p-1">Regla</th><th class="p-1">Monto</th><th class="p-1">Destino</th></tr></thead><tbody><tr><td>50% Necesidades</td><td>$750.000</td><td>Arriendo, Supermercado, Cuentas</td></tr><tr><td>30% Deseos</td><td>$450.000</td><td>Salidas, Netflix, Rappi</td></tr><tr><td>20% Ahorro/Deuda</td><td>$300.000</td><td>Fondo Emergencia, Pago Tarjeta</td></tr></tbody></table>',
-
-                false, 
-
-                ["Sin Cifras", "Meta Vaga"]),
-
-
-
-            // --- MARKETING (GANCHO FUERTE) ---
-
-            createCase(41, 'marketing', 'Calendario RRSS', 'calendar_month', 'Bloqueo creativo.', 
-
-                'Ideas para posts de Instagram de café.', 
-
-                '{r}Social Media Manager experto en viralidad.{/r} {c}Vendo café de grano online.{/c} {m}Dame 3 ideas de Reels que sean "Edutainment" (Educar + Entretener) para atraer clientes nuevos.{/m} {f}Tabla: Título, Gancho Visual (primeros 3 seg) y CTA.{/f}',
-
-                '<table class="w-full text-xs border-collapse"><thead><tr class="bg-pink-100"><th class="p-1">Título</th><th class="p-1">Gancho Visual</th></tr></thead><tbody><tr><td>Tu café sabe amargo</td><td>Tirar el café al lavaplatos con cara de asco 🤢</td></tr><tr><td>Ahorra $50.000/mes</td><td>Pantallazo de gastos en Starbucks vs. Bolsa de grano 📉</td></tr><tr><td>ASMR Mañanero</td><td>Solo sonido de molienda y agua cayendo (Satisfying) 🎧</td></tr></tbody></table>',
-
-                false, 
-
-                ["Muy Genérico", "Sin Formato Viral"]),
-
-
-
-            // --- PERSONAL ---
-
-            createCase(1, 'personal', 'Menú de Supervivencia', 'restaurant', 'Sobras en la nevera.', 
-
-                'Qué cocino con huevo y arroz.', 
-
-                '{r}Chef Michelin de cocina de aprovechamiento.{/r} {c}Tengo huevos, arroz frío y espinaca.{/c} {m}Receta gourmet en 15 min.{/m}',
-
-                '<p class="font-bold text-indigo-700">Tortilla "Soufflé" Florentina</p>...',
-
-                false, ["Sin Rol", "Sin Límites"]),
-
-
-
-            createCase(3, 'personal', 'Consejero de Regalos', 'card_giftcard', 'Regalo hombre 40 años.', 
-
-                'Qué le regalo a mi marido.', 
-
-                '{r}Personal Shopper.{/r} {c}40 años, tecnológico, parrillero.{/c} {m}5 ideas bajo $30.000.{/m}',
-
-                '1. Termómetro Bluetooth para asado...',
-
-                false, ["Información Insuficiente"]),
-
-
-
-            createCase(4, 'personal', 'Planificador de Viajes', 'flight', 'Viaje express.', 
-
-                'Qué hacer en Buenos Aires 3 días.', 
-
-                '{r}Guía porteño local.{/r} {c}Evitar trampas turísticas.{/c} {m}Itinerario real de comida y paseos.{/m}',
-
-                'Día 1: Pizza en Guerrin y Teatro Colón...',
-
-                false, ["Muy Amplio"]),
-
-
-
-            // --- EDUCATION ---
-
-            createCase(81, 'education', 'Tutor Socrático', 'psychology', 'Estudiar activo.', 
-
-                'Explícame la inflación.', 
-
-                '{r}Profesor de Economía.{/r} {m}Explícalo como si tuviera 10 años usando el ejemplo de las láminas del álbum del mundial.{/m}',
-
-                '"Imagina que todos tienen 10 láminas. Si de pronto el profesor regala 1000 láminas a cada uno, ¿tus láminas valen más o menos?..."',
-
-                false, ["Muy Complejo"])
-
-        ];
-
-
-
-        // --- GENERADOR DE RELLENO (PARA QUE PAREZCAN 100+) ---
-
-        const fillers = [
-
-            {t: 'Crear Logo Midjourney', c: 'marketing'}, {t: 'Resumidor de Papers PDF', c: 'education'}, 
-
-            {t: 'Debuggueador de Python', c: 'tech'}, {t: 'Script de Ventas en Frío', c: 'office'},
-
-            {t: 'Plan de Entrenamiento Maratón', c: 'personal'}, {t: 'Meditación Guiada', c: 'personal'},
-
-            {t: 'Analista de Contratos Legales', c: 'office'}, {t: 'Generador de Quiz', c: 'education'},
-
-            {t: 'Traductor de Código Legacy', c: 'tech'}, {t: 'Estratega de SEO', c: 'marketing'},
-
-            {t: 'Carta de Recomendación', c: 'office'}, {t: 'Planificador de Boda', c: 'personal'}
-
-        ];
-
-        
-
-        let idCounter = 100;
-
-        // Multiplicamos los fillers para que se vea lleno
-
-        for(let i=0; i<3; i++) {
-
-            fillers.forEach(f => {
-
-                allCases.push(createCase(idCounter++, f.c, f.t, 'lock', 'Contenido Premium', 'Ayuda...', '...', '...', false)); // <--- AQUÍ TAMBIÉN DESBLOQUEADO
-
-            });
-
-        }
-
-
-
-        // --- LÓGICA UI ---
-
-        let currentCategory = 'office'; // Empezar en Oficina que es fuerte
-
-        let searchQuery = '';
-
-
-
-        function init() {
-
-            renderCategories();
-
-            renderCaseList();
-
-            selectCase(22); // Seleccionar Excel por defecto
-
-        }
-
-
-
-        function renderCategories() {
-
-            const nav = document.getElementById('category-nav');
-
-            nav.innerHTML = Object.keys(categoryConfig).map(key => {
-
-                const conf = categoryConfig[key];
-
-                const isActive = currentCategory === key;
-
-                const activeClass = isActive 
-
-                    ? `bg-${conf.color}-100 text-${conf.color}-700 border-${conf.color}-200 shadow-sm` 
-
-                    : `bg-white text-slate-500 border-slate-100 hover:bg-slate-50`;
-
-                return `<button onclick="setCategory('${key}')" class="flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold transition-all whitespace-nowrap ${activeClass}"><span class="material-symbols-outlined text-lg">${conf.icon}</span>${conf.label}</button>`;
-
-            }).join('');
-
-        }
-
-
-
-        function renderCaseList() {
-
-            const listEl = document.getElementById('case-list');
-
-            const filtered = allCases.filter(c => (c.category === currentCategory || searchQuery !== '') && (c.title.toLowerCase().includes(searchQuery.toLowerCase()) || c.problem.toLowerCase().includes(searchQuery.toLowerCase())));
-
-            
-
-            document.getElementById('count-display').innerText = allCases.length; // Total real
-
-            
-
-            if (filtered.length === 0) {
-
-                listEl.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No hay resultados</div>`;
-
-                return;
-
-            }
-
-
-
-            listEl.innerHTML = filtered.map(c => {
-
-                const config = categoryConfig[c.category];
-
-                // Icon logic: Lock if locked, Category icon if free
-
-                const iconDisplay = c.locked ? 'lock' : c.icon;
-
-                const iconColorClass = c.locked ? 'text-slate-300 bg-slate-50' : `text-${config.color}-500 bg-white`;
-
-                const lockOpacity = c.locked ? 'opacity-70' : '';
-
-                
-
-                return `<button onclick="selectCase(${c.id})" class="w-full text-left p-3 rounded-lg group transition-all mb-2 hover:bg-slate-50 border border-transparent relative overflow-hidden ${lockOpacity}">
-
-                    <div class="flex items-center gap-3 pl-2">
-
-                        <div class="w-8 h-8 rounded-lg border border-slate-100 flex items-center justify-center flex-none shadow-sm ${iconColorClass}">
-
-                            <span class="material-symbols-outlined text-lg">${iconDisplay}</span>
-
-                        </div>
-
-                        <div class="overflow-hidden">
-
-                            <h4 class="text-sm font-semibold text-slate-700 truncate group-hover:text-indigo-700 transition-colors flex items-center gap-2">
-
-                                ${c.title} 
-
-                                ${!c.locked ? '<span class="text-[9px] bg-green-100 text-green-700 px-1.5 rounded-full">GRATIS</span>' : ''}
-
-                            </h4>
-
-                            <p class="text-[10px] text-slate-400 truncate">${c.locked ? 'Solo miembros Premium' : c.problem}</p>
-
-                        </div>
-
-                    </div>
-
-                </button>`;
-
-            }).join('');
-
-        }
-
-
-
-        function selectCase(id) {
-
-            const c = allCases.find(x => x.id === id);
-
-            if(!c) return;
-
-
-
-            // PAYWALL CHECK
-
-            if (c.locked) {
-
-                openPaywall();
-
-                return;
-
-            }
-
-
-
-            const conf = categoryConfig[c.category];
-
-
-
-            // Render Detail
-
-            document.getElementById('detail-title').innerText = c.title;
-
-            document.getElementById('detail-icon').innerText = c.icon;
-
-            document.getElementById('detail-icon-bg').className = `w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg border-2 border-white bg-${conf.color}-50 text-${conf.color}-600`;
-
-            document.getElementById('detail-category-badge').innerText = conf.label;
-
-            document.getElementById('detail-category-badge').className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-${conf.color}-100 text-${conf.color}-700 border border-${conf.color}-200`;
-
-            document.getElementById('detail-problem').innerText = c.problem;
-
-            
-
-            // Render Bad Prompt & Badges
-
-            document.getElementById('detail-bad-prompt').innerText = `"${c.badPrompt}"`;
-
-            document.getElementById('deficiency-badges').innerHTML = c.deficiencies.map(d => 
-
-                `<span class="px-2 py-1 bg-red-50 text-red-600 text-[10px] font-bold rounded-md border border-red-100 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">warning</span>${d}</span>`
-
-            ).join('');
-
-
-
-            // Render Good Prompt
-
-            document.getElementById('detail-prompt-rendered').innerHTML = renderAGIA(c.agiaPromptTagged);
-
-            document.getElementById('preview-response').innerHTML = c.previewResponse;
-
-
-
-            if(window.innerWidth < 768) toggleSidebar();
-
-        }
-
-
-
-        function setCategory(cat) {
-
-            currentCategory = cat;
-
-            searchQuery = '';
-
-            document.getElementById('searchInput').value = '';
-
-            renderCategories();
-
-            renderCaseList();
-
-        }
-
-
-
-        function filterCases() {
-
-            searchQuery = document.getElementById('searchInput').value;
-
-            renderCaseList();
-
-        }
-
-
-
-        function copyPrompt() {
-
-            const title = document.getElementById('detail-title').innerText;
-
-            const c = allCases.find(x => x.title === title);
-
-            if(!c) return;
-
-
-
-            const rawText = cleanAGIA(c.agiaPromptTagged);
-
-            navigator.clipboard.writeText(rawText);
-
-            
-
-            // Visual feedback
-
-            const btn = document.querySelector('button[onclick="copyPrompt()"]');
-
-            const originalHTML = btn.innerHTML;
-
-            
-
-            btn.innerHTML = `<span class="material-symbols-outlined text-sm">check_circle</span> <span>¡COPIADO!</span>`;
-
-            btn.classList.remove('bg-indigo-600', 'text-white');
-
-            btn.classList.add('bg-green-500', 'text-white', 'shadow-none');
-
-            
-
-            setTimeout(() => {
-
-                btn.innerHTML = originalHTML;
-
-                btn.classList.remove('bg-green-500', 'text-white', 'shadow-none');
-
-                btn.classList.add('bg-indigo-600', 'text-white');
-
-            }, 2000);
-
-        }
-
-
-
-        // --- PAYWALL LOGIC ---
-
-        function openPaywall() {
-
-            document.getElementById('paywall-modal').classList.remove('hidden');
-
-        }
-
-        function closePaywall() {
-
-            document.getElementById('paywall-modal').classList.add('hidden');
-
-        }
-
-
-
-        function toggleSidebar() {
-
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-
-        }
-
-
-
-        init();
-
-    </script>
-
-</body>
-
-</html>
+export default App;
