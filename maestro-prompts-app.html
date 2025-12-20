@@ -85,14 +85,10 @@
         }
         .pulse-attention { animation: pulse-ring 2s infinite; }
 
-        /* Shimmer Animation for Search Bar */
-        @keyframes gradient-x {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        .animate-gradient-border {
-            background-size: 200% 200%;
-            animation: gradient-x 4s ease infinite;
+        /* Search Glow Animation */
+        .search-container:focus-within {
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            border-color: #818cf8;
         }
     </style>
 </head>
@@ -155,18 +151,19 @@
         <!-- SIDEBAR -->
         <aside class="w-full md:w-72 lg:w-80 flex flex-col bg-white border-r border-slate-200 z-20 flex-none absolute md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300" id="sidebar">
             <div class="p-5 border-b border-slate-100">
-                <!-- DESTACADO: BUSCADOR PREMIUM (Updated) -->
-                <div class="relative group p-[2px] rounded-xl bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 shadow-lg shadow-indigo-100/50 animate-gradient-border">
-                    <div class="bg-white rounded-[10px] flex items-center relative z-10 overflow-hidden">
-                        <span class="material-symbols-rounded pl-3 text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600 text-xl animate-pulse">search_spark</span>
-                        <input type="text" id="searchInput" placeholder="¿Qué desafío tienes hoy?" 
-                            class="w-full pl-2 pr-4 py-3.5 bg-transparent border-none focus:ring-0 text-sm font-semibold text-slate-700 placeholder:text-slate-400 outline-none"
-                            onkeyup="filterCases()">
+                <!-- BUSCADOR CORREGIDO (Limpio y sin gradiente confuso) -->
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="material-symbols-rounded text-indigo-500 text-xl">search</span>
                     </div>
+                    <input type="text" id="searchInput" 
+                        class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400 text-slate-700 shadow-sm search-container"
+                        placeholder="¿Qué desafío tienes hoy?"
+                        onkeyup="filterCases()">
                 </div>
             </div>
             
-            <!-- COMPLEXITY LEGEND (UPDATED RANGOS HH) -->
+            <!-- COMPLEXITY LEGEND -->
             <div class="bg-slate-50 px-5 py-3 border-b border-slate-100 flex justify-between items-center text-[10px] text-slate-500 font-medium">
                 <div class="flex items-center gap-1.5 cursor-help" title="Básico: Hasta 15 min"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-200"></span> 15m</div>
                 <div class="flex items-center gap-1.5 cursor-help" title="Intermedio: 15~45 min"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-200"></span> 15-45m</div>
@@ -210,7 +207,7 @@
                 <div class="flex-1 bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 flex flex-col overflow-hidden relative ring-1 ring-black/5 transition-all duration-300" id="main-card-container">
                     
                     <!-- MAGIC SWITCH HEADER -->
-                    <div class="bg-slate-50 border-b border-slate-100 p-2 flex justify-center sticky top-0 z-20 items-center relative">
+                    <div class="bg-slate-50 border-b border-slate-100 p-2 flex justify-center sticky top-0 z-50 items-center relative">
                         <div class="relative bg-white border border-slate-200 rounded-xl p-1 flex items-center shadow-sm">
                             <div id="switch-bg" class="absolute left-1 top-1 bottom-1 w-[140px] bg-slate-400 rounded-lg shadow-md switch-toggle z-0"></div>
                             
@@ -220,10 +217,10 @@
                             <button onclick="setMode('agia')" class="relative z-10 w-[140px] py-2 text-xs font-bold text-center transition-colors duration-300 flex items-center justify-center gap-2 group" id="btn-agia">
                                 <span class="material-symbols-rounded text-base group-hover:rotate-12 transition-transform">verified</span> Modo Maestro
                                 
-                                <!-- Motivation Badge (Fixed Position: Below) -->
-                                <div id="magic-hint" class="absolute top-12 right-4 bg-indigo-600 text-white text-[10px] px-3 py-1.5 rounded-full font-bold animate-bounce shadow-lg shadow-indigo-200 hidden z-50 border border-indigo-400 pointer-events-none">
+                                <!-- Motivation Badge (Posicionado DEBAJO para no cortarse) -->
+                                <div id="magic-hint" class="absolute top-11 right-4 bg-indigo-600 text-white text-[10px] px-3 py-1.5 rounded-full font-bold animate-bounce shadow-lg shadow-indigo-200 hidden z-[60] border border-indigo-400 pointer-events-none w-max">
                                     ✨ Ver Magia
-                                    <!-- Triangle pointing up -->
+                                    <!-- Flecha apuntando hacia arriba -->
                                     <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-indigo-600 rotate-45 border-l border-t border-indigo-400"></div>
                                 </div>
                             </button>
