@@ -1,6 +1,6 @@
 // ==========================================
 // 🧠 BÓVEDA DE PROMPTS AGIA 2.0 - MASTER DB
-// Total Casos: 115 | Optimización: God Mode
+// Total Casos: ~100 | Optimización: God Mode
 // ==========================================
 
 const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goodPromptTagged, exampleTip, validationTip, goodResPreview, suggestedAI, locked = false, isTool = false, difficulty = 'beginner') => ({
@@ -183,220 +183,77 @@ const allCases = [
         '<p class="text-xs">40% S&P500 (Crecimiento) | 40% Depósitos (Seguridad) | 20% Caja.</p>', 'gemini', false, false, 'intermediate'),
 
     // ==========================================
-    // 🔥 VENTAS & MARKETING (301-323, 406, 502-507)
+    // 🔥 VENTAS & MARKETING (301-310)
     // ==========================================
-    createCase(301, 'sales', 'FBI Salary', 'verified_user', 'Negociación: Aumento sueldo.', 
-        'Quiero pedir aumento. Guion.',
-        '<div class="text-xs text-slate-500 italic">"Jefe, necesito plata."</div>', 
-        '{r}Negociador FBI.{/r} {c}Buenos resultados.{/c} {m}Guion basado en Valor y Preguntas Calibradas.{/m} {f}Diálogo.{/f}', 
-        '¿Cómo se supone que...?','Anclaje.', 
-        '<p class="text-xs">"¿Cómo puedo seguir aportando este valor si mi compensación no refleja el mercado?"</p>', 'chatgpt', false, false, 'advanced'),
-
-    createCase(302, 'sales', 'Calendario Contenido', 'calendar_today', 'RRSS: Ideas Instagram.',
-        'Ideas para posts de ropa.',
-        '<div class="text-xs text-slate-500 italic">"Sube fotos de ropa."</div>', 
-        '{r}Estratega Digital.{/r} {c}Marca ropa sustentable.{/c} {m}Matriz semanal (Educar, Entretener, Vender).{/m} {f}Tabla con Ganchos.{/f}',
-        'Hooks visuales.', 'No solo venta.',
-        '<p class="text-xs"><strong>Lun:</strong> "¿Tu ropa es tóxica?" (Educar).</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(303, 'sales', 'Cold Email', 'mail', 'Ventas: Email en frío.',
-        'Ofrecer webs a dentistas.',
-        '<div class="text-xs text-slate-500 italic">"Hola, hacemos webs."</div>', 
-        '{r}Copywriter B2B.{/r} {c}Dentistas ocupados.{/c} {m}Email enfocado en SU dolor (agenda vacía).{/m} {f}Asunto + Cuerpo.{/f}',
-        'Menciona problema específico.', 'CTA suave.',
-        '<div class="bg-white p-2 text-xs">"Intenté agendar en su web y tardó mucho. Arreglé esto para..."</div>', 'claude', false, false, 'intermediate'),
-
-    createCase(304, 'sales', 'Buyer Persona', 'person_search', 'Marketing: Perfil cliente.',
-        '¿Quién compra robots de juguete caros?',
-        '<div class="text-xs text-slate-500 italic">"Padres con dinero."</div>', 
-        '{r}Investigador Mercado.{/r} {c}Kits Robótica $100.{/c} {m}Perfil psicológico (Miedos y Deseos).{/m} {f}Perfil.{/f}',
-        'Miedo a futuro.', 'Validación parental.',
-        '<p class="text-xs"><strong>Ricardo:</strong> Teme que su hijo quede atrás en la era digital.</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(305, 'sales', 'Objeción Precio', 'price_check', 'Ventas: "Es muy caro".',
-        'Cliente dice que es caro.',
-        '<div class="text-xs text-slate-500 italic">"Te hago descuento."</div>', 
-        '{r}Closer Ventas.{/r} {c}Servicio High-Ticket.{/c} {m}Reencuadra como Inversión vs Costo Inacción.{/m} {f}Respuesta.{/f}',
-        'No te justifiques.', 'Calcula ROI.',
-        '<p class="text-xs">"¿Has calculado cuánto te cuesta NO solucionar este problema hoy?"</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(306, 'sales', 'Script Telefónico', 'call', 'Ventas: Llamada en frío.',
-        'Frase para que no me corten.',
-        '<div class="text-xs text-slate-500 italic">"Hola, ¿tiene un minuto?"</div>', 
-        '{r}Telemarketer.{/r} {c}Software RRHH.{/c} {m}Opener de 10 seg con propuesta de valor.{/m} {f}Script.{/f}',
-        'Sin permiso.', 'Al grano.',
-        '<p class="text-xs">"Ayudo a empresas a reducir 30% el tiempo de nómina..."</p>', 'chatgpt', false, false, 'beginner'),
-
-    createCase(307, 'sales', 'Objeción "Lo pensaré"', 'hourglass_empty', 'Ventas: Cliente duda.',
-        'Me dijo "lo voy a pensar".',
-        '<div class="text-xs text-slate-500 italic">"Ok, avísame."</div>', 
-        '{r}Coach Ventas.{/r} {c}Cierre reunión.{/c} {m}Descubre la objeción real oculta.{/m} {f}Pregunta.{/f}',
-        'Aísla la objeción.', 'Es dinero o duda.',
-        '<p class="text-xs">"Solo para saber, ¿es un tema de presupuesto o hay algo del producto que no te convence?"</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(308, 'sales', 'Títulos Webinar', 'video_camera_front', 'Marketing: Títulos gancho.',
-        'Título para webinar inmobiliario.',
-        '<div class="text-xs text-slate-500 italic">"Aprende a invertir."</div>', 
-        '{r}Copywriter.{/r} {c}Inversión principiantes.{/c} {m}Fórmula: Logro + Tiempo - Dolor.{/m} {f}5 Opciones.{/f}',
-        'Promesa fuerte.', 'Sin riesgo.',
-        '<p class="text-xs">"Cómo comprar tu 1er depa sin sueldo de gerente."</p>', 'chatgpt', false, false, 'beginner'),
-
-    createCase(309, 'sales', 'Recuperar Carrito', 'shopping_cart_checkout', 'Ecommerce: Email abandono.',
-        'Correo para quien dejó el carrito.',
-        '<div class="text-xs text-slate-500 italic">"Olvidaste comprar."</div>', 
-        '{r}Email Marketer.{/r} {c}Zapatillas.{/c} {m}Email humorístico/persuasivo.{/m} {f}Asunto + Texto.{/f}',
-        'No descuento inmediato.', 'Humor.',
-        '<p class="text-xs">"Tus zapatillas se sienten solas y frías en el carrito..."</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(310, 'sales', 'Perfil LinkedIn', 'badge', 'Personal: Bio vendedora.',
-        'Mejora mi perfil, soy consultor.',
-        '<div class="text-xs text-slate-500 italic">"Consultor responsable."</div>', 
-        '{r}Social Seller.{/r} {c}Consultor Logística.{/c} {m}Headline centrado en cliente (Ayudo a X a lograr Y).{/m} {f}Texto.{/f}',
-        'Resultados.', 'Prueba social.',
-        '<p class="text-xs">"Ayudo a Gerentes a reducir costos un 15% | +50 casos éxito."</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(311, 'sales', 'Pedir Testimonio', 'format_quote', 'Marketing: Reseñas.',
-        'Pide un testimonio al cliente.',
-        '<div class="text-xs text-slate-500 italic">"¿Me dejas una reseña?"</div>', 
-        '{r}Copywriter.{/r} {c}Cliente feliz.{/c} {m}3 preguntas guía para obtener una historia (Antes-Después).{/m} {f}Preguntas.{/f}',
-        'Evita Sí/No.', 'Transformación.',
-        '<p class="text-xs">"¿Cuál era tu mayor miedo antes de contratarnos?"</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(312, 'sales', 'Propuesta Valor', 'diamond', 'Estrategia: Diferenciación.',
-        'Frase para mi negocio de nutrición.',
-        '<div class="text-xs text-slate-500 italic">"Nutrición de calidad."</div>', 
-        '{r}Brand Strategist.{/r} {c}Nicho: Post-parto.{/c} {m}UVP (Unique Value Proposition) única.{/m} {f}Frase.{/f}',
-        'Beneficio único.', 'Nicho.',
-        '<p class="text-xs">"Recupera tu energía sin afectar la lactancia."</p>', 'chatgpt', false, false, 'advanced'),
-
-    createCase(313, 'sales', 'Guion Video Venta', 'play_circle', 'Marketing: VSL.',
-        'Video para vender curso Excel.',
-        '<div class="text-xs text-slate-500 italic">"Hola, compren mi curso."</div>', 
-        '{r}Guionista.{/r} {c}Curso Excel.{/c} {m}Estructura PAS (Problema-Agitación-Solución) 1er minuto.{/m} {f}Guion.{/f}',
-        'Haz que duela.', 'Solución mágica.',
-        '<p class="text-xs">"¿Sales a las 8PM por culpa de las planillas?..."</p>', 'chatgpt', false, false, 'advanced'),
-
-    // --- NUEVOS PROMPTS MASTER (314-323) ---
-
-    createCase(314, 'sales', 'El "Rompehielo" B2B', 'mail', 'Ventas: Conseguir reunión.',
+    createCase(301, 'sales', 'El "Rompehielo" B2B', 'mail', 'Ventas: Conseguir reunión.',
         'Escribe un correo para vender mi software de recursos humanos a gerentes.',
         '<div class="text-xs text-slate-500 italic">"Estimado Gerente, le escribo para presentarle..."</div>',
-        '{r}Experto Cold Email.{/r} {c}Producto: Software RRHH. Público: Gerentes.{/c} {m}Redactar correo marco PAS (Problema-Agitación-Solución).{/m} {l}Max 100 palabras. Asunto minúsculas.{/l} {f}Texto plano.{/f}',
+        '{r}Experto Cold Email.{/r} {c}Producto: Software RRHH. Público: Gerentes.{/c} {m}Redactar correo "puerta fría" marco PAS (Problema-Agitación-Solución).{/m} {l}Max 100 palabras. Asunto minúsculas.{/l} {f}Texto plano.{/f}',
         'Chain of Thought + Framework PAS.', 'Asunto casual.',
-        '<div class="bg-white p-2 text-xs">Asunto: dudas con la nómina<br>Hola [Nombre], Gestionar la nómina en Excel funciona bien cuando sois 10 personas...</div>', 'chatgpt', false, false, 'intermediate'),
+        '<div class="bg-white p-2 text-xs">Asunto: dudas con la nómina<br>Hola [Nombre], Gestionar la nómina en Excel funciona bien...</div>', 'chatgpt', false, false, 'intermediate'),
 
-    createCase(315, 'sales', 'Anuncios Ads', 'campaign', 'Marketing: Stop Scroll.',
+    createCase(302, 'sales', 'Anuncios Ads Stop-Scroll', 'campaign', 'Marketing: Stop Scroll.',
         'Haz un texto para un anuncio de Facebook sobre zapatillas de correr.',
         '<div class="text-xs text-slate-500 italic">"¡Llegaron las nuevas zapatillas RunPro! 👟..."</div>',
-        '{r}Media Buyer & Copywriter.{/r} {c}Zapatillas amortiguación.{/c} {m}3 variaciones AIDA (Atención, Interés, Deseo, Acción).{/m} {l}Gancho < 40 chars.{/l} {f}Lista variaciones.{/f}',
+        '{r}Media Buyer & Copywriter.{/r} {c}Zapatillas gel. Público: Corredores +35.{/c} {m}3 variaciones texto AIDA.{/m} {l}Gancho < 40 chars. Emojis.{/l} {f}Lista numerada.{/f}',
         'Iterative Prompting.', 'Gancho fuerte.',
         '<p class="text-xs">🛑 ¿Tus rodillas crujen al correr?<br>No es tu edad, es el impacto del asfalto...</p>', 'chatgpt', false, false, 'intermediate'),
 
-    createCase(316, 'sales', 'Ficha E-commerce', 'shopping_bag', 'Ecommerce: Conversión.',
+    createCase(303, 'sales', 'Ficha E-commerce', 'shopping_bag', 'Ecommerce: Conversión.',
         'Describe esta cafetera para mi tienda online.',
         '<div class="text-xs text-slate-500 italic">"Cafetera Italiana Modelo X. Capacidad 1 Litro..."</div>',
         '{r}Experto Neuromarketing.{/r} {c}Cafetera Italiana Lujo.{/c} {m}Convertir características técnicas a Beneficios Emocionales.{/m} {l}Lenguaje sensorial.{/l} {f}Título + Bullet Points.{/f}',
         'Data to Emotion.', 'Lenguaje sensorial.',
         '<p class="text-xs"><strong>Tu barista personal, ahora en tu cocina ☕</strong><br>Olvídate del café quemado de las mañanas...</p>', 'chatgpt', false, false, 'intermediate'),
 
-    createCase(317, 'sales', 'Guion Viral TikTok', 'movie', 'RRSS: Retención video.',
+    createCase(304, 'sales', 'Guion Viral TikTok', 'movie', 'RRSS: Retención video.',
         'Dame ideas para un video de TikTok sobre divorcios.',
         '<div class="text-xs text-slate-500 italic">"Hola a todos, soy abogado. Hoy hablaremos del divorcio..."</div>',
         '{r}Guionista Viral.{/r} {c}Divorcio y Bienes.{/c} {m}Guion 30s optimizado para retención máxima.{/m} {l}Gancho visual 0-3s. Sin "Hola".{/l} {f}Tabla Visual | Audio.{/f}',
         'Output Formatting.', 'Gancho visual.',
         '<table class="w-full text-[10px] border"><tr><th>Visual</th><th>Audio</th></tr><tr><td>Texto rojo: "¡NO TE VAYAS!"</td><td>"Si te vas de casa..."</td></tr></table>', 'chatgpt', false, false, 'advanced'),
 
-    createCase(318, 'sales', 'Cierre WhatsApp', 'chat', 'Ventas: Chat Closing.',
+    createCase(305, 'sales', 'Cierre WhatsApp', 'chat', 'Ventas: Chat Closing.',
         'Responde a un cliente que preguntó precio.',
         '<div class="text-xs text-slate-500 italic">"Hola, buenas tardes. El precio es $150.000..."</div>',
         '{r}Closer Ventas.{/r} {c}Curso Inglés. Preguntan precio.{/c} {m}Responder precio y mantener conversación viva.{/m} {l}Termina con pregunta abierta.{/l} {f}Texto chat.{/f}',
         'Tone Setting.', 'Pregunta final.',
         '<div class="bg-green-50 p-2 text-xs border border-green-200">"Hola! 👋 Claro que sí. El programa completo... ¿lo necesitas por trabajo o viaje? ✈️"</div>', 'chatgpt', false, false, 'beginner'),
 
-    createCase(319, 'sales', 'Hero Landing Page', 'web', 'Web: Propuesta Valor.',
+    createCase(306, 'sales', 'Hero Landing Page', 'web', 'Web: Propuesta Valor.',
         'Pon un título para mi web de marketing.',
         '<div class="text-xs text-slate-500 italic">"Agencia Digital Creative Minds. Expertos en Marketing..."</div>',
         '{r}Copywriter CRO.{/r} {c}Agencia Google Ads.{/c} {m}H1 y H2 que prometan transformación clara.{/m} {l}H1 Beneficio, H2 ataca objeción.{/l} {f}3 Opciones.{/f}',
         'Constraint-Based.', 'Beneficio claro.',
-        '<p class="text-xs"><strong>H1:</strong> Duplicamos el ROAS de tu E-commerce en 90 días o te devolvemos el fee.</p>', 'chatgpt', false, false, 'intermediate'),
+        '<p class="text-xs"><strong>H1:</strong> Duplicamos el ROAS de tu E-commerce en 90 días.<br><strong>H2:</strong> Deja de quemar presupuesto...</p>', 'chatgpt', false, false, 'intermediate'),
 
-    createCase(320, 'sales', 'Artículo SEO', 'article', 'SEO: Blog Post.',
+    createCase(307, 'sales', 'Artículo SEO', 'article', 'SEO: Blog Post.',
         'Escribe un artículo sobre implantes dentales.',
         '<div class="text-xs text-slate-500 italic">"Los implantes dentales son una solución para dientes perdidos..."</div>',
         '{r}Experto SEO.{/r} {c}Implantes dentales. Keyword: Dolor.{/c} {m}Crear Estructura (Outline) + Intro optimizada.{/m} {l}H2, H3 y FAQ.{/l} {f}Estructura + Intro.{/f}',
         'Structural Prompting.', 'Jerarquía.',
-        '<div class="bg-white p-2 text-xs">H1: Implantes Dentales: ¿Duelen?...<br>H2: Mito vs Realidad...</div>', 'chatgpt', false, false, 'advanced'),
+        '<div class="bg-white p-2 text-xs">H1: Implantes Dentales: ¿Duelen?<br>H2: Mito vs Realidad<br>Intro: "Si estás leyendo esto..."</div>', 'chatgpt', false, false, 'advanced'),
 
-    createCase(321, 'sales', 'Objeción "Muy Caro"', 'monetization_on', 'Ventas: Negociación.',
+    createCase(308, 'sales', 'Objeción "Muy Caro"', 'monetization_on', 'Ventas: Negociación.',
         'Dame respuestas para cuando dicen que es muy caro.',
         '<div class="text-xs text-slate-500 italic">"No es caro, es que ofrecemos mucha calidad. Lo barato sale caro."</div>',
         '{r}Negociador Harvard.{/r} {c}Consultoría $1000.{/c} {m}3 guiones de rebatimiento usando Reencuadre.{/m} {l}Nunca contradigas. Costo de inacción.{/l} {f}3 Guiones.{/f}',
         'Reframing.', 'Validar emoción.',
-        '<p class="text-xs">"Te entiendo... Pero el año pasado pagaste $5,000 en multas. ¿Realmente es caro pagar $1,000 para ahorrar $5,000?"</p>', 'chatgpt', false, false, 'intermediate'),
+        '<p class="text-xs">"Te entiendo... Pero el año pasado pagaste $5,000 en multas. ¿Es caro pagar $1,000 para ahorrar $5,000?"</p>', 'chatgpt', false, false, 'intermediate'),
 
-    createCase(322, 'sales', 'Storytelling Personal', 'history_edu', 'Marca Personal: Conexión.',
+    createCase(309, 'sales', 'Storytelling Personal', 'history_edu', 'Marca Personal: Conexión.',
         'Escribe la sección de "quién soy" para mi web.',
         '<div class="text-xs text-slate-500 italic">"Soy María, nutricionista titulada con distinción máxima..."</div>',
         '{r}Experto Storytelling.{/r} {c}Nutricionista ex-obesa.{/c} {m}Historia del Héroe (3 actos) donde el cliente se identifique.{/m} {l}Muestra vulnerabilidad.{/l} {f}Narrativa 1ra persona.{/f}',
         'Narrative Arc.', 'Vulnerabilidad.',
         '<div class="bg-white p-2 text-xs italic">"No siempre fui la nutricionista saludable que ves... pesaba 20 kilos más..."</div>', 'chatgpt', false, false, 'advanced'),
 
-    createCase(323, 'sales', 'Ideas Lead Magnet', 'lightbulb', 'Marketing: Captación.',
+    createCase(310, 'sales', 'Ideas Lead Magnet', 'lightbulb', 'Marketing: Captación.',
         'Dame ideas para un ebook gratis.',
         '<div class="text-xs text-slate-500 italic">"1. Guía de Finanzas. 2. Cómo ahorrar dinero..."</div>',
         '{r}Estratega Inbound.{/r} {c}Finanzas jóvenes.{/c} {m}5 ideas de Lead Magnets de Alto Valor y Consumo Rápido.{/m} {l}Herramientas prácticas. Títulos clickbait éticos.{/l} {f}Lista.{/f}',
         'Ideation.', 'Alto valor.',
         '<p class="text-xs">Plantilla Excel: "Calculadora Kakebo: Descubre en qué se te van los $100.000..."</p>', 'chatgpt', false, false, 'intermediate'),
-
-
-    createCase(406, 'sales', 'Gestión Crisis', 'policy', 'RRSS: Hater.',
-        'Me dijeron estafador en Instagram.',
-        '<div class="text-xs text-slate-500 italic">"Mentira, borra eso."</div>', 
-        '{r}PR Manager.{/r} {c}Comentario falso.{/c} {m}Respuesta pública elegante para llevar a DM.{/m} {f}Respuesta.{/f}',
-        'Mata con amabilidad.', 'Transparencia.',
-        '<div class="bg-white p-2 text-xs">"Lamento que sientas eso. Tu pedido aparece en ruta, escríbenos..."</div>', 'chatgpt', false, false, 'beginner'),
-
-    createCase(502, 'sales', 'Naming Marca', 'badge', 'Branding: Nombre.',
-        'Nombre para ropa reciclada.',
-        '<div class="text-xs text-slate-500 italic">"EcoRopa."</div>', 
-        '{r}Director Creativo.{/r} {c}Plástico oceánico.{/c} {m}Nombres evocadores sin "Eco/Bio".{/m} {f}5 Nombres.{/f}',
-        'Metáforas.', 'Sonoridad.',
-        '<p class="text-xs"><strong>Thalassa</strong> (Mar en griego).</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(503, 'sales', 'Bio LinkedIn', 'face', 'Personal: Acerca de.',
-        'Texto "Acerca de" para contador.',
-        '<div class="text-xs text-slate-500 italic">"Soy contador experto."</div>', 
-        '{r}Marca Personal.{/r} {c}Impuestos Pymes.{/c} {m}Bio enfocada en beneficios para el cliente.{/m} {f}Texto.{/f}',
-        'Habla de ellos, no de ti.', 'Solución.',
-        '<p class="text-xs">"No solo cuento números, recupero capital para tu negocio."</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(504, 'sales', 'Analogía Venta', 'compare_arrows', 'Ventas: Explicar difícil.',
-        'Explica Blockchain fácil.',
-        '<div class="text-xs text-slate-500 italic">"Libro mayor distribuido."</div>', 
-        '{r}Divulgador.{/r} {c}Cliente no técnico.{/c} {m}Analogía de la vida real.{/m} {f}Analogía.{/f}',
-        'Cotidiano.', 'Visual.',
-        '<p class="text-xs">"Es como escribir en un libro y darle copia a todo el estadio..."</p>', 'chatgpt', false, false, 'beginner'),
-
-    createCase(505, 'sales', 'Lead Magnet', 'magnet', 'Marketing: Regalo.',
-        '¿Qué regalo para captar emails de abogados?',
-        '<div class="text-xs text-slate-500 italic">"Un ebook de leyes."</div>', 
-        '{r}Growth Hacker.{/r} {c}Abogados ocupados.{/c} {m}Recurso de alto valor y consumo rápido.{/m} {f}Ideas.{/f}',
-        'Plantillas.', 'Calculadoras.',
-        '<p class="text-xs">"Plantilla de Contrato a prueba de balas (Word)."</p>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(506, 'sales', 'Estrategia Hashtags', 'tag', 'RRSS: Instagram.',
-        'Hashtags para tienda de perros.',
-        '<div class="text-xs text-slate-500 italic">"#perro #love"</div>', 
-        '{r}SEO Instagram.{/r} {c}Nicho mascotas.{/c} {m}Escalera de hashtags (Pequeños, Medios, Grandes).{/m} {f}Lista.{/f}',
-        'Especificidad.', 'Localización.',
-        '<p class="text-xs">#BulldogFrancesChile #AccesoriosMascotas</p>', 'chatgpt', false, false, 'beginner'),
-
-    createCase(507, 'sales', 'Respuesta Reseña', 'reviews', 'Fidelización: Cliente.',
-        'Gracias por reseña 5 estrellas.',
-        '<div class="text-xs text-slate-500 italic">"Gracias."</div>', 
-        '{r}Fidelización.{/r} {c}Cliente feliz restaurante.{/c} {m}Agradece e invita a probar plato secreto.{/m} {f}Respuesta.{/f}',
-        'Personaliza.', 'Call to action.',
-        '<p class="text-xs">"¡Gracias Ana! La próxima prueba el postre secreto..."</p>', 'chatgpt', false, false, 'beginner'),
 
     // ==========================================
     // 🎨 ARTE (401-412)
