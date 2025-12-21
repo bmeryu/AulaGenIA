@@ -151,14 +151,17 @@
 
             const auth = firebase.auth();
             const db = firebase.firestore();
-            const appId = 'default-app-id';
+            
+            // DIAGNÓSTICO: appId debe ser idéntico al del Campus para cruzar datos
+            const appId = 'aulagenia-app';
             
             let currentUser = null;
 
+            // DIAGNÓSTICO: El curso IA Esencial tiene 20 lecciones en el campus actual
             const ALL_COURSES_DATA = {
                 'ia-aplicada-esencial': { 
                     title: 'IA Aplicada · Esencial',
-                    totalLessons: 13
+                    totalLessons: 20
                 }
             };
 
@@ -215,7 +218,8 @@
                         if (courseInfo && courseProgress) {
                             const totalLessons = courseInfo.totalLessons;
                             const completedLessonsCount = new Set(courseProgress.completedLessons || []).size;
-                            if (totalLessons > 0 && completedLessonsCount >= totalLessons) {
+                            // Diagnóstico: Se flexibiliza validación si ya completó el examen final
+                            if (totalLessons > 0 && (completedLessonsCount >= totalLessons || (courseProgress.completedLessons || []).includes('final-exam'))) {
                                 completedPrograms.push({ id: courseId, name: courseInfo.title });
                             }
                         }
@@ -253,14 +257,18 @@
                     showStatus("Buscando certificado existente...", '#3b82f6');
                     
                     const certificateId = `${currentUser.uid}_${programId}`;
-                    const certificatesRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(certificateId);
+                    
+                    // DIAGNÓSTICO: Ruta anidada exacta para coincidir con campus-curso-ia
+                    const certificatesRef = db.collection('artifacts').doc(appId)
+                                              .collection('public').doc('data')
+                                              .collection('certificates').doc(certificateId);
                     
                     const docSnap = await certificatesRef.get();
                     let certificateData;
 
                     if (docSnap.exists) {
                         certificateData = docSnap.data();
-                        certificateData.studentName = studentNameForCert; // Ensure name is up to date
+                        certificateData.studentName = studentNameForCert; 
                         showStatus("Certificado recuperado.", '#059669');
                     } else {
                         certificateData = {
@@ -299,7 +307,9 @@
             async function saveCertificate(data) {
                  showStatus("Guardando nuevo certificado...", '#3b82f6');
                  try {
-                     const docRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(data.certificateId);
+                     const docRef = db.collection('artifacts').doc(appId)
+                                      .collection('public').doc('data')
+                                      .collection('certificates').doc(data.certificateId);
                      await docRef.set(data);
                      showStatus("¡Guardado con éxito!", '#16a34a', 3000);
                  } catch (error) {
@@ -312,7 +322,7 @@
                 const certName = dom.certProgramName.textContent;
                 const certId = dom.certificateIdElem.textContent;
                 const issueDate = new Date();
-                const certUrl = `https://aulagenia.cl/certificados?id=${certId}`;
+                const certUrl = `https://aulagenia.cl/portal-certificacion.html?id=${certId}`;
                 const linkedInUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(certName)}&organizationId=94349991&issueYear=${issueDate.getFullYear()}&issueMonth=${issueDate.getMonth() + 1}&certUrl=${encodeURIComponent(certUrl)}&certId=${encodeURIComponent(certId)}`;
                 window.open(linkedInUrl, '_blank');
             }
@@ -352,7 +362,9 @@
                 }
                 displayVerificationResult("Buscando...", "blue");
                 try {
-                    const docRef = db.collection(`artifacts/${appId}/public/data/certificates`).doc(codeToVerify);
+                    const docRef = db.collection('artifacts').doc(appId)
+                                      .collection('public').doc('data')
+                                      .collection('certificates').doc(codeToVerify);
                     const docSnap = await docRef.get();
                     if (docSnap.exists) {
                         const data = docSnap.data();
@@ -382,4 +394,3 @@
     </script>
 </body>
 </html>
-
