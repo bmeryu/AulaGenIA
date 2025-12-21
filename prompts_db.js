@@ -183,14 +183,14 @@ const allCases = [
         '<p class="text-xs">40% S&P500 (Crecimiento) | 40% Depósitos (Seguridad) | 20% Caja.</p>', 'gemini', false, false, 'intermediate'),
 
     // ==========================================
-    // 🔥 VENTAS & MARKETING (301-310) - (ACTUALIZADO CON FULL CONTENT)
+    // 🔥 VENTAS & MARKETING (301-310) - (TEXTO COMPLETO LITERAL)
     // ==========================================
 
     createCase(301, 'sales', 'El "Rompehielo" B2B', 'mail', 'Ventas: Conseguir reunión.',
         'Escribe un correo para vender mi software de recursos humanos a gerentes.',
         '<div class="text-xs text-slate-500 italic">"Estimado Gerente, le escribo para presentarle..."</div>',
-        '{r}Experto Cold Email.{/r} {c}Producto: Software RRHH. Público: Gerentes.{/c} {m}Redactar correo "puerta fría" marco PAS (Problema-Agitación-Solución).{/m} {l}Max 100 palabras. Asunto minúsculas.{/l} {f}Texto plano.{/f}',
-        'Chain of Thought + Framework PAS.', 'Asunto casual.',
+        '{r}Actúa como un experto en Cold Emailing y Copywriting B2B.{/r} {c}Producto: [Software de RRHH Automatizado] Público: [Gerentes de RRHH en empresas de 50-200 empleados] Dolor: [Pérdida de tiempo en excel y errores de cálculo manual] Referencia: (Opcional) [Adjuntar archivo: Caso de éxito breve o Testimonio]{/c} {m}Redactar un correo de "puerta fría" usando el marco PAS (Problema-Agitación-Solución) para vender la reunión, no el producto.{/m} {l}Máximo 100 palabras. El asunto debe ser en minúsculas (parecer casual) y de menos de 4 palabras. No uses: "Espero que estés bien", "Líder en el mercado", "Me gustaría".{/l} {f}Texto plano estructurado: [Asunto] + [Cuerpo] + [CTA].{/f}',
+        'Chain of Thought + Framework PAS.', '¿El asunto parece escrito por un colega o por una máquina de spam?',
         // FULL HTML INJECTION:
         '<div class="bg-white p-3 text-xs font-mono border border-slate-200 shadow-sm rounded-sm text-slate-800">' +
         '<div class="border-b pb-2 mb-2"><span class="text-slate-500">Asunto:</span> dudas con la nómina</div>' +
@@ -205,8 +205,8 @@ const allCases = [
     createCase(302, 'sales', 'Anuncios Ads Stop-Scroll', 'campaign', 'Marketing: Stop Scroll.',
         'Haz un texto para un anuncio de Facebook sobre zapatillas de correr.',
         '<div class="text-xs text-slate-500 italic">"¡Llegaron las nuevas zapatillas RunPro! 👟..."</div>',
-        '{r}Media Buyer & Copywriter.{/r} {c}Zapatillas gel. Público: Corredores +35.{/c} {m}3 variaciones texto AIDA.{/m} {l}Gancho < 40 chars. Emojis.{/l} {f}Lista numerada.{/f}',
-        'Iterative Prompting.', 'Gancho fuerte.',
+        '{r}Eres un Media Buyer Senior y Copywriter de Respuesta Directa.{/r} {c}Producto: [Zapatillas con amortiguación de gel] Público: [Corredores amateurs +35 años con dolores articulares] Dolor: [Miedo a lesionarse las rodillas] Imagen: (Opcional) [Analiza la imagen adjunta de la zapatilla para describir sus colores]{/c} {m}Crear 3 variaciones de texto (Primary Text) usando el marco AIDA (Atención, Interés, Deseo, Acción).{/m} {l}La primera frase (El Gancho) debe tener menos de 40 caracteres y cortar la respiración. Usa emojis para listar beneficios, no párrafos largos.{/l} {f}Lista numerada: Opción 1 (Directa), Opción 2 (Storytelling), Opción 3 (Controversial).{/f}',
+        'Iterative Prompting.', 'Lee solo la primera línea. ¿Te dan ganas de leer la segunda?',
         // FULL HTML INJECTION:
         '<div class="text-xs space-y-2">' +
         '<p class="font-bold text-indigo-700">Opción 1 (Directa):</p>' +
@@ -225,8 +225,8 @@ const allCases = [
     createCase(303, 'sales', 'Ficha E-commerce', 'shopping_bag', 'Ecommerce: Conversión.',
         'Describe esta cafetera para mi tienda online.',
         '<div class="text-xs text-slate-500 italic">"Cafetera Italiana Modelo X. Capacidad 1 Litro..."</div>',
-        '{r}Experto Neuromarketing.{/r} {c}Cafetera Italiana Lujo.{/c} {m}Convertir características técnicas a Beneficios Emocionales.{/m} {l}Lenguaje sensorial.{/l} {f}Título + Bullet Points.{/f}',
-        'Data to Emotion.', 'Lenguaje sensorial.',
+        '{r}Actúa como un experto en Neuromarketing y Psicología del Consumidor.{/r} {c}Producto: [Cafetera Italiana de Lujo] Público: [Amantes del café que valoran el diseño] Características: [Acero inoxidable, mantiene calor, diseño minimalista] Archivo: [Adjuntar especificaciones técnicas en PDF]{/c} {m}Convertir las características técnicas (del PDF) en Beneficios Emocionales.{/m} {l}Evita la voz pasiva. Usa lenguaje sensorial (olor, sabor, sonido, tacto). No hagas listas aburridas.{/l} {f}Título Persuasivo + Descripción Emocional + Bullet Points de "Por qué la amarás".{/f}',
+        'Translation (Data to Emotion).', '¿Te imaginas usando el producto o solo leyendo un manual?',
         // FULL HTML INJECTION:
         '<div class="text-xs">' +
         '<h4 class="font-bold text-lg mb-2 text-slate-800">Tu barista personal, ahora en tu cocina ☕</h4>' +
@@ -242,8 +242,8 @@ const allCases = [
     createCase(304, 'sales', 'Guion Viral TikTok', 'movie', 'RRSS: Retención video.',
         'Dame ideas para un video de TikTok sobre divorcios.',
         '<div class="text-xs text-slate-500 italic">"Hola a todos, soy abogado. Hoy hablaremos del divorcio..."</div>',
-        '{r}Guionista Viral.{/r} {c}Divorcio y Bienes.{/c} {m}Guion 30s optimizado para retención máxima.{/m} {l}Gancho visual 0-3s. Sin "Hola".{/l} {f}Tabla Visual | Audio.{/f}',
-        'Output Formatting.', 'Gancho visual.',
+        '{r}Eres un Guionista Viral de TikTok y Reels.{/r} {c}Tema: [Divorcio y Bienes] Público: [Personas pensando en separarse pero con miedo económico] Dolor: [Miedo a perder la casa o el auto]{/c} {m}Crear un guion de 30 segundos optimizado para retención máxima.{/m} {l}Gancho (0-3s): Debe ser visual o una afirmación polémica. Prohibido decir "Hola". Cuerpo: Entrega valor rápido. CTA: Llamada a la acción específica.{/l} {f}Tabla de 2 columnas: [Visual/Acción en Pantalla] | [Audio/Locución].{/f}',
+        'Output Formatting.', '¿Viste los primeros 3 segundos o pasaste de largo?',
         // FULL HTML INJECTION:
         '<div class="overflow-x-auto"><table class="w-full text-[10px] border-collapse border border-slate-200">' +
         '<thead class="bg-slate-50 text-slate-700"><tr><th class="border border-slate-200 p-2 text-left w-1/2">Visual</th><th class="border border-slate-200 p-2 text-left w-1/2">Audio</th></tr></thead>' +
@@ -257,8 +257,8 @@ const allCases = [
     createCase(305, 'sales', 'Cierre WhatsApp', 'chat', 'Ventas: Chat Closing.',
         'Responde a un cliente que preguntó precio.',
         '<div class="text-xs text-slate-500 italic">"Hola, buenas tardes. El precio es $150.000..."</div>',
-        '{r}Closer Ventas.{/r} {c}Curso Inglés. Preguntan precio.{/c} {m}Responder precio y mantener conversación viva.{/m} {l}Termina con pregunta abierta.{/l} {f}Texto chat.{/f}',
-        'Tone Setting.', 'Pregunta final.',
+        '{r}Eres un Closer de Ventas (Cerrador) experto en venta conversacional (Chat Marketing).{/r} {c}Producto: [Curso de Inglés Conversacional] Cliente: [Preguntó "Precio" en un anuncio de Instagram] Historial: [Adjuntar conversación previa si existe - opcional]{/c} {m}Responder la duda del precio pero mantener la conversación viva.{/m} {l}Tono: Casual, cercano, usa emojis moderados. Longitud: Máximo 2 párrafos cortos (visualización móvil). Regla de Oro: Termina SIEMPRE con una pregunta.{/l} {f}Texto listo para copiar y pegar.{/f}',
+        'Tone Setting & Open Loops.', '¿Sientes que hablas con un humano o con un bot?',
         // FULL HTML INJECTION:
         '<div class="bg-[#dcf8c6] p-3 rounded-lg text-xs text-slate-800 shadow-sm inline-block max-w-[90%]">' +
         '<p class="mb-2">"Hola! 👋 Claro que sí.</p>' +
@@ -270,8 +270,8 @@ const allCases = [
     createCase(306, 'sales', 'Hero Landing Page', 'web', 'Web: Propuesta Valor.',
         'Pon un título para mi web de marketing.',
         '<div class="text-xs text-slate-500 italic">"Agencia Digital Creative Minds. Expertos en Marketing..."</div>',
-        '{r}Copywriter CRO.{/r} {c}Agencia Google Ads.{/c} {m}H1 y H2 que prometan transformación clara.{/m} {l}H1 Beneficio, H2 ataca objeción.{/l} {f}3 Opciones.{/f}',
-        'Constraint-Based.', 'Beneficio claro.',
+        '{r}Eres un Copywriter de Conversión (CRO).{/r} {c}Servicio: [Agencia de Google Ads] Público: [Dueños de E-commerce] Dolor: [Gastan dinero en ads y no venden nada]{/c} {m}Escribir un H1 (Título) y H2 (Subtítulo) que prometan una transformación clara.{/m} {l}H1: Máximo 12 palabras. Debe centrarse en el BENEFICIO, no en la agencia. H2: Debe atacar la objeción principal (miedo a perder dinero).{/l} {f}3 Opciones: Opción Lógica, Opción Emocional, Opción Urgencia.{/f}',
+        'Constraint-Based.', '¿Entiendes qué ganas en menos de 5 segundos?',
         // FULL HTML INJECTION:
         '<div class="text-xs">' +
         '<div class="mb-1 text-slate-500 uppercase tracking-wide font-bold text-[10px]">Opción Lógica:</div>' +
@@ -283,8 +283,8 @@ const allCases = [
     createCase(307, 'sales', 'Artículo SEO', 'article', 'SEO: Blog Post.',
         'Escribe un artículo sobre implantes dentales.',
         '<div class="text-xs text-slate-500 italic">"Los implantes dentales son una solución para dientes perdidos..."</div>',
-        '{r}Experto SEO.{/r} {c}Implantes dentales. Keyword: Dolor.{/c} {m}Crear Estructura (Outline) + Intro optimizada.{/m} {l}H2, H3 y FAQ.{/l} {f}Estructura + Intro.{/f}',
-        'Structural Prompting.', 'Jerarquía.',
+        '{r}Eres un experto en SEO y Marketing de Contenidos.{/r} {c}Tema: [Implantes Dentales] Palabra Clave Principal: [Duelen los implantes dentales] Público: [Pacientes con miedo al dentista] Archivo: [Adjuntar lista de Keywords secundarias CSV - opcional]{/c} {m}Crear primero la Estructura (Outline) optimizada para SEO y luego desarrollar la introducción.{/m} {l}Incluye etiquetas H2 y H3 claras. Incluye una sección de "Preguntas Frecuentes" (FAQ) para Snippets de Google. Tono: Empático y tranquilizador.{/l} {f}Título SEO + Estructura de Encabezados + Intro de 200 palabras.{/f}',
+        'Structural Prompting.', '¿El artículo responde las dudas reales que buscas en Google?',
         // FULL HTML INJECTION:
         '<div class="bg-white border p-3 text-xs">' +
         '<h1 class="text-lg font-bold text-blue-800 mb-2">H1: Implantes Dentales: ¿Realmente duelen? La verdad sobre el procedimiento.</h1>' +
@@ -301,8 +301,8 @@ const allCases = [
     createCase(308, 'sales', 'Objeción "Muy Caro"', 'monetization_on', 'Ventas: Negociación.',
         'Dame respuestas para cuando dicen que es muy caro.',
         '<div class="text-xs text-slate-500 italic">"No es caro, es que ofrecemos mucha calidad. Lo barato sale caro."</div>',
-        '{r}Negociador Harvard.{/r} {c}Consultoría $1000.{/c} {m}3 guiones de rebatimiento usando Reencuadre.{/m} {l}Nunca contradigas. Costo de inacción.{/l} {f}3 Guiones.{/f}',
-        'Reframing.', 'Validar emoción.',
+        '{r}Actúa como un Negociador Experto del método Harvard.{/r} {c}Producto: [Consultoría de Impuestos] Precio: [$1000 USD] Objeción: ["Es muy caro" / "No tengo presupuesto"] Archivo: [Adjuntar PDF con propuesta de valor - opcional]{/c} {m}Generar 3 guiones de rebatimiento usando la técnica de Reencuadre (Reframing).{/m} {l}Nunca contradigas al cliente ("No es caro"). Valida su emoción primero. Compara el precio con el costo de NO solucionar el problema.{/l} {f}Guion 1 (Costo de Inacción), Guion 2 (División ridícula), Guion 3 (ROI).{/f}',
+        'Reframing.', '¿Te hace dudar de tu propia objeción?',
         // FULL HTML INJECTION:
         '<div class="bg-indigo-50 border-l-4 border-indigo-500 p-3 text-xs text-indigo-900 italic">' +
         '<p class="mb-2">"Te entiendo perfectamente, $1,000 es una suma importante.</p>' +
@@ -314,8 +314,8 @@ const allCases = [
     createCase(309, 'sales', 'Storytelling Personal', 'history_edu', 'Marca Personal: Conexión.',
         'Escribe la sección de "quién soy" para mi web.',
         '<div class="text-xs text-slate-500 italic">"Soy María, nutricionista titulada con distinción máxima..."</div>',
-        '{r}Experto Storytelling.{/r} {c}Nutricionista ex-obesa.{/c} {m}Historia del Héroe (3 actos) donde el cliente se identifique.{/m} {l}Muestra vulnerabilidad.{/l} {f}Narrativa 1ra persona.{/f}',
-        'Narrative Arc.', 'Vulnerabilidad.',
+        '{r}Eres un experto en Storytelling de Marca (Brand Story).{/r} {c}Profesión: [Nutricionista] Historia Personal: [Fui obesa, sufrí bullying, aprendí a comer sin dietas] Propósito: [Que nadie sufra lo que yo sufrí]{/c} {m}Contar la "Historia del Héroe" donde el cliente se identifique, usando narrativa de 3 actos.{/m} {l}Evita listar títulos universitarios al principio. Muestra vulnerabilidad. El héroe final debe ser el paciente, tú eres el guía (como Yoda).{/l} {f}Narrativa en primera persona.{/f}',
+        'Narrative Arc.', '¿Confías más en ella porque mostró su lado humano?',
         // FULL HTML INJECTION:
         '<div class="text-xs text-slate-700 italic leading-relaxed">' +
         '<p class="mb-2">"No siempre fui la nutricionista saludable que ves en las fotos.</p>' +
@@ -327,8 +327,8 @@ const allCases = [
     createCase(310, 'sales', 'Ideas Lead Magnet', 'lightbulb', 'Marketing: Captación.',
         'Dame ideas para un ebook gratis.',
         '<div class="text-xs text-slate-500 italic">"1. Guía de Finanzas. 2. Cómo ahorrar dinero..."</div>',
-        '{r}Estratega Inbound.{/r} {c}Finanzas jóvenes.{/c} {m}5 ideas de Lead Magnets de Alto Valor y Consumo Rápido.{/m} {l}Herramientas prácticas. Títulos clickbait éticos.{/l} {f}Lista.{/f}',
-        'Ideation.', 'Alto valor.',
+        '{r}Eres un Estratega de Inbound Marketing.{/r} {c}Nicho: [Finanzas Personales] Público: [Jóvenes endeudados] Dolor: [No llegan a fin de mes]{/c} {m}Generar 5 ideas de "Lead Magnets" de Alto Valor y Consumo Rápido (No ebooks largos).{/m} {l}Deben ser herramientas prácticas (Excel, Checklist, Audio, Quiz). Títulos "Clickbait" éticos (que prometan un resultado rápido).{/l} {f}Lista: Título + Formato + Promesa de Valor.{/f}',
+        'Ideation & Brainstorming.', '¿Te da curiosidad descargar alguna de esas herramientas?',
         // FULL HTML INJECTION:
         '<div class="text-xs">' +
         '<ul class="space-y-2">' +
