@@ -116,35 +116,35 @@
         <hr class="my-12 border-gray-300">
 
         <!-- SECCIÓN DE VERIFICACIÓN PÚBLICA -->
-        <section id="verifier-section" class="pb-12">
-            <header class="text-center mb-8">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Verificador de Certificados</h2>
-                <p class="text-gray-600 mt-2">Ingresa un código para confirmar la validez de un certificado.</p>
+        <section id=\"verifier-section\" class=\"pb-12\">
+            <header class=\"text-center mb-8\">
+                <h2 class=\"text-3xl sm:text-4xl font-bold text-gray-900\">Verificador de Certificados</h2>
+                <p class=\"text-gray-600 mt-2\">Ingresa un código para confirmar la validez de un certificado.</p>
             </header>
-            <div class="bg-white p-6 rounded-xl shadow-lg max-w-xl mx-auto">
-                <div class="flex items-center space-x-4">
-                    <input type="text" id="verifyCodeInput" class="flex-grow block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ingresa el código...">
-                    <button id="verifyButton" class="bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-800 transition-colors">Verificar</button>
+            <div class=\"bg-white p-6 rounded-xl shadow-lg max-w-xl mx-auto\">
+                <div class=\"flex items-center space-x-4\">
+                    <input type=\"text\" id=\"verifyCodeInput\" class=\"flex-grow block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500\" placeholder=\"Ingresa el código...\">
+                    <button id=\"verifyButton\" class=\"bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-800 transition-colors\">Verificar</button>
                 </div>
-                <div id="verificationResult" class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 hidden"></div>
+                <div id=\"verificationResult\" class=\"mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 hidden\"></div>
             </div>
         </section>
     </div>
 
     <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src=\"https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js\"></script>
+    <script src=\"https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js\"></script>
+    <script src=\"https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js\"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const firebaseConfig = { 
-                apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
-                authDomain: "aulagenia.firebaseapp.com", 
-                projectId: "aulagenia", 
-                storageBucket: "aulagenia.appspot.com", 
-                messagingSenderId: "173328075630", 
-                appId: "1:173328075630:web:825606db4271ea1e66cf7f" 
+                apiKey: \"AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM\", 
+                authDomain: \"aulagenia.firebaseapp.com\", 
+                projectId: \"aulagenia\", 
+                storageBucket: \"aulagenia.appspot.com\", 
+                messagingSenderId: \"173328075630\", 
+                appId: \"1:173328075630:web:825606db4271ea1e66cf7f\" 
             };
             
             if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
@@ -188,7 +188,7 @@
                     } else {
                         await auth.signInAnonymously();
                     }
-                } catch (e) { console.error("Auth init failed", e); }
+                } catch (e) { console.error(\"Auth init failed\", e); }
             };
 
             await initAuth();
@@ -197,7 +197,7 @@
                 if (user) {
                     currentUser = {
                         uid: user.uid,
-                        name: user.displayName || "Estudiante",
+                        name: user.displayName || \"Estudiante\",
                         email: user.email
                     };
                     loadUserDashboard();
@@ -241,27 +241,27 @@
                     completedPrograms.forEach(program => {
                         const div = document.createElement('div');
                         div.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg border';
-                        div.innerHTML = `<p class="font-semibold">${program.name}</p><button data-program-id="${program.id}" data-program-name="${program.name}" class="generate-cert-btn bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow">Generar Certificado</button>`;
+                        div.innerHTML = `<p class=\"font-semibold\">${program.name}</p><button data-program-id=\"${program.id}\" data-program-name=\"${program.name}\" class=\"generate-cert-btn bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow\">Generar Certificado</button>`;
                         dom.programsListContainer.appendChild(div);
                     });
                     document.querySelectorAll('.generate-cert-btn').forEach(btn => btn.addEventListener('click', handleGenerateCertificate));
                 } else {
-                    dom.programsListContainer.innerHTML = '<p class="text-gray-500 text-center">Finaliza tu curso para ver tu certificado aquí.</p>';
+                    dom.programsListContainer.innerHTML = '<p class=\"text-gray-500 text-center\">Finaliza tu curso para ver tu certificado aquí.</p>';
                 }
             }
 
             async function loadSpecificCertificate(certId) {
-                showStatus("Cargando certificado...", '#3b82f6');
+                showStatus(\"Cargando certificado...\", '#3b82f6');
                 try {
                     const certRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('certificates').doc(certId);
                     const doc = await certRef.get();
                     if (doc.exists) {
                         displayCertificate(doc.data(), certId);
-                        showStatus("Certificado recuperado.", '#059669', 2000);
+                        showStatus(\"Certificado recuperado.\", '#059669', 2000);
                     } else {
-                        showStatus("No se encontró el certificado.", '#ef4444', 3000);
+                        showStatus(\"No se encontró el certificado.\", '#ef4444', 3000);
                     }
-                } catch (error) { showStatus("Error de conexión.", '#ef4444'); }
+                } catch (error) { showStatus(\"Error de conexión.\", '#ef4444'); }
             }
 
             async function handleGenerateCertificate(event) {
@@ -271,19 +271,18 @@
                 const certId = `${currentUser.uid}_${programId}`;
 
                 button.disabled = true;
-                button.textContent = "Generando...";
+                button.textContent = \"Generando...\";
 
                 try {
-                    showStatus("Buscando certificado...", '#3b82f6');
+                    showStatus(\"Buscando certificado...\", '#3b82f6');
                     const certRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('certificates').doc(certId);
                     const docSnap = await certRef.get();
                     let certificateData;
 
                     if (docSnap.exists) {
                         certificateData = docSnap.data();
-                        // CORRECCIÓN: Asegurar que el ID existe en el objeto aunque no estuviera en DB
                         if (!certificateData.certificateId) certificateData.certificateId = certId;
-                        showStatus("Certificado recuperado.", '#059669', 2000);
+                        showStatus(\"Certificado recuperado.\", '#059669', 2000);
                     } else {
                         certificateData = {
                             studentName: currentUser.name,
@@ -295,26 +294,25 @@
                             programId: programId
                         };
                         await certRef.set(certificateData);
-                        showStatus("¡Certificado generado con éxito!", '#059669', 2000);
+                        showStatus(\"¡Certificado generado con éxito!\", '#059669', 2000);
                     }
                     
                     displayCertificate(certificateData, certId);
                 } catch (error) {
                     console.error(error);
-                    showStatus("Error al procesar certificado.", '#ef4444', 3000);
+                    showStatus(\"Error al procesar certificado.\", '#ef4444', 3000);
                 } finally {
                     button.disabled = false;
-                    button.textContent = "Ver Certificado";
+                    button.textContent = \"Ver Certificado\";
                 }
             }
 
             function displayCertificate(data, fallbackId) {
-                // CORRECCIÓN: Garantizar que el ID no sea undefined bajo ninguna circunstancia
                 const finalId = data.certificateId || fallbackId;
                 
-                dom.certStudentName.textContent = data.studentName || currentUser.name;
-                dom.certProgramName.textContent = data.programName;
-                dom.certCompletionDate.textContent = data.completionDate;
+                dom.certStudentName.textContent = data.studentName || currentUser.name || \"Alumno AulaGenIA\";
+                dom.certProgramName.textContent = data.programName || \"Programa de IA\";
+                dom.certCompletionDate.textContent = data.completionDate || formatSpanishDate(new Date());
                 dom.certificateIdElem.textContent = finalId;
                 dom.verifyCodeInput.value = finalId;
                 
@@ -332,14 +330,15 @@
                 if(duration > 0) setTimeout(() => { if(dom.statusMessage.textContent === message) dom.statusMessage.textContent = ''; }, duration);
             }
 
+            // Lógica mejorada del verificador para evitar "undefined"
             dom.verifyButton.addEventListener('click', async () => {
                 const code = dom.verifyCodeInput.value.trim();
                 if (!code) return;
                 
-                dom.verificationResult.innerHTML = "Buscando...";
+                dom.verificationResult.innerHTML = \"Buscando...\";
                 dom.verificationResult.classList.remove('hidden');
-                dom.verificationResult.style.backgroundColor = "#eff6ff";
-                dom.verificationResult.style.borderColor = "#3b82f6";
+                dom.verificationResult.style.backgroundColor = \"#eff6ff\";
+                dom.verificationResult.style.borderColor = \"#3b82f6\";
 
                 try {
                     const docRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('certificates').doc(code);
@@ -347,21 +346,41 @@
                     
                     if (docSnap.exists) {
                         const data = docSnap.data();
-                        dom.verificationResult.style.backgroundColor = "#f0fdf4";
-                        dom.verificationResult.style.borderColor = "#16a34a";
+                        
+                        // CORRECCIÓN: Manejo de campos para evitar undefined
+                        const alumno = data.studentName || data.userName || \"No especificado\";
+                        const programa = data.programName || data.courseName || \"No especificado\";
+                        const fecha = data.completionDate || (data.issuedAt ? new Date(data.issuedAt).toLocaleDateString('es-CL') : \"No especificada\");
+
+                        dom.verificationResult.style.backgroundColor = \"#f0fdf4\";
+                        dom.verificationResult.style.borderColor = \"#16a34a\";
                         dom.verificationResult.innerHTML = `
-                            <h4 class="font-bold text-green-700">✅ Certificado Válido</h4>
-                            <p class="mt-2 text-sm"><strong>Alumno:</strong> ${data.studentName}</p>
-                            <p class="text-sm"><strong>Programa:</strong> ${data.programName}</p>
-                            <p class="text-sm"><strong>Fecha:</strong> ${data.completionDate}</p>
+                            <div class=\"flex items-center gap-3 mb-2\">
+                                <span class=\"text-2xl\">✅</span>
+                                <h4 class=\"font-bold text-green-700 text-lg\">Certificado Válido</h4>
+                            </div>
+                            <div class=\"space-y-1 text-slate-700\">
+                                <p class=\"text-sm italic\">Este documento es auténtico y emitido por AulaGenIA.</p>
+                                <div class=\"pt-2 border-t border-green-200 mt-2\">
+                                    <p class=\"text-sm\"><strong>Alumno:</strong> ${alumno}</p>
+                                    <p class=\"text-sm\"><strong>Programa:</strong> ${programa}</p>
+                                    <p class=\"text-sm\"><strong>Fecha:</strong> ${fecha}</p>
+                                </div>
+                            </div>
                         `;
                     } else {
-                        dom.verificationResult.style.backgroundColor = "#fef2f2";
-                        dom.verificationResult.style.borderColor = "#ef4444";
-                        dom.verificationResult.innerHTML = `<h4 class="font-bold text-red-700">❌ Certificado No Encontrado</h4><p class="text-sm">El código no es válido o no ha sido registrado aún.</p>`;
+                        dom.verificationResult.style.backgroundColor = \"#fef2f2\";
+                        dom.verificationResult.style.borderColor = \"#ef4444\";
+                        dom.verificationResult.innerHTML = `
+                            <div class=\"flex items-center gap-3\">
+                                <span class=\"text-2xl\">❌</span>
+                                <h4 class=\"font-bold text-red-700\">Certificado No Encontrado</h4>
+                            </div>
+                            <p class=\"text-sm mt-2 text-red-600\">El código ingresado no corresponde a un certificado válido en nuestro sistema.</p>
+                        `;
                     }
                 } catch (error) {
-                    dom.verificationResult.innerHTML = "Error al conectar con el servidor.";
+                    dom.verificationResult.innerHTML = \"Error al conectar con el servidor. Inténtalo de nuevo.\";
                 }
             });
 
@@ -374,7 +393,7 @@
                     const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width, canvas.height] });
                     pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
                     pdf.save(`Certificado_AulaGenIA_${studentName}.pdf`);
-                } catch (error) { showStatus("Error al generar PDF.", '#ef4444'); }
+                } catch (error) { showStatus(\"Error al generar PDF.\", '#ef4444'); }
             });
 
             dom.linkedinButton.addEventListener('click', () => {
