@@ -253,21 +253,11 @@
 
             <div class="flex gap-2 items-center">
                 <!-- Global Lock Simulator (Test Mode) -->
-                <button onclick="toggleGlobalLock()" id="global-lock-btn"
-                    class="text-slate-300 hover:text-red-500 transition-colors p-1.5 rounded-lg border border-transparent hover:bg-red-50"
-                    title="Simular Modo Bloqueado (Usuario Gratis)">
-                    <span class="material-symbols-rounded text-xl">lock_open</span>
-                </button>
 
-                <div class="h-4 w-px bg-slate-200 mx-1"></div>
-
-                <button onclick="downloadPDF()"
-                    class="hidden md:flex text-slate-500 hover:text-indigo-600 transition-colors items-center gap-2 text-xs font-bold px-3 py-1.5 border border-slate-200 rounded-lg hover:border-indigo-200">
-                    <span class="material-symbols-rounded text-base">download</span> <span
-                        class="hidden lg:inline">PDF</span>
-                </button>
-                <button onclick="showTutorial()" class="text-slate-400 hover:text-indigo-600 transition-colors p-1.5">
-                    <span class="material-symbols-rounded text-xl">help</span>
+                <button onclick="window.print()"
+                    class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                    title="Imprimir / Guardar PDF">
+                    <span class="material-symbols-rounded">print</span>
                 </button>
                 <button onclick="openPaywall()"
                     class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md flex items-center gap-1.5 transition-transform hover:-translate-y-0.5">
@@ -436,30 +426,26 @@
 
                                 <!-- BLOCKED TEASER OVERLAY (Centered on prompt) -->
                                 <div id="locked-teaser"
-                                    class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center transition-all duration-500 backdrop-blur-[4px] bg-white/60">
+                                    class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center transition-all duration-500 backdrop-blur-[2px] bg-white/60">
                                     <div
-                                        class="bg-white p-6 rounded-2xl shadow-2xl border border-white/80 text-center transform scale-100 hover:scale-105 transition-transform duration-300 ring-1 ring-slate-200 max-w-xs relative z-40 translate-y-10">
+                                        class="bg-white/90 backdrop-blur-xl p-8 rounded-2xl border border-slate-200 shadow-2xl max-w-sm text-center transform hover:scale-[1.02] transition-transform">
                                         <div
-                                            class="w-14 h-14 bg-gradient-to-br from-indigo-800 to-indigo-950 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4 text-white">
-                                            <span class="material-symbols-rounded text-3xl">lock</span>
+                                            class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                                            <span class="material-symbols-rounded text-3xl text-slate-400">lock</span>
                                         </div>
-                                        <h3 class="text-lg font-black text-slate-900 mb-1">Contenido Protegido</h3>
-                                        <p class="text-xs text-slate-500 mb-4 leading-relaxed mx-auto">Esta base de
-                                            datos está encriptada. Ingresa la llave maestra para acceder.</p>
+                                        <h3 class="text-xl font-bold text-slate-800 mb-2">Contenido Protegido</h3>
+                                        <p class="text-slate-500 text-sm mb-6 leading-relaxed">
+                                            Esta fórmula maestra es exclusiva para miembros de la comunidad AGIA.
+                                        </p>
 
-                                        <div class="relative mb-3">
-                                            <input type="password" id="vault-password"
-                                                placeholder="Ingresa la contraseña"
-                                                class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm font-bold text-center focus:ring-2 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-300 placeholder:font-normal">
-                                            <p id="password-error"
-                                                class="hidden text-[10px] text-red-500 font-bold mt-1">Contraseña
-                                                incorrecta</p>
-                                        </div>
-
-                                        <button onclick="attemptUnlock()"
-                                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-indigo-200/50 text-xs w-full transition-all hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
-                                            <span class="material-symbols-rounded text-base">vpn_key</span> DESENCRIPTAR
-                                        </button>
+                                        <a href="acceso.html"
+                                            class="inline-flex items-center justify-center w-full gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-indigo-200">
+                                            <span class="material-symbols-rounded text-lg">login</span>
+                                            Iniciar Sesión para Acceder
+                                        </a>
+                                        <p class="text-[10px] text-slate-400 mt-4">
+                                            ¿Ya tienes cuenta? Tu sesión se detectará automáticamente.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -767,8 +753,7 @@
         // Se asume que el archivo prompts_db.js está en la misma ubicación
         const externalDBUrl = './prompts_db.js';
 
-        // Global Lock State
-        let globalLockMode = false;
+
 
         // UI Elements
         const statusOverlay = document.getElementById('system-status-overlay');
@@ -831,16 +816,37 @@
             }
         };
 
+        // Global References
         let currentPromptTemplate = "";
         let currentBadPromptTemplate = "";
         let currentVariables = {};
         let currentDifficulty = 'beginner';
         let currentViewMode = 'basic'; // 'basic' or 'agia'
         let currentCaseId = null;
+        let isVaultUnlocked = false;
 
-        // Secured: Removed lock logic from client side toggles
+        // Internal Key (Invisible to user in UI, used for decryption)
+        const CORRECT_HASH = "AGIA2025";
+
+        // FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
+            authDomain: "aulagenia.firebaseapp.com",
+            projectId: "aulagenia",
+            storageBucket: "aulagenia.appspot.com",
+            messagingSenderId: "173328075630",
+            appId: "1:173328075630:web:825606db4271ea1e66cf7f",
+            measurementId: "G-X500LE6Z8X"
+        };
+
+        // Initialize Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+        } catch (e) { console.log('Firebase already initialized'); }
+        const auth = firebase.auth();
 
         function initApp() {
+            // Expose globals
             window.loadCase = loadCase;
             window.filterCases = filterCases;
             window.filterByCategory = filterByCategory;
@@ -851,89 +857,45 @@
             window.closeTutorial = closeTutorial;
             window.downloadPDF = downloadPDF;
             window.setMode = setMode;
-            window.toggleGlobalLock = toggleGlobalLock;
-            window.attemptUnlock = attemptUnlock;
+            // Removed: window.toggleGlobalLock, window.attemptUnlock
 
             renderCategories();
             renderList(casesData);
-            updateTotalCounter();
+
+            // Auto-select first if available
+            if (casesData.length > 0) {
+                loadCase(casesData[0].id);
+            }
             startCountdown();
             startSocialProof();
             setupLegendInteractions();
 
-            const first = casesData[0];
-            if (first) loadCase(first.id);
-            else document.getElementById('workspace-empty').classList.replace('hidden', 'flex');
-        }
+            // Listen for Auth State
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    // console.log("Usuario autenticado:", user.email);
+                    isVaultUnlocked = true;
 
-        // ==========================================
-        // 🔐 SECURITY & ENCRYPTION LOGIC
-        // ==========================================
-        let isVaultUnlocked = false;
-        const CORRECT_HASH = "AGIA2025"; // In a real real scenario, use a hash. For this demo, simple check.
-
-        function attemptUnlock() {
-            const input = document.getElementById('vault-password');
-            const errorMsg = document.getElementById('password-error');
-            const pwd = input.value;
-
-            if (pwd === CORRECT_HASH) {
-                isVaultUnlocked = true;
-                errorMsg.classList.add('hidden');
-
-                // Trigger success visual
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-
-                // FORCE UI UPDATE IMMEDIATELY
-                const teaser = document.getElementById('locked-teaser');
-                if (teaser) {
-                    teaser.classList.add('hidden');
-                    teaser.classList.remove('flex');
-                }
-
-                // Force re-render logic manually if needed
-                const currentCase = casesData.find(x => x.id === currentCaseId);
-                if (currentCase && currentCase.agiaPromptTagged) {
-                    // Try to decrypt immediately to update render buffer if reload fails
-                    try {
-                        const decrypted = decryptPrompt(currentCase.agiaPromptTagged);
-                        if (!decrypted.startsWith("U2F") && !decrypted.startsWith("Error")) {
-                            // Success decryption in memory
-                            console.log("Desencriptación exitosa en memoria.");
-                        }
-                    } catch (e) { console.error(e); }
-                }
-
-                // Reload current case to apply decryption
-                if (currentCaseId) {
-                    loadCase(currentCaseId);
-                } else {
-                    // Fallback attempt
-                    const currentActive = document.querySelector('.case-item.bg-indigo-50');
-                    if (currentActive) {
-                        const id = parseInt(currentActive.id.replace('case-item-', ''));
-                        loadCase(id);
+                    const teaser = document.getElementById('locked-teaser');
+                    if (teaser) {
+                        teaser.classList.add('hidden');
+                        teaser.classList.remove('flex');
                     }
+
+                    // Reload current case to apply decryption
+                    if (currentCaseId) loadCase(currentCaseId);
+                } else {
+                    // console.log("Usuario no autenticado.");
+                    isVaultUnlocked = false;
+                    // Force reload to show lock
+                    if (currentCaseId) loadCase(currentCaseId);
                 }
-            } else {
-                errorMsg.classList.remove('hidden');
-                input.classList.add('border-red-300', 'bg-red-50');
-                input.classList.remove('border-slate-200', 'bg-slate-50');
-                setTimeout(() => {
-                    input.classList.remove('border-red-300', 'bg-red-50');
-                    input.classList.add('border-slate-200', 'bg-slate-50');
-                }, 2000);
-            }
+            });
         }
 
         function decryptPrompt(ciphertext) {
             try {
                 if (!ciphertext) return "";
-                // If it doesn't look like AES (U2F...), maybe it's plain text?
                 if (!ciphertext.startsWith("U2F")) return ciphertext;
 
                 const bytes = CryptoJS.AES.decrypt(ciphertext, CORRECT_HASH);
@@ -945,25 +907,6 @@
             }
         }
 
-        function toggleGlobalLock() {
-            globalLockMode = !globalLockMode;
-            const btn = document.getElementById('global-lock-btn');
-            const icon = btn.querySelector('span');
-
-            if (globalLockMode) {
-                btn.classList.replace('text-slate-300', 'text-red-500');
-                btn.classList.replace('hover:bg-red-50', 'bg-red-50');
-                icon.innerText = 'lock';
-                // Force reload of current case to apply lock state
-                if (currentCaseId) loadCase(currentCaseId);
-            } else {
-                btn.classList.replace('text-red-500', 'text-slate-300');
-                btn.classList.replace('bg-red-50', 'hover:bg-red-50');
-                icon.innerText = 'lock_open';
-                // Force reload to remove lock
-                if (currentCaseId) loadCase(currentCaseId);
-            }
-        }
 
         function setMode(mode) {
             currentViewMode = mode;
@@ -1026,8 +969,8 @@
             const c = casesData.find(x => x.id === id);
             if (!c) return;
 
-            // Determine effective lock state (Database OR Global Toggle)
-            const isLocked = c.locked || globalLockMode;
+            // Determine effective lock state (Database OR User Session)
+            const isLocked = c.locked || !isVaultUnlocked;
 
             currentDifficulty = c.difficulty || 'beginner';
 
@@ -1195,11 +1138,13 @@
                     <p class="subtitle">Reporte Generado el ${new Date().toLocaleDateString()} | ${unlockedCount}/${total} Desbloqueados</p>
                     
                     ${casesData.map(c => {
-                // Check if individual case is locked or if global lock is enabled
-                const isLocked = c.locked || globalLockMode;
+                // Check if individual case is locked or if global lock is enabled (now controlled by isVaultUnlocked)
+                // If vault is NOT unlocked, treat as locked.
+                const isLocked = c.locked || !isVaultUnlocked;
+
                 const content = isLocked
-                    ? `<div class="locked-box">🔒 CONTENIDO EXCLUSIVO (PREMIUM) - Desbloquea para acceder a la fórmula.</div>`
-                    : `<div class="prompt-box">${c.agiaPromptTagged.replace(/{[a-z]+\}|{\/[a-z]+\}/g, '')}</div>`;
+                    ? `<div class="locked-box">🔒 CONTENIDO EXCLUSIVO - Inicia sesión en AulaGenia para ver este contenido.</div>`
+                    : `<div class="prompt-box">${c.agiaPromptTagged ? decryptPrompt(c.agiaPromptTagged).replace(/{[a-z]+\}|{\/[a-z]+\}/g, '') : ''}</div>`;
 
                 return `
                             <div class="case">
