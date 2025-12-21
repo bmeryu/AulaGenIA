@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Encryptor Tool</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+
+<body>
+    <h1>Encrypting DB...</h1>
+    <textarea id="output" style="width: 100%; height: 500px;"></textarea>
+    <script type="module">
+        import allCases from './prompts_db.js';
+
+        const PASSWORD = "AGIA2025";
+
+        function encryptData() {
+            const encryptedCases = allCases.map(c => {
+                // Encrypt the 'agiaPromptTagged' field
+                if (c.agiaPromptTagged) {
+                    const ciphertext = CryptoJS.AES.encrypt(c.agiaPromptTagged, PASSWORD).toString();
+                    return { ...c, agiaPromptTagged: ciphertext };
+                }
+                return c;
+            });
+
+            // Reconstruct the file content string
+            // We need to match the original structure roughly to keep it clean
+
+            // Helper to stringify but keep it looking like the source if possible, 
+            // but for safety/speed we will just strictly JSONify the array and wrap it in export
+            // However, the original file uses a helper function `createCase`. 
+            // To preserve the file's editability we ideally wouldn't dump a huge JSON blob, 
+            // but since we are encrypting it, it becomes unreadble anyway. 
+            // So a simple JSON dump is acceptable for the data array.
+
+            // Actually, let's keep the `createCase` helper if possible? 
+            // No, the encrypted strings will be long and messy. 
+            // Let's just export the array directly.
+
+            const fileContent = `// ==========================================
+// 🧠 BÓVEDA DE PROMPTS AGIA 2.0 - SECURE DB
+// Encrypted Content. Key required to decrypt.
+// ==========================================
+
+const allCases = ${JSON.stringify(encryptedCases, null, 4)};
+
+export default allCases;
+`;
+
+            document.getElementById('output').value = fileContent;
+        }
+
+        // Wait for CryptoJS to load if not already (it's sync script so it should be fine)
+        if (window.CryptoJS) {
+            encryptData();
+        } else {
+            document.onload = encryptData;
+        }
+    </script>
+</body>
+
+</html>
