@@ -25,26 +25,18 @@
         }
         .cert-title { 
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.5rem, 4vw, 3rem); /* Responsive Font Size */
+            font-size: clamp(1.5rem, 4vw, 3rem);
         }
         .student-name {
             font-family: 'Playfair Display', serif;
             font-style: italic;
             font-weight: 600;
             color: #14b8a6;
-            font-size: clamp(2rem, 5vw, 3.75rem); /* Responsive Font Size */
+            font-size: clamp(2rem, 5vw, 3.75rem);
         }
-        
-        /* Responsive text sizes for certificate content */
-        .cert-text-base {
-            font-size: clamp(0.65rem, 1.5vw, 1rem);
-        }
-         .cert-text-lg {
-            font-size: clamp(0.75rem, 2vw, 1.125rem);
-        }
-        .cert-program-name {
-            font-size: clamp(1rem, 3vw, 1.875rem);
-        }
+        .cert-text-base { font-size: clamp(0.65rem, 1.5vw, 1rem); }
+        .cert-text-lg { font-size: clamp(0.75rem, 2vw, 1.125rem); }
+        .cert-program-name { font-size: clamp(1rem, 3vw, 1.875rem); }
     </style>
 </head>
 <body class="bg-slate-50 text-gray-800 p-4 sm:p-8">
@@ -131,7 +123,7 @@
             </header>
             <div class="bg-white p-6 rounded-xl shadow-lg max-w-xl mx-auto">
                 <div class="flex items-center space-x-4">
-                    <input type="text" id="verifyCodeInput" class="flex-grow block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ingresa el código AG-...">
+                    <input type="text" id="verifyCodeInput" class="flex-grow block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Ingresa el código...">
                     <button id="verifyButton" class="bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-800 transition-colors">Verificar</button>
                 </div>
                 <div id="verificationResult" class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 hidden"></div>
@@ -139,25 +131,30 @@
         </section>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js" defer></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-    <script defer>
-        document.addEventListener('DOMContentLoaded', () => {
-            const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const firebaseConfig = { 
+                apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", 
+                authDomain: "aulagenia.firebaseapp.com", 
+                projectId: "aulagenia", 
+                storageBucket: "aulagenia.appspot.com", 
+                messagingSenderId: "173328075630", 
+                appId: "1:173328075630:web:825606db4271ea1e66cf7f" 
+            };
             
-            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn("Firebase ya fue inicializado."); }
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
             const auth = firebase.auth();
             const db = firebase.firestore();
-            
-            // DIAGNÓSTICO: appId debe ser idéntico al del Campus para cruzar datos
             const appId = 'aulagenia-app';
             
             let currentUser = null;
 
-            // DIAGNÓSTICO: El curso IA Esencial tiene 20 lecciones en el campus actual
             const ALL_COURSES_DATA = {
                 'ia-aplicada-esencial': { 
                     title: 'IA Aplicada · Esencial',
@@ -182,15 +179,32 @@
             };
 
             const { jsPDF } = window.jspdf;
+
+            // Autenticación inicial requerida por el entorno
+            const initAuth = async () => {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await auth.signInWithCustomToken(__initial_auth_token);
+                    } else {
+                        await auth.signInAnonymously();
+                    }
+                } catch (e) { console.error("Auth init failed", e); }
+            };
+
+            await initAuth();
             
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUser = {
                         uid: user.uid,
-                        name: user.displayName || "Estudiante de AulaGenIA",
+                        name: user.displayName || "Estudiante",
                         email: user.email
                     };
                     loadUserDashboard();
+                    
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const certIdParam = urlParams.get('id');
+                    if (certIdParam) loadSpecificCertificate(certIdParam);
                 } else {
                     window.location.href = 'acceso.html';
                 }
@@ -199,15 +213,13 @@
             async function loadUserDashboard() {
                 if (!currentUser) return;
                 
-                const userDocRef = db.collection('users').doc(currentUser.uid);
-                const userDoc = await userDocRef.get();
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
                 if (userDoc.exists && userDoc.data().displayName) {
                     currentUser.name = userDoc.data().displayName;
                 }
                 dom.studentNameDisplay.textContent = currentUser.name;
 
-                const userProgressRef = db.collection('userProgress').doc(currentUser.uid);
-                const docSnap = await userProgressRef.get();
+                const docSnap = await db.collection('userProgress').doc(currentUser.uid).get();
 
                 let completedPrograms = [];
                 if (docSnap.exists) {
@@ -216,10 +228,8 @@
                         const courseInfo = ALL_COURSES_DATA[courseId];
                         const courseProgress = progressData[courseId];
                         if (courseInfo && courseProgress) {
-                            const totalLessons = courseInfo.totalLessons;
-                            const completedLessonsCount = new Set(courseProgress.completedLessons || []).size;
-                            // Diagnóstico: Se flexibiliza validación si ya completó el examen final
-                            if (totalLessons > 0 && (completedLessonsCount >= totalLessons || (courseProgress.completedLessons || []).includes('final-exam'))) {
+                            const completedCount = new Set(courseProgress.completedLessons || []).size;
+                            if (completedCount >= courseInfo.totalLessons || (courseProgress.completedLessons || []).includes('final-exam')) {
                                 completedPrograms.push({ id: courseId, name: courseInfo.title });
                             }
                         }
@@ -229,117 +239,87 @@
                 if (completedPrograms.length > 0) {
                     dom.programsListContainer.innerHTML = ''; 
                     completedPrograms.forEach(program => {
-                        const programElement = document.createElement('div');
-                        programElement.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg border';
-                        programElement.innerHTML = `<p class="font-semibold">${program.name}</p><button data-program-id="${program.id}" data-program-name="${program.name}" class="generate-cert-btn bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow">Generar Certificado</button>`;
-                        dom.programsListContainer.appendChild(programElement);
+                        const div = document.createElement('div');
+                        div.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg border';
+                        div.innerHTML = `<p class="font-semibold">${program.name}</p><button data-program-id="${program.id}" data-program-name="${program.name}" class="generate-cert-btn bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow">Generar Certificado</button>`;
+                        dom.programsListContainer.appendChild(div);
                     });
+                    document.querySelectorAll('.generate-cert-btn').forEach(btn => btn.addEventListener('click', handleGenerateCertificate));
                 } else {
-                    dom.programsListContainer.innerHTML = '<p class="text-gray-500 text-center">Aún no has finalizado ningún programa. ¡Sigue adelante!</p>';
+                    dom.programsListContainer.innerHTML = '<p class="text-gray-500 text-center">Finaliza tu curso para ver tu certificado aquí.</p>';
                 }
+            }
 
-                document.querySelectorAll('.generate-cert-btn').forEach(button => {
-                    button.addEventListener('click', handleGenerateCertificate);
-                });
+            async function loadSpecificCertificate(certId) {
+                showStatus("Cargando certificado...", '#3b82f6');
+                try {
+                    const certRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('certificates').doc(certId);
+                    const doc = await certRef.get();
+                    if (doc.exists) {
+                        displayCertificate(doc.data(), certId);
+                        showStatus("Certificado recuperado.", '#059669', 2000);
+                    } else {
+                        showStatus("No se encontró el certificado.", '#ef4444', 3000);
+                    }
+                } catch (error) { showStatus("Error de conexión.", '#ef4444'); }
             }
 
             async function handleGenerateCertificate(event) {
                 const button = event.currentTarget;
+                const programId = button.dataset.programId;
+                const programName = button.dataset.programName;
+                const certId = `${currentUser.uid}_${programId}`;
+
                 button.disabled = true;
                 button.textContent = "Generando...";
 
                 try {
-                    const programId = button.dataset.programId;
-                    const programName = button.dataset.programName;
-
-                    let studentNameForCert = currentUser.name; 
-                    
-                    showStatus("Buscando certificado existente...", '#3b82f6');
-                    
-                    const certificateId = `${currentUser.uid}_${programId}`;
-                    
-                    // DIAGNÓSTICO: Ruta anidada exacta para coincidir con campus-curso-ia
-                    const certificatesRef = db.collection('artifacts').doc(appId)
-                                              .collection('public').doc('data')
-                                              .collection('certificates').doc(certificateId);
-                    
-                    const docSnap = await certificatesRef.get();
+                    showStatus("Buscando certificado...", '#3b82f6');
+                    const certRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('certificates').doc(certId);
+                    const docSnap = await certRef.get();
                     let certificateData;
 
                     if (docSnap.exists) {
                         certificateData = docSnap.data();
-                        certificateData.studentName = studentNameForCert; 
-                        showStatus("Certificado recuperado.", '#059669');
+                        // CORRECCIÓN: Asegurar que el ID existe en el objeto aunque no estuviera en DB
+                        if (!certificateData.certificateId) certificateData.certificateId = certId;
+                        showStatus("Certificado recuperado.", '#059669', 2000);
                     } else {
                         certificateData = {
-                            studentName: studentNameForCert,
+                            studentName: currentUser.name,
                             programName: programName,
                             completionDate: formatSpanishDate(new Date()),
                             issuedAt: new Date().toISOString(),
-                            certificateId: certificateId,
+                            certificateId: certId,
                             userId: currentUser.uid,
                             programId: programId
                         };
-                        await saveCertificate(certificateData);
+                        await certRef.set(certificateData);
+                        showStatus("¡Certificado generado con éxito!", '#059669', 2000);
                     }
                     
-                    displayCertificate(certificateData);
-                    button.textContent = "Ver Certificado";
-                    button.classList.replace('bg-teal-500', 'bg-gray-400');
+                    displayCertificate(certificateData, certId);
                 } catch (error) {
-                    console.error("Error al generar certificado:", error);
-                    showStatus("Error al generar. Inténtalo de nuevo.", '#ef4444', 3000);
+                    console.error(error);
+                    showStatus("Error al procesar certificado.", '#ef4444', 3000);
+                } finally {
                     button.disabled = false;
-                    button.textContent = "Generar Certificado";
+                    button.textContent = "Ver Certificado";
                 }
             }
 
-            function displayCertificate(data) {
-                dom.certStudentName.textContent = data.studentName;
+            function displayCertificate(data, fallbackId) {
+                // CORRECCIÓN: Garantizar que el ID no sea undefined bajo ninguna circunstancia
+                const finalId = data.certificateId || fallbackId;
+                
+                dom.certStudentName.textContent = data.studentName || currentUser.name;
                 dom.certProgramName.textContent = data.programName;
                 dom.certCompletionDate.textContent = data.completionDate;
-                dom.certificateIdElem.textContent = data.certificateId;
-                dom.verifyCodeInput.value = data.certificateId;
+                dom.certificateIdElem.textContent = finalId;
+                dom.verifyCodeInput.value = finalId;
+                
                 dom.certificateSection.classList.remove('hidden');
-                window.scrollTo({ top: dom.certificateSection.offsetTop - 20, behavior: 'smooth' });
-            }
-            
-            async function saveCertificate(data) {
-                 showStatus("Guardando nuevo certificado...", '#3b82f6');
-                 try {
-                     const docRef = db.collection('artifacts').doc(appId)
-                                      .collection('public').doc('data')
-                                      .collection('certificates').doc(data.certificateId);
-                     await docRef.set(data);
-                     showStatus("¡Guardado con éxito!", '#16a34a', 3000);
-                 } catch (error) {
-                     console.error("Error guardando: ", error);
-                     showStatus("Error al guardar.", '#ef4444', 3000);
-                 }
-            }
-
-            function handleAddToLinkedIn() {
-                const certName = dom.certProgramName.textContent;
-                const certId = dom.certificateIdElem.textContent;
-                const issueDate = new Date();
-                const certUrl = `https://aulagenia.cl/portal-certificacion.html?id=${certId}`;
-                const linkedInUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(certName)}&organizationId=94349991&issueYear=${issueDate.getFullYear()}&issueMonth=${issueDate.getMonth() + 1}&certUrl=${encodeURIComponent(certUrl)}&certId=${encodeURIComponent(certId)}`;
-                window.open(linkedInUrl, '_blank');
-            }
-
-            async function downloadCertificate() {
-                const certificateElement = document.getElementById('certificate');
-                const studentName = dom.certStudentName.textContent.trim().replace(/ /g, '_');
-                try {
-                    const canvas = await html2canvas(certificateElement, { scale: 3, useCORS: true });
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width, canvas.height] });
-                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-                    pdf.save(`Certificado_Aulagenia_${studentName}.pdf`);
-                } catch (error) {
-                    console.error("Error al generar PDF:", error);
-                    showStatus("Error al descargar PDF.", '#ef4444');
-                }
+                dom.certificateSection.scrollIntoView({ behavior: 'smooth' });
             }
 
             function formatSpanishDate(date) {
@@ -349,47 +329,62 @@
             function showStatus(message, color, duration = 0) {
                 dom.statusMessage.textContent = message;
                 dom.statusMessage.style.color = color;
-                if(duration > 0) {
-                    setTimeout(() => { dom.statusMessage.textContent = ''; }, duration);
-                }
+                if(duration > 0) setTimeout(() => { if(dom.statusMessage.textContent === message) dom.statusMessage.textContent = ''; }, duration);
             }
 
-            async function handleVerifyClick() {
-                const codeToVerify = dom.verifyCodeInput.value.trim();
-                if (!codeToVerify) {
-                    displayVerificationResult("Por favor, ingresa un código.", "orange");
-                    return;
-                }
-                displayVerificationResult("Buscando...", "blue");
+            dom.verifyButton.addEventListener('click', async () => {
+                const code = dom.verifyCodeInput.value.trim();
+                if (!code) return;
+                
+                dom.verificationResult.innerHTML = "Buscando...";
+                dom.verificationResult.classList.remove('hidden');
+                dom.verificationResult.style.backgroundColor = "#eff6ff";
+                dom.verificationResult.style.borderColor = "#3b82f6";
+
                 try {
-                    const docRef = db.collection('artifacts').doc(appId)
-                                      .collection('public').doc('data')
-                                      .collection('certificates').doc(codeToVerify);
+                    const docRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('certificates').doc(code);
                     const docSnap = await docRef.get();
+                    
                     if (docSnap.exists) {
                         const data = docSnap.data();
-                        const resultHtml = `<h4 class="font-bold text-green-700">✅ Certificado Válido</h4><p class="mt-2"><strong>Alumno:</strong> ${data.studentName}</p><p><strong>Programa:</strong> ${data.programName}</p><p><strong>Fecha:</strong> ${data.completionDate}</p>`;
-                        displayVerificationResult(resultHtml, "green");
+                        dom.verificationResult.style.backgroundColor = "#f0fdf4";
+                        dom.verificationResult.style.borderColor = "#16a34a";
+                        dom.verificationResult.innerHTML = `
+                            <h4 class="font-bold text-green-700">✅ Certificado Válido</h4>
+                            <p class="mt-2 text-sm"><strong>Alumno:</strong> ${data.studentName}</p>
+                            <p class="text-sm"><strong>Programa:</strong> ${data.programName}</p>
+                            <p class="text-sm"><strong>Fecha:</strong> ${data.completionDate}</p>
+                        `;
                     } else {
-                        displayVerificationResult(`<h4 class="font-bold text-red-700">❌ Certificado No Encontrado</h4><p>El código no es válido o no ha sido guardado.</p>`, "red");
+                        dom.verificationResult.style.backgroundColor = "#fef2f2";
+                        dom.verificationResult.style.borderColor = "#ef4444";
+                        dom.verificationResult.innerHTML = `<h4 class="font-bold text-red-700">❌ Certificado No Encontrado</h4><p class="text-sm">El código no es válido o no ha sido registrado aún.</p>`;
                     }
                 } catch (error) {
-                    displayVerificationResult("Ocurrió un error durante la verificación.", "red");
+                    dom.verificationResult.innerHTML = "Error al conectar con el servidor.";
                 }
-            }
+            });
 
-            function displayVerificationResult(htmlContent, state) {
-                dom.verificationResult.innerHTML = htmlContent;
-                dom.verificationResult.classList.remove('hidden');
-                const colors = { green: '#16a34a', red: '#ef4444', orange: '#f59e0b', blue: '#3b82f6' };
-                const bgColors = { green: '#f0fdf4', red: '#fef2f2', orange: '#fffbeb', blue: '#eff6ff' };
-                dom.verificationResult.style.borderColor = colors[state] || '#d1d5db';
-                dom.verificationResult.style.backgroundColor = bgColors[state] || '#f9fafb';
-            }
+            dom.downloadButton.addEventListener('click', async () => {
+                const certificateElement = document.getElementById('certificate');
+                const studentName = dom.certStudentName.textContent.trim().replace(/ /g, '_');
+                try {
+                    const canvas = await html2canvas(certificateElement, { scale: 3, useCORS: true });
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width, canvas.height] });
+                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                    pdf.save(`Certificado_AulaGenIA_${studentName}.pdf`);
+                } catch (error) { showStatus("Error al generar PDF.", '#ef4444'); }
+            });
 
-            dom.downloadButton.addEventListener('click', downloadCertificate);
-            dom.linkedinButton.addEventListener('click', handleAddToLinkedIn);
-            dom.verifyButton.addEventListener('click', handleVerifyClick);
+            dom.linkedinButton.addEventListener('click', () => {
+                const name = dom.certProgramName.textContent;
+                const id = dom.certificateIdElem.textContent;
+                const date = new Date();
+                const url = `${window.location.origin}${window.location.pathname}?id=${id}`;
+                const linkedInUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(name)}&organizationId=94349991&issueYear=${date.getFullYear()}&issueMonth=${date.getMonth() + 1}&certUrl=${encodeURIComponent(url)}&certId=${encodeURIComponent(id)}`;
+                window.open(linkedInUrl, '_blank');
+            });
         });
     </script>
 </body>
