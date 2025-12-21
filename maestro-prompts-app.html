@@ -842,28 +842,43 @@
             win.document.close();
         }
 
+        // Función para escapar HTML y prevenir XSS
+        function escapeHtml(text) {
+          if (!text) return text;
+          return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+
         function renderPrompts(isLocked) {
-            let renderedAgia = currentPromptTemplate;
+            let renderedAgia = escapeHtml(currentPromptTemplate);
             Object.keys(currentVariables).forEach(key => {
                 const val = currentVariables[key] || "___";
+                // Escapamos el valor de la variable también
+                const safeVal = escapeHtml(val);
                 const regex = new RegExp(`{${key}\\|[^}]+}`, 'g');
-                renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${val}</span>`);
+                renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${safeVal}</span>`);
             });
 
             const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
             Object.keys(tags).forEach(t => {
                 const className = `hl-${tags[t]}`;
                 const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
+                // Aquí $1 ya ha sido escapado al inicio (currentPromptTemplate escapado), así que es seguro.
                 renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
             });
             renderedAgia = renderedAgia.replace(/\n/g, '<br>');
             document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
 
-            let renderedBad = currentBadPromptTemplate;
+            let renderedBad = escapeHtml(currentBadPromptTemplate);
             Object.keys(currentVariables).forEach(key => {
                 const val = currentVariables[key] || "...";
+                const safeVal = escapeHtml(val);
                 const regex = new RegExp(`{${key}}`, 'g');
-                renderedBad = renderedBad.replace(regex, `<span class="var-highlight-bad">${val}</span>`);
+                renderedBad = renderedBad.replace(regex, `<span class="var-highlight-bad">${safeVal}</span>`);
             });
             document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
         }
@@ -1056,10 +1071,12 @@
                             <span class="material-symbols-rounded text-[16px]">${c.locked ? 'lock' : c.icon}</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h4 class="text-xs font-bold truncate transition-colors text-slate-700 group-hover:text-indigo-900">${c.title}</h4>
+                            <!-- Se usa textContent implícitamente al interpolar en string, pero si c.title tuviera tags, se renderizarían. 
+                                 Para seguridad extra, escapamos el título. -->
+                            <h4 class="text-xs font-bold truncate transition-colors text-slate-700 group-hover:text-indigo-900">${escapeHtml(c.title)}</h4>
                             <div class="flex items-center gap-1.5 mt-0.5">
                                 <span class="w-1.5 h-1.5 rounded-full ${dotColor}" title="${tooltip}"></span>
-                                <span class="text-[10px] text-slate-400 capitalize truncate font-medium">${c.category}</span>
+                                <span class="text-[10px] text-slate-400 capitalize truncate font-medium">${escapeHtml(c.category)}</span>
                             </div>
                         </div>
                     </div>
