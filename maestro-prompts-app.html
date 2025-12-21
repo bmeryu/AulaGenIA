@@ -884,6 +884,26 @@
                     origin: { y: 0.6 }
                 });
 
+                // FORCE UI UPDATE IMMEDIATELY
+                const teaser = document.getElementById('locked-teaser');
+                if (teaser) {
+                    teaser.classList.add('hidden');
+                    teaser.classList.remove('flex');
+                }
+
+                // Force re-render logic manually if needed
+                const currentCase = casesData.find(x => x.id === currentCaseId);
+                if (currentCase && currentCase.agiaPromptTagged) {
+                    // Try to decrypt immediately to update render buffer if reload fails
+                    try {
+                        const decrypted = decryptPrompt(currentCase.agiaPromptTagged);
+                        if (!decrypted.startsWith("U2F") && !decrypted.startsWith("Error")) {
+                            // Success decryption in memory
+                            console.log("Desencriptación exitosa en memoria.");
+                        }
+                    } catch (e) { console.error(e); }
+                }
+
                 // Reload current case to apply decryption
                 if (currentCaseId) {
                     loadCase(currentCaseId);
