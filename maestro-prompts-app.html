@@ -317,7 +317,8 @@
             <div id="workspace-empty" class="hidden flex-col items-center justify-center h-full text-center p-8">
                 <div
                     class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-4 shadow-xl text-indigo-200">
-                    <span class="material-symbols-rounded text-5xl">compare_arrows</span></div>
+                    <span class="material-symbols-rounded text-5xl">compare_arrows</span>
+                </div>
                 <h3 class="text-lg font-bold text-slate-800">Selecciona un caso</h3>
                 <p class="text-xs text-slate-500">Comienza tu comparativa en el menú lateral.</p>
             </div>
@@ -506,7 +507,8 @@
                                                 class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-slate-900/95 backdrop-blur text-white text-[10px] rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 transform group-hover:-translate-y-1 border border-slate-700 text-center scale-95 group-hover:scale-100 origin-bottom">
                                                 <div
                                                     class="w-8 h-8 bg-blue-500/20 text-blue-300 rounded-full flex items-center justify-center mx-auto mb-2">
-                                                    <span class="material-symbols-rounded text-lg">person</span></div>
+                                                    <span class="material-symbols-rounded text-lg">person</span>
+                                                </div>
                                                 <strong class="block text-blue-200 text-xs mb-1">🎭 El Actor</strong>
                                                 <p class="leading-snug text-slate-300">Define "quién" ejecuta la acción.
                                                     Asigna identidad y expertise a la IA.</p>
@@ -526,7 +528,8 @@
                                                 class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-slate-900/95 backdrop-blur text-white text-[10px] rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 transform group-hover:-translate-y-1 border border-slate-700 text-center scale-95 group-hover:scale-100 origin-bottom">
                                                 <div
                                                     class="w-8 h-8 bg-emerald-500/20 text-emerald-300 rounded-full flex items-center justify-center mx-auto mb-2">
-                                                    <span class="material-symbols-rounded text-lg">map</span></div>
+                                                    <span class="material-symbols-rounded text-lg">map</span>
+                                                </div>
                                                 <strong class="block text-emerald-200 text-xs mb-1">🌍 El
                                                     Escenario</strong>
                                                 <p class="leading-snug text-slate-300">Antecedentes y datos necesarios.
@@ -547,7 +550,8 @@
                                                 class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-slate-900/95 backdrop-blur text-white text-[10px] rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 transform group-hover:-translate-y-1 border border-slate-700 text-center scale-95 group-hover:scale-100 origin-bottom">
                                                 <div
                                                     class="w-8 h-8 bg-amber-500/20 text-amber-300 rounded-full flex items-center justify-center mx-auto mb-2">
-                                                    <span class="material-symbols-rounded text-lg">flag</span></div>
+                                                    <span class="material-symbols-rounded text-lg">flag</span>
+                                                </div>
                                                 <strong class="block text-amber-200 text-xs mb-1">🎯 El
                                                     Objetivo</strong>
                                                 <p class="leading-snug text-slate-300">Qué quieres lograr exactamente.
@@ -568,7 +572,8 @@
                                                 class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-slate-900/95 backdrop-blur text-white text-[10px] rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 transform group-hover:-translate-y-1 border border-slate-700 text-center scale-95 group-hover:scale-100 origin-bottom">
                                                 <div
                                                     class="w-8 h-8 bg-red-500/20 text-red-300 rounded-full flex items-center justify-center mx-auto mb-2">
-                                                    <span class="material-symbols-rounded text-lg">block</span></div>
+                                                    <span class="material-symbols-rounded text-lg">block</span>
+                                                </div>
                                                 <strong class="block text-red-200 text-xs mb-1">🚧 Los Límites</strong>
                                                 <p class="leading-snug text-slate-300">Lo que NO quieres. Reglas de
                                                     seguridad, tono o longitud.</p>
@@ -588,7 +593,8 @@
                                                 class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-slate-900/95 backdrop-blur text-white text-[10px] rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 transform group-hover:-translate-y-1 border border-slate-700 text-center scale-95 group-hover:scale-100 origin-bottom">
                                                 <div
                                                     class="w-8 h-8 bg-purple-500/20 text-purple-300 rounded-full flex items-center justify-center mx-auto mb-2">
-                                                    <span class="material-symbols-rounded text-lg">output</span></div>
+                                                    <span class="material-symbols-rounded text-lg">output</span>
+                                                </div>
                                                 <strong class="block text-purple-200 text-xs mb-1">📦 La
                                                     Entrega</strong>
                                                 <p class="leading-snug text-slate-300">Cómo quieres ver la respuesta:
@@ -826,6 +832,7 @@
         let currentVariables = {};
         let currentDifficulty = 'beginner';
         let currentViewMode = 'basic'; // 'basic' or 'agia'
+        let currentCaseId = null;
 
         // Secured: Removed lock logic from client side toggles
 
@@ -878,10 +885,15 @@
                 });
 
                 // Reload current case to apply decryption
-                const currentActive = document.querySelector('.case-item.bg-indigo-50');
-                if (currentActive) {
-                    const id = parseInt(currentActive.id.replace('case-item-', ''));
-                    loadCase(id);
+                if (currentCaseId) {
+                    loadCase(currentCaseId);
+                } else {
+                    // Fallback attempt
+                    const currentActive = document.querySelector('.case-item.bg-indigo-50');
+                    if (currentActive) {
+                        const id = parseInt(currentActive.id.replace('case-item-', ''));
+                        loadCase(id);
+                    }
                 }
             } else {
                 errorMsg.classList.remove('hidden');
@@ -919,21 +931,13 @@
                 btn.classList.replace('hover:bg-red-50', 'bg-red-50');
                 icon.innerText = 'lock';
                 // Force reload of current case to apply lock state
-                const currentActive = document.querySelector('.case-item.bg-indigo-50');
-                if (currentActive) {
-                    const id = parseInt(currentActive.id.replace('case-item-', ''));
-                    loadCase(id);
-                }
+                if (currentCaseId) loadCase(currentCaseId);
             } else {
                 btn.classList.replace('text-red-500', 'text-slate-300');
                 btn.classList.replace('bg-red-50', 'hover:bg-red-50');
                 icon.innerText = 'lock_open';
                 // Force reload to remove lock
-                const currentActive = document.querySelector('.case-item.bg-indigo-50');
-                if (currentActive) {
-                    const id = parseInt(currentActive.id.replace('case-item-', ''));
-                    loadCase(id);
-                }
+                if (currentCaseId) loadCase(currentCaseId);
             }
         }
 
@@ -994,6 +998,7 @@
         }
 
         function loadCase(id) {
+            currentCaseId = id;
             const c = casesData.find(x => x.id === id);
             if (!c) return;
 
