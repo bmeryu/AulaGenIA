@@ -91,7 +91,7 @@ const allCases = [
         '<div class="bg-white p-3 border text-[10px] shadow-sm">"Actualmente invertimos $2.5M mensuales en tareas que la herramienta automatiza por $30k. El ahorro proyectado es del 40%..."</div>', 'chatgpt', false, false, 'advanced'),
 
     // ==========================================
-    // 💰 FINANZAS (201-210) - RESTAURADO
+    // 💰 FINANZAS (201-210)
     // ==========================================
     createCase(201, 'finance', 'Analista Buffett', 'trending_up', 'Inversión: Análisis Balance.',
         '¿Invierto en esta empresa? Mira los números.',
@@ -164,7 +164,7 @@ const allCases = [
         '<p class="text-xs">40% S&P500 (Crecimiento) | 40% Depósitos (Seguridad) | 20% Caja.</p>', 'gemini', false, false, 'intermediate'),
 
     // ==========================================
-    // 🔥 VENTAS & MARKETING (301-310) - RESTAURADO
+    // 🔥 VENTAS & MARKETING (301-310)
     // ==========================================
 
     createCase(301, 'sales', 'El "Rompehielo" B2B', 'mail', 'Ventas: Conseguir reunión.',
@@ -248,7 +248,7 @@ const allCases = [
         'chatgpt', false, false, 'intermediate'),
 
     // ==========================================
-    // 🎨 ARTE (401-412) - RESTAURADO
+    // 🎨 ARTE (401-412)
     // ==========================================
     createCase(401, 'art', 'Foto Producto IA', 'camera', 'Midjourney: Realismo.', 
         'Foto botella jugo naranja.',
@@ -335,7 +335,7 @@ const allCases = [
         '<div class="font-mono text-xs bg-slate-900 text-purple-300 p-2">/imagine prompt: Japandi living room...</div>', 'midjourney', false, false, 'beginner'),
 
     // ==========================================
-    // 🧠 TECH (601-612) - RESTAURADO
+    // 🧠 TECH (601-612)
     // ==========================================
     createCase(601, 'tech', 'Explicar Código', 'code', 'Dev: Entender Python.',
         'Explica este script.',
@@ -422,7 +422,7 @@ const allCases = [
         '<p class="text-xs text-red-600 font-bold">⚠️ PHISHING DETECTADO.</p>', 'gemini', false, false, 'beginner'),
 
     // ==========================================
-    // 🎓 EDUCACIÓN (701-712) - RESTAURADO
+    // 🎓 EDUCACIÓN (701-712)
     // ==========================================
     createCase(701, 'education', 'Tutor Socrático', 'psychology', 'Math: Guiar no resolver.', 
         'Resuelve x^2 - 5x + 6 = 0.',
@@ -509,7 +509,7 @@ const allCases = [
         '<p class="text-xs">1. ¿Qué pasa con trabajadores esenciales? Genera desigualdad.</p>', 'chatgpt', false, false, 'advanced'),
 
     // ==========================================
-    // 🧘 VIDA (801-814) - RESTAURADO
+    // 🧘 VIDA (801-814)
     // ==========================================
     createCase(801, 'life', 'Paz Familiar', 'handshake', 'Familia: Peleas.', 
         'Hijos pelean por tablet.',
@@ -610,7 +610,7 @@ const allCases = [
         '<p class="text-xs">1. Revisa el filtro de abajo (monedas). 2. Carga desbalanceada.</p>', 'gemini', false, false, 'intermediate'),
 
     // ==========================================
-    // 🛠️ INGENIERÍA PROMPTS (901-912) - RESTAURADO
+    // 🛠️ INGENIERÍA PROMPTS (901-912)
     // ==========================================
     createCase(901, 'engineering', 'Anti-Patrón', 'warning', 'Técnica: Claridad.', 
         'Ayuda con Excel.',
