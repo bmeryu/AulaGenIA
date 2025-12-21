@@ -1,6 +1,7 @@
 // ==========================================
 // 🧠 BÓVEDA DE PROMPTS AGIA 2.0 - MASTER DB
 // Total Casos: ~100 | Optimización: God Mode
+// Merge: 10 Nuevos de Productividad + Resto de Categorías Restauradas
 // ==========================================
 
 const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goodPromptTagged, exampleTip, validationTip, goodResPreview, suggestedAI, locked = false, isTool = false, difficulty = 'beginner') => ({
@@ -16,101 +17,81 @@ const createCase = (id, cat, title, icon, problem, badPrompt, badResPreview, goo
 const allCases = [
     
     // ==========================================
-    // 🚀 PRODUCTIVIDAD (101-113)
+    // 🚀 PRODUCTIVIDAD (101-110) - NUEVOS MAESTROS AGIA
     // ==========================================
-    createCase(101, 'productivity', 'El Limpiador de Data', 'cleaning_services', 'Excel: Datos sucios y desordenados.', 
-        'Arregla estos nombres que están en mayúsculas y con espacios raros.',
-        '<div class="text-xs text-slate-500 italic">"Juan Perez<br>Maria Gomez"</div><div class="mt-2 text-[10px] text-red-600 font-bold flex gap-1"><span class="material-symbols-outlined text-[12px]">error</span> Falla: No te dio la fórmula, solo el texto procesado.</div>', 
-        '{r}Experto Excel.{/r} {c}Tengo datos "sucios" copiados de la web (Celda A2) con espacios extra y mayúsculas irregulares.{/c} {m}Genera una fórmula anidada para limpiar todo.{/m} {f}Bloque de código.{/f}', 
-        'Entrada: "  JUAN   perez ".', 'Verifica espacios.', 
-        '<div class="font-mono text-xs bg-slate-900 text-green-400 p-2 rounded border-l-4 border-green-600">=NOMPROPIO(ESPACIOS(LIMPIAR(A2)))</div>', 'gemini', false, false, 'beginner'),
+    
+    createCase(101, 'productivity', 'El Domador de Inbox', 'inbox_customize', 'Email: Bandeja de entrada saturada y desordenada.', 
+        'Resúmeme mis últimos 10 correos y dime qué es importante.',
+        '<div class="text-xs text-slate-500 italic">"Recibiste un mail de Juan, otro de RRHH y uno de Starken. El de RRHH parece urgente..."</div>', 
+        '{r}Actúa como un Chief of Staff experto en productividad ejecutiva.{/r} {c}Lista de Emails: [Pegar texto de 10 correos]. Prioridad Q4: [Cerrar ventas].{/c} {m}Clasificar correos por urgencia e importancia y redactar borradores de respuesta rápida.{/m} {l}Máximo 3 líneas por respuesta. Usa Matriz de Eisenhower.{/l} {f}Tabla: [Remitente | Asunto | Categoría | Acción Sugerida].{/f}', 
+        'Identifica "La Pelota": Quién tiene el siguiente paso.', '¿Puedo vaciar mi bandeja en menos de 5 minutos con esto?', 
+        '<div class="overflow-x-auto"><table class="w-full text-[10px] border-collapse"><thead><tr class="bg-slate-100"><th>Remitente</th><th>Categoría</th><th>Acción</th></tr></thead><tbody><tr><td>Gerencia</td><td class="text-red-600 font-bold">Do First</td><td>Borrador listo para firma.</td></tr></tbody></table></div>', 'chatgpt', false, false, 'intermediate'),
 
-    createCase(102, 'productivity', 'El "No" Diplomático', 'block', 'Email: Rechazar sin perder cliente.', 
-        'Dile al cliente que no puedo hacer eso gratis.',
-        '<div class="text-xs text-slate-500 italic">"No podemos hacerlo gratis. Saludos."</div>', 
-        '{r}Gerente de Cuentas.{/r} {c}Cliente pide extras fuera de presupuesto (Scope Creep).{/c} {m}Rechaza la gratuidad pero ofrece cotización (Upsell).{/m} {l}No uses la palabra "No" al inicio.{/l} {f}Email empático.{/f}', 
-        'Técnica: Sí condicional.', 'Convierte problema en venta.', 
-        '<div class="bg-white p-2 text-xs border border-slate-200">"Me encanta la idea. Para implementarla sin afectar los plazos, he preparado esta cotización adicional..."</div>', 'chatgpt', false, false, 'intermediate'),
+    createCase(102, 'productivity', 'Arquitecto de Deep Work', 'event_seat', 'Gestión: Jornadas laborales fragmentadas y sin avance real.', 
+        'Hazme un horario para hoy que tengo muchas cosas que hacer.',
+        '<div class="text-xs text-slate-500 italic">"9:00 Correo, 10:00 Reunión, 11:00 Trabajar..."</div>', 
+        '{r}Eres un Coach de Alto Rendimiento experto en la metodología de Cal Newport.{/r} {c}Tareas pendientes: [Lista]. Reuniones fijas: [Ej: 15:00 Sync]. Pico de energía: [Mañana].{/c} {m}Diseñar un calendario de Time Blocking que proteja bloques de trabajo profundo.{/m} {l}Incluye 15m de "Buffer" entre tareas. Almuerzo de 1h obligatorio. Máximo 80% de carga horaria.{/l} {f}Cronograma visual hora a hora + 3 Victorias Críticas del día.{/f}', 
+        'Protege tus mañanas: El trabajo difícil va primero.', '¿Hay espacios para imprevistos o está todo saturado?', 
+        '<div class="bg-indigo-50 p-2 rounded border border-indigo-100 text-[10px] space-y-1"><div><strong>08:30 - 11:30:</strong> 🧠 Deep Work (Modo Avión)</div><div><strong>11:30 - 12:00:</strong> 📩 Gestión Administrativa</div></div>', 'chatgpt', false, false, 'beginner'),
 
-    createCase(103, 'productivity', 'Resumidor Reuniones', 'groups', 'Gestión: De audio a acción.',
-        'Resume esta reunión larga.',
-        '<div class="text-xs text-slate-500 italic">"Hablaron de varios temas..."</div>', 
-        '{r}Project Manager.{/r} {c}Transcripción de reunión desordenada.{/c} {m}Extrae solo Tareas y Responsables.{/m} {f}Tabla Markdown.{/f}',
-        'Busca verbos de acción.', 'Ignora charla social.',
-        '<table class="w-full text-[10px] border"><thead><tr class="bg-blue-50"><th>Tarea</th><th>Owner</th></tr></thead><tbody><tr><td>Enviar presupuesto</td><td>Ana</td></tr></tbody></table>', 'claude', false, false, 'beginner'),
+    createCase(103, 'productivity', 'El Alquimista de Actas', 'bolt', 'Reuniones: Horas de grabación que nadie vuelve a escuchar.', 
+        'Resume esta reunión y saca lo más importante.',
+        '<div class="text-xs text-slate-500 italic">"Se habló del proyecto Alpha y Pedro dijo que enviaría los diseños pronto..."</div>', 
+        '{r}Actúa como un PMO (Project Management Officer) de nivel Senior.{/r} {c}Transcripción: [Pegar texto de la reunión]. Proyecto: [Nombre].{/c} {m}Extraer decisiones tomadas, compromisos adquiridos y fechas límite.{/m} {l}Ignora el "Small Talk". No menciones saludos iniciales. Sé extremadamente directo.{/l} {f}Resumen Ejecutivo (3 líneas) + Tabla de Action Items [Tarea | Responsable | Deadline].{/f}', 
+        'Filtro de Ruido: Elimina anécdotas y discusiones circulares.', '¿Alguien que no asistió puede saber qué hacer hoy mismo?', 
+        '<div class="text-[10px]"><p class="font-bold">Resumen:</p><p>Aprobado presupuesto Fase 1. Se descarta proveedor B.</p><table class="w-full mt-2 border"><tr><td class="p-1 border bg-slate-50">Enviar contrato</td><td class="p-1 border">Luis</td><td class="p-1 border">Viernes</td></tr></table></div>', 'claude', false, false, 'intermediate'),
 
-    createCase(104, 'productivity', 'Traductor Corporativo', 'translate', 'Email: Inglés profesional.', 
-        'Traduce esto para mi jefe gringo: "Hola jefe, hay un problema".',
-        '<div class="text-xs text-slate-500 italic">"Hello boss, there is a problem." (Muy informal)</div>', 
-        '{r}Editor Ejecutivo.{/r} {c}Reporte de problema para CEO.{/c} {m}Traduce a inglés corporativo formal (C-Level).{/m} {f}Email.{/f}', 
-        'Evita "Boss".', 'Usa "Challenge" no "Problem".', 
-        '<div class="bg-white p-2 text-xs border border-slate-200">"Dear Mr. Smith, I am writing to address a recent challenge regarding..."</div>', 'chatgpt', false, false, 'intermediate'),
+    createCase(104, 'productivity', 'WBS: Descomponedor de Proyectos', 'account_tree', 'Planificación: Proyectos gigantes que paralizan por su complejidad.', 
+        'Dime los pasos para crear una app de delivery.',
+        '<div class="text-xs text-slate-500 italic">"1. Diseñar, 2. Programar, 3. Lanzar, 4. Marketing." (Demasiado genérico)</div>', 
+        '{r}Eres un Arquitecto de Sistemas y Project Manager experto en Work Breakdown Structure (WBS).{/r} {c}Proyecto: [Lanzar E-commerce de repuestos]. Recursos: [3 personas]. Plazo: [2 meses].{/c} {m}Descomponer el proyecto en hitos, tareas y sub-tareas atómicas.{/m} {l}Mínimo 3 niveles de profundidad. Identifica el "Camino Crítico".{/l} {f}Lista jerárquica indentada por fases.{/f}', 
+        'Regla 8/80: Ninguna tarea debe durar menos de 8h ni más de 80h.', '¿Cada tarea es lo suficientemente pequeña para asignarse a alguien?', 
+        '<div class="text-[10px] space-y-1 font-mono"><div>1. FASE DE DISEÑO</div><div class="ml-4">1.1 Definición de Arquitectura</div><div class="ml-8">1.1.1 Modelado de Base de Datos (Crítico)</div></div>', 'chatgpt', false, false, 'advanced'),
 
-    createCase(105, 'productivity', 'Resumen Hilos Email', 'mail_lock', 'Gestión: 50 correos reenviados.',
-        '¿En qué quedó esta conversación de correos?',
-        '<div class="text-xs text-slate-500 italic">"Parece que aprobaron el diseño."</div>', 
-        '{r}Asistente Ejecutivo.{/r} {c}Hilo de correos confuso.{/c} {m}Resume cronológicamente e identifica quién tiene la pelota ahora.{/m} {f}Bullets + Estado Actual.{/f}',
-        'Cronología inversa.', 'Identifica bloqueos.',
-        '<p class="text-xs"><strong>Estado:</strong> 🔴 Esperando aprobación de Pedro desde el Martes.</p>', 'claude', false, false, 'intermediate'),
+    createCase(105, 'productivity', 'El Filtro de Lectura Crítica', 'menu_book', 'Investigación: Exceso de información y falta de síntesis útil.', 
+        'Resúmeme este artículo de 20 páginas.',
+        '<div class="text-xs text-slate-500 italic">"El artículo trata sobre la economía en Chile y dice que..."</div>', 
+        '{r}Actúa como un Analista de Inteligencia y Pensador Crítico.{/r} {c}Texto: [Pegar artículo/paper]. Objetivo: [Encontrar fallas en la lógica del autor].{/c} {m}Sintetizar la tesis principal, identificar sesgos y extraer 3 "Insights" aplicables.{/m} {l}No uses lenguaje académico complejo. Prohibido usar "En conclusión".{/l} {f}Muro de Insights + Sección de "Puntos Ciegos" del autor.{/f}', 
+        'Skeptic Mode: Busca lo que el autor NO está diciendo.', '¿Aprendí algo nuevo o es solo un resumen de lo que ya sabía?', 
+        '<div class="bg-yellow-50 p-2 rounded border-l-4 border-yellow-400 text-[10px]"><strong>Punto Ciego:</strong> El autor asume que la tasa de interés bajará, ignorando la inflación proyectada en LATAM.</div>', 'claude', false, false, 'advanced'),
 
-    createCase(106, 'productivity', 'Organizador Archivos', 'folder_open', 'Gestión: Caos de versiones.',
-        'Nombres para mis archivos: final, final2...',
-        '<div class="text-xs text-slate-500 italic">"Ponle la fecha."</div>', 
-        '{r}Experto Documental.{/r} {c}Caos de versiones.{/c} {m}Estructura de nombrado ISO 8601.{/m} {f}Formato + Ejemplo.{/f}',
-        'Fecha invertida.', 'Usa v01, v02.',
-        '<code class="bg-slate-100 text-xs p-1">2024-12-31_Proyecto_Tipo_v03.pdf</code>', 'chatgpt', false, false, 'beginner'),
+    createCase(106, 'productivity', 'Arquitecto de Automatización No-Code', 'settings_input_component', 'Sistemas: Procesos manuales repetitivos que quitan tiempo.', 
+        '¿Cómo puedo automatizar mis facturas con Zapier?',
+        '<div class="text-xs text-slate-500 italic">"Crea un trigger de nuevo correo y guarda el adjunto en Google Drive."</div>', 
+        '{r}Eres un Solution Architect experto en Automatización No-Code (Zapier, Make, AppSheet).{/r} {c}Proceso Manual: [Recibo facturas por mail, las descargo, las subo a Drive y aviso por Slack].{/c} {m}Diseñar el flujo lógico paso a paso de una automatización robusta.{/m} {l}Incluye manejo de errores (Filtros). No escribas código, solo lógica de bloques.{/l} {f}Diagrama de flujo paso a paso: [Trigger] -> [Filtro] -> [Acción] -> [Notificación].{/f}', 
+        'Error Handling: ¿Qué pasa si el correo no trae adjunto?', '¿El flujo cubre todas las excepciones posibles?', 
+        '<div class="text-[10px] space-y-1"><div>🔹 <strong>Trigger:</strong> New Attachment in Gmail (Label: Facturas)</div><div>🔹 <strong>Filtro:</strong> Termina en .pdf?</div><div>🔹 <strong>Acción:</strong> Create File in Folder [2024_Facturas]</div></div>', 'chatgpt', false, false, 'intermediate'),
 
-    createCase(107, 'productivity', 'Time Blocking', 'schedule', 'Gestión: Horario productivo.',
-        'Hazme un horario para trabajar mejor.',
-        '<div class="text-xs text-slate-500 italic">"9:00 Trabajar. 10:00 Descanso."</div>', 
-        '{r}Coach Productividad.{/r} {c}Me distraigo fácil.{/c} {m}Horario con Bloques de Trabajo Profundo (Deep Work).{/m} {f}Tabla.{/f}',
-        'Sin reuniones AM.', 'Bloques de 90 min.',
-        '<div class="bg-indigo-50 p-2 text-xs">🦁 <strong>08:00-11:00:</strong> Deep Work (Sin celular).</div>', 'chatgpt', false, false, 'beginner'),
+    createCase(107, 'productivity', 'El Ghostwriter de Autoridad', 'history_edu', 'Networking: Necesidad de presencia en LinkedIn sin tener tiempo para escribir.', 
+        'Escribe un post para LinkedIn sobre la importancia de la disciplina.',
+        '<div class="text-xs text-slate-500 italic">"La disciplina es la clave del éxito. Todos debemos ser disciplinados para lograr nuestras metas..."</div>', 
+        '{r}Actúa como un Ghostwriter de nivel C-Suite (Ejecutivos de alto nivel).{/r} {c}Tema: [Delegar tareas]. Audiencia: [Fundadores de Startups]. Tono: [Provocador pero profesional].{/c} {m}Escribir un post de LinkedIn optimizado para el algoritmo y la retención.{/m} {l}Gancho de 1 línea impactante. Estructura de párrafos cortos. Máximo 150 palabras. Sin hashtags genéricos.{/l} {f}Post [Gancho + Cuerpo + Pregunta de Cierre].{/f}', 
+        'The Hook: La primera frase debe doler o dar esperanza.', '¿Yo le daría "Ver más" a este post si aparece en mi feed?', 
+        '<div class="bg-blue-50 p-3 rounded text-[10px] italic">"Delegar no es pasar trabajo, es comprar libertad. Pero la mayoría de los CEOs están comprando cadenas..."</div>', 'chatgpt', false, false, 'intermediate'),
 
-    createCase(108, 'productivity', 'Networking LinkedIn', 'connect_without_contact', 'Social: Contactar en frío.',
-        'Mensaje para agregar a un gerente en LinkedIn.',
-        '<div class="text-xs text-slate-500 italic">"Hola, busco trabajo." (Ignorado)</div>', 
-        '{r}Experto Networking.{/r} {c}Quiero conectar sin pedir nada aún.{/c} {m}Nota de conexión elogiando un logro reciente suyo.{/m} {f}Max 300 caracteres.{/f}',
-        'Personaliza.', 'No vendas.',
-        '<p class="text-xs italic">"Hola Ana, leí tu post sobre IA y coincido totalmente. Me encantaría conectar..."</p>', 'claude', false, false, 'intermediate'),
+    createCase(108, 'productivity', 'Consultor de Decisiones Estratégicas', 'psychology', 'Decisiones: Bloqueo mental ante opciones difíciles.', 
+        '¿Debería renunciar a mi trabajo para emprender?',
+        '<div class="text-xs text-slate-500 italic">"Es una decisión personal. Analiza los pros y contras y sigue tu corazón."</div>', 
+        '{r}Actúa como un Consultor Estratégico experto en Modelos Mentales.{/r} {c}Dilema: [Aceptar oferta en empresa grande vs Quedarme en mi Startup actual]. Contexto: [Tengo familia, busco estabilidad pero amo el reto].{/c} {m}Analizar el dilema usando 2 modelos mentales: "Minimización del Arrepentimiento" y "Principios Básicos (First Principles)".{/m} {l}No des consejos subjetivos. Provee un marco de decisión lógico.{/l} {f}Análisis comparativo + Pregunta definitiva para desempatar.{/f}', 
+        'Inversión: Piensa qué es lo peor que podría pasar si fallas.', '¿La respuesta me ayuda a decidir con lógica o solo me confunde más?', 
+        '<div class="text-[10px] border p-2 rounded"><strong>Modelo 1:</strong> A los 80 años, ¿te arrepentirás más de no haber intentado la startup o de no haber tenido el sueldo de la multinacional?</div>', 'chatgpt', false, false, 'advanced'),
 
-    createCase(109, 'productivity', 'Feedback Constructivo', 'thumbs_up_down', 'RRHH: Corregir empleado.',
-        'Dile a Juan que trabaja lento.',
-        '<div class="text-xs text-slate-500 italic">"Juan, apúrate más."</div>', 
-        '{r}Líder Empático.{/r} {c}Empleado lento pero talentoso.{/c} {m}Feedback modelo SBI (Situación-Comportamiento-Impacto).{/m} {f}Guion.{/f}',
-        'Enfoca en impacto.', 'Cierra con acuerdo.',
-        '<div class="bg-white p-2 text-xs border border-yellow-200">"Juan, cuando entregas tarde (C), el equipo de diseño se bloquea (I)..."</div>', 'chatgpt', false, false, 'intermediate'),
+    createCase(109, 'productivity', 'El Depurador de Excel (Data Ninja)', 'data_table', 'Data: Tablas desastrosas que requieren horas de limpieza manual.', 
+        'Dame la fórmula para separar nombres y apellidos de una celda.',
+        '<div class="text-xs text-slate-500 italic">"=IZQUIERDA(A2, HALLAR(" ", A2)-1)" (Falla si hay segundos nombres)</div>', 
+        '{r}Actúa como un Senior Data Analyst y Mago de Excel/Sheets.{/r} {c}Data: [JUAN PABLO PÉREZ GÓMEZ]. Celda: [A2]. Problema: [Nombres mezclados con mayúsculas irregulares].{/c} {m}Generar una fórmula robusta (o script) que limpie espacios, corrija formato de nombre propio y separe los campos.{/m} {l}Usa funciones modernas como INDICE, COINCIDIR o REGEX si es necesario. Incluye manejo de errores.{/l} {f}Fórmula explicada + Bloque de código listo para copiar.{/f}', 
+        'Trim and Proper: Limpia espacios invisibles antes de procesar.', '¿La fórmula funciona si el nombre tiene 3 o 4 palabras?', 
+        '<div class="bg-slate-900 text-green-400 p-2 rounded font-mono text-[9px] border-l-4 border-green-600">=NOMPROPIO(ESPACIOS(LIMPIAR(A2)))</div>', 'gemini', false, false, 'intermediate'),
 
-    createCase(110, 'productivity', 'Event Planner', 'event', 'Gestión: Fiesta empresa.',
-        'Lista de cosas para la fiesta de fin de año.',
-        '<div class="text-xs text-slate-500 italic">"Comida, bebida, música."</div>', 
-        '{r}Event Planner.{/r} {c}Fiesta 50 pax.{/c} {m}Checklist cronológico con detalles logísticos.{/m} {f}Lista por semanas.{/f}',
-        'Dietas especiales.', 'Plan B lluvia.',
-        '<p class="text-xs">📅 <strong>1 Mes antes:</strong> Reservar salón y DJ.</p>', 'gemini', false, false, 'beginner'),
-
-    createCase(111, 'productivity', 'Carta Renuncia', 'logout', 'RRHH: Salir bien.',
-        'Carta de renuncia. Me voy a la competencia.',
-        '<div class="text-xs text-slate-500 italic">"Chao jefe, renuncio."</div>', 
-        '{r}Consultor Carrera.{/r} {c}Renuncia estratégica.{/c} {m}Carta formal agradecida, ofreciendo transición.{/m} {l}No menciones a dónde vas.{/l} {f}Carta.{/f}',
-        'Ofrece capacitar.', 'Puertas abiertas.',
-        '<div class="bg-white p-2 text-xs border border-slate-200">"...agradezco las oportunidades y me comprometo a dejar todo al día..."</div>', 'chatgpt', false, false, 'intermediate'),
-
-    createCase(112, 'productivity', 'Brainstorming SCAMPER', 'lightbulb', 'Creatividad: Ideas negocio.',
-        'Ideas para vender más café.',
-        '<div class="text-xs text-slate-500 italic">"Haz promociones 2x1."</div>', 
-        '{r}Innovador.{/r} {c}Cafetería estancada.{/c} {m}7 ideas disruptivas usando método SCAMPER.{/m} {f}Lista.{/f}',
-        'Sustituir, Combinar...', 'Ideas locas.',
-        '<p class="text-xs"><strong>Combinar:</strong> Café + Librería (Blind Date with a Book).</p>', 'chatgpt', false, false, 'advanced'),
-
-    createCase(113, 'productivity', 'Respuesta Queja', 'support_agent', 'Soporte: Cliente furioso.',
-        'Responde a cliente enojado por retraso.',
-        '<div class="text-xs text-slate-500 italic">"Calma, ya llega."</div>', 
-        '{r}Customer Success.{/r} {c}Retraso de envío.{/c} {m}Disculpa radical + Explicación honesta + Compensación.{/m} {f}Email.{/f}',
-        'No te excuses.', 'Ofrece envío gratis.',
-        '<div class="bg-white p-2 text-xs border border-red-100">"...te pido disculpas sinceras. He reembolsado el envío como compensación."</div>', 'chatgpt', false, false, 'intermediate'),
+    createCase(110, 'productivity', 'El Negociador de Presupuesto Interno', 'monetization_on', 'Gestión: Dificultad para conseguir aprobación de recursos o software.', 
+        'Ayúdame a pedirle a mi jefe que compre una suscripción de ChatGPT Team.',
+        '<div class="text-xs text-slate-500 italic">"Jefe, ¿podemos comprar ChatGPT? Nos ayudará a trabajar más rápido y ser mejores."</div>', 
+        '{r}Eres un Estratega Corporativo experto en Gestión de Stakeholders.{/r} {c}Recurso pedido: [Suscripción AI]. Jefe: [Perfil conservador enfocado en costos]. Problema actual: [El equipo pierde 10h/semana redactando reportes].{/c} {m}Redactar un Business Case persuasivo enfocado en ROI y mitigación de riesgos.{/m} {l}Habla en términos de "Horas Hombre Ahorradas" y "Costo de Oportunidad". Máximo 300 palabras.{/l} {f}Estructura de Pitch: [Problema] -> [Solución] -> [Impacto Financiero] -> [Seguridad].{/f}', 
+        'Vende tiempo, no herramientas: A tu jefe no le importa la IA, le importa el dinero.', '¿El tono es lo suficientemente profesional para un Gerente de Finanzas?', 
+        '<div class="bg-white p-3 border text-[10px] shadow-sm">"Actualmente invertimos $2.5M mensuales en tareas que la herramienta automatiza por $30k. El ahorro proyectado es del 40%..."</div>', 'chatgpt', false, false, 'advanced'),
 
     // ==========================================
-    // 💰 FINANZAS (201-210)
+    // 💰 FINANZAS (201-210) - RESTAURADO
     // ==========================================
     createCase(201, 'finance', 'Analista Buffett', 'trending_up', 'Inversión: Análisis Balance.',
         '¿Invierto en esta empresa? Mira los números.',
@@ -183,164 +164,91 @@ const allCases = [
         '<p class="text-xs">40% S&P500 (Crecimiento) | 40% Depósitos (Seguridad) | 20% Caja.</p>', 'gemini', false, false, 'intermediate'),
 
     // ==========================================
-    // 🔥 VENTAS & MARKETING (301-310) - (TEXTO COMPLETO LITERAL)
+    // 🔥 VENTAS & MARKETING (301-310) - RESTAURADO
     // ==========================================
 
     createCase(301, 'sales', 'El "Rompehielo" B2B', 'mail', 'Ventas: Conseguir reunión.',
         'Escribe un correo para vender mi software de recursos humanos a gerentes.',
         '<div class="text-xs text-slate-500 italic">"Estimado Gerente, le escribo para presentarle..."</div>',
-        '{r}Actúa como un experto en Cold Emailing y Copywriting B2B.{/r} {c}Producto: [Software de RRHH Automatizado] Público: [Gerentes de RRHH en empresas de 50-200 empleados] Dolor: [Pérdida de tiempo en excel y errores de cálculo manual] Referencia: (Opcional) [Adjuntar archivo: Caso de éxito breve o Testimonio]{/c} {m}Redactar un correo de "puerta fría" usando el marco PAS (Problema-Agitación-Solución) para vender la reunión, no el producto.{/m} {l}Máximo 100 palabras. El asunto debe ser en minúsculas (parecer casual) y de menos de 4 palabras. No uses: "Espero que estés bien", "Líder en el mercado", "Me gustaría".{/l} {f}Texto plano estructurado: [Asunto] + [Cuerpo] + [CTA].{/f}',
+        '{r}Actúa como un experto en Cold Emailing y Copywriting B2B.{/r} {c}Producto: [Software de RRHH Automatizado] Público: [Gerentes de RRHH en empresas de 50-200 empleados] Dolor: [Pérdida de tiempo en excel y errores de cálculo manual]{/c} {m}Redactar un correo de "puerta fría" usando el marco PAS (Problema-Agitación-Solución) para vender la reunión, no el producto.{/m} {l}Máximo 100 palabras. El asunto debe ser en minúsculas (parecer casual) y de menos de 4 palabras. No uses: "Espero que estés bien", "Líder en el mercado", "Me gustaría".{/l} {f}Texto plano estructurado: [Asunto] + [Cuerpo] + [CTA].{/f}',
         'Chain of Thought + Framework PAS.', '¿El asunto parece escrito por un colega o por una máquina de spam?',
-        // FULL HTML INJECTION:
-        '<div class="bg-white p-3 text-xs font-mono border border-slate-200 shadow-sm rounded-sm text-slate-800">' +
-        '<div class="border-b pb-2 mb-2"><span class="text-slate-500">Asunto:</span> dudas con la nómina</div>' +
-        '<p class="mb-2">Hola [Nombre],</p>' +
-        '<p class="mb-2">Gestionar la nómina en Excel funciona bien cuando sois 10 personas, pero con 50 empleados se vuelve una bomba de tiempo de errores manuales.</p>' +
-        '<p class="mb-2">De hecho, acabamos de ayudar a una empresa similar a reducir 12 horas semanales de carga administrativa automatizando este proceso (te adjunto el caso si quieres verlo).</p>' +
-        '<p class="mb-2">¿Te parece mal si te robo 7 minutos el martes para mostrarte cómo lo hicieron?</p>' +
-        '<p>Saludos.</p>' +
-        '</div>', 
+        '<div class="bg-white p-3 text-xs font-mono border border-slate-200 shadow-sm rounded-sm text-slate-800"><div class="border-b pb-2 mb-2"><span class="text-slate-500">Asunto:</span> dudas con la nómina</div><p class="mb-2">Hola [Nombre],</p><p class="mb-2">Gestionar la nómina en Excel funciona bien cuando sois 10 personas, pero con 50 empleados se vuelve una bomba de tiempo de errores manuales.</p><p class="mb-2">De hecho, acabamos de ayudar a una empresa similar a reducir 12 horas semanales de carga administrativa automatizando este proceso.</p><p>¿Te parece mal si te robo 7 minutos el martes para mostrarte cómo lo hicieron?</p></div>', 
         'chatgpt', false, false, 'intermediate'),
 
     createCase(302, 'sales', 'Anuncios Ads Stop-Scroll', 'campaign', 'Marketing: Stop Scroll.',
         'Haz un texto para un anuncio de Facebook sobre zapatillas de correr.',
         '<div class="text-xs text-slate-500 italic">"¡Llegaron las nuevas zapatillas RunPro! 👟..."</div>',
-        '{r}Eres un Media Buyer Senior y Copywriter de Respuesta Directa.{/r} {c}Producto: [Zapatillas con amortiguación de gel] Público: [Corredores amateurs +35 años con dolores articulares] Dolor: [Miedo a lesionarse las rodillas] Imagen: (Opcional) [Analiza la imagen adjunta de la zapatilla para describir sus colores]{/c} {m}Crear 3 variaciones de texto (Primary Text) usando el marco AIDA (Atención, Interés, Deseo, Acción).{/m} {l}La primera frase (El Gancho) debe tener menos de 40 caracteres y cortar la respiración. Usa emojis para listar beneficios, no párrafos largos.{/l} {f}Lista numerada: Opción 1 (Directa), Opción 2 (Storytelling), Opción 3 (Controversial).{/f}',
+        '{r}Eres un Media Buyer Senior y Copywriter de Respuesta Directa.{/r} {c}Producto: [Zapatillas con amortiguación de gel] Público: [Corredores amateurs +35 años con dolores articulares] Dolor: [Miedo a lesionarse las rodillas]{/c} {m}Crear 3 variaciones de texto (Primary Text) usando el marco AIDA (Atención, Interés, Deseo, Acción).{/m} {l}La primera frase (El Gancho) debe tener menos de 40 caracteres y cortar la respiración. Usa emojis para listar beneficios, no párrafos largos.{/l} {f}Lista numerada: Opción 1 (Directa), Opción 2 (Storytelling), Opción 3 (Controversial).{/f}',
         'Iterative Prompting.', 'Lee solo la primera línea. ¿Te dan ganas de leer la segunda?',
-        // FULL HTML INJECTION:
-        '<div class="text-xs space-y-2">' +
-        '<p class="font-bold text-indigo-700">Opción 1 (Directa):</p>' +
-        '<p>🛑 ¿Tus rodillas crujen al correr?</p>' +
-        '<p>No es tu edad, es el impacto del asfalto.</p>' +
-        '<p>Conoce las nuevas RunPro Gel:</p>' +
-        '<ul class="list-none space-y-1 pl-1">' +
-        '<li>✅ Absorben el 40% del impacto.</li>' +
-        '<li>✅ Retorno de energía en cada paso.</li>' +
-        '<li>✅ Diseño gris y neón (como ves en la foto).</li>' +
-        '</ul>' +
-        '<p class="mt-2 font-medium">👉 Pide tu prueba de 30 días aquí.</p>' +
-        '</div>', 
+        '<div class="text-xs space-y-2"><p class="font-bold text-indigo-700">Opción 1 (Directa):</p><p>🛑 ¿Tus rodillas crujen al correr?</p><p>No es tu edad, es el impacto del asfalto.</p><p>Conoce las nuevas RunPro Gel:</p><ul class="list-none space-y-1 pl-1"><li>✅ Absorben el 40% del impacto.</li><li>✅ Retorno de energía en cada paso.</li></ul><p class="mt-2 font-medium">👉 Pide tu prueba de 30 días aquí.</p></div>', 
         'chatgpt', false, false, 'intermediate'),
 
     createCase(303, 'sales', 'Ficha E-commerce', 'shopping_bag', 'Ecommerce: Conversión.',
         'Describe esta cafetera para mi tienda online.',
         '<div class="text-xs text-slate-500 italic">"Cafetera Italiana Modelo X. Capacidad 1 Litro..."</div>',
-        '{r}Actúa como un experto en Neuromarketing y Psicología del Consumidor.{/r} {c}Producto: [Cafetera Italiana de Lujo] Público: [Amantes del café que valoran el diseño] Características: [Acero inoxidable, mantiene calor, diseño minimalista] Archivo: [Adjuntar especificaciones técnicas en PDF]{/c} {m}Convertir las características técnicas (del PDF) en Beneficios Emocionales.{/m} {l}Evita la voz pasiva. Usa lenguaje sensorial (olor, sabor, sonido, tacto). No hagas listas aburridas.{/l} {f}Título Persuasivo + Descripción Emocional + Bullet Points de "Por qué la amarás".{/f}',
+        '{r}Actúa como un experto en Neuromarketing y Psicología del Consumidor.{/r} {c}Producto: [Cafetera Italiana de Lujo] Público: [Amantes del café que valoran el diseño]{/c} {m}Convertir las características técnicas en Beneficios Emocionales.{/m} {l}Evita la voz pasiva. Usa lenguaje sensorial (olor, sabor, sonido, tacto). No hagas listas aburridas.{/l} {f}Título Persuasivo + Descripción Emocional + Bullet Points de "Por qué la amarás".{/f}',
         'Translation (Data to Emotion).', '¿Te imaginas usando el producto o solo leyendo un manual?',
-        // FULL HTML INJECTION:
-        '<div class="text-xs">' +
-        '<h4 class="font-bold text-lg mb-2 text-slate-800">Tu barista personal, ahora en tu cocina ☕</h4>' +
-        '<p class="mb-3 text-slate-600">Olvídate del café quemado de las mañanas. El cuerpo de Acero Térmico de la Modelo X no solo se ve espectacular en tu encimera; mantiene tu café a la temperatura exacta durante 2 horas. Imagina servirte esa segunda taza y que siga humeante y perfecta como la primera.</p>' +
-        '<p class="font-bold text-slate-700 mb-1">Por qué te encantará:</p>' +
-        '<ul class="list-disc pl-4 space-y-1 text-slate-600">' +
-        '<li><strong>Silencio absoluto:</strong> Prepara tu café sin despertar a toda la casa.</li>' +
-        '<li><strong>Sabor puro:</strong> El acero de grado quirúrgico no altera el gusto del grano.</li>' +
-        '</ul>' +
-        '</div>', 
+        '<div class="text-xs"><h4 class="font-bold text-lg mb-2 text-slate-800">Tu barista personal, ahora en tu cocina ☕</h4><p class="mb-3 text-slate-600">Olvídate del café quemado de las mañanas. El cuerpo de Acero Térmico de la Modelo X mantiene tu café a la temperatura exacta durante 2 horas.</p><ul class="list-disc pl-4 space-y-1 text-slate-600"><li><strong>Silencio absoluto:</strong> Prepara tu café sin despertar a toda la casa.</li><li><strong>Sabor puro:</strong> Acero de grado quirúrgico.</li></ul></div>', 
         'chatgpt', false, false, 'intermediate'),
 
     createCase(304, 'sales', 'Guion Viral TikTok', 'movie', 'RRSS: Retención video.',
         'Dame ideas para un video de TikTok sobre divorcios.',
         '<div class="text-xs text-slate-500 italic">"Hola a todos, soy abogado. Hoy hablaremos del divorcio..."</div>',
-        '{r}Eres un Guionista Viral de TikTok y Reels.{/r} {c}Tema: [Divorcio y Bienes] Público: [Personas pensando en separarse pero con miedo económico] Dolor: [Miedo a perder la casa o el auto]{/c} {m}Crear un guion de 30 segundos optimizado para retención máxima.{/m} {l}Gancho (0-3s): Debe ser visual o una afirmación polémica. Prohibido decir "Hola". Cuerpo: Entrega valor rápido. CTA: Llamada a la acción específica.{/l} {f}Tabla de 2 columnas: [Visual/Acción en Pantalla] | [Audio/Locución].{/f}',
+        '{r}Eres un Guionista Viral de TikTok y Reels.{/r} {c}Tema: [Divorcio y Bienes] Público: [Personas pensando en separarse pero con miedo económico]{/c} {m}Crear un guion de 30 segundos optimizado para retención máxima.{/m} {l}Gancho (0-3s): Debe ser visual o una afirmación polémica. Prohibido decir "Hola".{/l} {f}Tabla de 2 columnas: [Visual/Acción en Pantalla] | [Audio/Locución].{/f}',
         'Output Formatting.', '¿Viste los primeros 3 segundos o pasaste de largo?',
-        // FULL HTML INJECTION:
-        '<div class="overflow-x-auto"><table class="w-full text-[10px] border-collapse border border-slate-200">' +
-        '<thead class="bg-slate-50 text-slate-700"><tr><th class="border border-slate-200 p-2 text-left w-1/2">Visual</th><th class="border border-slate-200 p-2 text-left w-1/2">Audio</th></tr></thead>' +
-        '<tbody class="text-slate-600">' +
-        '<tr><td class="border border-slate-200 p-2 font-bold text-red-600">(Texto en pantalla rojo gigante: "¡NO TE VAYAS DE CASA!")</td><td class="border border-slate-200 p-2">"Si te vas de la casa antes de divorciarte, estás cometiendo un suicidio legal."</td></tr>' +
-        '<tr><td class="border border-slate-200 p-2">(El abogado señala un papel oficial)</td><td class="border border-slate-200 p-2">"Se llama `Abandono de Hogar` y tu ex puede usarlo para quitarte derechos sobre la propiedad."</td></tr>' +
-        '<tr><td class="border border-slate-200 p-2">(Zoom a la cara del abogado)</td><td class="border border-slate-200 p-2">"Antes de hacer las maletas, ve a Carabineros y deja una constancia. ¿Quieres el formato exacto? Comenta `CASA` y te lo envío."</td></tr>' +
-        '</tbody></table></div>', 
+        '<div class="overflow-x-auto"><table class="w-full text-[10px] border-collapse border border-slate-200"><thead class="bg-slate-50 text-slate-700"><tr><th class="border border-slate-200 p-2 text-left w-1/2">Visual</th><th class="border border-slate-200 p-2 text-left w-1/2">Audio</th></tr></thead><tbody class="text-slate-600"><tr><td class="border border-slate-200 p-2 font-bold text-red-600">(Texto en pantalla rojo gigante: "¡NO TE VAYAS DE CASA!")</td><td class="border border-slate-200 p-2">"Si te vas de la casa antes de divorciarte, estás cometiendo un suicidio legal."</td></tr></tbody></table></div>', 
         'chatgpt', false, false, 'advanced'),
 
     createCase(305, 'sales', 'Cierre WhatsApp', 'chat', 'Ventas: Chat Closing.',
         'Responde a un cliente que preguntó precio.',
         '<div class="text-xs text-slate-500 italic">"Hola, buenas tardes. El precio es $150.000..."</div>',
-        '{r}Eres un Closer de Ventas (Cerrador) experto en venta conversacional (Chat Marketing).{/r} {c}Producto: [Curso de Inglés Conversacional] Cliente: [Preguntó "Precio" en un anuncio de Instagram] Historial: [Adjuntar conversación previa si existe - opcional]{/c} {m}Responder la duda del precio pero mantener la conversación viva.{/m} {l}Tono: Casual, cercano, usa emojis moderados. Longitud: Máximo 2 párrafos cortos (visualización móvil). Regla de Oro: Termina SIEMPRE con una pregunta.{/l} {f}Texto listo para copiar y pegar.{/f}',
+        '{r}Eres un Closer de Ventas experto en venta conversacional.{/r} {c}Producto: [Curso de Inglés] Cliente: [Preguntó "Precio"]{/c} {m}Responder la duda del precio pero mantener la conversación viva.{/m} {l}Tono: Casual, cercano. Termina SIEMPRE con una pregunta.{/l} {f}Texto listo para copiar y pegar.{/f}',
         'Tone Setting & Open Loops.', '¿Sientes que hablas con un humano o con un bot?',
-        // FULL HTML INJECTION:
-        '<div class="bg-[#dcf8c6] p-3 rounded-lg text-xs text-slate-800 shadow-sm inline-block max-w-[90%]">' +
-        '<p class="mb-2">"Hola! 👋 Claro que sí.</p>' +
-        '<p class="mb-2">El programa completo, con acceso ilimitado al club de conversación 24/7 (que es lo que más ayuda a soltar la lengua), queda en $150.000.</p>' +
-        '<p>Cuéntame, ¿necesitas el inglés por trabajo o porque tienes un viaje planeado? ✈️ (Así te confirmo si este nivel es el que te sirve)."</p>' +
-        '</div>', 
+        '<div class="bg-[#dcf8c6] p-3 rounded-lg text-xs text-slate-800 shadow-sm inline-block max-w-[90%]"><p class="mb-2">"Hola! 👋 Claro que sí.</p><p>El programa completo queda en $150.000. Cuéntame, ¿necesitas el inglés por trabajo o porque tienes un viaje planeado? ✈️"</p></div>', 
         'chatgpt', false, false, 'beginner'),
 
     createCase(306, 'sales', 'Hero Landing Page', 'web', 'Web: Propuesta Valor.',
         'Pon un título para mi web de marketing.',
         '<div class="text-xs text-slate-500 italic">"Agencia Digital Creative Minds. Expertos en Marketing..."</div>',
-        '{r}Eres un Copywriter de Conversión (CRO).{/r} {c}Servicio: [Agencia de Google Ads] Público: [Dueños de E-commerce] Dolor: [Gastan dinero en ads y no venden nada]{/c} {m}Escribir un H1 (Título) y H2 (Subtítulo) que prometan una transformación clara.{/m} {l}H1: Máximo 12 palabras. Debe centrarse en el BENEFICIO, no en la agencia. H2: Debe atacar la objeción principal (miedo a perder dinero).{/l} {f}3 Opciones: Opción Lógica, Opción Emocional, Opción Urgencia.{/f}',
+        '{r}Eres un Copywriter de Conversión (CRO).{/r} {c}Servicio: [Agencia de Google Ads] Público: [Dueños de E-commerce]{/c} {m}Escribir un H1 y H2 que prometan una transformación clara.{/m} {l}H1: Máximo 12 palabras. H2: Debe atacar la objeción principal.{/l} {f}3 Opciones: Opción Lógica, Opción Emocional, Opción Urgencia.{/f}',
         'Constraint-Based.', '¿Entiendes qué ganas en menos de 5 segundos?',
-        // FULL HTML INJECTION:
-        '<div class="text-xs">' +
-        '<div class="mb-1 text-slate-500 uppercase tracking-wide font-bold text-[10px]">Opción Lógica:</div>' +
-        '<h1 class="text-xl font-bold text-slate-900 mb-2 leading-tight">Duplicamos el ROAS de tu E-commerce en 90 días o te devolvemos el fee.</h1>' +
-        '<h2 class="text-sm text-slate-600 leading-snug">Deja de quemar presupuesto. Usamos un sistema matemático para escalar tus ventas, no tu gasto.</h2>' +
-        '</div>', 
+        '<div class="text-xs"><div class="mb-1 text-slate-500 uppercase tracking-wide font-bold text-[10px]">Opción Lógica:</div><h1 class="text-xl font-bold text-slate-900 mb-2 leading-tight">Duplicamos el ROAS de tu E-commerce en 90 días o te devolvemos el fee.</h1></div>', 
         'chatgpt', false, false, 'intermediate'),
 
     createCase(307, 'sales', 'Artículo SEO', 'article', 'SEO: Blog Post.',
         'Escribe un artículo sobre implantes dentales.',
-        '<div class="text-xs text-slate-500 italic">"Los implantes dentales son una solución para dientes perdidos..."</div>',
-        '{r}Eres un experto en SEO y Marketing de Contenidos.{/r} {c}Tema: [Implantes Dentales] Palabra Clave Principal: [Duelen los implantes dentales] Público: [Pacientes con miedo al dentista] Archivo: [Adjuntar lista de Keywords secundarias CSV - opcional]{/c} {m}Crear primero la Estructura (Outline) optimizada para SEO y luego desarrollar la introducción.{/m} {l}Incluye etiquetas H2 y H3 claras. Incluye una sección de "Preguntas Frecuentes" (FAQ) para Snippets de Google. Tono: Empático y tranquilizador.{/l} {f}Título SEO + Estructura de Encabezados + Intro de 200 palabras.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Los implantes dentales son una solución..."</div>',
+        '{r}Eres un experto en SEO y Marketing de Contenidos.{/r} {c}Tema: [Implantes Dentales] Palabra Clave: [Duelen los implantes dentales]{/c} {m}Crear la Estructura optimizada para SEO e introducción.{/m} {l}Incluye etiquetas H2 y H3. Tono: Empático.{/l} {f}Título SEO + Estructura + Intro de 200 palabras.{/f}',
         'Structural Prompting.', '¿El artículo responde las dudas reales que buscas en Google?',
-        // FULL HTML INJECTION:
-        '<div class="bg-white border p-3 text-xs">' +
-        '<h1 class="text-lg font-bold text-blue-800 mb-2">H1: Implantes Dentales: ¿Realmente duelen? La verdad sobre el procedimiento.</h1>' +
-        '<ul class="space-y-1 text-slate-700 mb-3">' +
-        '<li><span class="font-bold text-slate-900">H2:</span> ¿Qué se siente durante la cirugía? (Mito vs Realidad)</li>' +
-        '<li><span class="font-bold text-slate-900">H2:</span> El post-operatorio: ¿Cuántos días de reposo necesito?</li>' +
-        '<li><span class="font-bold text-slate-900">H2:</span> Comparativa de dolor: Implante vs Extracción de muela.</li>' +
-        '<li><span class="font-bold text-slate-900 ml-4">H3:</span> FAQ: Preguntas rápidas.</li>' +
-        '</ul>' +
-        '<p class="italic text-slate-600 border-l-4 border-blue-200 pl-2">Intro: "Si estás leyendo esto, probablemente necesitas un implante pero el miedo al torno te paraliza..."</p>' +
-        '</div>', 
+        '<div class="bg-white border p-3 text-xs"><h1 class="text-lg font-bold text-blue-800 mb-2">Implantes Dentales: ¿Realmente duelen?</h1><ul class="space-y-1 text-slate-700 mb-3"><li><strong>H2:</strong> ¿Qué se siente durante la cirugía?</li></ul></div>', 
         'chatgpt', false, false, 'advanced'),
 
     createCase(308, 'sales', 'Objeción "Muy Caro"', 'monetization_on', 'Ventas: Negociación.',
         'Dame respuestas para cuando dicen que es muy caro.',
-        '<div class="text-xs text-slate-500 italic">"No es caro, es que ofrecemos mucha calidad. Lo barato sale caro."</div>',
-        '{r}Actúa como un Negociador Experto del método Harvard.{/r} {c}Producto: [Consultoría de Impuestos] Precio: [$1000 USD] Objeción: ["Es muy caro" / "No tengo presupuesto"] Archivo: [Adjuntar PDF con propuesta de valor - opcional]{/c} {m}Generar 3 guiones de rebatimiento usando la técnica de Reencuadre (Reframing).{/m} {l}Nunca contradigas al cliente ("No es caro"). Valida su emoción primero. Compara el precio con el costo de NO solucionar el problema.{/l} {f}Guion 1 (Costo de Inacción), Guion 2 (División ridícula), Guion 3 (ROI).{/f}',
+        '<div class="text-xs text-slate-500 italic">"No es caro, es que ofrecemos mucha calidad..."</div>',
+        '{r}Actúa como un Negociador Experto del método Harvard.{/r} {c}Producto: [Consultoría] Precio: [$1000] Objeción: ["Es muy caro"]{/c} {m}Generar 3 guiones de rebatimiento usando Reencuadre.{/m} {l}Nunca contradigas al cliente. Compara con el costo de NO solucionar el problema.{/l} {f}Guion 1 (Inacción), Guion 2 (División), Guion 3 (ROI).{/f}',
         'Reframing.', '¿Te hace dudar de tu propia objeción?',
-        // FULL HTML INJECTION:
-        '<div class="bg-indigo-50 border-l-4 border-indigo-500 p-3 text-xs text-indigo-900 italic">' +
-        '<p class="mb-2">"Te entiendo perfectamente, $1,000 es una suma importante.</p>' +
-        '<p class="mb-2">Pero déjame preguntarte algo: El año pasado, por no tener esta estrategia fiscal, pagaste $5,000 de más en multas e intereses.</p>' +
-        '<p>¿Realmente es caro pagar $1,000 hoy para blindarte y ahorrar esos $5,000 este año? Al final, lo costoso es seguir igual, ¿no crees?"</p>' +
-        '</div>', 
+        '<div class="bg-indigo-50 border-l-4 border-indigo-500 p-3 text-xs text-indigo-900 italic"><p>"Te entiendo. Pero déjame preguntarte: El año pasado pagaste $5,000 de más por no tener esto. ¿Es realmente caro pagar $1,000 hoy para ahorrar esos $5,000?"</p></div>', 
         'chatgpt', false, false, 'intermediate'),
 
     createCase(309, 'sales', 'Storytelling Personal', 'history_edu', 'Marca Personal: Conexión.',
         'Escribe la sección de "quién soy" para mi web.',
-        '<div class="text-xs text-slate-500 italic">"Soy María, nutricionista titulada con distinción máxima..."</div>',
-        '{r}Eres un experto en Storytelling de Marca (Brand Story).{/r} {c}Profesión: [Nutricionista] Historia Personal: [Fui obesa, sufrí bullying, aprendí a comer sin dietas] Propósito: [Que nadie sufra lo que yo sufrí]{/c} {m}Contar la "Historia del Héroe" donde el cliente se identifique, usando narrativa de 3 actos.{/m} {l}Evita listar títulos universitarios al principio. Muestra vulnerabilidad. El héroe final debe ser el paciente, tú eres el guía (como Yoda).{/l} {f}Narrativa en primera persona.{/f}',
+        '<div class="text-xs text-slate-500 italic">"Soy María, nutricionista titulada..."</div>',
+        '{r}Eres un experto en Storytelling de Marca.{/r} {c}Profesión: [Nutricionista] Historia: [Fui obesa, sufrí bullying]{/c} {m}Contar la "Historia del Héroe" usando narrativa de 3 actos.{/m} {l}Evita listar títulos al inicio. Muestra vulnerabilidad.{/l} {f}Narrativa en primera persona.{/f}',
         'Narrative Arc.', '¿Confías más en ella porque mostró su lado humano?',
-        // FULL HTML INJECTION:
-        '<div class="text-xs text-slate-700 italic leading-relaxed">' +
-        '<p class="mb-2">"No siempre fui la nutricionista saludable que ves en las fotos.</p>' +
-        '<p class="mb-2">Hace 10 años, pesaba 20 kilos más y lloraba en los probadores de ropa. Entendí a la mala que las dietas restrictivas de `pollo y lechuga` solo dañaban mi mente.</p>' +
-        '<p>Por eso estudié nutrición: no para darte una dieta de papel que tirarás a la basura, sino para enseñarte a disfrutar la comida sin culpa, tal como yo lo hice."</p>' +
-        '</div>', 
+        '<div class="text-xs text-slate-700 italic leading-relaxed"><p>"No siempre fui la nutricionista saludable que ves hoy. Hace 10 años, pesaba 20 kilos más y lloraba en los probadores..."</p></div>', 
         'chatgpt', false, false, 'advanced'),
 
     createCase(310, 'sales', 'Ideas Lead Magnet', 'lightbulb', 'Marketing: Captación.',
         'Dame ideas para un ebook gratis.',
-        '<div class="text-xs text-slate-500 italic">"1. Guía de Finanzas. 2. Cómo ahorrar dinero..."</div>',
-        '{r}Eres un Estratega de Inbound Marketing.{/r} {c}Nicho: [Finanzas Personales] Público: [Jóvenes endeudados] Dolor: [No llegan a fin de mes]{/c} {m}Generar 5 ideas de "Lead Magnets" de Alto Valor y Consumo Rápido (No ebooks largos).{/m} {l}Deben ser herramientas prácticas (Excel, Checklist, Audio, Quiz). Títulos "Clickbait" éticos (que prometan un resultado rápido).{/l} {f}Lista: Título + Formato + Promesa de Valor.{/f}',
+        '<div class="text-xs text-slate-500 italic">"1. Guía de Finanzas. 2. Cómo ahorrar..."</div>',
+        '{r}Eres un Estratega de Inbound Marketing.{/r} {c}Nicho: [Finanzas] Público: [Jóvenes endeudados]{/c} {m}Generar 5 ideas de "Lead Magnets" de Alto Valor y Consumo Rápido.{/m} {l}Deben ser herramientas prácticas (Excel, Checklist, Audio).{/l} {f}Lista: Título + Formato + Promesa.{/f}',
         'Ideation & Brainstorming.', '¿Te da curiosidad descargar alguna de esas herramientas?',
-        // FULL HTML INJECTION:
-        '<div class="text-xs">' +
-        '<ul class="space-y-2">' +
-        '<li class="flex gap-2"><span class="text-green-600 font-bold">Plantilla Excel:</span> <span>"Calculadora Kakebo: Descubre en qué se te van los $100.000 que te faltan cada mes".</span></li>' +
-        '<li class="flex gap-2"><span class="text-red-600 font-bold">Checklist PDF:</span> <span>"Detox de Gastos Hormiga: 7 suscripciones que debes cancelar hoy mismo".</span></li>' +
-        '<li class="flex gap-2"><span class="text-blue-600 font-bold">Audio (5 min):</span> <span>"Truco psicológico para no comprar ropa que no necesitas".</span></li>' +
-        '</ul>' +
-        '</div>', 
+        '<div class="text-xs"><ul class="space-y-2"><li class="flex gap-2"><span class="text-green-600 font-bold">Excel:</span> <span>"Calculadora Kakebo: Descubre dónde se van tus $100.000".</span></li></ul></div>', 
         'chatgpt', false, false, 'intermediate'),
 
     // ==========================================
-    // 🎨 ARTE (401-412)
+    // 🎨 ARTE (401-412) - RESTAURADO
     // ==========================================
     createCase(401, 'art', 'Foto Producto IA', 'camera', 'Midjourney: Realismo.', 
         'Foto botella jugo naranja.',
@@ -426,15 +334,8 @@ const allCases = [
         'Madera clara.', 'Luz natural.',
         '<div class="font-mono text-xs bg-slate-900 text-purple-300 p-2">/imagine prompt: Japandi living room...</div>', 'midjourney', false, false, 'beginner'),
 
-    createCase(501, 'art', 'Bloqueo Escritor', 'edit', 'Escritura: Terror.', 
-        'Idea para cuento terror.',
-        '<div class="text-xs text-slate-500 italic">"Casa embrujada."</div>', 
-        '{r}Stephen King.{/r} {c}Objeto cotidiano.{/c} {m}Premisa "What if" perturbadora.{/m} {f}Sinopsis.{/f}', 
-        'Giro inesperado.', 'Terror psicológico.', 
-        '<p class="text-xs">"Una mancha de humedad que tiene la forma de tu cara..."</p>', 'claude', false, false, 'beginner'),
-
     // ==========================================
-    // 🧠 TECH (601-612)
+    // 🧠 TECH (601-612) - RESTAURADO
     // ==========================================
     createCase(601, 'tech', 'Explicar Código', 'code', 'Dev: Entender Python.',
         'Explica este script.',
@@ -521,7 +422,7 @@ const allCases = [
         '<p class="text-xs text-red-600 font-bold">⚠️ PHISHING DETECTADO.</p>', 'gemini', false, false, 'beginner'),
 
     // ==========================================
-    // 🎓 EDUCACIÓN (701-712)
+    // 🎓 EDUCACIÓN (701-712) - RESTAURADO
     // ==========================================
     createCase(701, 'education', 'Tutor Socrático', 'psychology', 'Math: Guiar no resolver.', 
         'Resuelve x^2 - 5x + 6 = 0.',
@@ -608,7 +509,7 @@ const allCases = [
         '<p class="text-xs">1. ¿Qué pasa con trabajadores esenciales? Genera desigualdad.</p>', 'chatgpt', false, false, 'advanced'),
 
     // ==========================================
-    // 🧘 VIDA (801-814)
+    // 🧘 VIDA (801-814) - RESTAURADO
     // ==========================================
     createCase(801, 'life', 'Paz Familiar', 'handshake', 'Familia: Peleas.', 
         'Hijos pelean por tablet.',
@@ -709,7 +610,7 @@ const allCases = [
         '<p class="text-xs">1. Revisa el filtro de abajo (monedas). 2. Carga desbalanceada.</p>', 'gemini', false, false, 'intermediate'),
 
     // ==========================================
-    // 🛠️ INGENIERÍA PROMPTS (901-912)
+    // 🛠️ INGENIERÍA PROMPTS (901-912) - RESTAURADO
     // ==========================================
     createCase(901, 'engineering', 'Anti-Patrón', 'warning', 'Técnica: Claridad.', 
         'Ayuda con Excel.',
