@@ -259,7 +259,7 @@
                     title="Imprimir / Guardar PDF">
                     <span class="material-symbols-rounded">print</span>
                 </button>
-                <button onclick="window.location.href='https://mpago.la/2atUzLp'"
+                <button onclick="triggerUnlockPayment()"
                     class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md flex items-center gap-1.5 transition-transform hover:-translate-y-0.5">
                     <span class="material-symbols-rounded text-sm text-yellow-400">lock_open</span>
                     <span class="hidden sm:inline">Desbloquear</span>
@@ -763,13 +763,78 @@
                 %</div>
             <h3 class="text-xl font-black text-slate-900 mb-2">Oferta Limitada</h3>
             <p class="text-xs text-slate-500 mb-6">Acceso total a la Bóveda + Curso AGIA.</p>
-            <button onclick="window.location.href='https://mpago.la/2atUzLp'"
+            <button id="unlock-btn-modal" onclick="triggerUnlockPayment()"
                 class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold text-sm shadow-xl hover:scale-105 transition-transform">Desbloquear
                 por $20 USD</button>
             <button onclick="closePaywall()" class="mt-3 text-xs text-slate-400 hover:text-slate-600">No
                 gracias</button>
         </div>
     </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
+
+    <script>
+        // Firebase Config (Same as landing)
+        const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const functions = firebase.functions();
+
+        window.triggerUnlockPayment = async function () {
+            const btn = document.getElementById('unlock-btn-modal');
+            const user = auth.currentUser;
+
+            if (!user) {
+                console.log("User not logged in. Redirecting...");
+                // Redirect to Login, return to THIS page with action=buy
+                window.location.href = "acceso.html?redirect=maestro-prompts-app.html?action=buy";
+                return;
+            }
+
+            // Logged in
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "Generando...";
+            }
+
+            try {
+                const createPreference = functions.httpsCallable('createMercadoPagoPreference');
+                const result = await createPreference({ courseId: 'ia-aplicada-esencial' }); // Correct ID
+
+                if (result.data && result.data.init_point) {
+                    window.location.href = result.data.init_point;
+                } else {
+                    throw new Error("No payment link returned");
+                }
+            } catch (error) {
+                console.error("Payment Error:", error);
+                alert("Error al generar pago. Intenta más tarde.");
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = "Desbloquear por $20 USD";
+                }
+            }
+        };
+
+        // Auto-trigger on return
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.onAuthStateChanged(user => {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('action') === 'buy' && user) {
+                    // Open modal if closed
+                    const modal = document.getElementById('paywall-modal');
+                    if (modal) modal.classList.remove('hidden');
+
+                    triggerUnlockPayment();
+                }
+            });
+        });
+    </script>
 
     <script type="module">
         let casesData = [];

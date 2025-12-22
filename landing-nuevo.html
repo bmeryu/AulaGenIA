@@ -648,9 +648,86 @@
         </a>
     </div>
 
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
+
     <script>
-        // Initialize Lucide icons
+        // Init Lucide
         lucide.createIcons();
+
+        // Firebase Configuration
+        const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const functions = firebase.functions();
+
+        // Logic for Auth-Gated Payment
+        async function handlePurchaseIntent() {
+            const user = auth.currentUser;
+            if (!user) {
+                // Not logged in -> Redirect to Login with specific return action
+                console.log("User not logged in. Redirecting to login...");
+                window.location.href = "acceso.html?redirect=landing-nuevo.html?action=buy";
+                return;
+            }
+
+            // User Logged In -> Trigger Payment Function
+            const btns = document.querySelectorAll('.purchase-btn');
+            btns.forEach(b => {
+                b.disabled = true;
+                b.innerHTML = '<span class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span> Generando...';
+            });
+
+            try {
+                const createPreference = functions.httpsCallable('createMercadoPagoPreference');
+                const result = await createPreference({ courseId: 'ia-aplicada-esencial' }); // Correct ID based on investigation
+
+                if (result.data && result.data.init_point) {
+                    window.location.href = result.data.init_point;
+                } else {
+                    throw new Error("No payment link returned");
+                }
+            } catch (error) {
+                console.error("Payment Error:", error);
+                alert("Hubo un error al generar el pago. Por favor intenta nuevamente o contacta soporte.");
+                btns.forEach(b => {
+                    b.disabled = false;
+                    b.innerHTML = '🚀 Inscribirme Ahora';
+                });
+            }
+        }
+
+        // Attach listeners to all "Buy" buttons
+        function setupBuyButtons() {
+            const buyButtons = document.querySelectorAll('a[href*="mpago"]');
+            buyButtons.forEach(btn => {
+                btn.removeAttribute('href'); // Remove static link
+                btn.href = "#";
+                btn.classList.add('purchase-btn');
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    handlePurchaseIntent();
+                });
+            });
+        }
+
+        // Check for ?action=buy on load (Return from Login)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for Auth to initialize
+            auth.onAuthStateChanged(user => {
+                setupBuyButtons();
+
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('action') === 'buy' && user) {
+                    console.log("Auto-triggering purchase after login...");
+                    handlePurchaseIntent();
+                }
+            });
+        });
     </script>
 
 </body>
