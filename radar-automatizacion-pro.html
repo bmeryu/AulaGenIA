@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar de Automatización Pro - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold">⚡ Radar de Automatización Pro</h1>
+                    <p class="text-purple-100 mt-1">Recupera tu tiempo con inteligencia artificial</p>
+                </div>
+                <div class="hidden md:block">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+                        <p class="text-sm font-medium">Powered by Aula GenIA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Fase 1: Escaneo de Tareas -->
+        <div id="scanning-phase" class="mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-purple-100 rounded-full p-3 mr-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Fase 1: Escaneo de Tareas</h2>
+                        <p class="text-gray-600">Ingresa 5 tareas diarias y el tiempo que te consumen</p>
+                    </div>
+                </div>
+
+                <form id="task-form" class="space-y-4">
+                    <div id="tasks-container" class="space-y-4">
+                        <!-- Tasks will be generated here -->
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-4 rounded-lg transition-colors shadow-lg hover:shadow-xl">
+                        🚀 Analizar Tareas
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Fase 2: Resultados (Hidden initially) -->
+        <div id="results-phase" class="hidden space-y-8">
+
+            <!-- Calculadora de Libertad -->
+            <div class="bg-gradient-to-r from-green-400 to-blue-500 rounded-xl shadow-xl p-8 text-white">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-2">💎 Calculadora de Libertad</h3>
+                    <p class="text-green-100 mb-6">Tiempo que puedes recuperar este año</p>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-6 inline-block">
+                        <div class="text-6xl font-black mb-2" id="freedom-hours">0</div>
+                        <div class="text-xl font-semibold">horas al año</div>
+                        <div class="text-green-100 mt-3 text-lg" id="freedom-days">≈ 0 días completos</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cuadrante de Priorización -->
+            <div class="bg-white rounded-xl shadow-md p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <span class="bg-blue-100 rounded-full p-2 mr-3">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </span>
+                    Análisis de Priorización
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Automatización Inmediata -->
+                    <div class="bg-red-50 border-2 border-red-200 rounded-xl p-6 card-hover">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl mr-3">🔴</span>
+                            <h3 class="text-xl font-bold text-red-900">Automatización Inmediata</h3>
+                        </div>
+                        <p class="text-red-700 text-sm mb-4">Tareas repetitivas de alto impacto</p>
+                        <div id="quad-immediate" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Delegación IA -->
+                    <div class="bg-orange-50 border-2 border-orange-200 rounded-xl p-6 card-hover">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl mr-3">🟠</span>
+                            <h3 class="text-xl font-bold text-orange-900">Delegación IA</h3>
+                        </div>
+                        <p class="text-orange-700 text-sm mb-4">Tareas cognitivas asistibles</p>
+                        <div id="quad-delegate" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Optimización Manual -->
+                    <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 card-hover">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl mr-3">🟡</span>
+                            <h3 class="text-xl font-bold text-yellow-900">Optimización Manual</h3>
+                        </div>
+                        <p class="text-yellow-700 text-sm mb-4">Mejorar sin automatizar</p>
+                        <div id="quad-optimize" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Eliminar -->
+                    <div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-6 card-hover">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl mr-3">⚪</span>
+                            <h3 class="text-xl font-bold text-gray-900">Eliminar</h3>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-4">Bajo valor, considerar quitar</p>
+                        <div id="quad-eliminate" class="space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generador de Soluciones -->
+            <div id="solutions-section" class="bg-white rounded-xl shadow-md p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <span class="bg-green-100 rounded-full p-2 mr-3">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </span>
+                    Soluciones de Automatización
+                </h2>
+                <div id="solutions-container" class="space-y-6"></div>
+            </div>
+
+            <!-- Optimizaciones Manuales -->
+            <div id="manual-optimization-section" class="hidden bg-white rounded-xl shadow-md p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <span class="bg-yellow-100 rounded-full p-2 mr-3">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                    </span>
+                    Optimizaciones Manuales
+                </h2>
+                <p class="text-gray-600 mb-6">Tareas que no requieren automatización, pero se pueden mejorar
+                    significativamente</p>
+                <div id="manual-optimization-container" class="space-y-6"></div>
+            </div>
+
+            <!-- Botón para Reiniciar -->
+            <div class="text-center">
+                <button onclick="resetApp()"
+                    class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
+                    🔄 Analizar Nuevas Tareas
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar formulario con 5 campos de tarea
+        const tasksContainer = document.getElementById('tasks-container');
+        for (let i = 1; i <= 5; i++) {
+            const taskDiv = document.createElement('div');
+            taskDiv.className = 'bg-gray-50 rounded-lg p-4 border border-gray-200';
+            taskDiv.innerHTML = `
+                <div class="flex items-center mb-3">
+                    <span class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">${i}</span>
+                    <label class="text-sm font-semibold text-gray-700">Tarea ${i}</label>
+                </div>
+                <input type="text" name="task-${i}-name" required placeholder="Ej: Responder correos diarios" class="w-full mb-3 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <div class="flex items-center">
+                    <label class="text-sm text-gray-600 mr-3">Tiempo diario:</label>
+                    <input type="number" name="task-${i}-minutes" required min="1" placeholder="30" class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <span class="ml-2 text-sm text-gray-600">minutos</span>
+                </div>
+            `;
+            tasksContainer.appendChild(taskDiv);
+        }
+
+        // Algoritmo de priorización
+        function categorizeTasks(tasks) {
+            return tasks.map(task => {
+                const { name, minutes } = task;
+                const weeklyMinutes = minutes * 5; // 5 días laborales
+
+                // Palabras clave para detección
+                const automationKeywords = ['correo', 'email', 'reporte', 'informe', 'datos', 'excel', 'factura', 'copia', 'backup', 'actualizar', 'revisar'];
+                const delegationKeywords = ['escribir', 'redactar', 'crear', 'diseñar', 'analizar', 'investigar', 'contenido', 'traducir'];
+                const eliminateKeywords = ['reunión innecesaria', 'revisar redes', 'chequear', 'leer todo'];
+
+                const nameLower = name.toLowerCase();
+                const hasAutomationKeyword = automationKeywords.some(kw => nameLower.includes(kw));
+                const hasDelegationKeyword = delegationKeywords.some(kw => nameLower.includes(kw));
+                const hasEliminateKeyword = eliminateKeywords.some(kw => nameLower.includes(kw));
+
+                // Lógica de clasificación
+                let category;
+                if (weeklyMinutes >= 150 && hasAutomationKeyword) {
+                    category = 'immediate'; // Más de 30 min/día y automatizable
+                } else if (hasDelegationKeyword || (weeklyMinutes >= 100 && weeklyMinutes < 150)) {
+                    category = 'delegate';
+                } else if (hasEliminateKeyword || weeklyMinutes < 50) {
+                    category = 'eliminate'; // Menos de 10 min/día
+                } else {
+                    category = 'optimize';
+                }
+
+                return { ...task, category, weeklyMinutes };
+            });
+        }
+
+        // Recomendaciones de herramientas (Beginner-friendly)
+        function getToolRecommendation(taskName) {
+            const nameLower = taskName.toLowerCase();
+
+            if (nameLower.includes('correo') || nameLower.includes('email')) {
+                return {
+                    tool: 'ChatGPT (Crear un GPT personalizado) o Gemini (Crear un Gem)',
+                    prompt: `Eres mi asistente personal de correos electrónicos con 10 años de experiencia en comunicación corporativa. Cada día recibo entre 30 y 50 correos que necesito procesar rápidamente.
+
+Cuando te comparta un correo, debes:
+1. Clasificarlo en una de estas categorías: "Urgente y Requiere Acción", "Información para Archivar", "Respuesta Breve Posible", o "Spam/Irrelevante"
+2. Si es "Respuesta Breve Posible", generar un borrador de respuesta profesional, amable y concisa que pueda enviar directamente
+
+IMPORTANTE: No uses lenguaje demasiado formal ni rebuscado. Mantén un tono profesional pero cercano. No excedas las 3 líneas en tus respuestas sugeridas.
+
+Entrega tu análisis en este formato:
+📌 Categoría: [categoría]
+💬 Respuesta sugerida: [si aplica]`,
+                    icon: '📧'
+                };
+            } else if (nameLower.includes('reporte') || nameLower.includes('informe')) {
+                return {
+                    tool: 'ChatGPT (Crear un GPT personalizado) o Gemini (Crear un Gem)',
+                    prompt: `Actúas como analista de datos senior especializado en reportes ejecutivos. Mi objetivo es transformar datos en bruto en informes claros y accionables que pueda presentar a mi equipo cada semana.
+
+Cuando te comparta datos (pueden ser números, estadísticas, o información desordenada):
+1. Identifica los 3-5 hallazgos más importantes
+2. Resalta tendencias o patrones relevantes
+3. Sugiere 2-3 acciones concretas basadas en los datos
+
+RESTRICCIONES: No uses jerga técnica excesiva. Evita generar gráficos o tablas complejas (solo texto). Asume que tu audiencia tiene conocimientos básicos, no avanzados.
+
+Estructura tu reporte así:
+📊 Hallazgos Clave:
+• [punto 1]
+• [punto 2]
+• [punto 3]
+
+💡 Recomendaciones:
+1. [acción concreta]
+2. [acción concreta]`,
+                    icon: '📊'
+                };
+            } else if (nameLower.includes('contenido') || nameLower.includes('escribir') || nameLower.includes('redactar')) {
+                return {
+                    tool: 'ChatGPT (Crear un GPT personalizado) o Gemini (Crear un Gem)',
+                    prompt: `Eres mi copywriter y estratega de contenido con enfoque en engagement. Trabajo en [TU INDUSTRIA/NICHO] y creo contenido para [REDES SOCIALES/BLOG/EMAIL].
+
+Cuando te pida crear contenido, necesito que:
+1. Me generes 3 versiones diferentes del mismo mensaje
+2. Cada versión debe tener un tono distinto: (A) Profesional, (B) Cercano/Amigable, (C) Provocador/Llamativo
+3. Incluyas un hook potente en las primeras 2 líneas
+
+NO HAGAS: No uses emojis excesivos (máximo 2 por texto). No escribas más de 150 palabras por versión. No uses clichés como "en el mundo actual" o "revolucionario".
+
+Formato de entrega:
+✍️ Versión A (Profesional):
+[texto]
+
+✍️ Versión B (Cercano):
+[texto]
+
+✍️ Versión C (Provocador):
+[texto]`,
+                    icon: '✍️'
+                };
+            } else if (nameLower.includes('datos') || nameLower.includes('excel') || nameLower.includes('tabla')) {
+                return {
+                    tool: 'ChatGPT o Gemini + Google Sheets',
+                    prompt: `Eres mi asistente de organización de datos con experiencia en Google Sheets. Diariamente manejo información desordenada que necesito estructurar para tomar decisiones rápidas.
+
+Cuando te comparta datos sin estructura:
+1. Identifica qué columnas debería tener mi tabla (máximo 6 columnas)
+2. Organiza la información de forma clara
+3. Detecta si hay datos duplicados o inconsistentes
+4. Dame un mini resumen de lo más relevante
+
+IMPORTANTE: Tu salida debe ser una tabla simple en formato texto que pueda copiar y pegar directo a Google Sheets. No uses fórmulas complejas.
+
+Formato:
+COLUMNAS SUGERIDAS:
+[Columna 1] | [Columna 2] | [Columna 3]...
+
+DATOS ORGANIZADOS:
+[fila 1]
+[fila 2]...
+
+⚠️ ALERTAS: [duplicados o inconsistencias si existen]`,
+                    icon: '📈'
+                };
+            } else if (nameLower.includes('diseñ') || nameLower.includes('imagen') || nameLower.includes('visual')) {
+                return {
+                    tool: 'ChatGPT (DALL-E integrado) o Gemini (Imagen AI)',
+                    prompt: `Eres mi director creativo visual. Mi objetivo es generar imágenes profesionales para [REDES SOCIALES / PRESENTACIONES / MARKETING] sin necesidad de diseñadores.
+
+Cuando te pida una imagen:
+1. Primero hazme 3 preguntas clave: ¿Qué emoción quieres transmitir? ¿Quién es tu audiencia? ¿Dónde se usará?
+2. Con mis respuestas, genera una descripción ultra-detallada para crear la imagen
+3. Incluye: estilo visual, paleta de colores, composición y elementos específicos
+
+RESTRICCIONES: No sugieras ilustraciones muy abstractas o artísticas si el uso es corporativo. Evita clichés visuales (ej: apretones de manos, gente señalando pantallas).
+
+Tu descripción debe ser un párrafo de 4-5 líneas, escrito para que la IA de imágenes lo entienda perfectamente y genere algo profesional al primer intento.`,
+                    icon: '🎨'
+                };
+            } else if (nameLower.includes('reunión') || nameLower.includes('junta') || nameLower.includes('meeting')) {
+                return {
+                    tool: 'ChatGPT (Crear un GPT personalizado) o Gemini (Crear un Gem)',
+                    prompt: `Eres mi asistente ejecutivo especializado en optimización de reuniones. Mi desafío es que paso demasiado tiempo en juntas poco productivas.
+
+Cuando te comparta el contexto de una reunión próxima:
+1. Evalúa si realmente es necesaria (sí/no y por qué)
+2. Si es necesaria, genera una agenda de máximo 4 puntos clave
+3. Sugiere un límite de tiempo realista
+4. Dame un template de email para compartir con los asistentes
+
+NO INCLUYAS: Presentaciones largas, rondas de "updates" individuales, o temas que se pueden resolver por email.
+
+Formato:
+✅ ¿Es necesaria?: [Sí/No + justificación]
+
+📋 Agenda (si aplica):
+1. [Punto - X minutos]
+2. [Punto - X minutos]
+...
+
+📧 Email para enviar:
+[template listo para copiar]`,
+                    icon: '📅'
+                };
+            } else {
+                return {
+                    tool: 'ChatGPT (Crear un GPT personalizado) o Gemini (Crear un Gem)',
+                    prompt: `Eres mi consultor de automatización personal. Tu rol es ayudarme a delegar tareas repetitivas a la IA. Mi situación: paso demasiado tiempo en "${taskName}" y necesito recuperar ese tiempo.
+
+Cuando analices esta tarea:
+1. Identifica qué partes son 100% mecánicas y delegables
+2. Qué partes requieren mi criterio humano (y no debo delegar)
+3. Dame un paso a paso de cómo podría usar IA para la parte mecánica
+
+RESTRICCIONES: Solo sugiere soluciones que pueda implementar hoy mismo con herramientas gratuitas (ChatGPT, Gemini, Google Docs). No requiero código ni integraciones complejas.
+
+Formato de respuesta:
+🤖 Delegable a IA: [lista lo mecánico]
+👤 Requiere tu criterio: [lo que debes seguir haciendo tú]
+
+PLAN DE ACCIÓN:
+Paso 1: [instrucción concreta]
+Paso 2: [instrucción concreta]
+Paso 3: [instrucción concreta]`,
+                    icon: '⚙️'
+                };
+            }
+        }
+
+        // Tips avanzados de automatización completa
+        function getAdvancedTip(taskName) {
+            const nameLower = taskName.toLowerCase();
+
+            if (nameLower.includes('correo') || nameLower.includes('email')) {
+                return '💡 **Nivel Avanzado**: Automatiza completamente con Zapier o Make.com conectando Gmail + ChatGPT API + etiquetas automáticas. Configure reglas para que emails urgentes se reenvíen a tu Slack/WhatsApp y los spam se archiven sin intervención humana.';
+            } else if (nameLower.includes('reporte') || nameLower.includes('informe')) {
+                return '💡 **Nivel Avanzado**: Usa Make.com para extraer datos automáticamente de Google Sheets/SQL cada semana, procésalos con ChatGPT API y envía el reporte formateado por email sin tocar nada. Ideal con webhooks programados.';
+            } else if (nameLower.includes('contenido') || nameLower.includes('escribir')) {
+                return '💡 **Nivel Avanzado**: Crea un flujo en Zapier que tome ideas desde Google Docs, las procese con ChatGPT API, genere 3 versiones, y las suba directamente a tu CMS (WordPress, Notion, etc.) como borradores programados.';
+            } else if (nameLower.includes('datos') || nameLower.includes('excel')) {
+                return '💡 **Nivel Avanzado**: Automatiza la entrada de datos con Make.com + OCR (para facturas escaneadas) o conecta APIs de tus sistemas internos para que los datos fluyan automáticamente a Google Sheets sin copy-paste manual.';
+            } else if (nameLower.includes('diseñ') || nameLower.includes('imagen')) {
+                return '💡 **Nivel Avanzado**: Usa la API de DALL-E 3 o Midjourney conectada con Zapier para generar imágenes automáticamente desde prompts en Airtable/Notion, y súbelas directo a tu carpeta de Google Drive o Canva.';
+            } else if (nameLower.includes('reunión') || nameLower.includes('junta')) {
+                return '💡 **Nivel Avanzado**: Integra Zapier con Google Calendar + ChatGPT para auto-evaluar si las reuniones son necesarias antes de confirmarlas. Crea un bot que envíe agendas automáticas 24h antes basadas en el título de la reunión.';
+            } else {
+                return '💡 **Nivel Avanzado**: Para automatización completa, explora herramientas no-code como Make.com, Zapier o n8n. Conecta tu tarea con APIs de tus sistemas (Google Workspace, Slack, Notion, etc.) para eliminar intervención manual por completo.';
+            }
+        }
+
+        // Sugerencias de optimización manual
+        function getManualOptimization(taskName) {
+            const nameLower = taskName.toLowerCase();
+
+            if (nameLower.includes('reunión') || nameLower.includes('junta')) {
+                return {
+                    title: 'Optimización Manual Sugerida',
+                    suggestions: [
+                        '⏰ **Timeboxing**: Limita todas las reuniones a 25 minutos (no 30) para forzar concisión',
+                        '📋 **Regla de Agenda**: No aceptes reuniones sin agenda previa clara',
+                        '🎯 **Batch Days**: Agrupa todas tus reuniones en 2-3 días específicos de la semana',
+                        '✋ **Reuniones de Pie**: Para juntas rápidas (<15 min), hazlas de pie para mantener el ritmo'
+                    ]
+                };
+            } else if (nameLower.includes('revisar') || nameLower.includes('chequear')) {
+                return {
+                    title: 'Optimización Manual Sugerida',
+                    suggestions: [
+                        '⏱️ **Time Blocking**: Revisa todo en UN SOLO bloque diario (ej: 4pm), no constantemente',
+                        '✅ **Checklist**: Crea una lista de verificación de 5 puntos para acelerar tu revisión',
+                        '🔔 **Desactiva notificaciones**: Revisa solo en horarios programados, no reactivamente',
+                        '📊 **Métricas clave**: Enfócate solo en 3 indicadores críticos, ignora el resto'
+                    ]
+                };
+            } else if (nameLower.includes('buscar') || nameLower.includes('investigar')) {
+                return {
+                    title: 'Optimización Manual Sugerida',
+                    suggestions: [
+                        '⏰ **Limit Timer**: Pon un temporizador de 20 minutos para evitar caer en "rabbit holes"',
+                        '🎯 **Pregunta específica**: Define EXACTAMENTE qué necesitas encontrar antes de buscar',
+                        '📁 **Reutiliza investigación**: Guarda hallazgos en Notion/Evernote para no repetir búsquedas',
+                        '🤖 **IA primero**: Usa ChatGPT/Perplexity para resumir antes de leer artículos largos'
+                    ]
+                };
+            } else if (nameLower.includes('organizar') || nameLower.includes('ordenar')) {
+                return {
+                    title: 'Optimización Manual Sugerida',
+                    suggestions: [
+                        '🗂️ **Sistema de carpetas claro**: Usa máximo 5 carpetas principales, no más',
+                        '🏷️ **Naming Convention**: Define un sistema de nombres consistente (ej: YYYY-MM-DD_proyecto_version)',
+                        '🗑️ **Regla 1 año**: Si no lo usaste en 1 año, archívalo o bórralo',
+                        '⚡ **Batch Processing**: Organiza todo de una sola vez por semana, no diariamente'
+                    ]
+                };
+            } else if (nameLower.includes('actualizar') || nameLower.includes('copiar')) {
+                return {
+                    title: 'Optimización Manual Sugerida',
+                    suggestions: [
+                        '📋 **Templates**: Crea plantillas reutilizables para evitar partir de cero',
+                        '⌨️ **Atajos de teclado**: Domina Ctrl+C, Ctrl+V, y 5 atajos más de tu herramienta',
+                        '🔄 **Estandariza formato**: Usa SIEMPRE el mismo formato para no reformatear después',
+                        '📅 **Programa alertas**: Configura recordatorios automáticos para no olvidar actualizaciones'
+                    ]
+                };
+            } else {
+                return {
+                    title: 'Optimización Manual Sugerida',
+                    suggestions: [
+                        '⏱️ **Pomodoro Technique**: Trabaja en bloques de 25 min con descansos de 5 min',
+                        '📝 **Checklist estándar**: Crea una lista paso a paso para no improvisar cada vez',
+                        '🎯 **Elimina distracciones**: Cierra pestañas/apps innecesarias antes de empezar',
+                        '🔁 **Batch similares**: Agrupa tareas parecidas para hacerlas todas de una vez'
+                    ]
+                };
+            }
+        }
+
+        // Calcular tiempo recuperable
+        function calculateFreedom(tasks) {
+            const automatableTasks = tasks.filter(t => t.category === 'immediate' || t.category === 'delegate');
+            const totalMinutesPerWeek = automatableTasks.reduce((sum, t) => sum + t.weeklyMinutes, 0);
+            const hoursPerYear = (totalMinutesPerWeek * 52) / 60;
+            const daysPerYear = hoursPerYear / 8;
+
+            return {
+                hours: Math.round(hoursPerYear),
+                days: Math.round(daysPerYear * 10) / 10
+            };
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('task-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const tasks = [];
+            const taskNames = new Set();
+            let hasDuplicates = false;
+
+            for (let i = 1; i <= 5; i++) {
+                const name = formData.get(`task-${i}-name`).trim();
+                const minutes = parseInt(formData.get(`task-${i}-minutes`));
+
+                if (name && minutes) {
+                    const nameLower = name.toLowerCase();
+
+                    // Verificar duplicados
+                    if (taskNames.has(nameLower)) {
+                        hasDuplicates = true;
+                        alert(`⚠️ Tarea duplicada detectada: "${name}"\n\nPor favor, ingresa 5 tareas diferentes para obtener un análisis más completo.`);
+                        return;
+                    }
+
+                    taskNames.add(nameLower);
+                    tasks.push({ name, minutes });
+                }
+            }
+
+            if (tasks.length < 3) {
+                alert('⚠️ Por favor, ingresa al menos 3 tareas para analizar.');
+                return;
+            }
+
+            const categorizedTasks = categorizeTasks(tasks);
+            displayResults(categorizedTasks);
+        });
+
+        function displayResults(tasks) {
+            // Ocultar formulario y mostrar resultados
+            document.getElementById('scanning-phase').classList.add('hidden');
+            document.getElementById('results-phase').classList.remove('hidden');
+
+            // Calcular libertad
+            const freedom = calculateFreedom(tasks);
+            document.getElementById('freedom-hours').textContent = freedom.hours;
+            document.getElementById('freedom-days').textContent = `≈ ${freedom.days} días completos`;
+
+            // Animar contador
+            animateValue('freedom-hours', 0, freedom.hours, 1500);
+
+            // Mostrar tareas en cuadrantes
+            const quadrants = {
+                immediate: document.getElementById('quad-immediate'),
+                delegate: document.getElementById('quad-delegate'),
+                optimize: document.getElementById('quad-optimize'),
+                eliminate: document.getElementById('quad-eliminate')
+            };
+
+            // Limpiar cuadrantes
+            Object.values(quadrants).forEach(q => q.innerHTML = '');
+
+            tasks.forEach(task => {
+                const taskCard = document.createElement('div');
+                taskCard.className = 'bg-white p-3 rounded-lg border-l-4 border-gray-400 shadow-sm';
+                taskCard.innerHTML = `
+                    <div class="font-semibold text-gray-900 text-sm">${task.name}</div>
+                    <div class="text-xs text-gray-600 mt-1">${task.minutes} min/día · ${task.weeklyMinutes} min/semana</div>
+                `;
+                quadrants[task.category].appendChild(taskCard);
+            });
+
+            // Verificar si hay cuadrantes vacíos
+            Object.entries(quadrants).forEach(([key, element]) => {
+                if (element.children.length === 0) {
+                    element.innerHTML = '<p class="text-gray-400 text-sm italic">Sin tareas en esta categoría</p>';
+                }
+            });
+
+            // Generar soluciones
+            generateSolutions(tasks.filter(t => t.category === 'immediate'));
+
+            // Generar optimizaciones manuales
+            generateManualOptimizations(tasks.filter(t => t.category === 'optimize'));
+        }
+
+        function generateManualOptimizations(optimizeTasks) {
+            const section = document.getElementById('manual-optimization-section');
+            if (!section) return;
+
+            const container = document.getElementById('manual-optimization-container');
+
+            if (optimizeTasks.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            section.classList.remove('hidden');
+            container.innerHTML = '';
+
+            optimizeTasks.forEach((task) => {
+                const optimization = getManualOptimization(task.name);
+                const optCard = document.createElement('div');
+                optCard.className = 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-6';
+                optCard.innerHTML = `
+                    <div class="flex items-start mb-4">
+                        <span class="text-4xl mr-4">⚡</span>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-900 mb-1">${task.name}</h3>
+                            <p class="text-sm text-gray-600">${task.minutes} min/día · ${task.weeklyMinutes} min/semana</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-5">
+                        <h4 class="font-bold text-yellow-900 mb-3 flex items-center">
+                            <span class="text-xl mr-2">💡</span>
+                            ${optimization.title}
+                        </h4>
+                        <ul class="space-y-3">
+                            ${optimization.suggestions.map(s => `
+                                <li class="text-sm text-gray-700 leading-relaxed">${s}</li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+                container.appendChild(optCard);
+            });
+        }
+
+        function generateSolutions(immediateTasks) {
+            const container = document.getElementById('solutions-container');
+            container.innerHTML = '';
+
+            if (immediateTasks.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">No hay tareas de automatización inmediata detectadas.</p>';
+                return;
+            }
+
+            immediateTasks.forEach((task, index) => {
+                const recommendation = getToolRecommendation(task.name);
+                const advancedTip = getAdvancedTip(task.name);
+                const solutionCard = document.createElement('div');
+                solutionCard.className = 'bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-6';
+                solutionCard.innerHTML = `
+                    <div class="flex items-start mb-4">
+                        <span class="text-4xl mr-4">${recommendation.icon}</span>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-900 mb-1">${task.name}</h3>
+                            <p class="text-sm text-gray-600">💎 Ahorro potencial: ${(task.weeklyMinutes * 52 / 60).toFixed(0)} horas/año</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 mb-4">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            <span class="font-semibold text-gray-900">Herramienta Recomendada (Nivel Básico)</span>
+                        </div>
+                        <p class="text-purple-700 font-medium">${recommendation.tool}</p>
+                    </div>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm font-semibold text-gray-300">Prompt Inicial</span>
+                            <button onclick="copyPrompt(this, ${index})" class="text-purple-400 hover:text-purple-300 text-xs font-medium">
+                                📋 Copiar
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-300 font-mono leading-relaxed" id="prompt-${index}">${recommendation.prompt}</p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-4 text-white">
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">🚀</span>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium leading-relaxed">${advancedTip}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(solutionCard);
+            });
+        }
+
+        function copyPrompt(button, index) {
+            const promptText = document.getElementById(`prompt-${index}`).textContent;
+            navigator.clipboard.writeText(promptText).then(() => {
+                button.textContent = '✅ Copiado';
+                setTimeout(() => {
+                    button.textContent = '📋 Copiar';
+                }, 2000);
+            });
+        }
+
+        function animateValue(id, start, end, duration) {
+            const element = document.getElementById(id);
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.round(current);
+            }, 16);
+        }
+
+        function resetApp() {
+            document.getElementById('scanning-phase').classList.remove('hidden');
+            document.getElementById('results-phase').classList.add('hidden');
+            document.getElementById('task-form').reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>
