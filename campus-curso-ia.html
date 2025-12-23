@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v4.8.6 (Resource Update & Maintenance)
+  CAMPUS CURSO · AULA GENIA v4.8.7 (Bug Fix: materialTab Reference)
   -------------------------------------------------------------------
-  - UPD: Inclusión de nuevos materiales PDF en Módulos 2, 3 y 4.
-  - DEL: Eliminación de "Correcciones AulaGenIA.pdf" en Módulo 3.
+  - FIX: Corrección de error "materialTab is not defined".
+  - UPD: Mantenimiento de recursos de Módulos 2, 3 y 4.
   - INTEGRIDAD: Se mantiene el 100% de la lógica original.
   -------------------------------------------------------------------
 -->
@@ -2001,8 +2001,10 @@
                 dom.pdfModalOverlay.classList.remove('opacity-100'); dom.pdfModalContent.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => { dom.pdfModal.classList.add('hidden'); dom.pdfModalOverlay.classList.add('hidden'); dom.pdfIframe.src = ''; }, 300);
             }
-            if (materialTab) {
-                materialTab.addEventListener('click', (e) => {
+            
+            // FIX: Referencia a materialTab corregida usando dom.tabMaterialPanel
+            if (dom.tabMaterialPanel) {
+                dom.tabMaterialPanel.addEventListener('click', (e) => {
                     const button = e.target.closest('.resource-item[data-pdf-url]');
                     if (button) openPdfModal(button.dataset.pdfUrl, button.dataset.pdfTitle);
                 });
@@ -2132,4 +2134,5 @@
         });
     </script>
 </body>
+
 </html>
