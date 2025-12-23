@@ -474,14 +474,15 @@
 
                             <!-- Prompt Box Container -->
                             <div
-                                class="relative bg-slate-50/50 p-4 md:p-6 border-b border-indigo-100 flex-none group/expand">
+                                class="relative bg-slate-800 rounded-xl p-4 md:p-6 border border-slate-700 flex-none group/expand">
                                 <!-- Prompt Text with Blur Wrapper -->
                                 <div id="prompt-blur-wrapper" class="transition-all duration-500 relative">
-                                    <div class="flex justify-between items-center mb-3">
+                                    <div class="flex justify-between items-center mb-4">
                                         <label
-                                            class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest flex items-center gap-1.5">
-                                            <span class="material-symbols-rounded text-sm">auto_awesome</span>
-                                            Prompt Maestro AGIA
+                                            class="text-[10px] font-bold text-white/80 uppercase tracking-widest flex items-center gap-1.5">
+                                            <span
+                                                class="material-symbols-rounded text-sm text-yellow-400">auto_awesome</span>
+                                            Prompt Maestro
                                         </label>
                                         <!-- Dynamic Benefit Badge -->
                                         <span id="benefit-badge"
@@ -490,8 +491,8 @@
                                         </span>
                                     </div>
 
-                                    <!-- NEW: AGIA Sections with Colored Badges -->
-                                    <div id="agia-sections-container" class="space-y-2">
+                                    <!-- INLINE HIGHLIGHTS AGIA PROMPT (Dark theme) -->
+                                    <div id="agia-sections-container" class="leading-loose text-[14px] text-white/90">
                                         <!-- Sections will be rendered dynamically by JS -->
                                     </div>
 
@@ -1354,68 +1355,53 @@
             document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
         }
 
-        // NEW: Function to parse AGIA template and render sections with colored badges
+        // NEW: Function to parse AGIA template and render with INLINE colored highlights
         function renderAgiaSections(template) {
             const container = document.getElementById('agia-sections-container');
             if (!container) return;
 
-            // AGIA section configuration with colors
+            // AGIA section configuration with highlight colors
             const sectionConfig = {
-                'ROL': { color: 'blue', icon: 'person', label: 'Rol' },
-                'CONTEXTO': { color: 'emerald', icon: 'map', label: 'Contexto' },
-                'META': { color: 'amber', icon: 'target', label: 'Meta' },
-                'RESTRICCIONES': { color: 'rose', icon: 'rule', label: 'Restr.' },
-                'FORMATO': { color: 'violet', icon: 'format_list_bulleted', label: 'Formato' }
+                'ROL': { bg: 'bg-blue-400', text: 'text-blue-950' },
+                'CONTEXTO': { bg: 'bg-emerald-400', text: 'text-emerald-950' },
+                'META': { bg: 'bg-yellow-300', text: 'text-yellow-950' },
+                'RESTRICCIONES': { bg: 'bg-rose-300', text: 'text-rose-950' },
+                'FORMATO': { bg: 'bg-violet-400', text: 'text-violet-950' }
             };
 
             // Parse the template to extract sections
-            // Format: "1. ROL: content\n2. CONTEXTO: content\n3. META: content..."
             const lines = template.split('\n');
             const sections = {};
             let currentSection = null;
             let currentContent = [];
 
             lines.forEach(line => {
-                // Check if line starts a new section
                 const sectionMatch = line.match(/^(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*(.*)/i);
                 if (sectionMatch) {
-                    // Save previous section
                     if (currentSection) {
-                        sections[currentSection] = currentContent.join('\n').trim();
+                        sections[currentSection] = currentContent.join(' ').trim();
                     }
                     currentSection = sectionMatch[2].toUpperCase();
                     currentContent = [sectionMatch[3] || ''];
                 } else if (currentSection) {
-                    currentContent.push(line);
+                    currentContent.push(line.trim());
                 }
             });
-            // Save last section
             if (currentSection) {
-                sections[currentSection] = currentContent.join('\n').trim();
+                sections[currentSection] = currentContent.join(' ').trim();
             }
 
-            // Build HTML for sections
+            // Build INLINE HTML with colored highlights
             let html = '';
-            Object.keys(sectionConfig).forEach(key => {
+            const sectionOrder = ['ROL', 'CONTEXTO', 'META', 'RESTRICCIONES', 'FORMATO'];
+
+            sectionOrder.forEach(key => {
                 const config = sectionConfig[key];
-                const content = sections[key] || '';
+                let content = sections[key] || '';
                 if (!content) return;
 
-                // Clean content: remove leading dashes and excessive whitespace
-                const cleanContent = content
-                    .replace(/^\s*-\s*/gm, '• ')  // Replace leading dashes with bullets
-                    .replace(/\n\s+/g, '\n')      // Clean indentation
-                    .trim();
-
-                html += `
-                    <div class="agia-section flex items-start gap-3 p-3 bg-white rounded-lg border border-${config.color}-100 hover:border-${config.color}-200 transition-colors" data-section="${key.toLowerCase()}">
-                        <span class="flex-none inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 bg-${config.color}-50 text-${config.color}-700 border border-${config.color}-200 rounded-md whitespace-nowrap">
-                            <span class="w-1.5 h-1.5 rounded-full bg-${config.color}-500"></span>
-                            ${config.label}
-                        </span>
-                        <div class="flex-1 text-sm text-slate-700 leading-relaxed whitespace-pre-line">${escapeHtml(cleanContent)}</div>
-                    </div>
-                `;
+                content = content.replace(/\s+/g, ' ').trim();
+                html += `<span class="inline ${config.bg} ${config.text} px-2 py-0.5 rounded font-medium mx-0.5 leading-8">${escapeHtml(content)}</span> `;
             });
 
             container.innerHTML = html || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
