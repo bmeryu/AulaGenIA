@@ -928,15 +928,17 @@
 
         const config = {
             categories: {
-                productivity: { label: "Productividad", color: "emerald", icon: "rocket_launch" },
-                finance: { label: "Finanzas", color: "amber", icon: "payments" },
-                sales: { label: "Ventas & Copy", color: "rose", icon: "campaign" },
-                art: { label: "Arte Digital", color: "fuchsia", icon: "palette" },
-                life: { label: "Lifestyle", color: "orange", icon: "self_improvement" },
-                tech: { label: "Tecnología", color: "violet", icon: "terminal" },
-                education: { label: "Educación", color: "cyan", icon: "school" },
-                engineering: { label: "Ingeniería", color: "slate", icon: "construction" },
-                debug: { label: "Sistema", color: "gray", icon: "settings" }
+                "Productividad Ninja": { label: "Productividad", color: "emerald", icon: "rocket_launch" },
+                "Ventas & Persuasión": { label: "Ventas", color: "rose", icon: "campaign" },
+                "Contenido & Redes": { label: "Marketing", color: "fuchsia", icon: "share" },
+                "Finanzas Inteligentes": { label: "Finanzas", color: "amber", icon: "payments" },
+                "Legal & Formalización": { label: "Legal", color: "slate", icon: "gavel" },
+                "Estrategia & Lanzamiento": { label: "Estrategia", color: "violet", icon: "flag" },
+                "Diseño & Arte Digital": { label: "Diseño", color: "pink", icon: "palette" },
+                "Operaciones & Procesos": { label: "Operaciones", color: "cyan", icon: "settings_suggest" },
+                "Liderazgo & Equipos": { label: "Liderazgo", color: "blue", icon: "groups" },
+                "Tecnología & Herramientas": { label: "Tecnología", color: "indigo", icon: "terminal" },
+                "Otros / Análisis": { label: "Análisis", color: "gray", icon: "analytics" }
             }
         };
 
@@ -1469,8 +1471,12 @@
         function renderCategories() {
             const nav = document.getElementById('category-nav');
             if (!nav) return;
-            nav.innerHTML = Object.keys(config.categories).map(key => {
-                const conf = config.categories[key];
+
+            // Extract unique categories from the actual data
+            const uniqueCategories = [...new Set(casesData.map(c => c.category))];
+
+            nav.innerHTML = uniqueCategories.map(key => {
+                const conf = config.categories[key] || { label: key, color: 'slate', icon: 'category' };
                 // Count cases per category
                 const count = casesData.filter(x => x.category === key).length;
 
