@@ -344,16 +344,7 @@
                 </div>
             </div>
 
-            <!-- COMPLEXITY LEGEND -->
-            <div
-                class="bg-slate-50 px-5 py-3 border-b border-slate-100 flex justify-between items-center text-[10px] text-slate-500 font-medium">
-                <div class="flex items-center gap-1.5 cursor-help" title="Básico: Hasta 15 min"><span
-                        class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-200"></span> 15m</div>
-                <div class="flex items-center gap-1.5 cursor-help" title="Intermedio: 15~45 min"><span
-                        class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-200"></span> 15-45m</div>
-                <div class="flex items-center gap-1.5 cursor-help" title="Avanzado: 90-120 min"><span
-                        class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-sm shadow-rose-200"></span> 90-120m</div>
-            </div>
+            <!-- Case list starts directly after search -->
 
             <div class="flex-1 overflow-y-auto custom-scroll p-3 space-y-1" id="case-list"></div>
             <div
@@ -375,65 +366,60 @@
                 <p class="text-xs text-slate-500">Comienza tu comparativa en el menú lateral.</p>
             </div>
 
-            <div id="case-detail"
-                class="flex flex-col h-full w-full p-4 md:p-6 gap-5 overflow-hidden max-w-5xl mx-auto">
+            <div id="case-detail" class="flex flex-col h-full w-full p-3 gap-2 overflow-hidden max-w-5xl mx-auto">
 
-                <!-- TOP BAR -->
-                <div class="flex-none flex items-center justify-between">
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span id="detail-category-badge"
-                                class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-white text-slate-600 border-slate-200 shadow-sm">CAT</span>
-                            <!-- AI SUGGESTION -->
-                            <div id="ai-suggestion-badge"
-                                class="hidden text-[10px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full border bg-slate-800 text-white border-slate-900 items-center gap-1.5 shadow-md">
-                                <span class="material-symbols-rounded text-[12px] text-yellow-400">star</span>
-                                <span>IA RECOMENDADA: <span id="ai-name" class="text-yellow-400">CHATGPT</span></span>
-                            </div>
+                <!-- COMPACT SINGLE-LINE HEADER -->
+                <div
+                    class="flex-none flex items-center justify-between gap-3 bg-white rounded-xl px-4 py-2 border border-slate-200 shadow-sm">
+                    <!-- Left: Category + Title -->
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <span id="detail-category-badge"
+                            class="flex-none text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-indigo-50 text-indigo-600 border-indigo-100">CAT</span>
+                        <div class="min-w-0">
+                            <h2 id="detail-title" class="text-lg font-bold text-slate-900 truncate">Título del Caso</h2>
+                            <p id="detail-problem" class="text-[11px] text-slate-500 truncate hidden md:block"></p>
                         </div>
-                        <h2 id="detail-title" class="text-2xl font-black text-slate-900 leading-tight">Título del Caso
-                        </h2>
-                        <p id="detail-problem" class="text-sm text-slate-500 font-medium mt-1 max-w-2xl"></p>
+                        <!-- AI SUGGESTION (hidden by default) -->
+                        <div id="ai-suggestion-badge"
+                            class="hidden text-[9px] font-bold uppercase px-2 py-0.5 rounded-full bg-slate-800 text-white items-center gap-1 flex-none">
+                            <span class="material-symbols-rounded text-[10px] text-yellow-400">star</span>
+                            <span id="ai-name" class="text-yellow-400">CHATGPT</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Switch + Badge + Copy (all in one line) -->
+                    <div class="flex items-center gap-2 flex-none">
+                        <!-- Mode Switch (Compact) -->
+                        <div class="relative bg-slate-100 rounded-lg p-0.5 flex items-center">
+                            <button onclick="setMode('basic')"
+                                class="relative z-10 px-3 py-1.5 text-[10px] font-bold transition-colors duration-200 rounded-md flex items-center gap-1"
+                                id="btn-basic">
+                                <span class="material-symbols-rounded text-xs">cancel</span> Básico
+                            </button>
+                            <button onclick="setMode('agia')"
+                                class="relative z-10 px-3 py-1.5 text-[10px] font-bold transition-colors duration-200 rounded-md flex items-center gap-1"
+                                id="btn-agia">
+                                <span class="material-symbols-rounded text-xs">verified</span> Maestro
+                            </button>
+                        </div>
+
+                        <!-- Time Badge -->
+                        <span id="benefit-badge"
+                            class="text-[9px] font-bold px-2 py-1 rounded-md border flex items-center gap-1 bg-emerald-50 text-emerald-600 border-emerald-100">
+                            <span class="material-symbols-rounded text-xs">bolt</span> ~15 min
+                        </span>
+
+                        <!-- Copy Button -->
+                        <button onclick="copyPrompt()" id="copy-btn"
+                            class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 transition-all shadow-sm">
+                            <span class="material-symbols-rounded text-sm">content_copy</span> Copiar
+                        </button>
                     </div>
                 </div>
 
-                <!-- MAIN CARD WITH MAGIC SWITCH -->
-                <div class="flex-1 bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 flex flex-col overflow-hidden relative ring-1 ring-black/5 transition-all duration-300"
+                <!-- MAIN CONTENT CARD (No extra switch header needed) -->
+                <div class="flex-1 bg-white rounded-xl border border-slate-200 shadow-lg flex flex-col overflow-hidden"
                     id="main-card-container">
-
-                    <!-- MAGIC SWITCH HEADER -->
-                    <div
-                        class="bg-slate-50 border-b border-slate-100 p-2 flex justify-center sticky top-0 z-50 items-center relative">
-                        <div
-                            class="relative bg-white border border-slate-200 rounded-xl p-1 flex items-center shadow-sm">
-                            <div id="switch-bg"
-                                class="absolute left-1 top-1 bottom-1 w-[140px] bg-slate-400 rounded-lg shadow-md switch-toggle z-0">
-                            </div>
-
-                            <button onclick="setMode('basic')"
-                                class="relative z-10 w-[140px] py-2 text-xs font-bold text-center transition-colors duration-300 flex items-center justify-center gap-2"
-                                id="btn-basic">
-                                <span class="material-symbols-rounded text-base">cancel</span> Modo Básico
-                            </button>
-                            <button onclick="setMode('agia')"
-                                class="relative z-10 w-[140px] py-2 text-xs font-bold text-center transition-colors duration-300 flex items-center justify-center gap-2 group"
-                                id="btn-agia">
-                                <span
-                                    class="material-symbols-rounded text-base group-hover:rotate-12 transition-transform">verified</span>
-                                Modo Maestro
-
-                                <!-- Motivation Badge (Posicionado DEBAJO para no cortarse) -->
-                                <div id="magic-hint"
-                                    class="absolute top-11 right-4 bg-indigo-600 text-white text-[10px] px-3 py-1.5 rounded-full font-bold animate-bounce shadow-lg shadow-indigo-200 hidden z-[60] border border-indigo-400 pointer-events-none w-max">
-                                    ✨ Ver Magia
-                                    <!-- Flecha apuntando hacia arriba -->
-                                    <div
-                                        class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-indigo-600 rotate-45 border-l border-t border-indigo-400">
-                                    </div>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
 
                     <!-- CONTENT AREA -->
                     <div id="detail-scroll-container" class="flex-1 overflow-y-auto custom-scroll relative bg-white">
@@ -1055,53 +1041,23 @@
             const btnAgia = document.getElementById('btn-agia');
             const contentBasic = document.getElementById('content-basic');
             const contentAgia = document.getElementById('content-agia');
-            const switchBg = document.getElementById('switch-bg');
-            const mainCard = document.getElementById('main-card-container');
-            const magicHint = document.getElementById('magic-hint');
 
             if (mode === 'basic') {
                 contentBasic.classList.remove('hidden');
                 contentAgia.classList.add('hidden');
-
-                btnBasic.classList.add('text-white');
-                btnBasic.classList.remove('text-slate-500');
-                btnAgia.classList.add('text-slate-500');
-                btnAgia.classList.remove('text-white');
-
-                // Add attention animation to Agia button and show hint
-                btnAgia.classList.add('pulse-attention');
-                magicHint.classList.remove('hidden');
-
-                // Switch Background color for basic
-                switchBg.classList.remove('bg-indigo-600');
-                switchBg.classList.add('bg-slate-400');
-                switchBg.style.transform = 'translateX(0)';
-
-                // Reset card border color
-                mainCard.classList.remove('border-indigo-200', 'shadow-indigo-100');
-                mainCard.classList.add('border-slate-200');
-
+                // Compact button styling
+                btnBasic.classList.add('bg-slate-600', 'text-white');
+                btnBasic.classList.remove('text-slate-600');
+                btnAgia.classList.remove('bg-indigo-600', 'text-white');
+                btnAgia.classList.add('text-slate-600');
             } else {
                 contentBasic.classList.add('hidden');
                 contentAgia.classList.remove('hidden');
-
-                btnBasic.classList.add('text-slate-500');
-                btnBasic.classList.remove('text-white');
-                btnAgia.classList.add('text-white');
-                btnAgia.classList.remove('text-slate-500');
-
-                // Remove attention animation and hide hint
-                btnAgia.classList.remove('pulse-attention');
-                magicHint.classList.add('hidden');
-
-                // Switch Background color for AGIA (Aulagenia Brand Color)
-                switchBg.classList.remove('bg-slate-400');
-                switchBg.classList.add('bg-indigo-600');
-                switchBg.style.transform = 'translateX(100%)';
-
-                // Update card border to brand color
-                mainCard.classList.remove('border-slate-200');
-                mainCard.classList.add('border-indigo-200', 'shadow-indigo-100');
+                // Compact button styling
+                btnBasic.classList.remove('bg-slate-600', 'text-white');
+                btnBasic.classList.add('text-slate-600');
+                btnAgia.classList.add('bg-indigo-600', 'text-white');
+                btnAgia.classList.remove('text-slate-600');
             }
         }
 
