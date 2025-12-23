@@ -327,8 +327,8 @@
             class="w-full md:w-72 lg:w-80 flex flex-col bg-white border-r border-slate-200 z-20 flex-none absolute md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300"
             id="sidebar">
 
-            <div class="p-5 border-b border-slate-100">
-                <!-- BUSCADOR CORREGIDO (Limpio y Elegante) -->
+            <!-- BUSCADOR CORREGIDO (Limpio y Elegante) -->
+            <div class="px-5 pt-5 pb-3 border-b border-slate-100">
                 <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span class="material-symbols-rounded text-indigo-500 text-xl">search</span>
@@ -336,6 +336,11 @@
                     <input type="text" id="searchInput"
                         class="w-full pl-10 pr-4 py-3 bg-white border-2 border-slate-100 rounded-xl text-sm font-medium focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all placeholder:text-slate-400 text-slate-700 shadow-sm search-container"
                         placeholder="¿Qué desafío tienes hoy?" onkeyup="filterCases()">
+                </div>
+                <!-- Search Feedback -->
+                <div id="search-stats" class="hidden mt-2 px-1 flex justify-between items-center animate-pulse">
+                    <span class="text-[10px] uppercase font-bold text-indigo-500 tracking-wider">Buscando...</span>
+                    <span class="text-[10px] font-bold text-slate-400" id="results-count"></span>
                 </div>
             </div>
 
@@ -1533,6 +1538,25 @@
             });
 
             renderList(filtered);
+
+            // Update UI Stats
+            const statsEl = document.getElementById('search-stats');
+            const countEl = document.getElementById('results-count');
+
+            if (rawInput.length > 0) {
+                statsEl.classList.remove('hidden');
+                statsEl.classList.add('flex');
+                if (filtered.length === 0) {
+                    countEl.innerText = "0 resultados";
+                    countEl.className = "text-[10px] font-bold text-red-400";
+                } else {
+                    countEl.innerText = `${filtered.length} encontrados`;
+                    countEl.className = "text-[10px] font-bold text-emerald-500";
+                }
+            } else {
+                statsEl.classList.add('hidden');
+                statsEl.classList.remove('flex');
+            }
         }
 
         function renderList(cases) {
