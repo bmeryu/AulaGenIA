@@ -16,6 +16,7 @@
     <!-- FIREBASE SDKs (v8 compat for consistency with access page) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
 
     <!-- Google Fonts -->
     <link rel="stylesheet"
@@ -812,10 +813,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
+    <!-- Firebase SDKs moved to head -->
 
     <script>
         // Firebase Config (Same as landing)
@@ -877,12 +875,17 @@
         });
     </script>
 
-    <script type="module">
-        let casesData = [];
-        // Se asume que el archivo prompts_db.js está en la misma ubicación
-        const externalDBUrl = './prompts_db.js';
+    </script>
 
+    <!-- Database Loader -->
+    <script src="prompts_db.js"></script>
 
+    <script>
+        // Check if DB loaded
+        if (typeof casesData === 'undefined') {
+            console.error("Critical: prompts_db.js not loaded.");
+            var casesData = []; // Fallback prevention
+        }
 
         // UI Elements
         const statusOverlay = document.getElementById('system-status-overlay');
@@ -898,30 +901,22 @@
             statusIcon.innerHTML = '<span class="material-symbols-rounded text-3xl text-red-500">error</span>';
             statusIcon.className = "w-16 h-16 bg-white border border-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm";
             statusTitle.innerText = "Error de Conexión";
-
-            if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
-                statusDesc.innerText = "No pudimos conectar con el servidor de AulaGenia. Verifica tu conexión o que prompts_db.js exista.";
-                statusCode.innerText = "NETWORK_ERROR";
-            } else {
-                statusDesc.innerText = "Error al procesar la base de datos de prompts.";
-                statusCode.innerText = "DATA_ERROR: " + err.message;
-            }
+            statusDesc.innerText = "No se pudo cargar la base de datos local (prompts_db.js).";
+            statusCode.innerText = "DB_LOAD_ERROR";
             statusCode.className = "text-red-500 font-bold";
             retryBtn.classList.remove('hidden');
         }
 
-        async function loadDatabase() {
+        function loadDatabase() {
             try {
-                // Import dinámico del módulo
-                const module = await import(externalDBUrl);
-                if (module && module.default && Array.isArray(module.default)) {
-                    casesData = module.default;
+                if (window.casesData && Array.isArray(window.casesData) && window.casesData.length > 0) {
+                    // Database loaded successfully via script tag
                     setTimeout(() => {
                         statusOverlay.classList.add('hidden');
                         initApp();
-                    }, 800);
+                    }, 500);
                 } else {
-                    throw new Error("Formato de base de datos inválido.");
+                    throw new Error("Base de datos vacía o no encontrada.");
                 }
             } catch (err) {
                 console.error("System Error:", err);
