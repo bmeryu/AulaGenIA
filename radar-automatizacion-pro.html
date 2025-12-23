@@ -7,6 +7,12 @@
     <title>Radar de Automatización Pro - Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -121,16 +127,6 @@
                 <p class="text-lg text-white/75 mb-6">Analiza tu día y recupera hasta <span
                         class="text-yellow-300 font-bold">400+ horas al año</span></p>
                 <div class="flex justify-center gap-3 mt-6">
-                    <span
-                        class="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1.5 text-sm font-medium inline-flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                            <path fill-rule="evenodd"
-                                d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        Sin registro
-                    </span>
                     <span
                         class="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1.5 text-sm font-medium inline-flex items-center gap-2">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -867,11 +863,6 @@ Paso 3: [instrucción concreta]`,
             let current = start;
 
             const timer = setInterval(() => {
-                current += increment;
-                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-                    current = end;
-                    clearInterval(timer);
-                }
                 element.textContent = Math.round(current);
             }, 16);
         }
@@ -881,6 +872,158 @@ Paso 3: [instrucción concreta]`,
             document.getElementById('results-phase').classList.add('hidden');
             document.getElementById('task-form').reset();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ========================================
+        // FIREBASE AUTHENTICATION & ACCESS CONTROL
+        // ========================================
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
+            authDomain: "aulagenia.firebaseapp.com",
+            projectId: "aulagenia",
+            storageBucket: "aulagenia.appspot.com",
+            messagingSenderId: "173328075630",
+            appId: "1:173328075630:web:825606db4271ea1e66cf7f"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Check authentication and enrollment on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    // Not logged in - show login overlay
+                    showLoginOverlay();
+                    return;
+                }
+
+                // Check if user is enrolled
+                try {
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    if (!userDoc.exists || !userDoc.data().enrolled) {
+                        // Not enrolled - show enrollment required overlay
+                        showEnrollmentOverlay(user.email);
+                        return;
+                    }
+
+                    // User is authenticated and enrolled - allow access
+                    hideOverlay();
+                } catch (error) {
+                    console.error('Error checking enrollment:', error);
+                    showEnrollmentOverlay(user.email);
+                }
+            });
+        });
+
+        function showLoginOverlay() {
+            const overlay = document.getElementById('auth-overlay') || createAuthOverlay();
+            overlay.innerHTML = `
+                <div class="fixed inset-0 bg-gradient-to-br from-gray-900/95 to-slate-800/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full">
+                        <div class="text-center mb-6">
+                            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full mb-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <h2 class="text-2xl font-black text-gray-900 mb-2">Acceso Exclusivo</h2>
+                            <p class="text-gray-600">Inicia sesión para usar el Radar de Automatización</p>
+                        </div>
+                        
+                        <div id="login-error" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"></div>
+                        
+                        <form id="login-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                                <input type="email" id="login-email" required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition"
+                                    placeholder="tu@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Contraseña</label>
+                                <input type="password" id="login-password" required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition"
+                                    placeholder="••••••••">
+                            </div>
+                            <button type="submit"
+                                class="w-full btn-agia text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                                Iniciar Sesión
+                            </button>
+                        </form>
+                        
+                        <p class="text-center text-sm text-gray-600 mt-6">
+                            ¿No tienes cuenta? 
+                            <a href="https://aulagenia.cl" class="text-teal-600 font-bold hover:underline">Inscríbete aquí</a>
+                        </p>
+                    </div>
+                </div>
+            `;
+            overlay.classList.remove('hidden');
+
+            // Handle login form submission
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                const errorDiv = document.getElementById('login-error');
+
+                try {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    // Auth state change will handle the rest
+                } catch (error) {
+                    errorDiv.textContent = 'Email o contraseña incorrectos. Por favor, intenta de nuevo.';
+                    errorDiv.classList.remove('hidden');
+                }
+            });
+        }
+
+        function showEnrollmentOverlay(email) {
+            const overlay = document.getElementById('auth-overlay') || createAuthOverlay();
+            overlay.innerHTML = `
+                <div class="fixed inset-0 bg-gradient-to-br from-gray-900/95 to-slate-800/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full mb-4">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-black text-gray-900 mb-2">Inscripción Requerida</h2>
+                        <p class="text-gray-600 mb-6">
+                            Hola <strong>${email}</strong>,<br>
+                            Para acceder al Radar de Automatización necesitas estar inscrito en nuestros cursos.
+                        </p>
+                        <a href="https://aulagenia.cl" 
+                            class="inline-block btn-agia text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 mb-4">
+                            Ver Cursos Disponibles
+                        </a>
+                        <button onclick="firebase.auth().signOut()" 
+                            class="block w-full text-gray-600 hover:text-gray-900 font-medium text-sm mt-4">
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+            `;
+            overlay.classList.remove('hidden');
+        }
+
+        function hideOverlay() {
+            const overlay = document.getElementById('auth-overlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function createAuthOverlay() {
+            const overlay = document.createElement('div');
+            overlay.id = 'auth-overlay';
+            document.body.appendChild(overlay);
+            return overlay;
         }
     </script>
 </body>
