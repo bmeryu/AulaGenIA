@@ -576,7 +576,7 @@ const casesData = [
         "icon": "lightbulb",
         "badPrompt": "Explícame este reporte del SII y dime qué significa.",
         "badResponsePreview": "El reporte indica que tienes varias facturas emitidas y recibidas este mes. Dice que el monto total a pagar por el formulario 29 es de $145.000 pesos.",
-        "badResponseAnalysis": "El resultado es un simple eco de los datos. No desglosa cuánto corresponde a IVA Débito vs Crédito, no menciona el PPM ni explica si existen retenciones de honorarios o multas pendientes.",
+        "badResponseAnalysis": "El resultado solo repite los números sin explicarlos. No desglosa cuánto de IVA cobraste (Débito) vs cuánto pagaste en compras (Crédito), no menciona el PPM (pago provisional mensual) ni avisa si tienes multas pendientes.",
         "agiaPromptTagged": "1. ROL: Contador Auditor experto en tributación chilena. 2. CONTEXTO: Reporte Formulario 29 [Texto/Imagen]. 3. META: Explicar cuánto, por qué y fecha límite de pago. 4. RESTRICCIONES: Sin tecnicismos, foco en flujo de caja. 5. FORMATO: Resumen 'A pagar'.",
         "previewResponse": "\"Este mes pagas $145.000: El desglose real es $120.000 de IVA (vendiste más de lo que compraste) y $25.000 de PPM (tu ahorro obligatorio para el impuesto a la renta anual). Recuerda pagar antes del 20 si emites facturas electrónicas.\"",
         "metadata": {
@@ -604,7 +604,7 @@ const casesData = [
         "icon": "lightbulb",
         "badPrompt": "Ayúdame a escribir un correo para pedir un préstamo de 5 millones al banco.",
         "badResponsePreview": "Hola, necesito un crédito de 5 millones para comprar máquinas nuevas para mi pyme. Siempre pago a tiempo y mi negocio está creciendo. Quedo atento a su respuesta.",
-        "badResponseAnalysis": "Tono informal y carente de sustento técnico. No menciona el ROI de la inversión, la capacidad de repago, el EBITDA ni cómo el crédito impactará positivamente en los estados financieros.",
+        "badResponseAnalysis": "Tono informal y carente de respaldo. No menciona el ROI (retorno de la inversión: cuánto ganarás por cada peso invertido), la capacidad de repago (cuánto puedes pagar al mes), el EBITDA (la ganancia real del negocio antes de impuestos) ni cómo el crédito mejorará tus números.",
         "agiaPromptTagged": "1. ROL: Ex-Agente Bancario Senior. 2. CONTEXTO: Monto $5M, Destino: Maquinaria, Ventas anuales: $60M. 3. META: Justificación técnica para aprobación de crédito. 4. RESTRICCIONES: Foco en Capacidad Repago y ROI. 5. FORMATO: Resumen Ejecutivo Bancario.",
         "previewResponse": "\"Proyectamos un 35% de incremento en la capacidad productiva. Con un margen operativo actual del 45%, la cobertura de deuda se mantiene en niveles de bajo riesgo para la institución.\"",
         "metadata": {
@@ -618,7 +618,7 @@ const casesData = [
         "icon": "lightbulb",
         "badPrompt": "Cuánto dinero puedo sacar de mi empresa si gané 3 millones este mes.",
         "badResponsePreview": "Puedes sacar unos 1.5 millones para tu sueldo personal y dejar el otro 1.5 millones en la cuenta de la empresa para pagar los gastos que vengan el próximo mes.",
-        "badResponseAnalysis": "Sugerencia peligrosa. No considera el IVA por pagar, el PPM, las imposiciones de los empleados ni el fondo de reserva para emergencias, lo que podría llevar a la quiebra técnica en meses de baja venta.",
+        "badResponseAnalysis": "Sugerencia peligrosa. No considera el IVA por pagar (19% de tus ventas que debes al Estado), el PPM (pago provisional mensual: un ahorro obligatorio para tu declaración anual), las imposiciones de los empleados ni el fondo de reserva para emergencias.",
         "agiaPromptTagged": "1. ROL: Consultor Finanzas Personales para Emprendedores. 2. CONTEXTO: Ventas, Insumos y Gastos fijos. 3. META: Sueldo máximo seguro. 4. RESTRICCIONES: Reserva imprevistos (20%) + Impuestos. 5. FORMATO: Plan de Retiro Mensual.",
         "previewResponse": "\"Tu sueldo seguro es de $1.050.000 líquido. Si retiras más, comprometes el flujo de caja operativo de los próximos 90 días ante cualquier caída en la demanda.\"",
         "metadata": {
@@ -646,7 +646,7 @@ const casesData = [
         "icon": "lightbulb",
         "badPrompt": "Revisa mi lista de programas y dime qué puedo cancelar para ahorrar plata.",
         "badResponsePreview": "Podrías cancelar Zoom si usas la versión gratuita y revisar si realmente necesitas Netflix en la oficina. También mira tu cuenta bancaria por si hay seguros que no conoces.",
-        "badResponseAnalysis": "Análisis superficial y no profesional. No detecta solapamiento de funciones (ej. pagar Google Workspace y Microsoft 365 al mismo tiempo) ni sugiere alternativas Open Source o 'Lifetime deals'.",
+        "badResponseAnalysis": "Análisis superficial. No detecta que estés pagando dos programas que hacen lo mismo (ej. Google Workspace y Microsoft 365) ni sugiere alternativas gratuitas o pagos únicos en vez de suscripciones mensuales.",
         "agiaPromptTagged": "1. ROL: Consultor Eficiencia TI. 2. CONTEXTO: Suscripciones actuales (Shopify, Klaviyo, Canva, Adobe). 3. META: Eliminar software redundante. 4. RESTRICCIONES: Alternativas unificadas. 5. FORMATO: Plan de Limpieza Tech.",
         "previewResponse": "\"Cancela Klaviyo si tienes menos de 1.000 leads, usa el marketing nativo de Shopify. Cancela Adobe Express, Canva Pro ya cubre esas necesidades. Ahorro anual: $320.000.\"",
         "metadata": {
@@ -660,7 +660,7 @@ const casesData = [
         "icon": "lightbulb",
         "badPrompt": "Quiero contratar un asistente por 500 mil pesos, ¿mis ventas alcanzan?",
         "badResponsePreview": "Si tienes el dinero en la cuenta ahora mismo, puedes hacerlo. Solo asegúrate de que el asistente sea productivo y te ayude a vender más para que se pague solo.",
-        "badResponseAnalysis": "Error crítico de cálculo. No considera el 'Costo Empresa' real (gratificación, leyes sociales, SIS, vacaciones), que en Chile es aprox. un 25-30% sobre el sueldo líquido.",
+        "badResponseAnalysis": "Error crítico de cálculo. No considera el 'Costo Empresa' real (lo que pagas extra por cada empleado: gratificación, AFP, salud, seguro de accidentes y vacaciones), que en Chile es aproximadamente un 25-30% más que el sueldo.",
         "agiaPromptTagged": "1. ROL: CFO para Startups. 2. CONTEXTO: Sueldo líquido $500k, Ventas actuales y Margen. 3. META: Viabilidad real y nueva meta de ventas. 4. RESTRICCIONES: Considerar Costo Empresa real. 5. FORMATO: Análisis SÍ/NO.",
         "previewResponse": "\"NO ahora. Tu costo real por ese asistente será de $680.000. Necesitas subir tus ventas mensuales a $5.8M para que la contratación no destruya tu utilidad neta.\"",
         "metadata": {
@@ -674,7 +674,7 @@ const casesData = [
         "icon": "lightbulb",
         "badPrompt": "Dime los pasos para crear una empresa en el portal de Tu Empresa en un Día.",
         "badResponsePreview": "Entra a la página, elige el tipo de empresa, llena el formulario con tus datos y los de tus socios, y luego ve a una notaría para firmar el documento final.",
-        "badResponseAnalysis": "Omite detalles críticos: no explica la diferencia tributaria entre SpA y Ltda, no menciona la importancia del capital inicial mínimo para el banco, ni el paso posterior del RUT en el SII.",
+        "badResponseAnalysis": "Omite detalles críticos: no explica la diferencia entre SpA (Sociedad por Acciones: más flexible) y Ltda (Limitada: más tradicional), no menciona el capital inicial que piden los bancos para abrirte una cuenta, ni cómo sacar tu RUT de empresa en el SII (Servicio de Impuestos Internos).",
         "agiaPromptTagged": "1. ROL: Abogado Corporativo Chile. 2. CONTEXTO: Emprendimiento de servicios con 1 socio. 3. META: Guía paso a paso técnica. 4. RESTRICCIONES: Explicar SpA vs Ltda y costos de firma. 5. FORMATO: Guía + Tabla comparativa.",
         "previewResponse": "\"Recomiendo SpA por su facilidad para vender acciones a futuro. Pasos: 1. Redacción de estatutos (ojo con el objeto social amplio). 2. Firma con Clave Única ($15k). 3. Inicio actividades SII.\"",
         "metadata": {
@@ -688,7 +688,7 @@ const casesData = [
         "icon": "lightbulb",
         "badPrompt": "Cómo registro mi nombre de marca en Chile.",
         "badResponsePreview": "Debes ir a la página de INAPI, buscar si el nombre está disponible, pagar las tasas correspondientes y esperar unos meses a que te den el certificado de registro.",
-        "badResponseAnalysis": "No identifica las 'Clases Niza'. El usuario podría registrar su marca en una categoría que no le pertenece, dejándolo desprotegido legalmente ante competidores del mismo rubro.",
+        "badResponseAnalysis": "No identifica las 'Clases Niza' (las categorías en que debes registrar tu marca: ropa, comida, servicios, etc.). Podrías registrar tu marca en la categoría equivocada y quedar desprotegido ante competidores de tu mismo rubro.",
         "agiaPromptTagged": "1. ROL: Especialista en Propiedad Intelectual. 2. CONTEXTO: Marca de ropa online. 3. META: Determinar Clases Niza correctas y riesgos de rebote. 4. RESTRICCIONES: Explicar costo en UTM. 5. FORMATO: Lista de Clases Sugeridas.",
         "previewResponse": "\"Debes registrar en Clase 25 (Vestuario) y Clase 35 (Venta online). Ojo: si tu nombre es muy genérico, INAPI te lo va a rechazar por falta de distintividad. Costo: 3 UTM.\"",
         "metadata": {
@@ -702,7 +702,7 @@ const casesData = [
         "icon": "lightbulb",
         "badPrompt": "Escribe un contrato de trabajo simple para un vendedor.",
         "badResponsePreview": "Contrato de Trabajo: El empleador contrata al trabajador como vendedor. El sueldo será de $500.000 más comisiones. El horario es de lunes a viernes. Firma aquí.",
-        "badResponseAnalysis": "Contrato legalmente débil en Chile. No incluye la cláusula de gratificación legal (Art. 47 o 50), no define la naturaleza de las comisiones ni incluye protección de propiedad intelectual o carteras de clientes.",
+        "badResponseAnalysis": "Contrato legalmente débil en Chile. No incluye la cláusula de gratificación legal (el bono obligatorio que debes pagar al trabajador), no define bien cómo se calculan las comisiones ni protege los datos de tus clientes si el vendedor se va a la competencia.",
         "agiaPromptTagged": "1. ROL: Abogado Laboral Chile. 2. CONTEXTO: Vendedor B2B con manejo de datos sensibles. 3. META: Borrador contrato robusto. 4. RESTRICCIONES: Incluir gratificación legal y confidencialidad. 5. FORMATO: Documento legal estructurado.",
         "previewResponse": "Borrador con cláusulas específicas de gratificación mensual del 25%, jornada 44h (Ley 40h progresiva) y blindaje sobre el robo de base de datos de clientes.",
         "metadata": {
