@@ -1484,13 +1484,54 @@
             if (filtered.length > 0) loadCase(filtered[0].id); // Auto-select first item
         }
 
+        // Diccionario de Sinónimos para Búsqueda Inteligente
+        const synonymMap = {
+            "venta": ["vender", "marketing", "comercial", "lead", "cliente", "negocio", "ingreso", "dinero"],
+            "marketing": ["publicidad", "anuncio", "redes", "social", "campaña", "promoción", "difusión"],
+            "texto": ["redacción", "copy", "escribir", "blog", "artículo", "guion", "email", "correo"],
+            "imagen": ["foto", "diseño", "logo", "visual", "arte", "midjourney", "dall-e", "creativo"],
+            "empresa": ["pyme", "emprendimiento", "negocio", "startup", "compañía", "marca"],
+            "legal": ["contrato", "abogado", "ley", "norma", "sii", "impuesto", "tributario"],
+            "curso": ["educación", "aprender", "taller", "clase", "enseñar", "formación"],
+            "ia": ["inteligencia", "gpt", "chatgpt", "midjourney", "claude", "bot", "automatización"],
+            "idea": ["creatividad", "brainstorming", "invención", "innovación", "concepto"],
+            "plan": ["estrategia", "calendario", "cronograma", "organización", "paso a paso"]
+        };
+
         function filterCases() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = casesData.filter(c =>
-                c.title.toLowerCase().includes(search) ||
-                c.problem.toLowerCase().includes(search) ||
-                c.category.toLowerCase().includes(search)
-            );
+            const rawInput = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!rawInput) {
+                renderList(casesData);
+                return;
+            }
+
+            // 1. Desglosar búsqueda en palabras clave
+            const searchTerms = rawInput.split(/\s+/);
+
+            // 2. Expandir con sinónimos
+            const expandedTerms = new Set(searchTerms);
+            searchTerms.forEach(term => {
+                // Buscar coincidencia parcial en claves del diccionario
+                Object.keys(synonymMap).forEach(key => {
+                    if (key.includes(term) || term.includes(key)) {
+                        synonymMap[key].forEach(syn => expandedTerms.add(syn));
+                    }
+                });
+            });
+
+            // Convertir Set a Array para iterar
+            const finalKeywords = Array.from(expandedTerms);
+
+            const filtered = casesData.filter(c => {
+                // Unir todo el texto buscable en un solo string para eficiencia
+                const content = `${c.title} ${c.problem} ${c.category} ${c.badPrompt}`.toLowerCase();
+
+                // Lógica OR: Si AL MENOS UNA de las palabras expandidas está presente
+                // Lógica AND (opcional): Si TODAS las palabras originales (expandidas) están presentes
+                // Aquí usaremos OR para maximizar resultados (mayor recall)
+                return finalKeywords.some(keyword => content.includes(keyword));
+            });
+
             renderList(filtered);
         }
 
