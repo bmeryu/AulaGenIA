@@ -711,16 +711,17 @@ const casesData = [
     },
     {
         "id": 66,
-        "category": "Legal & Formalización",
-        "title": "Términos Web: SERNAC y Garantía",
+        "category": "Estrategia & Lanzamiento",
+        "title": "Naming Maestro: Marcas Pegajosas",
         "icon": "lightbulb",
-        "badPrompt": "Escribe los términos y condiciones para mi tienda de zapatos online.",
-        "badResponsePreview": "No aceptamos devoluciones si el producto fue usado. El envío tarda 5 días. Si el zapato falla, tienes 30 días para avisarnos y lo cambiamos si tenemos stock.",
-        "badResponseAnalysis": "Ilegal según la normativa actual del SERNAC. En Chile, la garantía legal es de 6 meses (6x6) y el derecho a retracto en compras online es obligatorio a menos que se excluya explícitamente bajo ciertas condiciones.",
-        "agiaPromptTagged": "1. ROL: Consultor Derecho Digital Chile. 2. CONTEXTO: Ecommerce de calzado. 3. META: T&C conformes a Ley Pro-Consumidor. 4. RESTRICCIONES: Garantía legal 6 meses. 5. FORMATO: Texto legal claro para usuario.",
-        "previewResponse": "\"Tu política ahora cumple: Garantía legal de 6 meses para fallas de fábrica y 10 días de retracto sin preguntas. Esto evita multas millonarias del SERNAC ante reclamos.\"",
+        "problem": "Creación de activos de marca memorables y registrables (ahorro en rebranding futuro).",
+        "badPrompt": "Dame 10 nombres para mi marca de ropa de yoga.",
+        "badResponsePreview": "1. YogaStyle. 2. ZenWear. 3. Respirar Yoga. 4. FlexiRopa. 5. Paz Interior. 6. YogaMundo. 7. Loto Ropa. 8. Equilibrio. 9. Namaste. 10. Om Wear.",
+        "badResponseAnalysis": "Nombres genéricos, aburridos y probablemente ya registrados en INAPI. No tienen un concepto de marca detrás ni una sonoridad que los haga memorables o fáciles de pronunciar.",
+        "agiaPromptTagged": "1. ROL: Experto en Naming y Branding. 2. CONTEXTO: Ropa de yoga para cuerpos reales (inclusiva). 3. META: 10 nombres originales y potentes. 4. RESTRICCIONES: Evitar palabras trilladas como 'Zen' o 'Yoga'. 5. FORMATO: Lista + Significado + Disponibilidad .cl.",
+        "previewResponse": "**1. Calma Real:** Evoca honestidad y pausa.\n**2. Cuerpo Vivo:** Enfocado en el movimiento y vitalidad.\n**3. Raíz:** Conexión con la tierra. Nombres cortos, de dos sílabas, fáciles de recordar.",
         "metadata": {
-            "score": 90
+            "score": 89
         }
     },
     {
@@ -780,17 +781,33 @@ const casesData = [
         }
     },
     {
-        "id": 75,
-        "category": "Diseño & Arte Digital",
-        "title": "Thumbnail Viral YouTube",
+        "id": 74,
+        "category": "Operaciones & Procesos",
+        "title": "Arquitecto No-Code: Automatización Zapier",
         "icon": "lightbulb",
-        "badPrompt": "Dame una idea de portada para un video sobre inteligencia artificial.",
-        "badResponsePreview": "Una imagen de un robot azul sentado frente a un computador con un fondo de circuitos eléctricos y luces brillantes.",
-        "badResponseAnalysis": "Imagen saturada y extremadamente común (cliché de IA). No genera curiosidad, el robot se ve \"falso\" y no deja espacio para el texto de impacto que requiere YouTube para captar atención.",
-        "agiaPromptTagged": "1. ROL: Experto en CTR visual de YouTube. 2. CONTEXTO: Video de 5 min sobre cómo la IA reemplaza tareas aburridas. 3. META: Prompt para miniatura de alto impacto. 4. RESTRICCIONES: Colores contrastantes (Amarillo/Negro). 5. FORMATO: Prompt técnico en inglés.",
-        "previewResponse": "\"High-impact YouTube thumbnail, extreme close-up of a shocked human face looking at a floating holographic task list being checked by a minimal energy spark, bright yellow and deep black contrast, bokeh background, 3D render style, 8k resolution\"",
+        "problem": "Eliminación de horas hombre en traslado de datos manuales.",
+        "badPrompt": "Cómo conecto mi formulario de Google con mi WhatsApp.",
+        "badResponsePreview": "Puedes usar una aplicación como Zapier. Tienes que crear una cuenta, seleccionar Google Forms como origen y luego buscar una integración con WhatsApp para enviar el mensaje.",
+        "badResponseAnalysis": "Respuesta genérica. No explica la lógica de los datos (mapeo de campos), no advierte sobre los costos de la API de WhatsApp ni sugiere alternativas más baratas para Pymes (como usar Sheets de intermedio).",
+        "agiaPromptTagged": "1. ROL: Ingeniero Automatización No-Code. 2. CONTEXTO: Lead llena formulario -> Quiero alerta en mi celular. 3. META: Diseño de flujo lógico paso a paso. 4. RESTRICCIONES: Mapeo de variables. 5. FORMATO: Trigger -> Filtro -> Acción.",
+        "previewResponse": "**Workflow Sugerido:**\n1. **Trigger:** Nueva respuesta en Google Forms.\n2. **Action (Google Sheets):** Crear fila nueva (Respaldo).\n3. **Action (Pushbullet/Slack):** Enviar notificación \"¡Nuevo Cliente: [Nombre]!\" (Es gratis, a diferencia de la API oficial de WhatsApp).",
         "metadata": {
-            "score": 89
+            "score": 93
+        }
+    },
+    {
+        "id": 75,
+        "category": "Operaciones & Procesos",
+        "title": "Filtro Inteligente de Prospectos (Scoring)",
+        "icon": "lightbulb",
+        "problem": "Focalización del equipo de ventas en clientes con dinero y urgencia.",
+        "badPrompt": "Dime quiénes de estos clientes son mejores para venderles.",
+        "badResponsePreview": "Los que tienen empresas grandes parecen mejores. Los que escribieron hoy también son prioridad.",
+        "badResponseAnalysis": "Criterio subjetivo y vago. No asigna un puntaje numérico basado en datos objetivos (presupuesto, urgencia, cargo) ni define una acción inmediata.",
+        "agiaPromptTagged": "1. ROL: Director de Ventas (VP of Sales). 2. CONTEXTO: Lista de leads pegada. Criterios: Presupuesto +500k, Urgencia Alta. 3. META: Calificar leads del 1 al 10. 4. RESTRICCIONES: Justificar puntaje. 5. FORMATO: Tabla: [Nombre] | [Puntaje] | [Acción Inmediata].",
+        "previewResponse": "| Nombre | Score | Acción |\n| :--- | :--- | :--- |\n| **Pyme X (Juan)** | **9/10** | **Llamar YA.** Cumple presupuesto y tiene urgencia por multa. |\n| **Estudiante Ana** | 3/10 | Enviar email con info genérica (Bajo presupuesto). |",
+        "metadata": {
+            "score": 91
         }
     },
     {
@@ -808,100 +825,166 @@ const casesData = [
         }
     },
     {
-        "id": 80,
-        "category": "Diseño & Arte Digital",
-        "title": "Banner Profesional LinkedIn",
+        "id": 77,
+        "category": "Operaciones & Procesos",
+        "title": "Optimizador Logístico: Rutas Inteligentes",
         "icon": "lightbulb",
-        "badPrompt": "Hazme un fondo para mi perfil de LinkedIn que hable de mi trabajo en marketing.",
-        "badResponsePreview": "Una foto de un escritorio con un café, un iPhone y un Macbook abierto con gráficos de barras de colores subiendo.",
-        "badResponseAnalysis": "Imagen genérica de stock. No considera que en LinkedIn la foto de perfil tapa el lado izquierdo del banner, por lo que el contenido importante quedaría oculto.",
-        "agiaPromptTagged": "1. ROL: Personal Branding Designer. 2. CONTEXTO: Consultor experto en IA. 3. META: Imagen panorámica (aspect ratio 4:1). 4. RESTRICCIONES: Lado izquierdo libre de elementos clave. 5. FORMATO: Prompt técnico en inglés.",
-        "previewResponse": "\"Abstract panoramic background for LinkedIn, deep navy blue gradients, geometric data patterns focused on the right side, sleek 3D glass textures, minimal and clean, cinematic lighting, 4:1 aspect ratio --ar 4:1\"",
+        "problem": "Ahorro de combustible y tiempo de conducción en última milla.",
+        "badPrompt": "Tengo que ir a Maipú, Las Condes y Santiago Centro. ¿Cuál es el mejor orden?",
+        "badResponsePreview": "Podrías ir primero a Santiago Centro porque está al medio, luego a Las Condes y terminar en Maipú.",
+        "badResponseAnalysis": "No considera el tráfico de hora punta en Santiago, ni el punto de partida específico, ni la agrupación lógica por zonas (Norte, Oriente, Poniente) para evitar cruzar la ciudad dos veces.",
+        "agiaPromptTagged": "1. ROL: Coordinador Logístico. 2. CONTEXTO: Salida Independencia 10:00 AM. Puntos: Maipú, Vitacura, Centro. 3. META: Ruta anti-taco eficiente. 4. RESTRICCIONES: Agrupar por sectores. 5. FORMATO: Lista ordenada con tiempos estimados.",
+        "previewResponse": "1. **Centro (10:30):** Aprovecha que ya bajó la hora punta de entrada.\n2. **Vitacura (11:30):** Conecta por Costanera Norte (rápido a esta hora).\n3. **Maipú (13:00):** Cruza la ciudad a la hora de almuerzo (menos autos) y regresas contra el tráfico.",
         "metadata": {
             "score": 88
         }
     },
     {
-        "id": 82,
-        "category": "Diseño & Arte Digital",
-        "title": "Iconografía Web: Detalles",
+        "id": 78,
+        "category": "Operaciones & Procesos",
+        "title": "Asistente RRHH: Filtro de CVs",
         "icon": "lightbulb",
-        "badPrompt": "Necesito unos iconos de una casa, un camión y un reloj para mi página web.",
-        "badResponsePreview": "Aquí tienes: 🏠, 🚚, 🕒. Puedes usarlos en tu menú o en la sección de servicios para que se entienda mejor.",
-        "badResponseAnalysis": "Entrega emojis o imágenes de estilos diferentes. Para una web profesional, los iconos deben compartir el mismo grosor de línea, color y estilo (Line-art, Solid o Duotone) para no verse como una \"página en construcción\".",
-        "agiaPromptTagged": "1. ROL: Icon Designer Senior. 2. CONTEXTO: Marca Aula GenIA (moderna, técnica). 3. META: Set de 5 iconos coherentes. 4. RESTRICCIONES: Estilo Line Art minimalista. 5. FORMATO: Prompt técnico en inglés.",
-        "previewResponse": "\"Icon set for technology web, [house, truck, clock, gear, user], consistent thin line-art style, rounded corners, white background, isolated, vector quality, flat design, minimal --no shadows\"",
+        "problem": "Identificación de talento real y reducción de tiempo en entrevistas inútiles.",
+        "badPrompt": "Dime cuál de estos 3 currículums es mejor para vendedor.",
+        "badResponsePreview": "El candidato 2 se ve bien porque trabajó en Falabella. El candidato 1 tiene poca experiencia.",
+        "badResponseAnalysis": "Análisis superficial basado en marcas. No evalúa estabilidad laboral (rotación), logros numéricos concretos (cuánto vendió) ni brechas temporales sospechosas en el CV.",
+        "agiaPromptTagged": "1. ROL: Headhunter Senior. 2. CONTEXTO: Buscamos vendedor agresivo. CVs pegados. 3. META: Ranking de candidatos. 4. RESTRICCIONES: Detectar 'Job Hopping' y logros numéricos. 5. FORMATO: Tabla Fortalezas/Riesgos.",
+        "previewResponse": "| Candidato | Fortaleza | Bandera Roja 🚩 |\n| :--- | :--- | :--- |\n| **Juan** | Experiencia en retail grande. | Ha tenido 4 trabajos en 2 años (Baja lealtad). |\n| **Ana** | **Logro: Superó meta +15% anual.** | Vive lejos (Riesgo atrasos). |\n*Recomendación: Entrevista a Ana. El logro pesa más.*",
         "metadata": {
-            "score": 87
+            "score": 92
+        }
+    },
+    {
+        "id": 79,
+        "category": "Operaciones & Procesos",
+        "title": "Planificador de Producción Semanal",
+        "icon": "lightbulb",
+        "problem": "Cumplimiento de plazos de entrega sin colapsar al equipo el último día.",
+        "badPrompt": "Tengo que hacer 100 tortas esta semana, ayúdame a organizarme.",
+        "badResponsePreview": "Haz 20 tortas cada día de lunes a viernes y así terminas a tiempo.",
+        "badResponseAnalysis": "Planificación lineal irreal. No considera tiempos de enfriado, decoración ni empaquetado. Ignora la capacidad limitada de los hornos y el riesgo de cuellos de botella.",
+        "agiaPromptTagged": "1. ROL: Jefe de Producción Industrial. 2. CONTEXTO: 100 tortas. Capacidad: 2 hornos. Entrega viernes. 3. META: Plan de producción por lotes (Batching). 4. RESTRICCIONES: Considerar enfriado. 5. FORMATO: Cronograma AM/PM.",
+        "previewResponse": "**Lunes:** Horneado masivo (Batch 1 y 2). Solo bizcochos.\n**Martes:** Horneado final y primer relleno.\n**Miércoles:** Decoración Batch 1.\n**Jueves:** Decoración final y Empaquetado total.",
+        "metadata": {
+            "score": 90
+        }
+    },
+    {
+        "id": 80,
+        "category": "Operaciones & Procesos",
+        "title": "Generador de Scripts Excel (Macros)",
+        "icon": "lightbulb",
+        "problem": "Automatización de tareas repetitivas en hojas de cálculo.",
+        "badPrompt": "Cómo hago que en Excel se pinten de rojo las celdas que dicen 'Vencido'.",
+        "badResponsePreview": "Usa el formato condicional. Selecciona las celdas, busca 'reglas para resaltar' y pon que sea igual a 'Vencido'.",
+        "badResponseAnalysis": "Instrucción vaga para un usuario no experto. No entrega la fórmula exacta ni explica cómo aplicarla a toda una columna automáticamente.",
+        "agiaPromptTagged": "1. ROL: Experto Excel Avanzado. 2. CONTEXTO: Pintar facturas vencidas (Fecha < Hoy). 3. META: Fórmula Formato Condicional exacta. 4. RESTRICCIONES: Paso a paso a prueba de tontos. 5. FORMATO: Guía 1-2-3 + Fórmula.",
+        "previewResponse": "1. Selecciona columna Fechas. 2. Formato Condicional > Nueva Regla > Fórmula.\n**Pegar esto:** `=Y(A2<HOY(); B2=\"Pendiente\")`\n3. Elegir relleno Rojo.",
+        "metadata": {
+            "score": 89
+        }
+    },
+    {
+        "id": 81,
+        "category": "Operaciones & Procesos",
+        "title": "Auditor de Ciberseguridad: Higiene Digital",
+        "icon": "lightbulb",
+        "problem": "Prevención de pérdida catastrófica de datos o robo de cuentas bancarias.",
+        "badPrompt": "Es segura mi contraseña 'Empresa2024'?",
+        "badResponsePreview": "No, es muy insegura. Deberías ponerle mayúsculas, números y símbolos como 'Empresa2024!'.",
+        "badResponseAnalysis": "Consejo cosmético. Agregar un signo de exclamación no protege contra ataques modernos. No menciona la autenticación de dos pasos (2FA) ni gestores de contraseñas.",
+        "agiaPromptTagged": "1. ROL: Consultor Ciberseguridad Pyme. 2. CONTEXTO: Claves en Excel compartido. 3. META: Plan choque seguridad. 4. RESTRICCIONES: Herramientas gratuitas. 5. FORMATO: Semáforo Riesgos Críticos.",
+        "previewResponse": "🔴 **Crítico:** Borra el Excel de claves YA. Instala **Bitwarden** (Gratis).\n🔴 **Crítico:** Activa el 2FA en el Instagram de la empresa (Google Authenticator, no SMS). Es el activo más robado hoy.",
+        "metadata": {
+            "score": 94
+        }
+    },
+    {
+        "id": 82,
+        "category": "Operaciones & Procesos",
+        "title": "Estandarizador de Inventario (SKU)",
+        "icon": "lightbulb",
+        "problem": "Orden lógico en bodega y reducción de errores de despacho.",
+        "badPrompt": "Cómo le pongo nombre a mis productos para que no se me desordene el stock.",
+        "badResponsePreview": "Ponle un nombre corto y un número. Por ejemplo: Polera1, Polera2.",
+        "badResponseAnalysis": "Sistema no escalable. Cuando tengas 100 poleras, 'Polera99' no te dirá nada sobre la talla, color o modelo, causando caos en bodega.",
+        "agiaPromptTagged": "1. ROL: Gestor de Inventarios. 2. CONTEXTO: Ropa bebé (Talla, Color, Tela). 3. META: Sistema códigos SKU lógico. 4. RESTRICCIONES: Legible por humanos. 5. FORMATO: Glosario + Ejemplos.",
+        "previewResponse": "**Estructura:** [CATEGORÍA]-[PRENDA]-[TALLA]-[COLOR]\n**Ejemplos:**\n- BEB-BODY-03M-AZU (Body Bebé 3 Meses Azul)\n- NIÑ-POL-04T-ROJ (Polera Niño Talla 4 Roja)",
+        "metadata": {
+            "score": 88
         }
     },
     {
         "id": 83,
-        "category": "Tecnología & Herramientas",
-        "title": "CTO Personal: Tu Stack de IA",
+        "category": "Liderazgo & Equipos",
+        "title": "El Delegador Maestro: Niveles de Autoridad",
         "icon": "lightbulb",
-        "problem": "Automatización masiva con herramientas baratas. Eficiencia tecnológica.",
-        "badPrompt": "Dime qué programas de inteligencia artificial me recomiendas para mi negocio de ropa.",
-        "badResponsePreview": "Te recomiendo usar ChatGPT para escribir textos, Canva para hacer los diseños de Instagram y Midjourney si necesitas fotos de modelos. Son los más conocidos.",
-        "badResponseAnalysis": "Recomendación de herramientas aisladas. No explica cómo se conectan entre sí (workflow), no considera el presupuesto ni la curva de aprendizaje del usuario.",
-        "agiaPromptTagged": "1. ROL: Consultor CTO (Chief Technology Officer). 2. CONTEXTO: E-commerce de ropa, presupuesto bajo, 1 persona operando. 3. META: Recomendar Stack ideal (3 apps) y su conexión. 4. RESTRICCIONES: Fáciles de usar. 5. FORMATO: Tabla de Ecosistema.",
-        "previewResponse": "\"Tu Stack: 1. **ManyChat** (Ventas automáticas en IG), 2. **Canva Pro** (Diseño con IA Magic Media), 3. **ChatGPT Plus** (Tu cerebro estratégico para promociones). Conexión: ManyChat capta el lead -> ChatGPT genera el copy -> Canva lo visualiza.\"",
+        "problem": "Liberación de tiempo del dueño sin perder el control del negocio.",
+        "badPrompt": "Dime cómo decirle a mi asistente que vea mi correo.",
+        "badResponsePreview": "Hola, necesito que desde mañana revises mi correo y me avises si hay algo urgente. Gracias.",
+        "badResponseAnalysis": "Delegación 'abierta' peligrosa. No define qué es 'urgente', no establece límites de decisión ni crea un sistema de reporte.",
+        "agiaPromptTagged": "1. ROL: Experto Liderazgo Situacional. 2. CONTEXTO: Delegar Inbox a junior. 3. META: Instrucción con límites. 4. RESTRICCIONES: Definir Nivel Autoridad (1: Investiga, 2: Propone, 3: Actúa). 5. FORMATO: Protocolo Delegación.",
+        "previewResponse": "**Regla de Oro:**\n- Tienes **Nivel 3** en facturas (Envíalas a contabilidad directo).\n- Tienes **Nivel 2** en reclamos (Redacta el borrador, yo lo apruebo antes de enviar).",
         "metadata": {
             "score": 96
         }
     },
     {
         "id": 84,
-        "category": "Tecnología & Herramientas",
-        "title": "Comparador de IAs: Elige Bien",
+        "category": "Liderazgo & Equipos",
+        "title": "Perfil de Cargo 'Imán de Talento'",
         "icon": "lightbulb",
-        "badPrompt": "Cuál IA es mejor: ¿ChatGPT o Claude?.",
-        "badResponsePreview": "Ambas son buenas. ChatGPT es más famosa y tiene más funciones, pero Claude escribe muy bien. Te recomiendo probar las dos y ver cuál te gusta más.",
-        "badResponseAnalysis": "Respuesta subjetiva y sin datos. No diferencia por casos de uso específicos (análisis de datos vs. redacción creativa) ni menciona las limitaciones de las versiones gratuitas.",
-        "agiaPromptTagged": "1. ROL: Experto en LLMs (Modelos de Lenguaje). 2. CONTEXTO: Necesidad de analizar archivos Excel pesados y redactar correos humanos. 3. META: Mejor modelo según tarea. 4. RESTRICCIONES: Versiones actuales (2024). 5. FORMATO: Veredicto + Truco de uso.",
-        "previewResponse": "\"Veredicto: Usa **Claude 3.5 Sonnet** para correos (tono mucho más humano y menos clichés) y **ChatGPT (GPT-4o)** para el Excel (su herramienta de Data Analysis es superior).\"",
+        "problem": "Atracción de candidatos proactivos alineados con la cultura.",
+        "badPrompt": "Escribe un aviso para contratar a un Community Manager.",
+        "badResponsePreview": "Busco Community Manager que sepa usar Instagram y TikTok. Pago conversable. Mandar currículum al correo.",
+        "badResponseAnalysis": "Aviso plano que atraerá a cualquiera. No vende la visión de la empresa ni desafía al candidato, resultando en postulaciones de baja calidad.",
+        "agiaPromptTagged": "1. ROL: Reclutador Senior. 2. CONTEXTO: Pyme educativa innovadora. 3. META: Aviso que filtre a los mediocres. 4. RESTRICCIONES: Incluir 'Misión del Cargo'. 5. FORMATO: Título + Misión + Desafío.",
+        "previewResponse": "**Título:** ¿Eres el CM que odia el contenido aburrido?\n**Tu Misión:** No es 'postear fotos', es convertir seguidores en alumnos apasionados usando storytelling. Si buscas un trabajo de 9 a 5 para calentar el asiento, esto no es para ti.",
         "metadata": {
-            "score": 92
+            "score": 91
         }
     },
     {
         "id": 85,
-        "category": "Tecnología & Herramientas",
-        "title": "Prompt Chaining: Procesos Pro",
+        "category": "Liderazgo & Equipos",
+        "title": "Feedback Constructivo: Técnica Sandwich Pro",
         "icon": "lightbulb",
-        "badPrompt": "Hazme un curso online completo sobre cómo cocinar pan de masa madre.",
-        "badResponsePreview": "Módulo 1: Introducción. Módulo 2: Ingredientes. Módulo 3: Fermentación. Módulo 4: Horneado. (Sigue un texto largo y genérico).",
-        "badResponseAnalysis": "Intenta hacer todo en un solo paso. Esto causa que la IA alucine, pierda calidad en los detalles y entregue un contenido superficial que no sirve para un curso real.",
-        "agiaPromptTagged": "1. ROL: Ingeniero de Prompts. 2. CONTEXTO: Creación de infoproducto de alta calidad. 3. META: 3 prompts encadenados. 4. RESTRICCIONES: No mezclar tareas. 5. FORMATO: Prompt 1 -> Prompt 2 -> Prompt 3.",
-        "previewResponse": "\"Prompt 1: Diseña el temario pedagógico. Prompt 2: Redacta el guion detallado del Módulo 1 basado en el temario aprobado. Prompt 3: Crea el examen de certificación para el Módulo 1.\"",
-        "metadata": {
-            "score": 94
-        }
-    },
-    {
-        "id": 86,
-        "category": "Tecnología & Herramientas",
-        "title": "Auditoría de Suscripciones Tech",
-        "icon": "lightbulb",
-        "badPrompt": "Dime qué programas puedo dejar de pagar si ya tengo ChatGPT Plus.",
-        "badResponsePreview": "Podrías dejar de pagar traductores online o algunos correctores de texto, porque ChatGPT ya hace esas cosas bastante bien por ti.",
-        "badResponseAnalysis": "No analiza el solapamiento de funciones avanzadas (ej: Jasper, Copy.ai, o herramientas de análisis de datos básicas) que ChatGPT Plus ya integra de forma nativa, ahorrando cientos de dólares.",
-        "agiaPromptTagged": "1. ROL: Consultor TI (Tecnologías de Información). 2. CONTEXTO: Suscripciones actuales: Copy.ai ($20/mo), Grammarly ($12/mo). 3. META: IA 'todo en uno'. 4. RESTRICCIONES: Ahorro máximo. 5. FORMATO: Plan de Consolidación.",
-        "previewResponse": "\"Cancela Copy.ai y Grammarly hoy. Con un Prompt Maestro de revisión en ChatGPT Plus obtienes mejores resultados. Ahorro inmediato: $32.000 mensuales.\"",
+        "problem": "Corrección de errores sin dañar la moral del equipo.",
+        "badPrompt": "Cómo le digo a mi diseñador que su trabajo quedó feo.",
+        "badResponsePreview": "Dile que no te gustó, que se ve poco profesional y que esperabas algo mejor. Sé honesto para que aprenda.",
+        "badResponseAnalysis": "Feedback destructivo y subjetivo ('feo'). Genera defensa y desmotivación en el empleado.",
+        "agiaPromptTagged": "1. ROL: Coach Alto Rendimiento. 2. CONTEXTO: Logo no cumple identidad. 3. META: Feedback correctivo motivante. 4. RESTRICCIONES: Modelo SBI (Situación-Comportamiento-Impacto). 5. FORMATO: Guion conversación.",
+        "previewResponse": "**\"Valoro tu rapidez (Pan). El uso de Comic Sans impacta nuestra percepción de seriedad ante clientes corporativos (Relleno). Sé que puedes ajustarlo a la tipografía del manual (Pan).\"**",
         "metadata": {
             "score": 90
         }
     },
     {
-        "id": 87,
-        "category": "Tecnología & Herramientas",
-        "title": "Arquitecto GPTs: Instrucciones",
+        "id": 86,
+        "category": "Liderazgo & Equipos",
+        "title": "Mediador de Conflictos: Gana-Gana",
         "icon": "lightbulb",
-        "badPrompt": "Ayúdame a crear un GPT que sea experto en leyes chilenas.",
-        "badResponsePreview": "Debes poner en la configuración: 'Eres un experto en leyes de Chile y vas a responder todas mis dudas de forma amable y profesional'.",
-        "badResponseAnalysis": "Instrucción demasiado vaga. El bot se saldrá del personaje, dará consejos legales peligrosos o mezclará leyes de otros países si no tiene \"barreras\" técnicas y un tono definido.",
-        "agiaPromptTagged": "1. ROL: Especialista en System Prompts. 2. CONTEXTO: Función [Consultor Laboral] y Personalidad [Directo]. 3. META: Instrucciones de configuración (System Message). 4. RESTRICCIONES: Casos borde (no dar consejos médicos). 5. FORMATO: Bloque de código.",
-        "previewResponse": "\"Instrucciones: Actúa exclusivamente bajo el Código del Trabajo Chileno. Nunca respondas con 'Depende', siempre cita el artículo si es posible. Si no sabes, di: 'Este caso requiere un abogado'.\"",
+        "problem": "Resolución de problemas operativos derivados de roces personales.",
+        "badPrompt": "Mis empleados pelean por la camioneta de reparto. Qué hago.",
+        "badResponsePreview": "Haz un calendario donde la usen mitad y mitad. Si siguen peleando, amenaza con despedirlos.",
+        "badResponseAnalysis": "Solución parche. No investiga la causa raíz (¿las rutas se solapan?) y el calendario arbitrario puede afectar las ventas.",
+        "agiaPromptTagged": "1. ROL: Mediador Laboral. 2. CONTEXTO: Vendedor vs Repartidor por activo. 3. META: Acuerdo operativo justo. 4. RESTRICCIONES: Foco eficiencia negocio. 5. FORMATO: Guion Reunión.",
+        "previewResponse": "**\"El objetivo no es quién gana la camioneta, es cómo entregamos más. Solución: Vendedor usa Uber corporativo para visitas cercanas (más barato) y la camioneta queda para cargas pesadas.\"**",
+        "metadata": {
+            "score": 92
+        }
+    },
+    {
+        "id": 87,
+        "category": "Liderazgo & Equipos",
+        "title": "Entrevista de Selección: Preguntas Filtro",
+        "icon": "lightbulb",
+        "problem": "Detección de mentiras o incompetencias antes de contratar.",
+        "badPrompt": "Qué le pregunto a alguien que quiere ser mi asistente.",
+        "badResponsePreview": "¿Tienes experiencia? ¿Sabes usar Excel? ¿Dónde vives? ¿Cuánto quieres ganar?",
+        "badResponseAnalysis": "Preguntas cerradas o hipotéticas que se responden con un simple 'Sí'. No predicen comportamiento real.",
+        "agiaPromptTagged": "1. ROL: Psicólogo Organizacional. 2. CONTEXTO: Asistente. Miedo: Que sea lento o deshonesto. 3. META: 5 preguntas conductuales. 4. RESTRICCIONES: Basadas en hechos pasados. 5. FORMATO: Pregunta | Qué buscar.",
+        "previewResponse": "**Pregunta:** \"Cuéntame de la última vez que cometiste un error grave en el trabajo. ¿Cómo lo solucionaste?\"\n**Qué buscar:** Si culpa a otros o si asume responsabilidad y muestra aprendizaje.",
         "metadata": {
             "score": 93
         }
@@ -923,44 +1006,47 @@ const casesData = [
     },
     {
         "id": 89,
-        "category": "Tecnología & Herramientas",
-        "title": "Perplexity Pro: Inteligencia Mercado",
+        "category": "Liderazgo & Equipos",
+        "title": "Checklist Onboarding: Primer Día Inolvidable",
         "icon": "lightbulb",
-        "badPrompt": "Busca noticias sobre el precio de las paltas en Chile hoy día.",
-        "badResponsePreview": "El precio de la palta en Chile ha subido últimamente debido a la sequía y la baja producción. En los supermercados puede llegar a los 6 mil pesos el kilo.",
-        "badResponseAnalysis": "Respuesta vaga y sin fuentes. No entrega datos comparativos por regiones, no menciona el impacto en el IPC del mes ni ofrece enlaces directos a informes oficiales de la ODEPA para tomar decisiones de compra mayorista.",
-        "agiaPromptTagged": "1. ROL: Investigador de Mercado Senior. 2. CONTEXTO: Análisis de costos de insumos para restaurante. 3. META: Datos reales, comparación regional y links. 4. RESTRICCIONES: Fuentes < 15 días. 5. FORMATO: Informe citado con fuentes web.",
-        "previewResponse": "\"Informe Palta Hass (22 Dic): Precio promedio Lo Valledor $4.200/kg (Baja 5% vs semana anterior). Supermercados RM: $5.990/kg. Fuente: [Link ODEPA], [Link Diario Financiero]. Recomendación: Comprar stock ahora antes del feriado.\"",
+        "problem": "Acelera la productividad del nuevo empleado desde el día 1.",
+        "badPrompt": "Qué hago con el empleado nuevo el primer día.",
+        "badResponsePreview": "Dale las llaves, preséntalo al equipo y pásale los manuales para que lea.",
+        "badResponseAnalysis": "Onboarding frío. El empleado pasará el día leyendo sin entender, sintiéndose solo y sin producir valor real.",
+        "agiaPromptTagged": "1. ROL: Gerente Cultura. 2. CONTEXTO: Pyme servicios. 3. META: Onboarding 4 horas productividad. 4. RESTRICCIONES: Gesto humano + Configuración técnica. 5. FORMATO: Cronograma Hora a Hora.",
+        "previewResponse": "**09:00:** Café bienvenida (No trabajo).\n**10:00:** Entrega \"Kit Supervivencia\" (Claves listas, nada de esperar al informático).\n**12:00:** Primera Victoria: Asignar tarea simple que pueda cerrar con éxito antes de almorzar.",
         "metadata": {
-            "score": 92
+            "score": 91
         }
     },
     {
         "id": 90,
-        "category": "Tecnología & Herramientas",
-        "title": "IA para Datos Masivos: Ventas",
+        "category": "Liderazgo & Equipos",
+        "title": "Facilitador Daily: Reuniones Ágiles",
         "icon": "lightbulb",
-        "badPrompt": "Analiza este Excel de ventas del año y dime qué producto se vendió más.",
-        "badResponsePreview": "El producto más vendido fue la 'Polera Negra Talla L' con un total de 500 unidades en el año. Felicidades por tus ventas.",
-        "badResponseAnalysis": "Análisis simplista. No identifica la estacionalidad (cuándo se vendió), no calcula el margen de contribución real (si dejó plata o no) ni detecta que el 80% de las ventas vienen de solo 3 clientes específicos (Ley de Pareto).",
-        "agiaPromptTagged": "1. ROL: Científico de Datos de Negocios. 2. CONTEXTO: Excel de ventas de 12 meses. 3. META: Hallar productos de máximo margen y fuga de clientes. 4. RESTRICCIONES: Lenguaje simple para el dueño. 5. FORMATO: 3 Insights Estratégicos.",
-        "previewResponse": "\"Insight 1: Tu producto más vendido (Polera L) tiene el margen más bajo (10%). Estás trabajando mucho para ganar poco. Insight 2: El 60% de tus clientes de Enero no volvió en todo el año (Fuga crítica). Insight 3: Los Jueves a las 21:00 es cuando más te compran por la web.\"",
+        "problem": "Eliminación de reuniones eternas. Foco en desbloqueo.",
+        "badPrompt": "Cómo hago una reunión rápida en la mañana.",
+        "badResponsePreview": "Junta a todos y que cada uno cuente en qué está. Trata de que no hablen mucho.",
+        "badResponseAnalysis": "Sin estructura, las 'Dailys' se convierten en sesiones de quejas interminables.",
+        "agiaPromptTagged": "1. ROL: Scrum Master. 2. CONTEXTO: Equipo remoto. 3. META: Daily 15 minutos exactos. 4. RESTRICCIONES: Las 3 Preguntas Clave. Prohibido solucionar problemas ahí. 5. FORMATO: Reglas del Juego.",
+        "previewResponse": "**Regla:** Cada uno tiene 2 minutos.\n1. ¿Qué logré ayer?\n2. ¿Qué haré hoy?\n3. **¿Qué me lo impide? (Bloqueo)** -> Aquí el líder actúa.",
         "metadata": {
             "score": 94
         }
     },
     {
         "id": 91,
-        "category": "Tecnología & Herramientas",
-        "title": "Ciberseguridad Pyme: Blindaje",
+        "category": "Liderazgo & Equipos",
+        "title": "Definidor de KPIs (Qué medir)",
         "icon": "lightbulb",
-        "badPrompt": "Dime cómo puedo proteger mi WhatsApp para que no me lo roben.",
-        "badResponsePreview": "Para proteger tu WhatsApp debes poner una contraseña difícil y no compartir tu código de verificación con nadie que te lo pida por mensaje.",
-        "badResponseAnalysis": "Consejo básico. No explica cómo activar la 'Verificación en dos pasos' (2FA) de forma técnica, no menciona el riesgo de las estafas por 'Buzoneo' ni ofrece un protocolo de recuperación si el robo ya ocurrió.",
-        "agiaPromptTagged": "1. ROL: Experto en Ciberseguridad para Pymes. 2. CONTEXTO: Uso de WhatsApp Business para ventas. 3. META: Protocolo de Higiene Digital. 4. RESTRICCIONES: Herramientas gratuitas. 5. FORMATO: Checklist de Blindaje.",
-        "previewResponse": "\"Checklist Crítico: 1. Activar 2FA en Ajustes > Cuenta. 2. Desactivar previsualización de mensajes en pantalla bloqueada. 3. Configurar PIN de correo de recuperación. 4. Instalar Bitwarden para gestionar claves únicas. Hazlo hoy o arriesgas perder tu base de datos de clientes.\"",
+        "problem": "Control de gestión real más allá de la 'sensación' del dueño.",
+        "badPrompt": "Cómo sé si mi vendedor está trabajando bien.",
+        "badResponsePreview": "Mira cuánto vendió al mes y compáralo con el mes pasado.",
+        "badResponseAnalysis": "Indicador tardío (Lagging). Si esperas a fin de mes para saber que no vendió, ya perdiste el mes.",
+        "agiaPromptTagged": "1. ROL: Director Operaciones. 2. CONTEXTO: Vendedor B2B. 3. META: 3 KPIs (Actividad, Calidad, Resultado). 4. RESTRICCIONES: Métricas predictivas. 5. FORMATO: Tabla KPIs.",
+        "previewResponse": "1. **Actividad:** Llamadas salientes por día (Control diario).\n2. **Calidad:** Tasa de conversión Cita/Venta.\n3. **Resultado:** Margen generado (no solo venta bruta).",
         "metadata": {
-            "score": 88
+            "score": 92
         }
     },
     {
@@ -979,87 +1065,92 @@ const casesData = [
     },
     {
         "id": 93,
-        "category": "Estrategia & Lanzamiento",
-        "title": "Validador de Ideas 'Pies en la Tierra'",
+        "category": "Otros / Análisis",
+        "title": "Analista de Ventas (BI)",
         "icon": "lightbulb",
-        "problem": "Evita perder millones de pesos en una idea que no tiene mercado real.",
-        "badPrompt": "Dime si es buena idea poner un local de comida para perros a domicilio en mi barrio.",
-        "badResponsePreview": "Sí, es una buena idea porque mucha gente tiene mascotas hoy en día y valoran la comodidad de recibir la comida en su casa. Deberías hacerlo.",
-        "badResponseAnalysis": "Respuesta de 'sí a todo'. No cuestiona la densidad de mascotas, el costo del delivery (bencina), la competencia de supermercados ni el margen real por saco vendido.",
-        "agiaPromptTagged": "1. ROL: Consultor Lean Startup. 2. CONTEXTO: Idea de negocio local. Público: Ñuñoa/Providencia. 3. META: Prueba de estrés de rentabilidad. 4. RESTRICCIONES: Identificar 3 fallas fatales. Tono crítico. 5. FORMATO: Semáforo + 2 Experimentos de validación.",
-        "previewResponse": "🔴 **Riesgo Fatal:** El costo del despacho matará tu margen si la ruta no está optimizada.\n🟡 **Riesgo Medio:** Fidelización difícil; la gente busca el precio más bajo en marcas grandes.\n**Experimento sugerido:** Crea una Landing Page hoy con $5.000 de Ads. Si nadie deja su correo, la idea no vuela.",
+        "problem": "Detección de patrones ocultos para aumentar ticket promedio.",
+        "badPrompt": "Mira mis ventas de este mes y dime cómo me fue.",
+        "badResponsePreview": "Vendiste 5 millones. El producto más vendido fue la polera roja.",
+        "badResponseAnalysis": "Reporte descriptivo básico. No cruza variables (hora de compra, productos combinados) para dar insights accionables.",
+        "agiaPromptTagged": "1. ROL: Analista BI. 2. CONTEXTO: CSV Ventas mes. 3. META: Patrones ocultos. 4. RESTRICCIONES: ¿Qué compran juntos? ¿Hora peak? 5. FORMATO: 3 Hallazgos de Oro.",
+        "previewResponse": "**Hallazgo:** El 40% de quienes compran la 'Polera Roja' también llevan 'Calcetines Negros'.\n**Acción:** Crea un Pack 'Urbano' con ambos productos y sube el ticket promedio en un 15%.",
+        "metadata": {
+            "score": 96
+        }
+    },
+    {
+        "id": 94,
+        "category": "Otros / Análisis",
+        "title": "Detector de Sentimientos (Reviews)",
+        "icon": "lightbulb",
+        "problem": "Mejora de producto basada en feedback masivo real.",
+        "badPrompt": "Resume los comentarios que dejaron los clientes.",
+        "badResponsePreview": "A la mayoría le gusta, pero algunos se quejan del envío.",
+        "badResponseAnalysis": "Demasiado general. No especifica qué del envío (¿lento? ¿roto? ¿caro?) ni cuantifica la gravedad del problema.",
+        "agiaPromptTagged": "1. ROL: Especialista CX. 2. CONTEXTO: 50 reviews pegadas. 3. META: Análisis sentimiento profundo. 4. RESTRICCIONES: Dolores recurrentes y 'Lo que nadie dice'. 5. FORMATO: Tabla Categoría/Sentimiento.",
+        "previewResponse": "**Dolor Crítico:** 8 clientes mencionan que la caja llega aplastada. Aunque el producto está bien, la experiencia de 'unboxing' es terrible.",
+        "metadata": {
+            "score": 90
+        }
+    },
+    {
+        "id": 95,
+        "category": "Otros / Análisis",
+        "title": "La Regla de Pareto: 80/20 Clientes",
+        "icon": "lightbulb",
+        "problem": "Optimización extrema de recursos enfocándose en clientes rentables.",
+        "badPrompt": "Dime quiénes son mis mejores clientes.",
+        "badResponsePreview": "Juan y María han comprado harto.",
+        "badResponseAnalysis": "Análisis lineal. No cruza rentabilidad ni riesgo de fuga.",
+        "agiaPromptTagged": "1. ROL: Estratega Rentabilidad. 2. CONTEXTO: Lista ventas anuales. 3. META: Identificar el 20% que hace el 80% utilidad. 4. RESTRICCIONES: Estrategia retención VIP. 5. FORMATO: Lista VIP + Acción Mimo.",
+        "previewResponse": "**Alerta:** Solo 5 clientes te generan el 75% de tu sueldo.\n**Acción:** A esos 5, envíales un regalo físico a fin de año. Si pierdes a uno, tu negocio tiembla.",
+        "metadata": {
+            "score": 97
+        }
+    },
+    {
+        "id": 96,
+        "category": "Otros / Análisis",
+        "title": "Análisis de Embudo: Fugas Web",
+        "icon": "lightbulb",
+        "problem": "Recuperación de ventas perdidas por fricción técnica.",
+        "badPrompt": "Mucha gente visita mi web pero nadie compra.",
+        "badResponsePreview": "Mejora el diseño y baja los precios.",
+        "badResponseAnalysis": "Diagnóstico de escopeta. No analiza métricas para saber DÓNDE se van.",
+        "agiaPromptTagged": "1. ROL: Experto CRO. 2. CONTEXTO: 1000 visitas -> 100 carritos -> 2 ventas. 3. META: Diagnóstico fuga. 4. RESTRICCIONES: Fricción checkout. 5. FORMATO: Hipótesis + Solución.",
+        "previewResponse": "**Diagnóstico:** Caída del 98% en Checkout.\n**Causa:** Costo de envío sorpresa al final asusta al cliente.\n**Solución:** Pon calculador de envíos en la ficha de producto.",
         "metadata": {
             "score": 95
         }
     },
     {
-        "id": 94,
-        "category": "Estrategia & Lanzamiento",
-        "title": "Arquitecto de Avatar: El Cliente Ideal",
-        "icon": "lightbulb",
-        "badPrompt": "Quién compraría mi curso de repostería saludable.",
-        "badResponsePreview": "Tu cliente ideal son mujeres de 25 a 45 años, que viven en ciudades grandes, les gusta comer sano y tienen interés por la cocina y el bienestar.",
-        "badResponseAnalysis": "Perfil demográfico vacío. No explica el 'dolor' (ej. la culpa de darle azúcar a sus hijos), no sabe qué cuentas de Instagram sigue ni qué palabras usa para buscar soluciones a su problema.",
-        "agiaPromptTagged": "1. ROL: Psicólogo del Consumidor. 2. CONTEXTO: Curso de repostería sin azúcar para diabéticos y niños. 3. META: Perfil psicográfico detallado del Avatar. 4. RESTRICCIONES: Deseos profundos y miedos. 5. FORMATO: Ficha de Personaje.",
-        "previewResponse": "\"Perfil: 'Carla, la mamá protectora'. Su mayor miedo es que su hijo se sienta excluido en los cumpleaños por no poder comer la torta. Su deseo no es 'aprender a cocinar', es ver a su hijo feliz sin poner en riesgo su salud.\"",
-        "metadata": {
-            "score": 92
-        }
-    },
-    {
-        "id": 95,
-        "category": "Estrategia & Lanzamiento",
-        "title": "Naming Maestro: Marcas Pegajosas",
-        "icon": "lightbulb",
-        "badPrompt": "Dame 10 nombres para mi marca de ropa de yoga.",
-        "badResponsePreview": "1. YogaStyle. 2. ZenWear. 3. Respirar Yoga. 4. FlexiRopa. 5. Paz Interior. 6. YogaMundo. 7. Loto Ropa. 8. Equilibrio. 9. Namaste. 10. Om Wear.",
-        "badResponseAnalysis": "Nombres genéricos, aburridos y probablemente ya registrados en INAPI. No tienen un concepto de marca detrás ni una sonoridad que los haga memorables o fáciles de pronunciar.",
-        "agiaPromptTagged": "1. ROL: Experto en Naming y Branding. 2. CONTEXTO: Ropa de yoga para cuerpos reales (inclusiva). 3. META: 10 nombres originales y potentes. 4. RESTRICCIONES: Evitar palabras trilladas como 'Zen' o 'Yoga'. 5. FORMATO: Lista + Significado + Disponibilidad .cl.",
-        "previewResponse": "\"1. **Calma Real:** Evoca honestidad. 2. **Cuerpo Vivo:** Enfocado en el movimiento. 3. **Raíz:** Conexión con la tierra. Nombres cortos, de dos sílabas, fáciles de recordar y con dominios disponibles.\"",
-        "metadata": {
-            "score": 88
-        }
-    },
-    {
-        "id": 96,
-        "category": "Estrategia & Lanzamiento",
-        "title": "Propuesta Única: Diferenciación",
-        "icon": "lightbulb",
-        "badPrompt": "Dime por qué los clientes deberían comprarme a mí y no a mi competencia.",
-        "badResponsePreview": "Deberían comprarte porque tienes buena calidad, precios competitivos, una excelente atención al cliente y mucha experiencia en lo que haces.",
-        "badResponseAnalysis": "La respuesta de todos los negocios del mundo. No identifica un factor diferenciador real (como rapidez, especialización única o una garantía imbatible) que haga que la competencia sea irrelevante.",
-        "agiaPromptTagged": "1. ROL: Estratega de Diferenciación de Negocios. 2. CONTEXTO: Servicio de comida para mascotas vs Supermercados. 3. META: Frase de 15 palabras de 'Por qué yo'. 4. RESTRICCIONES: Prohibido usar la palabra 'calidad'. 5. FORMATO: 3 Variaciones de UVP.",
-        "previewResponse": "\"Variación 1: 'Programamos los pedidos según el apetito de tu perro: nunca más se quedará sin comida'. Esto resuelve la logística, no solo el hambre. Es una promesa de tranquilidad.\"",
-        "metadata": {
-            "score": 93
-        }
-    },
-    {
         "id": 97,
-        "category": "Estrategia & Lanzamiento",
-        "title": "Estructurador MVP: Lanza en 48h",
+        "category": "Otros / Análisis",
+        "title": "Pronóstico de Demanda (Forecasting)",
         "icon": "lightbulb",
-        "badPrompt": "Cómo empiezo mi negocio de venta de flores a domicilio paso a paso.",
-        "badResponsePreview": "1. Busca un local. 2. Compra muebles. 3. Busca proveedores de flores. 4. Contrata a un repartidor. 5. Crea una página web profesional. 6. Abre tus redes sociales.",
-        "badResponseAnalysis": "Plan de alto costo y lento. Propone invertir dinero antes de validar si hay gente dispuesta a comprar, lo que aumenta el riesgo de fracaso total en los primeros 3 meses.",
-        "agiaPromptTagged": "1. ROL: Product Manager de Startups. 2. CONTEXTO: Flores a domicilio. Presupuesto: $100.000. 3. META: Versión mínima para vender en 48h. 4. RESTRICCIONES: Sin programar. 5. FORMATO: Plan Día 1 y Día 2.",
-        "previewResponse": "\"Día 1: Toma fotos a ramos en el terminal de flores. Súbelas a Instagram con un link de WhatsApp. Día 2: Invierte $10k en Ads para tu barrio. Si vendes, compras las flores y las entregas tú mismo. Valida el mercado antes de comprar el local.\"",
+        "problem": "Evita quiebres de stock o sobre-stock (dinero parado).",
+        "badPrompt": "Cuánto voy a vender el próximo mes.",
+        "badResponsePreview": "Seguramente vendas parecido a este mes, unos 4 millones.",
+        "badResponseAnalysis": "Proyección estática. No considera tendencia de crecimiento mensual ni estacionalidad.",
+        "agiaPromptTagged": "1. ROL: Data Scientist Retail. 2. CONTEXTO: Ventas últimos 6 meses. 3. META: Proyección 3 meses. 4. RESTRICCIONES: Tasa crecimiento promedio. 5. FORMATO: Escenario Conservador vs Optimista.",
+        "previewResponse": "**Proyección:** Vienes creciendo al 10% mensual.\n- **Mes 1:** $4.4M\n- **Mes 2:** $4.8M\n*Alerta:* Necesitas comprar un 20% más de stock hoy para no quebrar en Mes 2.",
         "metadata": {
-            "score": 94
+            "score": 91
         }
     },
     {
         "id": 98,
-        "category": "Estrategia & Lanzamiento",
-        "title": "Análisis Competencia 'Detective'",
+        "category": "Otros / Análisis",
+        "title": "Auditoría de Ads: ROI Real",
         "icon": "lightbulb",
-        "badPrompt": "Quiénes son mis competidores en el rubro de las joyas de plata en Santiago.",
-        "badResponsePreview": "Tus competidores son tiendas como Joyas Barón, Swarovski y muchos emprendedores que venden por Instagram y en ferias artesanales en los malls.",
-        "badResponseAnalysis": "Análisis obvio. No analiza qué están quejándose los clientes en las reseñas de esos competidores ni identifica qué 'hueco' de mercado están dejando (ej. falta de tallas grandes o empaques de regalo mediocres).",
-        "agiaPromptTagged": "1. ROL: Analista Competitivo. 2. CONTEXTO: Joyas de plata para regalos de última hora. 3. META: Hallar aciertos y fallas ajenas. 4. RESTRICCIONES: Encontrar el 'Espacio Vacío'. 5. FORMATO: Tabla de Oportunidades.",
-        "previewResponse": "\"Oportunidad detectada: Nadie ofrece despacho en 2 horas para emergencias de aniversarios. Si logras cubrir ese 'dolor' de última hora, el precio pasa a segundo plano.\"",
+        "problem": "Evita quemar dinero en publicidad que no es rentable.",
+        "badPrompt": "Gasté 100 lucas en Facebook y vendí 300. ¿Está bien?",
+        "badResponsePreview": "Sí, triplicaste tu inversión. Sigue así.",
+        "badResponseAnalysis": "Falso positivo peligroso. No descuenta costo producto ni impuestos.",
+        "agiaPromptTagged": "1. ROL: Performance Manager. 2. CONTEXTO: Inversión $100k, Venta $300k, Costo Prod 50%. 3. META: Utilidad Neta real. 4. RESTRICCIONES: Considerar IVA. 5. FORMATO: Matemática Servilleta.",
+        "previewResponse": "**Cálculo Real:**\nVenta $300k - IVA $48k - Costo $150k - Ads $100k = **Utilidad $2.000**.\n*Veredicto:* Trabajaste gratis. Sube precios o apaga la campaña.",
         "metadata": {
-            "score": 91
+            "score": 98
         }
     },
     {
@@ -1078,30 +1169,47 @@ const casesData = [
     },
     {
         "id": 100,
-        "category": "Estrategia & Lanzamiento",
-        "title": "Diseñador Oferta Irresistible",
+        "category": "Otros / Análisis",
+        "title": "Análisis de Canales (Atribución)",
         "icon": "lightbulb",
-        "badPrompt": "Escribe una oferta para mi servicio de limpieza de alfombras.",
-        "badResponsePreview": "Limpieza de alfombras a domicilio. Solo por esta semana, 20% de descuento en el total de tu boleta. Llámanos ahora y agenda tu visita técnica gratuita.",
-        "badResponseAnalysis": "Oferta basada solo en precio (descuento). Es fácil de ignorar y atrae a clientes que solo buscan lo más barato, quienes suelen ser los más difíciles de gestionar.",
-        "agiaPromptTagged": "1. ROL: Experto en Arquitectura de Ofertas. 2. CONTEXTO: Servicio de limpieza premium. 3. META: Oferta imposible de rechazar. 4. RESTRICCIONES: Bonos + Garantía + Urgencia. 5. FORMATO: Paquete de Valor.",
-        "previewResponse": "\"Paquete 'Casa Nueva': Limpieza profunda + Sanitizado GRATIS + Seguro 'Si no brilla, no pag: as'. Solo 5 cupos por comuna para asegurar la calidad de las máquinas.\"",
+        "problem": "Enfoque de esfuerzos de marketing donde realmente pagan.",
+        "badPrompt": "Qué me trae más clientes: Instagram o Email.",
+        "badResponsePreview": "Instagram porque tienes más likes.",
+        "badResponseAnalysis": "Confunde métricas de vanidad (likes) con métricas de negocio (ventas).",
+        "agiaPromptTagged": "1. ROL: Estratega Digital. 2. CONTEXTO: Origen clientes vs Ventas. 3. META: Ranking rentabilidad. 4. RESTRICCIONES: Calidad del cliente (LTV). 5. FORMATO: Ranking + Acción.",
+        "previewResponse": "**Ranking:**\n1. **Email:** Pocos clics, pero compran 2 veces más caro.\n2. **Instagram:** Muchos likes, pero compran productos baratos.\n*Acción:* Mueve esfuerzo de crear Reels a escribir correos.",
         "metadata": {
-            "score": 96
+            "score": 91
         }
     },
     {
         "id": 101,
-        "category": "Estrategia & Lanzamiento",
-        "title": "Timeline Lanzamiento Día a Día",
+        "category": "Otros / Análisis",
+        "title": "Simulador de Escenarios 'What If'",
         "icon": "lightbulb",
-        "badPrompt": "Dime qué pasos debo seguir para lanzar mi curso online en 2 semanas.",
-        "badResponsePreview": "Semana 1: Crea el contenido del curso y súbelo a una plataforma. Semana 2: Haz publicidad en Facebook y envía correos a tus conocidos invitándolos a comprar.",
-        "badResponseAnalysis": "Falta de estrategia de 'calentamiento'. El lanzamiento fallará porque intenta vender en frío a gente que no conoce el valor del producto ni confía en el instructor aún.",
-        "agiaPromptTagged": "1. ROL: Launch Manager Senior. 2. CONTEXTO: Lanzamiento de Aula GenIA en 14 días. 3. META: Acciones diarias detalladas. 4. RESTRICCIONES: Fase de pre-lanzamiento obligatoria. 5. FORMATO: Tabla Cronograma.",
-        "previewResponse": "\"Día 1: Encuesta de dolores en Stories. Día 5: Regala una 'victoria rápida' (PDF). Día 10: Abre lista de espera con descuento. Día 14: VENTA abierta por 24 horas. Urgencia real.\"",
+        "problem": "Toma de decisiones financieras sin riesgo real.",
+        "badPrompt": "Qué pasa si subo mis precios un 10%.",
+        "badResponsePreview": "Ganarás más por unidad, pero quizás vendas menos.",
+        "badResponseAnalysis": "Respuesta obvia cualitativa. Necesitamos saber *cuánto* menos podemos vender antes de perder dinero.",
+        "agiaPromptTagged": "1. ROL: Modelador Financiero. 2. CONTEXTO: Venta actual 100u a $20k. 3. META: Escenario subida 10% con pérdida 5% clientes. 4. RESTRICCIONES: Comparar utilidad final. 5. FORMATO: A vs B.",
+        "previewResponse": "**Escenario Actual:** Utilidad $500k.\n**Escenario Nuevo (+10% precio, -5% ventas):** Utilidad $580k.\n*Conclusión:* Incluso perdiendo clientes, ganas $80k más trabajando menos. Sube el precio.",
         "metadata": {
-            "score": 92
+            "score": 93
+        }
+    },
+    {
+        "id": 102,
+        "category": "Otros / Análisis",
+        "title": "Reporte de Salud del Negocio",
+        "icon": "lightbulb",
+        "problem": "Visión holística del estado de la empresa en una página.",
+        "badPrompt": "Cómo va mi pyme este año.",
+        "badResponsePreview": "Va bien, vendes harto.",
+        "badResponseAnalysis": "Optimismo ciego. No mira la deuda ni el flujo de caja.",
+        "agiaPromptTagged": "1. ROL: CEO Interino. 2. CONTEXTO: Ventas, Gastos, Deudas. 3. META: Diagnóstico salud. 4. RESTRICCIONES: Semáforo. 5. FORMATO: Semáforo + Prioridad #1.",
+        "previewResponse": "🟢 **Ventas:** Creciendo.\n🔴 **Caja:** Peligro. Tienes muchas facturas por cobrar. Estás vendiendo pero no cobrando.\n**Prioridad:** Llama a cobranza hoy.",
+        "metadata": {
+            "score": 94
         }
     }
 ];
