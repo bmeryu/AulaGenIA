@@ -420,7 +420,7 @@
                     </div>
 
                     <!-- CONTENT AREA -->
-                    <div class="flex-1 overflow-y-auto custom-scroll relative bg-white">
+                    <div id="detail-scroll-container" class="flex-1 overflow-y-auto custom-scroll relative bg-white">
 
                         <!-- BASIC CONTENT -->
                         <div id="content-basic" class="p-6 md:p-8 space-y-6 fade-in">
@@ -1073,6 +1073,10 @@
             currentCaseId = id;
             const c = casesData.find(x => x.id === id);
             if (!c) return;
+
+            // Scroll to Top logic fix
+            const scrollContainer = document.getElementById('detail-scroll-container');
+            if (scrollContainer) scrollContainer.scrollTop = 0;
 
             // Determine effective lock state (Database OR User Session)
             const isLocked = c.locked || !isVaultUnlocked;
