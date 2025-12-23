@@ -8,7 +8,7 @@ const casesData = [
         "badPrompt": "Resume mis correos pendientes y dime qué es importante.",
         "badResponsePreview": "Tienes 10 correos nuevos. 3 son de clientes preguntando por pedidos, 2 son facturas de servicios y el resto es spam de LinkedIn y promociones de viajes. Deberías revisar los de los clientes primero para que no se molesten.",
         "badResponseAnalysis": "La IA actúa como un simple lector pasivo. No ofrece acciones concretas, no redacta borradores y mezcla lo urgente con lo informativo sin un criterio de negocio real.",
-        "agiaPromptTagged": "1. ROL: Actúa como un Asistente Ejecutivo de Alta Dirección (SDR).\n2. CONTEXTO: \n   Correos: [Pega aquí el texto de tus últimos 10-15 correos]\n   Prioridades: [Pagos de clientes, consultas de soporte, envíos por Starken]\n3. META: Categorizar los correos por urgencia y redactar borradores de respuesta inmediata.\n4. RESTRICCIONES:\n   - Clasifica en: \"Responder Hoy\", \"Delegar\", \"Informativo\".\n   - Tono: Profesional pero cercano (estilo chileno de oficina).\n   - Máximo 3 líneas por respuesta sugerida.\n5. FORMATO: Tabla con 3 columnas: [Remitente] | [Resumen Crítico] | [Acción Sugerida].",
+        "agiaPromptTagged": "1. ROL: Actúa como un Asistente Ejecutivo de Alta Dirección.\n2. CONTEXTO:\n   📎 ADJUNTO: Captura de pantalla de mi bandeja de entrada con los últimos 15 correos.\n   Mi negocio: [Venta de productos online / Servicios / etc.]\n   Prioridades del día: [Pagos pendientes, consultas de clientes, envíos]\n3. META: Categorizar cada correo por urgencia y redactar borrador de respuesta listo para enviar.\n4. RESTRICCIONES:\n   - Clasifica en: \"Responder HOY\", \"Delegar\", \"Archivar\".\n   - Tono: Profesional pero cercano (estilo chileno).\n   - Máximo 3 líneas por respuesta.\n5. FORMATO: Tabla con columnas: [Remitente] | [Resumen] | [Acción + Borrador].",
         "previewResponse": "| Remitente | Resumen Crítico | Acción Sugerida |\n| :--- | :--- | :--- |\n| Juan Pérez (Cliente) | Reclamo por retraso en envío Starken. El cliente suena molesto por falta de tracking. | **Responder Hoy:** \"Hola Juan, te pido mil disculpas por el retraso. El envío está en tránsito y aquí tienes el número de seguimiento...\" |\n| Tesorería Municipal | Aviso de pago de patentes comerciales vence este viernes. | **Delegar:** Enviar a Contabilidad para pago inmediato y evitar multas. |\n| Newsletter IA | Resumen de novedades de la semana. | **Informativo:** Archivar para lectura de fin de semana. |",
         "metadata": {
             "score": 88
@@ -23,7 +23,7 @@ const casesData = [
         "badPrompt": "Haz un resumen de esta transcripción de reunión.",
         "badResponsePreview": "En la reunión hablaron sobre el nuevo logo y que se van a juntar el próximo jueves. Pedro dijo que no tiene el Excel listo aún y María mencionó que hay que llamar a los proveedores pronto para el evento.",
         "badResponseAnalysis": "El resultado es un párrafo narrativo que obliga al usuario a volver a leerlo todo para encontrar los hitos. No asigna responsables, no define plazos claros ni identifica bloqueadores.",
-        "agiaPromptTagged": "1. ROL: Eres un Project Manager experto en metodologías Ágiles. 2. CONTEXTO: Transcripción: [Texto notas rápidas]. 3. META: Extraer decisiones y tareas. 4. RESTRICCIONES: Identifica Bloqueadores. Tono ejecutivo. 5. FORMATO: Resumen frase + Lista Decisiones + Tabla Tareas.",
+        "agiaPromptTagged": "1. ROL: Eres un Project Manager experto en metodologías Ágiles.\n2. CONTEXTO:\n   🎤 ADJUNTO: Audio de la reunión (o transcripción automática de Zoom/Meet).\n   Participantes: [Nombres y cargos]\n   Objetivo de la reunión: [Definir campaña de verano]\n3. META: Extraer SOLO las decisiones tomadas y tareas asignadas con responsables.\n4. RESTRICCIONES:\n   - Ignora la charla social, solo hechos.\n   - Identifica bloqueadores que impiden avanzar.\n   - Tono ejecutivo, sin relleno.\n5. FORMATO: Resumen (1 frase) + Lista Decisiones + Tabla Tareas [Tarea|Responsable|Plazo|Bloqueador].",
         "previewResponse": "**Resumen Ejecutivo:** Se posterga el lanzamiento de la campaña de verano para el 15 de enero debido a falta de stock de insumos básicos.\n\n**Decisiones Clave:**\n- Se cancela la contratación de la agencia de influencers por falta de presupuesto.\n- Se prioriza la atención al cliente vía WhatsApp mediante un bot automatizado para descongestionar correos.\n\n**Tabla de Tareas:**\n| Tarea | Responsable | Plazo | Bloqueador |\n| :--- | :--- | :--- | :--- |\n| Ajustar presupuesto Excel | Pedro | Lunes | Falta reporte de ventas de Noviembre. |\n| Contactar proveedor Starken | María | Hoy | Ninguno. |",
         "metadata": {
             "score": 92
@@ -38,7 +38,7 @@ const casesData = [
         "badPrompt": "Resume este documento largo.",
         "badResponsePreview": "El documento es un informe legal sobre la nueva ley de teletrabajo en Chile. Explica las obligaciones del empleador en cuanto a seguridad, salud y los anexos que deben firmar los trabajadores remotos.",
         "badResponseAnalysis": "Resumen genérico y 'enciclopédico'. No indica costos monetarios, fechas límite de implementación ni cambios específicos que el dueño de la pyme deba firmar hoy mismo.",
-        "agiaPromptTagged": "1. ROL: Analista de Inteligencia con síntesis extrema. 2. CONTEXTO: Documento extenso sobre Ley 21.220 Chile. Interés: Costos financieros. 3. META: Extraer esencia accionable. 4. RESTRICCIONES: Formato 'La Carnecita'. Max 300 palabras. 5. FORMATO: Resumen Ejecutivo + Tabla Riesgos/Oportunidades.",
+        "agiaPromptTagged": "1. ROL: Analista de Inteligencia con capacidad de síntesis extrema.\n2. CONTEXTO:\n   📄 ADJUNTO: PDF del documento legal/técnico (o copia del texto).\n   Mi situación: Soy dueño de Pyme con [X] empleados.\n   Lo que me importa: Costos, multas, fechas límite.\n3. META: Extraer SOLO lo que me afecta directamente y debo hacer esta semana.\n4. RESTRICCIONES:\n   - Máximo 300 palabras.\n   - Sin jerga legal, explícalo como si fuera un café con un amigo.\n   - Destaca montos en pesos chilenos.\n5. FORMATO: 'La Carnecita' (resumen en 3 líneas) + Tabla Riesgos/Oportunidades.",
         "previewResponse": "**La Carnecita:** El nuevo reglamento exige el pago proporcional de servicios (luz e internet). Costo estimado: $15.000/mes adicionales por cada empleado en modalidad 100% remota.\n\n**Análisis de Impacto para la Pyme:**\n| Riesgo | Oportunidad |\n| :--- | :--- |\n| Multas graves de la Dirección del Trabajo si no hay anexo firmado antes de fin de mes. | Reducción potencial del 30% en costos fijos de oficina física (arriendo y aseo). |\n| Necesidad de fiscalizar el derecho a desconexión (12 horas continuas). | Atractivo para retención de talento joven que valora la flexibilidad. |",
         "metadata": {
             "score": 96
@@ -98,7 +98,7 @@ const casesData = [
         "badPrompt": "Arregla esta lista de nombres.",
         "badResponsePreview": "Aquí tienes los nombres ordenados: Juan Pérez +56912345678, Maria Paz 98765432, Pedro Picapiedra Santiago.",
         "badResponseAnalysis": "Solo copia los datos. No estandariza los prefijos telefónicos, no separa nombres de apellidos en columnas distintas y no entrega un formato importable (CSV o Tabla) para herramientas de venta.",
-        "agiaPromptTagged": "1. ROL: Analista Datos Senior. 2. CONTEXTO: Contactos desordenados de una feria presencial. 3. META: Normalizar para CRM. 4. RESTRICCIONES: Formato chileno +56 9 XXXX XXXX. Separa Nombre y Apellido. 5. FORMATO: Bloque de código CSV.",
+        "agiaPromptTagged": "1. ROL: Analista de Datos Senior especializado en CRM.\n2. CONTEXTO:\n   📊 ADJUNTO: Excel o captura con mi lista de contactos desordenados.\n   Origen: Contactos recolectados en feria presencial / WhatsApp / tarjetas.\n   Destino: Importar a [HubSpot / Clientify / Google Contacts].\n3. META: Limpiar y normalizar todos los datos en formato listo para importar.\n4. RESTRICCIONES:\n   - Teléfonos en formato chileno: +56 9 XXXX XXXX.\n   - Separar Nombre y Apellido en columnas distintas.\n   - Marcar datos incompletos como 'Revisar'.\n5. FORMATO: Código CSV que pueda copiar y pegar directamente en Excel.",
         "previewResponse": "```csv\nNombre,Apellido,Telefono,Ciudad,Status\nJuan,Perez,+56 9 1234 5678,Santiago,Nuevo\nMaria,Paz,+56 9 8765 4321,Concepcion,Nuevo\nPedro,Picapiedra,+56 9 9988 7766,Valparaiso,Filtro\n```\n*(Nota: Datos listos para copiar y pegar en Excel > Datos > Texto en columnas).*",
         "metadata": {
             "score": 91
@@ -141,7 +141,7 @@ const casesData = [
         "badPrompt": "Describe esta cafetera.",
         "badResponsePreview": "Esta cafetera es de acero inoxidable de alta calidad. Tiene capacidad para 1 litro de café y mantiene el calor por mucho tiempo. Es fácil de lavar y queda bien en cualquier cocina.",
         "badResponseAnalysis": "Se enfoca solo en las características técnicas (material, capacidad). No vende la experiencia, el aroma ni el placer de tomar un café perfecto, perdiendo la conexión emocional con el comprador.",
-        "agiaPromptTagged": "1. ROL: Experto Neuromarketing. 2. CONTEXTO: Cafetera de lujo para sibaritas del café. 3. META: Beneficios Sensoriales. 4. RESTRICCIONES: Lenguaje de olor/sonido. 5. FORMATO: Título + Descripción Emocional.",
+        "agiaPromptTagged": "1. ROL: Experto en Neuromarketing y Copywriting Sensorial.\n2. CONTEXTO:\n   📷 ADJUNTO: Foto del producto (o link de la tienda).\n   Producto: Cafetera de lujo italiana.\n   Público: Amantes del café que buscan una experiencia premium en casa.\n3. META: Crear descripción que VENDA la experiencia, no solo las características.\n4. RESTRICCIONES:\n   - Usa lenguaje sensorial (olores, sonidos, texturas).\n   - Evita tecnicismos aburridos.\n   - Máximo 100 palabras.\n5. FORMATO: Título llamativo + Descripción emocional.",
         "previewResponse": "**Tu Barista Personal en Casa.**\n\"Imagina despertar con el sonido del vapor y el aroma profundo del grano recién molido inundando tu cocina. Esta cafetera de acero quirúrgico no solo hace café; preserva cada nota sensorial para que tu segunda taza esté tan humeante y perfecta como la primera. Siente la textura del espresso perfecto cada mañana.\"",
         "metadata": {
             "score": 89
@@ -436,7 +436,7 @@ const casesData = [
         "badPrompt": "Dime qué partes de mi video sirven para sacar clips de TikTok.",
         "badResponsePreview": "Usa el minuto 02:15 donde explicas el primer consejo y el minuto 05:40 cuando hablas del cierre. Esas partes son buenas porque resumes el contenido principal.",
         "badResponseAnalysis": "La IA no identifica el 'Hook' (gancho) inicial ni el valor de retención. No ofrece títulos virales para el clip ni explica por qué ese fragmento funcionaría de forma independiente fuera de contexto.",
-        "agiaPromptTagged": "1. ROL: Editor Viral. 2. CONTEXTO: Transcripción clase 10 min. 3. META: 3 momentos alto impacto (30-60s). 4. RESTRICCIONES: Tiempos exactos y títulos virales. 5. FORMATO: Lista detallada.",
+        "agiaPromptTagged": "1. ROL: Editor de Videos Virales especializado en TikTok/Reels.\n2. CONTEXTO:\n   🎥 ADJUNTO: Video de mi clase/podcast de 10 minutos (o link de YouTube).\n   Tema del video: [Ej: Cómo cobrar más sin perder clientes]\n   Plataforma destino: TikTok / Instagram Reels.\n3. META: Identificar los 3 mejores momentos para crear clips virales de 30-60 segundos.\n4. RESTRICCIONES:\n   - Dame tiempos exactos (minuto:segundo).\n   - Cada clip debe funcionar SOLO, sin ver el video completo.\n   - Sugiere títulos que generen curiosidad o controversia.\n5. FORMATO: Lista con [Tiempo Inicio-Fin] | [Título Viral] | [Por qué funciona].",
         "previewResponse": "Clip 1: \"El mito de la IA gratis\". Inicio: 01:20. Fin: 02:10. Por qué: Genera controversia.",
         "metadata": {
             "score": 91
@@ -549,7 +549,7 @@ const casesData = [
         "badPrompt": "Analiza mis gastos de la tarjeta de crédito y dime en qué puedo ahorrar.",
         "badResponsePreview": "Gastaste mucho en restaurantes, Uber y suscripciones de streaming. Mi consejo es que cocines más en casa y revises si realmente usas todas las plataformas que pagas.",
         "badResponseAnalysis": "Análisis genérico. No detecta cobros duplicados, no identifica \"gastos vampiro\" específicos de software y no prioriza el ahorro según el impacto en el flujo de caja del negocio.",
-        "agiaPromptTagged": "1. ROL: Auditor Financiero Pymes. 2. CONTEXTO: Lista gastos banco. 3. META: Hallar gastos hormiga/duplicados. 4. RESTRICCIONES: Clasifica: Crítico, Necesario, Prescindible. 5. FORMATO: Informe Fugas.",
+        "agiaPromptTagged": "1. ROL: Auditor Financiero especializado en Pymes.\n2. CONTEXTO:\n   🏦 ADJUNTO: Captura de mi cartola bancaria o lista de cargos de tarjeta de crédito (oculta datos sensibles).\n   Período: Últimos 3 meses.\n   Mi negocio: [Tipo de negocio y tamaño].\n3. META: Encontrar gastos 'vampiro', cobros duplicados y suscripciones olvidadas.\n4. RESTRICCIONES:\n   - Clasifica cada gasto en: Crítico, Necesario, Prescindible.\n   - Calcula cuánto pierdo al año por cada fuga.\n   - Sugiere alternativas más baratas.\n5. FORMATO: Informe de Fugas con montos anualizados.",
         "previewResponse": "\"Pierdes $1.2M al año en: Canva+Adobe ($240k) y comisiones bancarias ($84k).\"",
         "metadata": {
             "score": 95
@@ -577,7 +577,7 @@ const casesData = [
         "badPrompt": "Explícame este reporte del SII y dime qué significa.",
         "badResponsePreview": "El reporte indica que tienes varias facturas emitidas y recibidas este mes. Dice que el monto total a pagar por el formulario 29 es de $145.000 pesos.",
         "badResponseAnalysis": "El resultado solo repite los números sin explicarlos. No desglosa cuánto de IVA cobraste (Débito) vs cuánto pagaste en compras (Crédito), no menciona el PPM (pago provisional mensual) ni avisa si tienes multas pendientes.",
-        "agiaPromptTagged": "1. ROL: Contador Auditor experto en tributación chilena. 2. CONTEXTO: Reporte Formulario 29 [Texto/Imagen]. 3. META: Explicar cuánto, por qué y fecha límite de pago. 4. RESTRICCIONES: Sin tecnicismos, foco en flujo de caja. 5. FORMATO: Resumen 'A pagar'.",
+        "agiaPromptTagged": "1. ROL: Contador Auditor experto en tributación chilena.\n2. CONTEXTO:\n   📸 ADJUNTO: Captura de pantalla de mi reporte del SII (Formulario 29 o propuesta).\n   Mi situación: Soy [Pyme / Profesional independiente] con boletas/facturas.\n3. META: Explicar EN SIMPLE cuánto debo pagar, por qué y cuándo vence.\n4. RESTRICCIONES:\n   - Cero tecnicismos, explícalo como si fuera un café con un amigo.\n   - Desglosa el IVA y el PPM por separado.\n   - Avisa si hay algo raro o multas pendientes.\n5. FORMATO: Resumen 'Lo que debes pagar este mes' + Alertas.",
         "previewResponse": "\"Este mes pagas $145.000: El desglose real es $120.000 de IVA (vendiste más de lo que compraste) y $25.000 de PPM (tu ahorro obligatorio para el impuesto a la renta anual). Recuerda pagar antes del 20 si emites facturas electrónicas.\"",
         "metadata": {
             "score": 91
@@ -591,7 +591,7 @@ const casesData = [
         "badPrompt": "Dime cuál de mis productos es mejor basándote en mis ventas.",
         "badResponsePreview": "El Producto A vendió 100 unidades y el Producto B vendió 50. Por lo tanto, el Producto A es mucho mejor para tu negocio y deberías enfocarte en él.",
         "badResponseAnalysis": "Solo analiza volumen de ventas. Ignora el margen de contribución, el tiempo de ejecución y el costo de oportunidad. El Producto A podría estar dándote pérdidas si requiere demasiadas horas de trabajo manual.",
-        "agiaPromptTagged": "1. ROL: Analista BI Senior. 2. CONTEXTO: Costos, Precios y Tiempos de entrega de [Producto A] y [Producto B]. 3. META: Rentabilidad por HORA de trabajo. 4. RESTRICCIONES: Identificar cuál eliminar o potenciar. 5. FORMATO: Tabla comparativa.",
+        "agiaPromptTagged": "1. ROL: Analista de Business Intelligence Senior.\n2. CONTEXTO:\n   📊 ADJUNTO: Excel con mis productos, precios, costos y tiempo que me toma hacer cada uno.\n   Mi negocio: [Ej: Pastelería / Servicios de diseño / Cursos online].\n3. META: Calcular cuánto gano POR HORA de trabajo en cada producto para saber cuál priorizar.\n4. RESTRICCIONES:\n   - Considera costos ocultos (empaque, energía, post-venta).\n   - Identifica productos que parecen buenos pero me quitan tiempo.\n   - Recomendación: eliminar, mantener o potenciar.\n5. FORMATO: Tabla comparativa + Veredicto final.",
         "previewResponse": "\"En el Producto A ganas $8.000/h líquida. En el Producto B ganas $2.000/h debido a la post-venta. Aunque vendas más del B, te está quitando 10 veces más tiempo de vida.\"",
         "metadata": {
             "score": 94
@@ -818,7 +818,7 @@ const casesData = [
         "badPrompt": "Qué colores me recomiendas para mi nueva marca de tecnología.",
         "badResponsePreview": "Te recomiendo usar azul y gris, porque el azul transmite confianza y el gris se ve profesional y serio para una empresa de tecnología.",
         "badResponseAnalysis": "Recomendación perezosa. El \"azul tech\" está saturado. No ofrece códigos HEX, no sugiere una jerarquía de colores (primario, secundario, acento) ni tipografías que complementen la emoción de la marca.",
-        "agiaPromptTagged": "1. ROL: Branding Specialist Senior. 2. CONTEXTO: Marca de IA para humanos, valores: Innovación y Cercanía. 3. META: Paleta HEX + Google Fonts. 4. RESTRICCIONES: Evitar el azul corporativo estándar. 5. FORMATO: Guía de Estilo Visual.",
+        "agiaPromptTagged": "1. ROL: Branding Specialist Senior con experiencia en startups.\n2. CONTEXTO:\n   🎨 ADJUNTO: Logo actual o boceto de mi marca (si existe).\n   Mi negocio: [Ej: App de IA para emprendedores chilenos]\n   Valores de marca: [Ej: Innovación + Cercanía + Accesibilidad]\n   Público objetivo: [Ej: Dueños de Pymes 30-50 años]\n3. META: Crear paleta de colores completa + tipografías sugeridas.\n4. RESTRICCIONES:\n   - Dame códigos HEX exactos para usar en Canva/Figma.\n   - Evita el azul corporativo clásico (muy usado).\n   - Sugiere Google Fonts gratuitas.\n5. FORMATO: Guía de Estilo Visual con 3-4 colores y 2 tipografías.",
         "previewResponse": "\"Paleta: Morado Eléctrico (#6C5CE7) para innovación y Arena (#F7F1E3) para calidez humana. Tipografías: Inter (Sans) para legibilidad en pantalla y Playfair Display para títulos con autoridad.\"",
         "metadata": {
             "score": 90
@@ -848,7 +848,7 @@ const casesData = [
         "badPrompt": "Dime cuál de estos 3 currículums es mejor para vendedor.",
         "badResponsePreview": "El candidato 2 se ve bien porque trabajó en Falabella. El candidato 1 tiene poca experiencia.",
         "badResponseAnalysis": "Análisis superficial basado en marcas. No evalúa estabilidad laboral (rotación), logros numéricos concretos (cuánto vendió) ni brechas temporales sospechosas en el CV.",
-        "agiaPromptTagged": "1. ROL: Headhunter Senior. 2. CONTEXTO: Buscamos vendedor agresivo. CVs pegados. 3. META: Ranking de candidatos. 4. RESTRICCIONES: Detectar 'Job Hopping' y logros numéricos. 5. FORMATO: Tabla Fortalezas/Riesgos.",
+        "agiaPromptTagged": "1. ROL: Headhunter Senior especializado en ventas.\n2. CONTEXTO:\n   📄 ADJUNTO: Los 3 CVs de los candidatos (PDF o texto copiado).\n   Cargo: Vendedor B2B para [mi rubro].\n   Lo que más me importa: [Ej: Que haya vendido antes y tenga estabilidad laboral]\n3. META: Ranking de candidatos con fortalezas y banderas rojas.\n4. RESTRICCIONES:\n   - Detecta 'Job Hopping' (muchos trabajos en poco tiempo).\n   - Busca logros numéricos concretos (ej: 'superé meta en 15%').\n   - Identifica gaps sospechosos (períodos sin trabajar).\n5. FORMATO: Tabla [Candidato | Fortaleza | Bandera Roja] + Recomendación final.",
         "previewResponse": "| Candidato | Fortaleza | Bandera Roja 🚩 |\n| :--- | :--- | :--- |\n| **Juan** | Experiencia en retail grande. | Ha tenido 4 trabajos en 2 años (Baja lealtad). |\n| **Ana** | **Logro: Superó meta +15% anual.** | Vive lejos (Riesgo atrasos). |\n*Recomendación: Entrevista a Ana. El logro pesa más.*",
         "metadata": {
             "score": 92
@@ -863,7 +863,7 @@ const casesData = [
         "badPrompt": "Tengo que hacer 100 tortas esta semana, ayúdame a organizarme.",
         "badResponsePreview": "Haz 20 tortas cada día de lunes a viernes y así terminas a tiempo.",
         "badResponseAnalysis": "Planificación lineal irreal. No considera tiempos de enfriado, decoración ni empaquetado. Ignora la capacidad limitada de los hornos y el riesgo de cuellos de botella.",
-        "agiaPromptTagged": "1. ROL: Jefe de Producción Industrial. 2. CONTEXTO: 100 tortas. Capacidad: 2 hornos. Entrega viernes. 3. META: Plan de producción por lotes (Batching). 4. RESTRICCIONES: Considerar enfriado. 5. FORMATO: Cronograma AM/PM.",
+        "agiaPromptTagged": "1. ROL: Jefe de Producción Industrial experto en Manufactura.\n2. CONTEXTO:\n   📋 ADJUNTO: Lista de pedidos de la semana (Excel o foto de la pizarra).\n   Capacidad: [Ej: 2 hornos, 1 decorador, trabajo de 8 AM a 6 PM]\n   Fecha de entrega: Viernes antes de las 5 PM.\n3. META: Plan de producción por lotes para no colapsar el último día.\n4. RESTRICCIONES:\n   - Considera tiempos de enfriado/secado entre etapas.\n   - Identifica cuellos de botella (dónde se atora todo).\n   - Deja margen para imprevistos.\n5. FORMATO: Cronograma día por día con horarios AM/PM.",
         "previewResponse": "**Lunes:** Horneado masivo (Batch 1 y 2). Solo bizcochos.\n**Martes:** Horneado final y primer relleno.\n**Miércoles:** Decoración Batch 1.\n**Jueves:** Decoración final y Empaquetado total.",
         "metadata": {
             "score": 90
@@ -1057,7 +1057,7 @@ const casesData = [
         "badPrompt": "Toma este texto de una reunión grabada y arréglalo para que se lea bien.",
         "badResponsePreview": "Aquí está el texto limpio: Pedro dijo que el proyecto va bien, pero María dice que falta el presupuesto. Acordaron verse el próximo martes a las 10.",
         "badResponseAnalysis": "El resultado pierde el contexto de quién debe ejecutar qué tarea. No elimina las muletillas 'eeh', 'o sea' de forma inteligente y no estructura el acta bajo un formato profesional de compromisos.",
-        "agiaPromptTagged": "1. ROL: Especialista en ASR (Automatic Speech Recognition). 2. CONTEXTO: Transcripción sucia de reunión de equipo. 3. META: Limpiar muletillas y extraer compromisos. 4. RESTRICCIONES: Mantener el tono original. 5. FORMATO: Acta de Acuerdos.",
+        "agiaPromptTagged": "1. ROL: Especialista en Transcripciones y Actas Ejecutivas.\n2. CONTEXTO:\n   🎙️ ADJUNTO: Audio de la reunión (MP3/M4A) o transcripción automática de Zoom/Meet.\n   Participantes: [Nombres si los conoces]\n   Duración aproximada: [X minutos]\n3. META: Limpiar muletillas y crear acta profesional con compromisos claros.\n4. RESTRICCIONES:\n   - Elimina 'eeh', 'o sea', 'básicamente' y repeticiones.\n   - Mantiene el tono original (no lo hagas sonar robot).\n   - Extrae SOLO los compromisos con responsable y fecha.\n5. FORMATO: Acta de Acuerdos lista para enviar por email.",
         "previewResponse": "**Acta de Reunión 22/12:**\n- **Acuerdo 1:** Pedro envía el Excel de costos antes del Miércoles.\n- **Acuerdo 2:** María contacta a Starken por el retraso.\n- **Bloqueador:** No hay respuesta de Tesorería por el pago de la factura #405.",
         "metadata": {
             "score": 89
@@ -1072,7 +1072,7 @@ const casesData = [
         "badPrompt": "Mira mis ventas de este mes y dime cómo me fue.",
         "badResponsePreview": "Vendiste 5 millones. El producto más vendido fue la polera roja.",
         "badResponseAnalysis": "Reporte descriptivo básico. No cruza variables (hora de compra, productos combinados) para dar insights accionables.",
-        "agiaPromptTagged": "1. ROL: Analista BI. 2. CONTEXTO: CSV Ventas mes. 3. META: Patrones ocultos. 4. RESTRICCIONES: ¿Qué compran juntos? ¿Hora peak? 5. FORMATO: 3 Hallazgos de Oro.",
+        "agiaPromptTagged": "1. ROL: Analista de Business Intelligence experto en retail.\n2. CONTEXTO:\n   📊 ADJUNTO: Excel o CSV con mis ventas del mes (fecha, producto, monto, cliente).\n   Mi negocio: [Ej: Tienda de ropa online / Pastelería / Servicios]\n3. META: Encontrar patrones ocultos que me ayuden a vender más.\n4. RESTRICCIONES:\n   - ¿Qué productos compran juntos? (para crear combos)\n   - ¿Cuál es la hora/día peak de ventas?\n   - ¿Quiénes son mis clientes VIP que repiten?\n5. FORMATO: 3 Hallazgos de Oro + Acción Inmediata para cada uno.",
         "previewResponse": "**Hallazgo:** El 40% de quienes compran la 'Polera Roja' también llevan 'Calcetines Negros'.\n**Acción:** Crea un Pack 'Urbano' con ambos productos y sube el ticket promedio en un 15%.",
         "metadata": {
             "score": 96
@@ -1087,7 +1087,7 @@ const casesData = [
         "badPrompt": "Resume los comentarios que dejaron los clientes.",
         "badResponsePreview": "A la mayoría le gusta, pero algunos se quejan del envío.",
         "badResponseAnalysis": "Demasiado general. No especifica qué del envío (¿lento? ¿roto? ¿caro?) ni cuantifica la gravedad del problema.",
-        "agiaPromptTagged": "1. ROL: Especialista CX. 2. CONTEXTO: 50 reviews pegadas. 3. META: Análisis sentimiento profundo. 4. RESTRICCIONES: Dolores recurrentes y 'Lo que nadie dice'. 5. FORMATO: Tabla Categoría/Sentimiento.",
+        "agiaPromptTagged": "1. ROL: Especialista en Customer Experience y Análisis de Sentimientos.\n2. CONTEXTO:\n   💬 ADJUNTO: Copia de los últimos 30-50 comentarios/reviews de clientes (de Google, Instagram, WhatsApp o email).\n   Mi producto/servicio: [Ej: Cursos online / Pastelería / Servicios de diseño]\n3. META: Analizar qué les encanta y qué odian de mi negocio.\n4. RESTRICCIONES:\n   - Identifica dolores recurrentes (lo que se repite).\n   - Busca 'lo que nadie dice pero se nota' (quejas implícitas).\n   - Cuantifica: ¿cuántos mencionan cada problema?\n5. FORMATO: Tabla [Categoría | Sentimiento | Frecuencia] + Top 3 Acciones Urgentes.",
         "previewResponse": "**Dolor Crítico:** 8 clientes mencionan que la caja llega aplastada. Aunque el producto está bien, la experiencia de 'unboxing' es terrible.",
         "metadata": {
             "score": 90
