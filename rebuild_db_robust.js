@@ -11,7 +11,9 @@ rawContent = rawContent.replace(/\r\n/g, '\n');
 // Eliminar cabecera y cierre
 rawContent = rawContent.replace(/export default prompts_db;/, '');
 rawContent = rawContent.replace(/const prompts_db = \[/, '');
-rawContent = rawContent.replace(/\];$/, '');
+// Fix: remove closing bracket and semicolon more aggressively at the end
+rawContent = rawContent.replace(/\];\s*export default prompts_db;?/, '');
+rawContent = rawContent.replace(/\];\s*$/, '');
 
 // Split por "},"
 // Esto nos dará fragmentos de objetos "  { ... "
@@ -98,14 +100,14 @@ function processCase(c) {
         badPrompt: c.prompt_basico,
         badResponsePreview: badResp,
         badResponseAnalysis: analysis,
-        agiaPromptTagged: encrypt(c.prompt_maestro),
+        agiaPromptTagged: c.prompt_maestro, // Encrypt disabled by user request
         previewResponse: c.resultado_maestro,
         metadata: { score: c.score }
         // Agrego campos mínimos requeridos por la app para que no rompa
     });
 }
 
-const fileContent = `const casesData = ${JSON.stringify(finalCases, null, 4)};`;
+const fileContent = `const casesData = ${JSON.stringify(finalCases, null, 4)};\nexport default casesData;`;
 fs.writeFileSync('prompts_db.js', fileContent);
 
 console.log(`Generados ${finalCases.length} casos válidos.`);
