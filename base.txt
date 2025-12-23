@@ -1,0 +1,1981 @@
+const prompts_db = [
+  {
+    id: 1,
+    nombre_caso: "El Filtra-Correos: De Caos a Inbox Zero",
+    categoria: "Productividad",
+    prompt_basico: "Resume mis correos pendientes y dime qué es importante.",
+    resultado_basico: "Tienes 10 correos. 3 son de clientes, 2 de facturas y el resto es publicidad. Debes responder a los clientes pronto.",
+    prompt_maestro: `1. ROL: Actúa como un Asistente Ejecutivo de Alta Dirección (SDR).
+2. CONTEXTO: 
+   Correos: [Pega aquí el texto de tus últimos 10-15 correos]
+   Prioridades: [Ej: Pagos de clientes, consultas de soporte, envíos por Starken]
+3. META: Categorizar los correos por urgencia y redactar borradores de respuesta inmediata.
+4. RESTRICCIONES:
+   - Clasifica en: "Responder Hoy", "Delegar", "Informativo".
+   - Tono: Profesional pero cercano (estilo chileno de oficina).
+   - Máximo 3 líneas por respuesta sugerida.
+5. FORMATO: Tabla con 3 columnas: [Remitente] | [Resumen Crítico] | [Acción Sugerida].`,
+    resultado_maestro: `| Remitente | Resumen Crítico | Acción Sugerida |
+| :--- | :--- | :--- |
+| Juan Pérez | Consulta por retraso en envío Starken. | Responder hoy: Pedir disculpas y adjuntar número de seguimiento. |
+| Tesorería | Aviso de factura vencida (Internet). | Informativo: Programar pago para el viernes. |
+| María Paz | Pide reunión para ver presupuesto Aula GenIA. | Responder hoy: Enviar link de Calendly para el martes. |
+
+**Borrador Sugerido (Juan):** "Hola Juan, te pido mil disculpas por la demora. Aquí tienes el número de seguimiento de Starken: [Número]. Mañana debería estar en tu oficina. Saludos!"`,
+    tecnica_ingenieria: "Classification & Zero-Shot Prompting.",
+    validacion: "¿Puedes identificar qué hacer en menos de 10 segundos mirando la tabla?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "30 - 60 min diarios"
+  },
+  {
+    id: 2,
+    nombre_caso: "Ninja de Actas: De Reunión Eterna a Tareas Claras",
+    categoria: "Productividad",
+    prompt_basico: "Haz un resumen de esta transcripción de reunión.",
+    resultado_basico: "En la reunión hablaron sobre el nuevo logo, el presupuesto de marketing y que se van a juntar el próximo jueves.",
+    prompt_maestro: `1. ROL: Eres un Project Manager experto en metodologías Ágiles.
+2. CONTEXTO: 
+   Transcripción: [Insertar texto de Zoom/Teams o notas rápidas]
+   Proyecto: [Nombre del Proyecto]
+3. META: Extraer decisiones clave y asignar responsables para evitar el "reunionismo".
+4. RESTRICCIONES:
+   - No uses prosa larga.
+   - Identifica "Bloqueadores" (lo que impide avanzar).
+   - Usa un tono ejecutivo.
+5. FORMATO: 
+   - Resumen en 1 frase.
+   - Lista de DECISIONES TOMADAS.
+   - Tabla de TAREAS: [Tarea] | [Responsable] | [Plazo].`,
+    resultado_maestro: `**Resumen:** Se aprueba el aumento de presupuesto para Ads pero se pausa el diseño de la web.
+
+**Decisiones Clave:**
+- No se contratará agencia externa este mes.
+- El lanzamiento se mueve al 15 de enero.
+
+| Tarea | Responsable | Plazo |
+| :--- | :--- | :--- |
+| Ajustar presupuesto en Excel | Pedro | Lunes |
+| Enviar diseño final a imprenta | Carola | Miércoles |
+| Dejar constancia en Carabineros por pérdida de equipo | Don Lucho | Mañana |`,
+    tecnica_ingenieria: "Information Extraction & Structured Output.",
+    validacion: "¿Si alguien no fue a la reunión, entiende perfectamente qué debe hacer?",
+    ia_recomendada: "ChatGPT (GPT-4o) / Perplexity",
+    hh_ahorradas: "45 - 90 min"
+  },
+  {
+    id: 3,
+    nombre_caso: "El Explicador 'Feynman': Aprende lo que sea en minutos",
+    categoria: "Productividad",
+    prompt_basico: "Explícame qué es el Blockchain.",
+    resultado_basico: "El blockchain es un libro de contabilidad digital descentralizado que registra transacciones en muchas computadoras para que el registro no se pueda alterar retroactivamente.",
+    prompt_maestro: `1. ROL: Eres un profesor experto en pedagogía simple (Técnica Feynman).
+2. CONTEXTO: 
+   Tema complejo: [Ej: Cómo declarar impuestos en el SII / Qué es una API]
+   Mi nivel: [Principiante absoluto / Dueño de negocio]
+3. META: Explicar el concepto usando una analogía cotidiana para que lo entienda un niño de 10 años.
+4. RESTRICCIONES:
+   - Prohibido usar tecnicismos sin explicarlos.
+   - Usa una analogía cotidiana (ej: una feria, un partido de fútbol, una junta de vecinos).
+5. FORMATO: Analogía inicial + Concepto clave + Ejemplo práctico.`,
+    resultado_maestro: `**El SII explicado como una Junta de Vecinos:**
+Imagínate que vives en una comunidad. Para que las luces de la calle funcionen y la plaza esté bonita, todos deben poner una cuota mensual. El SII es como el "Tesorero" de la junta de vecinos.
+
+**Concepto Clave:** Él revisa cuánto dinero ganaste (tus boletas) para decirte cuánto te toca poner para la plaza (los impuestos).
+
+**Ejemplo Práctico:** Si vendiste 10 tortas, el SII sabe que ganaste $100.000. Te dice: "De esos $100.000, $19.000 son el IVA". No es dinero tuyo, lo guardas para la comunidad.`,
+    tecnica_ingenieria: "Analogical Reasoning.",
+    validacion: "¿Podrías explicarle esto a tu abuela o a tu hija de 4 años y que lo entiendan?",
+    ia_recomendada: "Gemini / ChatGPT",
+    hh_ahorradas: "2 - 3 horas de estudio"
+  },
+  {
+    id: 4,
+    nombre_caso: "Sintetizador de PDF y Documentos: De 50 páginas a 5 minutos",
+    categoria: "Productividad",
+    prompt_basico: "Resume este documento largo.",
+    resultado_basico: "El documento habla sobre la nueva ley de teletrabajo, las obligaciones del empleador y los derechos del trabajador. Es importante leerlo completo para no tener multas.",
+    prompt_maestro: `1. ROL: Eres un Analista de Inteligencia de Negocios con capacidad de síntesis extrema.
+2. CONTEXTO: 
+   Documento: [Adjuntar archivo o pegar texto largo]
+   Interés: [Ej: Soy el dueño y quiero saber cuánto me va a costar esto en plata]
+3. META: Extraer la esencia accionable del documento eliminando el relleno legal o técnico.
+4. RESTRICCIONES:
+   - Usa el formato "La Carnecita" (lo más importante).
+   - Identifica 3 Riesgos y 3 Oportunidades.
+   - Máximo 300 palabras.
+5. FORMATO: Resumen Ejecutivo + Tabla de Riesgos/Oportunidades + Pregunta Final para profundizar.`,
+    resultado_maestro: `**RESUMEN EJECUTIVO (La Carnecita):**
+El nuevo reglamento de la DT exige que el empleador pague el internet y la luz proporcional del trabajador. El costo estimado por empleado es de $15.000 adicionales al mes.
+
+**Análisis Estratégico:**
+| Riesgos | Oportunidades |
+| :--- | :--- |
+| Multas de la Inspección si no hay anexo de contrato. | Reducción de costos de oficina física en un 30%. |
+| Accidentes laborales en el hogar son tu responsabilidad. | Mayor retención de talento joven. |
+| Problemas de ciberseguridad por redes domésticas. | Posibilidad de contratar gente de regiones (más barato). |
+
+**¿Quieres que analice específicamente cómo redactar el anexo de contrato para evitar las multas?**`,
+    tecnica_ingenieria: "Targeted Summarization (Resumen dirigido a un interés específico del usuario).",
+    validacion: "¿Sientes que ya no necesitas leer las 50 páginas para tomar una decisión?",
+    ia_recomendada: "Claude (por su gran ventana de contexto) o Gemini 1.5 Pro.",
+    hh_ahorradas: "2 - 4 horas de lectura"
+  },
+  {
+    id: 5,
+    nombre_caso: "Asistente de Redacción de Informes 'Sin Relleno'",
+    categoria: "Productividad",
+    prompt_basico: "Escribe un informe sobre los resultados de ventas del mes.",
+    resultado_basico: "Las ventas este mes fueron buenas. Subieron un 10% respecto al mes pasado. Estamos contentos y esperamos seguir así.",
+    prompt_maestro: `1. ROL: Consultor de Estrategia de Negocios.
+2. CONTEXTO: 
+   Datos brutos: [Ventas: $5M, Gastos: $2M, Cliente principal: Pyme X]
+   Objetivo: [Presentar a socios]
+3. META: Convertir números fríos en una narrativa de crecimiento y detección de riesgos.
+4. RESTRICCIONES:
+   - Usa el formato BLUF (Bottom Line Up Front): La conclusión va al principio.
+   - Sin palabras de relleno como "estimados", "consideramos".
+5. FORMATO: Resumen Ejecutivo + 3 Insights Clave + 2 Próximos Pasos.`,
+    resultado_maestro: `**RESUMEN EJECUTIVO (BLUF):** Cerramos el mes con una utilidad neta de $3M (60% de margen), superando la meta en un 15%.
+
+**Insights Clave:**
+- **Eficiencia:** Los gastos se mantuvieron estables a pesar del aumento en ventas.
+- **Concentración:** El 40% de los ingresos depende de "Pyme X"; es un riesgo alto.
+- **Canal:** TikTok generó más leads que Instagram este mes.
+
+**Próximos Pasos:**
+1. Diversificar cartera: Captar 2 clientes nuevos del tamaño de Pyme X.
+2. Reasignar presupuesto de Ads de IG a TikTok.`,
+    tecnica_ingenieria: "BLUF Strategy (Prioriza la información crítica).",
+    validacion: "¿Si el jefe solo lee el primer párrafo, se entera de todo lo importante?",
+    ia_recomendada: "Gemini / ChatGPT",
+    hh_ahorradas: "2 horas de redacción"
+  },
+  {
+    id: 6,
+    nombre_caso: "Planificador de Jornada 'Anti-Procrastinación'",
+    categoria: "Productividad",
+    prompt_basico: "Organiza mi calendario de mañana, tengo mucho que hacer.",
+    resultado_basico: "9am: Correos. 10am: Reunión. 12pm: Almuerzo. 2pm: Trabajo. 5pm: Terminar.",
+    prompt_maestro: `1. ROL: Coach de Productividad experto en Time Blocking y Técnica Pomodoro.
+2. CONTEXTO: 
+   Tareas: [Ej: Grabar videos TikTok, pagar cuentas, llevar hija al jardín]
+   Energía: [Soy más productivo de 9am a 12pm]
+3. META: Crear un horario realista que proteja mis "bloques de enfoque".
+4. RESTRICCIONES:
+   - Incluye "Tiempos de Buffer" (descanso/imprevistos).
+   - Prioriza la tarea más difícil (Eat the Frog) temprano.
+5. FORMATO: Horario detallado con duración y tipo de energía requerida.`,
+    resultado_maestro: `**Tu Plan Maestro de Mañana:**
+- **09:15 - 11:15:** **BLOQUE PROFUNDO:** Grabar 5 videos de TikTok. *Energía: Máxima.*
+- **11:15 - 11:45:** Break & Buffer (Estirarse, café).
+- **11:45 - 13:00:** Trabajo Administrativo (Pagar cuentas, correos). *Energía: Media.*`,
+    tecnica_ingenieria: "Time Blocking & Energy Mapping.",
+    validacion: "¿Sientes que el horario es realista o te estresa solo verlo?",
+    ia_recomendada: "ChatGPT / Motion",
+    hh_ahorradas: "20 min de parálisis cada mañana"
+  },
+  {
+    id: 7,
+    nombre_caso: "Traductor de Jerga Legal (Contratos)",
+    categoria: "Productividad",
+    prompt_basico: "Dime qué dice este contrato de arriendo.",
+    resultado_basico: "Es un contrato de arriendo por 12 meses. Dice que tienes que pagar el 5 de cada mes y cuidar la propiedad.",
+    prompt_maestro: `1. ROL: Abogado experto en contratos civiles (Chile).
+2. CONTEXTO: 
+   Documento: [Pega las cláusulas del contrato]
+   Mi rol: [Arrendatario / Prestador de servicios]
+3. META: Identificar cláusulas abusivas, multas escondidas y fechas críticas.
+4. RESTRICCIONES:
+   - Explica como si fuera una conversación de café.
+   - Resalta lo que NO me conviene.
+5. FORMATO: Semáforo de Riesgo: [Verde: Ok] | [Amarillo: Cuidado] | [Rojo: Peligro/Negociar].`,
+    resultado_maestro: `**Análisis de tu Contrato:**
+🟢 **Verde:** Reajuste IPC estándar.
+🔴 **Rojo:** Cláusula de entrada sin aviso previo. **Esto es ilegal.** Pide cambiarlo.`,
+    tecnica_ingenieria: "Risk Assessment Prompting.",
+    validacion: "¿Sabes exactamente qué frase pedir que cambien en el contrato?",
+    ia_recomendada: "ChatGPT / Perplexity",
+    hh_ahorradas: "1 - 2 horas de consulta legal"
+  },
+  {
+    id: 8,
+    nombre_caso: "Generador de Presentaciones Express",
+    categoria: "Productividad",
+    prompt_basico: "Hazme una presentación sobre marketing digital.",
+    resultado_basico: "Diapositiva 1: Título. Diapositiva 2: Qué es marketing. Diapositiva 3: Redes sociales.",
+    prompt_maestro: `1. ROL: Eres un Diseñador de Presentaciones de Storytelling (estilo TED Talk).
+2. CONTEXTO: 
+   Tema: [Cómo usar IA en el teletrabajo]
+   Audiencia: [Jefes de área tradicionales]
+3. META: Crear una estructura de 7 diapositivas que no aburran.
+4. RESTRICCIONES:
+   - Máximo 20 palabras por slide.
+5. FORMATO: [Slide #] | [Título Impactante] | [Guion del orador] | [Imagen sugerida].`,
+    resultado_maestro: `| Slide | Título Impactante | Guion | Imagen |
+| :--- | :--- | :--- | :--- |
+| 1 | No es magia, es ahorro. | "Vengo a mostrarles cómo ganar 2 horas al día." | Persona feliz cerrando laptop. |`,
+    tecnica_ingenieria: "Visual Metaphor & Storylining.",
+    validacion: "¿La presentación cuenta una historia o es solo una lista?",
+    ia_recomendada: "Gamma (para slides) / ChatGPT",
+    hh_ahorradas: "3 - 4 horas de diseño"
+  },
+  {
+    id: 9,
+    nombre_caso: "Asistente de Compras 'Smart Buyer'",
+    categoria: "Productividad",
+    prompt_basico: "Dime cuál es la mejor lavadora-secadora.",
+    resultado_basico: "La LG WashTower y la Samsung WD22 son buenas opciones.",
+    prompt_maestro: `1. ROL: Experto en Consumer Reports y Tecnología de Hogar.
+2. CONTEXTO: 
+   Producto: [Lavadora-Secadora Premium]
+   Presupuesto: [Ej: 800.000 - 1.200.000 CLP]
+3. META: Comparar los 3 mejores modelos disponibles en Chile.
+4. RESTRICCIONES:
+   - Menciona una "Contra" real de cada modelo.
+5. FORMATO: Tabla Comparativa + Veredicto: "La que yo compraría".`,
+    resultado_maestro: `**Veredicto:** Si teletrabajas, la **LG WashTower** es la ganadora por su bajo nivel de ruido.`,
+    tecnica_ingenieria: "Critique-Based Comparison.",
+    validacion: "¿Te ahorró leer 50 comentarios en Falabella?",
+    ia_recomendada: "Perplexity (Precios reales) / Gemini",
+    hh_ahorradas: "2 - 3 horas de investigación"
+  },
+  {
+    id: 10,
+    nombre_caso: "Prompt de Limpieza de Bases de Datos (Excel)",
+    categoria: "Productividad",
+    prompt_basico: "Arregla esta lista de nombres y teléfonos.",
+    resultado_basico: "Aquí tienes la lista: Juan Pérez +569123..., Maria Paz 9876...",
+    prompt_maestro: `1. ROL: Analista de Datos Senior.
+2. CONTEXTO: 
+   Datos sucios: [Pega aquí tu lista de contactos desordenada]
+3. META: Normalizar los datos para que sean útiles en un CRM.
+4. RESTRICCIONES:
+   - Teléfonos: Formato internacional +56 9 XXXX XXXX.
+5. FORMATO: Bloque de código CSV (para copiar y pegar en Excel).`,
+    resultado_maestro: `\`\`\`csv
+Nombre,Telefono,Email,Estado
+Juan Perez,+56 9 1234 5678,juan@gmail.com,OK
+\`\`\``,
+    tecnica_ingenieria: "Data Normalization & Pattern Recognition.",
+    validacion: "¿Puedes importar este resultado directamente a tu Excel?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "1 - 2 horas de limpieza"
+  }
+];
+const marketing_prompts_db = [
+  {
+    id: 1,
+    nombre_caso: "Cold Email B2B: El Abre-Puertas",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Escribe un correo para vender mi software de RRHH a una empresa.",
+    resultado_basico: "Hola, tenemos un software de RRHH que automatiza todo. Es muy bueno y ahorra tiempo. ¿Podemos agendar una reunión? Saludos.",
+    prompt_maestro: `1. ROL: Actúa como un experto en Cold Emailing y Copywriting B2B.
+2. CONTEXTO: 
+   Producto: [Software de RRHH Automatizado]
+   Público: [Gerentes de RRHH en empresas de 50-200 empleados]
+   Dolor: [Errores en Excel y cálculo manual de nómina]
+3. META: Redactar un correo de "puerta fría" usando el marco PAS (Problema-Agitación-Solución) para vender la reunión, no el producto.
+4. RESTRICCIONES:
+   - Máximo 100 palabras.
+   - El asunto debe ser en minúsculas y de menos de 4 palabras.
+   - No uses: "Espero que estés bien", "Líder en el mercado".
+5. FORMATO: [Asunto] + [Cuerpo] + [CTA].`,
+    resultado_maestro: `Asunto: dudas con la nómina
+
+Hola [Nombre], 
+
+Gestionar la nómina en Excel funciona bien con 10 personas, pero con 50 se vuelve una bomba de tiempo de errores manuales. 
+
+De hecho, ayudamos a una empresa similar a reducir 12 horas semanales de carga administrativa automatizando este proceso (te adjunto el caso si quieres verlo). 
+
+¿Te parece mal si te robo 7 minutos el martes para mostrarte cómo lo hicieron?
+
+Saludos.`,
+    tecnica_ingenieria: "PAS Framework (Problem-Agitation-Solution). Enfoca la atención en el dolor antes de ofrecer la cura.",
+    validacion: "¿El asunto parece escrito por un colega o por una máquina de spam?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "15 - 45 min"
+  },
+  {
+    id: 2,
+    nombre_caso: "Facebook & IG Ads: El Freno de Scroll",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Haz un texto para un anuncio de zapatillas de correr en Instagram.",
+    resultado_basico: "¡Nuevas RunPro! Las mejores zapatillas para correr. Cómpralas ahora con envío gratis. No te quedes sin las tuyas.",
+    prompt_maestro: `1. ROL: Eres un Media Buyer Senior y Copywriter de Respuesta Directa.
+2. CONTEXTO: 
+   Producto: [Zapatillas con gel]
+   Público: [Corredores amateurs +35 años con dolor de rodillas]
+   Imagen: [Zapatillas gris con neón]
+3. META: Crear 3 variaciones de texto (Primary Text) usando el marco AIDA.
+4. RESTRICCIONES:
+   - El Gancho (primera frase) debe cortar la respiración (<40 caracteres).
+   - Usa emojis para beneficios.
+5. FORMATO: Lista numerada: Opción 1 (Directa), Opción 2 (Storytelling), Opción 3 (Controversial).`,
+    resultado_maestro: `Opción 1:
+🛑 ¿Tus rodillas crujen al correr?
+No es tu edad, es el impacto del asfalto. Conoce las RunPro Gel:
+✅ Absorben el 40% del impacto.
+✅ Retorno de energía en cada paso.
+👉 Pide tu prueba de 30 días aquí.`,
+    tecnica_ingenieria: "AIDA Framework (Attention, Interest, Desire, Action) + Hook Focus.",
+    validacion: "¿Te dan ganas de leer la segunda línea después de ver la primera?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "30 - 60 min"
+  },
+  {
+    id: 3,
+    nombre_caso: "Ficha de Producto: El Vendedor 24/7",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Describe esta cafetera para mi tienda online.",
+    resultado_basico: "Cafetera de acero inoxidable. Capacidad 1 litro. Mantiene el calor. Diseño moderno. Garantía 6 meses.",
+    prompt_maestro: `1. ROL: Experto en Neuromarketing y Psicología del Consumidor.
+2. CONTEXTO: 
+   Producto: [Cafetera Italiana de Lujo]
+   Público: [Amantes del café que valoran el diseño]
+3. META: Convertir características técnicas en Beneficios Emocionales y Sensoriales.
+4. RESTRICCIONES:
+   - Evita la voz pasiva. 
+   - Usa lenguaje sensorial (olor, tacto, sonido).
+5. FORMATO: Título Persuasivo + Descripción Emocional + Bullet Points de "Por qué la amarás".`,
+    resultado_maestro: `**Tu barista personal, ahora en tu cocina ☕**
+
+Olvídate del café quemado de las mañanas. El cuerpo de Acero Térmico de la Modelo X no solo se ve increíble; mantiene tu café a la temperatura exacta durante 2 horas. Imagina servirte esa segunda taza y que siga tan humeante como la primera.
+
+**Por qué la amarás:**
+- **Silencio absoluto:** Prepara tu café sin despertar a toda la casa.
+- **Sabor puro:** Acero de grado quirúrgico que no altera el gusto del grano.`,
+    tecnica_ingenieria: "Feature-to-Benefit Translation (Transforma datos fríos en deseos humanos).",
+    validacion: "¿Te imaginas usando el producto o solo estás leyendo un manual?",
+    ia_recomendada: "Gemini / ChatGPT",
+    hh_ahorradas: "20 - 40 min"
+  },
+  {
+    id: 4,
+    nombre_caso: "Guion de TikTok/Reels: Viralidad con Propósito",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Dame una idea de video para vender mi curso de IA.",
+    resultado_basico: "Hola, soy experto en IA. En mi curso aprenderás a usar ChatGPT. Es muy útil para tu trabajo. Inscríbete hoy.",
+    prompt_maestro: `1. ROL: Guionista Viral de TikTok y Reels.
+2. CONTEXTO: 
+   Tema: [IA para ahorrar tiempo]
+   Público: [Emprendedores que trabajan desde casa y están colapsados]
+3. META: Crear un guion de 30 segundos optimizado para retención máxima.
+4. RESTRICCIONES:
+   - Gancho (0-3s): Afirmación polémica o visual fuerte. Prohibido decir "Hola".
+   - CTA específico.
+5. FORMATO: Tabla: [Visual/Acción] | [Audio/Locución].`,
+    resultado_maestro: `| Visual | Audio |
+| :--- | :--- |
+| (Texto: "TRABAJAR MÁS NO ES UN LOGRO") | "Si sigues orgulloso de trabajar 12 horas al día, tienes un problema de herramientas, no de tiempo." |
+| (Muestra la pantalla de ChatGPT haciendo un reporte) | "Mientras tú haces este informe a mano, la IA lo termina en 40 segundos." |
+| (Zoom a la cara) | "¿Quieres mis 10 prompts de oro? Comenta 'TIEMPO' y te los mando." |`,
+    tecnica_ingenieria: "High-Retention Scripting (Estructura Hook-Value-CTA).",
+    validacion: "¿Viste los primeros 3 segundos o pasaste de largo?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "1 - 2 horas de creatividad"
+  },
+  {
+    id: 5,
+    nombre_caso: "WhatsApp Sales: El Cerrador Cercano",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Responde a un cliente que preguntó precio por WhatsApp.",
+    resultado_basico: "Hola, el curso vale $150.000. Incluye 4 módulos. ¿Lo quiere?",
+    prompt_maestro: `1. ROL: Closer de Ventas experto en Chat Marketing (Venta conversacional).
+2. CONTEXTO: 
+   Producto: [Curso de Inglés]
+   Cliente: [Preguntó "Precio" en un anuncio]
+3. META: Responder el precio pero manteniendo la conversación viva (Open Loop).
+4. RESTRICCIONES:
+   - Máximo 2 párrafos cortos. 
+   - Termina SIEMPRE con una pregunta.
+5. FORMATO: Texto listo para copiar y enviar.`,
+    resultado_maestro: `"¡Hola! 👋 Claro que sí.
+
+El programa completo, con el club de conversación 24/7 (que es lo que más ayuda a soltar la lengua), queda en $150.000. 
+
+Cuéntame, ¿necesitas el inglés por un tema de trabajo o tienes algún viaje planeado? ✈️ (Así te confirmo si este nivel es el que más te sirve)."`,
+    tecnica_ingenieria: "Tone Setting & Open Loops (Evita que el cliente diga 'gracias' y se vaya).",
+    validacion: "¿Sientes que hablas con un humano o con un bot de cobranza?",
+    ia_recomendada: "ChatGPT / Grok",
+    hh_ahorradas: "Horas de seguimiento manual"
+  },
+  {
+    id: 6,
+    nombre_caso: "Landing Page Hero: La Promesa de 3 Segundos",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Pon un título para mi web de marketing.",
+    resultado_basico: "Agencia Creative. Hacemos marketing digital, SEO y redes sociales para tu empresa. Contáctanos hoy.",
+    prompt_maestro: `1. ROL: Copywriter de Conversión (CRO).
+2. CONTEXTO: 
+   Servicio: [Agencia de Google Ads]
+   Público: [Dueños de E-commerce]
+   Dolor: [Gastan plata en anuncios pero no venden nada]
+3. META: Escribir un H1 (Título) y H2 (Subtítulo) que prometan una transformación clara.
+4. RESTRICCIONES:
+   - H1: Máximo 12 palabras centradas en el BENEFICIO.
+   - H2: Explica el CÓMO de forma simple.
+5. FORMATO: [H1] + [H2] + [Botón CTA].`,
+    resultado_maestro: `**H1: Deja de "donar" dinero a Google y empieza a vender.**
+**H2:** Auditamos tus campañas de Ads para encontrar las fugas de dinero y escalamos solo lo que te deja utilidad real.
+**Botón:** Quiero mi Auditoría Gratuita.`,
+    tecnica_ingenieria: "Value Proposition Focus (Enfocado en el '¿Qué gano yo?' del cliente).",
+    validacion: "¿Queda claro el beneficio en menos de 5 segundos?",
+    ia_recommended: "ChatGPT / Gemini",
+    hh_ahorradas: "2 - 3 horas de estrategia"
+  },
+  {
+    id: 7,
+    nombre_caso: "Google Ads Copy: CTR por las Nubes",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Hazme anuncios de Google para un dentista.",
+    resultado_basico: "Clínica Dental Pro. Los mejores dentistas. Limpieza dental y ortodoncia. Pide tu hora ahora.",
+    prompt_maestro: `1. ROL: Especialista en SEM (Google Ads).
+2. CONTEXTO: 
+   Servicio: [Implantes Dentales]
+   Público: [Gente que busca 'implantes dentales precios Chile']
+   Ventaja: [Evaluación costo cero + Facilidades de pago]
+3. META: Escribir 3 títulos (30 carac) y 2 descripciones (90 carac) optimizados para clics.
+4. RESTRICCIONES:
+   - Usa 'Keyword Insertion' simbólica.
+   - Incluye urgencia o beneficio económico.
+5. FORMATO: Lista de Títulos y Descripciones.`,
+    resultado_maestro: `Títulos:
+1. Implantes Dentales en Santiago
+2. Recupera tu Sonrisa Hoy
+3. Evaluación $0 y Cuotas Aquí
+
+Descripciones:
+1. Especialistas en implantes con tecnología sin dolor. Agenda tu evaluación gratuita ahora.
+2. No más prótesis incómodas. Recupera la confianza al comer. Facilidades de pago disponibles.`,
+    tecnica_ingenieria: "Search Intent Matching (Alinea el anuncio con lo que el usuario está buscando exactamente).",
+    validacion: "¿Si tú buscaras eso, harías clic en este anuncio o en el de la competencia?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "1 hora de redacción técnica"
+  },
+  {
+    id: 8,
+    nombre_caso: "Lead Magnet Hook: El Imán de Clientes",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Dame un título para un PDF gratis sobre finanzas.",
+    resultado_basico: "Guía gratuita de finanzas personales. Aprende a ahorrar y a invertir tu dinero de forma segura.",
+    prompt_maestro: `1. ROL: Content Marketer experto en Lead Generation.
+2. CONTEXTO: 
+   Recurso: [Planilla de Excel para control de gastos]
+   Público: [Personas que llegan a fin de mes en cero]
+3. META: Crear un título magnético que genere descargas masivas.
+4. RESTRICCIONES:
+   - Usa números o resultados específicos.
+   - Crea curiosidad o ataca un miedo.
+5. FORMATO: 5 opciones de títulos + 1 párrafo de "gancho" para redes sociales.`,
+    resultado_maestro: `**Títulos sugeridos:**
+1. El Método de las 3 Cuentas: Cómo ahorrar tus primeros $500.000 sin sufrir.
+2. La Planilla "Anti-Fugas" que los bancos no quieren que uses.
+3. 10 Minutos al Domingo: El sistema para no llegar "pato" a fin de mes.
+
+**Gancho Social:** "¿Sabes exactamente a dónde se fue tu sueldo este mes? Si la respuesta es 'ni idea', mi nueva planilla gratuita te va a mostrar el agujero negro de tus finanzas en 2 clics."`,
+    tecnica_ingenieria: "Curiosity Gap & Value Stacking.",
+    validacion: "¿Tú darías tu correo electrónico a cambio de este título?",
+    ia_recomendada: "Gemini / ChatGPT",
+    hh_ahorradas: "45 min de brainstorming"
+  },
+  {
+    id: 9,
+    nombre_caso: "Manejo de Objeciones: El 'Está muy caro'",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Dime qué responder si un cliente dice que mi producto es caro.",
+    resultado_basico: "Dile que es de buena calidad y que vale la pena la inversión porque dura mucho tiempo.",
+    prompt_maestro: `1. ROL: Sales Closer Senior.
+2. CONTEXTO: 
+   Producto: [Asesoría Personalizada de Inversiones]
+   Precio: [$300.000]
+   Objeción: "Es que vi otro curso por $50.000 en internet."
+3. META: Reencuadrar el precio como una inversión y resaltar el costo de oportunidad.
+4. RESTRICCIONES:
+   - No sonar defensivo ni arrogante.
+   - Usar la técnica "Siente-Sintieron-Encontraron".
+5. FORMATO: Guion de respuesta directa.`,
+    resultado_maestro: `"Entiendo perfectamente, [Nombre]. De hecho, varios de mis clientes actuales sintieron lo mismo cuando compararon precios. 
+
+Lo que ellos encontraron es que el curso de $50k les daba teoría, pero seguían perdiendo dinero por no saber aplicarlo. Mi asesoría no es un gasto, es un seguro para que no pierdas esos $5M que tienes parados. 
+
+Si el precio no fuera un problema, ¿sientes que esta es la solución que necesitas?"`,
+    tecnica_ingenieria: "Reframing & Empathy Anchoring (Transforma el costo en valor percibido).",
+    validacion: "¿La respuesta invita al diálogo o cierra la puerta?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "Horas de frustración en ventas"
+  },
+  {
+    id: 10,
+    nombre_caso: "Email de Carrito Abandonado: El Empujón Final",
+    categoria: "Marketing y Ventas",
+    prompt_basico: "Escribe un correo para alguien que dejó algo en el carrito de mi tienda.",
+    resultado_basico: "Hola, vimos que dejaste productos en el carrito. Vuelve y termina tu compra antes de que se agoten.",
+    prompt_maestro: `1. ROL: Copywriter de Ecommerce.
+2. CONTEXTO: 
+   Tienda: [Ropa de diseño local]
+   Producto: [Chaqueta de mezclilla intervenida]
+3. META: Recuperar la venta usando escasez real y cercanía.
+4. RESTRICCIONES:
+   - Tono: "Amiga que te avisa de algo bueno". 
+   - Incluye un beneficio extra (ej: envío por Starken gratis por 24h).
+5. FORMATO: [Asunto] + [Cuerpo].`,
+    resultado_maestro: `Asunto: se nos va tu chaqueta... 🧥
+
+¡Hola [Nombre]! Paso por aquí solo para avisarte que la chaqueta que dejaste en el carrito es una de las últimas 3 que quedan en stock. 
+
+Como sé que te gustó, te habilité **envío gratis por Starken** si terminas la compra en las próximas 24 horas. 
+
+Usa el código: QUIEROLA MIA
+
+¿Tienes alguna duda con la talla? Responde a este correo y te ayudo feliz.`,
+    tecnica_ingenieria: "Scarcity & Risk Reversal (Escasez y eliminación de barreras como el costo de envío).",
+    validacion: "¿El correo se siente como una ayuda o como una presión molesta?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "30 min por secuencia"
+  }
+];
+const finanzas_db = [
+  {
+    id: 1,
+    nombre_caso: "Detector de Fugas de Dinero (Auditoría de Gastos)",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "Analiza mis gastos del mes y dime en qué estoy gastando mucho.",
+    resultado_basico: "Gastaste $500.000 en publicidad, $200.000 en herramientas y $100.000 en cafés. Deberías gastar menos en cafés.",
+    prompt_maestro: `1. ROL: Eres un Auditor Financiero experto en optimización de costos para Pymes.
+2. CONTEXTO: 
+   Lista de Gastos: [Pega aquí tu lista de gastos o movimientos del banco]
+   Meta: [Reducir costos en un 20% sin afectar la operación]
+3. META: Identificar "gastos hormiga", suscripciones duplicadas y servicios sobrevalorados.
+4. RESTRICCIONES:
+   - Clasifica los gastos en: Críticos, Necesarios y Prescindibles.
+   - Usa un tono directo y de alerta.
+5. FORMATO: Informe de "Fugas Detectadas" con una tabla de [Gasto] | [Impacto Anual] | [Acción Recomendada].`,
+    resultado_maestro: `### Informe de Fugas Detectadas 🚨
+
+Tras analizar tus movimientos, he detectado que estás perdiendo **$1.200.000 al año** en gastos innecesarios:
+
+| Gasto | Impacto Anual | Acción Recomendada |
+| :--- | :--- | :--- |
+| Suscripción Duplicada (Canva + Adobe) | $240.000 | Quédate solo con una; ambas hacen lo mismo para tu nivel actual. |
+| Comisiones por Transferencia (Otros Bancos) | $84.000 | Centraliza tus pagos en una sola cuenta empresa. |
+| Servicios de Hosting no optimizados | $150.000 | Pásate a un plan anual; estás pagando el mensual que es 30% más caro. |
+
+**Veredicto:** Si cortas estos 3 puntos hoy, ya tienes pagada la publicidad del próximo mes.`,
+    tecnica_ingenieria: "Financial Categorization & Cost-Benefit Analysis. La IA actúa como un filtro de prioridades.",
+    validacion: "¿Identificaste al menos un gasto que habías olvidado que tenías?",
+    ia_recomendada: "ChatGPT / Gemini (Excelente para procesar listas largas)",
+    hh_ahorradas: "2 - 3 horas de revisión manual"
+  },
+  {
+    id: 2,
+    nombre_caso: "Simulador de Precios 'No Pierdas Plata'",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "A cuánto debo vender mi curso si me cuesta $20.000 hacerlo.",
+    resultado_basico: "Si te cuesta $20.000, podrías venderlo a $40.000 para ganar el doble. Recuerda considerar los impuestos.",
+    prompt_maestro: `1. ROL: Consultor de Estrategia de Precios (Pricing Expert).
+2. CONTEXTO: 
+   Costo Directo: [Ej: $20.000 por alumno]
+   Gastos Fijos: [Ej: $500.000 al mes en software y arriendo]
+   Meta de Sueldo: [Ej: $1.500.000 líquido para mí]
+3. META: Calcular el precio de venta real considerando IVA (19% Chile), comisiones de pasarela de pago (Transbank/Getnet) y margen de utilidad.
+4. RESTRICCIONES:
+   - No olvides el impuesto digital si aplica.
+   - Explica el "Punto de Equilibrio" (cuántos debo vender para no quedar 'pato').
+5. FORMATO: Desglose de precio sugerido + Tabla de escenarios (Pesimista, Realista, Optimista).`,
+    resultado_maestro: `### Propuesta de Precio Inteligente
+
+Para recibir **$1.500.000 líquidos** y cubrir tus costos, no puedes vender a $40.000. Tu precio mínimo debe ser **$72.900**.
+
+**Desglose por unidad:**
+- Costo base: $20.000
+- IVA (19%): $11.639
+- Comisión Pasarela (3.5%): $2.551
+- Margen de contribución: $38.710
+
+**Punto de Equilibrio:** Necesitas vender **13 unidades al mes** solo para pagar tus costos fijos. A partir de la venta 14, empiezas a ganar tú.`,
+    tecnica_ingenieria: "Reverse Financial Engineering (Calcula desde la meta hacia el precio).",
+    validacion: "¿El precio final cubre tus impuestos y tu sueldo soñado?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "4 - 5 horas de cálculos en Excel"
+  },
+  {
+    id: 3,
+    nombre_caso: "Traductor de Cartola del SII (Impuestos)",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "Explícame qué significa este reporte del SII.",
+    resultado_basico: "Es un reporte de tus boletas de honorarios y facturas. Dice que tienes retenciones y que debes pagar el F29.",
+    prompt_maestro: `1. ROL: Contador Auditor experto en tributación chilena.
+2. CONTEXTO: 
+   Texto del reporte: [Pega aquí el resumen de tu Formulario 29 o registro de compras/ventas]
+3. META: Explicar en lenguaje de "vecino" cuánto debo pagar, por qué y cuándo es la fecha límite.
+4. RESTRICCIONES:
+   - Traduce términos como "Remanente de IVA", "PPM" y "Retención" a conceptos simples.
+   - Sin tecnicismos de relleno.
+5. FORMATO: Resumen de "A pagar" + Tips para bajar impuestos legalmente.`,
+    resultado_maestro: `### Tu situación con el SII en simple:
+
+Este mes tienes que pagar **$145.000**. Aquí te explico por qué:
+- **IVA:** Vendiste más de lo que compraste con factura. La diferencia que le debes al estado son $120.000.
+- **PPM:** Es tu "chanchito" para la renta. Estás ahorrando obligatoriamente $25.000 por si te va muy bien el próximo año.
+
+**Tip de ahorro:** Tienes 3 boletas de servicios (luz/internet) que no has pasado como gasto. Si las pides con factura el próximo mes, tu pago de IVA bajará un ~19%.`,
+    tecnica_ingenieria: "Knowledge Translation (De jerga legal/contable a lenguaje ciudadano).",
+    validacion: "¿Te quedó claro exactamente cuánta plata debes tener en la cuenta el día 20?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "1 - 2 horas de angustia e investigación"
+  },
+  {
+    id: 4,
+    nombre_caso: "Analista de Rentabilidad de Producto",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "Dime cuál de mis productos es mejor.",
+    resultado_basico: "El Producto A se vende más, así que probablemente es el mejor. El Producto B es más caro.",
+    prompt_maestro: `1. ROL: Analista de Negocios (Business Intelligence).
+2. CONTEXTO: 
+   Producto A: [Precio $10k, Costo $2k, Tiempo de entrega 1h]
+   Producto B: [Precio $50k, Costo $30k, Tiempo de entrega 10h]
+3. META: Determinar cuál producto es realmente más rentable considerando el factor TIEMPO (Costo de oportunidad).
+4. RESTRICCIONES:
+   - Calcula la "Ganancia por Hora de Trabajo".
+   - Recomienda cuál eliminar o potenciar.
+5. FORMATO: Tabla comparativa de rentabilidad real + Recomendación estratégica.`,
+    resultado_maestro: `### Análisis de Rentabilidad Real
+
+| Producto | Margen ($) | Margen (%) | Ganancia por Hora |
+| :--- | :--- | :--- | :--- |
+| **Producto A** | $8.000 | 80% | **$8.000/hr** |
+| **Producto B** | $20.000 | 40% | **$2.000/hr** |
+
+**Veredicto Estratégico:** Aunque el Producto B parece dejar "más plata" ($20k vs $8k), te quita 10 veces más tiempo. Estás ganando 4 veces más por cada hora invertida en el **Producto A**. 
+**Acción:** Automatiza el B o enfoca toda tu publicidad en el A.`,
+    tecnica_ingenieria: "Opportunity Cost Calculation (Mide el valor del tiempo del emprendedor).",
+    validacion: "¿Te diste cuenta de qué tarea te está quitando tiempo sin dejarte dinero?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 horas de análisis estratégico"
+  },
+  {
+    id: 5,
+    nombre_caso: "Preparador de Pitch para Crédito Bancario",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "Ayúdame a pedir un préstamo al banco para mi pyme.",
+    resultado_basico: "Hola Banco, necesito un crédito de 5 millones para comprar máquinas. Mi empresa es buena y siempre pago a tiempo. Gracias.",
+    prompt_maestro: `1. ROL: Ex-Agente de Cuentas Bancarias experto en evaluación de riesgos.
+2. CONTEXTO: 
+   Monto solicitado: [Ej: 10 millones de CLP]
+   Destino: [Ej: Stock para navidad]
+   Ventas anuales: [Ej: 40 millones]
+3. META: Redactar la justificación técnica que el banco quiere leer para aprobar el crédito.
+4. RESTRICCIONES:
+   - Enfócate en la "Capacidad de Repago" y el "Retorno de Inversión".
+   - Tono formal y ultra profesional.
+5. FORMATO: Resumen Ejecutivo para el ejecutivo del banco.`,
+    resultado_maestro: `**Asunto: Solicitud de Financiamiento de Capital de Trabajo - [Tu Empresa]**
+
+Estimado Ejecutivo,
+Adjunto la propuesta de financiamiento por **$10.000.000**. El destino de los fondos es la adquisición anticipada de inventario para la temporada Q4, donde proyectamos un incremento del 35% en ventas basado en el histórico adjunto.
+
+**Puntos clave para el análisis de riesgo:**
+- **Liquidez:** La operación tiene un margen operativo del 45%, asegurando el servicio de la deuda incluso en escenarios conservadores.
+- **ROI:** El retorno esperado de esta inversión es de 2.5x en un ciclo de 90 días.
+- **Historial:** Cero morosidades en el sistema financiero y crecimiento sostenido del 15% anual.`,
+    tecnica_ingenieria: "Role Play & Financial Persuasion (Habla el idioma del evaluador de riesgos).",
+    validacion: "¿Te sientes seguro presentando estos números ante un ejecutivo?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "3 - 5 horas de preparación"
+  },
+  {
+    id: 6,
+    nombre_caso: "Calculadora de 'Sueldo de Dueño' Realista",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "Cuánto me puedo pagar de sueldo si mi empresa gana 3 millones al mes.",
+    resultado_basico: "Si ganas 3 millones, podrías pagarte 1.5 millones y dejar el resto para la empresa y los gastos.",
+    prompt_maestro: `1. ROL: Consultor de Finanzas Personales para Emprendedores.
+2. CONTEXTO: 
+   Venta Mensual: [Ej: $3.000.000]
+   Costos de Venta (Insumos): [Ej: $1.000.000]
+   Gastos Fijos: [Ej: $500.000]
+3. META: Calcular el sueldo máximo que el dueño puede retirar sin quebrar la empresa en 6 meses.
+4. RESTRICCIONES:
+   - Reserva obligatoria para imprevistos (10%).
+   - Reserva para impuestos de fin de año.
+5. FORMATO: Plan de Retiro Mensual + Consejos de reinversión.`,
+    resultado_maestro: `### Tu Sueldo Seguro: **$1.050.000**
+
+Aquí está el por qué no puedes sacar más:
+- **Venta neta:** $3.000.000
+- **Costos operativos:** -$1.500.000 (Insumos + Gastos)
+- **Caja de Emergencia (10%):** -$150.000 (No se toca)
+- **Reserva Impuestos (10%):** -$300.000 (Para que en abril no sufras)
+- **Disponible para dueño:** $1.050.000
+
+**Consejo:** Si quieres subir tu sueldo a $1.5M, necesitamos bajar tus costos fijos en un 15% o subir el precio de tu producto estrella.`,
+    tecnica_ingenieria: "Conservative Financial Planning (Previene la quiebra por exceso de retiros).",
+    validacion: "¿Este sueldo te permite vivir tranquilo sabiendo que la empresa tiene ahorros?",
+    ia_recomendada: "Gemini / ChatGPT",
+    hh_ahorradas: "1 hora de planificación"
+  },
+  {
+    id: 7,
+    nombre_caso: "Optimizador de Logística: Starken vs ChilePost",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "Qué me conviene más para enviar mis productos en Chile.",
+    resultado_basico: "Starken es bueno para cosas grandes y Blue Express para cosas chicas. Depende de a dónde lo mandes.",
+    prompt_maestro: `1. ROL: Experto en Logística y Supply Chain (Chile).
+2. CONTEXTO: 
+   Producto: [Ej: Ropa, 1kg, 30x20x10 cm]
+   Volumen: [Ej: 50 envíos al mes]
+   Destinos: [Ej: 70% Santiago, 30% Regiones extremas]
+3. META: Comparar opciones de envío y negociar tarifas Pyme.
+4. RESTRICCIONES:
+   - Menciona convenios vigentes (ej: Transbank+Starken o convenios de emprendedores).
+   - Considera el "tiempo de entrega" como factor de productividad.
+5. FORMATO: Tabla Comparativa + Estrategia de ahorro en packaging.`,
+    resultado_maestro: `### Estrategia Logística Sugerida:
+
+| Operador | Ideal para... | Tip de Ahorro |
+| :--- | :--- | :--- |
+| **Blue Express** | Envíos en RM y ciudades grandes. | Usa los "Puntos Blue" (almacenes de barrio); es más barato que retiro en domicilio. |
+| **Starken** | Regiones y bultos grandes. | Regístrate como "Pyme Starken" para obtener 10-20% de descuento inmediato. |
+| **ChilePost** | Zonas rurales o extremas. | Es el único que llega a precios razonables a lugares como Putre o Cochrane. |
+
+**Ahorro en Packaging:** Cambia las cajas de cartón por bolsas de compostables de 60 micras. Bajas el peso volumétrico y ahorras **$400 por envío**.`,
+    tecnica_ingenieria: "Logistics Cost Optimization (Enfocado en el mercado chileno).",
+    validacion: "¿Cuánto dinero ahorras al mes aplicando el tip de packaging?",
+    ia_recomendada: "Perplexity (Para ver tarifas actualizadas) / ChatGPT",
+    hh_ahorradas: "3 - 4 horas de cotización"
+  },
+  {
+    id: 8,
+    nombre_caso: "Analista de 'Membresías Vampiro'",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "Revisa mis suscripciones y dime cuáles borrar.",
+    resultado_basico: "Tienes Netflix, Spotify, Canva y Zoom. Si no usas Zoom, bórralo y ahorra dinero.",
+    prompt_maestro: `1. ROL: Consultor de Eficiencia Operativa.
+2. CONTEXTO: 
+   Lista de Software: [Ej: ChatGPT Plus, Shopify, Klaviyo, Canva Pro, Zoom Premium]
+   Uso: [Soy solo yo y tengo 500 suscriptores en el mail]
+3. META: Eliminar software "vampiro" que chupa dinero sin dar retorno.
+4. RESTRICCIONES:
+   - Sugiere alternativas gratuitas que hagan el 90% de lo mismo.
+   - Calcula el ahorro anual.
+5. FORMATO: Plan de "Limpieza Digital".`,
+    resultado_maestro: `### Plan de Limpieza Digital 🧹
+
+1. **Eliminar Klaviyo ($30/mes):** Con 500 suscriptores, cámbiate a **MailerLite** o **Sender**. Son gratis hasta los 1.000 suscriptores. 
+   - *Ahorro anual: $320.000 CLP.*
+2. **Bajar Zoom a Gratis ($15/mes):** Si tus reuniones duran menos de 40 min o usas Google Meet (que viene con tu correo), no lo necesitas.
+   - *Ahorro anual: $160.000 CLP.*
+
+**Total Ahorro Anual: $480.000 CLP.** Con esto pagas un curso nuevo en Aula GenIA y te sobra.`,
+    tecnica_ingenieria: "Software Stack Optimization.",
+    validacion: "¿Realmente usas todas las funciones premium por las que pagas?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "1 hora de revisión"
+  },
+  {
+    id: 9,
+    nombre_caso: "Simulador de Escenarios: '¿Puedo contratar a alguien?'",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "Quiero contratar a un asistente por 500 mil pesos, ¿puedo?",
+    resultado_basico: "Si tienes el dinero en la cuenta, puedes hacerlo. Pero recuerda que debes pagar leyes sociales.",
+    prompt_maestro: `1. ROL: Director de Finanzas (CFO) para startups.
+2. CONTEXTO: 
+   Costo de la persona: [$500.000 líquido]
+   Ventas actuales: [$3.500.000]
+   Margen actual: [30%]
+3. META: Determinar si el negocio soporta el nuevo sueldo y cuánto deben subir las ventas para compensarlo.
+4. RESTRICCIONES:
+   - Considera el "Costo Empresa" real (Leyes sociales, gratificación, seguro). En Chile es aprox un 25-30% extra sobre el líquido.
+5. FORMATO: Análisis de Viabilidad (SÍ/NO) + Meta de ventas nueva.`,
+    resultado_maestro: `### Análisis de Contratación: **NO por ahora** ⚠️
+
+**La Realidad de los Números:**
+- Sueldo Líquido: $500.000
+- **Costo Empresa Real:** ~$680.000 (Incluye AFP, Salud, Seguro Cesantía, Mutual).
+- Tu margen actual es de $1.050.000 (30% de $3.5M). 
+
+Si contratas hoy, tu utilidad baja de $1.050.000 a **$370.000**. Estarías trabajando solo para pagar el sueldo del asistente.
+
+**La Meta para contratar:** Necesitas subir tus ventas a **$5.800.000** para que, tras pagar al asistente, tú sigas ganando el mismo millón de pesos que hoy.`,
+    tecnica_ingenieria: "Break-even Labor Analysis.",
+    validacion: "¿Estás dispuesto a ganar menos por un tiempo a cambio de más ayuda?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "3 horas de proyecciones"
+  },
+  {
+    id: 10,
+    nombre_caso: "Proyección de Ventas Navideña / Temporada Alta",
+    categoria: "Finanzas y Estrategia",
+    prompt_basico: "Cuánto voy a vender en diciembre si el año pasado vendí 2 millones.",
+    resultado_basico: "Probablemente vendas 2 millones o un poco más si haces buena publicidad. La economía está algo lenta.",
+    prompt_maestro: `1. ROL: Analista de Datos y Tendencias de Consumo.
+2. CONTEXTO: 
+   Ventas año pasado: [Diciembre: $2M, Noviembre: $1.2M]
+   Tendencia este año: [Vienes creciendo un 10% mes a mes]
+3. META: Proyectar la venta de temporada alta y recomendar cuánto stock comprar para no quebrar stock ni sobrar.
+4. RESTRICCIONES:
+   - Considera la inflación y el estado del consumo en Chile.
+   - Da un rango de seguridad.
+5. FORMATO: Proyección Numérica + Estrategia de Inventario.`,
+    resultado_maestro: `### Proyección Diciembre 2025: **$2.450.000** 📈
+
+**Cómo llegamos a este número:**
+- Crecimiento orgánico (10%): $2.200.000
+- Ajuste por estacionalidad y tendencia de mercado: +$250.000.
+
+**Estrategia de Stock:**
+- Compra mercadería para cubrir **$2.700.000** (Rango de seguridad). 
+- Es mejor que te sobre un 10% a que un cliente llegue con la plata y tú no tengas qué venderle (Venta perdida).
+- **Tip:** Si el 15 de diciembre no has llegado al 50% de la meta, lanza un "Pack Regalo" para acelerar el flujo.`,
+    tecnica_ingenieria: "Predictive Analytics for Small Business.",
+    validacion: "¿Tienes el capital para comprar el stock sugerido?",
+    ia_recomendada: "Gemini (Usa datos actuales de Google) / ChatGPT",
+    hh_ahorradas: "2 horas de análisis de datos"
+  }
+];
+   id: 21,
+    nombre_caso: "El Negociador High-Ticket",
+    categoria: "Ventas & Copywriting",
+    prompt_basico: "Ayúdame a cobrar más caro por mi asesoría.",
+    resultado_basico: "Dile al cliente que tienes mucha experiencia y sube el precio.",
+    prompt_maestro: `1. ROL: Experto en Negociación de Alto Nivel.
+2. CONTEXTO: Servicio: [Asesoría IA]. Precio actual: [500k]. Meta: [1.5M].
+3. META: Reestructurar la oferta para que el aumento parezca una ganga.
+4. RESTRICCIONES: Usa 'Anclaje de Precios'. Enfócate en el ROI.
+5. FORMATO: Guion de venta + Estructura de oferta comparativa.`,
+    resultado_realista: "Argumentación basada en el ahorro de 12M al año en sueldos automatizados.",
+    tecnica_ingenieria: "Price Anchoring.",
+    ia_recomendada: "Claude / ChatGPT",
+    hh_ahorradas: "10 - 20 horas"
+  },
+const contenido_rrss_db = [
+  {
+    id: 1,
+    nombre_caso: "El Pulpo de Contenidos (1 Idea = 5 Posts)",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Dame 5 ideas de posts sobre inteligencia artificial.",
+    resultado_basico: "1. Qué es la IA. 2. Cómo usar ChatGPT. 3. El futuro del trabajo. 4. Herramientas de IA. 5. Por qué aprender IA.",
+    prompt_maestro: `1. ROL: Eres un Estratega de Contenido Multiplataforma.
+2. CONTEXTO: 
+   Idea Base: [Ej: Cómo la IA ayuda a los contadores a ahorrar tiempo]
+   Público: [Contadores independientes en Chile]
+3. META: Convertir esa única idea en 5 formatos distintos para maximizar el alcance.
+4. RESTRICCIONES:
+   - Formatos: 1 Reel (Entretenimiento), 1 Carrusel (Educativo), 1 Tweet/X (Opinión), 1 Post LinkedIn (Profesional), 1 Story (Interacción).
+   - Tono: Autoridad pero accesible.
+5. FORMATO: Lista numerada con [Plataforma] + [Gancho/Hook] + [Estructura del contenido].`,
+    resultado_maestro: `### Tu Fábrica de Contenido:
+
+1. **Reel (Instagram):** - **Gancho:** "Si eres contador y sigues digitando facturas a mano, estás perdiendo plata." 
+   - **Estructura:** Muestra un proceso tedioso vs. la IA haciéndolo en segundos.
+2. **Carrusel (Educativo):** - **Gancho:** "5 Herramientas de IA que tu cliente amará que uses." 
+   - **Estructura:** Slide a slide explicando cada herramienta y su beneficio.
+3. **LinkedIn (Profesional):** - **Gancho:** "La ética de la IA en la contabilidad chilena: ¿Riesgo o ventaja?" 
+   - **Estructura:** Texto reflexivo sobre la evolución del rol del contador.
+4. **Story (Interacción):** - **Estructura:** Encuesta: "¿Cuántas horas pasas al mes en el SII? A) -10h B) +20h".
+5. **X/Twitter (Opinión):** - **Gancho:** "La IA no reemplazará al contador, pero el contador que usa IA reemplazará al que no."`,
+    tecnica_ingenieria: "Content Repurposing Strategy (Maximiza el ROI de una sola idea creativa).",
+    validacion: "¿Sientes que con un solo concepto tienes cubierta la semana de redes sociales?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "3 - 5 horas de brainstorming"
+  },
+  {
+    id: 2,
+    nombre_caso: "Guionista de Tutoriales 'Que Se Entienden'",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Hazme un guion para un video enseñando a usar una app.",
+    resultado_basico: "Hola, hoy veremos esta app. Primero abres la cuenta, luego aprietas el botón azul y al final guardas todo. Espero te guste.",
+    prompt_maestro: `1. ROL: Eres un Creador de Contenido Educativo (Edutainer).
+2. CONTEXTO: 
+   Herramienta: [Ej: Gamma.app para presentaciones]
+   Público: [Profesores que están cansados de hacer PPTs]
+3. META: Crear un guion de video corto (60s) que enseñe una victoria rápida.
+4. RESTRICCIONES:
+   - Gancho inicial: Ataca el cansancio o el tiempo perdido.
+   - Paso a paso: Máximo 3 pasos.
+   - Prohibido decir "Hola a todos" o "Bienvenidos a mi canal".
+5. FORMATO: Guion tipo "Habla a cámara" vs "Muestra pantalla".`,
+    resultado_maestro: `**Guion: Presentaciones en 30 segundos**
+
+- **(0-5s) Cámara:** "¿Te has quedado hasta las 2 AM terminando un PowerPoint para mañana? Eso se acabó."
+- **(5-15s) Pantalla:** "Entra a Gamma.app, escribe el tema de tu clase y mira cómo la IA diseña las diapositivas por ti."
+- **(15-45s) Pantalla:** "Paso 1: Eliges el estilo. Paso 2: Ajustas el texto. Paso 3: Exportas a PDF."
+- **(45-60s) Cámara:** "Si quieres el link directo, comenta 'CLASE' y te lo mando por interno. ¡Sígueme para más trucos de Aula GenIA!"`,
+    tecnica_ingenieria: "Micro-learning Scripting (Enfocado en retención y utilidad inmediata).",
+    validacion: "¿El video enseña algo útil en menos de 1 minuto?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 horas de edición y guion"
+  },
+  {
+    id: 3,
+    nombre_caso: "Titulares Magnéticos (Clickbait Ético)",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Dame títulos para mi blog sobre emprendimiento.",
+    resultado_basico: "Cómo emprender en Chile. Consejos para tu negocio. El éxito del emprendedor.",
+    prompt_maestro: `1. ROL: Copywriter experto en Titulares de Alto Impacto.
+2. CONTEXTO: 
+   Tema: [Errores comunes al usar ChatGPT]
+   Audiencia: [Dueños de Pyme]
+3. META: Generar 10 opciones de títulos que obliguen al usuario a hacer clic pero que cumplan lo prometido.
+4. RESTRICCIONES:
+   - Usa fórmulas: Curiosidad, Miedo, Número/Lista, Resultado Contra-intuitivo.
+   - Tono: Desafiante pero útil.
+5. FORMATO: Lista de 10 titulares categorizados.`,
+    resultado_maestro: `### Titulares que SÍ reciben clics:
+
+1. **(Miedo)** El error en ChatGPT que le está dando datos falsos a tu negocio.
+2. **(Curiosidad)** Por qué tus prompts no funcionan (y qué hace la competencia distinto).
+3. **(Lista)** 5 Prompts que te ahorran 2 horas de oficina hoy mismo.
+4. **(Contra-intuitivo)** Deja de pedirle "favores" a la IA: Por qué ser 'educado' arruina tus resultados.
+5. **(Urgencia)** Lo que debes saber sobre la IA antes de que termine el 2025.`,
+    tecnica_ingenieria: "Headline Psychology (Usa gatillos mentales para aumentar el CTR o tasa de clics).",
+    validacion: "¿Tú harías clic en estos títulos si los vieras en tu celular?",
+    ia_recommended: "ChatGPT / Gemini",
+    hh_ahorradas: "45 min de bloqueo creativo"
+  },
+  {
+    id: 4,
+    nombre_caso: "Estructurador de Carruseles (Viralidad Educativa)",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Dime qué poner en las 10 fotos de un carrusel de Instagram.",
+    resultado_basico: "Foto 1: Título. Foto 2-9: Consejos de marketing. Foto 10: Gracias por leer.",
+    prompt_maestro: `1. ROL: Diseñador de Experiencia de Usuario en Redes Sociales.
+2. CONTEXTO: 
+   Tema: [Cómo automatizar el servicio al cliente con IA]
+   Público: [Dueños de tiendas online]
+3. META: Definir el contenido de un carrusel de 7 diapositivas diseñado para ser "Guardado" y "Compartido".
+4. RESTRICCIONES:
+   - Slide 1: El Gancho visual.
+   - Slide 2: El problema (empatía).
+   - Slide 3-5: La solución paso a paso.
+   - Slide 6: El resultado (antes/después).
+   - Slide 7: CTA (Llamada a la acción).
+5. FORMATO: Tabla: [Slide #] | [Texto Principal] | [Sugerencia de Imagen/Diseño].`,
+    resultado_maestro: `| Slide | Texto Principal | Sugerencia de Diseño |
+| :--- | :--- | :--- |
+| 1 | "Tu WhatsApp no debería ser una cárcel" | Foto tuya cansado frente al cel vs. feliz. |
+| 2 | Respondes 'precio' 50 veces al día y no vendes nada. | Captura de pantalla de chat infinito. |
+| 3 | PASO 1: Define tus 10 preguntas frecuentes. | Iconos de burbujas de texto. |
+| 4 | PASO 2: Entrena a tu asistente con estos datos. | Gráfico simple de cerebro + datos. |
+| 5 | PASO 3: Conecta y deja que la IA trabaje. | Robot respondiendo con un check verde. |
+| 6 | De 4 horas respondiendo a 0 minutos de gestión. | Gráfico de barras comparativo. |
+| 7 | ¿Quieres mi guía de automatización? Link en la Bio. | Flecha señalando tu foto de perfil. |`,
+    tecnica_ingenieria: "Sequential Storytelling (Mantiene la atención del usuario hasta el final del carrusel).",
+    validacion: "¿El carrusel cuenta una historia completa con una solución clara?",
+    ia_recomendada: "ChatGPT / Canva (Para el diseño)",
+    hh_ahorradas: "3 - 4 horas de diseño y redacción"
+  },
+  {
+    id: 5,
+    nombre_caso: "Blog Post Humanizado (SEO que no parece Robot)",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Escribe un artículo de 500 palabras sobre por qué usar IA en el trabajo.",
+    resultado_basico: "La inteligencia artificial es una tecnología que ha avanzado mucho. Es importante porque ayuda a las empresas a ser más rápidas y eficientes. En conclusión, hay que usarla.",
+    prompt_maestro: `1. ROL: Eres un Redactor SEO Senior con tono humano y personal.
+2. CONTEXTO: 
+   Tema: [Cómo la IA le devolvió los fines de semana a este emprendedor chileno]
+   Palabras clave: [Productividad, IA para Pymes, Ahorro de tiempo]
+3. META: Escribir un artículo de blog que Google ame (SEO) pero que las personas disfruten leer (Storytelling).
+4. RESTRICCIONES:
+   - Empieza con una historia personal o anécdota.
+   - Usa subtítulos (H2) llamativos.
+   - No uses párrafos de más de 4 líneas.
+5. FORMATO: Texto estructurado con Título SEO + Cuerpo del post.`,
+    resultado_maestro: `**Título: Del colapso a la calma: Cómo la IA se convirtió en mi socio silencioso**
+
+Hubo un martes, cerca de las 11 de la noche, en que miré mi Excel y sentí que el negocio me estaba comiendo vivo. ¿Te ha pasado? Esa sensación de que vendes, pero no tienes vida.
+
+**El mito del 'trabajo duro'**
+Nos enseñaron que para ser exitosos hay que estar 'ocupados'. Pero estar ocupado no es ser productivo. Ahí es donde entró la IA en mi Pyme.
+
+**No es reemplazar humanos, es potenciar talentos**
+Implementar IA no se trata de robots futuristas. Se trata de que una máquina redacte el informe de ventas mientras tú juegas con tus hijos o piensas en la estrategia del próximo año.`,
+    tecnica_ingenieria: "Narrative SEO (Combina optimización para buscadores con técnicas de escritura persuasiva).",
+    validacion: "¿Sientes que estás leyendo a una persona o un manual de instrucciones?",
+    ia_recomendada: "ChatGPT / Claude (Por su calidez en la escritura)",
+    hh_ahorradas: "4 - 6 horas de redacción"
+  },
+  {
+    id: 6,
+    nombre_caso: "Capitán de Captions (Instagram/FB)",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Escribe el texto para una foto de mi oficina nueva.",
+    resultado_basico: "Muy feliz con mi nueva oficina. Seguimos creciendo y trabajando duro para nuestros clientes. Gracias a todos.",
+    prompt_maestro: `1. ROL: Social Media Manager experto en engagement.
+2. CONTEXTO: 
+   Foto: [Nueva oficina de Aula GenIA]
+   Objetivo: [Mostrar crecimiento y generar comentarios]
+3. META: Escribir un caption que genere interacción real, no solo "likes" vacíos.
+4. RESTRICCIONES:
+   - Usa la estructura: Gancho -> Historia/Valor -> CTA.
+   - Incluye 5 hashtags locales y específicos.
+5. FORMATO: Texto listo para copiar con espacios y emojis.`,
+    resultado_maestro: `"Parece solo una oficina, pero para mí es tiempo recuperado. 🚀
+
+Hace un año, mi 'oficina' era la mesa del comedor llena de migas y cables. Hoy, este espacio representa todas las horas que la IA me ayudó a ahorrar para enfocarme en lo que amo: enseñar.
+
+No se trata de tener un escritorio bonito, se trata de tener la libertad de elegir dónde trabajar.
+
+**¿Desde dónde estás trabajando tú hoy?**
+A) La oficina 🏢
+B) Desde la casa (home office) 🏠
+C) Algún café inspirador ☕
+
+Cuéntame abajo, ¡los leo! 👇
+
+#AulaGenIA #EmprendedoresChile #IAChile #Productividad #LasCondes"`,
+    tecnica_ingenieria: "Engagement Anchoring (Termina con preguntas cerradas o fáciles de responder para aumentar comentarios).",
+    validacion: "¿El texto invita a la gente a contar su propia historia?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "20 - 30 min por post"
+  },
+  {
+    id: 7,
+    nombre_caso: "Curador de Noticias (Autoridad en LinkedIn)",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Resume esta noticia de tecnología para compartirla.",
+    resultado_basico: "OpenAI lanzó un nuevo modelo de voz. Es muy rápido y suena natural. Puedes usarlo en tu celular pronto.",
+    prompt_maestro: `1. ROL: Líder de Pensamiento (Thought Leader) en Tecnología.
+2. CONTEXTO: 
+   Noticia: [Pega link o texto sobre el último lanzamiento de Google/OpenAI]
+   Audiencia: [Dueños de negocio en Chile]
+3. META: Explicar por qué esta noticia le importa al dueño de una Pyme (no solo el dato técnico).
+4. RESTRICCIONES:
+   - Resumen en 3 puntos clave de impacto.
+   - Opinión personal sobre el futuro.
+5. FORMATO: Post de LinkedIn estructurado.`,
+    resultado_maestro: `**¿Por qué el nuevo lanzamiento de OpenAI debería importarte si tienes una Pyme? 🤖**
+
+Se habla mucho de la tecnología, pero poco del impacto real en el bolsillo. Aquí lo que rescatamos del anuncio de hoy:
+
+1. **Atención 24/7 real:** La latencia bajó tanto que tus clientes no notarán que hablan con una IA por teléfono.
+2. **Costos de entrada:** Estas herramientas son cada vez más baratas. Lo que antes costaba un millón, hoy cuesta 10 dólares.
+3. **Multimodalidad:** Ya no solo lee texto, ahora "ve" tus documentos y fotos al instante.
+
+**Mi opinión:** El que no adopte esto en los próximos 6 meses, se va a quedar fuera de competencia por un tema de costos operativos.
+
+¿Ya estás probando estas herramientas en tu equipo o todavía lo ves como algo 'del futuro'?`,
+    tecnica_ingenieria: "Impact Analysis (Traduce novedades tecnológicas en consecuencias de negocio).",
+    validacion: "¿La noticia suena útil para un negocio o solo como un dato curioso?",
+    ia_recomendada: "Perplexity (Para noticias frescas) / ChatGPT",
+    hh_ahorradas: "1 - 2 horas de investigación diaria"
+  },
+  {
+    id: 8,
+    nombre_caso: "Reciclador de Videos (YouTube a Shorts/TikTok)",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Dime qué partes de mi video largo sirven para TikTok.",
+    resultado_basico: "Usa la parte donde explicas el consejo 1 y el consejo 3. Son las más interesantes del video.",
+    prompt_maestro: `1. ROL: Editor de Contenido Viral y Especialista en Retención.
+2. CONTEXTO: 
+   Transcripción de video largo: [Pega el texto de tu video de YouTube o clase de 10 min]
+3. META: Identificar 3 momentos de alto impacto (clips) que funcionen como videos independientes de 30-60s.
+4. RESTRICCIONES:
+   - Define el minuto exacto (si hay tiempos) o el texto de inicio y fin.
+   - Sugiere un título viral para cada clip.
+5. FORMATO: Lista de Clips: [Título] | [Texto de inicio] | [Texto de fin] | [Por qué funciona].`,
+    resultado_maestro: `### Clips sugeridos para tus redes:
+
+1. **Clip: El mito de la IA gratuita**
+   - **Inicio:** "Mucha gente cree que lo gratis es suficiente..."
+   - **Fin:** "...y por eso terminan perdiendo más tiempo que antes."
+   - **Por qué:** Genera controversia y educa sobre el valor de las herramientas Pro.
+
+2. **Clip: El truco de los 5 segundos**
+   - **Inicio:** "Hay un comando secreto que nadie usa..."
+   - **Fin:** "...y así es como recuperas tu tarde."
+   - **Por qué:** Es un 'tip' rápido y accionable que la gente guarda.`,
+    tecnica_ingenieria: "Hook-Point Identification (Encuentra picos de interés en contenidos largos).",
+    validacion: "¿Los clips seleccionados tienen sentido por sí solos sin ver el video completo?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "3 - 5 horas de revisión de material"
+  },
+  {
+    id: 9,
+    nombre_caso: "Consultor de Lead Magnets (El Imán de Emails)",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Qué puedo regalar para que la gente se suscriba a mi newsletter.",
+    resultado_basico: "Puedes regalar un ebook, un descuento en tu tienda o una consultoría gratuita de 15 minutos.",
+    prompt_maestro: `1. ROL: Estratega de Marketing de Atracción.
+2. CONTEXTO: 
+   Mi negocio: [Curso Aula GenIA]
+   Mi público: [Emprendedores estresados]
+3. META: Idear 3 opciones de "Regalos Gratuitos" (Lead Magnets) que sean tan buenos que el usuario se sienta "tonto" diciendo que no.
+4. RESTRICCIONES:
+   - Debe ser algo que se consuma en menos de 10 min.
+   - Debe resolver un dolor específico inmediato.
+5. FORMATO: Nombre del regalo + Qué incluye + Por qué funciona.`,
+    resultado_maestro: `### Ideas de Imanes de Clientes:
+
+1. **La "Caja de Herramientas Anti-Estrés":** Un PDF de una página con los 10 links directos a las IAs que hacen el trabajo sucio. 
+   - *Por qué funciona:* Promete velocidad inmediata.
+2. **La Plantilla de Prompt "Copia y Pega":** El prompt exacto que usamos para redactar correos de venta que sí funcionan.
+   - *Por qué funciona:* Elimina el miedo a la 'hoja en blanco'.
+3. **Video: "Tu primera automatización en 5 minutos":** Un tutorial relámpago que les da una victoria real sin saber programar.
+   - *Por qué funciona:* Demuestra que ellos también pueden hacerlo.`,
+    tecnica_ingenieria: "High-Value Exchange (Crea una oferta gratuita con alto valor percibido para captar datos).",
+    validacion: "¿Tú darías tu correo personal por uno de estos recursos?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Semanas de prueba y error en marketing"
+  },
+  {
+    id: 10,
+    nombre_caso: "Calendario Editorial Estratégico",
+    categoria: "Creación de Contenido & RRSS",
+    prompt_basico: "Hazme un calendario de contenido para el mes de enero.",
+    resultado_basico: "Lunes: Post motivacional. Miércoles: Tip de IA. Viernes: Promoción de curso. Repite esto todas las semanas.",
+    prompt_maestro: `1. ROL: Content Strategist Senior.
+2. CONTEXTO: 
+   Mes: [Marzo - Vuelta a clases/trabajo en Chile]
+   Objetivo: [Vender el curso Aula GenIA]
+3. META: Crear un calendario de 4 semanas con un "Arco Narrativo" (Calentar -> Educar -> Vender).
+4. RESTRICCIONES:
+   - Considera fechas importantes (ej: 8 de marzo, fin de mes).
+   - Equilibrio: 40% Educación, 30% Entretenimiento/Personal, 30% Venta Directa.
+5. FORMATO: Tabla por semanas: [Día] | [Pilar de Contenido] | [Objetivo].`,
+    resultado_maestro: `### Plan Estratégico Marzo:
+
+| Día | Pilar | Objetivo |
+| :--- | :--- | :--- |
+| **Lun** | Motivación Real | Empatizar con el caos de marzo en Chile (tacos, gastos, trabajo). |
+| **Mar** | Educación | Tutorial rápido: Cómo la IA te ayuda a organizar tu agenda de marzo. |
+| **Jue** | Autoridad | Caso de éxito: "Cómo Juan recuperó 10 horas a la semana". |
+| **Vie** | Venta | Oferta relámpago: Inscripciones abiertas Aula GenIA. |
+| **Dom** | Personal | Foto de tu setup o lectura del domingo (Humanizar). |`,
+    tecnica_ingenieria: "Narrative Arc Planning (Mueve al usuario desde el desconocimiento hasta la compra).",
+    validacion: "¿El calendario tiene una lógica de ventas o son solo posts sueltos?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "5 - 10 horas de planificación mensual"
+  }
+];
+{
+    id: 41,
+    nombre_caso: "Extractor de ADN de Voz",
+    categoria: "Contenido & Redes",
+    prompt_basico: "Analiza cómo escribo.",
+    resultado_basico: "Escribes de forma profesional y usas párrafos cortos.",
+    prompt_maestro: `1. ROL: Ghostwriter experto.
+2. CONTEXTO: Texto referencia: [Pega 3-5 párrafos tuyos].
+3. META: Extraer mi ADN de escritura para que la IA lo replique.
+4. RESTRICCIONES: Identifica ritmo, vocabulario y lo que debo evitar.
+5. FORMATO: Guía de Estilo: [Tono] | [Ritmo] | [Vocabulario].`,
+    resultado_realista: "Análisis que revela que prefieres analogías futboleras y frases cortas directas.",
+    tecnica_ingenieria: "Style Mimicry.",
+    ia_recomendada: "Claude",
+    hh_ahorradas: "Ahorra sonar como robot"
+  },
+const lanzamiento_ideas_db = [
+  // --- CATEGORÍA: LANZAMIENTO DE IDEAS (51-60) ---
+  {
+    id: 51,
+    nombre_caso: "Validador de Ideas 'Pies en la Tierra'",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Dime si es buena idea vender pan de masa madre a domicilio.",
+    resultado_basico: "Es una buena idea porque a la gente le gusta el pan sano. Podrías tener éxito si cocinas bien.",
+    prompt_maestro: `1. ROL: Eres un Consultor de Lean Startup experto en validación de mercados. 2. CONTEXTO: Idea: [Vender pan de masa madre a domicilio en Ñuñoa]. Público: [Personas 30-50 años que cuidan su salud]. 3. META: Someter la idea a una "prueba de estrés" para ver si es rentable. 4. RESTRICCIONES: Identifica 3 fallas fatales potenciales y cómo evitarlas. Tono: Crítico pero constructivo. 5. FORMATO: Análisis de Viabilidad (Semáforo) + 3 Experimentos baratos para validar sin gastar plata.`,
+    resultado_realista: "Análisis que advierte sobre el costo del delivery y sugiere preventa por WhatsApp para medir interés real antes de comprar el horno.",
+    tecnica_ingenieria: "Stress Testing & Pre-morten Analysis (Identifica fallos antes de que ocurran).",
+    validacion: "¿La respuesta te hizo pensar en un problema que no habías visto?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "10 - 15 horas de dudas"
+  },
+  {
+    id: 52,
+    nombre_caso: "Arquitecto de Avatar (Buyer Persona)",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Quién compraría un curso de repostería saludable.",
+    resultado_basico: "Mujeres que quieren comer sano, personas con diabetes y gente que le gusta cocinar.",
+    prompt_maestro: `1. ROL: Psicólogo del Consumidor y Experto en Marketing. 2. CONTEXTO: Producto: [Curso de repostería con alulosa]. 3. META: Crear un perfil detallado de mi "Cliente Ideal". 4. RESTRICCIONES: Ve más allá de la edad. Describe sus miedos, sus deseos profundos y qué cuentas sigue en Instagram. 5. FORMATO: Ficha de Personaje: [Nombre ficticio] | [Dolores] | [Deseos] | [Dónde encontrarlo].`,
+    resultado_realista: "Perfil de 'Carla, la mamá culposa', que ama el dulce pero tiene miedo a que su hija de 4 años coma azúcar procesada.",
+    tecnica_ingenieria: "Psychographic Profiling (Entiende la mente del cliente, no solo su bolsillo).",
+    validacion: "¿Sientes que conoces a esta persona en la vida real?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "2 - 3 horas de investigación"
+  },
+  {
+    id: 53,
+    nombre_caso: "Naming Maestro: Nombres que se pegan",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Dame nombres para mi nueva marca de ropa de yoga.",
+    resultado_basico: "YogaStyle, Paz Interior, Ropa Zen, Yoga Chile.",
+    prompt_maestro: `1. ROL: Experto en Branding y Naming Creativo. 2. CONTEXTO: Marca: [Ropa de yoga para tallas grandes]. Valores: [Inclusión, Comodidad, Poder]. 3. META: Generar 10 nombres originales, fáciles de pronunciar y que tengan el dominio disponible (conceptualmente). 4. RESTRICCIONES: Evita nombres obvios o en inglés difícil. 5. FORMATO: Lista: [Nombre] | [Significado] | [Por qué funciona].`,
+    resultado_realista: "Sugerencias como 'Calma Real' o 'Cuerpo Vivo', que conectan con la inclusión sin sonar a cliché.",
+    tecnica_ingenieria: "Creative Ideation & Brand Semantics.",
+    validacion: "¿Alguno de los nombres te genera una emoción inmediata?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "4 - 5 horas de vueltas en la cabeza"
+  },
+  {
+    id: 54,
+    nombre_caso: "La Propuesta Única de Valor (Diferenciador)",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Por qué deberían comprarme a mí y no a la competencia.",
+    resultado_basico: "Porque tus productos son de buena calidad y das una atención personalizada.",
+    prompt_maestro: `1. ROL: Estratega de Diferenciación de Negocios. 2. CONTEXTO: Mi negocio: [Venta de comida para mascotas a domicilio]. Competencia: [Grandes supermercados y apps]. 3. META: Redactar una frase de 15 palabras que explique por qué eres la mejor opción. 4. RESTRICCIONES: Prohibido usar "calidad", "precio justo" o "buen servicio". 5. FORMATO: 3 Variaciones de Propuesta Única de Valor (PUV).`,
+    resultado_realista: "Propuesta: 'Nunca más te quedarás sin comida: programamos tus pedidos según el apetito de tu perro'.",
+    tecnica_ingenieria: "Unique Value Proposition (UVP) Design.",
+    validacion: "¿Tu propuesta suena distinta a lo que dicen todos los demás?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 horas de estrategia"
+  },
+  {
+    id: 55,
+    nombre_caso: "Estructurador de Producto Mínimo Viable (MVP)",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Cómo empiezo mi negocio de suscripción de flores.",
+    resultado_basico: "Compra flores, haz ramos, crea una página web y empieza a vender por Instagram.",
+    prompt_maestro: `1. ROL: Product Manager de Startups. 2. CONTEXTO: Idea: [Suscripción semanal de flores]. Presupuesto: [Solo $100.000 para empezar]. 3. META: Diseñar la versión más simple y barata para empezar a vender en 48 horas. 4. RESTRICCIONES: Sin programar, sin oficina, sin stock gigante. 5. FORMATO: Plan de acción: Día 1 (Montaje) | Día 2 (Venta).`,
+    resultado_realista: "Plan para validar con un formulario de Google y fotos de flores compradas en el terminal, usando delivery local.",
+    tecnica_ingenieria: "MVP Scoping (Enfocado en reducir el riesgo y la inversión inicial).",
+    validacion: "¿Podrías empezar este negocio mañana mismo con lo que tienes?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Semanas de planificación innecesaria"
+  },
+  {
+    id: 56,
+    nombre_caso: "Análisis de Competencia 'Detective'",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Quiénes son mis competidores si vendo joyas de plata.",
+    resultado_basico: "Tus competidores son Joyerías Barón, otras tiendas de Instagram y las grandes tiendas del mall.",
+    prompt_maestro: `1. ROL: Analista de Inteligencia Competitiva. 2. CONTEXTO: Mi nicho: [Joyas de plata con piedras chilenas (lapislázuli)]. 3. META: Identificar qué están haciendo bien y en qué están fallando mis competidores. 4. RESTRICCIONES: Encuentra el "espacio vacío" que ellos no están cubriendo. 5. FORMATO: Tabla: [Competidor] | [Lo que hace bien] | [Su debilidad] | [Mi oportunidad].`,
+    resultado_realista: "Descubrimiento de que nadie está ofreciendo packaging de regalo premium para envíos a regiones por Starken.",
+    tecnica_ingenieria: "Gap Analysis (Encuentra nichos desatendidos en mercados saturados).",
+    validacion: "¿Descubriste algo que tu competencia ignora por completo?",
+    ia_recomendada: "Perplexity / ChatGPT",
+    hh_ahorradas: "4 - 6 horas de investigación"
+  },
+  {
+    id: 57,
+    nombre_caso: "Guion de Pitch 'Elevator': Vende en 30s",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Cómo explico mi negocio de IA a un inversionista.",
+    resultado_basico: "Hacemos una plataforma de IA para que la gente aprenda y use herramientas en su trabajo diario.",
+    prompt_maestro: `1. ROL: Coach de Pitch para Shark Tank. 2. CONTEXTO: Proyecto: [Aula GenIA]. Público: [Alguien que no sabe nada de IA]. 3. META: Un guion de 30 segundos que enganche a la primera. 4. RESTRICCIONES: Estructura: Gancho -> Problema -> Solución -> Por qué ahora. 5. FORMATO: Texto para leer en voz alta.`,
+    resultado_realista: "Pitch: '¿Sabías que el 70% de los emprendedores trabaja 12 horas pero solo 4 son productivas? En Aula GenIA...' ",
+    tecnica_ingenieria: "Elevator Pitch Framing.",
+    validacion: "¿Si le dices esto a alguien en un ascensor, te pediría su tarjeta?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "2 horas de ensayo"
+  },
+  {
+    id: 58,
+    nombre_caso: "Prompt para Diseñar tu Logo (DALL-E/Midjourney)",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Dame una idea de logo para una panadería.",
+    resultado_basico: "Un dibujo de un pan con trigo y el nombre de la panadería escrito abajo en letras bonitas.",
+    prompt_maestro: `1. ROL: Director de Arte y Diseñador Gráfico Senior. 2. CONTEXTO: Marca: [Masa Madre & Co]. Estilo: [Minimalista, rústico, elegante]. 3. META: Redactar un prompt técnico para una IA de imagen (DALL-E, Midjourney o Ideogram) que genere un logo profesional. 4. RESTRICCIONES: Evita logos saturados. Usa colores tierra. 5. FORMATO: Prompt en inglés (para mejor resultado) + Explicación en español.`,
+    resultado_realista: "Prompt técnico: 'Minimalist logo design, sourdough wheat ear, earthy tones, vector style, white background...' ",
+    tecnica_ingenieria: "Text-to-Image Engineering (Traducción de conceptos visuales a comandos de IA).",
+    validacion: "¿La imagen generada se ve como una marca de $1.000.000 o como un dibujo de Paint?",
+    ia_recomendada: "ChatGPT (DALL-E 3) / Ideogram",
+    hh_ahorradas: "2 - 3 días de diseño"
+  },
+  {
+    id: 59,
+    nombre_caso: "Diseñador de Oferta Irresistible",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Haz una oferta para mi nuevo servicio de limpieza.",
+    resultado_basico: "Limpio tu casa por $30.000. Si compras hoy te doy un 10% de descuento.",
+    prompt_maestro: `1. ROL: Experto en Ofertas de Respuesta Directa (Alex Hormozi style). 2. CONTEXTO: Servicio: [Limpieza de alfombras a domicilio]. 3. META: Crear una oferta que sea "estúpido" decir que no. 4. RESTRICCIONES: Agrega un bono, una garantía y urgencia. 5. FORMATO: El "Paquete Irresistible" detallado.`,
+    resultado_realista: "Oferta: 'Limpieza de alfombra + Sanitizado de colchón GRATIS + Garantía de 7 días (si no queda impecable, no pagas)'.",
+    tecnica_ingenieria: "Offer Stacking & Risk Reversal.",
+    validacion: "¿Tú comprarías esta oferta si la vieras en Facebook?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 horas de brainstorming"
+  },
+  {
+    id: 60,
+    nombre_caso: "Timeline de Lanzamiento (Día a Día)",
+    categoria: "Lanzamiento de Ideas",
+    prompt_basico: "Qué pasos sigo para lanzar mi curso online.",
+    resultado_basico: "Graba los videos, haz la web, avisa por redes sociales y abre las inscripciones.",
+    prompt_maestro: `1. ROL: Lanzador de Productos Digitales (Launch Manager). 2. CONTEXTO: Producto: [Aula GenIA]. Fecha de lanzamiento: [En 14 días]. 3. META: Crear un calendario de acciones diarias para generar expectación y ventas. 4. RESTRICCIONES: Considera la "fase de calentamiento". 5. FORMATO: Tabla: [Día] | [Acción en RRSS] | [Acción Técnica].`,
+    resultado_realista: "Cronograma de 14 días que incluye 'encuestas de dolor' el día 1 y 'cuenta regresiva' el día 13.",
+    tecnica_ingenieria: "Launch Sequencing (Crea tensión dramática y psicológica para maximizar las ventas del día 1).",
+    validacion: "¿Sabes exactamente qué tienes que publicar mañana para vender?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "10 - 20 horas de planificación estratégica"
+  }
+];
+const operaciones_procesos_db = [
+  // --- CATEGORÍA: OPERACIONES & PROCESOS (61-70) ---
+  {
+    id: 61,
+    nombre_caso: "Creador de Manuales de Procedimiento (SOP)",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Escribe los pasos para empaquetar mis productos.",
+    resultado_basico: "Primero envuelve el producto, ponle una tarjeta, mételo en la bolsa de Starken y llévalo al correo.",
+    prompt_maestro: `1. ROL: Eres un Consultor de Operaciones experto en eficiencia. 2. CONTEXTO: Tarea: [Preparación de pedidos de joyería]. Herramientas: [Papel seda, cajas, adhesivos, guía de despacho]. 3. META: Crear un Manual de Procedimientos Estándar (SOP) para que cualquier persona nueva pueda hacerlo perfecto sin preguntarme. 4. RESTRICCIONES: Usa pasos numerados y añade una sección de "Control de Calidad" (qué revisar antes de cerrar). 5. FORMATO: Lista estructurada: [Paso] | [Acción] | [Detalle clave].`,
+    resultado_realista: "Manual detallado que asegura que cada paquete lleve el aroma de la marca y la tarjeta de agradecimiento en la posición correcta.",
+    tecnica_ingenieria: "Standard Operating Procedure (SOP) Design (Sistematiza el conocimiento para que el negocio no dependa de ti).",
+    validacion: "¿Podría un extraño seguir estos pasos y obtener el mismo resultado que tú?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "5 - 8 horas de entrenamiento a personal"
+  },
+  {
+    id: 62,
+    nombre_caso: "Arquitecto de Flujos de Trabajo (Zapier/Make)",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Cómo conecto mi formulario de Google con mi WhatsApp.",
+    resultado_basico: "Usa Zapier para que cuando alguien llene el formulario, te llegue un aviso o se le mande un mensaje al cliente.",
+    prompt_maestro: `1. ROL: Ingeniero No-Code experto en automatización. 2. CONTEXTO: Trigger: [Cliente llena formulario en mi web]. Acción deseada: [Que se cree una fila en Excel y me llegue una alerta al celu]. 3. META: Diseñar la lógica paso a paso para configurar esta automatización sin saber programar. 4. RESTRICCIONES: Explica qué campos "mapear" (unir). 5. FORMATO: Diagrama de flujo en texto: [Trigger] -> [Acción 1] -> [Acción 2].`,
+    resultado_realista: "Guía lógica para conectar Google Forms con Sheets y mandar notificaciones inmediatas por Telegram o Slack.",
+    tecnica_ingenieria: "Logic Workflow Mapping (Divide un proceso complejo en pasos binarios ejecutables).",
+    validacion: "¿Entiendes qué gatilla la acción y cuál es el resultado final?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "10 - 20 horas de trabajo manual al mes"
+  },
+  {
+    id: 63,
+    nombre_caso: "Filtro Inteligente de Prospectos (Leads)",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Dime quiénes de estos clientes son mejores para venderles.",
+    resultado_basico: "Los que tienen empresas grandes parecen mejores. Los que escribieron hoy también son prioridad.",
+    prompt_maestro: `1. ROL: Director de Ventas (VP of Sales). 2. CONTEXTO: Lista de leads: [Pega aquí datos de 10 personas que consultaron]. Mis criterios: [Que tengan presupuesto de +500k, que necesiten el servicio urgente]. 3. META: Calificar los leads del 1 al 10 y decirme a quién llamar primero. 4. RESTRICCIONES: Justifica cada puntaje. 5. FORMATO: Tabla: [Nombre] | [Puntaje] | [Por qué] | [Acción inmediata].`,
+    resultado_realista: "Ranking de prospectos que prioriza a los dueños de negocio sobre los estudiantes, ahorrando tiempo de llamadas en frío.",
+    tecnica_ingenieria: "Lead Scoring & Prioritization.",
+    validacion: "¿La tabla te ayuda a decidir a quién llamar en menos de 5 segundos?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "1 hora diaria de gestión comercial"
+  },
+  {
+    id: 64,
+    nombre_caso: "Generador de Políticas 'Sin Relleno'",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Escribe una política de devolución para mi tienda.",
+    resultado_basico: "No aceptamos devoluciones después de 10 días. El producto debe estar nuevo y con boleta.",
+    prompt_maestro: `1. ROL: Gerente de Operaciones y Experiencia al Cliente. 2. CONTEXTO: Negocio: [Venta de ropa online]. Problema común: [Clientes que se prueban la ropa y la devuelven sucia]. 3. META: Redactar términos y condiciones de devolución que protejan al negocio pero que suenen amables. 4. RESTRICCIONES: Usa lenguaje claro, evita términos legales complejos. 5. FORMATO: Título + 3 Cláusulas clave + Instrucciones de envío.`,
+    resultado_realista: "Política de cambios que establece claramente que las prendas íntimas no tienen cambio por higiene, evitando conflictos.",
+    tecnica_ingenieria: "Conflict Mitigation Copywriting.",
+    validacion: "¿La política es justa para ti y para el cliente?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 - 3 horas de redacción legal"
+  },
+  {
+    id: 65,
+    nombre_caso: "Optimizador de Rutas y Logística",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Tengo que ir a 5 comunas de Santiago, dime cuál es el mejor orden.",
+    resultado_basico: "Ve primero a Providencia, luego a Las Condes, después a Maipú, Puente Alto y termina en San Bernardo.",
+    prompt_maestro: `1. ROL: Coordinador Logístico de última milla. 2. CONTEXTO: Puntos de entrega: [Maipú, Vitacura, La Florida, Santiago Centro, Quilicura]. Punto de partida: [Independencia]. Hora de salida: [10:00 AM]. 3. META: Diseñar la ruta más eficiente para ahorrar bencina y tiempo de taco. 4. RESTRICCIONES: Considera el sentido del tránsito en horas punta en Santiago. 5. FORMATO: Lista ordenada de paradas con tiempo estimado entre cada una.`,
+    resultado_realista: "Ruta optimizada que agrupa las comunas del sector norte primero para evitar cruzar el centro en hora de almuerzo.",
+    tecnica_ingenieria: "Geographical Logic Optimization.",
+    validacion: "¿La ruta tiene sentido geográfico o te hace dar vueltas en círculo?",
+    ia_recomendada: "ChatGPT / Perplexity (para tráfico real)",
+    hh_ahorradas: "1 - 2 horas de conducción diaria"
+  },
+  {
+    id: 66,
+    nombre_caso: "Asistente de Reclutamiento: Filtro de CVs",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Mira estos 5 currículums y dime cuál es el mejor para vendedor.",
+    resultado_basico: "Juan tiene mucha experiencia, pero María vive más cerca. Creo que Juan es mejor.",
+    prompt_maestro: `1. ROL: Gerente de Recursos Humanos. 2. CONTEXTO: Cargo: [Vendedor de mesón para ferretería]. Perfil buscado: [Honesto, rápido con los números, que viva en la comuna]. CVs: [Pega aquí el texto de los postulantes]. 3. META: Comparar los candidatos contra el perfil ideal y descartar los que no cumplen. 4. RESTRICCIONES: Identifica "banderas rojas" (ej: vacíos laborales sin explicación). 5. FORMATO: Tabla: [Nombre] | [Fortaleza] | [Riesgo] | [Veredicto: Entrevistar / Archivar].`,
+    resultado_realista: "Selección de los 2 mejores candidatos para entrevista, descartando a quienes no tienen disponibilidad inmediata.",
+    tecnica_ingenieria: "Applicant Tracking Logic (ATS-like filtering).",
+    validacion: "¿Te ahorró leer cada línea de 10 currículums?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "2 - 4 horas de reclutamiento"
+  },
+  {
+    id: 67,
+    nombre_caso: "Planificador de Producción Semanal",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Tengo que hacer 100 tortas esta semana, ayúdame a organizarme.",
+    resultado_basico: "Haz 20 tortas cada día de lunes a viernes y así terminas a tiempo.",
+    prompt_maestro: `1. ROL: Jefe de Producción Industrial. 2. CONTEXTO: Pedido: [100 tortas de panqueque]. Capacidad: [Solo 2 hornos, 1 batidora grande]. Plazo: [Entrega viernes 9 AM]. 3. META: Crear un plan de producción diario para no colapsar el último día. 4. RESTRICCIONES: Considera el tiempo de enfriado y decoración. 5. FORMATO: Cronograma: [Día] | [Mañana: Tarea] | [Tarde: Tarea].`,
+    resultado_realista: "Plan de acción que sugiere hornear todos los bizcochos el lunes y martes, para dedicar miércoles y jueves solo al relleno y montaje.",
+    tecnica_ingenieria: "Batch Processing Strategy (Optimiza el uso de maquinaria y reduce el lavado de utensilios).",
+    validacion: "¿El plan evita que te quedes trabajando toda la noche el jueves?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "3 - 5 horas de caos operativo"
+  },
+  {
+    id: 68,
+    nombre_caso: "Generador de Scripts para Excel (Macros)",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Cómo hago que en Excel se pinten de rojo las celdas que dicen 'Vencido'.",
+    resultado_basico: "Usa el formato condicional. Selecciona las celdas, busca 'reglas para resaltar' y pon que sea igual a 'Vencido'.",
+    prompt_maestro: `1. ROL: Experto en Data Analytics y Excel Avanzado. 2. CONTEXTO: Tarea: [Pintar de rojo facturas vencidas y de verde las pagadas automáticamente]. 3. META: Explicar cómo hacerlo con formato condicional O dar el código VBA si es algo más complejo. 4. RESTRICCIONES: Paso a paso para alguien que no sabe dónde están los botones. 5. FORMATO: Guía 1, 2, 3 + Fórmula exacta a copiar.`,
+    resultado_realista: "Fórmula de Excel lista para copiar que detecta automáticamente si la fecha de hoy es mayor a la de la factura.",
+    tecnica_ingenieria: "Process Automation via Formula Engineering.",
+    validacion: "¿La fórmula funciona cuando la pegas en tu Excel?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "1 hora de revisión visual de planillas"
+  },
+  {
+    id: 69,
+    nombre_caso: "Auditoría de Higiene Digital (Seguridad)",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Dime si mi contraseña 'Empresa2024' es segura.",
+    resultado_basico: "No es muy segura porque tiene el nombre de tu empresa y el año. Deberías usar números y símbolos.",
+    prompt_maestro: `1. ROL: Consultor en Ciberseguridad para Pymes. 2. CONTEXTO: Situación: [Tengo todas mis claves en un cuaderno, comparto mi clave de SII con mi contador por WhatsApp]. 3. META: Crear un plan de seguridad básica para evitar hackeos o robos de información. 4. RESTRICCIONES: Sugiere herramientas gratuitas. 5. FORMATO: Lista de "Riesgos Críticos" + "Acciones de Mejora".`,
+    resultado_realista: "Recomendación de usar un gestor de contraseñas y activar la verificación en dos pasos (2FA) en Gmail y WhatsApp.",
+    tecnica_ingenieria: "Cybersecurity Protocol Design.",
+    validacion: "¿Sientes que tus datos están más protegidos tras seguir estos pasos?",
+    ia_recomendada: "ChatGPT / Perplexity",
+    hh_ahorradas: "Evita el costo (millonario) de un hackeo"
+  },
+  {
+    id: 70,
+    nombre_caso: "Estandarizador de Inventario (Naming)",
+    categoria: "Operaciones & Procesos",
+    prompt_basico: "Cómo le pongo nombre a mis productos para que no se me desordene el stock.",
+    resultado_basico: "Ponle un nombre corto y un número. Por ejemplo: Polera1, Polera2.",
+    prompt_maestro: `1. ROL: Gestor de Inventarios y Bodega. 2. CONTEXTO: Productos: [Ropa de bebé de distintos colores, tallas y telas]. 3. META: Crear un sistema de códigos (SKU) que permita identificar el producto sin ver la foto. 4. RESTRICCIONES: El código debe tener lógica (ej: Marca-Tipo-Talla-Color). 5. FORMATO: Glosario de códigos + 5 ejemplos de etiquetas reales.`,
+    resultado_realista: "Sistema de códigos como 'BEBE-POL-03M-AZU' (Bebé, Polera, 3 meses, Azul) que facilita el despacho.",
+    tecnica_ingenieria: "SKU Architecture (Crea un lenguaje común para el crecimiento de la bodega).",
+    validacion: "¿Si lees el código, sabes qué producto tienes que sacar de la caja?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Horas de confusión buscando productos en la bodega"
+  }
+];
+{
+    id: 71,
+    nombre_caso: "Creador de Manuales (SOP)",
+    categoria: "Operaciones & Sistemas",
+    prompt_basico: "Escribe pasos para empaquetar productos.",
+    resultado_basico: "Envuelve, pon tarjeta, mete en bolsa Starken y envía.",
+    prompt_maestro: `1. ROL: Consultor de Operaciones.
+2. CONTEXTO: Tarea: [Preparación joyería]. Herramientas: [Papel seda, cajas].
+3. META: Crear SOP para que un novato lo haga perfecto.
+4. RESTRICCIONES: Incluye sección Control de Calidad.
+5. FORMATO: Lista: [Paso] | [Acción] | [Detalle clave].`,
+    resultado_realista: "Manual que asegura que cada paquete tenga el aroma de marca y la tarjeta centrada.",
+    tecnica_ingenieria: "SOP Design.",
+    ia_recomendada: "ChatGPT",
+    hh_ahorradas: "8 horas de entrenamiento"
+  },
+const liderazgo_equipos_db = [
+  // --- CATEGORÍA: LIDERAZGO & GESTIÓN DE EQUIPOS (71-80) ---
+  {
+    id: 71,
+    nombre_caso: "El Delegador Maestro (Cómo soltar tareas)",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Dime cómo pedirle a mi asistente que se encargue de los correos.",
+    resultado_basico: "Hola, desde hoy tú respondes los correos de los clientes. Avísame si tienes dudas. Gracias.",
+    prompt_maestro: `1. ROL: Eres un experto en Liderazgo Situacional y Delegación Efectiva. 2. CONTEXTO: Tarea: [Gestión de Inbox y soporte al cliente]. Delegado: [Asistente nuevo con poca experiencia]. 3. META: Redactar una instrucción de delegación que incluya el "Para qué", los límites de autoridad y cuándo reportar. 4. RESTRICCIONES: Usa un tono empoderador pero con límites claros. 5. FORMATO: Mensaje estructurado: Contexto + Autoridad + Sistema de Reporte.`,
+    resultado_realista: "Instrucción clara que define que el asistente puede resolver dudas de hasta $20.000 de descuento sin preguntar, pero debe escalar reclamos legales.",
+    tecnica_ingenieria: "Levels of Authority Framework (Evita el micromanagement definiendo qué puede decidir el empleado solo).",
+    validacion: "¿El asistente sabe exactamente qué puede decidir por su cuenta y qué no?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 - 3 horas de interrupciones diarias"
+  },
+  {
+    id: 72,
+    nombre_caso: "Perfil de Cargo 'Imán de Talento'",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Escribe un aviso para contratar a un Community Manager.",
+    resultado_basico: "Busco Community Manager que sepa usar Instagram y TikTok. Pago conversable. Mandar currículum al correo.",
+    prompt_maestro: `1. ROL: Reclutador Senior (Headhunter). 2. CONTEXTO: Cargo: [Community Manager part-time]. Negocio: [Aula GenIA]. 3. META: Escribir una oferta de trabajo que atraiga a gente proactiva y no solo a buscadores de sueldo. 4. RESTRICCIONES: Incluye una "misión del cargo" inspiradora y 3 requisitos técnicos obligatorios. 5. FORMATO: Título Atractivo + Misión + Responsabilidades + "Buscamos a alguien que...".`,
+    resultado_realista: "Aviso de empleo que vende la visión del proyecto y filtra desde el inicio a quienes no tienen sintonía con la educación digital.",
+    tecnica_ingenieria: "Value-Based Recruitment (Atrae por propósito para asegurar compromiso a largo plazo).",
+    validacion: "¿El aviso describe a una persona real o es una lista de deseos genérica?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "2 horas de redacción"
+  },
+  {
+    id: 73,
+    nombre_caso: "Feedback Constructivo (Sin Herir Sentimientos)",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Dile a mi diseñador que su último logo quedó feo y que lo haga de nuevo.",
+    resultado_basico: "Hola, el logo no nos gustó mucho. Se ve desordenado. ¿Podrías intentar hacerlo de nuevo?",
+    prompt_maestro: `1. ROL: Coach de Equipos de Alto Rendimiento. 2. CONTEXTO: Situación: [El diseño no cumple con la identidad visual de la marca]. Persona: [Diseñador freelance]. 3. META: Dar feedback negativo pero constructivo que motive a mejorar en lugar de desanimar. 4. RESTRICCIONES: Usa la técnica del "Sándwich" (Positivo - Crítica - Positivo) o el modelo SBI (Situación, Comportamiento, Impacto). 5. FORMATO: Guion de conversación o mensaje de Slack.`,
+    resultado_realista: "Crítica profesional que se enfoca en los objetivos de la marca y no en el gusto personal, logrando que el diseñador entienda el error sin enojarse.",
+    tecnica_ingenieria: "Radical Candor & SBI Feedback (Mejora el desempeño sin destruir la relación).",
+    validacion: "¿El feedback se centra en el trabajo o en la persona?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "Previene la rotación de buenos colaboradores"
+  },
+  {
+    id: 74,
+    nombre_caso: "Mediador de Conflictos Internos",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Mis dos empleados se llevan mal y pelean por quién usa la camioneta. Ayúdame.",
+    resultado_basico: "Diles que dejen de pelear y que se turnen un día cada uno para usar la camioneta y así no hay problemas.",
+    prompt_maestro: `1. ROL: Consultor en Resolución de Conflictos Laborales. 2. CONTEXTO: Conflicto: [Uso de recursos compartidos (camioneta de repartos)]. Involucrados: [Vendedor vs. Repartidor]. 3. META: Redactar un guion de reunión para resolver la raíz del problema y establecer una regla justa. 4. RESTRICCIONES: Busca una solución "Gana-Gana". 5. FORMATO: Estructura de la reunión: Apertura + Escucha Activa + Acuerdo.`,
+    resultado_realista: "Plan de mediación que revela que el problema no era la camioneta, sino la falta de un calendario compartido en Google Calendar.",
+    tecnica_ingenieria: "Interest-Based Negotiation (Harvard Method).",
+    validacion: "¿La solución ataca el síntoma (la pelea) o la causa (la falta de orden)?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Días de mal clima laboral"
+  },
+  {
+    id: 75,
+    nombre_caso: "Entrevista de Selección: Preguntas 'Filtro'",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Qué le pregunto a alguien que quiere ser mi asistente administrativo.",
+    resultado_basico: "¿Tienes experiencia? ¿Sabes usar Excel? ¿Dónde vives? ¿Cuánto quieres ganar?",
+    prompt_maestro: `1. ROL: Psicólogo Organizacional experto en Selección. 2. CONTEXTO: Cargo: [Asistente administrativo]. Mayor temor: [Que sea una persona lenta o poco honesta]. 3. META: Crear 5 preguntas conductuales (basadas en hechos pasados) para predecir el desempeño futuro. 4. RESTRICCIONES: Incluye qué respuesta deberías esperar (la "respuesta ideal"). 5. FORMATO: Pregunta | Qué evaluar en la respuesta.`,
+    resultado_realista: "Lista de preguntas tipo 'Cuéntame una vez que cometiste un error grave con un cliente y cómo lo resolviste' para evaluar honestidad y resiliencia.",
+    tecnica_ingenieria: "Behavioral Event Interviewing (BEI).",
+    validacion: "¿Las preguntas te ayudan a ver cómo actúa la persona bajo presión?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "Evita contrataciones fallidas (que cuestan 3 veces el sueldo)"
+  },
+  {
+    id: 6,
+    nombre_caso: "Discurso de Motivación 'Lunes con Garra'",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Escribe un mensaje de ánimo para mi equipo para empezar la semana.",
+    resultado_basico: "Hola equipo, espero que hayan tenido un buen fin de semana. Vamos con todo este lunes para cumplir las metas. ¡Éxito!",
+    prompt_maestro: `1. ROL: Líder Transformacional. 2. CONTEXTO: Situación: [Mes difícil de ventas, equipo un poco cansado]. 3. META: Un mensaje de WhatsApp o email que suba la moral y enfoque al equipo en una victoria pequeña. 4. RESTRICCIONES: No uses frases motivacionales de calendario (clichés). Sé vulnerable y realista. 5. FORMATO: Mensaje corto de alto impacto emocional.`,
+    resultado_realista: "Mensaje genuino que reconoce el esfuerzo extra del equipo y propone un premio grupal si logran la meta de la semana.",
+    tecnica_ingenieria: "Emotional Intelligence in Leadership (Conecta con el propósito y el reconocimiento).",
+    validacion: "¿Tú te sentirías motivado al recibir este mensaje?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Mejora el clima de equipo instantáneamente"
+  },
+  {
+    id: 77,
+    nombre_caso: "Checklist de Onboarding (Primer día)",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Qué tengo que pasarle a un empleado nuevo el primer día.",
+    resultado_basico: "Dale su computador, su clave del correo, el manual de la empresa y muéstrale dónde queda el baño.",
+    prompt_maestro: `1. ROL: Especialista en Cultura Organizacional. 2. CONTEXTO: Empresa: [Pyme de servicios digitales]. 3. META: Crear una lista de bienvenida (Onboarding) para que el nuevo integrante se sienta productivo y acogido en sus primeras 4 horas. 4. RESTRICCIONES: Incluye un gesto de bienvenida humano. 5. FORMATO: Checklist por horas: [Hora] | [Acción] | [Responsable].`,
+    resultado_realista: "Plan que incluye un 'almuerzo de bienvenida' y la asignación de un 'compañero guía' para resolver dudas básicas.",
+    tecnica_ingenieria: "Experience Design (Onboarding). Reduce la ansiedad del nuevo integrante y acelera su curva de aprendizaje.",
+    validacion: "¿La persona nueva siente que el negocio está organizado al entrar?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "1 - 2 días de confusión del nuevo empleado"
+  },
+  {
+    id: 78,
+    nombre_caso: "Facilitador de Reuniones Diarias (Daily)",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Cómo hago una reunión rápida con mi equipo todas las mañanas.",
+    resultado_basico: "Junten a todos 10 minutos, pregunten qué hicieron ayer y qué van a hacer hoy. Que sea corto.",
+    prompt_maestro: `1. ROL: Scrum Master experto en agilidad. 2. CONTEXTO: Equipo: [3 personas trabajando remoto]. 3. META: Diseñar una estructura de reunión de 15 minutos que realmente sirva para destrabar tareas y no para perder tiempo. 4. RESTRICCIONES: Usa las 3 preguntas clásicas de la agilidad. 5. FORMATO: Guion de apertura + Reglas de la reunión + Formato de seguimiento.`,
+    resultado_realista: "Estructura de reunión que se enfoca en los 'bloqueadores' para que el dueño de negocio pueda ayudar a su equipo a avanzar.",
+    tecnica_ingenieria: "Agile Ritual Design (Daily Stand-up).",
+    validacion: "¿La reunión termina con una lista de problemas a resolver?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Horas de reuniones innecesarias"
+  },
+  {
+    id: 79,
+    nombre_caso: "Definidor de KPIs (Qué medir)",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Cómo sé si mi vendedor está trabajando bien.",
+    resultado_basico: "Mira cuánto vendió al mes y compáralo con el mes pasado. Si subió, está bien.",
+    prompt_maestro: `1. ROL: Director de Operaciones y Estrategia. 2. CONTEXTO: Cargo: [Vendedor de servicios B2B]. 3. META: Definir 3 indicadores (KPIs) de gestión que no sean solo 'ventas totales'. 4. RESTRICCIONES: Incluye un indicador de 'actividad' y uno de 'calidad'. 5. FORMATO: Tabla: [KPI] | [Cómo se mide] | [Meta sugerida].`,
+    resultado_realista: "Indicadores como 'Tasa de conversión de llamadas a reuniones' para entender dónde está fallando el vendedor realmente.",
+    tecnica_ingenieria: "Performance Metrics Design (Mide procesos, no solo resultados finales).",
+    validacion: "¿Los indicadores te permiten corregir el rumbo antes de fin de mes?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 horas de análisis mensual"
+  },
+  {
+    id: 80,
+    nombre_caso: "Carta de Despido/Renuncia Profesional",
+    categoria: "Liderazgo & Gestión",
+    prompt_basico: "Escribe una carta para despedir a alguien porque no cumplió las metas.",
+    resultado_basico: "Hola, lamentamos decirte que ya no trabajas con nosotros por no cumplir las metas. Te pagaremos tu finiquito.",
+    prompt_maestro: `1. ROL: Abogado Laboral y Gerente de Personas. 2. CONTEXTO: Situación: [Término de contrato por necesidades de la empresa en Chile]. 3. META: Redactar una comunicación formal y respetuosa que cumpla con los estándares mínimos para evitar conflictos legales. 4. RESTRICCIONES: No seas emocional. Sé breve y claro sobre los pasos a seguir (finiquito, entrega de equipos). 5. FORMATO: Documento formal.`,
+    resultado_realista: "Carta sobria que protege al empleador y trata con dignidad al trabajador, cerrando el ciclo profesionalmente.",
+    tecnica_ingenieria: "Compliance & Risk Mitigation Writing.",
+    validacion: "¿La carta es clara, firme y legalmente adecuada?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "Evita potenciales demandas laborales por mal manejo de formas"
+  }
+];
+const analisis_decisiones_db = [
+  // --- CATEGORÍA: ANÁLISIS & DECISIONES (81-90) ---
+  {
+    id: 81,
+    nombre_caso: "Analista de Ventas (De Excel a Estrategia)",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Mira mis ventas de este mes y dime cómo me fue.",
+    resultado_basico: "Vendiste 5 millones. El producto más vendido fue la polera roja. El día con más ventas fue el lunes.",
+    prompt_maestro: `1. ROL: Eres un Analista de Business Intelligence (BI). 2. CONTEXTO: Datos de ventas: [Pega aquí tu lista de ventas del mes o CSV]. 3. META: Encontrar patrones ocultos que no se ven a simple vista. 4. RESTRICCIONES: Identifica: ¿A qué hora compran más? ¿Qué productos se compran juntos? ¿Cuál es el ticket promedio? 5. FORMATO: 3 "Hallazgos de Oro" + 2 Recomendaciones para el próximo mes.`,
+    resultado_realista: "Descubrimiento de que los clientes que compran 'Alulosa' también suelen comprar 'Harina de Almendras', sugiriendo crear un pack promocional.",
+    tecnica_ingenieria: "Pattern Recognition & Data Storytelling (Convierte filas de datos en una narrativa de negocio).",
+    validacion: "¿La recomendación te da una idea clara para una nueva promoción?",
+    ia_recomendada: "ChatGPT (Advanced Data Analysis) / Gemini",
+    hh_ahorradas: "3 - 5 horas de cruce de datos"
+  },
+  {
+    id: 82,
+    nombre_caso: "Detector de Sentimientos (Reviews de Clientes)",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Resume los comentarios que dejaron los clientes en Google.",
+    resultado_basico: "A la mayoría le gusta el producto, pero algunos dicen que el envío es lento. Promedio 4 estrellas.",
+    prompt_maestro: `1. ROL: Especialista en Experiencia del Cliente (CX). 2. CONTEXTO: Feedback: [Pega aquí 20-30 comentarios o reseñas]. 3. META: Hacer un análisis de sentimiento profundo. 4. RESTRICCIONES: Clasifica en: Dolores recurrentes, Fortalezas amadas y "Lo que nadie está diciendo". 5. FORMATO: Tabla: [Categoría] | [Sentimiento] | [Qué dicen exactamente].`,
+    resultado_realista: "Análisis que detecta que los clientes aman la calidad, pero están frustrados con la dificultad de abrir el envase, no con el producto en sí.",
+    tecnica_ingenieria: "Sentiment Analysis & Qualitative Clustering (Agrupa opiniones subjetivas en datos objetivos).",
+    validacion: "¿Entiendes mejor qué es lo que más le molesta a tu cliente?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "2 horas de lectura y categorización"
+  },
+  {
+    id: 83,
+    nombre_caso: "La Regla de Pareto (El 80/20 de tu Negocio)",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Dime qué clientes me dan más plata.",
+    resultado_basico: "Juan, Pedro y María son tus mejores clientes porque han comprado varias veces este año.",
+    prompt_maestro: `1. ROL: Consultor Estratégico de Rentabilidad. 2. CONTEXTO: Lista de clientes y montos: [Pega aquí]. 3. META: Identificar el 20% de tus clientes que generan el 80% de tus ingresos. 4. RESTRICCIONES: Sugiere una estrategia para "mimar" a esos clientes VIP y otra para los que te quitan tiempo y no dejan margen. 5. FORMATO: Lista VIP + Estrategia de Retención.`,
+    resultado_realista: "Identificación de 5 clientes clave que mantienen el negocio, permitiendo crear un club de beneficios exclusivo para ellos.",
+    tecnica_ingenieria: "Pareto Analysis (Focus on High-Impact Units).",
+    validacion: "¿Sabes ahora a quién deberías llamar personalmente para agradecerle su compra?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "1 hora de análisis estratégico"
+  },
+  {
+    id: 84,
+    nombre_caso: "Análisis de Embudo (Funnel): ¿Dónde se va la plata?",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Mucha gente entra a mi web pero nadie compra, ¿por qué?",
+    resultado_basico: "Puede ser que el precio esté alto, que la página sea lenta o que el botón de compra no se vea bien.",
+    prompt_maestro: `1. ROL: Experto en Conversión (CRO). 2. CONTEXTO: Datos: [1000 visitas, 100 agregados al carrito, 2 ventas]. 3. META: Identificar el punto exacto donde los clientes abandonan y por qué. 4. RESTRICCIONES: Analiza la pérdida de fricción en cada paso. 5. FORMATO: Análisis por etapa + 2 cambios urgentes en la web.`,
+    resultado_realista: "Detección de una caída del 90% en el carrito, sugiriendo que el costo de despacho (Starken) se muestra muy tarde y asusta al cliente.",
+    tecnica_ingenieria: "Funnel Drop-off Analysis (Localiza fugas en el proceso de venta).",
+    validacion: "¿Tienes claro en qué parte del proceso se están "asustando" tus clientes?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 - 3 horas de auditoría de marketing"
+  },
+  {
+    id: 85,
+    nombre_caso: "Pronóstico de Demanda (Forecasting)",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Cuánto voy a vender el próximo mes.",
+    resultado_basico: "Si sigues así, venderás parecido a este mes, unos 4 o 5 millones dependiendo de la publicidad.",
+    prompt_maestro: `1. ROL: Data Scientist especializado en retail. 2. CONTEXTO: Ventas últimos 6 meses: [Ene: 2M, Feb: 2.2M, Mar: 3M, Abr: 2.8M, May: 3.5M, Jun: 4M]. 3. META: Predecir la venta de los próximos 3 meses considerando la tendencia. 4. RESTRICCIONES: Calcula la tasa de crecimiento promedio mensual. 5. FORMATO: Proyección Escenario Conservador vs. Optimista.`,
+    resultado_realista: "Predicción de crecimiento sostenido que alerta sobre la necesidad de contratar a un asistente en agosto si la tendencia se mantiene.",
+    tecnica_ingenieria: "Time Series Trend Analysis (Usa el pasado para anticipar el futuro financiero).",
+    validacion: "¿La proyección te ayuda a planificar tus compras de stock con anticipación?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 horas de proyecciones financieras"
+  },
+  {
+    id: 86,
+    nombre_caso: "Auditoría de Campañas de Ads (ROI)",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Gasté 100 lucas en Facebook y vendí 300, ¿está bien?",
+    resultado_basico: "Sí, estás ganando el triple de lo que gastas. Sigue así, parece una buena inversión.",
+    prompt_maestro: `1. ROL: Performance Manager (Experto en anuncios pagados). 2. CONTEXTO: Inversión: [$100.000]. Ventas: [$300.000]. Costo producto: [$120.000]. 3. META: Calcular el ROAS real (Retorno sobre la inversión en anuncios) y la utilidad neta tras publicidad. 4. RESTRICCIONES: Explica si el negocio es escalable o si estás "cambiando plata". 5. FORMATO: Resumen de Rentabilidad + Veredicto (Subir presupuesto / Mantener / Apagar).`,
+    resultado_realista: "Cálculo que muestra que después de costos y anuncios, la ganancia es de solo $80.000, sugiriendo optimizar el costo de envío para que valga la pena.",
+    tecnica_ingenieria: "ROAS & Contribution Margin Analysis.",
+    validacion: "¿Sabes exactamente cuántos pesos te quedan en el bolsillo por cada peso que le das a Facebook?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "1 hora de matemáticas de marketing"
+  },
+  {
+    id: 87,
+    nombre_caso: "Comparativa Mensual (MoM Growth)",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Compara mis ventas de mayo contra junio.",
+    resultado_basico: "En mayo vendiste 3 millones y en junio 4 millones. Subiste 1 millón.",
+    prompt_maestro: `1. ROL: Controller Financiero. 2. CONTEXTO: Mes anterior: [Ventas, Gastos, Nuevos Clientes]. Mes actual: [Ventas, Gastos, Nuevos Clientes]. 3. META: Calcular el porcentaje de crecimiento y detectar qué métrica se estancó. 4. RESTRICCIONES: No solo mires el total de dinero, mira el costo de adquisición. 5. FORMATO: Tabla Comparativa + "La cifra de la que nadie habla".`,
+    resultado_realista: "Análisis que revela que aunque las ventas subieron, los gastos subieron más rápido, por lo que el negocio fue menos eficiente este mes.",
+    tecnica_ingenieria: "Month-over-Month (MoM) Growth Analytics.",
+    validacion: "¿Creciste en utilidad real o solo en facturación?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "1 - 2 horas de reporte mensual"
+  },
+  {
+    id: 88,
+    nombre_caso: "Análisis de Canales (¿Dónde está mi gente?)",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Qué me trae más clientes: Instagram, TikTok o el boca a boca.",
+    resultado_basico: "Parece que Instagram es lo más fuerte, pero en TikTok tus videos tienen hartos likes.",
+    prompt_maestro: `1. ROL: Estratega de Marketing Digital. 2. CONTEXTO: Origen de clientes: [Instagram: 50, TikTok: 20, Referidos: 30, Email: 10]. 3. META: Determinar dónde poner los esfuerzos de tiempo y dinero. 4. RESTRICCIONES: Analiza la "Calidad" del cliente (ej: los referidos compran más caro que los de TikTok). 5. FORMATO: Ranking de Canales + Acción por Canal.`,
+    resultado_realista: "Descubrimiento de que los clientes de Email Marketing compran 2 veces más seguido que los de Instagram, sugiriendo priorizar la base de datos propia.",
+    tecnica_ingenieria: "Attribution Modeling & Channel Efficiency Analysis.",
+    validacion: "¿Sabes en qué red social dejar de perder tiempo y en cuál invertir más?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 horas de análisis de tráfico"
+  },
+  {
+    id: 89,
+    nombre_caso: "Simulador de Escenarios 'What If' (¿Qué pasaría si...?)",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Qué pasa si subo mis precios un 10%.",
+    resultado_basico: "Ganarás más por cada venta, pero quizás algunas personas dejen de comprarte.",
+    prompt_maestro: `1. ROL: Estratega de Negocios y Modelador Financiero. 2. CONTEXTO: Ventas actuales: [100 unidades a $20.000]. 3. META: Predecir qué pasa si subo el precio un 10% y pierdo un 5% de clientes por ese aumento. 4. RESTRICCIONES: Calcula la utilidad final en ambos escenarios. 5. FORMATO: Escenario A (Actual) vs. Escenario B (Nuevo precio) + Conclusión recomendada.`,
+    resultado_realista: "Demostración numérica de que subir el precio un 10% es mejor negocio incluso perdiendo algunos clientes, ya que el esfuerzo operativo baja y la ganancia sube.",
+    tecnica_ingenieria: "Sensitivity Analysis (Simula el impacto de cambios en las variables del negocio).",
+    validacion: "¿El riesgo de subir el precio se compensa con la ganancia extra?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "2 horas de proyecciones"
+  },
+  {
+    id: 90,
+    nombre_caso: "Reporte de Salud del Negocio (Semáforo)",
+    categoria: "Análisis & Decisiones",
+    prompt_basico: "Hazme un resumen general de cómo va mi pyme este año.",
+    resultado_basico: "Va bien, has vendido harto y tienes clientes nuevos. Solo cuida de no gastar tanto en cosas innecesarias.",
+    prompt_maestro: `1. ROL: Director General (CEO) Interino. 2. CONTEXTO: Pega aquí: [Resumen de ventas, gastos, deudas y ánimo del equipo]. 3. META: Dar un diagnóstico de salud del negocio. 4. RESTRICCIONES: Clasifica cada área (Ventas, Finanzas, Operaciones) con colores de semáforo. 5. FORMATO: Semáforo de Salud + "La prioridad #1 de esta semana".`,
+    resultado_realista: "Diagnóstico que pone en ROJO el flujo de caja (poca plata en el banco) a pesar de tener VENTAS en VERDE, sugiriendo cobrar facturas pendientes urgente.",
+    tecnica_ingenieria: "Holistic Business Health Assessment.",
+    validacion: "¿Tienes claro cuál es el "incendio" más importante que debes apagar hoy?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Toda una tarde de reflexión y orden"
+  }
+];
+const marca_personal_db = [
+  // --- CATEGORÍA: MARCA PERSONAL & ESTILO (91-100) ---
+  {
+    id: 91,
+    nombre_caso: "Extractor de ADN de Voz (Análisis de Estilo)",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Analiza cómo escribo y dime cómo es mi estilo.",
+    resultado_basico: "Tu estilo es profesional, usas párrafos cortos y eres amable con el lector.",
+    prompt_maestro: `1. ROL: Eres un Ghostwriter experto y Analista Lingüístico. 2. CONTEXTO: Texto de referencia: [Pega aquí 3-5 párrafos escritos por ti]. 3. META: Extraer mi "ADN de escritura" para que la IA lo replique. 4. RESTRICCIONES: Identifica: Longitud de frases, uso de emojis, palabras frecuentes, nivel de formalidad y uso de humor o sarcasmo. 5. FORMATO: Guía de Estilo: [Tono] | [Ritmo] | [Vocabulario] | [Lo que debo evitar].`,
+    resultado_realista: "Guía detallada que identifica que usas frases directas, hablas de 'tú' y sueles usar analogías sobre el día a día en Chile.",
+    tecnica_ingenieria: "Style Mimicry & Linguistic Fingerprinting (Analiza la estructura antes de generar contenido).",
+    validacion: "¿La descripción que dio la IA se siente como si te estuvieras mirando en un espejo?",
+    ia_recomendada: "ChatGPT / Claude (Líder en captar matices humanos)",
+    hh_ahorradas: "Ahorra semanas de 'sonar como robot'"
+  },
+  {
+    id: 92,
+    nombre_caso: "Filtro 'Des-Robotizador' (Humanizar)",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Haz que este texto de la IA suene más natural.",
+    resultado_basico: "Aquí tienes el texto más natural: Hola, quiero contarte que la inteligencia artificial es muy buena para todos...",
+    prompt_maestro: `1. ROL: Editor Jefe con "detector de IA" ultra sensible. 2. CONTEXTO: Texto genérico: [Pega el texto aburrido de la IA]. 3. META: Reescribir el contenido eliminando clichés de IA como "En el vasto mundo de...", "Es fundamental mencionar...", "Exploremos...". 4. RESTRICCIONES: Usa lenguaje que usaría un chileno en una reunión de café. No uses palabras demasiado sofisticadas que nadie usa al hablar. 5. FORMATO: Texto original vs. Texto Humanizado.`,
+    resultado_realista: "Transformación de un párrafo rígido en una invitación cercana y genuina que genera confianza.",
+    tecnica_ingenieria: "Cliché Filtering & Conversational Buffing (Limpia los patrones típicos de los modelos de lenguaje).",
+    validacion: "¿Si lees el texto en voz alta, suena a algo que tú dirías de verdad?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "1 hora de edición manual"
+  },
+  {
+    id: 93,
+    nombre_caso: "Traductor a 'Chileno Profesional'",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Escribe este correo en español de Chile.",
+    resultado_basico: "Hola, te escribo para decirte que el pedido está listo. Avísame cuando puedas pasar por él. Chao.",
+    prompt_maestro: `1. ROL: Experto en comunicación local (Chile). 2. CONTEXTO: Texto: [Pega el texto neutro o español de España]. 3. META: Ajustar el vocabulario para que suene natural en Chile pero manteniendo la seriedad profesional. 4. RESTRICCIONES: Cambia "vosotros" por "ustedes", "ordenador" por "computador", "móvil" por "celu", etc. No exageres con los modismos (sin 'po', 'cachai' en exceso), solo el tono local de oficina. 5. FORMATO: Texto ajustado.`,
+    resultado_realista: "Un correo que se siente 100% local, ideal para clientes chilenos que valoran la cercanía.",
+    tecnica_ingenieria: "Localization & Dialect Tuning.",
+    validacion: "¿El texto evita palabras que suenan 'ajenas' a nuestra cultura?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "20 min de corrección de términos"
+  },
+  {
+    id: 94,
+    nombre_caso: "Ghostwriter de LinkedIn (Autoridad)",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Escribe un post para LinkedIn sobre mi nuevo proyecto.",
+    resultado_basico: "Estoy muy feliz de anunciar que hoy lanzo mi nuevo proyecto Aula GenIA. Es una plataforma para aprender IA.",
+    prompt_maestro: `1. ROL: Ghostwriter de CEOs y líderes de opinión. 2. CONTEXTO: Logro: [Lanzamiento de Aula GenIA]. Mi valor: [Ayudar a emprendedores a recuperar su tiempo]. 3. META: Escribir un post que posicione autoridad pero con humildad (estilo 'Building in public'). 4. RESTRICCIONES: Usa párrafos de una sola línea para facilitar la lectura móvil. Termina con una pregunta de reflexión profesional. 5. FORMATO: Post de LinkedIn con estructura Gancho-Cuerpo-Cierre.`,
+    resultado_realista: "Post de alto impacto que genera comentarios de otros profesionales interesados en la tecnología.",
+    tecnica_ingenieria: "Thought Leadership Framing (Enfoca el éxito personal como un beneficio para la comunidad).",
+    validacion: "¿El post proyecta la imagen profesional que quieres tener?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "2 horas de bloqueo frente a la pantalla blanca"
+  },
+  {
+    id: 95,
+    nombre_caso: "Storytelling: De Datos a Historias",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Cuenta una historia sobre cómo empecé mi negocio.",
+    resultado_basico: "Todo empezó en 2024. Tenía una idea y trabajé duro. Al principio fue difícil pero ahora me va bien.",
+    prompt_maestro: `1. ROL: Guionista experto en el "Viaje del Héroe". 2. CONTEXTO: Hecho real: [Empecé cocinando en mi casa con un horno viejo]. 3. META: Transformar ese hecho en una historia inspiradora que conecte emocionalmente con mi audiencia. 4. RESTRICCIONES: Describe olores, sonidos y emociones internas (el miedo, la duda). No seas perfecto, sé vulnerable. 5. FORMATO: Historia corta de 3 actos.`,
+    resultado_realista: "Relato emocionante sobre el primer pedido fallido y cómo eso te enseñó a ser el profesional que eres hoy.",
+    tecnica_ingenieria: "Narrative Arc Construction (Usa la vulnerabilidad para crear conexión de marca).",
+    validacion: "¿La historia te puso los pelos de punta o te hizo sonreír?",
+    ia_recomendada: "Claude / ChatGPT",
+    hh_ahorradas: "Años de práctica en escritura creativa"
+  },
+  {
+    id: 96,
+    nombre_caso: "El 'Check' de Valores de Marca",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Dime si este texto representa mis valores.",
+    resultado_basico: "Sí, el texto es bueno y habla de tus valores de honestidad y trabajo duro.",
+    prompt_maestro: `1. ROL: Consultor de Branding e Identidad de Marca. 2. CONTEXTO: Mis valores: [Simplicidad, Honestidad, Rapidez]. Texto a revisar: [Pega tu post o mail]. 3. META: Evaluar si el texto realmente proyecta esos valores o si suena contradictorio. 4. RESTRICCIONES: Sé brutalmente honesto. Si suena arrogante y mi valor es humildad, dímelo. 5. FORMATO: Semáforo de Valores + Sugerencia de cambio.`,
+    resultado_realista: "Crítica que te ayuda a suavizar un texto que sonaba muy 'vendedor de autos' y lo vuelve más 'mentor amigo'.",
+    tecnica_ingenieria: "Value Alignment Audit.",
+    validacion: "¿Sientes que el texto es fiel a quién eres tú realmente?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "Evita crisis de reputación o marca"
+  },
+  {
+    id: 97,
+    nombre_caso: "Escriptor de Bio 'No Aburrida'",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Escribe una bio para mi Instagram de 150 caracteres.",
+    resultado_basico: "Emprendedora, mamá y experta en IA. Ayudo a personas a mejorar sus negocios con tecnología. Sígueme.",
+    prompt_maestro: `1. ROL: Especialista en Micro-copywriting para Redes Sociales. 2. CONTEXTO: Nombre: [Tu Nombre]. Lo que hago: [Aula GenIA]. Factor diferenciador: [Hija de 4 años, teletrabajo]. 3. META: Escribir 3 opciones de Bio que mezclen lo profesional con lo humano. 4. RESTRICCIONES: Máximo 150 caracteres. Usa emojis estratégicos. 5. FORMATO: Opción Profesional | Opción Creativa | Opción Minimalista.`,
+    resultado_realista: "Bio: '🤖 Enseñando IA sin dramas | 🏡 Home office con hija de 4 años | 🚀 Te ayudo a recuperar 2h de tu día con Aula GenIA'.",
+    tecnica_ingenieria: "Constraint-Based Creative Writing.",
+    validacion: "¿La bio resume lo que haces y quién eres de forma atractiva?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "45 min de borra y escribe"
+  },
+  {
+    id: 98,
+    nombre_caso: "El Conversador de Comentarios",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Responde a este comentario positivo en mi post.",
+    resultado_basico: "Muchas gracias por tu comentario. Me alegra que te haya gustado el post. Saludos.",
+    prompt_maestro: `1. ROL: Community Manager experto en fidelización. 2. CONTEXTO: Comentario del cliente: [¡Me encantó el tip de la alulosa, gracias!]. 3. META: Responder de forma que la conversación siga y no muera en un 'gracias'. 4. RESTRICCIONES: Usa el nombre de la persona. Haz una pregunta de seguimiento. 5. FORMATO: Respuesta corta y cercana.`,
+    resultado_realista: "Respuesta: '¡De nada, María! Qué bueno que te sirvió. ¿Ya probaste las galletas con esa receta o estás pensando en otro postre?' ",
+    tecnica_ingenieria: "Engagement Retention Scripting.",
+    validacion: "¿La respuesta invita al cliente a volver a escribirte?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Horas de gestión de comunidad"
+  },
+  {
+    id: 99,
+    nombre_caso: "Transformador de Voz a Texto (Limpieza)",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Limpia esta transcripción de un audio que grabé.",
+    resultado_basico: "Aquí tienes el texto limpio sin las muletillas y repeticiones que tenías en el audio original.",
+    prompt_maestro: `1. ROL: Editor de Estilo y Transcriptor Profesional. 2. CONTEXTO: Audio transcrito: [Pega el texto desordenado de tu audio]. 3. META: Convertir un pensamiento hablado (desordenado) en un texto estructurado pero que mantenga tu "chispa" al hablar. 4. RESTRICCIONES: Elimina muletillas (eh, bueno, o sea) pero no quites tu esencia. 5. FORMATO: Texto final listo para publicar como post o mail.`,
+    resultado_realista: "Conversión de una idea grabada mientras caminabas en un artículo de opinión brillante y coherente.",
+    tecnica_ingenieria: "Verbatim Cleaning & Syntactic Restructuring.",
+    validacion: "¿El texto final dice lo mismo que tú pensabas pero de forma elegante?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "1 - 2 horas de transcribir y ordenar ideas"
+  },
+  {
+    id: 100,
+    nombre_caso: "La Firma con Personalidad",
+    categoria: "Marca Personal & Estilo",
+    prompt_basico: "Cómo puedo cerrar mis correos de forma original.",
+    resultado_basico: "Saludos cordiales. Atentamente. Quedo atento a tus comentarios. Nos vemos pronto.",
+    prompt_maestro: `1. ROL: Diseñador de Identidad de Marca. 2. CONTEXTO: Mi marca es: [Aula GenIA]. Mi tono es: [Cercano, tecnológico, optimista]. 3. META: Crear 5 formas de cerrar mis comunicaciones que no sean el típico "Saludos cordiales". 4. RESTRICCIONES: Debe sonar coherente con alguien que enseña IA. 5. FORMATO: Lista de 5 cierres creativos.`,
+    resultado_realista: "Cierres como: 'Seguimos optimizando tu tiempo', 'Un abrazo digital' o 'Nos vemos en el futuro'.",
+    tecnica_ingenieria: "Brand Signature Design.",
+    validacion: "¿El cierre deja una sonrisa o una impresión positiva en quien lee?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "Te diferencia del resto de correos aburridos que recibe tu cliente"
+  }
+];
+const ventas_persuasion_db = [
+  // --- CATEGORÍA: VENTAS & PERSUASIÓN AVANZADA (101-110) ---
+  {
+    id: 101,
+    nombre_caso: "El Negociador de Alto Valor (High-Ticket)",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Ayúdame a cobrar más caro por mi servicio de asesoría.",
+    resultado_basico: "Para cobrar más, debes decir que tienes mucha experiencia y que tus resultados son garantizados. Intenta subir el precio un 20%.",
+    prompt_maestro: `1. ROL: Eres un experto en Negociación de Alto Nivel y Psicología de Precios. 2. CONTEXTO: Servicio: [Asesoría de IA para Empresas]. Precio actual: [$500.000]. Precio objetivo: [$1.500.000]. 3. META: Reestructurar la oferta para que el aumento de precio se sienta como una "ganga" debido al valor entregado. 4. RESTRICCIONES: Usa el concepto de "Anclaje de Precios" y enfócate en el ROI (Retorno de Inversión) del cliente. 5. FORMATO: Guion de venta + Estructura de la oferta comparativa.`,
+    resultado_realista: "Estrategia que posiciona el precio de $1.5M comparándolo con el costo de contratar a un empleado full-time ($12M al año), haciendo que la asesoría parezca barata.",
+    tecnica_ingenieria: "Price Anchoring & Value-Based Framing (Cambia la percepción del costo por la percepción de ahorro o ganancia).",
+    validacion: "¿El precio nuevo se justifica con un beneficio económico claro para el cliente?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "10 - 20 horas de dudas y miedo a cobrar"
+  },
+  {
+    id: 102,
+    nombre_caso: "Manejador de la Objeción: 'Tengo que pensarlo'",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Qué le digo a alguien que me dice que tiene que pensar si comprar mi curso.",
+    resultado_basico: "Dile que no hay problema, que lo piense tranquilo y que te avise cualquier cosa la próxima semana.",
+    prompt_maestro: `1. ROL: Closer de Ventas (Cerrador) experto en lenguaje persuasivo. 2. CONTEXTO: Producto: [Aula GenIA]. Objeción: "Lo encuentro bueno, pero tengo que consultarlo con mi almohada/pareja". 3. META: Identificar si la objeción es real o si es un miedo oculto, y cerrar la venta hoy. 4. RESTRICCIONES: No seas agresivo. Usa preguntas socráticas para que el cliente descubra por qué está postergando la decisión. 5. FORMATO: Guion de respuesta por WhatsApp o llamada.`,
+    resultado_realista: "Respuesta que ayuda al cliente a entender que 'pensarlo' es solo miedo al cambio, logrando el cierre en el momento.",
+    tecnica_ingenieria: "Objection Isolation & Socratic Questioning (Aísla la duda real para eliminar el bloqueo).",
+    validacion: "¿La respuesta invita al cliente a revelar cuál es su miedo real?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Evita que el 40% de tus ventas se 'enfríen' y se pierdan"
+  },
+  {
+    id: 103,
+    nombre_caso: "Guionista de Video de Ventas (VSL)",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Escribe un video para vender mi producto en mi página web.",
+    resultado_basico: "Hola, este es mi producto. Es muy bueno, tiene estas características y si compras ahora tienes descuento. Haz clic aquí.",
+    prompt_maestro: `1. ROL: Copywriter Senior experto en VSL (Video Sales Letters). 2. CONTEXTO: Producto: [Suscripción a herramientas de IA]. Público: [Dueños de Pyme cansados]. 3. META: Crear un guion de video de 2 minutos que siga la estructura: Gancho -> Herida -> Solución -> Prueba -> Oferta -> CTA. 4. RESTRICCIONES: Usa frases cortas y poderosas. Crea una "llave de curiosidad" al principio. 5. FORMATO: Guion con indicaciones de locución.`,
+    resultado_realista: "Guion de video que mantiene al usuario pegado a la pantalla hasta que aparece el botón de compra.",
+    tecnica_ingenieria: "The 6-Step VSL Formula (Estructura probada para convertir desconocidos en compradores).",
+    validacion: "¿Sientes que el video cuenta una historia que termina necesariamente en una compra?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "5 - 8 horas de redacción creativa"
+  },
+  {
+    id: 104,
+    nombre_caso: "Seguimiento 'Aportando Valor' (No Molestar)",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Escríbele a alguien que no me contestó el último mensaje de ventas.",
+    resultado_basico: "Hola, ¿pudiste ver la información que te mandé el otro día? Quedo atento a tus comentarios.",
+    prompt_maestro: `1. ROL: Estratega de Seguimiento de Ventas (Follow-up Specialist). 2. CONTEXTO: Cliente: [Pidió precio hace 3 días y desapareció]. Mi negocio: [Clases de repostería]. 3. META: Retomar el contacto sin sonar desesperado, entregando algo útil antes de preguntar por la venta. 4. RESTRICCIONES: Envía un "tip de regalo" relacionado con lo que quería comprar. 5. FORMATO: Mensaje de WhatsApp corto.`,
+    resultado_realista: "Mensaje: 'Hola María, me acordé de ti porque hoy horneamos con alulosa y el truco para que no quede amarga es [Tip]. Por cierto, ¿pudiste revisar el temario del curso?' ",
+    tecnica_ingenieria: "Value-First Follow-up (Reinicia la conversación eliminando la presión de venta).",
+    validacion: "¿Te molestaría recibir este mensaje si fueras el cliente?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Recupera hasta un 30% de leads 'muertos'"
+  },
+  {
+    id: 105,
+    nombre_caso: "Creador de Garantías de Hierro",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Escribe una garantía de devolución de dinero de 30 días.",
+    resultado_basico: "Si no te gusta el producto, tienes 30 días para pedir tu dinero de vuelta. Te lo devolvemos sin preguntas.",
+    prompt_maestro: `1. ROL: Experto en Mitigación de Riesgos y Conversión. 2. CONTEXTO: Producto: [Servicio de limpieza profunda]. 3. META: Crear una garantía que elimine todo el miedo del comprador y lo haga sentir "seguro" de elegirte. 4. RESTRICCIONES: Crea una garantía basada en RESULTADOS, no solo en tiempo. 5. FORMATO: Texto de la garantía para la web.`,
+    resultado_realista: "Garantía: 'Si después de la limpieza no sientes que tu alfombra se ve como el primer día, no solo te devolvemos el dinero, sino que te pagamos a la competencia para que lo haga'.",
+    tecnica_ingenieria: "Risk Reversal Strategy (El vendedor asume todo el riesgo, lo que dispara las ventas).",
+    validacion: "¿La garantía es tan fuerte que te daría susto no cumplirla?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "Aumenta la tasa de cierre en un 20-30%"
+  },
+  {
+    id: 106,
+    nombre_caso: "Psicología de Precios (El Efecto Señuelo)",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Tengo un plan de $10.000 y uno de $20.000, ¿cómo vendo más el de $20k?",
+    resultado_basico: "Dile que el de $20.000 tiene más cosas y que es el más conveniente para el cliente.",
+    prompt_maestro: `1. ROL: Arquitecto de Decisiones y Experto en Neuromarketing. 2. CONTEXTO: Plan Básico: [$10.000]. Plan Pro: [$20.000]. 3. META: Diseñar un tercer plan "Señuelo" (Decoy) para que el de $20.000 parezca la opción más lógica e inteligente. 4. RESTRICCIONES: Explica la lógica psicológica detrás de la elección. 5. FORMATO: Tabla de 3 precios con beneficios detallados.`,
+    resultado_realista: "Diseño de un plan 'Premium' de $50k que hace que el de $20k parezca extremadamente barato y equilibrado.",
+    tecnica_ingenieria: "Decoy Effect (Guía al cliente hacia la opción que tú quieres que elija).",
+    validacion: "¿Mirando los 3 precios, el del medio se ve como la mejor oferta?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Aumenta el ticket promedio sin esfuerzo extra"
+  },
+  {
+    id: 107,
+    nombre_caso: "La Escalera de Valor (Aumenta el LTV)",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Qué más puedo venderle a alguien que ya compró mi curso básico.",
+    resultado_basico: "Podrías venderle un curso avanzado, una asesoría uno a uno o un libro con más consejos.",
+    prompt_maestro: `1. ROL: Estratega de Crecimiento de Negocios. 2. CONTEXTO: Producto inicial (Gancho): [E-book de $5.000]. 3. META: Diseñar el camino del cliente desde que compra lo más barato hasta que compra tu servicio más caro. 4. RESTRICCIONES: Cada paso debe resolver un nuevo problema que creó el paso anterior. 5. FORMATO: Diagrama de la Escalera: [Producto] | [Precio] | [Problema que resuelve].`,
+    resultado_realista: "Estructura que lleva al cliente de un e-book de $5k a una asesoría anual de $2M, maximizando el valor de cada cliente.",
+    tecnica_ingenieria: "Value Ladder Architecture (Multiplica los ingresos sin necesidad de buscar clientes nuevos todo el tiempo).",
+    validacion: "¿Cada producto se siente como el paso natural después del anterior?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Años de estabilidad financiera"
+  },
+  {
+    id: 108,
+    nombre_caso: "Cierre por Escasez Real (No Fake)",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Diles que quedan pocos cupos para que compren rápido.",
+    resultado_basico: "¡Últimos cupos disponibles! Compra ahora antes de que se acaben y te quedes fuera del curso.",
+    prompt_maestro: `1. ROL: Especialista en Psicología de la Urgencia. 2. CONTEXTO: Producto: [Workshop presencial de IA]. Capacidad total: [20 personas]. Quedan: [4 cupos]. 3. META: Redactar un mensaje de escasez que no suene a "presión barata" de vendedor, sino a una oportunidad que se cierra. 4. RESTRICCIONES: Justifica por qué los cupos son limitados (ej: atención personalizada). 5. FORMATO: Email o post de redes sociales.`,
+    resultado_realista: "Mensaje honesto: 'Solo puedo mentorear a 4 personas más para asegurar que cada una salga con su bot funcionando. Una vez que se llenen, cerramos inscripciones'.",
+    tecnica_ingenieria: "Genuine Scarcity & Social Proof (Usa la limitación real para acelerar la toma de decisiones).",
+    validacion: "¿El mensaje te genera ganas de comprar o ganas de cerrar la ventana?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "Acelera el cierre de ventas en un 50%"
+  },
+  {
+    id: 109,
+    nombre_caso: "Diseñador de Propuestas Comerciales Irresistibles",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Haz una propuesta de presupuesto para un cliente que quiere marketing.",
+    resultado_basico: "Propuesta de Marketing: Gestión de redes sociales, creación de contenido y anuncios. Valor: $500.000 al mes.",
+    prompt_maestro: `1. ROL: Consultor de Negocios Senior. 2. CONTEXTO: Cliente: [Dueño de restaurante]. Problema: [Mesas vacías los martes y miércoles]. 3. META: Redactar una propuesta que no sea una "lista de precios", sino una "hoja de ruta al éxito". 4. RESTRICCIONES: Enfócate en el resultado final (más ventas) y no en las horas de trabajo. 5. FORMATO: Título de impacto + Diagnóstico + Solución + Inversión sugerida.`,
+    resultado_realista: "Propuesta: 'Plan de Llenado de Mesas para [Restaurante]: Cómo atraer 50 clientes nuevos cada martes usando IA'.",
+    tecnica_ingenieria: "Results-Oriented Pitching (Vende el agujero, no el taladro).",
+    validacion: "¿La propuesta habla más del negocio del cliente que del tuyo?",
+    ia_recomendada: "ChatGPT / Claude",
+    hh_ahorradas: "2 - 3 horas de redacción de presupuestos"
+  },
+  {
+    id: 110,
+    nombre_caso: "El Guion de Cierre Telefónico (Script)",
+    categoria: "Ventas & Persuasión",
+    prompt_basico: "Qué digo cuando llamo a un cliente para cerrar la venta.",
+    resultado_basico: "Hola, te llamo para ver si te decidiste a comprar el producto. Es muy bueno y tiene descuento esta semana.",
+    prompt_maestro: `1. ROL: Coach de Ventas Telefónicas. 2. CONTEXTO: Situación: [El cliente ya vio la demo pero no ha pagado]. 3. META: Una conversación de 5 minutos para resolver la última duda y procesar el pago. 4. RESTRICCIONES: Usa silencios estratégicos y la técnica de "Cierre por Suposición". 5. FORMATO: Guion: Introducción -> Sondeo -> Manejo de duda -> Cierre.`,
+    resultado_realista: "Guion profesional que evita sonar desesperado y guía al cliente naturalmente hacia la pregunta: '¿Prefieres pagar con transferencia o Webpay?' ",
+    tecnica_ingenieria: "Assumptive Close & Tactical Empathy (Mueve al cliente hacia la acción presumiendo que ya está convencido).",
+    validacion: "¿El guion te da seguridad para tomar el teléfono y llamar?",
+    ia_recomendada: "ChatGPT / Gemini",
+    hh_ahorradas: "Elimina el miedo a las llamadas de cierre"
+  }
+];
