@@ -16,7 +16,6 @@
     <!-- FIREBASE SDKs (v8 compat for consistency with access page) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
 
     <!-- Google Fonts -->
     <link rel="stylesheet"
@@ -452,16 +451,6 @@
                                 </label>
                                 <div id="bad-result-preview" class="text-sm text-slate-600 leading-relaxed"></div>
                             </div>
-                            <!-- Error Analysis (New Field) -->
-                            <div id="bad-response-analysis-container"
-                                class="hidden border-l-4 border-amber-300 bg-amber-50/50 p-4 rounded-r-lg mt-4 fade-in">
-                                <label
-                                    class="text-[10px] font-bold text-amber-600 uppercase mb-2 block tracking-wider flex items-center gap-1">
-                                    <span class="material-symbols-rounded text-sm">psychology_alt</span> Análisis del
-                                    Error
-                                </label>
-                                <div id="analysis-text" class="text-sm text-slate-700 leading-relaxed"></div>
-                            </div>
                         </div>
 
                         <!-- AGIA MASTER CONTENT (AULAGENIA COLOR THEME) -->
@@ -813,7 +802,10 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs moved to head -->
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
 
     <script>
         // Firebase Config (Same as landing)
@@ -875,17 +867,12 @@
         });
     </script>
 
-    </script>
+    <script type="module">
+        let casesData = [];
+        // Se asume que el archivo prompts_db.js está en la misma ubicación
+        const externalDBUrl = './prompts_db.js';
 
-    <!-- Database Loader -->
-    <script src="prompts_db.js"></script>
 
-    <script>
-        // Check if DB loaded
-        if (typeof casesData === 'undefined') {
-            console.error("Critical: prompts_db.js not loaded.");
-            var casesData = []; // Fallback prevention
-        }
 
         // UI Elements
         const statusOverlay = document.getElementById('system-status-overlay');
@@ -901,22 +888,30 @@
             statusIcon.innerHTML = '<span class="material-symbols-rounded text-3xl text-red-500">error</span>';
             statusIcon.className = "w-16 h-16 bg-white border border-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm";
             statusTitle.innerText = "Error de Conexión";
-            statusDesc.innerText = "No se pudo cargar la base de datos local (prompts_db.js).";
-            statusCode.innerText = "DB_LOAD_ERROR";
+
+            if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
+                statusDesc.innerText = "No pudimos conectar con el servidor de AulaGenia. Verifica tu conexión o que prompts_db.js exista.";
+                statusCode.innerText = "NETWORK_ERROR";
+            } else {
+                statusDesc.innerText = "Error al procesar la base de datos de prompts.";
+                statusCode.innerText = "DATA_ERROR: " + err.message;
+            }
             statusCode.className = "text-red-500 font-bold";
             retryBtn.classList.remove('hidden');
         }
 
-        function loadDatabase() {
+        async function loadDatabase() {
             try {
-                if (window.casesData && Array.isArray(window.casesData) && window.casesData.length > 0) {
-                    // Database loaded successfully via script tag
+                // Import dinámico del módulo
+                const module = await import(externalDBUrl);
+                if (module && module.default && Array.isArray(module.default)) {
+                    casesData = module.default;
                     setTimeout(() => {
                         statusOverlay.classList.add('hidden');
                         initApp();
-                    }, 500);
+                    }, 800);
                 } else {
-                    throw new Error("Base de datos vacía o no encontrada.");
+                    throw new Error("Formato de base de datos inválido.");
                 }
             } catch (err) {
                 console.error("System Error:", err);
@@ -1014,44 +1009,18 @@
             });
         }
 
-        function decryptPrompt(encryptedStr) {
-            // Support Plain Text or Legacy
-            if (!encryptedStr) return "";
-            if (!encryptedStr.includes(':') && !encryptedStr.startsWith('U2F')) return encryptedStr;
-
+        function decryptPrompt(ciphertext) {
             try {
-                // Determine Key (Hardcoded for client-side demo 'AGIA2025' or derived)
-                const password = "AGIA2025";
+                if (!ciphertext) return "";
+                if (!ciphertext.startsWith("U2F")) return ciphertext;
 
-                // New Format: IV:Ciphertext (AES-256-CBC with PBKDF2)
-                if (encryptedStr.includes(':')) {
-                    const parts = encryptedStr.split(':');
-                    const iv = CryptoJS.enc.Base64.parse(parts[0]);
-                    const ciphertext = parts[1];
-                    const salt = CryptoJS.enc.Utf8.parse("salsapicante");
-                    const key = CryptoJS.PBKDF2(password, salt, {
-                        keySize: 256 / 32,
-                        iterations: 1000,
-                        hasher: CryptoJS.algo.SHA256
-                    });
-
-                    const decrypted = CryptoJS.AES.decrypt(ciphertext, key, {
-                        iv: iv,
-                        mode: CryptoJS.mode.CBC,
-                        padding: CryptoJS.pad.Pkcs7
-                    });
-                    return decrypted.toString(CryptoJS.enc.Utf8);
-                }
-
-                // Legacy Format (U2F...)
-                if (encryptedStr.startsWith('U2F')) {
-                    return CryptoJS.AES.decrypt(encryptedStr, getEncryptionKey()).toString(CryptoJS.enc.Utf8);
-                }
+                const bytes = CryptoJS.AES.decrypt(ciphertext, getEncryptionKey());
+                const originalText = bytes.toString(CryptoJS.enc.Utf8);
+                return originalText || "Error: Corrupted Data";
             } catch (e) {
-                console.error("Decrypt failed:", e);
-                return "Error: Clave incorrecta o datos corruptos.";
+                console.error("Decryption failed", e);
+                return "Error: Decryption Failed";
             }
-            return encryptedStr;
         }
 
 
@@ -1111,58 +1080,24 @@
             }
         }
 
-        hasher: CryptoJS.algo.SHA256
-            });
-
-        // Decrypt
-        const decrypted = CryptoJS.AES.decrypt(ciphertext, key, {
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-
-        const val = decrypted.toString(CryptoJS.enc.Utf8);
-        return val;
-        } catch (e) {
-            console.error("Decrypt error:", e);
-            return null;
-        }
-    }
-
-        // Helper to prompt for password if needed
-        function requestUnlock() {
-            const pwd = prompt("🔐 Ingrese Clave Maestra de Bóveda (AGIA2025):");
-            if (pwd === "AGIA2025") { // Client-side check for demo
-                localStorage.setItem("agia_master_key", pwd);
-                isVaultUnlocked = true;
-                alert("✅ Bóveda Desbloqueada. Recargando...");
-                if (currentCaseId) loadCase(currentCaseId);
-                // Update UI lock icons immediately? handled by loadCase
-            } else {
-                alert("❌ Clave Incorrecta");
-            }
-        }
-
         function loadCase(id) {
             currentCaseId = id;
             const c = casesData.find(x => x.id === id);
             if (!c) return;
 
-            // Scroll to Top
+            // Scroll to Top logic fix
             const scrollContainer = document.getElementById('detail-scroll-container');
             if (scrollContainer) scrollContainer.scrollTop = 0;
 
-            // Determine effective lock state
-            // Check Vault Unlock State from Storage if not set in memory
-            if (!isVaultUnlocked) {
-                const storedKey = localStorage.getItem("agia_master_key");
-                if (storedKey === "AGIA2025") isVaultUnlocked = true;
-            }
+            // Determine effective lock state (Database OR User Session)
+            const isLocked = c.locked || !isVaultUnlocked;
 
-            const isLocked = c.locked && !isVaultUnlocked;
             currentDifficulty = c.difficulty || 'beginner';
 
-            // Update List Active State
+            // Reset Social Proof Counter specific to prompt ID
+            // Removed static formula ID * 0.2
+            // Now logic is handled in the text randomizer below
+
             document.querySelectorAll('.case-item').forEach(el => {
                 el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
                 el.classList.add('border-transparent', 'text-slate-600');
@@ -1173,49 +1108,26 @@
                 activeItem.classList.add('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
             }
 
-            // Show Detail View
             document.getElementById('workspace-empty').classList.add('hidden');
             document.getElementById('case-detail').classList.remove('hidden');
 
-            // Populate Fields
-            document.getElementById('detail-title').innerText = c.title || c.nombre_caso;
-            document.getElementById('detail-problem').innerText = c.problem || c.prompt_basico;
+            document.getElementById('detail-title').innerText = c.title;
+            document.getElementById('detail-problem').innerText = c.problem;
 
-            // Bad Result & Analysis
-            document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview || c.resultado_basico;
+            document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview;
+            document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview;
+            document.getElementById('good-result-preview').innerHTML = formatPreviewTable(c.previewResponse);
 
-            const analysisContainer = document.getElementById('bad-response-analysis-container');
-            const analysisText = document.getElementById('analysis-text');
-            if (c.badResponseAnalysis) {
-                analysisContainer.classList.remove('hidden');
-                analysisText.innerText = c.badResponseAnalysis;
-            } else {
-                analysisContainer.classList.add('hidden');
-            }
-
-            // Good Result (Preview)
-            let goodRes = c.previewResponse || c.resultado_maestro;
-            // Logic to decrypt good result if encrypted? Usually prompt_maestro is encrypted, result might be plain.
-            // If result starts with U2F or IV, treat as blocked preview. But usually preview is open.
-            // We assume result_maestro is clear text for now or we decrypt it too.
-            // Actually, prompt_maestro is the high value. Result might be teaser.
-            document.getElementById('good-result-preview').innerHTML = formatPreviewTable(goodRes);
-
-
-            // Category Badge
-            const catKey = c.category || "General";
-            const cat = config.categories[catKey] || { label: catKey, color: 'slate' };
+            const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
             const badge = document.getElementById('detail-category-badge');
-            badge.innerText = cat.label || catKey;
-            const color = cat.color || 'slate';
-            badge.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${color}-600 border-${color}-100`;
+            badge.innerText = cat.label;
+            badge.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${cat.color}-600 border-${cat.color}-100`;
 
-
-            // AI Suggestion Badge
             const aiBadge = document.getElementById('ai-suggestion-badge');
             const aiName = document.getElementById('ai-name');
-            if (c.suggestedAI || c.ia_recomendada) {
-                aiName.innerText = (c.suggestedAI || c.ia_recomendada).toUpperCase();
+            if (c.suggestedAI) {
+                let niceName = c.suggestedAI.toUpperCase();
+                aiName.innerText = niceName;
                 aiBadge.classList.remove('hidden');
                 aiBadge.classList.add('flex');
             } else {
@@ -1224,358 +1136,99 @@
             }
 
             // Benefit Badge Logic
-            const hh = c.metadata || c.hh_ahorradas || "1h";
             const benefitBadge = document.getElementById('benefit-badge');
             if (benefitBadge) {
-                benefitBadge.className = "text-[10px] font-bold px-2.5 py-1 rounded-md border flex items-center gap-1.5 shadow-sm bg-indigo-50 text-indigo-700 border-indigo-100";
-                benefitBadge.innerHTML = `<span class="material-symbols-rounded text-sm">schedule</span> Ahorro: ${hh}`;
+                if (currentDifficulty === 'beginner') {
+                    benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">bolt</span> Ahorro: ~15 min';
+                    benefitBadge.className = "text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 flex items-center gap-1.5 shadow-sm";
+                } else if (currentDifficulty === 'intermediate') {
+                    benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">rocket_launch</span> Ahorro: ~45 min';
+                    benefitBadge.className = "text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100 flex items-center gap-1.5 shadow-sm";
+                } else {
+                    benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">diamond</span> Ahorro: +2 Horas';
+                    benefitBadge.className = "text-[10px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-100 flex items-center gap-1.5 shadow-sm";
+                }
             }
 
-            // Tips
             const tipContainer = document.getElementById('tip-container');
             const validationContainer = document.getElementById('validation-container');
             const tipText = document.getElementById('detail-example-tip');
             const valText = document.getElementById('detail-validation-tip');
 
-            if (c.tecnica_ingenieria) {
-                // Mapping new DB field 'tecnica_ingenieria' to tip
-                tipText.innerHTML = `<strong>Técnica:</strong> ${c.tecnica_ingenieria}`;
-                tipContainer.classList.remove('hidden');
-            } else if (c.exampleTip) {
-                tipText.innerHTML = c.exampleTip; tipContainer.classList.remove('hidden');
-            } else {
-                tipContainer.classList.add('hidden');
+            if (c.exampleTip) { tipText.innerHTML = c.exampleTip; tipContainer.classList.remove('hidden'); } else { tipContainer.classList.add('hidden'); }
+            if (c.validationTip) { valText.innerHTML = c.validationTip; validationContainer.classList.remove('hidden'); } else { validationContainer.classList.add('hidden'); }
+
+            currentPromptTemplate = c.agiaPromptTagged;
+
+            // Decrypt ONLY if unlocked
+            if (isVaultUnlocked && currentPromptTemplate.startsWith("U2F")) {
+                currentPromptTemplate = decryptPrompt(currentPromptTemplate);
             }
 
-            if (c.validacion) {
-                valText.innerHTML = c.validacion; validationContainer.classList.remove('hidden');
-            } else if (c.validationTip) {
-                valText.innerHTML = c.validationTip; validationContainer.classList.remove('hidden');
-            } else {
-                validationContainer.classList.add('hidden');
-            }
+            currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
+            currentVariables = {};
 
-
-            // PROMPT MAESTRO DECRYPTION
-            currentPromptTemplate = c.agiaPromptTagged || c.prompt_maestro;
-
-            let decryptedText = null;
-            let requiresUnlock = false;
-
-            if (currentPromptTemplate && (currentPromptTemplate.includes(':') || currentPromptTemplate.startsWith('U2F'))) {
-                if (isVaultUnlocked) {
-                    decryptedText = decryptPrompt(currentPromptTemplate);
-                } else {
-                    requiresUnlock = true;
-                    decryptedText = null;
-                }
-            } else {
-                decryptedText = currentPromptTemplate;
-            }
-
-            if (decryptedText) {
-                currentPromptTemplate = decryptedText;
-                // Parse variables
-                currentVariables = {};
+            // Si está bloqueado, no intentamos parsear variables porque el texto es basura encriptada
+            if (!currentPromptTemplate.startsWith("U2F")) {
                 const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
                 let match;
                 while ((match = regex.exec(currentPromptTemplate)) !== null) {
                     currentVariables[match[1]] = match[2];
                 }
-                renderPrompts(false);
-            } else {
-                renderPrompts(true);
             }
 
-            // Lock Overlay with Unlock Action
+            // Force Lock if content is encrypted and vault is locked
+            const effectivelyLocked = isLocked || (!isVaultUnlocked && currentPromptTemplate.startsWith("U2F"));
+
+            renderPrompts(effectivelyLocked);
+
+            // Lógica de Bloqueo Visual (Teaser)
             const lockOverlay = document.getElementById('locked-teaser');
+            const blurWrapper = document.getElementById('prompt-blur-wrapper');
             const copyBtn = document.getElementById('copy-btn');
+            const resultTeaser = document.getElementById('result-teaser-label');
+            const passwordInput = document.getElementById('vault-password');
+            if (passwordInput) passwordInput.value = ""; // Clear password on new case load
 
-            if (requiresUnlock) {
+            if (effectivelyLocked) {
                 lockOverlay.classList.remove('hidden');
+                blurWrapper.classList.add('blur-prompt');
                 copyBtn.disabled = true;
+                copyBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">lock</span> BLOQUEADO';
-
-                lockOverlay.onclick = requestUnlock;
-                lockOverlay.style.cursor = "pointer";
-                lockOverlay.title = "Click para desbloquear";
+                resultTeaser.classList.remove('hidden');
+                resultTeaser.classList.add('flex');
             } else {
                 lockOverlay.classList.add('hidden');
+                blurWrapper.classList.remove('blur-prompt');
                 copyBtn.disabled = false;
-                copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">content_copy</span> Copiar Prompt';
-
-                lockOverlay.onclick = null;
-                lockOverlay.style.cursor = "default";
-                lockOverlay.title = "";
+                copyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">content_copy</span> COPIAR PROMPT';
+                resultTeaser.classList.add('hidden');
+                resultTeaser.classList.remove('flex');
             }
-        }
 
+            setupMagicHover();
+            setMode(currentViewMode);
 
-        // Scroll to Top
-        const scrollContainer = document.getElementById('detail-scroll-container');
-        if (scrollContainer) scrollContainer.scrollTop = 0;
+            // Social Proof Randomizer
+            const socialText = document.getElementById('social-proof-text');
+            if (socialText) {
+                // Deterministic Randomness based on ID
+                const base = Math.floor(c.id * 0.8);
+                const variance = ((c.id * 7) % 30) * 5;
+                const count = base + variance + 45; // Minimum ~125 range
 
-        // Check Vault Unlock State from Storage if not set
-        if (!isVaultUnlocked) {
-            const storedKey = localStorage.getItem("agia_master_key");
-            if (storedKey === "AGIA2025") isVaultUnlocked = true;
-        }
+                // Randomize phrasing slightly based on ID parity
+                const templates = [
+                    `Usado <span class="text-orange-600 text-xs">${count}</span> veces en la última hora`,
+                    `<span class="text-orange-600 text-xs">${count}</span> personas lo están usando ahora`,
+                    `Tendencia: <span class="text-orange-600 text-xs">${count}</span> usos recientes`
+                ];
+                const phraseIndex = c.id % templates.length;
 
-        // Determine effective lock state
-        // Locked if case is restricted AND vault is not unlocked
-        const isLocked = c.locked && !isVaultUnlocked;
-
-        currentDifficulty = c.difficulty || 'beginner';
-
-        // Update List Active State
-        document.querySelectorAll('.case-item').forEach(el => {
-            el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
-            el.classList.add('border-transparent', 'text-slate-600');
-        });
-        const activeItem = document.getElementById(`case-item-${id}`);
-        if (activeItem) {
-            activeItem.classList.remove('border-transparent', 'text-slate-600');
-            activeItem.classList.add('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
-        }
-
-        // Show Detail View
-        document.getElementById('workspace-empty').classList.add('hidden');
-        document.getElementById('case-detail').classList.remove('hidden');
-
-        // Populate Fields
-        document.getElementById('detail-title').innerText = c.title || c.nombre_caso; // Support both naming conventions
-        document.getElementById('detail-problem').innerText = c.problem || c.prompt_basico; // Support legacy wrapper
-
-        // Bad Result & Analysis
-        document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview || c.resultado_basico;
-
-        const analysisContainer = document.getElementById('bad-response-analysis-container');
-        const analysisText = document.getElementById('analysis-text');
-        if (c.badResponseAnalysis) {
-            analysisContainer.classList.remove('hidden');
-            analysisText.innerText = c.badResponseAnalysis;
-        } else {
-            analysisContainer.classList.add('hidden');
-        }
-
-        // Preview (Good Result)
-        // Use maestro result if available and plain text, else previewResponse
-        let goodRes = c.previewResponse || c.resultado_maestro;
-        // If result is encrypted string (U2F or IV:), don't show it here, show preview.
-        // Assuming c.previewResponse is always safe plain text for preview.
-        document.getElementById('good-result-preview').innerHTML = formatPreviewTable(goodRes);
-
-
-        // Category Badge
-        const catKey = c.category || "General";
-        const cat = config.categories[catKey] || { label: catKey, color: 'slate' };
-
-        const badge = document.getElementById('detail-category-badge');
-        badge.innerText = cat.label || catKey;
-        // Simple fallback colors
-        const color = cat.color || 'slate';
-        badge.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${color}-600 border-${color}-100`;
-
-
-        // AI Suggestion Badge
-        const aiBadge = document.getElementById('ai-suggestion-badge');
-        const aiName = document.getElementById('ai-name');
-        if (c.suggestedAI || c.ia_recomendada) {
-            aiName.innerText = (c.suggestedAI || c.ia_recomendada).toUpperCase();
-            aiBadge.classList.remove('hidden');
-            aiBadge.classList.add('flex');
-        } else {
-            aiBadge.classList.add('hidden');
-            aiBadge.classList.remove('flex');
-        }
-
-        // Benefit Badge logic based on difficulty/time saved
-        const hh = c.metadata || c.hh_ahorradas || "1h"; // fallback
-        const benefitBadge = document.getElementById('benefit-badge');
-        if (benefitBadge) {
-            benefitBadge.className = "text-[10px] font-bold px-2.5 py-1 rounded-md border flex items-center gap-1.5 shadow-sm bg-indigo-50 text-indigo-700 border-indigo-100";
-            benefitBadge.innerHTML = `<span class="material-symbols-rounded text-sm">schedule</span> Ahorro: ${hh}`;
-        }
-
-        // Tips logic
-        // ... (omitted for brevity, assume tips exist or not) ...
-
-        // PROMPT MAESTRO DECRYPTION
-        currentPromptTemplate = c.agiaPromptTagged || c.prompt_maestro; // Encrypted field
-
-        let decryptedText = null;
-        let requiresUnlock = false;
-
-        // Check if encrypted
-        if (currentPromptTemplate && (currentPromptTemplate.includes(':') || currentPromptTemplate.startsWith('U2F'))) {
-            if (isVaultUnlocked) {
-                // Try decrypt
-                // Key retrieval: From storage or fixed prompt
-                const pwd = localStorage.getItem("agia_master_key") || "AGIA2025";
-                decryptedText = decryptPrompt(currentPromptTemplate); // Uses hardcoded internal logic or need password param?
-                // My new decryptPrompt function uses "AGIA2025" logic internally via getEncryptionKey or fixed.
-                // Wait, I need to pass password to decryptPrompt if I updated it to accept it? 
-                // Previous step definition of decryptPrompt used hardcoded getEncryptionKey() or fixed salt.
-                // I should update decryptPrompt to use the password.
-                // BUT for now, let's assume decryptPrompt handles it using the fixed 'AGIA2025' logic.
-            } else {
-                requiresUnlock = true;
+                socialText.innerHTML = templates[phraseIndex];
             }
-        } else {
-            decryptedText = currentPromptTemplate; // Not encrypted
-        }
-
-        // Render Prompts logic
-        // This relies on 'renderPrompts(isLocked)' separate function.
-        // We override the global variables it uses.
-
-        if (decryptedText) {
-            currentPromptTemplate = decryptedText;
-            // Parse variables if needed
-            currentVariables = {};
-            const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
-            let match;
-            while ((match = regex.exec(currentPromptTemplate)) !== null) {
-                currentVariables[match[1]] = match[2];
-            }
-            renderPrompts(false); // Render unlocked
-        } else {
-            // Still encrypted or failed
-            renderPrompts(true); // Render locked
-        }
-
-        // Lock Overlay Teaser override
-        const lockOverlay = document.getElementById('locked-teaser');
-        const copyBtn = document.getElementById('copy-btn');
-
-        if (requiresUnlock) {
-            lockOverlay.classList.remove('hidden');
-            copyBtn.disabled = true;
-            copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">lock</span> BLOQUEADO';
-            // Add Click listener to unlock
-            lockOverlay.onclick = requestUnlock;
-            lockOverlay.style.cursor = "pointer";
-            lockOverlay.title = "Click para desbloquear";
-        } else {
-            lockOverlay.classList.add('hidden');
-            copyBtn.disabled = false;
-            copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">content_copy</span> Copiar Prompt';
-            lockOverlay.onclick = null;
-            lockOverlay.style.cursor = "default";
-        }
-
-
-        const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
-        const badge = document.getElementById('detail-category-badge');
-        badge.innerText = cat.label;
-        badge.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${cat.color}-600 border-${cat.color}-100`;
-
-        const aiBadge = document.getElementById('ai-suggestion-badge');
-        const aiName = document.getElementById('ai-name');
-        if (c.suggestedAI) {
-            let niceName = c.suggestedAI.toUpperCase();
-            aiName.innerText = niceName;
-            aiBadge.classList.remove('hidden');
-            aiBadge.classList.add('flex');
-        } else {
-            aiBadge.classList.add('hidden');
-            aiBadge.classList.remove('flex');
-        }
-
-        // Benefit Badge Logic
-        const benefitBadge = document.getElementById('benefit-badge');
-        if (benefitBadge) {
-            if (currentDifficulty === 'beginner') {
-                benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">bolt</span> Ahorro: ~15 min';
-                benefitBadge.className = "text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 flex items-center gap-1.5 shadow-sm";
-            } else if (currentDifficulty === 'intermediate') {
-                benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">rocket_launch</span> Ahorro: ~45 min';
-                benefitBadge.className = "text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100 flex items-center gap-1.5 shadow-sm";
-            } else {
-                benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">diamond</span> Ahorro: +2 Horas';
-                benefitBadge.className = "text-[10px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-100 flex items-center gap-1.5 shadow-sm";
-            }
-        }
-
-        const tipContainer = document.getElementById('tip-container');
-        const validationContainer = document.getElementById('validation-container');
-        const tipText = document.getElementById('detail-example-tip');
-        const valText = document.getElementById('detail-validation-tip');
-
-        if (c.exampleTip) { tipText.innerHTML = c.exampleTip; tipContainer.classList.remove('hidden'); } else { tipContainer.classList.add('hidden'); }
-        if (c.validationTip) { valText.innerHTML = c.validationTip; validationContainer.classList.remove('hidden'); } else { validationContainer.classList.add('hidden'); }
-
-        currentPromptTemplate = c.agiaPromptTagged;
-
-        // Decrypt ONLY if unlocked
-        if (isVaultUnlocked && currentPromptTemplate.startsWith("U2F")) {
-            currentPromptTemplate = decryptPrompt(currentPromptTemplate);
-        }
-
-        currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
-        currentVariables = {};
-
-        // Si está bloqueado, no intentamos parsear variables porque el texto es basura encriptada
-        if (!currentPromptTemplate.startsWith("U2F")) {
-            const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
-            let match;
-            while ((match = regex.exec(currentPromptTemplate)) !== null) {
-                currentVariables[match[1]] = match[2];
-            }
-        }
-
-        // Force Lock if content is encrypted and vault is locked
-        const effectivelyLocked = isLocked || (!isVaultUnlocked && currentPromptTemplate.startsWith("U2F"));
-
-        renderPrompts(effectivelyLocked);
-
-        // Lógica de Bloqueo Visual (Teaser)
-        const lockOverlay = document.getElementById('locked-teaser');
-        const blurWrapper = document.getElementById('prompt-blur-wrapper');
-        const copyBtn = document.getElementById('copy-btn');
-        const resultTeaser = document.getElementById('result-teaser-label');
-        const passwordInput = document.getElementById('vault-password');
-        if (passwordInput) passwordInput.value = ""; // Clear password on new case load
-
-        if (effectivelyLocked) {
-            lockOverlay.classList.remove('hidden');
-            blurWrapper.classList.add('blur-prompt');
-            copyBtn.disabled = true;
-            copyBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">lock</span> BLOQUEADO';
-            resultTeaser.classList.remove('hidden');
-            resultTeaser.classList.add('flex');
-        } else {
-            lockOverlay.classList.add('hidden');
-            blurWrapper.classList.remove('blur-prompt');
-            copyBtn.disabled = false;
-            copyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            copyBtn.innerHTML = '<span class="material-symbols-rounded text-lg">content_copy</span> COPIAR PROMPT';
-            resultTeaser.classList.add('hidden');
-            resultTeaser.classList.remove('flex');
-        }
-
-        setupMagicHover();
-        setMode(currentViewMode);
-
-        // Social Proof Randomizer
-        const socialText = document.getElementById('social-proof-text');
-        if (socialText) {
-            // Deterministic Randomness based on ID
-            const base = Math.floor(c.id * 0.8);
-            const variance = ((c.id * 7) % 30) * 5;
-            const count = base + variance + 45; // Minimum ~125 range
-
-            // Randomize phrasing slightly based on ID parity
-            const templates = [
-                `Usado <span class="text-orange-600 text-xs">${count}</span> veces en la última hora`,
-                `<span class="text-orange-600 text-xs">${count}</span> personas lo están usando ahora`,
-                `Tendencia: <span class="text-orange-600 text-xs">${count}</span> usos recientes`
-            ];
-            const phraseIndex = c.id % templates.length;
-
-            socialText.innerHTML = templates[phraseIndex];
-        }
         }
 
         function downloadPDF() {
