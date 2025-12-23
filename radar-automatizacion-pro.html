@@ -895,6 +895,7 @@ Paso 3: [instrucción concreta]`,
         const db = firebase.firestore();
 
         // Check authentication and enrollment on page load
+        // Check authentication and enrollment on page load
         window.addEventListener('DOMContentLoaded', () => {
             auth.onAuthStateChanged(async (user) => {
                 if (!user) {
@@ -903,19 +904,47 @@ Paso 3: [instrucción concreta]`,
                     return;
                 }
 
-                // Check if user is enrolled
+                // Check access permissions (Robust Logic)
                 try {
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    if (!userDoc.exists || !userDoc.data().enrolled) {
+                    const allowlistRef = db.collection('allowlist').doc(user.email);
+                    const userRef = db.collection('users').doc(user.uid);
+
+                    const [allowlistDoc, userDoc] = await Promise.all([allowlistRef.get(), userRef.get()]);
+
+                    let isWhitelisted = false;
+                    if (allowlistDoc.exists) {
+                        const data = allowlistDoc.data();
+                        const allowedCourses = data.courses || [];
+                        // Check for specific course or global access
+                        if (data.active === true && (allowedCourses.includes('ia-aplicada-esencial') || allowedCourses.includes('programa-esencial'))) {
+                            isWhitelisted = true;
+                        }
+                    }
+
+                    let isEnrolled = false;
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        // Check contemporary enrollment map OR legacy field for backward compatibility
+                        if (userData.enrollments && (userData.enrollments['ia-aplicada-esencial'] === true || userData.enrollments['inteligencia-aplicada'] === true)) {
+                            isEnrolled = true;
+                        } else if (userData.enrolled === true) {
+                            // Fallback for very old accounts
+                            isEnrolled = true;
+                        }
+                    }
+
+                    if (!isWhitelisted && !isEnrolled) {
                         // Not enrolled - show enrollment required overlay
+                        console.log('User denied access: Not on allowlist and no valid enrollment found.');
                         showEnrollmentOverlay(user.email);
                         return;
                     }
 
                     // User is authenticated and enrolled - allow access
-                    console.log('User authenticated and enrolled');
+                    console.log('User authenticated and authorized via:', isWhitelisted ? 'Allowlist' : 'Enrollment');
                 } catch (error) {
                     console.error('Error checking enrollment:', error);
+                    // In case of error (e.g. network), defaulting to blocking is safer, but specific error handling could be better
                     showEnrollmentOverlay(user.email);
                 }
             });
