@@ -1537,7 +1537,7 @@
                 return finalKeywords.some(keyword => content.includes(keyword));
             });
 
-            renderList(filtered);
+            renderList(filtered, finalKeywords);
 
             // Update UI Stats
             const statsEl = document.getElementById('search-stats');
@@ -1559,7 +1559,42 @@
             }
         }
 
-        function renderList(cases) {
+        function highlightText(text, keywords) {
+            if (!keywords || keywords.length === 0) return escapeHtml(text);
+            let escapedText = escapeHtml(text);
+
+            // Crear regex combinada para todas las keywords (case insensitive)
+            // Ordenar por longitud descendente para evitar que una corta rompa una larga
+            const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
+            const pattern = new RegExp(`(${sortedKeywords.join('|')})`, 'gi');
+
+            return escapedText.replace(pattern, match =>
+                `<span class="bg-yellow-200 text-yellow-900 font-bold px-0.5 rounded">${match}</span>`
+            );
+        }
+
+        function getMatchContext(c, keywords) {
+            // Buscar en campos secundarios si no está en título/categoría
+            const fields = [c.problem, c.badPrompt];
+            for (let text of fields) {
+                if (!text) continue;
+                const lower = text.toLowerCase();
+                const hit = keywords.find(k => lower.includes(k));
+                if (hit) {
+                    // Extraer fragmento
+                    const idx = lower.indexOf(hit);
+                    const start = Math.max(0, idx - 15);
+                    const end = Math.min(text.length, idx + hit.length + 25);
+                    let snippet = text.substring(start, end);
+                    if (start > 0) snippet = "..." + snippet;
+                    if (end < text.length) snippet = snippet + "...";
+                    return highlightText(snippet, keywords);
+                }
+            }
+            return null;
+        }
+
+        function renderList(cases, highlightKeywords = []) {
             const list = document.getElementById('case-list');
             document.getElementById('total-display').innerText = casesData.length;
 
@@ -1575,6 +1610,28 @@
                 else if (c.difficulty === 'intermediate') { dotColor = 'bg-amber-400'; tooltip = 'Intermedio: 45 min'; }
                 else if (c.difficulty === 'advanced') { dotColor = 'bg-rose-400'; tooltip = 'Avanzado: 90-120 min'; }
 
+                // Procesar Highlighting
+                const titleHtml = highlightText(c.title, highlightKeywords);
+                const catHtml = highlightText(c.category, highlightKeywords);
+
+                // Determinar si necesitamos mostrar contexto extra (si el match NO está en título ni categoría)
+                let contextHtml = '';
+                if (highlightKeywords.length > 0) {
+                    // Check simple si alguna keyword está en titulo o categoria (ignorando case)
+                    const titleHit = highlightKeywords.some(k => c.title.toLowerCase().includes(k));
+                    const catHit = highlightKeywords.some(k => c.category.toLowerCase().includes(k));
+
+                    if (!titleHit && !catHit) {
+                        const matchSnippet = getMatchContext(c, highlightKeywords);
+                        if (matchSnippet) {
+                            contextHtml = `<div class="mt-1.5 text-[10px] text-slate-500 bg-slate-50 p-1.5 rounded border border-slate-100 flex items-start gap-1">
+                                <span class="material-symbols-rounded text-[10px] text-indigo-400 mt-0.5">manage_search</span>
+                                <span class="leading-tight break-words has-highlights">${matchSnippet}</span>
+                             </div>`;
+                        }
+                    }
+                }
+
                 return `
                 <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item group p-3 rounded-lg cursor-pointer hover:bg-slate-50 hover:shadow-sm transition-all border border-transparent hover:border-indigo-100 relative mb-1">
                     <div class="flex items-center gap-3">
@@ -1582,13 +1639,12 @@
                             <span class="material-symbols-rounded text-[16px]">${c.locked ? 'lock' : c.icon}</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <!-- Se usa textContent implícitamente al interpolar en string, pero si c.title tuviera tags, se renderizarían. 
-                                 Para seguridad extra, escapamos el título. -->
-                            <h4 class="text-xs font-bold truncate transition-colors text-slate-700 group-hover:text-indigo-900">${escapeHtml(c.title)}</h4>
+                            <h4 class="text-xs font-bold truncate transition-colors text-slate-700 group-hover:text-indigo-900">${titleHtml}</h4>
                             <div class="flex items-center gap-1.5 mt-0.5">
                                 <span class="w-1.5 h-1.5 rounded-full ${dotColor}" title="${tooltip}"></span>
-                                <span class="text-[10px] text-slate-400 capitalize truncate font-medium">${escapeHtml(c.category)}</span>
+                                <span class="text-[10px] text-slate-400 capitalize truncate font-medium">${catHtml}</span>
                             </div>
+                            ${contextHtml}
                         </div>
                     </div>
                 </div>
