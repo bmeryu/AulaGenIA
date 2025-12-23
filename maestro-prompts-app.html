@@ -474,13 +474,15 @@
 
                             <!-- Prompt Box Container -->
                             <div
-                                class="relative bg-slate-50/50 p-6 md:p-8 border-b border-indigo-100 flex-none group/expand">
+                                class="relative bg-slate-50/50 p-4 md:p-6 border-b border-indigo-100 flex-none group/expand">
                                 <!-- Prompt Text with Blur Wrapper -->
                                 <div id="prompt-blur-wrapper" class="transition-all duration-500 relative">
-                                    <div class="flex justify-between items-end mb-4">
+                                    <div class="flex justify-between items-center mb-3">
                                         <label
-                                            class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Estructura
-                                            Optimizada</label>
+                                            class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest flex items-center gap-1.5">
+                                            <span class="material-symbols-rounded text-sm">auto_awesome</span>
+                                            Prompt Maestro AGIA
+                                        </label>
                                         <!-- Dynamic Benefit Badge -->
                                         <span id="benefit-badge"
                                             class="text-[10px] font-bold px-2.5 py-1 rounded-md border flex items-center gap-1.5 shadow-sm">
@@ -488,9 +490,13 @@
                                         </span>
                                     </div>
 
-                                    <div id="detail-prompt-rendered"
-                                        class="font-mono text-[15px] leading-relaxed text-slate-800 whitespace-pre-wrap">
+                                    <!-- NEW: AGIA Sections with Colored Badges -->
+                                    <div id="agia-sections-container" class="space-y-2">
+                                        <!-- Sections will be rendered dynamically by JS -->
                                     </div>
+
+                                    <!-- Hidden original for copy functionality -->
+                                    <div id="detail-prompt-rendered" class="hidden"></div>
                                 </div>
 
                                 <!-- BLOCKED TEASER OVERLAY (Centered on prompt) -->
@@ -1318,24 +1324,25 @@
         }
 
         function renderPrompts(isLocked) {
+            // Keep original behavior for hidden element (used for copy)
             let renderedAgia = escapeHtml(currentPromptTemplate);
             Object.keys(currentVariables).forEach(key => {
                 const val = currentVariables[key] || "___";
-                // Escapamos el valor de la variable también
                 const safeVal = escapeHtml(val);
                 const regex = new RegExp(`{${key}\\|[^}]+}`, 'g');
                 renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${safeVal}</span>`);
             });
-
             const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
             Object.keys(tags).forEach(t => {
                 const className = `hl-${tags[t]}`;
                 const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
-                // Aquí $1 ya ha sido escapado al inicio (currentPromptTemplate escapado), así que es seguro.
                 renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
             });
             renderedAgia = renderedAgia.replace(/\n/g, '<br>');
             document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
+
+            // NEW: Parse and render AGIA sections with colored badges
+            renderAgiaSections(currentPromptTemplate);
 
             let renderedBad = escapeHtml(currentBadPromptTemplate);
             Object.keys(currentVariables).forEach(key => {
@@ -1345,6 +1352,73 @@
                 renderedBad = renderedBad.replace(regex, `<span class="var-highlight-bad">${safeVal}</span>`);
             });
             document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
+        }
+
+        // NEW: Function to parse AGIA template and render sections with colored badges
+        function renderAgiaSections(template) {
+            const container = document.getElementById('agia-sections-container');
+            if (!container) return;
+
+            // AGIA section configuration with colors
+            const sectionConfig = {
+                'ROL': { color: 'blue', icon: 'person', label: 'Rol' },
+                'CONTEXTO': { color: 'emerald', icon: 'map', label: 'Contexto' },
+                'META': { color: 'amber', icon: 'target', label: 'Meta' },
+                'RESTRICCIONES': { color: 'rose', icon: 'rule', label: 'Restr.' },
+                'FORMATO': { color: 'violet', icon: 'format_list_bulleted', label: 'Formato' }
+            };
+
+            // Parse the template to extract sections
+            // Format: "1. ROL: content\n2. CONTEXTO: content\n3. META: content..."
+            const lines = template.split('\n');
+            const sections = {};
+            let currentSection = null;
+            let currentContent = [];
+
+            lines.forEach(line => {
+                // Check if line starts a new section
+                const sectionMatch = line.match(/^(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*(.*)/i);
+                if (sectionMatch) {
+                    // Save previous section
+                    if (currentSection) {
+                        sections[currentSection] = currentContent.join('\n').trim();
+                    }
+                    currentSection = sectionMatch[2].toUpperCase();
+                    currentContent = [sectionMatch[3] || ''];
+                } else if (currentSection) {
+                    currentContent.push(line);
+                }
+            });
+            // Save last section
+            if (currentSection) {
+                sections[currentSection] = currentContent.join('\n').trim();
+            }
+
+            // Build HTML for sections
+            let html = '';
+            Object.keys(sectionConfig).forEach(key => {
+                const config = sectionConfig[key];
+                const content = sections[key] || '';
+                if (!content) return;
+
+                // Clean content: remove leading dashes and excessive whitespace
+                const cleanContent = content
+                    .replace(/^\s*-\s*/gm, '• ')  // Replace leading dashes with bullets
+                    .replace(/\n\s+/g, '\n')      // Clean indentation
+                    .trim();
+
+                html += `
+                    <div class="agia-section flex items-start gap-3 p-3 bg-white rounded-lg border border-${config.color}-100 hover:border-${config.color}-200 transition-colors" data-section="${key.toLowerCase()}">
+                        <span class="flex-none inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 bg-${config.color}-50 text-${config.color}-700 border border-${config.color}-200 rounded-md whitespace-nowrap">
+                            <span class="w-1.5 h-1.5 rounded-full bg-${config.color}-500"></span>
+                            ${config.label}
+                        </span>
+                        <div class="flex-1 text-sm text-slate-700 leading-relaxed whitespace-pre-line">${escapeHtml(cleanContent)}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
         }
 
         // New Logic: Bidirectional Magic Hover
