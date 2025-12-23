@@ -37,20 +37,63 @@
     </script>
 
     <style>
+        /* Aula GenIA Brand Variables */
+        :root {
+            --brand-teal: #14b8a6;
+            --brand-blue: #3b82f6;
+            --brand-yellow: #f59e0b;
+            --brand-gradient: linear-gradient(90deg, #2DD4BF 0%, #FBBF24 100%);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        /* Brand Gradient Button */
         .gradient-btn {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            background: linear-gradient(90deg, #2DD4BF 0%, #FBBF24 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #0e9488 0%, #d97706 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gradient-btn:hover::before {
+            opacity: 1;
         }
 
         .gradient-btn:hover {
-            background: linear-gradient(135deg, #4338CA 0%, #6D28D9 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(20, 184, 166, 0.25), 0 0 20px rgba(251, 191, 36, 0.3);
         }
 
+        .gradient-btn>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Premium Glassmorphism */
         .glassmorphism {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
+        /* Gradient Text with Brand Colors */
+        .gradient-text-brand {
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-blue), var(--brand-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Timeline Line for Module Cards */
         .timeline-line {
             position: relative;
         }
@@ -62,7 +105,66 @@
             top: 60px;
             bottom: -20px;
             width: 2px;
-            background: linear-gradient(180deg, #4F46E5 0%, #E0E7FF 100%);
+            background: linear-gradient(180deg, var(--brand-teal) 0%, #E0F2F1 100%);
+        }
+
+        /* Badge with Pulse Animation */
+        .badge-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(20, 184, 166, 0);
+            }
+        }
+
+        /* Card Hover Effect with Brand Colors */
+        .card-hover-brand:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(20, 184, 166, 0.15);
+        }
+
+        /* Icon Gradient */
+        .icon-gradient {
+            background: linear-gradient(135deg, var(--brand-teal), var(--brand-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Smooth Fade In Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Reduce Motion for Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
@@ -83,17 +185,16 @@
         <div class="max-w-7xl mx-auto">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <!-- Left: Text -->
-                <div class="space-y-8">
-                    <div class="inline-block">
+                <div class="space-y-8 fade-in-up">
+                    <div class="inline-block badge-pulse">
                         <span
-                            class="px-4 py-2 bg-indigo-50 text-primary text-sm font-bold rounded-full border border-indigo-100">
+                            class="px-4 py-2 bg-gradient-to-r from-teal-50 to-cyan-50 text-teal-700 text-sm font-bold rounded-full border border-teal-200 shadow-sm">
                             ✨ Herramienta Gratuita Incluida
                         </span>
                     </div>
 
                     <h1 class="text-5xl lg:text-6xl font-black text-gray-900 leading-tight tracking-tight">
-                        Tú pones la Estrategia. <span
-                            class="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">La IA pone
+                        Tú pones la Estrategia. <span class="gradient-text-brand">La IA pone
                             la Ejecución.</span>
                     </h1>
 
@@ -104,15 +205,18 @@
 
                     <div class="space-y-4">
                         <a href="#pricing"
-                            class="gradient-btn inline-flex items-center gap-3 px-8 py-5 text-white text-lg font-bold rounded-2xl shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300">
+                            class="gradient-btn inline-flex items-center justify-center gap-3 px-8 py-5 text-white text-lg font-bold rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300">
                             <i data-lucide="sparkles" class="w-6 h-6"></i>
                             Ver Metodología y Oferta
                         </a>
 
-                        <p class="text-sm text-gray-500 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4"></i>
-                            Únete a cientos de profesionales que ya perdieron el miedo
-                        </p>
+                        <div class="flex items-center gap-4">
+                            <p class="text-sm text-gray-500 flex items-center gap-2">
+                                <i data-lucide="users" class="w-4 h-4 text-teal-600"></i>
+                                <span>Únete a <strong class="text-gray-900">500+</strong> profesionales que ya perdieron
+                                    el miedo</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -122,12 +226,15 @@
                         class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white transform hover:scale-105 transition-transform duration-500">
                         <img src="JuliaBernardita.png" alt="Bernardita enseñando IA" class="w-full h-auto">
                     </div>
-                    <!-- Floating elements -->
+                    <!-- Floating elements with brand colors -->
                     <div
-                        class="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full blur-3xl opacity-30 animate-pulse">
+                        class="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-teal-400 to-cyan-400 rounded-full blur-3xl opacity-30 animate-pulse">
                     </div>
                     <div
-                        class="absolute -bottom-6 -left-6 w-40 h-40 bg-gradient-to-br from-pink-400 to-orange-400 rounded-full blur-3xl opacity-20 animate-pulse">
+                        class="absolute -bottom-6 -left-6 w-40 h-40 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full blur-3xl opacity-25 animate-pulse">
+                    </div>
+                    <div
+                        class="absolute top-1/2 -left-10 w-24 h-24 bg-gradient-to-br from-blue-400 to-indigo-400 rounded-full blur-2xl opacity-20 animate-pulse">
                     </div>
                 </div>
             </div>
@@ -443,33 +550,45 @@
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" class="py-24 px-6 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+    <section id="pricing" class="py-24 px-6 bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50">
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-16">
                 <div
-                    class="inline-block px-4 py-2 bg-red-500 text-white text-sm font-bold rounded-full mb-4 animate-pulse">
+                    class="inline-block px-5 py-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white text-sm font-bold rounded-full mb-4 shadow-lg badge-pulse">
                     🎄 OFERTA NAVIDAD
                 </div>
                 <h2 class="text-5xl font-black text-gray-900 mb-4">Oferta Irresistible</h2>
                 <p class="text-xl text-gray-600">Todo lo que necesitas para dominar la IA</p>
             </div>
 
-            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-primary/20">
-                <div class="bg-gradient-to-r from-primary to-purple-600 text-white p-8 text-center">
-                    <p class="text-sm uppercase tracking-wider mb-2 opacity-90">Precio Normal</p>
-                    <p class="text-3xl line-through opacity-75 mb-4">$120 USD</p>
-                    <div class="flex items-center justify-center gap-4">
-                        <p class="text-7xl font-black">$20</p>
-                        <div class="text-left">
-                            <p class="text-sm opacity-90">USD</p>
-                            <p class="text-xs opacity-75">Pago único</p>
+            <div
+                class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border-2 border-teal-200/50 ring-1 ring-teal-100/50">
+                <div
+                    class="bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 text-white p-8 text-center relative overflow-hidden">
+                    <!-- Decorative pattern -->
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=" 20" height="20"
+                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" %3E%3Cg fill="%23ffffff"
+                        fill-opacity="0.05" %3E%3Ccircle cx="10" cy="10" r="1.5" %3E%3C/circle%3E%3C/g%3E%3C/svg%3E')]
+                        opacity-50"></div>
+                    <div class="relative z-10">
+                        <p class="text-sm uppercase tracking-wider mb-2 opacity-90">Precio Normal</p>
+                        <p class="text-3xl line-through opacity-75 mb-4">$120 USD</p>
+                        <div class="flex items-center justify-center gap-4">
+                            <p class="text-7xl font-black drop-shadow-lg">$20</p>
+                            <div class="text-left">
+                                <p class="text-sm opacity-90 font-bold">USD</p>
+                                <p class="text-xs opacity-75">Pago único</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mt-6 flex items-center justify-center gap-4">
-                        <span class="px-4 py-2 bg-purple-500 text-white text-sm font-bold rounded-full">Ahorras
-                            83%</span>
-                        <span class="px-4 py-2 bg-pink-500 text-white text-sm font-bold rounded-full">⚡ Cupos
-                            Limitados</span>
+                        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                            <span
+                                class="px-4 py-2 bg-white/20 backdrop-blur text-white text-sm font-bold rounded-full shadow-lg">Ahorras
+                                83%</span>
+                            <span
+                                class="px-4 py-2 bg-yellow-400 text-gray-900 text-sm font-bold rounded-full shadow-lg animate-pulse">⚡
+                                Cupos
+                                Limitados</span>
+                        </div>
                     </div>
                 </div>
 
@@ -477,37 +596,37 @@
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Incluye Todo Esto:</h3>
                     <ul class="space-y-4 mb-10">
                         <li class="flex items-start gap-3">
-                            <i data-lucide="check-circle" class="w-6 h-6 text-purple-600 flex-shrink-0 mt-0.5"></i>
+                            <i data-lucide="check-circle" class="w-6 h-6 text-teal-600 flex-shrink-0 mt-0.5"></i>
                             <div>
                                 <p class="font-bold text-gray-900">Curso Completo (4 Módulos)</p>
                                 <p class="text-gray-600 text-sm">Lecciones en video, ejercicios prácticos y talleres</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-3">
-                            <i data-lucide="check-circle" class="w-6 h-6 text-purple-600 flex-shrink-0 mt-0.5"></i>
+                            <i data-lucide="check-circle" class="w-6 h-6 text-teal-600 flex-shrink-0 mt-0.5"></i>
                             <div>
                                 <p class="font-bold text-gray-900">Acceso de Por Vida</p>
                                 <p class="text-gray-600 text-sm">Acceso 12 meses + actualizaciones futuras</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-3">
-                            <i data-lucide="check-circle" class="w-6 h-6 text-purple-600 flex-shrink-0 mt-0.5"></i>
+                            <i data-lucide="check-circle" class="w-6 h-6 text-teal-600 flex-shrink-0 mt-0.5"></i>
                             <div>
                                 <p class="font-bold text-gray-900">Soporte Personalizado</p>
                                 <p class="text-gray-600 text-sm">Resuelve tus dudas con el equipo de tutores</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-3">
-                            <i data-lucide="check-circle" class="w-6 h-6 text-purple-600 flex-shrink-0 mt-0.5"></i>
+                            <i data-lucide="check-circle" class="w-6 h-6 text-teal-600 flex-shrink-0 mt-0.5"></i>
                             <div>
                                 <p class="font-bold text-gray-900">Certificado de Finalización</p>
                                 <p class="text-gray-600 text-sm">Acredita tus nuevas habilidades</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-3">
-                            <i data-lucide="gift" class="w-6 h-6 text-indigo-500 flex-shrink-0 mt-0.5"></i>
+                            <i data-lucide="gift" class="w-6 h-6 text-yellow-500 flex-shrink-0 mt-0.5"></i>
                             <div>
-                                <p class="font-bold text-indigo-600">🎁 BONUS: Herramienta Maestro de Prompts</p>
+                                <p class="font-bold text-yellow-600">🎁 BONUS: Herramienta Maestro de Prompts</p>
                                 <p class="text-gray-600 text-sm">Versión completa con +80 prompts (Valor: $27 USD)</p>
                             </div>
                         </li>
