@@ -859,12 +859,20 @@ Paso 3: [instrucción concreta]`,
         function animateValue(id, start, end, duration) {
             const element = document.getElementById(id);
             const range = end - start;
-            const increment = range / (duration / 16);
+            const stepTime = 16; // ~60fps
+            const totalSteps = duration / stepTime;
+            const increment = range / totalSteps;
             let current = start;
 
             const timer = setInterval(() => {
-                element.textContent = Math.round(current);
-            }, 16);
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    element.textContent = Math.round(end);
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.round(current);
+                }
+            }, stepTime);
         }
 
         function resetApp() {
