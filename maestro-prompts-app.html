@@ -1411,16 +1411,10 @@
             }).join('');
         }
 
-        // SCROLL LOGIC FOR CATEGORIES - FIXED: Now properly scrolls by offset amount
+        // SCROLL LOGIC FOR CATEGORIES
         function scrollCategories(offset) {
             const nav = document.getElementById('category-nav');
-            if (!nav) return;
-
-            // Scroll by the provided offset (positive for right, negative for left)
-            nav.scrollBy({ left: offset, behavior: 'smooth' });
-
-            // Debug: Log current scroll position
-            console.log('Scrolling categories by:', offset, 'Current position:', nav.scrollLeft);
+            if (nav) nav.scrollBy({ left: offset, behavior: 'smooth' });
         }
 
         // Initialize scroll listeners with Right Arrow handling
@@ -1452,67 +1446,93 @@
             }
         });
 
-        // ADVANCED UX HIGHLIGHT SYSTEM - Only active section + legend are prominent
+        /**
+         * VERSIÓN FINAL: BIDIRECCIONALIDAD TOTAL Y FOCO QUIRÚRGICO
+         * Highlighting que atenúa contenedor + elementos inactivos
+         */
         function highlightSection(key) {
             if (!key) return;
             const targetKey = key.toUpperCase();
+            const container = document.getElementById('agia-sections-container');
 
-            // 1. Legend: Highlight ONLY the active one, dim all others
+            // 1. Efecto en el Contenedor del Prompt (Texto plano/conectores)
+            // Apagamos el color de los conectores ("eres un", "en el", etc.)
+            if (container) {
+                container.style.transition = 'all 0.3s ease';
+                container.style.color = '#cbd5e1'; // Gris muy claro (slate-300)
+            }
+
+            // 2. Leyenda (Items superiores) - BIDIRECCIONAL
             document.querySelectorAll('.legend-item').forEach(el => {
-                if (el.id === `legend-${targetKey}`) {
-                    // ACTIVE: Full prominence
-                    el.classList.remove('opacity-40', 'grayscale', 'scale-95');
-                    el.classList.add('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-1');
-                    el.style.removeProperty('opacity');
-                    el.style.removeProperty('filter');
+                const legendKey = el.id.replace('legend-', '').toUpperCase();
+
+                if (legendKey === targetKey) {
+                    // ELEMENTO ACTIVO: Brilla y resalta
+                    el.style.opacity = '1';
+                    el.style.filter = 'none';
+                    el.style.transform = 'scale(1.1)';
+                    el.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                    el.style.zIndex = '20';
                 } else {
-                    // INACTIVE: Subtle fade - UX principle: dim but don't destroy
-                    el.classList.remove('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-1');
-                    el.classList.add('opacity-40', 'grayscale', 'scale-95');
+                    // ELEMENTOS INACTIVOS: Se desaturan y atenúan
+                    el.style.opacity = '0.15';
+                    el.style.filter = 'grayscale(1)';
+                    el.style.transform = 'scale(0.95)';
+                    el.style.zIndex = '1';
                 }
             });
 
-            // 2. Prompt Sections: ONLY the matching section keeps its color
+            // 3. Secciones del Prompt (Bloques de texto) - BIDIRECCIONAL
             document.querySelectorAll('.prompt-section').forEach(el => {
                 const sectionKey = (el.dataset.section || '').toUpperCase();
 
                 if (sectionKey === targetKey) {
-                    // ACTIVE: Keep original colors and add subtle elevation
-                    el.style.removeProperty('background-color');
-                    el.style.removeProperty('color');
-                    el.style.removeProperty('opacity');
-                    el.style.removeProperty('filter');
-
-                    // Subtle lift effect for active section
-                    el.classList.add('scale-105', 'z-20', 'shadow-lg');
-                    el.style.setProperty('transition', 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
+                    // BLOQUE ACTIVO: Mantiene su color pastel original y resalta sobre el gris
+                    el.style.opacity = '1';
+                    el.style.filter = 'none';
+                    el.style.transform = 'scale(1.02)';
+                    el.style.zIndex = '10';
+                    el.style.position = 'relative';
+                    el.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05)';
+                    // Importante: forzar que el color de texto interno no sea el gris del padre
+                    el.style.color = 'inherit';
                 } else {
-                    // INACTIVE: Reduce visual weight WITHOUT killing the design
-                    // UX Principle: Fade to neutral background, reduce opacity
-                    el.style.setProperty('background-color', '#f8fafc', 'important'); // Lighter slate
-                    el.style.setProperty('color', '#cbd5e1', 'important');           // Muted slate
-                    el.style.setProperty('opacity', '0.35', 'important');           // Reduced but visible
-                    el.style.setProperty('filter', 'grayscale(80%)', 'important'); // Partial grayscale
-
-                    el.classList.remove('scale-105', 'z-20', 'shadow-lg');
-                    el.style.setProperty('transition', 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
+                    // BLOQUES INACTIVOS: Se vuelven grises y casi transparentes
+                    el.style.opacity = '0.1';
+                    el.style.filter = 'grayscale(1)';
+                    el.style.transform = 'scale(1)';
+                    el.style.zIndex = '1';
+                    el.style.boxShadow = 'none';
                 }
             });
         }
 
         function resetLegend() {
-            // Reset Legend
+            const container = document.getElementById('agia-sections-container');
+
+            // Restaurar el texto plano a su color original (Slate-800)
+            if (container) {
+                container.style.color = '';
+            }
+
+            // Restaurar Leyenda a estado normal
             document.querySelectorAll('.legend-item').forEach(el => {
-                el.classList.remove('opacity-30', 'grayscale', 'scale-110', 'shadow-lg', 'ring-2', 'ring-offset-2');
+                el.style.opacity = '1';
+                el.style.filter = 'none';
+                el.style.transform = 'scale(1)';
+                el.style.boxShadow = 'none';
+                el.style.zIndex = '';
             });
 
-            // Reset Prompt Sections
+            // Restaurar Secciones del Prompt a estado normal
             document.querySelectorAll('.prompt-section').forEach(el => {
-                el.style.removeProperty('background-color');
-                el.style.removeProperty('color');
-                el.style.removeProperty('opacity');
-                el.style.removeProperty('filter');
-                el.classList.remove('scale-105', 'z-20', 'shadow-md', 'ring-2');
+                el.style.opacity = '1';
+                el.style.filter = 'none';
+                el.style.transform = 'scale(1)';
+                el.style.zIndex = '';
+                el.style.position = '';
+                el.style.boxShadow = 'none';
+                el.style.color = '';
             });
         }
 
