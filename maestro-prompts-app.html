@@ -389,32 +389,59 @@
 
                     <!-- Right: Switch + Badge + Copy (all in one line) -->
                     <div class="flex items-center gap-2 flex-none">
-                        <!-- Mode Switch (Compact) -->
+                        <!-- Mode Switch with Tooltip -->
                         <div class="relative bg-slate-100 rounded-lg p-0.5 flex items-center">
                             <button onclick="setMode('basic')"
                                 class="relative z-10 px-3 py-1.5 text-[10px] font-bold transition-colors duration-200 rounded-md flex items-center gap-1"
                                 id="btn-basic">
                                 <span class="material-symbols-rounded text-xs">cancel</span> Básico
                             </button>
-                            <button onclick="setMode('agia')"
-                                class="relative z-10 px-3 py-1.5 text-[10px] font-bold transition-colors duration-200 rounded-md flex items-center gap-1"
-                                id="btn-agia">
-                                <span class="material-symbols-rounded text-xs">verified</span> Maestro
-                            </button>
+                            <!-- Maestro button with tooltip -->
+                            <div class="relative group">
+                                <button onclick="setMode('agia')"
+                                    class="relative z-10 px-3 py-1.5 text-[10px] font-bold transition-colors duration-200 rounded-md flex items-center gap-1"
+                                    id="btn-agia">
+                                    <span class="material-symbols-rounded text-xs">verified</span> Maestro
+                                </button>
+                                <!-- Tooltip -->
+                                <div
+                                    class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 p-3 bg-slate-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 text-center">
+                                    <span
+                                        class="material-symbols-rounded text-indigo-400 text-base mb-1">auto_awesome</span>
+                                    <p class="font-medium">Incluye variables de contexto y tono para resultados <span
+                                            class="text-indigo-400 font-bold">10x mejores</span></p>
+                                    <div
+                                        class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Time Badge -->
+                        <!-- Time Saved Badge -->
                         <span id="benefit-badge"
                             class="text-[9px] font-bold px-2 py-1 rounded-md border flex items-center gap-1 bg-emerald-50 text-emerald-600 border-emerald-100">
                             <span class="material-symbols-rounded text-xs">bolt</span> ~15 min
                         </span>
 
-                        <!-- Copy Button -->
-                        <button onclick="copyPrompt()" id="copy-btn"
+                        <!-- Social Proof (near copy button) -->
+                        <div class="hidden md:flex items-center gap-1 text-[9px] text-orange-600 font-medium">
+                            <span class="material-symbols-rounded text-xs animate-pulse">local_fire_department</span>
+                            <span><span id="social-counter-header" class="font-bold">80</span> activos</span>
+                        </div>
+
+                        <!-- Copy Button with Feedback -->
+                        <button onclick="copyPromptWithFeedback(this)" id="copy-btn"
                             class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 transition-all shadow-sm">
-                            <span class="material-symbols-rounded text-sm">content_copy</span> Copiar
+                            <span class="material-symbols-rounded text-sm copy-icon">content_copy</span>
+                            <span class="copy-text">Copiar</span>
                         </button>
                     </div>
+                </div>
+
+                <!-- Next Step Instruction (subtle hint) -->
+                <div class="flex-none text-center text-[10px] text-slate-400 py-1">
+                    <span class="material-symbols-rounded text-xs align-middle">tips_and_updates</span>
+                    Copia y pega este prompt en tu IA favorita (ChatGPT, Claude, Gemini)
                 </div>
 
                 <!-- MAIN CONTENT CARD (No extra switch header needed) -->
@@ -1311,7 +1338,7 @@
             document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
         }
 
-        // NEW: Function to parse AGIA template and render with INLINE colored highlights
+        // NEW: Function to parse AGIA template and render with INLINE colored highlights + EDITABLE VARIABLES
         function renderAgiaSections(template) {
             const container = document.getElementById('agia-sections-container');
             if (!container) return;
@@ -1347,7 +1374,23 @@
                 sections[currentSection] = currentContent.join(' ').trim();
             }
 
-            // Build INLINE HTML with colored highlights
+            // Function to convert [bracketed text] into editable inputs
+            function convertBracketsToInputs(text, sectionKey) {
+                let inputIndex = 0;
+                return text.replace(/\[([^\]]+)\]/g, (match, placeholder) => {
+                    const inputId = `var-input-${sectionKey}-${inputIndex++}`;
+                    const displayWidth = Math.max(placeholder.length * 8, 80);
+                    return `<input type="text" 
+                        id="${inputId}"
+                        class="var-input bg-white/90 border border-white/50 rounded px-1.5 py-0.5 text-[12px] font-medium text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent mx-0.5 transition-all"
+                        style="width: ${displayWidth}px; min-width: 60px;"
+                        placeholder="${escapeHtml(placeholder)}"
+                        data-original="[${escapeHtml(placeholder)}]"
+                        oninput="this.style.width = Math.max(this.value.length * 8, this.placeholder.length * 8, 60) + 'px'">`;
+                });
+            }
+
+            // Build INLINE HTML with colored highlights and editable inputs
             let html = '';
             const sectionOrder = ['ROL', 'CONTEXTO', 'META', 'RESTRICCIONES', 'FORMATO'];
 
@@ -1357,10 +1400,41 @@
                 if (!content) return;
 
                 content = content.replace(/\s+/g, ' ').trim();
-                html += `<span class="inline ${config.bg} ${config.text} px-2 py-0.5 rounded font-medium mx-0.5 leading-8">${escapeHtml(content)}</span> `;
+
+                // Convert brackets to inputs BEFORE escaping (so they become real inputs)
+                const htmlContent = convertBracketsToInputs(content, key);
+
+                // Escape only non-input text
+                const finalContent = htmlContent.replace(/([^<]*?)(<input[^>]+>)/g, (m, text, input) => {
+                    return escapeHtml(text) + input;
+                }).replace(/(<\/[^>]+>)([^<]*?)(?=<|$)/g, (m, tag, text) => {
+                    return tag + escapeHtml(text);
+                });
+
+                html += `<span class="inline-flex flex-wrap items-center ${config.bg} ${config.text} px-2 py-0.5 rounded font-medium mx-0.5 leading-8 my-0.5">${htmlContent}</span> `;
             });
 
             container.innerHTML = html || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
+        }
+
+        // Function to get the prompt text with filled variables
+        function getPromptWithVariables() {
+            const promptRendered = document.getElementById('detail-prompt-rendered');
+            if (!promptRendered) return '';
+
+            let text = promptRendered.innerText;
+
+            // Get all variable inputs and replace placeholders with their values
+            const inputs = document.querySelectorAll('.var-input');
+            inputs.forEach(input => {
+                const original = input.dataset.original;
+                const value = input.value.trim() || input.placeholder;
+                if (original && value) {
+                    text = text.replace(original, value);
+                }
+            });
+
+            return text;
         }
 
         // New Logic: Bidirectional Magic Hover
@@ -1439,7 +1513,7 @@
                 socialCounter.innerText = (currentCount + 1).toLocaleString();
             }
 
-            const rawText = document.getElementById('detail-prompt-rendered').innerText;
+            const rawText = getPromptWithVariables();
             const textArea = document.createElement("textarea");
             textArea.value = rawText;
             document.body.appendChild(textArea);
@@ -1488,6 +1562,38 @@
             setTimeout(() => {
                 toast.classList.add('translate-x-full');
             }, 4000);
+        }
+
+        // Enhanced copy with visual button feedback
+        function copyPromptWithFeedback(btn) {
+            // Call the original copy function
+            copyPrompt();
+
+            // Visual feedback on the button itself
+            const icon = btn.querySelector('.copy-icon');
+            const text = btn.querySelector('.copy-text');
+            const originalBg = btn.className;
+
+            // Change to success state
+            btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+            btn.classList.add('bg-emerald-500');
+            if (icon) icon.textContent = 'check_circle';
+            if (text) text.textContent = '¡Copiado!';
+
+            // Update header social counter too
+            const headerCounter = document.getElementById('social-counter-header');
+            if (headerCounter) {
+                let count = parseInt(headerCounter.innerText) || 80;
+                headerCounter.innerText = count + 1;
+            }
+
+            // Revert after 2 seconds
+            setTimeout(() => {
+                btn.classList.remove('bg-emerald-500');
+                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                if (icon) icon.textContent = 'content_copy';
+                if (text) text.textContent = 'Copiar';
+            }, 2000);
         }
 
         function updateTotalCounter() {
