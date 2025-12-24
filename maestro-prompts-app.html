@@ -1417,6 +1417,7 @@
             const nav = document.getElementById('category-nav');
             if (nav) {
                 nav.scrollBy({ left: offset, behavior: 'smooth' });
+                // Verificamos el estado de las flechas después de que termine el scroll
                 setTimeout(window.updateScrollArrows, 350);
             }
         };
@@ -1428,39 +1429,40 @@
 
             if (!nav || !leftBtn || !rightBtn) return;
 
-            // Mostrar flecha izquierda solo si no estamos al inicio
+            // Flecha izquierda: Visible si el scroll es mayor a 10px
             leftBtn.style.display = nav.scrollLeft > 10 ? 'flex' : 'none';
 
-            // Mostrar flecha derecha solo si hay más contenido
-            const hasMore = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 15);
-            rightBtn.style.display = hasMore ? 'flex' : 'none';
+            // Flecha derecha: Visible si el ancho total es mayor al scroll actual + el ancho visible
+            const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 20);
+            rightBtn.style.display = hasMoreContent ? 'flex' : 'none';
         };
 
-        // Inicializar visibilidad de flechas al cargar
+        // Inicialización de eventos
         document.addEventListener('DOMContentLoaded', () => {
             const nav = document.getElementById('category-nav');
             if (nav) {
                 nav.addEventListener('scroll', window.updateScrollArrows);
                 window.addEventListener('resize', window.updateScrollArrows);
-                // Pequeño retardo para esperar a que las categorías se rendericen
-                setTimeout(window.updateScrollArrows, 600);
+                // Pequeño retardo inicial para que se calcule bien tras cargar los datos
+                setTimeout(window.updateScrollArrows, 800);
             }
         });
 
         /**
          * VERSIÓN REPARADA: FOCO QUIRÚRGICO (Texto Plano) + NAVEGACIÓN
-         * Esta versión asegura que el contenido no seleccionado sea legible como texto normal.
+         * Esta versión garantiza que el contenido no seleccionado sea legible como texto normal,
+         * eliminando únicamente los fondos de color para que parezca texto plano.
          */
         window.highlightSection = function (key) {
             if (!key) return;
             const targetKey = key.toUpperCase();
             const container = document.getElementById('agia-sections-container');
 
-            // 1. Atenuación del texto base (conectores)
-            // Usamos un gris legible (Slate-400) para que parezca texto secundario pero visible
+            // 1. Ajuste del texto base (conectores)
+            // Cambiamos a un gris neutro pero con opacidad completa para que sea legible
             if (container) {
                 container.style.transition = 'all 0.3s ease';
-                container.style.color = '#94a3b8';
+                container.style.color = '#64748b'; // Slate-500 (Gris legible)
             }
 
             // 2. Leyenda (Items superiores)
@@ -1474,9 +1476,11 @@
                     el.style.boxShadow = '0 8px 15px -3px rgba(79, 70, 229, 0.2)';
                     el.style.zIndex = '20';
                 } else {
-                    el.style.opacity = '0.3';
-                    el.style.filter = 'grayscale(0.8)';
+                    // Se mantiene visible pero desaturado
+                    el.style.opacity = '0.4';
+                    el.style.filter = 'grayscale(1)';
                     el.style.transform = 'scale(0.96)';
+                    el.style.boxShadow = 'none';
                 }
             });
 
@@ -1485,7 +1489,7 @@
                 const sectionKey = (el.dataset.section || '').toUpperCase();
 
                 if (sectionKey === targetKey) {
-                    // EL SELECCIONADO: Mantiene su estilo y color original
+                    // EL SELECCIONADO: Resalta con su color original y fondo
                     el.style.opacity = '1';
                     el.style.filter = 'none';
                     el.style.transform = 'scale(1.02)';
@@ -1493,15 +1497,14 @@
                     el.style.position = 'relative';
                     el.style.color = 'rgb(30, 41, 59)'; // Slate-800
                     el.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
-                    // Restauramos el fondo original de la clase
-                    el.style.backgroundColor = '';
+                    el.style.backgroundColor = ''; // Muestra el color de fondo original (Tailwind)
                 } else {
                     // LOS DEMÁS: Se ven como "Texto Plano"
-                    // Quitamos el fondo y mantenemos opacidad media para que se vea pero no distraiga
+                    // Quitamos el fondo por completo y usamos un color de texto neutro
                     el.style.backgroundColor = 'transparent';
-                    el.style.opacity = '0.5';
+                    el.style.opacity = '0.8'; // Opacidad alta para que "se vea" claramente
                     el.style.filter = 'grayscale(1)';
-                    el.style.color = '#64748b'; // Slate-500
+                    el.style.color = '#475569'; // Slate-600 (Gris oscuro legible)
                     el.style.transform = 'scale(1)';
                     el.style.boxShadow = 'none';
                 }
@@ -1511,7 +1514,7 @@
         window.resetLegend = function () {
             const container = document.getElementById('agia-sections-container');
 
-            // Restaurar contenedor (conectores)
+            // Restaurar contenedor (conectores) a su color original
             if (container) {
                 container.style.color = '';
             }
