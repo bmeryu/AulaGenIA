@@ -501,23 +501,22 @@
                         <!-- AGIA MASTER CONTENT (AULAGENIA COLOR THEME) -->
                         <div id="content-agia" class="hidden p-0 fade-in flex flex-col h-full">
 
-                            <!-- Prompt Box Container -->
+                            <!-- Prompt Box Container - Compact & Full Width -->
                             <div
-                                class="relative bg-slate-800 rounded-xl p-4 md:p-6 border border-slate-700 flex-none group/expand">
+                                class="relative bg-slate-900 rounded-xl p-3 border border-slate-800 flex-none w-full shadow-inner">
                                 <!-- Prompt Text with Blur Wrapper -->
                                 <div id="prompt-blur-wrapper" class="transition-all duration-500 relative">
-                                    <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center gap-4 mb-3 border-b border-slate-800 pb-2">
                                         <label
-                                            class="text-[10px] font-bold text-white/80 uppercase tracking-widest flex items-center gap-1.5">
+                                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5 flex-none">
                                             <span
-                                                class="material-symbols-rounded text-sm text-yellow-400">auto_awesome</span>
+                                                class="material-symbols-rounded text-sm text-yellow-500">auto_awesome</span>
                                             Prompt Maestro
                                         </label>
-                                        <!-- Dynamic Benefit Badge -->
-                                        <span id="benefit-badge"
-                                            class="text-[10px] font-bold px-2.5 py-1 rounded-md border flex items-center gap-1.5 shadow-sm">
-                                            <span class="material-symbols-rounded text-sm">bolt</span> Loading...
-                                        </span>
+                                        <!-- Dynamic Inline Legend (Inserted by JS) -->
+                                        <div id="agia-legend-inline"
+                                            class="flex items-center gap-1.5 overflow-x-auto no-scrollbar mask-gradient-r flex-1">
+                                        </div>
                                     </div>
 
                                     <!-- INLINE HIGHLIGHTS AGIA PROMPT (Dark theme) -->
@@ -1353,13 +1352,13 @@
             const container = document.getElementById('agia-sections-container');
             if (!container) return;
 
-            // AGIA section configuration - WCAG accessible with dark bg + color border
+            // AGIA section configuration - Pastel highlights with dark text (High Contrast & Inline)
             const sectionConfig = {
-                'ROL': { bg: 'bg-slate-700', border: 'border-l-4 border-blue-400', text: 'text-white' },
-                'CONTEXTO': { bg: 'bg-slate-700', border: 'border-l-4 border-emerald-400', text: 'text-white' },
-                'META': { bg: 'bg-slate-700', border: 'border-l-4 border-yellow-400', text: 'text-white' },
-                'RESTRICCIONES': { bg: 'bg-slate-700', border: 'border-l-4 border-rose-400', text: 'text-white' },
-                'FORMATO': { bg: 'bg-slate-700', border: 'border-l-4 border-violet-400', text: 'text-white' }
+                'ROL': { bg: 'bg-blue-200', text: 'text-slate-900', label: 'Rol' },
+                'CONTEXTO': { bg: 'bg-emerald-200', text: 'text-slate-900', label: 'Contexto' },
+                'META': { bg: 'bg-amber-200', text: 'text-slate-900', label: 'Meta' },
+                'RESTRICCIONES': { bg: 'bg-rose-200', text: 'text-slate-900', label: 'Restricciones' },
+                'FORMATO': { bg: 'bg-violet-200', text: 'text-slate-900', label: 'Formato' }
             };
 
             // Parse the template to extract sections
@@ -1421,10 +1420,71 @@
                     return tag + escapeHtml(text);
                 });
 
-                html += `<div class="block ${config.bg} ${config.border} ${config.text} px-3 py-2 rounded-r font-medium my-1 leading-relaxed text-[13px]">${htmlContent}</div>`;
+                // Inline span with hover effect similar to reference image
+                html += `<span class="${config.bg} ${config.text} px-1.5 py-0.5 mx-0.5 box-decoration-clone leading-7 text-[14px] font-medium transition-all duration-200 cursor-default hover:bg-opacity-80"
+                    onmouseenter="highlightLegend('${key}')"
+                    onmouseleave="resetLegend()">${htmlContent}</span>`;
             });
 
-            container.innerHTML = html || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
+            container.innerHTML = `<div class="inline leading-9">${html}</div>` || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
+
+            // Render Dynamic Inline Legend
+            renderInlineLegend(sectionConfig);
+        }
+
+        // Render the new inline legend beside the header
+        function renderInlineLegend(config) {
+            const legendContainer = document.getElementById('agia-legend-inline');
+            if (!legendContainer) return;
+
+            legendContainer.innerHTML = Object.entries(config).map(([key, conf]) => {
+                // Determine active color for legend pill from config bg (e.g., bg-blue-200 -> text-blue-600)
+                let activeClass = 'text-slate-200'; // fallback
+                if (conf.bg.includes('blue')) activeClass = 'text-blue-400';
+                if (conf.bg.includes('emerald')) activeClass = 'text-emerald-400';
+                if (conf.bg.includes('amber')) activeClass = 'text-amber-400';
+                if (conf.bg.includes('rose')) activeClass = 'text-rose-400';
+                if (conf.bg.includes('violet')) activeClass = 'text-violet-400';
+
+                return `<span id="legend-${key}" 
+                    class="legend-item text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded cursor-help transition-all duration-300 border border-transparent"
+                    data-active-class="${activeClass}"
+                    onmouseenter="highlightSection('${key}')"
+                    onmouseleave="resetLegend()">
+                    ${conf.label}
+                </span>`;
+            }).join('');
+        }
+
+        // Highlight Legend Item when hovering text
+        function highlightLegend(key) {
+            // Dim all legends slightly
+            document.querySelectorAll('.legend-item').forEach(el => {
+                el.classList.add('opacity-40', 'scale-95');
+                el.classList.remove('bg-slate-800', 'text-white', 'shadow-sm', 'scale-105');
+            });
+
+            // Highlight specific legend
+            const target = document.getElementById(`legend-${key}`);
+            if (target) {
+                target.classList.remove('opacity-40', 'scale-95');
+                // Make it pop
+                target.classList.add('bg-slate-800', 'text-white', 'shadow-sm', 'scale-105');
+            }
+        }
+
+        // Highlight Section when hovering legend
+        function highlightSection(key) {
+            highlightLegend(key);
+            // Also could highlight the text span if we added IDs to them, 
+            // but for now the user request "quede solo la palabra de la leyenda del color destacada" is met.
+        }
+
+        function resetLegend() {
+            document.querySelectorAll('.legend-item').forEach(el => {
+                el.classList.remove('opacity-40', 'bg-slate-800', 'text-white', 'shadow-sm', 'scale-95', 'scale-105');
+                el.classList.add('text-slate-600');
+            });
         }
 
         // Function to get the prompt text with filled variables
