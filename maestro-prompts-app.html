@@ -1425,7 +1425,7 @@
 
             if (nav && leftBtn && rightBtn) {
                 const updateArrows = () => {
-                    // Left Arrow Logic
+                    // Left Arrow Logic (Hide only at extreme start)
                     if (nav.scrollLeft > 10) {
                         leftBtn.classList.remove('hidden');
                         leftBtn.classList.add('flex');
@@ -1434,15 +1434,9 @@
                         leftBtn.classList.remove('flex');
                     }
 
-                    // Right Arrow Logic (Tolerance of 5px)
-                    const maxScroll = nav.scrollWidth - nav.clientWidth - 5;
-                    if (nav.scrollLeft >= maxScroll) {
-                        rightBtn.classList.add('hidden');
-                        rightBtn.classList.remove('flex');
-                    } else {
-                        rightBtn.classList.remove('hidden');
-                        rightBtn.classList.add('flex');
-                    }
+                    // Right Arrow Logic: ALWAYS VISIBLE to guarantee access to hidden content
+                    rightBtn.classList.remove('hidden');
+                    rightBtn.classList.add('flex');
                 };
 
                 nav.addEventListener('scroll', updateArrows);
