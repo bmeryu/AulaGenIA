@@ -857,7 +857,7 @@
         let isVaultUnlocked = false;
 
         // Initialize Firebase (Reuse global instance if available, or init)
-        const auth = firebase.auth();
+        // const auth = firebase.auth(); // Use global auth from previous script to avoid issues
 
         // SECURITY: Key is constructed at runtime to prevent static analysis exposure
         // "AGIA2025" -> Obfuscated construction
@@ -1271,7 +1271,8 @@
 
                     return `<span class="inline-flex items-baseline font-bold opacity-70 select-none">[</span><input type="text" 
                         id="${inputId}"
-                        class="var-input bg-transparent border-b border-black/20 px-0.5 mx-0.5 text-inherit font-bold placeholder-black/40 focus:outline-none focus:border-indigo-600 focus:bg-white/20 transition-colors h-auto p-0 leading-none text-center"
+                        title="Escribe aquí para personalizar tu prompt antes de copiarlo"
+                        class="var-input bg-transparent border-b border-black/20 px-0.5 mx-0.5 text-inherit font-bold placeholder-black/40 focus:outline-none focus:border-indigo-600 focus:bg-white/20 transition-colors h-auto p-0 leading-none text-center cursor-text"
                         style="width: ${displayWidth}px; min-width: 40px; display: inline-block;"
                         placeholder="${escapeHtml(placeholder)}"
                         data-original="[${escapeHtml(placeholder)}]"
@@ -1305,8 +1306,9 @@
                 // Also ensures the hover color matches the section color family (derived from bg class)
                 const colorFamily = config.bg.split('-')[1]; // e.g. 'blue' from 'bg-blue-100'
 
-                html += `<span class="${config.bg} ${config.text} px-1.5 py-0.5 mx-0.5 box-decoration-clone leading-6 text-[14px] font-medium transition-all duration-200 cursor-default hover:ring-2 hover:ring-${colorFamily}-300 hover:bg-${colorFamily}-100 rounded-sm"
-                    onmouseenter="highlightLegend('${key}')"
+                html += `<span class="prompt-section ${config.bg} ${config.text} px-1.5 py-0.5 mx-0.5 box-decoration-clone leading-6 text-[14px] font-medium transition-all duration-300 cursor-default hover:ring-2 hover:ring-${colorFamily}-300 hover:bg-${colorFamily}-100 rounded-sm inline relative"
+                    data-section="${key}"
+                    onmouseenter="highlightSection('${key}')"
                     onmouseleave="resetLegend()">${htmlContent}</span>`;
             });
 
@@ -1344,24 +1346,44 @@
             }).join('');
         }
 
-        // Highlight Legend Item when hovering text
-        function highlightLegend(key) {
-            // Dim others
+        // Highlight Legend Item AND Prompt Section when hovering either
+        function highlightSection(key) {
+            // 1. Highlight Legend
             document.querySelectorAll('.legend-item').forEach(el => {
                 el.classList.add('opacity-40', 'grayscale');
             });
-
-            // Highlight specific
-            const target = document.getElementById(`legend-${key}`);
-            if (target) {
-                target.classList.remove('opacity-40', 'grayscale');
-                target.classList.add('scale-105', 'shadow-sm', 'ring-1', 'ring-offset-1', 'ring-slate-200');
+            const targetLegend = document.getElementById(`legend-${key}`);
+            if (targetLegend) {
+                targetLegend.classList.remove('opacity-40', 'grayscale');
+                targetLegend.classList.add('scale-105', 'shadow-sm', 'ring-1', 'ring-offset-1', 'ring-slate-200');
             }
+
+            // 2. Spotlight Prompt Section (Text)
+            document.querySelectorAll('.prompt-section').forEach(el => {
+                if (el.dataset.section === key) {
+                    // Active Section: Pop it out
+                    el.classList.remove('opacity-30', 'grayscale', 'blur-[1px]');
+                    el.classList.add('opacity-100', 'z-10');
+                } else {
+                    // Inactive Sections: Dim and Grayscale
+                    el.classList.add('opacity-30', 'grayscale', 'blur-[0.5px]');
+                    el.classList.remove('opacity-100', 'z-10');
+                }
+            });
         }
 
+        // Removed redundant separate highlightLegend function since highlightSection handles both
+
         function resetLegend() {
+            // Reset Legend
             document.querySelectorAll('.legend-item').forEach(el => {
                 el.classList.remove('opacity-40', 'grayscale', 'scale-105', 'shadow-sm', 'ring-1', 'ring-offset-1', 'ring-slate-200');
+            });
+
+            // Reset Prompt Sections
+            document.querySelectorAll('.prompt-section').forEach(el => {
+                el.classList.remove('opacity-30', 'grayscale', 'blur-[0.5px]', 'z-10');
+                el.classList.add('opacity-100');
             });
         }
 
