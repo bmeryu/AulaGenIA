@@ -1168,13 +1168,22 @@
                 socialText.innerHTML = templates[phraseIndex];
             }
 
-            // Apply same randomizer to header counter
+            // Apply same randomizer to header counter with varied phrases
             const headerCounter = document.getElementById('social-counter-header');
             if (headerCounter) {
                 const base = Math.floor(c.id * 0.8);
                 const variance = ((c.id * 7) % 30) * 5;
                 const count = base + variance + 45;
-                headerCounter.innerText = count;
+
+                // Varied phrases based on prompt ID for natural feel
+                const phrases = [
+                    `${count} copiaron`,
+                    `${count} activos`,
+                    `${count} usando`,
+                    `${count} copias`
+                ];
+                const phraseIndex = c.id % phrases.length;
+                headerCounter.innerText = phrases[phraseIndex];
             }
         }
 
@@ -1412,15 +1421,15 @@
                 targetLegend.classList.add('scale-105', 'shadow-sm', 'ring-1', 'ring-offset-1', 'ring-slate-200');
             }
 
-            // 2. Spotlight Prompt Section (Text)
+            // 2. STRONG Spotlight Prompt Section (remove colors from inactive)
             document.querySelectorAll('.prompt-section').forEach(el => {
                 if (el.dataset.section === key) {
-                    // Active Section: Pop it out
-                    el.classList.remove('opacity-30', 'grayscale', 'blur-[1px]');
+                    // Active Section: Keep full color and visibility
+                    el.classList.remove('opacity-20', '!bg-slate-100', '!text-slate-400');
                     el.classList.add('opacity-100', 'z-10');
                 } else {
-                    // Inactive Sections: Dim and Grayscale
-                    el.classList.add('opacity-30', 'grayscale', 'blur-[0.5px]');
+                    // Inactive Sections: STRONG dimming - remove all color
+                    el.classList.add('opacity-20', '!bg-slate-100', '!text-slate-400');
                     el.classList.remove('opacity-100', 'z-10');
                 }
             });
@@ -1434,9 +1443,9 @@
                 el.classList.remove('opacity-40', 'grayscale', 'scale-105', 'shadow-sm', 'ring-1', 'ring-offset-1', 'ring-slate-200');
             });
 
-            // Reset Prompt Sections
+            // Reset Prompt Sections - restore original colors
             document.querySelectorAll('.prompt-section').forEach(el => {
-                el.classList.remove('opacity-30', 'grayscale', 'blur-[0.5px]', 'z-10');
+                el.classList.remove('opacity-20', '!bg-slate-100', '!text-slate-400', 'z-10');
                 el.classList.add('opacity-100');
             });
         }
