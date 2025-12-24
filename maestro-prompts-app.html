@@ -321,7 +321,7 @@
                     title="Imprimir / Guardar PDF">
                     <span class="material-symbols-rounded">print</span>
                 </button>
-                <button onclick="triggerUnlockPayment()"
+                <button id="unlock-btn" onclick="triggerUnlockPayment()"
                     class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md flex items-center gap-1.5 transition-transform hover:-translate-y-0.5">
                     <span class="material-symbols-rounded text-sm text-yellow-400">lock_open</span>
                     <span class="hidden sm:inline">Desbloquear</span>
@@ -935,9 +935,14 @@
 
             // Listen for Auth State
             auth.onAuthStateChanged(user => {
+                const unlockBtn = document.getElementById('unlock-btn');
+
                 if (user) {
                     // console.log("Usuario autenticado:", user.email);
                     isVaultUnlocked = true;
+
+                    // Ocultar botón de desbloquear - usuario ya tiene acceso
+                    if (unlockBtn) unlockBtn.classList.add('hidden');
 
                     const teaser = document.getElementById('locked-teaser');
                     if (teaser) {
@@ -950,6 +955,10 @@
                 } else {
                     // console.log("Usuario no autenticado.");
                     isVaultUnlocked = false;
+
+                    // Mostrar botón de desbloquear - usuario necesita acceso
+                    if (unlockBtn) unlockBtn.classList.remove('hidden');
+
                     // Force reload to show lock
                     if (currentCaseId) loadCase(currentCaseId);
                 }
