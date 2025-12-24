@@ -1411,55 +1411,21 @@
             }).join('');
         }
 
-        // Highlight Legend Item AND Prompt Section when hovering either - FOCUSED UX APPROACH
-        function highlightSection(key) {
-            // 1. Highlight Legend - Keep focused legend item at full opacity, dim others
-            document.querySelectorAll('.legend-item').forEach(el => {
-                el.classList.add('opacity-30', 'grayscale');
-            });
-            const targetLegend = document.getElementById(`legend-${key}`);
-            if (targetLegend) {
-                targetLegend.classList.remove('opacity-30', 'grayscale');
-                targetLegend.classList.add('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-2');
-            }
-
-            // 2. FOCUSED Spotlight - only highlight active section, strongly dim others
-            document.querySelectorAll('.prompt-section').forEach(el => {
-                // Determine equality case-insensitively for robustness
-                const sectionKey = (el.dataset.section || '').toUpperCase();
-                const targetKey = (key || '').toUpperCase();
-
-                if (sectionKey === targetKey) {
-                    // Active Section: Keep FULL original color and make it pop
-                    el.style.removeProperty('background');
-                    el.style.removeProperty('color');
-                    el.style.removeProperty('opacity');
-                    el.classList.add('scale-105', 'z-20', 'shadow-md', 'ring-2');
-                } else {
-                    // Inactive: Strong dimming with reduced opacity
-                    el.style.background = '#f8fafc';
-                    el.style.color = '#cbd5e1';
-                    el.style.opacity = '0.25';
-                    el.classList.remove('scale-105', 'z-20', 'shadow-md', 'ring-2');
-                }
-            });
-        }
-
         // SCROLL LOGIC FOR CATEGORIES
         function scrollCategories(offset) {
             const nav = document.getElementById('category-nav');
             if (nav) nav.scrollBy({ left: offset, behavior: 'smooth' });
         }
 
-        // Initialize scroll listeners
+        // Initialize scroll listeners with Right Arrow handling
         document.addEventListener('DOMContentLoaded', () => {
             const nav = document.getElementById('category-nav');
             const leftBtn = document.getElementById('btn-scroll-left');
             const rightBtn = document.getElementById('btn-scroll-right');
 
             if (nav && leftBtn && rightBtn) {
-                nav.addEventListener('scroll', () => {
-                    // Toggle Left Button
+                const updateArrows = () => {
+                    // Left Arrow Logic
                     if (nav.scrollLeft > 10) {
                         leftBtn.classList.remove('hidden');
                         leftBtn.classList.add('flex');
@@ -1468,14 +1434,63 @@
                         leftBtn.classList.remove('flex');
                     }
 
-                    // Optional: Toggle Right Button if end reached (heuristic)
-                    // const maxScroll = nav.scrollWidth - nav.clientWidth;
-                    // if (nav.scrollLeft >= maxScroll - 10) { ... }
-                });
+                    // Right Arrow Logic (Tolerance of 5px)
+                    const maxScroll = nav.scrollWidth - nav.clientWidth - 5;
+                    if (nav.scrollLeft >= maxScroll) {
+                        rightBtn.classList.add('hidden');
+                        rightBtn.classList.remove('flex');
+                    } else {
+                        rightBtn.classList.remove('hidden');
+                        rightBtn.classList.add('flex');
+                    }
+                };
+
+                nav.addEventListener('scroll', updateArrows);
+                // Initial check
+                setTimeout(updateArrows, 100);
+                window.addEventListener('resize', updateArrows);
             }
         });
 
-        // Removed redundant separate highlightLegend function since highlightSection handles both
+        // HIGHLIGHTS LOGIC - NUCLEAR OPTION
+        function highlightSection(key) {
+            if (!key) return;
+            const targetKey = key.toUpperCase();
+
+            // 1. Legend: Highlight Target, Dim Others
+            document.querySelectorAll('.legend-item').forEach(el => {
+                if (el.id === `legend-${targetKey}`) {
+                    el.classList.remove('opacity-30', 'grayscale');
+                    el.classList.add('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-2');
+                } else {
+                    el.classList.add('opacity-30', 'grayscale');
+                    el.classList.remove('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-2');
+                }
+            });
+
+            // 2. Prompt Sections: Highlight Target, KILL Color on Others
+            document.querySelectorAll('.prompt-section').forEach(el => {
+                const sectionKey = (el.dataset.section || '').toUpperCase();
+
+                if (sectionKey === targetKey) {
+                    // ACTIVE: RESTORE FULL GLORY
+                    el.style.removeProperty('background-color');
+                    el.style.removeProperty('color');
+                    el.style.removeProperty('opacity');
+                    el.style.removeProperty('filter');
+
+                    el.classList.add('scale-105', 'z-20', 'shadow-md', 'ring-2');
+                } else {
+                    // INACTIVE: FORCE GREY (Nuclear Method)
+                    el.style.setProperty('background-color', '#f1f5f9', 'important'); // Slate-100
+                    el.style.setProperty('color', '#94a3b8', 'important');           // Slate-400
+                    el.style.setProperty('opacity', '0.5', 'important');
+                    el.style.setProperty('filter', 'grayscale(100%)', 'important');
+
+                    el.classList.remove('scale-105', 'z-20', 'shadow-md', 'ring-2');
+                }
+            });
+        }
 
         function resetLegend() {
             // Reset Legend
@@ -1483,11 +1498,12 @@
                 el.classList.remove('opacity-30', 'grayscale', 'scale-110', 'shadow-lg', 'ring-2', 'ring-offset-2');
             });
 
-            // Reset Prompt Sections - restore ALL original styles
+            // Reset Prompt Sections
             document.querySelectorAll('.prompt-section').forEach(el => {
-                el.style.removeProperty('background');
+                el.style.removeProperty('background-color');
                 el.style.removeProperty('color');
                 el.style.removeProperty('opacity');
+                el.style.removeProperty('filter');
                 el.classList.remove('scale-105', 'z-20', 'shadow-md', 'ring-2');
             });
         }
