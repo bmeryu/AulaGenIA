@@ -1175,12 +1175,12 @@
                 const variance = ((c.id * 7) % 30) * 5;
                 const count = base + variance + 45;
 
-                // Varied phrases based on prompt ID for natural feel
+                // Varied action verbs for natural feel
                 const phrases = [
                     `${count} copiaron`,
-                    `${count} activos`,
                     `${count} usando`,
-                    `${count} copias`
+                    `${count} probaron`,
+                    `${count} aplicaron`
                 ];
                 const phraseIndex = c.id % phrases.length;
                 headerCounter.innerText = phrases[phraseIndex];
@@ -1409,28 +1409,32 @@
             }).join('');
         }
 
-        // Highlight Legend Item AND Prompt Section when hovering either
+        // Highlight Legend Item AND Prompt Section when hovering either - ULTRA AGGRESSIVE
         function highlightSection(key) {
             // 1. Highlight Legend
             document.querySelectorAll('.legend-item').forEach(el => {
-                el.classList.add('opacity-40', 'grayscale');
+                el.classList.add('opacity-30', 'grayscale');
             });
             const targetLegend = document.getElementById(`legend-${key}`);
             if (targetLegend) {
-                targetLegend.classList.remove('opacity-40', 'grayscale');
-                targetLegend.classList.add('scale-105', 'shadow-sm', 'ring-1', 'ring-offset-1', 'ring-slate-200');
+                targetLegend.classList.remove('opacity-30', 'grayscale');
+                targetLegend.classList.add('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-2');
             }
 
-            // 2. STRONG Spotlight Prompt Section (remove colors from inactive)
+            // 2. ULTRA AGGRESSIVE Spotlight - completely remove colors
             document.querySelectorAll('.prompt-section').forEach(el => {
                 if (el.dataset.section === key) {
-                    // Active Section: Keep full color and visibility
-                    el.classList.remove('opacity-20', '!bg-slate-100', '!text-slate-400');
-                    el.classList.add('opacity-100', 'z-10');
+                    // Active Section: Keep FULL original color and make it pop
+                    el.style.removeProperty('background');
+                    el.style.removeProperty('color');
+                    el.style.removeProperty('opacity');
+                    el.classList.add('scale-105', 'z-20', 'shadow-sm');
                 } else {
-                    // Inactive Sections: STRONG dimming - remove all color
-                    el.classList.add('opacity-20', '!bg-slate-100', '!text-slate-400');
-                    el.classList.remove('opacity-100', 'z-10');
+                    // Inactive: TOTAL color removal - force gray
+                    el.style.background = '#f1f5f9';
+                    el.style.color = '#94a3b8';
+                    el.style.opacity = '0.4';
+                    el.classList.remove('scale-105', 'z-20', 'shadow-sm');
                 }
             });
         }
@@ -1440,13 +1444,15 @@
         function resetLegend() {
             // Reset Legend
             document.querySelectorAll('.legend-item').forEach(el => {
-                el.classList.remove('opacity-40', 'grayscale', 'scale-105', 'shadow-sm', 'ring-1', 'ring-offset-1', 'ring-slate-200');
+                el.classList.remove('opacity-30', 'grayscale', 'scale-110', 'shadow-lg', 'ring-2', 'ring-offset-2');
             });
 
-            // Reset Prompt Sections - restore original colors
+            // Reset Prompt Sections - restore ALL original styles
             document.querySelectorAll('.prompt-section').forEach(el => {
-                el.classList.remove('opacity-20', '!bg-slate-100', '!text-slate-400', 'z-10');
-                el.classList.add('opacity-100');
+                el.style.removeProperty('background');
+                el.style.removeProperty('color');
+                el.style.removeProperty('opacity');
+                el.classList.remove('scale-105', 'z-20', 'shadow-sm');
             });
         }
 
