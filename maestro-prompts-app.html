@@ -207,6 +207,35 @@
             box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
             border-color: #818cf8;
         }
+
+        /* Toast Animations */
+        @keyframes slide-in-right {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-out-right {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        .animate-slide-in-right {
+            animation: slide-in-right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
     </style>
 </head>
 
@@ -408,20 +437,29 @@
                                 id="btn-basic">
                                 <span class="material-symbols-rounded text-xs">cancel</span> Básico
                             </button>
-                            <!-- Maestro button with tooltip -->
+                            <!-- Maestro button with tooltip and CTA badge -->
                             <div class="relative group">
                                 <button onclick="setMode('agia')"
-                                    class="relative z-10 px-3 py-1.5 text-[10px] font-bold transition-colors duration-200 rounded-md flex items-center gap-1 bg-indigo-600 text-white"
+                                    class="relative z-10 px-3 py-1.5 text-[10px] font-bold transition-all duration-300 rounded-md flex items-center gap-1 bg-indigo-600 text-white"
                                     id="btn-agia">
-                                    <span class="material-symbols-rounded text-xs">verified</span> Maestro
+                                    <span class="material-symbols-rounded text-xs">verified</span>
+                                    <span>Maestro</span>
+                                    <!-- CTA Badge (shown only in Basic mode, controlled by JS) -->
+                                    <span id="maestro-cta-badge"
+                                        class="hidden absolute -top-2 -right-2 bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full shadow-lg animate-bounce">¡MEJORAR!</span>
                                 </button>
-                                <!-- Tooltip -->
+                                <!-- Enhanced Tooltip -->
                                 <div
-                                    class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 p-3 bg-slate-900 text-white text-[10px] rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 text-center">
-                                    <span
-                                        class="material-symbols-rounded text-indigo-400 text-base mb-1">auto_awesome</span>
-                                    <p class="font-medium">Incluye variables de contexto y tono para resultados <span
-                                            class="text-indigo-400 font-bold">10x mejores</span></p>
+                                    class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-60 p-3 bg-gradient-to-br from-slate-900 to-slate-800 text-white text-[10px] rounded-xl shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                                    <div class="text-center">
+                                        <span
+                                            class="material-symbols-rounded text-yellow-400 text-lg mb-1 block">auto_awesome</span>
+                                        <p class="font-bold text-xs text-yellow-400 mb-1">🚀 Resultados Profesionales
+                                        </p>
+                                        <p class="font-medium text-white/90 leading-relaxed">Contexto personalizado +
+                                            Tono profesional = Respuestas <span class="text-emerald-400 font-bold">10x
+                                                más precisas</span></p>
+                                    </div>
                                     <div
                                         class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45">
                                     </div>
@@ -449,12 +487,20 @@
                                 <span class="material-symbols-rounded text-sm copy-icon">content_copy</span>
                                 <span class="copy-text">Copiar</span>
                             </button>
-                            <!-- Tooltip with next step instruction -->
+                            <!-- Enhanced Tooltip with clear next step -->
                             <div
-                                class="absolute top-full right-0 mt-2 w-56 p-2 bg-slate-800 text-white text-[10px] rounded-lg shadow-xl opacity-0 group-hover/copy:opacity-100 transition-opacity duration-200 pointer-events-none z-50 text-center">
-                                <span class="material-symbols-rounded text-indigo-400 text-xs">tips_and_updates</span>
-                                Pega en tu IA favorita: ChatGPT, Claude, Gemini
-                                <div class="absolute -top-1 right-4 w-2 h-2 bg-slate-800 rotate-45"></div>
+                                class="absolute top-full right-0 mt-2 w-64 p-3 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white text-[10px] rounded-xl shadow-2xl opacity-0 group-hover/copy:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                                <div class="flex items-start gap-2">
+                                    <span
+                                        class="material-symbols-rounded text-yellow-300 text-base flex-none">lightbulb</span>
+                                    <div class="text-left">
+                                        <p class="font-bold text-xs mb-1">📋 Siguiente paso:</p>
+                                        <p class="text-white/90 leading-relaxed">Pega este prompt en <span
+                                                class="font-bold text-yellow-300">ChatGPT, Claude o Gemini</span> y
+                                            obtén respuestas profesionales al instante.</p>
+                                    </div>
+                                </div>
+                                <div class="absolute -top-1 right-4 w-2 h-2 bg-indigo-600 rotate-45"></div>
                             </div>
                         </div>
                     </div>
@@ -942,6 +988,7 @@
             currentViewMode = mode;
             const btnBasic = document.getElementById('btn-basic');
             const btnAgia = document.getElementById('btn-agia');
+            const maestroBadge = document.getElementById('maestro-cta-badge');
             const contentBasic = document.getElementById('content-basic');
             const contentAgia = document.getElementById('content-agia');
             const copyBtn = document.getElementById('copy-btn');
@@ -949,26 +996,38 @@
             if (mode === 'basic') {
                 contentBasic.classList.remove('hidden');
                 contentAgia.classList.add('hidden');
-                // Compact button styling
+
+                // Basic button active
                 btnBasic.classList.add('bg-slate-600', 'text-white');
                 btnBasic.classList.remove('text-slate-600');
-                btnAgia.classList.remove('bg-indigo-600', 'text-white');
-                btnAgia.classList.add('text-slate-600', 'animate-pulse');
 
-                // Disable copy button in basic mode
+                // Maestro button with CTA styling
+                btnAgia.classList.remove('bg-indigo-600', 'text-white');
+                btnAgia.classList.add('text-slate-600', 'animate-pulse', 'ring-2', 'ring-emerald-400', 'ring-offset-2');
+
+                // Show upgrade badge
+                if (maestroBadge) maestroBadge.classList.remove('hidden');
+
+                // Disable copy button
                 copyBtn.disabled = true;
                 copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
                 copyBtn.classList.add('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
             } else {
                 contentBasic.classList.add('hidden');
                 contentAgia.classList.remove('hidden');
-                // Compact button styling
+
+                // Basic button inactive
                 btnBasic.classList.remove('bg-slate-600', 'text-white');
                 btnBasic.classList.add('text-slate-600');
-                btnAgia.classList.add('bg-indigo-600', 'text-white');
-                btnAgia.classList.remove('text-slate-600', 'animate-pulse');
 
-                // Enable copy button in Maestro mode
+                // Maestro button active (no CTA)
+                btnAgia.classList.add('bg-indigo-600', 'text-white');
+                btnAgia.classList.remove('text-slate-600', 'animate-pulse', 'ring-2', 'ring-emerald-400', 'ring-offset-2');
+
+                // Hide upgrade badge
+                if (maestroBadge) maestroBadge.classList.add('hidden');
+
+                // Enable copy button
                 copyBtn.disabled = false;
                 copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
                 copyBtn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
@@ -1488,15 +1547,17 @@
             // Visual feedback on the button itself
             const icon = btn.querySelector('.copy-icon');
             const text = btn.querySelector('.copy-text');
-            const originalBg = btn.className;
 
             // Change to success state
             btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
-            btn.classList.add('bg-emerald-500');
+            btn.classList.add('bg-emerald-500', 'scale-105');
             if (icon) icon.textContent = 'check_circle';
             if (text) text.textContent = '¡Copiado!';
 
-            // Update header social counter too
+            // Show floating success toast
+            showSuccessToast();
+
+            // Update header social counter
             const headerCounter = document.getElementById('social-counter-header');
             if (headerCounter) {
                 let count = parseInt(headerCounter.innerText) || 80;
@@ -1505,11 +1566,32 @@
 
             // Revert after 2 seconds
             setTimeout(() => {
-                btn.classList.remove('bg-emerald-500');
+                btn.classList.remove('bg-emerald-500', 'scale-105');
                 btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
                 if (icon) icon.textContent = 'content_copy';
                 if (text) text.textContent = 'Copiar';
             }, 2000);
+        }
+
+        // Floating success toast notification
+        function showSuccessToast() {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 right-6 bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-[9999] animate-slide-in-right';
+            toast.innerHTML = `
+                <span class="material-symbols-rounded text-2xl">check_circle</span>
+                <div>
+                    <p class="font-bold text-sm">✅ ¡Prompt Copiado!</p>
+                    <p class="text-xs text-white/90">Listo para pegar en tu IA favorita</p>
+                </div>
+            `;
+            document.body.appendChild(toast);
+
+            // Auto-remove after 3 seconds with fade out
+            setTimeout(() => {
+                toast.style.animation = 'slide-out-right 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
         function updateTotalCounter() {
