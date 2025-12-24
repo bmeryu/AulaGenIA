@@ -1411,10 +1411,16 @@
             }).join('');
         }
 
-        // SCROLL LOGIC FOR CATEGORIES
+        // SCROLL LOGIC FOR CATEGORIES - FIXED: Now properly scrolls by offset amount
         function scrollCategories(offset) {
             const nav = document.getElementById('category-nav');
-            if (nav) nav.scrollBy({ left: offset, behavior: 'smooth' });
+            if (!nav) return;
+
+            // Scroll by the provided offset (positive for right, negative for left)
+            nav.scrollBy({ left: offset, behavior: 'smooth' });
+
+            // Debug: Log current scroll position
+            console.log('Scrolling categories by:', offset, 'Current position:', nav.scrollLeft);
         }
 
         // Initialize scroll listeners with Right Arrow handling
@@ -1446,42 +1452,50 @@
             }
         });
 
-        // HIGHLIGHTS LOGIC - NUCLEAR OPTION
+        // ADVANCED UX HIGHLIGHT SYSTEM - Only active section + legend are prominent
         function highlightSection(key) {
             if (!key) return;
             const targetKey = key.toUpperCase();
 
-            // 1. Legend: Highlight Target, Dim Others
+            // 1. Legend: Highlight ONLY the active one, dim all others
             document.querySelectorAll('.legend-item').forEach(el => {
                 if (el.id === `legend-${targetKey}`) {
-                    el.classList.remove('opacity-30', 'grayscale');
-                    el.classList.add('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-2');
+                    // ACTIVE: Full prominence
+                    el.classList.remove('opacity-40', 'grayscale', 'scale-95');
+                    el.classList.add('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-1');
+                    el.style.removeProperty('opacity');
+                    el.style.removeProperty('filter');
                 } else {
-                    el.classList.add('opacity-30', 'grayscale');
-                    el.classList.remove('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-2');
+                    // INACTIVE: Subtle fade - UX principle: dim but don't destroy
+                    el.classList.remove('scale-110', 'shadow-lg', 'ring-2', 'ring-offset-1');
+                    el.classList.add('opacity-40', 'grayscale', 'scale-95');
                 }
             });
 
-            // 2. Prompt Sections: Highlight Target, KILL Color on Others
+            // 2. Prompt Sections: ONLY the matching section keeps its color
             document.querySelectorAll('.prompt-section').forEach(el => {
                 const sectionKey = (el.dataset.section || '').toUpperCase();
 
                 if (sectionKey === targetKey) {
-                    // ACTIVE: RESTORE FULL GLORY
+                    // ACTIVE: Keep original colors and add subtle elevation
                     el.style.removeProperty('background-color');
                     el.style.removeProperty('color');
                     el.style.removeProperty('opacity');
                     el.style.removeProperty('filter');
 
-                    el.classList.add('scale-105', 'z-20', 'shadow-md', 'ring-2');
+                    // Subtle lift effect for active section
+                    el.classList.add('scale-105', 'z-20', 'shadow-lg');
+                    el.style.setProperty('transition', 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
                 } else {
-                    // INACTIVE: FORCE GREY (Nuclear Method)
-                    el.style.setProperty('background-color', '#f1f5f9', 'important'); // Slate-100
-                    el.style.setProperty('color', '#94a3b8', 'important');           // Slate-400
-                    el.style.setProperty('opacity', '0.5', 'important');
-                    el.style.setProperty('filter', 'grayscale(100%)', 'important');
+                    // INACTIVE: Reduce visual weight WITHOUT killing the design
+                    // UX Principle: Fade to neutral background, reduce opacity
+                    el.style.setProperty('background-color', '#f8fafc', 'important'); // Lighter slate
+                    el.style.setProperty('color', '#cbd5e1', 'important');           // Muted slate
+                    el.style.setProperty('opacity', '0.35', 'important');           // Reduced but visible
+                    el.style.setProperty('filter', 'grayscale(80%)', 'important'); // Partial grayscale
 
-                    el.classList.remove('scale-105', 'z-20', 'shadow-md', 'ring-2');
+                    el.classList.remove('scale-105', 'z-20', 'shadow-lg');
+                    el.style.setProperty('transition', 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
                 }
             });
         }
