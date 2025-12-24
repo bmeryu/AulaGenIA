@@ -1433,7 +1433,8 @@
             leftBtn.style.display = nav.scrollLeft > 10 ? 'flex' : 'none';
 
             // Flecha derecha: Visible si el ancho total es mayor al scroll actual + el ancho visible
-            const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 20);
+            // Reducimos el margen de +20 a +5 para detectar mejor el contenido adicional
+            const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 5);
             rightBtn.style.display = hasMoreContent ? 'flex' : 'none';
         };
 
@@ -1443,8 +1444,10 @@
             if (nav) {
                 nav.addEventListener('scroll', window.updateScrollArrows);
                 window.addEventListener('resize', window.updateScrollArrows);
-                // Pequeño retardo inicial para que se calcule bien tras cargar los datos
-                setTimeout(window.updateScrollArrows, 800);
+                // Múltiples verificaciones escalonadas para asegurar que detecte el contenido
+                setTimeout(window.updateScrollArrows, 100);  // Primera verificación rápida
+                setTimeout(window.updateScrollArrows, 500);  // Segunda verificación
+                setTimeout(window.updateScrollArrows, 1000); // Verificación final
             }
         });
 
