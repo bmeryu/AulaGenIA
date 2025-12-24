@@ -1303,48 +1303,82 @@
                 'FORMATO': { bg: 'bg-violet-100', text: 'text-violet-900', label: 'Formato', desc: 'Estructura de salida (Tabla, Lista, Código, etc.).' }
             };
 
-            // NEW APPROACH: Preserve the entire original text, only wrap section keywords
-            let processedHTML = template;
+            // Parse the template to extract sections
+            const lines = template.split('\n');
+            const sections = {};
+            let currentSection = null;
+            let currentContent = [];
 
-            // Replace section keywords with colored spans while preserving all surrounding text
-            Object.keys(sectionConfig).forEach(key => {
-                const config = sectionConfig[key];
-                const colorFamily = config.bg.split('-')[1];
+            lines.forEach(line => {
+                const sectionMatch = line.match(/^(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*(.*)/i);
+                if (sectionMatch) {
+                    if (currentSection) {
+                        sections[currentSection] = currentContent.join(' ').trim();
+                    }
+                    currentSection = sectionMatch[2].toUpperCase();
+                    currentContent = [sectionMatch[3] || ''];
+                } else if (currentSection) {
+                    currentContent.push(line.trim());
+                }
+            });
+            // Don't forget the last section
+            if (currentSection) {
+                sections[currentSection] = currentContent.join(' ').trim();
+            }
 
-                // Match pattern: "1. ROL:" or "2. CONTEXTO:" etc., capturing everything after the colon
-                const regex = new RegExp(
-                    `(\\d+\\.\\s*)(${key}:?)`,
-                    'gi'
-                );
+            // Function to convert [bracketed text] into editable inputs
+            // (Function is defined above, this is reference)
+            function convertBracketsToInputs(text, sectionKey) {
+                let inputIndex = 0;
+                return text.replace(/\[([^\]]+)\]/g, (match, placeholder) => {
+                    const inputId = `var-input-${sectionKey}-${inputIndex++}`;
+                    const displayWidth = Math.max(placeholder.length * 8.5, 40);
 
-                processedHTML = processedHTML.replace(regex, (match, number, sectionName) => {
-                    return `${number}<span class="prompt-section ${config.bg} ${config.text} px-1.5 py-0.5 mx-0.5 box-decoration-clone leading-6 text-[14px] font-semibold transition-all duration-300 cursor-default hover:ring-2 hover:ring-${colorFamily}-300 hover:bg-${colorFamily}-100 rounded-sm inline-block relative" 
-                        data-section="${key}"
-                        onmouseenter="highlightSection('${key}')"
-                        onmouseleave="resetLegend()">${sectionName}</span>`;
+                    return `<span class="inline-flex items-baseline font-bold opacity-70 select-none">[</span><input type="text" 
+                        id="${inputId}"
+                        title="Escribe aquí para personalizar tu prompt antes de copiarlo"
+                        class="var-input bg-transparent border-b border-black/20 px-0.5 mx-0.5 text-inherit font-bold placeholder-black/40 focus:outline-none focus:border-indigo-600 focus:bg-white/20 transition-colors h-auto p-0 leading-none text-center cursor-text"
+                        style="width: ${displayWidth}px; min-width: 40px; display: inline-block;"
+                        placeholder="${escapeHtml(placeholder)}"
+                        data-original="[${escapeHtml(placeholder)}]"
+                        oninput="this.style.width = Math.max(this.value.length * 9, this.placeholder.length * 8.5, 40) + 'px'"><span class="inline-flex items-baseline font-bold opacity-70 select-none">]</span>`;
                 });
+            }
+
+            // Build INLINE HTML with colored highlights and editable inputs
+            let html = '';
+            const sectionOrder = ['ROL', 'CONTEXTO', 'META', 'RESTRICCIONES', 'FORMATO'];
+
+            sectionOrder.forEach(key => {
+                const config = sectionConfig[key];
+                let content = sections[key] || '';
+                if (!content) return;
+
+                content = content.replace(/\s+/g, ' ').trim();
+
+                // Convert brackets to inputs BEFORE escaping (so they become real inputs)
+                const htmlContent = convertBracketsToInputs(content, key);
+
+                // Escape only non-input text
+                const finalContent = htmlContent.replace(/([^<]*?)(<input[^>]+>)/g, (m, text, input) => {
+                    return escapeHtml(text) + input;
+                }).replace(/(<\/[^>]+>)([^<]*?)(?=<|$)/g, (m, tag, text) => {
+                    return tag + escapeHtml(text);
+                });
+
+                // Inline span with hover effect - Stronger interaction for visibility
+                // Added ring-2 on hover to make it really pop as user requested
+                // Also ensures the hover color matches the section color family (derived from bg class)
+                const colorFamily = config.bg.split('-')[1]; // e.g. 'blue' from 'bg-blue-100'
+
+                html += `<span class="prompt-section ${config.bg} ${config.text} px-1.5 py-0.5 mx-0.5 box-decoration-clone leading-6 text-[14px] font-medium transition-all duration-300 cursor-default hover:ring-2 hover:ring-${colorFamily}-300 hover:bg-${colorFamily}-100 rounded-sm inline relative"
+                    data-section="${key}"
+                    onmouseenter="highlightSection('${key}')"
+                    onmouseleave="resetLegend()">${htmlContent}</span>`;
             });
 
-            // Convert newlines to <br> tags for proper display and convert brackets to inputs
-            processedHTML = processedHTML.replace(/\n/g, '<br>');
-
-            // Convert [bracketed text] to editable inputs
-            let inputIndex = 0;
-            processedHTML = processedHTML.replace(/\[([^\]]+)\]/g, (match, placeholder) => {
-                const inputId = `var-input-global-${inputIndex++}`;
-                const displayWidth = Math.max(placeholder.length * 8.5, 40);
-                return `<span class="inline-flex items-baseline font-bold opacity-70 select-none">[</span><input type="text" 
-                    id="${inputId}"
-                    title="Escribe aquí para personalizar tu prompt antes de copiarlo"
-                    class="var-input bg-transparent border-b border-black/20 px-0.5 mx-0.5 text-inherit font-bold placeholder-black/40 focus:outline-none focus:border-indigo-600 focus:bg-white/20 transition-colors h-auto p-0 leading-none text-center cursor-text"
-                    style="width: ${displayWidth}px; min-width: 40px; display: inline-block;"
-                    placeholder="${escapeHtml(placeholder)}"
-                    data-original="[${escapeHtml(placeholder)}]"
-                    oninput="this.style.width = Math.max(this.value.length * 9, this.placeholder.length * 8.5, 40) + 'px'"><span class="inline-flex items-baseline font-bold opacity-70 select-none">]</span>`;
-            });
-
-            // Set the container content
-            container.innerHTML = `<div class="leading-relaxed tracking-tight text-slate-700">${processedHTML}</div>`;
+            // Container with tighter leading
+            container.innerHTML = `<div class="inline leading-6 tracking-tight">${html}</div>` || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
 
             // Render Dynamic Inline Legend
             renderInlineLegend(sectionConfig);
