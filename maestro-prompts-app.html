@@ -1573,25 +1573,41 @@
             }, 2000);
         }
 
-        // Floating success toast notification
+        // Floating success toast notification with sequential messages
         function showSuccessToast() {
             // Create toast element
             const toast = document.createElement('div');
-            toast.className = 'fixed top-20 right-6 bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-[9999] animate-slide-in-right';
+            toast.className = 'fixed top-20 right-6 bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-[9999] animate-slide-in-right transition-all duration-500';
             toast.innerHTML = `
                 <span class="material-symbols-rounded text-2xl">check_circle</span>
                 <div>
                     <p class="font-bold text-sm">✅ ¡Prompt Copiado!</p>
-                    <p class="text-xs text-white/90">Listo para pegar en tu IA favorita</p>
+                    <p class="text-xs text-white/90">Guardado en el portapapeles</p>
                 </div>
             `;
             document.body.appendChild(toast);
 
-            // Auto-remove after 3 seconds with fade out
+            // After 1.5s, transition to "Next Step" message
+            setTimeout(() => {
+                toast.style.transform = 'scale(1.05)';
+                toast.className = 'fixed top-20 right-6 bg-indigo-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-start gap-3 z-[9999] transition-all duration-500';
+                toast.innerHTML = `
+                    <span class="material-symbols-rounded text-xl flex-none">lightbulb</span>
+                    <div>
+                        <p class="font-bold text-xs mb-1">📋 Siguiente paso:</p>
+                        <p class="text-xs text-white/90 leading-relaxed">Pega este prompt en <span class="font-bold text-yellow-300">ChatGPT, Claude o Gemini</span></p>
+                    </div>
+                `;
+                setTimeout(() => {
+                    toast.style.transform = 'scale(1)';
+                }, 100);
+            }, 1500);
+
+            // Auto-remove after 5 seconds total (1.5s first message + 3.5s second message)
             setTimeout(() => {
                 toast.style.animation = 'slide-out-right 0.3s ease-out';
                 setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            }, 5000);
         }
 
         function updateTotalCounter() {
