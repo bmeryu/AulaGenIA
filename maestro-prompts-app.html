@@ -503,14 +503,14 @@
 
                             <!-- Prompt Box Container - Compact & Full Width -->
                             <div
-                                class="relative bg-slate-900 rounded-xl p-3 border border-slate-800 flex-none w-full shadow-inner">
+                                class="relative bg-white rounded-xl p-3 border border-slate-200 flex-none w-full shadow-sm">
                                 <!-- Prompt Text with Blur Wrapper -->
                                 <div id="prompt-blur-wrapper" class="transition-all duration-500 relative">
-                                    <div class="flex items-center gap-4 mb-3 border-b border-slate-800 pb-2">
+                                    <div class="flex items-center gap-4 mb-3 border-b border-slate-100 pb-2">
                                         <label
-                                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5 flex-none">
+                                            class="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5 flex-none">
                                             <span
-                                                class="material-symbols-rounded text-sm text-yellow-500">auto_awesome</span>
+                                                class="material-symbols-rounded text-sm text-amber-500">auto_awesome</span>
                                             Prompt Maestro
                                         </label>
                                         <!-- Dynamic Inline Legend (Inserted by JS) -->
@@ -519,8 +519,8 @@
                                         </div>
                                     </div>
 
-                                    <!-- INLINE HIGHLIGHTS AGIA PROMPT (Dark theme) -->
-                                    <div id="agia-sections-container" class="leading-loose text-[14px] text-white/90">
+                                    <!-- INLINE HIGHLIGHTS AGIA PROMPT (Light Theme) -->
+                                    <div id="agia-sections-container" class="text-[14px] text-slate-800">
                                         <!-- Sections will be rendered dynamically by JS -->
                                     </div>
 
@@ -1352,13 +1352,14 @@
             const container = document.getElementById('agia-sections-container');
             if (!container) return;
 
-            // AGIA section configuration - Pastel highlights with dark text (High Contrast & Inline)
+            // AGIA section configuration - Light Theme Pastel Highlights
+            // Using bg-*-100 for subtle highlight on white/light bg, text-*-900 for readability
             const sectionConfig = {
-                'ROL': { bg: 'bg-blue-200', text: 'text-slate-900', label: 'Rol' },
-                'CONTEXTO': { bg: 'bg-emerald-200', text: 'text-slate-900', label: 'Contexto' },
-                'META': { bg: 'bg-amber-200', text: 'text-slate-900', label: 'Meta' },
-                'RESTRICCIONES': { bg: 'bg-rose-200', text: 'text-slate-900', label: 'Restricciones' },
-                'FORMATO': { bg: 'bg-violet-200', text: 'text-slate-900', label: 'Formato' }
+                'ROL': { bg: 'bg-blue-100', text: 'text-blue-900', label: 'Rol' },
+                'CONTEXTO': { bg: 'bg-emerald-100', text: 'text-emerald-900', label: 'Contexto' },
+                'META': { bg: 'bg-amber-100', text: 'text-amber-900', label: 'Meta' },
+                'RESTRICCIONES': { bg: 'bg-rose-100', text: 'text-rose-900', label: 'Restr.' },
+                'FORMATO': { bg: 'bg-violet-100', text: 'text-violet-900', label: 'Formato' }
             };
 
             // Parse the template to extract sections
@@ -1379,12 +1380,13 @@
                     currentContent.push(line.trim());
                 }
             });
+            // Don't forget the last section
             if (currentSection) {
                 sections[currentSection] = currentContent.join(' ').trim();
             }
 
             // Function to convert [bracketed text] into editable inputs
-            // Function to convert [bracketed text] into editable inputs
+            // (Function is defined above, this is reference)
             function convertBracketsToInputs(text, sectionKey) {
                 let inputIndex = 0;
                 return text.replace(/\[([^\]]+)\]/g, (match, placeholder) => {
@@ -1422,70 +1424,63 @@
                     return tag + escapeHtml(text);
                 });
 
-                // Inline span with hover effect similar to reference image
-                html += `<span class="${config.bg} ${config.text} px-1.5 py-0.5 mx-0.5 box-decoration-clone leading-7 text-[14px] font-medium transition-all duration-200 cursor-default hover:bg-opacity-80"
+                // Inline span with hover effect - Tighter leading-6
+                html += `<span class="${config.bg} ${config.text} px-1.5 py-0.5 mx-0.5 box-decoration-clone leading-6 text-[14px] font-medium transition-all duration-200 cursor-default hover:bg-opacity-80"
                     onmouseenter="highlightLegend('${key}')"
                     onmouseleave="resetLegend()">${htmlContent}</span>`;
             });
 
-            container.innerHTML = `<div class="inline leading-9">${html}</div>` || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
+            // Container with tighter leading
+            container.innerHTML = `<div class="inline leading-6 tracking-tight">${html}</div>` || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
 
             // Render Dynamic Inline Legend
             renderInlineLegend(sectionConfig);
         }
 
-        // Render the new inline legend beside the header
+        // Render the new inline legend beside the header - Exact Design from Image
         function renderInlineLegend(config) {
             const legendContainer = document.getElementById('agia-legend-inline');
             if (!legendContainer) return;
 
             legendContainer.innerHTML = Object.entries(config).map(([key, conf]) => {
-                // Determine active color for legend pill from config bg (e.g., bg-blue-200 -> text-blue-600)
-                let activeClass = 'text-slate-200'; // fallback
-                if (conf.bg.includes('blue')) activeClass = 'text-blue-400';
-                if (conf.bg.includes('emerald')) activeClass = 'text-emerald-400';
-                if (conf.bg.includes('amber')) activeClass = 'text-amber-400';
-                if (conf.bg.includes('rose')) activeClass = 'text-rose-400';
-                if (conf.bg.includes('violet')) activeClass = 'text-violet-400';
+                // Map config colors to specific Tailwind shades for the "Dot + Text" style
+                // Image style: Light bg (50), Border (100/200), Strong Text (600/700), Dot (500)
+                let colorName = 'slate';
+                if (conf.bg.includes('blue')) colorName = 'blue';
+                if (conf.bg.includes('emerald')) colorName = 'emerald';
+                if (conf.bg.includes('amber')) colorName = 'amber';
+                if (conf.bg.includes('rose')) colorName = 'rose';
+                if (conf.bg.includes('violet')) colorName = 'violet';
 
-                return `<span id="legend-${key}" 
-                    class="legend-item text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded cursor-help transition-all duration-300 border border-transparent"
-                    data-active-class="${activeClass}"
+                return `<div id="legend-${key}" 
+                    class="legend-item flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-all duration-200 cursor-help
+                    bg-${colorName}-50 border-${colorName}-100 text-${colorName}-700 hover:bg-${colorName}-100 hover:border-${colorName}-300"
                     onmouseenter="highlightSection('${key}')"
                     onmouseleave="resetLegend()">
-                    ${conf.label}
-                </span>`;
+                    <span class="w-2 h-2 rounded-full bg-${colorName}-500"></span>
+                    <span class="text-[11px] font-bold tracking-wide">${conf.label}</span>
+                </div>`;
             }).join('');
         }
 
         // Highlight Legend Item when hovering text
         function highlightLegend(key) {
-            // Dim all legends slightly
+            // Dim others
             document.querySelectorAll('.legend-item').forEach(el => {
-                el.classList.add('opacity-40', 'scale-95');
-                el.classList.remove('bg-slate-800', 'text-white', 'shadow-sm', 'scale-105');
+                el.classList.add('opacity-40', 'grayscale');
             });
 
-            // Highlight specific legend
+            // Highlight specific
             const target = document.getElementById(`legend-${key}`);
             if (target) {
-                target.classList.remove('opacity-40', 'scale-95');
-                // Make it pop
-                target.classList.add('bg-slate-800', 'text-white', 'shadow-sm', 'scale-105');
+                target.classList.remove('opacity-40', 'grayscale');
+                target.classList.add('scale-105', 'shadow-sm', 'ring-1', 'ring-offset-1', 'ring-slate-200');
             }
-        }
-
-        // Highlight Section when hovering legend
-        function highlightSection(key) {
-            highlightLegend(key);
-            // Also could highlight the text span if we added IDs to them, 
-            // but for now the user request "quede solo la palabra de la leyenda del color destacada" is met.
         }
 
         function resetLegend() {
             document.querySelectorAll('.legend-item').forEach(el => {
-                el.classList.remove('opacity-40', 'bg-slate-800', 'text-white', 'shadow-sm', 'scale-95', 'scale-105');
-                el.classList.add('text-slate-600');
+                el.classList.remove('opacity-40', 'grayscale', 'scale-105', 'shadow-sm', 'ring-1', 'ring-offset-1', 'ring-slate-200');
             });
         }
 
