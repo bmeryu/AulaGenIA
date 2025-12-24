@@ -1384,18 +1384,20 @@
             }
 
             // Function to convert [bracketed text] into editable inputs
+            // Function to convert [bracketed text] into editable inputs
             function convertBracketsToInputs(text, sectionKey) {
                 let inputIndex = 0;
                 return text.replace(/\[([^\]]+)\]/g, (match, placeholder) => {
                     const inputId = `var-input-${sectionKey}-${inputIndex++}`;
-                    const displayWidth = Math.max(placeholder.length * 8, 80);
-                    return `<input type="text" 
+                    const displayWidth = Math.max(placeholder.length * 8.5, 40);
+
+                    return `<span class="inline-flex items-baseline font-bold opacity-70 select-none">[</span><input type="text" 
                         id="${inputId}"
-                        class="var-input bg-white/90 border border-white/50 rounded px-1.5 py-0.5 text-[12px] font-medium text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent mx-0.5 transition-all"
-                        style="width: ${displayWidth}px; min-width: 60px;"
+                        class="var-input bg-transparent border-b border-black/20 px-0.5 mx-0.5 text-inherit font-bold placeholder-black/40 focus:outline-none focus:border-indigo-600 focus:bg-white/20 transition-colors h-auto p-0 leading-none text-center"
+                        style="width: ${displayWidth}px; min-width: 40px; display: inline-block;"
                         placeholder="${escapeHtml(placeholder)}"
                         data-original="[${escapeHtml(placeholder)}]"
-                        oninput="this.style.width = Math.max(this.value.length * 8, this.placeholder.length * 8, 60) + 'px'">`;
+                        oninput="this.style.width = Math.max(this.value.length * 9, this.placeholder.length * 8.5, 40) + 'px'"><span class="inline-flex items-baseline font-bold opacity-70 select-none">]</span>`;
                 });
             }
 
