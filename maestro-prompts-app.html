@@ -1411,103 +1411,109 @@
             }).join('');
         }
 
-        // SCROLL LOGIC FOR CATEGORIES
-        function scrollCategories(offset) {
-            const nav = document.getElementById('category-nav');
-            if (nav) nav.scrollBy({ left: offset, behavior: 'smooth' });
-        }
+        // --- LÓGICA DE NAVEGACIÓN (FLECHAS) ---
 
-        // Initialize scroll listeners with Right Arrow handling
-        document.addEventListener('DOMContentLoaded', () => {
+        window.scrollCategories = function (offset) {
+            const nav = document.getElementById('category-nav');
+            if (nav) {
+                nav.scrollBy({ left: offset, behavior: 'smooth' });
+                setTimeout(window.updateScrollArrows, 350);
+            }
+        };
+
+        window.updateScrollArrows = function () {
             const nav = document.getElementById('category-nav');
             const leftBtn = document.getElementById('btn-scroll-left');
             const rightBtn = document.getElementById('btn-scroll-right');
 
-            if (nav && leftBtn && rightBtn) {
-                const updateArrows = () => {
-                    // Left Arrow Logic (Hide only at extreme start)
-                    if (nav.scrollLeft > 10) {
-                        leftBtn.classList.remove('hidden');
-                        leftBtn.classList.add('flex');
-                    } else {
-                        leftBtn.classList.add('hidden');
-                        leftBtn.classList.remove('flex');
-                    }
+            if (!nav || !leftBtn || !rightBtn) return;
 
-                    // Right Arrow Logic: ALWAYS VISIBLE to guarantee access to hidden content
-                    rightBtn.classList.remove('hidden');
-                    rightBtn.classList.add('flex');
-                };
+            // Mostrar flecha izquierda solo si no estamos al inicio
+            leftBtn.style.display = nav.scrollLeft > 10 ? 'flex' : 'none';
 
-                nav.addEventListener('scroll', updateArrows);
-                // Initial check
-                setTimeout(updateArrows, 100);
-                window.addEventListener('resize', updateArrows);
+            // Mostrar flecha derecha solo si hay más contenido
+            const hasMore = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 15);
+            rightBtn.style.display = hasMore ? 'flex' : 'none';
+        };
+
+        // Inicializar visibilidad de flechas al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            const nav = document.getElementById('category-nav');
+            if (nav) {
+                nav.addEventListener('scroll', window.updateScrollArrows);
+                window.addEventListener('resize', window.updateScrollArrows);
+                // Pequeño retardo para esperar a que las categorías se rendericen
+                setTimeout(window.updateScrollArrows, 600);
             }
         });
 
         /**
-         * VERSIÓN REPARADA: FOCO TOTAL (Fix de herencia de color)
-         * Corrige el bug donde el elemento activo heredaba el gris del contenedor
+         * VERSIÓN REPARADA: FOCO QUIRÚRGICO (Texto Plano) + NAVEGACIÓN
+         * Esta versión asegura que el contenido no seleccionado sea legible como texto normal.
          */
-        window.highlightSection = function highlightSection(key) {
+        window.highlightSection = function (key) {
             if (!key) return;
             const targetKey = key.toUpperCase();
             const container = document.getElementById('agia-sections-container');
 
-            // 1. Atenuación del texto base (conectores como "eres un", "para el")
+            // 1. Atenuación del texto base (conectores)
+            // Usamos un gris legible (Slate-400) para que parezca texto secundario pero visible
             if (container) {
-                container.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-                container.style.color = '#e2e8f0'; // Gris muy suave para que el texto plano "desaparezca"
+                container.style.transition = 'all 0.3s ease';
+                container.style.color = '#94a3b8';
             }
 
-            // 2. Lógica para la LEYENDA (Items superiores)
+            // 2. Leyenda (Items superiores)
             document.querySelectorAll('.legend-item').forEach(el => {
                 const legendKey = el.id.replace('legend-', '').toUpperCase();
 
                 if (legendKey === targetKey) {
                     el.style.opacity = '1';
                     el.style.filter = 'none';
-                    el.style.transform = 'scale(1.1)';
-                    el.style.boxShadow = '0 10px 15px -3px rgba(79, 70, 229, 0.2)';
+                    el.style.transform = 'scale(1.08)';
+                    el.style.boxShadow = '0 8px 15px -3px rgba(79, 70, 229, 0.2)';
                     el.style.zIndex = '20';
                 } else {
-                    el.style.opacity = '0.1';
-                    el.style.filter = 'grayscale(1)';
-                    el.style.transform = 'scale(0.95)';
+                    el.style.opacity = '0.3';
+                    el.style.filter = 'grayscale(0.8)';
+                    el.style.transform = 'scale(0.96)';
                 }
             });
 
-            // 3. Lógica para el PROMPT MAESTRO (Secciones coloreadas)
+            // 3. Secciones del Prompt (Bloques de texto)
             document.querySelectorAll('.prompt-section').forEach(el => {
                 const sectionKey = (el.dataset.section || '').toUpperCase();
 
                 if (sectionKey === targetKey) {
-                    // EL ELEGIDO: Brilla, mantiene color y evita heredar el gris del padre
+                    // EL SELECCIONADO: Mantiene su estilo y color original
                     el.style.opacity = '1';
                     el.style.filter = 'none';
-                    el.style.transform = 'scale(1.03)';
+                    el.style.transform = 'scale(1.02)';
                     el.style.zIndex = '10';
                     el.style.position = 'relative';
-                    // IMPORTANTE: Forzamos el color para que NO herede el gris del container
-                    el.style.color = 'rgb(30, 41, 59)'; // Color slate-800 original
-                    el.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                    el.style.color = 'rgb(30, 41, 59)'; // Slate-800
+                    el.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                    // Restauramos el fondo original de la clase
+                    el.style.backgroundColor = '';
                 } else {
-                    // LOS DEMÁS: Se vuelven grises y casi invisibles
-                    el.style.opacity = '0.05';
+                    // LOS DEMÁS: Se ven como "Texto Plano"
+                    // Quitamos el fondo y mantenemos opacidad media para que se vea pero no distraiga
+                    el.style.backgroundColor = 'transparent';
+                    el.style.opacity = '0.5';
                     el.style.filter = 'grayscale(1)';
+                    el.style.color = '#64748b'; // Slate-500
                     el.style.transform = 'scale(1)';
-                    el.style.zIndex = '1';
+                    el.style.boxShadow = 'none';
                 }
             });
-        }
+        };
 
-        window.resetLegend = function resetLegend() {
+        window.resetLegend = function () {
             const container = document.getElementById('agia-sections-container');
 
-            // Restaurar texto base a color oscuro y legible
+            // Restaurar contenedor (conectores)
             if (container) {
-                container.style.color = 'rgb(51, 65, 85)'; // Slate-700 oscuro para legibilidad
+                container.style.color = '';
             }
 
             // Restaurar Leyenda
@@ -1527,9 +1533,10 @@
                 el.style.zIndex = '';
                 el.style.position = '';
                 el.style.boxShadow = 'none';
-                el.style.color = ''; // Elimina el color forzado para volver al de sus clases CSS
+                el.style.color = '';
+                el.style.backgroundColor = ''; // Vuelve al color pastel definido en sus clases CSS
             });
-        }
+        };
 
         // Function to get the prompt text with filled variables
         function getPromptWithVariables() {
