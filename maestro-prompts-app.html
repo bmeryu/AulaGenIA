@@ -934,24 +934,51 @@
             setupLegendInteractions();
 
             // Listen for Auth State
-            auth.onAuthStateChanged(user => {
+            auth.onAuthStateChanged(async user => {
                 const unlockBtn = document.getElementById('unlock-btn');
 
                 if (user) {
                     // console.log("Usuario autenticado:", user.email);
-                    isVaultUnlocked = true;
 
-                    // Ocultar botón de desbloquear - usuario ya tiene acceso
-                    if (unlockBtn) unlockBtn.classList.add('hidden');
+                    // Verificar enrollment en Firestore
+                    const userRef = db.collection('users').doc(user.uid);
+                    let hasEnrollment = false;
 
-                    const teaser = document.getElementById('locked-teaser');
-                    if (teaser) {
-                        teaser.classList.add('hidden');
-                        teaser.classList.remove('flex');
+                    try {
+                        const userDoc = await userRef.get();
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
+                            const courseId = 'ia-aplicada-esencial';
+                            const oldCourseId = 'inteligencia-aplicada';
+
+                            if (userData.enrollments &&
+                                (userData.enrollments[courseId] === true ||
+                                    userData.enrollments[oldCourseId] === true)) {
+                                hasEnrollment = true;
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Error verificando enrollment:", error);
                     }
 
-                    // Reload current case to apply decryption
-                    if (currentCaseId) loadCase(currentCaseId);
+                    // Solo desbloquear si tiene enrollment
+                    if (hasEnrollment) {
+                        isVaultUnlocked = true;
+                        if (unlockBtn) unlockBtn.classList.add('hidden');
+
+                        const teaser = document.getElementById('locked-teaser');
+                        if (teaser) {
+                            teaser.classList.add('hidden');
+                            teaser.classList.remove('flex');
+                        }
+
+                        if (currentCaseId) loadCase(currentCaseId);
+                    } else {
+                        // Usuario sin enrollment - mantener bloqueado
+                        isVaultUnlocked = false;
+                        if (unlockBtn) unlockBtn.classList.remove('hidden');
+                        if (currentCaseId) loadCase(currentCaseId);
+                    }
                 } else {
                     // console.log("Usuario no autenticado.");
                     isVaultUnlocked = false;
