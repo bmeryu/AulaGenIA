@@ -1447,62 +1447,57 @@
         });
 
         /**
-         * VERSIÓN FINAL: BIDIRECCIONALIDAD TOTAL Y FOCO QUIRÚRGICO
-         * Highlighting que atenúa contenedor + elementos inactivos
+         * VERSIÓN REPARADA: FOCO TOTAL (Fix de herencia de color)
+         * Corrige el bug donde el elemento activo heredaba el gris del contenedor
          */
         function highlightSection(key) {
             if (!key) return;
             const targetKey = key.toUpperCase();
             const container = document.getElementById('agia-sections-container');
 
-            // 1. Efecto en el Contenedor del Prompt (Texto plano/conectores)
-            // Apagamos el color de los conectores ("eres un", "en el", etc.)
+            // 1. Atenuación del texto base (conectores como "eres un", "para el")
             if (container) {
-                container.style.transition = 'all 0.3s ease';
-                container.style.color = '#cbd5e1'; // Gris muy claro (slate-300)
+                container.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                container.style.color = '#e2e8f0'; // Gris muy suave para que el texto plano "desaparezca"
             }
 
-            // 2. Leyenda (Items superiores) - BIDIRECCIONAL
+            // 2. Lógica para la LEYENDA (Items superiores)
             document.querySelectorAll('.legend-item').forEach(el => {
                 const legendKey = el.id.replace('legend-', '').toUpperCase();
 
                 if (legendKey === targetKey) {
-                    // ELEMENTO ACTIVO: Brilla y resalta
                     el.style.opacity = '1';
                     el.style.filter = 'none';
                     el.style.transform = 'scale(1.1)';
-                    el.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                    el.style.boxShadow = '0 10px 15px -3px rgba(79, 70, 229, 0.2)';
                     el.style.zIndex = '20';
                 } else {
-                    // ELEMENTOS INACTIVOS: Se desaturan y atenúan
-                    el.style.opacity = '0.15';
+                    el.style.opacity = '0.1';
                     el.style.filter = 'grayscale(1)';
                     el.style.transform = 'scale(0.95)';
-                    el.style.zIndex = '1';
                 }
             });
 
-            // 3. Secciones del Prompt (Bloques de texto) - BIDIRECCIONAL
+            // 3. Lógica para el PROMPT MAESTRO (Secciones coloreadas)
             document.querySelectorAll('.prompt-section').forEach(el => {
                 const sectionKey = (el.dataset.section || '').toUpperCase();
 
                 if (sectionKey === targetKey) {
-                    // BLOQUE ACTIVO: Mantiene su color pastel original y resalta sobre el gris
+                    // EL ELEGIDO: Brilla, mantiene color y evita heredar el gris del padre
                     el.style.opacity = '1';
                     el.style.filter = 'none';
-                    el.style.transform = 'scale(1.02)';
+                    el.style.transform = 'scale(1.03)';
                     el.style.zIndex = '10';
                     el.style.position = 'relative';
-                    el.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05)';
-                    // Importante: forzar que el color de texto interno no sea el gris del padre
-                    el.style.color = 'inherit';
+                    // IMPORTANTE: Forzamos el color para que NO herede el gris del container
+                    el.style.color = 'rgb(30, 41, 59)'; // Color slate-800 original
+                    el.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
                 } else {
-                    // BLOQUES INACTIVOS: Se vuelven grises y casi transparentes
-                    el.style.opacity = '0.1';
+                    // LOS DEMÁS: Se vuelven grises y casi invisibles
+                    el.style.opacity = '0.05';
                     el.style.filter = 'grayscale(1)';
                     el.style.transform = 'scale(1)';
                     el.style.zIndex = '1';
-                    el.style.boxShadow = 'none';
                 }
             });
         }
@@ -1510,12 +1505,12 @@
         function resetLegend() {
             const container = document.getElementById('agia-sections-container');
 
-            // Restaurar el texto plano a su color original (Slate-800)
+            // Restaurar texto base
             if (container) {
                 container.style.color = '';
             }
 
-            // Restaurar Leyenda a estado normal
+            // Restaurar Leyenda
             document.querySelectorAll('.legend-item').forEach(el => {
                 el.style.opacity = '1';
                 el.style.filter = 'none';
@@ -1524,7 +1519,7 @@
                 el.style.zIndex = '';
             });
 
-            // Restaurar Secciones del Prompt a estado normal
+            // Restaurar Secciones del Prompt
             document.querySelectorAll('.prompt-section').forEach(el => {
                 el.style.opacity = '1';
                 el.style.filter = 'none';
@@ -1532,7 +1527,7 @@
                 el.style.zIndex = '';
                 el.style.position = '';
                 el.style.boxShadow = 'none';
-                el.style.color = '';
+                el.style.color = ''; // Elimina el color forzado para volver al de sus clases CSS
             });
         }
 
