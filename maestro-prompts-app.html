@@ -1101,7 +1101,6 @@
                 resultTeaser.classList.remove('flex');
             }
 
-            setupMagicHover();
             setMode(currentViewMode);
 
             // Social Proof Randomizer
@@ -1407,65 +1406,10 @@
             return text;
         }
 
-        // New Logic: Bidirectional Magic Hover
-        function setupMagicHover() {
-            // Wait for DOM update
-            setTimeout(() => {
-                const promptSpans = document.querySelectorAll('#detail-prompt-rendered .hl-tag');
-                const legendItems = document.querySelectorAll('.legend-item');
 
-                // 1. Legend -> Prompt
-                legendItems.forEach(item => {
-                    item.addEventListener('mouseenter', () => {
-                        const type = item.dataset.type;
-                        // Highlight prompt spans
-                        promptSpans.forEach(span => {
-                            if (span.dataset.tagType === type) {
-                                span.classList.add('highlighted');
-                            } else {
-                                span.classList.add('dimmed');
-                            }
-                        });
-                        // Dim other legend items
-                        legendItems.forEach(li => { if (li !== item) li.classList.add('dimmed'); });
-                    });
-
-                    item.addEventListener('mouseleave', () => {
-                        promptSpans.forEach(span => {
-                            span.classList.remove('highlighted', 'dimmed');
-                        });
-                        legendItems.forEach(li => li.classList.remove('dimmed'));
-                    });
-                });
-
-                // 2. Prompt -> Legend
-                promptSpans.forEach(span => {
-                    span.addEventListener('mouseenter', () => {
-                        const type = span.dataset.tagType;
-                        // Highlight legend item
-                        legendItems.forEach(li => {
-                            if (li.dataset.type === type) {
-                                li.classList.add('highlighted');
-                            } else {
-                                li.classList.add('dimmed');
-                            }
-                        });
-                        // Dim other prompt spans
-                        promptSpans.forEach(s => { if (s !== span) s.classList.add('dimmed'); });
-                    });
-
-                    span.addEventListener('mouseleave', () => {
-                        legendItems.forEach(li => {
-                            li.classList.remove('highlighted', 'dimmed');
-                        });
-                        promptSpans.forEach(s => s.classList.remove('dimmed'));
-                    });
-                });
-            }, 100);
-        }
 
         function setupLegendInteractions() {
-            setupMagicHover();
+            // setupMagicHover(); // Removed legacy logic
         }
 
         function copyPrompt() {
