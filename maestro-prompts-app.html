@@ -441,9 +441,10 @@
                             <span><span id="social-counter-header" class="font-bold">80</span> activos</span>
                         </div>
 
-                        <!-- Copy Button with Feedback -->
+                        <!-- Copy Button (only active in Maestro mode) -->
                         <button onclick="copyPromptWithFeedback(this)" id="copy-btn"
-                            class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 transition-all shadow-sm">
+                            class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-slate-300 text-slate-500 flex items-center gap-1.5 transition-all cursor-not-allowed opacity-60"
+                            disabled title="Activa Modo Maestro para copiar">
                             <span class="material-symbols-rounded text-sm copy-icon">content_copy</span>
                             <span class="copy-text">Copiar</span>
                         </button>
@@ -722,23 +723,6 @@
                                 </div>
                             </div>
 
-                            <!-- ACTION BAR (Fixed Bottom for Master) -->
-                            <div
-                                class="sticky bottom-0 bg-white border-t border-slate-100 p-4 flex justify-between items-center z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
-                                <!-- HIGHLIGHTED SOCIAL PROOF -->
-                                <div
-                                    class="flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-100 shadow-sm animate-pulse">
-                                    <span
-                                        class="material-symbols-rounded text-orange-500 text-base">local_fire_department</span>
-                                    <span id="social-proof-text" class="text-[10px] font-bold text-orange-800">Usado
-                                        <span id="social-counter" class="text-orange-600 text-xs">...</span> veces en la
-                                        última hora</span>
-                                </div>
-                                <button id="copy-btn" onclick="copyPrompt()"
-                                    class="bg-indigo-600 hover:bg-indigo-700 text-white pl-5 pr-6 py-2.5 rounded-xl font-bold shadow-lg shadow-indigo-200/50 text-xs flex items-center gap-2 transform transition-all hover:-translate-y-0.5 active:translate-y-0">
-                                    <span class="material-symbols-rounded text-lg">content_copy</span> COPIAR PROMPT
-                                </button>
-                            </div>
                         </div>
 
                     </div>
@@ -1080,6 +1064,7 @@
             const btnAgia = document.getElementById('btn-agia');
             const contentBasic = document.getElementById('content-basic');
             const contentAgia = document.getElementById('content-agia');
+            const copyBtn = document.getElementById('copy-btn');
 
             if (mode === 'basic') {
                 contentBasic.classList.remove('hidden');
@@ -1088,7 +1073,12 @@
                 btnBasic.classList.add('bg-slate-600', 'text-white');
                 btnBasic.classList.remove('text-slate-600');
                 btnAgia.classList.remove('bg-indigo-600', 'text-white');
-                btnAgia.classList.add('text-slate-600');
+                btnAgia.classList.add('text-slate-600', 'animate-pulse');
+
+                // Disable copy button in basic mode
+                copyBtn.disabled = true;
+                copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
+                copyBtn.classList.add('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
             } else {
                 contentBasic.classList.add('hidden');
                 contentAgia.classList.remove('hidden');
@@ -1096,7 +1086,12 @@
                 btnBasic.classList.remove('bg-slate-600', 'text-white');
                 btnBasic.classList.add('text-slate-600');
                 btnAgia.classList.add('bg-indigo-600', 'text-white');
-                btnAgia.classList.remove('text-slate-600');
+                btnAgia.classList.remove('text-slate-600', 'animate-pulse');
+
+                // Enable copy button in Maestro mode
+                copyBtn.disabled = false;
+                copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
+                copyBtn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
             }
         }
 
