@@ -587,14 +587,14 @@
                                             <span class="material-symbols-rounded text-3xl text-slate-400">lock</span>
                                         </div>
                                         <h3 class="text-xl font-bold text-slate-800 mb-2">Contenido Protegido</h3>
-                                        <p class="text-slate-500 text-sm mb-6 leading-relaxed">
+                                        <p id="teaser-message" class="text-slate-500 text-sm mb-6 leading-relaxed">
                                             Esta fórmula maestra es exclusiva para miembros de la comunidad AGIA.
                                         </p>
 
-                                        <a href="acceso.html?redirect=maestro-prompts-app.html"
+                                        <a id="teaser-action-btn" href="acceso.html?redirect=maestro-prompts-app.html"
                                             class="inline-flex items-center justify-center w-full gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-indigo-200">
                                             <span class="material-symbols-rounded text-lg">login</span>
-                                            Iniciar Sesión para Acceder
+                                            <span id="teaser-action-text">Iniciar Sesión para Acceder</span>
                                         </a>
                                         <p class="text-[10px] text-slate-400 mt-4">
                                             ¿Ya tienes cuenta? Tu sesión se detectará automáticamente.
@@ -1015,17 +1015,66 @@
 
                         if (currentCaseId) loadCase(currentCaseId);
                     } else {
-                        // Usuario sin enrollment - mantener bloqueado
+                        // Usuario logueado SIN enrollment - mantener bloqueado
                         isVaultUnlocked = false;
-                        if (unlockBtn) unlockBtn.classList.remove('hidden');
+
+                        // Actualizar botón del header a "Inscribirse"
+                        if (unlockBtn) {
+                            unlockBtn.classList.remove('hidden');
+                            const btnText = unlockBtn.querySelector('span:last-child');
+                            if (btnText) btnText.textContent = 'Inscribirse';
+                        }
+
+                        // Actualizar mensaje del teaser
+                        const teaserMessage = document.getElementById('teaser-message');
+                        const teaserActionText = document.getElementById('teaser-action-text');
+                        const teaserActionBtn = document.getElementById('teaser-action-btn');
+
+                        if (teaserMessage) {
+                            teaserMessage.textContent = 'Inscríbete en el curso "IA Aplicada · Esencial" para desbloquear todas las fórmulas maestras.';
+                        }
+                        if (teaserActionText) {
+                            teaserActionText.textContent = 'Inscribirse en el Curso';
+                        }
+                        if (teaserActionBtn) {
+                            teaserActionBtn.href = '#'; // Prevent default navigation
+                            teaserActionBtn.onclick = (e) => {
+                                e.preventDefault();
+                                window.triggerUnlockPayment();
+                            };
+                        }
+
                         if (currentCaseId) loadCase(currentCaseId);
                     }
                 } else {
-                    // Usuario no autenticado - ocultar perfil
+                    // Usuario NO autenticado - ocultar perfil y restaurar mensajes por defecto
                     const userProfile = document.getElementById('user-profile');
                     if (userProfile) {
                         userProfile.classList.add('hidden');
                         userProfile.classList.remove('flex');
+                    }
+
+                    // Restaurar mensajes por defecto del teaser
+                    const teaserMessage = document.getElementById('teaser-message');
+                    const teaserActionText = document.getElementById('teaser-action-text');
+                    const teaserActionBtn = document.getElementById('teaser-action-btn');
+
+                    if (teaserMessage) {
+                        teaserMessage.textContent = 'Esta fórmula maestra es exclusiva para miembros de la comunidad AGIA.';
+                    }
+                    if (teaserActionText) {
+                        teaserActionText.textContent = 'Iniciar Sesión para Acceder';
+                    }
+                    if (teaserActionBtn) {
+                        teaserActionBtn.href = 'acceso.html?redirect=maestro-prompts-app.html';
+                        teaserActionBtn.onclick = null;
+                    }
+
+                    // Restaurar texto del botón del header
+                    const unlockBtn = document.getElementById('unlock-btn');
+                    if (unlockBtn) {
+                        const btnText = unlockBtn.querySelector('span:last-child');
+                        if (btnText) btnText.textContent = 'Desbloquear';
                     }
 
                     // console.log("Usuario no autenticado.");
