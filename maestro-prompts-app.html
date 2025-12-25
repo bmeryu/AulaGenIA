@@ -349,6 +349,19 @@
             box-shadow: 0 2px 6px rgba(20, 184, 166, 0.4);
             border: 2px solid white;
         }
+
+        /* Active Category Styling */
+        .category-item.active {
+            background: linear-gradient(135deg, #14b8a6, #0d9488) !important;
+            color: white !important;
+            border-color: #0d9488 !important;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4) !important;
+        }
+
+        .category-item.active .badge {
+            background: white !important;
+            color: #0d9488 !important;
+        }
     </style>
 </head>
 
@@ -1829,6 +1842,33 @@
                 setTimeout(window.updateScrollArrows, 100);
                 setTimeout(window.updateScrollArrows, 500);
                 setTimeout(window.updateScrollArrows, 1000);
+
+                // Auto-scroll on hover for arrows
+                let scrollInterval = null;
+                const leftBtn = document.getElementById('btn-scroll-left');
+                const rightBtn = document.getElementById('btn-scroll-right');
+
+                if (leftBtn) {
+                    leftBtn.addEventListener('mouseenter', () => {
+                        scrollInterval = setInterval(() => {
+                            nav.scrollBy({ left: -5, behavior: 'auto' });
+                        }, 20);
+                    });
+                    leftBtn.addEventListener('mouseleave', () => {
+                        if (scrollInterval) clearInterval(scrollInterval);
+                    });
+                }
+
+                if (rightBtn) {
+                    rightBtn.addEventListener('mouseenter', () => {
+                        scrollInterval = setInterval(() => {
+                            nav.scrollBy({ left: 5, behavior: 'auto' });
+                        }, 20);
+                    });
+                    rightBtn.addEventListener('mouseleave', () => {
+                        if (scrollInterval) clearInterval(scrollInterval);
+                    });
+                }
             }
         });
 
