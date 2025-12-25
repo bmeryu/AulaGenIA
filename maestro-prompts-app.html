@@ -1734,51 +1734,64 @@
             const rawText = getPromptWithVariables();
             const textArea = document.createElement("textarea");
             textArea.value = rawText;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
             document.body.appendChild(textArea);
             textArea.select();
 
             try {
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
+                const success = document.execCommand('copy');
 
-                // Get button elements
-                const btnIcon = button.querySelector('.copy-icon');
-                const btnText = button.querySelector('.copy-text');
+                if (success) {
+                    // Get button elements - with null checks
+                    const btnIcon = button.querySelector('.copy-icon');
+                    const btnText = button.querySelector('.copy-text');
 
-                // Store originals
-                const originalClass = button.className;
-                const originalIcon = btnIcon.innerHTML;
-                const originalText = btnText.textContent;
+                    if (!btnIcon || !btnText) {
+                        console.warn('Copy button structure missing expected elements');
+                        return;
+                    }
 
-                // Step 1: Green Success (1.5s)
-                button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-emerald-500 text-white flex items-center gap-1.5 transition-all';
-                btnIcon.innerHTML = 'check_circle';
-                btnText.textContent = '¡Prompt Copiado!';
+                    // Store originals
+                    const originalClass = button.className;
+                    const originalIcon = btnIcon.innerHTML;
+                    const originalText = btnText.textContent;
 
-                // Confetti celebration
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
+                    // Step 1: Green Success (1.5s)
+                    button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-emerald-500 text-white flex items-center gap-1.5 transition-all';
+                    btnIcon.innerHTML = 'check_circle';
+                    btnText.textContent = '¡Prompt Copiado!';
 
-                setTimeout(() => {
-                    // Step 2: Blue Info (3.5s)
-                    button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-blue-500 text-white flex items-center gap-1.5 transition-all';
-                    btnIcon.innerHTML = 'arrow_forward';
-                    btnText.textContent = 'Pégalo en ChatGPT, Gemini o Claude';
+                    // Confetti celebration
+                    if (typeof confetti !== 'undefined') {
+                        confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                        });
+                    }
 
                     setTimeout(() => {
-                        // Restore original state
-                        button.className = originalClass;
-                        btnIcon.innerHTML = originalIcon;
-                        btnText.textContent = originalText;
-                    }, 3500);
-                }, 1500);
+                        // Step 2: Blue Info (3.5s)
+                        button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-blue-500 text-white flex items-center gap-1.5 transition-all';
+                        btnIcon.innerHTML = 'arrow_forward';
+                        btnText.textContent = 'Pégalo en ChatGPT, Gemini o Claude';
 
+                        setTimeout(() => {
+                            // Restore original state
+                            button.className = originalClass;
+                            btnIcon.innerHTML = originalIcon;
+                            btnText.textContent = originalText;
+                        }, 3500);
+                    }, 1500);
+                }
             } catch (err) {
                 console.error('Error al copiar:', err);
-                document.body.removeChild(textArea);
+            } finally {
+                // Always cleanup textarea
+                if (textArea && textArea.parentNode) {
+                    textArea.parentNode.removeChild(textArea);
+                }
             }
         };
 
