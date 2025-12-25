@@ -234,6 +234,12 @@
         .animate-slide-in-right {
             animation: slide-in-right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
+
+        /* Tooltips instantáneos - Sin delay */
+        [title]:hover::before,
+        [title]:hover::after {
+            transition-delay: 0ms !important;
+        }
     </style>
 </head>
 
@@ -479,7 +485,7 @@
                         <div class="relative hidden" id="copy-btn-container">
                             <button onclick="copyPromptWithFeedback(this)" id="copy-btn"
                                 class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-slate-300 text-slate-500 flex items-center gap-1.5 transition-all cursor-not-allowed opacity-60"
-                                disabled title="Activa Modo Maestro para copiar">
+                                disabled>
                                 <span class="material-symbols-rounded text-sm copy-icon">content_copy</span>
                                 <span class="copy-text">Copiar</span>
                             </button>
@@ -1717,6 +1723,62 @@
         function setupLegendInteractions() {
             // setupMagicHover(); // Removed legacy logic
         }
+
+        // Copy with Visual Feedback (Sequential Messages)
+        window.copyPromptWithFeedback = function (button) {
+            if (!button || button.disabled) return;
+
+            // Copy to clipboard
+            const rawText = getPromptWithVariables();
+            const textArea = document.createElement("textarea");
+            textArea.value = rawText;
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+
+                // Get button elements
+                const btnIcon = button.querySelector('.copy-icon');
+                const btnText = button.querySelector('.copy-text');
+
+                // Store originals
+                const originalClass = button.className;
+                const originalIcon = btnIcon.innerHTML;
+                const originalText = btnText.textContent;
+
+                // Step 1: Green Success (1.5s)
+                button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-emerald-500 text-white flex items-center gap-1.5 transition-all';
+                btnIcon.innerHTML = 'check_circle';
+                btnText.textContent = '¡Prompt Copiado!';
+
+                // Confetti celebration
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                setTimeout(() => {
+                    // Step 2: Blue Info (3.5s)
+                    button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-blue-500 text-white flex items-center gap-1.5 transition-all';
+                    btnIcon.innerHTML = 'arrow_forward';
+                    btnText.textContent = 'Pégalo en ChatGPT, Gemini o Claude';
+
+                    setTimeout(() => {
+                        // Restore original state
+                        button.className = originalClass;
+                        btnIcon.innerHTML = originalIcon;
+                        btnText.textContent = originalText;
+                    }, 3500);
+                }, 1500);
+
+            } catch (err) {
+                console.error('Error al copiar:', err);
+                document.body.removeChild(textArea);
+            }
+        };
 
         function copyPrompt() {
             // Trigger Confetti Celebration!
