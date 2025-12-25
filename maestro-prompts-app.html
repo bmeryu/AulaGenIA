@@ -1539,18 +1539,28 @@
             let currentSection = null;
             let currentContent = [];
 
-            lines.forEach(line => {
-                const sectionMatch = line.match(/^(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*(.*)/i);
+            lines.forEach((line, index) => {
+                // More flexible regex: matches with or without number, with or without colon
+                // Examples: "1. ROL:", "ROL:", "2. CONTEXTO", "CONTEXTO", etc.
+                const sectionMatch = line.match(/^(?:\d+\.\s*)?(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*(.*)/i);
+
                 if (sectionMatch) {
+                    // Save previous section
                     if (currentSection) {
                         sections[currentSection] = currentContent.join(' ').trim();
                     }
-                    currentSection = sectionMatch[2].toUpperCase();
-                    currentContent = [sectionMatch[3] || ''];
+                    currentSection = sectionMatch[1].toUpperCase();
+                    currentContent = [sectionMatch[2] || ''];
                 } else if (currentSection) {
+                    // Continue current section
                     currentContent.push(line.trim());
+                } else if (index === 0 && line.trim() && !sectionMatch) {
+                    // First line doesn't have section marker - treat as ROL
+                    currentSection = 'ROL';
+                    currentContent = [line.trim()];
                 }
             });
+
             // Don't forget the last section
             if (currentSection) {
                 sections[currentSection] = currentContent.join(' ').trim();
