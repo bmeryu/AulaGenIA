@@ -782,8 +782,9 @@
 
             if (!user) {
                 console.log("User not logged in. Redirecting...");
-                // Redirect to Login, return to THIS page with action=buy
-                window.location.href = "acceso.html?redirect=maestro-prompts-app.html?action=buy";
+                // Redirigir a login y luego volver aquí para iniciar pago
+                const returnUrl = encodeURIComponent('maestro-prompts-app.html?action=buy');
+                window.location.href = `acceso.html?redirect=${returnUrl}`;
                 return;
             }
 
@@ -1044,7 +1045,8 @@
                 logoutBtn.addEventListener('click', async () => {
                     try {
                         await auth.signOut();
-                        window.location.href = 'index.html'; // Redirigir al home
+                        // Recargar la misma página en lugar de redirigir a home
+                        window.location.reload();
                     } catch (error) {
                         console.error('Error al cerrar sesión:', error);
                         alert('Error al cerrar sesión. Intenta nuevamente.');
