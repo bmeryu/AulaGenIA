@@ -312,9 +312,20 @@
                     class="hidden flex-none w-8 h-8 flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-white bg-slate-100 rounded-full transition-all shadow-sm ring-1 ring-slate-200 hover:ring-indigo-200 z-10">
                     <span class="material-symbols-rounded text-xl font-bold">chevron_left</span>
                 </button>
-                <!-- Scrollable categories -->
-                <div class="flex-1 overflow-x-auto no-scrollbar px-1 py-1 flex space-x-2 scroll-smooth"
-                    id="category-nav" style="scroll-padding-right: 40px;"></div>
+                <!-- Scrollable categories with gradient fade masks -->
+                <div class="flex-1 relative">
+                    <!-- Left gradient fade -->
+                    <div id="gradient-left"
+                        class="hidden absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none">
+                    </div>
+                    <!-- Scrollable container -->
+                    <div class="overflow-x-auto no-scrollbar px-1 py-1 flex space-x-2 scroll-smooth" id="category-nav"
+                        style="scroll-padding-right: 40px;"></div>
+                    <!-- Right gradient fade -->
+                    <div id="gradient-right"
+                        class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none">
+                    </div>
+                </div>
                 <!-- Right scroll arrow (ALWAYS VISIBLE) -->
                 <button id="btn-scroll-right" onclick="window.scrollCategories(200)"
                     class="flex-none w-8 h-8 items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-white bg-slate-100 rounded-full transition-all shadow-sm ring-1 ring-slate-200 hover:ring-indigo-200 z-10 flex">
@@ -1701,28 +1712,50 @@
             const nav = document.getElementById('category-nav');
             const leftBtn = document.getElementById('btn-scroll-left');
             const rightBtn = document.getElementById('btn-scroll-right');
+            const gradientLeft = document.getElementById('gradient-left');
+            const gradientRight = document.getElementById('gradient-right');
 
             if (!nav || !leftBtn || !rightBtn) return;
 
-            // Flecha izquierda: Visible si el scroll es mayor a 10px
-            leftBtn.style.display = nav.scrollLeft > 10 ? 'flex' : 'none';
+            // Flecha izquierda y gradient: Visible si hay scroll
+            const hasScrollLeft = nav.scrollLeft > 10;
+            leftBtn.style.display = hasScrollLeft ? 'flex' : 'none';
+            if (gradientLeft) {
+                gradientLeft.classList.toggle('hidden', !hasScrollLeft);
+            }
 
-            // Flecha derecha: Visible si el ancho total es mayor al scroll actual + el ancho visible
-            // Reducimos el margen de +20 a +5 para detectar mejor el contenido adicional
+            // Flecha derecha y gradient: Visible si hay más contenido
             const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 5);
             rightBtn.style.display = hasMoreContent ? 'flex' : 'none';
+            if (gradientRight) {
+                gradientRight.classList.toggle('hidden', !hasMoreContent);
+            }
         };
 
         // Inicialización de eventos
         document.addEventListener('DOMContentLoaded', () => {
             const nav = document.getElementById('category-nav');
             if (nav) {
+                // Scroll listener
                 nav.addEventListener('scroll', window.updateScrollArrows);
                 window.addEventListener('resize', window.updateScrollArrows);
-                // Múltiples verificaciones escalonadas para asegurar que detecte el contenido
-                setTimeout(window.updateScrollArrows, 100);  // Primera verificación rápida
-                setTimeout(window.updateScrollArrows, 500);  // Segunda verificación
-                setTimeout(window.updateScrollArrows, 1000); // Verificación final
+
+                // Mouse wheel horizontal scroll support
+                nav.addEventListener('wheel', (e) => {
+                    // Only handle horizontal scroll if there's content to scroll
+                    if (nav.scrollWidth > nav.clientWidth) {
+                        e.preventDefault();
+                        nav.scrollBy({
+                            left: e.deltaY < 0 ? -100 : 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, { passive: false });
+
+                // Múltiples verificaciones escalonadas
+                setTimeout(window.updateScrollArrows, 100);
+                setTimeout(window.updateScrollArrows, 500);
+                setTimeout(window.updateScrollArrows, 1000);
             }
         });
 
