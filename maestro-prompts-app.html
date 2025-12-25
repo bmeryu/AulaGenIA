@@ -461,7 +461,9 @@
     <div class="bg-white border-b border-slate-200 shadow-sm flex-none z-40">
         <div class="container mx-auto px-4 py-2 flex items-center gap-2 relative">
             <!-- Left scroll arrow (Absolute Positioned) -->
+            <!-- Left scroll arrow (Absolute Positioned) -->
             <button id="btn-scroll-left" onclick="window.scrollCategories(-200)"
+                onmouseenter="window.startAutoScroll(-10)" onmouseleave="window.stopAutoScroll()"
                 class="hidden absolute left-2 top-1/2 -translate-y-1/2 flex-none shrink-0 w-8 h-8 flex items-center justify-center bg-indigo-600 text-white rounded-full shadow-md hover:bg-indigo-700 transition-all z-50">
                 <span class="material-symbols-rounded text-xl font-bold">chevron_left</span>
             </button>
@@ -483,6 +485,7 @@
 
             <!-- Right scroll arrow (Absolute Positioned) -->
             <button id="btn-scroll-right" onclick="window.scrollCategories(200)"
+                onmouseenter="window.startAutoScroll(10)" onmouseleave="window.stopAutoScroll()"
                 style="display: flex !important; z-index: 100;"
                 class="absolute right-2 top-1/2 -translate-y-1/2 flex-none shrink-0 w-8 h-8 flex items-center justify-center bg-indigo-600 text-white rounded-full shadow-md hover:bg-indigo-700 transition-all z-50">
                 <span class="material-symbols-rounded text-xl font-bold">chevron_right</span>
@@ -1021,6 +1024,32 @@
         let currentVariables = {};
         let currentDifficulty = 'beginner';
         let currentViewMode = 'basic'; // 'basic' or 'agia'
+        // --- GLOBAL SCROLL CONTROLS ---
+        let autoScrollFrame;
+        let autoScrollSpeed = 0;
+
+        window.startAutoScroll = function (speed) {
+            const nav = document.getElementById('category-nav');
+            if (!nav) return;
+
+            autoScrollSpeed = speed;
+            if (autoScrollFrame) cancelAnimationFrame(autoScrollFrame);
+
+            nav.style.scrollBehavior = 'auto'; // Disable smooth for continuous
+
+            const loop = () => {
+                nav.scrollLeft += autoScrollSpeed;
+                autoScrollFrame = requestAnimationFrame(loop);
+            };
+            loop();
+        };
+
+        window.stopAutoScroll = function () {
+            if (autoScrollFrame) cancelAnimationFrame(autoScrollFrame);
+            const nav = document.getElementById('category-nav');
+            if (nav) nav.style.scrollBehavior = 'smooth';
+        };
+
         let currentCaseId = null;
         let isVaultUnlocked = false;
 
