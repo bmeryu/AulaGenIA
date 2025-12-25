@@ -1850,29 +1850,46 @@
                 setTimeout(window.updateScrollArrows, 1000);
 
                 // Auto-scroll on hover for arrows
-                let scrollInterval = null;
+                // Auto-scroll on hover for arrows (Improved Logic)
+                let leftInterval = null;
+                let rightInterval = null;
                 const leftBtn = document.getElementById('btn-scroll-left');
                 const rightBtn = document.getElementById('btn-scroll-right');
 
                 if (leftBtn) {
                     leftBtn.addEventListener('mouseenter', () => {
-                        scrollInterval = setInterval(() => {
-                            nav.scrollBy({ left: -5, behavior: 'auto' });
+                        if (leftInterval) clearInterval(leftInterval);
+                        leftInterval = setInterval(() => {
+                            // Remove smooth scroll temporarily for continuous movement
+                            nav.style.scrollBehavior = 'auto';
+                            nav.scrollLeft -= 15; // Faster speed
                         }, 20);
                     });
                     leftBtn.addEventListener('mouseleave', () => {
-                        if (scrollInterval) clearInterval(scrollInterval);
+                        if (leftInterval) {
+                            clearInterval(leftInterval);
+                            leftInterval = null;
+                        }
+                        nav.style.scrollBehavior = 'smooth'; // Restore
                     });
                 }
 
                 if (rightBtn) {
                     rightBtn.addEventListener('mouseenter', () => {
-                        scrollInterval = setInterval(() => {
-                            nav.scrollBy({ left: 5, behavior: 'auto' });
+                        console.log('Hover start right'); // Debug
+                        if (rightInterval) clearInterval(rightInterval);
+                        rightInterval = setInterval(() => {
+                            nav.style.scrollBehavior = 'auto';
+                            nav.scrollLeft += 15; // Faster speed
                         }, 20);
                     });
                     rightBtn.addEventListener('mouseleave', () => {
-                        if (scrollInterval) clearInterval(scrollInterval);
+                        console.log('Hover end right'); // Debug
+                        if (rightInterval) {
+                            clearInterval(rightInterval);
+                            rightInterval = null;
+                        }
+                        nav.style.scrollBehavior = 'smooth'; // Restore
                     });
                 }
             }
