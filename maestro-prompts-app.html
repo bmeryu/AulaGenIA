@@ -1212,13 +1212,28 @@
                 copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
                 copyBtn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
 
-                // Show Social Proof with Smoke Effect (random count each time)
+                // Show Social Proof with Smoke Effect (consistent per user via localStorage)
                 const socialProof = document.getElementById('maestro-social-proof');
                 const counter = document.getElementById('maestro-counter');
-                if (socialProof && counter) {
-                    // Generate random number between 150-400
-                    const randomCount = Math.floor(Math.random() * (400 - 150 + 1)) + 150;
-                    counter.textContent = randomCount;
+                const counterText = document.querySelector('#maestro-social-proof .text-\\[9px\\]');
+
+                if (socialProof && counter && counterText && currentCaseId) {
+                    // Generate consistent random number per prompt (stored in localStorage)
+                    const storageKey = `social-proof-${currentCaseId}`;
+                    let savedCount = localStorage.getItem(storageKey);
+
+                    if (!savedCount) {
+                        // First time visiting this prompt - generate and save
+                        savedCount = Math.floor(Math.random() * (400 - 150 + 1)) + 150;
+                        localStorage.setItem(storageKey, savedCount);
+                    }
+
+                    counter.textContent = savedCount;
+
+                    // Vary action verbs based on prompt ID (consistent but natural)
+                    const phrases = ['copiaron', 'usando', 'aplicaron', 'compartieron'];
+                    const phraseIndex = currentCaseId % phrases.length;
+                    counterText.innerHTML = `<span id="maestro-counter">${savedCount}</span> ${phrases[phraseIndex]}`;
 
                     // Reset animation by removing and re-adding class
                     socialProof.classList.remove('smoke-effect');
