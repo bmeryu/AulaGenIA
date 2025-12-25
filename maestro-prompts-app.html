@@ -482,7 +482,7 @@
             </div>
 
             <!-- Right scroll arrow -->
-            <button id="btn-scroll-right" onclick="window.scrollCategories(200)"
+            <button id="btn-scroll-right" onclick="window.scrollCategories(200)" style="display: flex !important;"
                 class="flex-none w-8 h-8 items-center justify-center text-slate-500 hover:text-teal-600 hover:bg-white bg-slate-100 rounded-full transition-all shadow-sm ring-1 ring-slate-200 hover:ring-teal-200 z-10 flex">
                 <span class="material-symbols-rounded text-xl font-bold">chevron_right</span>
             </button>
@@ -2179,19 +2179,31 @@
                 // Count cases per category
                 const count = casesData.filter(x => x.category === key).length;
 
-                return `<button onclick="filterByCategory('${key}')" class="whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-50 border border-slate-200 text-slate-600 hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 transition-all flex items-center gap-1.5 group">
+                // Add ID for easier selection and dynamic active class
+                const btnId = `cat-btn-${key.replace(/[^a-zA-Z0-9]/g, '-')}`;
+                const isActive = key === window.currentCategory;
+                const activeClass = isActive ? 'active' : '';
+
+                return `<button id="${btnId}" onclick="filterByCategory('${key}')" class="category-item whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-50 border border-slate-200 text-slate-600 hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 transition-all flex items-center gap-1.5 group ${activeClass}">
                     <span class="material-symbols-rounded text-sm text-slate-400 group-hover:text-indigo-600">${conf.icon}</span> 
                     ${key}
-                    <span class="bg-slate-100 text-slate-500 text-[9px] px-1.5 py-0.5 rounded-full ml-1 group-hover:bg-indigo-100 group-hover:text-indigo-600">${count}</span>
+                    <span class="badge bg-slate-100 text-slate-500 text-[9px] px-1.5 py-0.5 rounded-full ml-1 group-hover:bg-indigo-100 group-hover:text-indigo-600">${count}</span>
                 </button>`;
             }).join('');
         }
 
         function filterByCategory(cat) {
+            window.currentCategory = cat; // Store current category
             document.getElementById('searchInput').value = '';
             const filtered = casesData.filter(c => c.category === cat);
             renderList(filtered);
             if (filtered.length > 0) loadCase(filtered[0].id); // Auto-select first item
+
+            // Visual Update Active State
+            document.querySelectorAll('.category-item').forEach(btn => btn.classList.remove('active'));
+            const safeId = `cat-btn-${cat.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            const activeBtn = document.getElementById(safeId);
+            if (activeBtn) activeBtn.classList.add('active');
         }
 
         // Diccionario de Sinónimos para Búsqueda Inteligente
