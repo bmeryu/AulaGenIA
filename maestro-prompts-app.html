@@ -482,8 +482,9 @@
             </div>
 
             <!-- Right scroll arrow -->
-            <button id="btn-scroll-right" onclick="window.scrollCategories(200)" style="display: flex !important;"
-                class="flex-none w-8 h-8 items-center justify-center text-slate-500 hover:text-teal-600 hover:bg-white bg-slate-100 rounded-full transition-all shadow-sm ring-1 ring-slate-200 hover:ring-teal-200 z-10 flex">
+            <button id="btn-scroll-right" onclick="window.scrollCategories(200)"
+                style="display: flex !important; z-index: 100;"
+                class="flex-none w-8 h-8 flex items-center justify-center text-slate-500 hover:text-teal-600 hover:bg-white bg-slate-100 rounded-full transition-all shadow-sm ring-1 ring-slate-200 hover:ring-teal-200">
                 <span class="material-symbols-rounded text-xl font-bold">chevron_right</span>
             </button>
         </div>
@@ -1810,8 +1811,12 @@
                 gradientLeft.classList.toggle('hidden', !hasScrollLeft);
             }
 
-            // Flecha derecha: SIEMPRE visible
-            rightBtn.style.display = 'flex';
+            // Flecha derecha: SIEMPRE visible y forzada
+            if (rightBtn) {
+                rightBtn.style.setProperty('display', 'flex', 'important');
+                rightBtn.classList.remove('hidden');
+            }
+
             // Gradient derecha: visible si hay más contenido
             const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 5);
             if (gradientRight) {
@@ -2179,12 +2184,11 @@
                 // Count cases per category
                 const count = casesData.filter(x => x.category === key).length;
 
-                // Add ID for easier selection and dynamic active class
-                const btnId = `cat-btn-${key.replace(/[^a-zA-Z0-9]/g, '-')}`;
+                // Add data attribute for robust selection
                 const isActive = key === window.currentCategory;
                 const activeClass = isActive ? 'active' : '';
 
-                return `<button id="${btnId}" onclick="filterByCategory('${key}')" class="category-item whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-50 border border-slate-200 text-slate-600 hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 transition-all flex items-center gap-1.5 group ${activeClass}">
+                return `<button data-category="${key}" onclick="filterByCategory('${key}')" class="category-item whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-50 border border-slate-200 text-slate-600 hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 transition-all flex items-center gap-1.5 group ${activeClass}">
                     <span class="material-symbols-rounded text-sm text-slate-400 group-hover:text-indigo-600">${conf.icon}</span> 
                     ${key}
                     <span class="badge bg-slate-100 text-slate-500 text-[9px] px-1.5 py-0.5 rounded-full ml-1 group-hover:bg-indigo-100 group-hover:text-indigo-600">${count}</span>
@@ -2197,12 +2201,11 @@
             document.getElementById('searchInput').value = '';
             const filtered = casesData.filter(c => c.category === cat);
             renderList(filtered);
-            if (filtered.length > 0) loadCase(filtered[0].id); // Auto-select first item
-
-            // Visual Update Active State
+            if (filtered.length > 0) loadCase(filtered[0].id); // Auto-select            
+            // Visual Update Active State using data attributes
             document.querySelectorAll('.category-item').forEach(btn => btn.classList.remove('active'));
-            const safeId = `cat-btn-${cat.replace(/[^a-zA-Z0-9]/g, '-')}`;
-            const activeBtn = document.getElementById(safeId);
+            // Selector seguro sin regex complejos
+            const activeBtn = document.querySelector(`.category-item[data-category="${cat}"]`);
             if (activeBtn) activeBtn.classList.add('active');
         }
 
