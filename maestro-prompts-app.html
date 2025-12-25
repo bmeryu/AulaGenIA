@@ -968,24 +968,40 @@
 
                     try {
                         const userDoc = await userRef.get();
+                        console.log("🔍 Verificando enrollment para:", user.email);
+
                         if (userDoc.exists) {
                             const userData = userDoc.data();
+                            console.log("📦 User Data:", userData);
+                            console.log("📋 Enrollments:", userData.enrollments);
+
                             const courseId = 'ia-aplicada-esencial';
                             const oldCourseId = 'inteligencia-aplicada';
+
+                            if (userData.enrollments) {
+                                console.log(`✅ Checking ${courseId}:`, userData.enrollments[courseId]);
+                                console.log(`✅ Checking ${oldCourseId}:`, userData.enrollments[oldCourseId]);
+                            }
 
                             if (userData.enrollments &&
                                 (userData.enrollments[courseId] === true ||
                                     userData.enrollments[oldCourseId] === true)) {
                                 hasEnrollment = true;
+                                console.log("✅ ENROLLMENT DETECTADO - Desbloqueando contenido");
+                            } else {
+                                console.log("❌ NO HAY ENROLLMENT - Manteniendo bloqueado");
                             }
+                        } else {
+                            console.log("❌ Usuario no existe en Firestore");
                         }
                     } catch (error) {
-                        console.error("Error verificando enrollment:", error);
+                        console.error("❌ Error verificando enrollment:", error);
                     }
 
                     // Solo desbloquear si tiene enrollment
                     if (hasEnrollment) {
                         isVaultUnlocked = true;
+                        console.log("🔓 Desbloqueando vault...");
                         if (unlockBtn) unlockBtn.classList.add('hidden');
 
                         const teaser = document.getElementById('locked-teaser');
