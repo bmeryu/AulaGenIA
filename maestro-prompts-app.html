@@ -349,18 +349,6 @@
             box-shadow: 0 2px 6px rgba(20, 184, 166, 0.4);
             border: 2px solid white;
         }
-
-        /* Custom Tooltip Hover Effect */
-        .legend-item:hover .tooltip-custom {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .tooltip-custom {
-            white-space: normal;
-            max-width: 280px;
-            line-height: 1.4;
-        }
     </style>
 </head>
 
@@ -1771,16 +1759,13 @@
                 if (conf.bg.includes('violet')) colorName = 'violet';
 
                 return `<div id="legend-${key}" 
-                    class="legend-item flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-all duration-200 cursor-help relative
+                    title="${conf.desc.replace(/"/g, '&quot;')}"
+                    class="legend-item flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-all duration-200 cursor-help
                     bg-${colorName}-50 border-${colorName}-100 text-${colorName}-700 hover:bg-${colorName}-100 hover:border-${colorName}-300 shadow-sm"
                     onmouseenter="highlightSection('${key}')"
                     onmouseleave="resetLegend()">
                     <span class="w-2 h-2 rounded-full bg-${colorName}-500"></span>
                     <span class="text-[11px] font-bold tracking-wide">${conf.label}</span>
-                    <div class="tooltip-custom absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 pointer-events-none transition-opacity duration-200 z-50 max-w-xs">
-                        ${conf.desc.replace(/"/g, '&quot;')}
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-2 h-2 bg-slate-900 rotate-45"></div>
-                    </div>
                 </div>`;
             }).join('');
         }
