@@ -326,6 +326,21 @@
                     <span class="material-symbols-rounded text-sm text-yellow-400">lock_open</span>
                     <span class="hidden sm:inline">Desbloquear</span>
                 </button>
+
+                <!-- User Profile (hidden by default, shown when authenticated) -->
+                <div id="user-profile" class="hidden items-center gap-3 ml-2">
+                    <span id="user-display-name"
+                        class="text-sm font-semibold text-slate-700 truncate max-w-[12ch]"></span>
+                    <button id="user-avatar-btn" class="relative">
+                        <img id="user-avatar"
+                            class="w-9 h-9 rounded-full border-2 border-indigo-500 cursor-pointer hover:opacity-90 transition-opacity"
+                            alt="Avatar" />
+                    </button>
+                    <button id="logout-btn"
+                        class="text-xs text-slate-500 hover:text-red-600 transition-colors font-medium">
+                        Cerrar sesión
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -832,7 +847,7 @@
             statusOverlay.classList.add('flex');
             statusIcon.innerHTML = '<span class="material-symbols-rounded text-3xl text-red-500">error</span>';
             statusIcon.className = "w-16 h-16 bg-white border border-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm";
-            statusTitle.innerText = "Error de Conexión";
+        rror de Conexión";
 
             if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
                 statusDesc.innerText = "No pudimos conectar con el servidor de AulaGenia. Verifica tu conexión o que prompts_db.js exista.";
@@ -940,6 +955,31 @@
                 if (user) {
                     // console.log("Usuario autenticado:", user.email);
 
+                    // Mostrar perfil de usuario
+                    const userProfile = document.getElementById('user-profile');
+                    const userName = document.getElementById('user-display-name');
+                    const userAvatar = document.getElementById('user-avatar');
+
+                    if (userProfile && userName && userAvatar) {
+                        // Obtener nombre para mostrar
+                        const displayName = user.displayName || user.email.split('@')[0] || 'Usuario';
+                        const firstName = displayName.split(' ')[0];
+                        userName.textContent = firstName;
+
+                        // Configurar avatar
+                        if (user.photoURL) {
+                            userAvatar.src = user.photoURL;
+                        } else {
+                            // Avatar por defecto con inicial
+                            const initial = firstName.charAt(0).toUpperCase();
+                            userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName)}&background=6366f1&color=fff&bold=true`;
+                        }
+
+                        // Mostrar perfil
+                        userProfile.classList.remove('hidden');
+                        userProfile.classList.add('flex');
+                    }
+
                     // Verificar enrollment en Firestore
                     const userRef = db.collection('users').doc(user.uid);
                     let hasEnrollment = false;
@@ -980,6 +1020,13 @@
                         if (currentCaseId) loadCase(currentCaseId);
                     }
                 } else {
+                    // Usuario no autenticado - ocultar perfil
+                    const userProfile = document.getElementById('user-profile');
+                    if (userProfile) {
+                        userProfile.classList.add('hidden');
+                        userProfile.classList.remove('flex');
+                    }
+
                     // console.log("Usuario no autenticado.");
                     isVaultUnlocked = false;
 
@@ -990,6 +1037,20 @@
                     if (currentCaseId) loadCase(currentCaseId);
                 }
             });
+
+            // Logout functionality
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    try {
+                        await auth.signOut();
+                        window.location.href = 'index.html'; // Redirigir al home
+                    } catch (error) {
+                        console.error('Error al cerrar sesión:', error);
+                        alert('Error al cerrar sesión. Intenta nuevamente.');
+                    }
+                });
+            }
         }
 
         function decryptPrompt(ciphertext) {
@@ -1519,15 +1580,14 @@
                     el.style.zIndex = '20';
                 } else {
                     // Se mantiene visible pero desaturado
-                    el.style.opacity = '0.4';
-                    el.style.filter = 'grayscale(1)';
-                    el.style.transform = 'scale(0.96)';
+                    el.style.opacity = '                          el.style.filter = 'grayscale(1)';
+                    el.s         sform = 'scale(0.96)';
                     el.style.boxShadow = 'none';
                 }
             });
 
             // 3. Secciones del Prompt (Bloques de texto)
-            document.querySelectorAll('.prompt-section').forEach(el => {
+            ment.querySelectorAll('.prompt-section').forEach(el => {
                 const sectionKey = (el.dataset.section || '').toUpperCase();
 
                 if (sectionKey === targetKey) {
