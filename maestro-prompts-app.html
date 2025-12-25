@@ -1534,36 +1534,71 @@
             };
 
             // Parse the template to extract sections
-            const lines = template.split('\n');
-            const sections = {};
-            let currentSection = null;
-            let currentContent = [];
+            let sections = {};
 
-            lines.forEach((line, index) => {
-                // More flexible regex: matches with or without number, with or without colon
-                // Examples: "1. ROL:", "ROL:", "2. CONTEXTO", "CONTEXTO", etc.
-                const sectionMatch = line.match(/^(?:\d+\.\s*)?(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*(.*)/i);
+            // Check if prompt is all in one line (detect by presence of numbered sections)
+            const isSingleLine = template.indexOf('\n') === -1 && /\d+\.\s*(CONTEXTO|META|RESTRICCIONES|FORMATO)/i.test(template);
 
-                if (sectionMatch) {
-                    // Save previous section
-                    if (currentSection) {
-                        sections[currentSection] = currentContent.join(' ').trim();
-                    }
-                    currentSection = sectionMatch[1].toUpperCase();
-                    currentContent = [sectionMatch[2] || ''];
-                } else if (currentSection) {
-                    // Continue current section
-                    currentContent.push(line.trim());
-                } else if (index === 0 && line.trim() && !sectionMatch) {
-                    // First line doesn't have section marker - treat as ROL
-                    currentSection = 'ROL';
-                    currentContent = [line.trim()];
+            if (isSingleLine) {
+                // Single-line parser: split by numbered sections
+                // Example: "Estratega... 2. CONTEXTO: Idea... 3. META: 5 formatos... 4. RESTRICCIONES: Tono... 5. FORMATO: Tabla..."
+                const sectionRegex = /(?:^|(?:\s+|\.)\s*)(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*/gi;
+                let matches = [];
+                let match;
+
+                while ((match = sectionRegex.exec(template)) !== null) {
+                    matches.push({
+                        index: match.index,
+                        sectionName: match[2].toUpperCase(),
+                        fullMatch: match[0]
+                    });
                 }
-            });
 
-            // Don't forget the last section
-            if (currentSection) {
-                sections[currentSection] = currentContent.join(' ').trim();
+                // If no numbered sections found, treat entire text as ROL
+                if (matches.length === 0) {
+                    sections['ROL'] = template.trim();
+                } else {
+                    // Extract content between section markers
+                    matches.forEach((current, i) => {
+                        const nextIndex = i < matches.length - 1 ? matches[i + 1].index : template.length;
+                        const content = template.substring(current.index + current.fullMatch.length, nextIndex).trim();
+                        sections[current.sectionName] = content;
+                    });
+
+                    // Check if there's content before first numbered section (implicit ROL)
+                    if (matches[0].index > 0) {
+                        const beforeFirst = template.substring(0, matches[0].index).trim();
+                        if (beforeFirst) {
+                            sections['ROL'] = beforeFirst;
+                        }
+                    }
+                }
+            } else {
+                // Multi-line parser (original logic)
+                const lines = template.split('\n');
+                let currentSection = null;
+                let currentContent = [];
+
+                lines.forEach((line, index) => {
+                    const sectionMatch = line.match(/^(?:\d+\.\s*)?(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*(.*)/i);
+
+                    if (sectionMatch) {
+                        if (currentSection) {
+                            sections[currentSection] = currentContent.join(' ').trim();
+                        }
+                        currentSection = sectionMatch[1].toUpperCase();
+                        currentContent = [sectionMatch[2] || ''];
+                    } else if (currentSection) {
+                        currentContent.push(line.trim());
+                    } else if (index === 0 && line.trim() && !sectionMatch) {
+                        currentSection = 'ROL';
+                        currentContent = [line.trim()];
+                    }
+                });
+
+                if (currentSection) {
+                    sections[currentSection] = currentContent.join(' ').trim();
+                }
             }
 
             // Function to convert [bracketed text] into editable inputs
