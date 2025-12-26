@@ -470,35 +470,24 @@
     </header>
 
     <!-- CATEGORY CAROUSEL (Full Width) -->
-    <div class="bg-white border-b border-slate-200 shadow-sm flex-none z-40">
-        <div class="py-2 flex items-center gap-2 relative">
-            <!-- Left scroll arrow (Absolute Positioned) -->
-            <!-- Left scroll arrow (Absolute Positioned) -->
+    <div class="bg-white border-b border-slate-200 shadow-sm flex-none z-40 relative group">
+        <div class="w-full h-12 flex items-center relative">
+            <!-- Left scroll arrow (Floating Bubble) -->
             <button id="btn-scroll-left" onclick="window.scrollCategories(-200)"
-                onmouseenter="window.startAutoScroll(-10)" onmouseleave="window.stopAutoScroll()"
-                class="hidden absolute left-4 top-1/2 -translate-y-1/2 flex-none shrink-0 w-8 h-8 flex items-center justify-center bg-indigo-600 text-white rounded-full shadow-md hover:bg-indigo-700 transition-all z-50">
+                onmouseenter="window.startAutoScroll(-15)" onmouseleave="window.stopAutoScroll()"
+                class="hidden absolute left-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center bg-white/90 backdrop-blur-sm border border-slate-200 text-indigo-600 hover:text-indigo-800 hover:scale-110 rounded-full shadow-md transition-all">
                 <span class="material-symbols-rounded text-xl font-bold">chevron_left</span>
             </button>
 
-            <!-- Scrollable categories with gradient fade masks -->
-            <div class="flex-1 relative">
-                <!-- Left gradient fade -->
-                <div id="gradient-left"
-                    class="hidden absolute left-14 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none">
-                </div>
-                <!-- Scrollable container with extra padding for absolute arrows -->
-                <div class="overflow-x-auto no-scrollbar py-1 flex space-x-2 scroll-smooth mx-14" id="category-nav"
-                    style="scroll-padding-right: 40px;"></div>
-                <!-- Right gradient fade -->
-                <div id="gradient-right"
-                    class="absolute right-14 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none">
-                </div>
-            </div>
+            <!-- Scrollable container -->
+            <div class="overflow-x-auto no-scrollbar flex items-center space-x-2 scroll-smooth w-full px-4 h-full"
+                id="category-nav"></div>
 
-            <!-- Right scroll arrow (Absolute Positioned) -->
+            <!-- Right scroll arrow (Floating Bubble) -->
             <button id="btn-scroll-right" onclick="window.scrollCategories(200)"
-                onmouseenter="window.startAutoScroll(10)" onmouseleave="window.stopAutoScroll()"
-                class="absolute right-4 top-1/2 -translate-y-1/2 flex-none shrink-0 w-8 h-8 flex items-center justify-center bg-indigo-600 text-white rounded-full shadow-md hover:bg-indigo-700 transition-all z-50">
+                onmouseenter="window.startAutoScroll(15)" onmouseleave="window.stopAutoScroll()"
+                style="display: flex !important;"
+                class="absolute right-2 top-1/2 -translate-y-1/2 z-50 flex-none w-8 h-8 flex items-center justify-center bg-white/90 backdrop-blur-sm border border-slate-200 text-indigo-600 hover:text-indigo-800 hover:scale-110 rounded-full shadow-md transition-all">
                 <span class="material-symbols-rounded text-xl font-bold">chevron_right</span>
             </button>
         </div>
@@ -1872,13 +1861,14 @@
                 gradientLeft.classList.toggle('hidden', !hasScrollLeft);
             }
 
-            // Flecha derecha y gradient: Visible si hay más contenido
-            const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 5);
-
+            // Flecha derecha: SIEMPRE visible y forzada
             if (rightBtn) {
-                rightBtn.style.display = hasMoreContent ? 'flex' : 'none';
+                rightBtn.style.setProperty('display', 'flex', 'important');
+                rightBtn.classList.remove('hidden');
             }
 
+            // Gradient derecha: visible si hay más contenido
+            const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 5);
             if (gradientRight) {
                 gradientRight.classList.toggle('hidden', !hasMoreContent);
             }
@@ -2226,7 +2216,7 @@
                 const isActive = key === window.currentCategory;
                 const activeClass = isActive ? 'active' : '';
 
-                return `<button data-category="${key}" onclick="filterByCategory('${key}')" class="category-item whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-50 border border-slate-200 text-slate-600 hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 transition-all flex items-center gap-1.5 group ${activeClass}">
+                return `<button data-category="${key}" onclick="filterByCategory('${key}')" class="category-item shrink-0 whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-50 border border-slate-200 text-slate-600 hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 transition-all flex items-center gap-1.5 group ${activeClass}">
                     <span class="material-symbols-rounded text-sm text-slate-400 group-hover:text-indigo-600">${conf.icon}</span> 
                     ${key}
                     <span class="badge bg-slate-100 text-slate-500 text-[9px] px-1.5 py-0.5 rounded-full ml-1 group-hover:bg-indigo-100 group-hover:text-indigo-600">${count}</span>
