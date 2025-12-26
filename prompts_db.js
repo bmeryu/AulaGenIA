@@ -12,10 +12,7 @@ const casesData = [
         "previewResponse": "| Remitente | Resumen Crítico | Acción Sugerida |\n| :--- | :--- | :--- |\n| Juan Pérez (Cliente) | Reclamo por retraso en envío Starken. El cliente suena molesto por falta de tracking. | **Responder Hoy:** \"Hola Juan, te pido mil disculpas por el retraso. El envío está en tránsito y aquí tienes el número de seguimiento...\" |\n| Tesorería Municipal | Aviso de pago de patentes comerciales vence este viernes. | **Delegar:** Enviar a Contabilidad para pago inmediato y evitar multas. |\n| Newsletter IA | Resumen de novedades de la semana. | **Informativo:** Archivar para lectura de fin de semana. |",
         "metadata": {
             "score": 88
-        },
-        "suggestedAI": "ChatGPT-4",
-        "exampleTip": "Usa este prompt cuando tengas más de 20 correos sin leer. Si son menos, es mejor responder manualmente.",
-        "validationTip": "Verifica que la tabla incluya la columna 'Acción Sugerida' con verbos de acción claros (Responder, Archivar)."
+        }
     },
     {
         "id": 2,
