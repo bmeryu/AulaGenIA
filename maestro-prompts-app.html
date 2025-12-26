@@ -1588,6 +1588,38 @@
                         para.startsWith('<ul') || para.startsWith('<ol')) {
                         return para;
                     }
+
+                    // Check if paragraph has list items (lines starting with -)
+                    const lines = para.split('\n');
+                    const hasListItems = lines.some(line => line.trim().startsWith('- '));
+
+                    if (hasListItems) {
+                        // Process mixed content: convert dash lines to list
+                        let html = '';
+                        let inList = false;
+
+                        lines.forEach(line => {
+                            line = line.trim();
+                            if (line.startsWith('- ')) {
+                                if (!inList) {
+                                    html += '§§§UL§§§';
+                                    inList = true;
+                                }
+                                const content = line.substring(2).trim();
+                                html += `§§§LI§§§${content}§§§/LI§§§`;
+                            } else {
+                                if (inList) {
+                                    html += '§§§/UL§§§';
+                                    inList = false;
+                                }
+                                if (line) html += `<p>${line}</p>`;
+                            }
+                        });
+
+                        if (inList) html += '§§§/UL§§§';
+                        return html;
+                    }
+
                     return `<p>${para.replace(/\n/g, '<br>')}</p>`;
                 }).join('');
 
