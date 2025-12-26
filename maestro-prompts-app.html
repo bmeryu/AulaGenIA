@@ -382,6 +382,112 @@
             /* teal-500 */
             color: white !important;
         }
+
+        /* Markdown Content Styles - Professional Output Rendering */
+        .markdown-content {
+            line-height: 1.7;
+            color: #334155;
+        }
+
+        .markdown-content strong {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .markdown-content em {
+            font-style: italic;
+            color: #475569;
+        }
+
+        .markdown-content code {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.9em;
+            color: #be123c;
+        }
+
+        .markdown-content pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 12px 0;
+            border: 1px solid #334155;
+        }
+
+        .markdown-content pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            color: #e2e8f0;
+            font-size: 0.875rem;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .markdown-content table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .markdown-content table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75em;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #5a67d8;
+        }
+
+        .markdown-content table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        .markdown-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .markdown-content table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        .markdown-content li {
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+
+        .markdown-content p {
+            margin: 12px 0;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid #14b8a6;
+            padding-left: 16px;
+            margin: 16px 0;
+            color: #64748b;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -1353,6 +1459,129 @@
                 }
             }
 
+            /**
+             * Secure Markdown Renderer with XSS Protection
+             * Converts markdown text to properly formatted HTML
+             * Supports: tables, bold, italic, code, lists
+             */
+            function escapeHtml(unsafe) {
+                if (!unsafe) return '';
+                return String(unsafe)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            function formatPreviewTable(rawText) {
+                if (!rawText) return '';
+
+                // Remove leading/trailing quotes
+                let text = String(rawText).trim();
+                if ((text.startsWith('"') && text.endsWith('"')) ||
+                    (text.startsWith("'") && text.endsWith("'"))) {
+                    text = text.slice(1, -1).trim();
+                }
+
+                // Escape all HTML first for security
+                text = escapeHtml(text);
+
+                // Convert newlines to <br> for line breaks
+                text = text.replace(/\\n/g, '\n');
+
+                // Process markdown tables
+                text = renderMarkdownTables(text);
+
+                // Process code blocks (```...```)
+                text = text.replace(/```([a-z]*)\n([\s\S]*?)```/gi, (match, lang, code) => {
+                    return `<pre><code>${code.trim()}</code></pre>`;
+                });
+
+                // Process inline code (`...`)
+                text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+                // Process bold (**...**)
+                text = text.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+
+                // Process italic (*...*)
+                text = text.replace(/\*([^\*\n]+)\*/g, '<em>$1</em>');
+
+                // Process unordered lists (- item)
+                text = text.replace(/((?:^|\n)- .+(?:\n|$))+/g, (match) => {
+                    const items = match.trim().split('\n').map(line => {
+                        const content = line.replace(/^- /, '').trim();
+                        return `<li>${content}</li>`;
+                    }).join('');
+                    return `<ul>${items}</ul>`;
+                });
+
+                // Process ordered lists (1. item)
+                text = text.replace(/((?:^|\n)\d+\. .+(?:\n|$))+/g, (match) => {
+                    const items = match.trim().split('\n').map(line => {
+                        const content = line.replace(/^\d+\. /, '').trim();
+                        return `<li>${content}</li>`;
+                    }).join('');
+                    return `<ol>${items}</ol>`;
+                });
+
+                // Convert remaining newlines to paragraphs
+                text = text.split('\n\n').map(para => {
+                    para = para.trim();
+                    if (!para) return '';
+                    if (para.startsWith('<table') || para.startsWith('<pre') ||
+                        para.startsWith('<ul') || para.startsWith('<ol')) {
+                        return para;
+                    }
+                    return `<p>${para.replace(/\n/g, '<br>')}</p>`;
+                }).join('');
+
+                // Wrap in markdown-content class for styling
+                return `<div class="markdown-content">${text}</div>`;
+            }
+
+            function renderMarkdownTables(text) {
+                // Match markdown tables: | header | header |\n| --- | --- |\n| cell | cell |
+                const tableRegex = /(\|[^\n]+\|\n(?:\|[\s:-]+\|[\s\S]*?\n)?(?:\|[^\n]+\|\n?)*)/g;
+
+                return text.replace(tableRegex, (tableMatch) => {
+                    const lines = tableMatch.trim().split('\n').filter(l => l.trim());
+                    if (lines.length < 2) return tableMatch;
+
+                    // Parse header
+                    const headerCells = lines[0].split('|').filter(c => c.trim()).map(c => c.trim());
+
+                    // Check for separator line (optional in some formats)
+                    let dataStartIndex = 1;
+                    if (lines[1] && lines[1].includes('---') || lines[1].includes(':--')) {
+                        dataStartIndex = 2;
+                    }
+
+                    // Parse data rows
+                    const dataRows = lines.slice(dataStartIndex).map(line => {
+                        return line.split('|').filter(c => c.trim()).map(c => c.trim());
+                    });
+
+                    // Build HTML table
+                    let html = '<table><thead><tr>';
+                    headerCells.forEach(cell => {
+                        html += `<th>${cell}</th>`;
+                    });
+                    html += '</tr></thead><tbody>';
+
+                    dataRows.forEach(row => {
+                        html += '<tr>';
+                        row.forEach(cell => {
+                            html += `<td>${cell}</td>`;
+                        });
+                        html += '</tr>';
+                    });
+
+                    html += '</tbody></table>';
+                    return html;
+                });
+            }
+
             function decryptPrompt(ciphertext) {
                 try {
                     if (!ciphertext) return "";
@@ -1497,7 +1726,7 @@
                 document.getElementById('detail-title').innerText = c.title;
                 document.getElementById('detail-problem').innerText = c.problem;
 
-                document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview || '';
+                document.getElementById('bad-result-preview').innerHTML = formatPreviewTable(c.badResponsePreview || '');
                 document.getElementById('bad-response-analysis').innerHTML = c.badResponseAnalysis || '';
                 document.getElementById('good-result-preview').innerHTML = formatPreviewTable(c.previewResponse);
 
