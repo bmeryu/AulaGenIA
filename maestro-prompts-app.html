@@ -2136,12 +2136,13 @@
                 // CONVERSATIONAL MODE: Auto-detect sections by keywords
                 // CONVERSATIONAL MODE: Auto-detect sections by keywords
                 // UPDATED: Now supports both conversational hooks AND explicit headers (1. ROL, 🎯 CONTEXTO, etc.)
+                // Fixed: Added specific emoji support for ADJUNTO and stronger FORMATO delimiters
                 const conversationalPatterns = {
-                    'ROL': /^(Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:)/i,
-                    'CONTEXTO': /(📎|📄|🎤|🎯|📱|📹|💻|🧲|🛒|💰|📉|🛡️|🏷️|🪜|⏳)\s*CON(?:TEXTO)?|Mi negocio:|Mi situación:|Origen:|Destino:|Participantes:|Objetivo de|^2\.\s*CON(?:TEXTO)?:/i,
+                    'ROL': /^(Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:|🔸 ROL)/i,
+                    'CONTEXTO': /(📎|📄|🎤|🎯|📱|📹|💻|🧲|🛒|💰|📉|🛡️|🏷️|🪜|⏳|📊|📷)\s*(?:ADJUNTO|CON(?:TEXTO)?)|Mi negocio:|Mi situación:|Origen:|Destino:|Participantes:|Objetivo de|^2\.\s*CON(?:TEXTO)?:/i,
                     'META': /Necesito que|Necesito un|Necesito una|debo|quiero|busco|^3\.\s*META:|Meta:/i,
-                    'RESTRICCIONES': /Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|Restricciones Obligatorias|^4\.\s*RESTRICCIONES:|Restricciones:/i,
-                    'FORMATO': /Tabla con columnas?:|Formato:|Lista|usar el formato|^5\.\s*FORMATO:|Formato de Salida:/i
+                    'RESTRICCIONES': /Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|Restricciones Obligatorias|RESTRICCIONES CRÍTICAS|^4\.\s*RESTRICCIONES:|Restricciones:/i,
+                    'FORMATO': /Tabla con columnas?:|Formato:|Lista|usar el formato|^5\.\s*FORMATO:|Formato de Salida|FORMATO DE SALIDA/i
                 };
 
                 // Try conversational detection first
@@ -2179,7 +2180,20 @@
 
                 if (Object.keys(detectedSections).length > 0) {
                     sections = Object.fromEntries(
-                        Object.entries(detectedSections).map(([key, val]) => [key, val.join('\n')])
+                        Object.entries(detectedSections).map(([key, val]) => {
+                            // Strip the header text to avoid repetition
+                            // We join the array first
+                            let fullText = val.join('\n').trim();
+                            // Get the pattern associated with this key
+                            const pattern = conversationalPatterns[key];
+                            if (pattern) {
+                                // Replace the matched header at the start of the string
+                                fullText = fullText.replace(pattern, '').trim();
+                                // Clean up leading delimiters like ":" or "-" just in case
+                                fullText = fullText.replace(/^[:\s-]+/, '').trim();
+                            }
+                            return [key, fullText];
+                        })
                     );
                 } else {
                     // Fallback for extremely unstructured text
