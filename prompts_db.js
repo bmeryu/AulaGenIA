@@ -1527,3 +1527,5 @@ const casesData = [
         }
     }
 ];
+
+export default casesData;
