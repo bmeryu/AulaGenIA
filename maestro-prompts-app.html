@@ -969,26 +969,7 @@
             }
         };
 
-        // Auto-trigger on return
-        document.addEventListener('DOMContentLoaded', () => {
-            auth.onAuthStateChanged(user => {
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('action') === 'buy' && user) {
-                    // Open modal immediately to show feedback
-                    const modal = document.getElementById('paywall-modal');
-                    if (modal) modal.classList.remove('hidden');
 
-                    // Show "Generating Link..." feedback on button immediately
-                    const btn = document.getElementById('unlock-btn-modal');
-                    if (btn) {
-                        btn.textContent = "Generando link de pago...";
-                        btn.disabled = true;
-                    }
-
-                    triggerUnlockPayment();
-                }
-            });
-        });
     </script>
 
     <script type="module">
@@ -1244,42 +1225,53 @@
                             isVaultUnlocked = false;
 
                             // Actualizar botón del header a "Inscribirse"
-                            if (unlockBtn) {
-                                unlockBtn.classList.remove('hidden');
-                                const btnText = unlockBtn.querySelector('span:last-child');
-                                if (btnText) btnText.textContent = 'Inscribirse';
+                            const headerBtn = document.getElementById('unlock-btn');
+                            if (headerBtn) {
+                                headerBtn.innerHTML = '<span class="material-symbols-rounded text-sm text-yellow-400">star</span> Inscribirse';
                             }
-
-                            // Actualizar mensaje del teaser (SIEMPRE IGUAL)
-                            const teaserMessage = document.getElementById('teaser-message');
-                            const teaserActionText = document.getElementById('teaser-action-text');
-                            const teaserActionBtn = document.getElementById('teaser-action-btn');
-
-                            if (teaserMessage) {
-                                teaserMessage.textContent = 'Inscríbete en el curso "IA Aplicada · Esencial" para desbloquear todas las fórmulas maestras.';
-                            }
-                            if (teaserActionText) {
-                                teaserActionText.textContent = 'Inscribirse';
-                            }
-                            if (teaserActionBtn) {
-                                teaserActionBtn.href = '#';
-                                teaserActionBtn.onclick = (e) => {
-                                    e.preventDefault();
-                                    window.triggerUnlockPayment();
-                                };
-                            }
-
-                            if (currentCaseId) loadCase(currentCaseId);
-                        }
-                    } else {
-                        // Usuario NO autenticado - ocultar perfil y restaurar mensajes por defecto
-                        const userProfile = document.getElementById('user-profile');
-                        if (userProfile) {
-                            userProfile.classList.add('hidden');
-                            userProfile.classList.remove('flex');
                         }
 
-                        // Mensajes unificados del teaser (SIEMPRE IGUAL)
+                        // --- AUTO TRIGGER PAYMENT LOGIC (Moved here for safety) ---
+                        // Check URL actions ONLY after we know enrollment status
+                        const urlParams = new URLSearchParams(window.location.search);
+                        if (urlParams.get('action') === 'buy') {
+                            if (isVaultUnlocked) {
+                                // CASE: User/Guest paid, logged in, came back.
+                                console.log("User already enrolled. Creating smooth clean URL.");
+                                // Clean URL without reload
+                                const newUrl = window.location.pathname;
+                                window.history.replaceState({}, document.title, newUrl);
+                                // Toast feedback?
+                                const toast = document.getElementById('toast');
+                                if (toast) {
+                                    toast.innerHTML = '<div class="bg-emerald-500 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3"><span class="material-symbols-rounded">check_circle</span><div><p class="font-bold text-sm">¡Ya tienes acceso!</p></div></div>';
+                                    toast.classList.remove('translate-x-full');
+                                    setTimeout(() => toast.classList.add('translate-x-full'), 3000);
+                                }
+                            } else {
+                                // CASE: User/Guest NOT paid. Trigger flow.
+                                console.log("User NOT enrolled. Auto-triggering payment...");
+
+                                // Show Modal Feedback
+                                const modal = document.getElementById('paywall-modal');
+                                if (modal) modal.classList.remove('hidden');
+
+                                const btn = document.getElementById('unlock-btn-modal');
+                                if (btn) {
+                                    btn.textContent = "Generando link de pago...";
+                                    btn.disabled = true;
+                                }
+
+                                triggerUnlockPayment();
+                            }
+                        }
+                        if (unlockBtn) {
+                            unlockBtn.classList.remove('hidden');
+                            const btnText = unlockBtn.querySelector('span:last-child');
+                            if (btnText) btnText.textContent = 'Inscribirse';
+                        }
+
+                        // Actualizar mensaje del teaser (SIEMPRE IGUAL)
                         const teaserMessage = document.getElementById('teaser-message');
                         const teaserActionText = document.getElementById('teaser-action-text');
                         const teaserActionBtn = document.getElementById('teaser-action-btn');
@@ -1291,28 +1283,56 @@
                             teaserActionText.textContent = 'Inscribirse';
                         }
                         if (teaserActionBtn) {
-                            teaserActionBtn.href = 'acceso.html?redirect=maestro-prompts-app.html';
-                            teaserActionBtn.onclick = null;
+                            teaserActionBtn.href = '#';
+                            teaserActionBtn.onclick = (e) => {
+                                e.preventDefault();
+                                window.triggerUnlockPayment();
+                            };
                         }
+
+                        if (currentCaseId) loadCase(currentCaseId);
+                    }
+                } else {
+                    // Usuario NO autenticado - ocultar perfil y restaurar mensajes por defecto
+                    const userProfile = document.getElementById('user-profile');
+                    if(userProfile) {
+                        userProfile.classList.add('hidden');
+                        userProfile.classList.remove('flex');
+                    }
+
+                        // Mensajes unificados del teaser (SIEMPRE IGUAL)
+                        const teaserMessage = document.getElementById('teaser-message');
+                    const teaserActionText = document.getElementById('teaser-action-text');
+                    const teaserActionBtn = document.getElementById('teaser-action-btn');
+
+                    if(teaserMessage) {
+                        teaserMessage.textContent = 'Inscríbete en el curso "IA Aplicada · Esencial" para desbloquear todas las fórmulas maestras.';
+                    }
+                        if(teaserActionText) {
+                        teaserActionText.textContent = 'Inscribirse';
+                    }
+                        if(teaserActionBtn) {
+                        teaserActionBtn.href = 'acceso.html?redirect=maestro-prompts-app.html';
+                        teaserActionBtn.onclick = null;
+                    }
 
                         // Restaurar texto del botón del header
                         const unlockBtn = document.getElementById('unlock-btn');
-                        if (unlockBtn) {
-                            const btnText = unlockBtn.querySelector('span:last-child');
-                            if (btnText) btnText.textContent = 'Desbloquear';
-                        }
+                    if(unlockBtn) {
+                        const btnText = unlockBtn.querySelector('span:last-child');
+                        if (btnText) btnText.textContent = 'Desbloquear';
+                    }
 
                         // console.log("Usuario no autenticado.");
                         isVaultUnlocked = false;
 
-                        // Mostrar botón de desbloquear - usuario necesita acceso
-                        if (unlockBtn) unlockBtn.classList.remove('hidden');
+                    // Mostrar botón de desbloquear - usuario necesita acceso
+                    if(unlockBtn) unlockBtn.classList.remove('hidden');
 
-                        // Force reload to show lock
-                        if (currentCaseId) loadCase(currentCaseId);
-                    }
+                    // Force reload to show lock
+                    if(currentCaseId) loadCase(currentCaseId);
+                }
                 });
-            }
 
             // Logout functionality
             const logoutBtn = document.getElementById('logout-btn');
