@@ -1484,6 +1484,10 @@
                     text = text.slice(1, -1).trim();
                 }
 
+                // CRITICAL: Remove pseudo-HTML tags like <font-bold text-indigo-900> BEFORE escaping
+                // This cleans up any malformed HTML-like syntax that's not standard markdown
+                text = text.replace(/<[^>]+>/g, '');
+
                 // Escape all HTML first for security
                 text = escapeHtml(text);
 
