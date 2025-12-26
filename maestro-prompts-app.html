@@ -974,9 +974,16 @@
             auth.onAuthStateChanged(user => {
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('action') === 'buy' && user) {
-                    // Open modal if closed
+                    // Open modal immediately to show feedback
                     const modal = document.getElementById('paywall-modal');
                     if (modal) modal.classList.remove('hidden');
+
+                    // Show "Generating Link..." feedback on button immediately
+                    const btn = document.getElementById('unlock-btn-modal');
+                    if (btn) {
+                        btn.textContent = "Generando link de pago...";
+                        btn.disabled = true;
+                    }
 
                     triggerUnlockPayment();
                 }
@@ -2476,21 +2483,61 @@
         }
 
         function startSocialProof() {
-            // Expanded List of Names (More realistic and varied)
-            const buyers = [
+            // Expanded List of Names (More realistic and varied) - 200+ Mix
+            const globalBuyers = [
                 "Carlos R.", "Maria Jose L.", "StartUp Vision", "David Gonzalez", "Sofia P.",
                 "Agencia Nova", "Mario B.", "Fernanda S.", "Juan Pablo M.", "TechSolution Ltda",
                 "Laura D.", "Pedro A.", "Consuelo V.", "Ignacio R.", "Camila T.",
                 "Estudio Creativo", "Rodrigo F.", "Andrea M.", "Felipe S.", "Gabriela O.",
                 "Nicolas C.", "Valentina H.", "Javier E.", "Digital Growth", "Carolina U.",
-                "Ricardo P.", "Daniela B.", "Sebastian V.", "Francisca A.", "Matias L."
+                "Ricardo P.", "Daniela B.", "Sebastian V.", "Francisca A.", "Matias L.",
+                "Jorge M.", "Beatriz S.", "Luis G.", "Global Trends", "Elena K.",
+                "Pablo R.", "Teresa V.", "Hugo C.", "Verónica N.", "Innova Corp",
+                "Diego A.", "Natalia F.", "Roberto S.", "Clara D.", "Smart Biz",
+                "Manuel J.", "Patricia L.", "Gabriel M.", "Isabel T.", "Fusion Media",
+                "Alejandro V.", "Lucía B.", "Fernando R.", "Marta P.", "NextGen Agency",
+                "Alberto D.", "Carmen S.", "Raúl G.", "Silvia M.", "Eco Systems",
+                "Adrián L.", "Lorena C.", "Oscar P.", "Rosa T.", "Data Mind",
+                "Sergio H.", "Paula R.", "Iván F.", "Mónica G.", "Web Solutions",
+                "Antonio M.", "Eva S.", "Francisco J.", "Alicia V.", "Market Pro",
+                "Julián R.", "Cristina B.", "Rubén D.", "Nuria L.", "Cloud Nine",
+                "Héctor S.", "Marina P.", "Emilio C.", "Diana M.", "Alpha Group",
+                "Gonzalo V.", "Pilar R.", "Esteban G.", "Julia T.", "Net Connect",
+                "Álvaro F.", "Raquel S.", "Vicente M.", "Celia D.", "Future Tech",
+                "Santiago L.", "Inés P.", "Tomás R.", "Gloria V.", "Prime Corp",
+                "Rafael G.", "Angela M.", "Joaquín S.", "Olga B.", "Elite Services",
+                "Mariano D.", "Irene C.", "Salvador P.", "Adela R.", "Visionary Labs",
+                "Samuel V.", "Lidia M.", "Isaac G.", "Esther T.", "Quantum Leap",
+                "Félix R.", "Aurora S.", "Gustavo P.", "Blanca D.", "Apex Solutions",
+                "César M.", "Elisa V.", "Arturo L.", "Sara G.", "Nexus Point",
+                "Ramón B.", "Vanesa C.", "Domingo R.", "Fátima P.", "Synergy Hub",
+                "Gregorio S.", "Amalia M.", "Lorenzo D.", "Sonia V.", "Bright Ideas",
+                "Marcos P.", "Noelia R.", "Eugenio G.", "Miriam T.", "Zenith Corp",
+                "Benjamín L.", "Rocío S.", "Alfonso M.", "Virginia D.", "Core Systems",
+                "Cristóbal V.", "Begoña P.", "Leandro R.", "Matilde G.", "Flux Media",
+                "Simón D.", "Ariadna M.", "Damián S.", "Erika V.", "Spark Labs",
+                "Teodoro P.", "Carlota R.", "Fabián G.", "Lara D.", "Velocity Inc",
+                "Mauricio M.", "Daniela S.", "René V.", "Paulina C.", "Titan Group",
+                "Bruno L.", "Valeria P.", "Axel R.", "Camila G.", "Nova Tech",
+                "Ezequiel M.", "Ximena D.", "Dante S.", "Zoe V.", "Omega Corp",
+                "Lucas P.", "Abril R.", "Mateo G.", "Luna D.", "Starlight Co",
+                "Thiago M.", "Mia S.", "Ian V.", "Emma P.", "Blue Sky",
+                "Oliver R.", "Olivia G.", "Noah D.", "Ava M.", "Green Leaf",
+                "Liam S.", "Sophia V.", "Ethan P.", "Isabella R.", "Red Rock",
+                "Mason G.", "Charlotte D.", "Logan M.", "Amelia S.", "Silver Lining",
+                "Jacob P.", "Harper V.", "William R.", "Evelyn G.", "Golden Gate",
+                "Michael D.", "Abigail M.", "Alexander S.", "Emily P.", "Diamond Edge",
+                "James R.", "Elizabeth V.", "Benjamin G.", "Mila D.", "Iron Clad",
+                "Daniel M.", "Ella S.", "Henry P.", "Avery R.", "Steel Works",
+                "Jackson V.", "Sofia G.", "Sebastian D.", "Camila M.", "Bronze Age"
             ];
 
             // Expanded Locations
             const locations = [
                 "Madrid", "CDMX", "Santiago", "Bogotá", "Lima", "Miami", "Barcelona",
                 "Buenos Aires", "Medellín", "Valencia", "Monterrey", "Guadalajara",
-                "Quito", "Montevideo", "Viña del Mar", "Concepción", "Rosario", "Córdoba"
+                "Quito", "Montevideo", "Viña del Mar", "Concepción", "Rosario", "Córdoba",
+                "San José", "Panamá", "Asunción", "La Paz", "Bilbao", "Sevilla", "Zaragoza", "Málaga"
             ];
 
             // Professional Action Messages
@@ -2498,55 +2545,96 @@
                 "se inscribió en el Programa",
                 "comenzó el Curso de IA",
                 "accedió a la Bóveda",
-                "desbloqueó el Pack Maestro",
-                "se unió a AulaGenIA",
-                "comenzó a aprender",
-                "adquirió la Licencia Pro"
+                "desbloqueó su primer caso",
+                "está optimizando sus procesos",
+                "mejoró su prompt en 90%",
+                "ahorró 4 horas esta semana",
+                "descargó la guía maestra"
             ];
+
+            // --- SESSION TRACKING LOGIC ---
+            // Prevent repeating names in a single session
+            let usedNames = new Set();
+            try {
+                const stored = sessionStorage.getItem('agia_used_names');
+                if (stored) {
+                    usedNames = new Set(JSON.parse(stored));
+                }
+            } catch (e) {
+                console.warn('Session storage inaccessible');
+            }
+
+            function getRandomDetails() {
+                // Filter out used names
+                let availableBuyers = globalBuyers.filter(n => !usedNames.has(n));
+
+                // If we ran out (unlikely with 200+), reset
+                if (availableBuyers.length === 0) {
+                    usedNames.clear();
+                    availableBuyers = globalBuyers;
+                }
+
+                const buyer = availableBuyers[Math.floor(Math.random() * availableBuyers.length)];
+
+                // Mark as used
+                usedNames.add(buyer);
+                try {
+                    sessionStorage.setItem('agia_used_names', JSON.stringify([...usedNames]));
+                } catch (e) { }
+
+                const location = locations[Math.floor(Math.random() * locations.length)];
+                const action = actions[Math.floor(Math.random() * actions.length)];
+                // Random time: "Hace X min" or "Hace instantes"
+                const time = Math.random() > 0.7 ? "Hace instantes" : `Hace ${Math.floor(Math.random() * 59) + 1} min`;
+
+                return { buyer, location, action, time };
+            }
 
             const toast = document.getElementById('sales-toast');
 
-            const showNotification = () => {
-                const name = buyers[Math.floor(Math.random() * buyers.length)];
-                const location = locations[Math.floor(Math.random() * locations.length)];
-                const action = actions[Math.floor(Math.random() * actions.length)];
+            function showToast() {
+                if (!toast || document.hidden) return; // Don't show if tab hidden
 
-                // Logic to generate realistic time (skewed towards "recent")
-                const timeAgo = Math.random() > 0.6 ? "Hace instantes" : `Hace ${Math.floor(Math.random() * 12) + 1} min`;
+                const { buyer, location, action, time } = getRandomDetails();
 
-                // Determine avatar initial or icon
-                let avatarContent = name.charAt(0);
-                if (name.includes(" ")) {
-                    // StartUp -> S
-                    avatarContent = name.charAt(0);
-                }
+                // Generate Avatar Initial
+                const initial = buyer.charAt(0);
+                const colors = ['bg-indigo-500', 'bg-blue-500', 'bg-emerald-500', 'bg-violet-500', 'bg-rose-500', 'bg-amber-500'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
 
                 toast.innerHTML = `
-                <div class="bg-white/95 backdrop-blur border border-slate-100 p-3 rounded-xl shadow-lg flex items-center gap-3 max-w-sm ring-1 ring-black/5 transform transition-all hover:scale-105 cursor-pointer" onclick="openPaywall()">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs relative shadow-md shrink-0 border border-white">
-                        ${avatarContent}
-                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></span>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-[11px] text-slate-600 leading-tight truncate pr-2">
-                            <span class="font-bold text-slate-900">${name}</span> ${action}
-                        </p>
-                        <p class="text-[9px] text-slate-400 font-bold mt-0.5 flex items-center gap-1">
-                            <span class="material-symbols-rounded text-[10px] text-slate-300">public</span> ${timeAgo} • ${location}
-                        </p>
-                    </div>
+                <div class="bg-white rounded-lg shadow-xl border border-slate-100 p-3 flex items-center gap-3 w-80 relative overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer" onclick="openPaywall()">
+                     <div class="absolute left-0 top-0 bottom-0 w-1 ${color}"></div>
+                     <div class="flex-none w-10 h-10 rounded-full ${color} text-white flex items-center justify-center font-bold text-lg shadow-md relative">
+                        ${initial}
+                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full"></div>
+                     </div>
+                     <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                             <p class="text-sm font-bold text-slate-800 truncate pr-1">${buyer} <span class="font-normal text-slate-500 text-xs">adquirió la Licencia Pro</span></p>
+                        </div>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                             <span class="material-symbols-rounded text-slate-300 text-[10px]">public</span>
+                             <p class="text-[10px] text-slate-400 font-medium truncate">${time} • ${location}</p>
+                        </div>
+                     </div>
                 </div>`;
 
-                toast.classList.remove('opacity-0', 'translate-y-24');
-                setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-24'); }, 5000);
-            };
+                // Show
+                toast.classList.remove('translate-y-24', 'opacity-0');
 
-            setTimeout(showNotification, 4000);
-            const loop = () => {
-                const nextTime = Math.floor(Math.random() * (35000 - 12000 + 1) + 12000);
-                setTimeout(() => { showNotification(); loop(); }, nextTime);
-            };
-            loop();
+                // Hide after 6s
+                setTimeout(() => {
+                    toast.classList.add('translate-y-24', 'opacity-0');
+                }, 6000);
+
+                // Schedule next (random 15-45s)
+                const next = Math.floor(Math.random() * 30000) + 15000;
+                setTimeout(showToast, next);
+            }
+
+            // First show delayed
+            setTimeout(showToast, 5000);
         }
 
         // --- UTILIDAD DE FORMATEO VISUAL (Premium UX for Tables and Text) ---
