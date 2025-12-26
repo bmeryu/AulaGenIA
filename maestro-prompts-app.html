@@ -2476,24 +2476,64 @@
         }
 
         function startSocialProof() {
-            const buyers = ["Carlos R.", "Ana M.", "StartUp Inc", "David L.", "Sofia P.", "Agencia Flow", "Mario B."];
-            const locations = ["Madrid", "CDMX", "Santiago", "Bogotá", "Lima", "Miami", "Barcelona", "Buenos Aires", "Medellín"];
+            // Expanded List of Names (More realistic and varied)
+            const buyers = [
+                "Carlos R.", "Maria Jose L.", "StartUp Vision", "David Gonzalez", "Sofia P.",
+                "Agencia Nova", "Mario B.", "Fernanda S.", "Juan Pablo M.", "TechSolution Ltda",
+                "Laura D.", "Pedro A.", "Consuelo V.", "Ignacio R.", "Camila T.",
+                "Estudio Creativo", "Rodrigo F.", "Andrea M.", "Felipe S.", "Gabriela O.",
+                "Nicolas C.", "Valentina H.", "Javier E.", "Digital Growth", "Carolina U.",
+                "Ricardo P.", "Daniela B.", "Sebastian V.", "Francisca A.", "Matias L."
+            ];
+
+            // Expanded Locations
+            const locations = [
+                "Madrid", "CDMX", "Santiago", "Bogotá", "Lima", "Miami", "Barcelona",
+                "Buenos Aires", "Medellín", "Valencia", "Monterrey", "Guadalajara",
+                "Quito", "Montevideo", "Viña del Mar", "Concepción", "Rosario", "Córdoba"
+            ];
+
+            // Professional Action Messages
+            const actions = [
+                "se inscribió en el Programa",
+                "comenzó el Curso de IA",
+                "accedió a la Bóveda",
+                "desbloqueó el Pack Maestro",
+                "se unió a AulaGenIA",
+                "comenzó a aprender",
+                "adquirió la Licencia Pro"
+            ];
+
             const toast = document.getElementById('sales-toast');
 
             const showNotification = () => {
                 const name = buyers[Math.floor(Math.random() * buyers.length)];
                 const location = locations[Math.floor(Math.random() * locations.length)];
-                const timeAgo = Math.random() > 0.7 ? "Hace instantes" : `Hace ${Math.floor(Math.random() * 10) + 1} min`;
+                const action = actions[Math.floor(Math.random() * actions.length)];
+
+                // Logic to generate realistic time (skewed towards "recent")
+                const timeAgo = Math.random() > 0.6 ? "Hace instantes" : `Hace ${Math.floor(Math.random() * 12) + 1} min`;
+
+                // Determine avatar initial or icon
+                let avatarContent = name.charAt(0);
+                if (name.includes(" ")) {
+                    // StartUp -> S
+                    avatarContent = name.charAt(0);
+                }
 
                 toast.innerHTML = `
-                <div class="bg-white/95 backdrop-blur border border-slate-100 p-3 rounded-xl shadow-lg flex items-center gap-3 max-w-xs ring-1 ring-black/5 transform transition-all hover:scale-105 cursor-pointer" onclick="openPaywall()">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs relative shadow-md shrink-0">
-                        ${name.charAt(0)}
-                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white animate-pulse"></span>
+                <div class="bg-white/95 backdrop-blur border border-slate-100 p-3 rounded-xl shadow-lg flex items-center gap-3 max-w-sm ring-1 ring-black/5 transform transition-all hover:scale-105 cursor-pointer" onclick="openPaywall()">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs relative shadow-md shrink-0 border border-white">
+                        ${avatarContent}
+                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
-                    <div>
-                        <p class="text-xs text-slate-600 leading-tight"><span class="font-bold text-slate-900">${name}</span> compró Pack</p>
-                        <p class="text-[9px] text-slate-400 font-bold mt-0.5 flex items-center gap-1">${timeAgo} • ${location}</p>
+                    <div class="min-w-0">
+                        <p class="text-[11px] text-slate-600 leading-tight truncate pr-2">
+                            <span class="font-bold text-slate-900">${name}</span> ${action}
+                        </p>
+                        <p class="text-[9px] text-slate-400 font-bold mt-0.5 flex items-center gap-1">
+                            <span class="material-symbols-rounded text-[10px] text-slate-300">public</span> ${timeAgo} • ${location}
+                        </p>
                     </div>
                 </div>`;
 
