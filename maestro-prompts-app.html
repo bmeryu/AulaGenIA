@@ -2549,7 +2549,6 @@
             loop();
         }
 
-        // --- UTILIDAD DE FORMATEO VISUAL (Reparación de Tablas Markdown) ---
         // --- UTILIDAD DE FORMATEO VISUAL (Premium UX for Tables and Text) ---
         function formatPreviewTable(htmlContent) {
             if (!htmlContent) return "";
@@ -2561,25 +2560,12 @@
 
             cleanText = cleanText.replace(/&#124;/g, "|");
 
-            // 0. PRE-EXTRACCIÓN DE BLOQUES DE CÓDIGO (Para evitar que se rompan)
-            const codeBlockRegex = /```(\w+)?\n?([\s\S]*?)```/g;
-            let codeBlocks = [];
-            cleanText = cleanText.replace(codeBlockRegex, (match, lang, code) => {
-                const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
-                const language = lang || 'Code';
-                codeBlocks.push({
-                    lang: language.toUpperCase(),
-                    code: code.trim()
-                });
-                return placeholder;
-            });
-
             // 2. DETECTOR DE TABLAS (Lógica existente robusta)
             const lines = cleanText.split('\n').filter(l => l.trim().length > 0);
             const hasPipes = lines.some(l => l.includes('|'));
 
             // Si parece una tabla y tiene estructura, usamos el renderizador de tablas
-            if (hasPipes && (lines[0].includes('|') || (lines.length > 1 && lines[1].includes('|')))) {
+            if (hasPipes && lines.length > 1 && (lines[0].includes('|') || lines[1].includes('|'))) {
                 try {
                     let tableHTML = '<div class="overflow-x-auto my-3 rounded-xl border border-slate-200 shadow-sm"><table class="w-full text-xs text-left border-collapse bg-white">';
                     let inTbody = false;
@@ -2587,8 +2573,9 @@
 
                     lines.forEach((line, index) => {
                         const trimmed = line.trim();
-                        // Ignorar separadores md
-                        if (trimmed.match(/^\|?[\s-:]+\|[\s-:]+\|?$/) || trimmed.match(/^[\s-:]+\|[\s-:]+$/)) return;
+                        // Ignorar separadores md (ahora más robusto para :---)
+                        // Detecta líneas que SOLAMENTE contienen: pipes, espacios, guiones, dos puntos
+                        if (trimmed.match(/^\|?[\s\:\-\|]+\|?$/)) return;
 
                         let cells = trimmed.split('|');
                         if (trimmed.startsWith('|')) cells.shift();
@@ -2620,7 +2607,6 @@
             }
 
             // 3. RENDERIZADO DE TEXTO ENRIQUECIDO (NUEVO: Superior UX)
-            // Transforma Markdown básico en componentes UI profesionales
 
             let formattedHTML = '<div class="space-y-3 text-sm text-slate-600 leading-relaxed">';
 
@@ -2629,34 +2615,13 @@
 
             paragraphs.forEach(p => {
                 let text = p.trim();
-                if (!text) return;
+                // Ignorar líneas vacías o separadores md aislados
+                if (!text || text.match(/^\|?[\s\:\-\|]+\|?$/)) return;
 
-                // Re-insertar Bloques de Código
-                if (text.startsWith('__CODE_BLOCK_')) {
-                    const blockIdMatch = text.match(/\d+/);
-                    if (blockIdMatch) {
-                        const blockId = parseInt(blockIdMatch[0]);
-                        const block = codeBlocks[blockId];
-                        if (block) {
-                            formattedHTML += `<div class="bg-slate-900 text-slate-50 rounded-xl p-0 my-3 font-mono text-xs shadow-md border border-slate-700/50 relative group overflow-hidden">
-                                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5 bg-gradient-to-r from-white/5 to-transparent">
-                                    <span class="text-[10px] font-bold text-indigo-300 uppercase tracking-wider flex items-center gap-1.5"><span class="material-symbols-rounded text-sm">code</span> ${block.lang}</span>
-                                    <div class="flex gap-1.5 opacity-60">
-                                        <div class="w-2 h-2 rounded-full bg-slate-600"></div>
-                                        <div class="w-2 h-2 rounded-full bg-slate-600"></div>
-                                    </div>
-                                </div>
-                                <div class="p-4 overflow-x-auto custom-scrollbar">
-                                    <pre class="whitespace-pre text-slate-300 font-medium"><code>${escapeHtml(block.code)}</code></pre>
-                                </div>
-                            </div>`;
-                        }
-                    }
-                    return;
-                }
+                // A. Listas (Bullets) con guiones o asteriscos
+                const isList = text.match(/^[\-\*]\s/m) || (text.split('\n').every(l => l.trim().match(/^[\-\*]\s/)));
 
-                // A. Listas (Bullets)
-                if (text.match(/^[\-\*]\s/m)) {
+                if (isList) {
                     formattedHTML += '<ul class="space-y-2 my-2 ml-1">';
                     const listItems = text.split('\n');
                     listItems.forEach(item => {
@@ -2664,8 +2629,12 @@
                         let content = item.replace(/^[\-\*]\s+/, '').trim();
                         if (!content) return;
 
-                        // Negrita dentro de lista
+                        // Negrita
                         content = content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-indigo-900">$1</strong>');
+                        // Comillas - Estilo Destacado
+                        content = content.replace(/"([^"]+)"/g, '<span class="text-indigo-600 font-medium tracking-wide">"$1"</span>');
+                        // Highlights tipo `codigo`
+                        content = content.replace(/`([^`]+)`/g, '<code class="bg-indigo-50 text-indigo-700 px-1 py-0.5 rounded text-xs font-bold border border-indigo-100">$1</code>');
 
                         formattedHTML += `<li class="flex items-start gap-2.5">
                             <span class="flex-none mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-sm"></span>
@@ -2677,14 +2646,14 @@
                 }
 
                 // B. Bloques Destacados (Key: Value style)
-                // Ejemplo: "**RESUMEN:** Contenido..."
                 const keyValMatch = text.match(/^\*\*(.*?)\:\*\*\s*(.*)/s);
                 if (keyValMatch) {
                     const label = keyValMatch[1];
                     const body = keyValMatch[2];
 
-                    // Renderizado tipo "Tarjeta de Insight"
-                    let styledBody = body.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>');
+                    let styledBody = body
+                        .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
+                        .replace(/"([^"]+)"/g, '<span class="text-indigo-600 font-medium tracking-wide">"$1"</span>');
 
                     formattedHTML += `<div class="bg-indigo-50/40 rounded-xl p-4 border border-indigo-100/50 relative overflow-hidden group">
                         <div class="absolute top-0 left-0 w-1 h-full bg-indigo-400/30"></div>
@@ -2696,11 +2665,13 @@
                     return;
                 }
 
-                // C. Párrafos Estándar con formato inline
+                // C. Párrafos Estándar con formato inline extendido
                 let styledParam = text
                     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 bg-slate-100/50 px-0.5 rounded">$1</strong>') // Negrita
                     .replace(/\*(.*?)\*/g, '<em class="text-slate-500 italic">$1</em>') // Cursiva
-                    .replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-slate-700 px-1 py-0.5 rounded text-xs font-mono border border-slate-200">$1</code>'); // Code
+                    .replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-slate-700 px-1 py-0.5 rounded text-xs font-mono border border-slate-200">$1</code>') // Code
+                    .replace(/"([^"]+)"/g, '<span class="text-indigo-600 font-medium tracking-wide">"$1"</span>') // Quotes color
+                    .replace(/ --/g, ' &mdash;'); // Guiones largos visuales
 
                 formattedHTML += `<p>${styledParam}</p>`;
             });
