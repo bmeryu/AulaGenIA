@@ -1477,25 +1477,51 @@
             function formatPreviewTable(rawText) {
                 if (!rawText) return '';
 
-                // Remove leading/trailing quotes
                 let text = String(rawText).trim();
-                if ((text.startsWith('"') && text.endsWith('"')) ||
-                    (text.startsWith("'") && text.endsWith("'"))) {
-                    text = text.slice(1, -1).trim();
-                }
 
-                // CRITICAL: Remove pseudo-HTML tags like <font-bold text-indigo-900> BEFORE escaping
-                // This cleans up any malformed HTML-like syntax that's not standard markdown
-                text = text.replace(/<[^>]+>/g, '');
+                // ═══════════════════════════════════════════════════════
+                // STAGE 1: AGGRESSIVE CLEANUP (Before any processing)
+                // ═══════════════════════════════════════════════════════
 
-                // Escape all HTML first for security
-                text = escapeHtml(text);
+                // Remove ALL HTML/XML tags (including pseudo-HTML like <font-bold text-indigo-900>)
+                text = text.replace(/<\/?[^>]+(>|$)/g, '');
 
-                // Convert newlines to <br> for line breaks
+                // Remove leading/trailing quotes (single or double)
+                text = text.replace(/^["']|["']$/g, '').trim();
+
+                // Clean up excessive whitespace
+                text = text.replace(/\s+/g, ' ').trim();
+
+                // ═══════════════════════════════════════════════════════
+                // STAGE 2: MARKDOWN TO HTML CONVERSION (Safe, controlled)
+                // ═══════════════════════════════════════════════════════
+
+                // Convert escaped newlines to actual newlines
                 text = text.replace(/\\n/g, '\n');
 
-                // Process markdown tables
+                // Process markdown tables FIRST (before escaping)
                 text = renderMarkdownTables(text);
+
+                // Now escape HTML for security (but preserve our table HTML)
+                const parts = [];
+                const tablePattern = /(<table>[\s\S]*?<\/table>)/g;
+                let lastIndex = 0;
+                let match;
+
+                while ((match = tablePattern.exec(text)) !== null) {
+                    // Escape text before table
+                    if (match.index > lastIndex) {
+                        parts.push(escapeHtml(text.substring(lastIndex, match.index)));
+                    }
+                    // Keep table HTML as-is
+                    parts.push(match[0]);
+                    lastIndex = match.index + match[0].length;
+                }
+                // Escape remaining text
+                if (lastIndex < text.length) {
+                    parts.push(escapeHtml(text.substring(lastIndex)));
+                }
+                text = parts.join('');
 
                 // Process code blocks (```...```)
                 text = text.replace(/```([a-z]*)\n([\s\S]*?)```/gi, (match, lang, code) => {
@@ -1529,10 +1555,15 @@
                     return `<ol>${items}</ol>`;
                 });
 
+                // ═══════════════════════════════════════════════════════
+                // STAGE 3: FINAL FORMATTING
+                // ═══════════════════════════════════════════════════════
+
                 // Convert remaining newlines to paragraphs
                 text = text.split('\n\n').map(para => {
                     para = para.trim();
                     if (!para) return '';
+                    // Don't wrap structural elements
                     if (para.startsWith('<table') || para.startsWith('<pre') ||
                         para.startsWith('<ul') || para.startsWith('<ol')) {
                         return para;
