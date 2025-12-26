@@ -1291,365 +1291,364 @@
                         }
 
                         if (currentCaseId) loadCase(currentCaseId);
-                    }
-                } else {
-                    // Usuario NO autenticado - ocultar perfil y restaurar mensajes por defecto
-                    const userProfile = document.getElementById('user-profile');
-                    if(userProfile) {
-                        userProfile.classList.add('hidden');
-                        userProfile.classList.remove('flex');
-                    }
+                    } else {
+                        // Usuario NO autenticado - ocultar perfil y restaurar mensajes por defecto
+                        const userProfile = document.getElementById('user-profile');
+                        if (userProfile) {
+                            userProfile.classList.add('hidden');
+                            userProfile.classList.remove('flex');
+                        }
 
                         // Mensajes unificados del teaser (SIEMPRE IGUAL)
                         const teaserMessage = document.getElementById('teaser-message');
-                    const teaserActionText = document.getElementById('teaser-action-text');
-                    const teaserActionBtn = document.getElementById('teaser-action-btn');
+                        const teaserActionText = document.getElementById('teaser-action-text');
+                        const teaserActionBtn = document.getElementById('teaser-action-btn');
 
-                    if(teaserMessage) {
-                        teaserMessage.textContent = 'Inscríbete en el curso "IA Aplicada · Esencial" para desbloquear todas las fórmulas maestras.';
-                    }
-                        if(teaserActionText) {
-                        teaserActionText.textContent = 'Inscribirse';
-                    }
-                        if(teaserActionBtn) {
-                        teaserActionBtn.href = 'acceso.html?redirect=maestro-prompts-app.html';
-                        teaserActionBtn.onclick = null;
-                    }
+                        if (teaserMessage) {
+                            teaserMessage.textContent = 'Inscríbete en el curso "IA Aplicada · Esencial" para desbloquear todas las fórmulas maestras.';
+                        }
+                        if (teaserActionText) {
+                            teaserActionText.textContent = 'Inscribirse';
+                        }
+                        if (teaserActionBtn) {
+                            teaserActionBtn.href = 'acceso.html?redirect=maestro-prompts-app.html';
+                            teaserActionBtn.onclick = null;
+                        }
 
                         // Restaurar texto del botón del header
                         const unlockBtn = document.getElementById('unlock-btn');
-                    if(unlockBtn) {
-                        const btnText = unlockBtn.querySelector('span:last-child');
-                        if (btnText) btnText.textContent = 'Desbloquear';
-                    }
+                        if (unlockBtn) {
+                            const btnText = unlockBtn.querySelector('span:last-child');
+                            if (btnText) btnText.textContent = 'Desbloquear';
+                        }
 
                         // console.log("Usuario no autenticado.");
                         isVaultUnlocked = false;
 
-                    // Mostrar botón de desbloquear - usuario necesita acceso
-                    if(unlockBtn) unlockBtn.classList.remove('hidden');
+                        // Mostrar botón de desbloquear - usuario necesita acceso
+                        if (unlockBtn) unlockBtn.classList.remove('hidden');
 
-                    // Force reload to show lock
-                    if(currentCaseId) loadCase(currentCaseId);
-                }
-                });
-
-            // Logout functionality
-            const logoutBtn = document.getElementById('logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', async () => {
-                    try {
-                        await auth.signOut();
-                        // Recargar la misma página en lugar de redirigir a home
-                        window.location.reload();
-                    } catch (error) {
-                        console.error('Error al cerrar sesión:', error);
-                        alert('Error al cerrar sesión. Intenta nuevamente.');
+                        // Force reload to show lock
+                        if (currentCaseId) loadCase(currentCaseId);
                     }
                 });
-            }
-        }
 
-        function decryptPrompt(ciphertext) {
-            try {
-                if (!ciphertext) return "";
-                if (!ciphertext.startsWith("U2F")) return ciphertext;
-
-                const bytes = CryptoJS.AES.decrypt(ciphertext, getEncryptionKey());
-                const originalText = bytes.toString(CryptoJS.enc.Utf8);
-                return originalText || "Error: Corrupted Data";
-            } catch (e) {
-                console.error("Decryption failed", e);
-                return "Error: Decryption Failed";
-            }
-        }
-
-
-        function setMode(mode) {
-            currentViewMode = mode;
-            const btnBasic = document.getElementById('btn-basic');
-            const btnAgia = document.getElementById('btn-agia');
-            const maestroBadge = document.getElementById('maestro-cta-badge');
-            const contentBasic = document.getElementById('content-basic');
-            const contentAgia = document.getElementById('content-agia');
-            const copyBtn = document.getElementById('copy-btn');
-            const copyBtnContainer = document.getElementById('copy-btn-container');
-
-            if (mode === 'basic') {
-                contentBasic.classList.remove('hidden');
-                contentAgia.classList.add('hidden');
-
-                // Basic button active
-                btnBasic.classList.add('bg-slate-600', 'text-white');
-                btnBasic.classList.remove('text-slate-600');
-
-                // Maestro button with CTA styling
-                btnAgia.classList.remove('bg-indigo-600', 'text-white');
-                btnAgia.classList.add('text-slate-600', 'animate-pulse', 'ring-2', 'ring-emerald-400', 'ring-offset-2');
-
-                // Show upgrade badge
-                if (maestroBadge) maestroBadge.classList.remove('hidden');
-
-                // Disable and hide copy button
-                if (copyBtnContainer) copyBtnContainer.classList.add('hidden');
-                copyBtn.disabled = true;
-                copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
-                copyBtn.classList.add('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
-
-                // Hide Social Proof counter
-                const socialProof = document.getElementById('maestro-social-proof');
-                if (socialProof) {
-                    socialProof.classList.add('hidden');
-                    socialProof.classList.remove('flex');
+                // Logout functionality
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', async () => {
+                        try {
+                            await auth.signOut();
+                            // Recargar la misma página en lugar de redirigir a home
+                            window.location.reload();
+                        } catch (error) {
+                            console.error('Error al cerrar sesión:', error);
+                            alert('Error al cerrar sesión. Intenta nuevamente.');
+                        }
+                    });
                 }
-            } else {
-                contentBasic.classList.add('hidden');
-                contentAgia.classList.remove('hidden');
+            }
 
-                // Basic button inactive
-                btnBasic.classList.remove('bg-slate-600', 'text-white');
-                btnBasic.classList.add('text-slate-600');
+            function decryptPrompt(ciphertext) {
+                try {
+                    if (!ciphertext) return "";
+                    if (!ciphertext.startsWith("U2F")) return ciphertext;
 
-                // Maestro button active (no CTA)
-                btnAgia.classList.add('bg-indigo-600', 'text-white');
-                btnAgia.classList.remove('text-slate-600', 'animate-pulse', 'ring-2', 'ring-emerald-400', 'ring-offset-2');
+                    const bytes = CryptoJS.AES.decrypt(ciphertext, getEncryptionKey());
+                    const originalText = bytes.toString(CryptoJS.enc.Utf8);
+                    return originalText || "Error: Corrupted Data";
+                } catch (e) {
+                    console.error("Decryption failed", e);
+                    return "Error: Decryption Failed";
+                }
+            }
 
-                // Hide upgrade badge
-                if (maestroBadge) maestroBadge.classList.add('hidden');
 
-                // Show and enable copy button
-                if (copyBtnContainer) copyBtnContainer.classList.remove('hidden');
-                copyBtn.disabled = false;
-                copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
-                copyBtn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
+            function setMode(mode) {
+                currentViewMode = mode;
+                const btnBasic = document.getElementById('btn-basic');
+                const btnAgia = document.getElementById('btn-agia');
+                const maestroBadge = document.getElementById('maestro-cta-badge');
+                const contentBasic = document.getElementById('content-basic');
+                const contentAgia = document.getElementById('content-agia');
+                const copyBtn = document.getElementById('copy-btn');
+                const copyBtnContainer = document.getElementById('copy-btn-container');
 
-                // Show Social Proof with Smoke Effect (consistent per user via localStorage)
-                const socialProof = document.getElementById('maestro-social-proof');
-                const counter = document.getElementById('maestro-counter');
-                const counterText = document.querySelector('#maestro-social-proof .text-\\[9px\\]');
+                if (mode === 'basic') {
+                    contentBasic.classList.remove('hidden');
+                    contentAgia.classList.add('hidden');
 
-                if (socialProof && counter && counterText && currentCaseId) {
-                    // Generate consistent random number per prompt (stored in localStorage)
-                    const storageKey = `social-proof-${currentCaseId}`;
-                    let savedCount = localStorage.getItem(storageKey);
+                    // Basic button active
+                    btnBasic.classList.add('bg-slate-600', 'text-white');
+                    btnBasic.classList.remove('text-slate-600');
 
-                    if (!savedCount) {
-                        // First time visiting this prompt - generate and save
-                        savedCount = Math.floor(Math.random() * (400 - 150 + 1)) + 150;
-                        localStorage.setItem(storageKey, savedCount);
+                    // Maestro button with CTA styling
+                    btnAgia.classList.remove('bg-indigo-600', 'text-white');
+                    btnAgia.classList.add('text-slate-600', 'animate-pulse', 'ring-2', 'ring-emerald-400', 'ring-offset-2');
+
+                    // Show upgrade badge
+                    if (maestroBadge) maestroBadge.classList.remove('hidden');
+
+                    // Disable and hide copy button
+                    if (copyBtnContainer) copyBtnContainer.classList.add('hidden');
+                    copyBtn.disabled = true;
+                    copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
+                    copyBtn.classList.add('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
+
+                    // Hide Social Proof counter
+                    const socialProof = document.getElementById('maestro-social-proof');
+                    if (socialProof) {
+                        socialProof.classList.add('hidden');
+                        socialProof.classList.remove('flex');
                     }
-
-                    counter.textContent = savedCount;
-
-                    // Vary action verbs based on prompt ID (consistent but natural)
-                    const phrases = ['copiaron', 'usando', 'aplicaron', 'compartieron'];
-                    const phraseIndex = currentCaseId % phrases.length;
-                    counterText.innerHTML = `<span id="maestro-counter">${savedCount}</span> ${phrases[phraseIndex]}`;
-
-                    // Reset animation by removing and re-adding class
-                    socialProof.classList.remove('smoke-effect');
-                    socialProof.classList.remove('hidden');
-                    socialProof.classList.add('flex');
-
-                    // Trigger reflow to restart animation
-                    void socialProof.offsetWidth;
-
-                    // Add smoke effect animation
-                    socialProof.classList.add('smoke-effect');
-                }
-            }
-        }
-
-        function loadCase(id) {
-            currentCaseId = id;
-            const c = casesData.find(x => x.id === id);
-            if (!c) return;
-
-            // Scroll to Top logic fix
-            const scrollContainer = document.getElementById('detail-scroll-container');
-            if (scrollContainer) scrollContainer.scrollTop = 0;
-
-            // Determine effective lock state (Database OR User Session)
-            const isLocked = c.locked || !isVaultUnlocked;
-
-            currentDifficulty = c.difficulty || 'beginner';
-
-            // Reset Social Proof Counter specific to prompt ID
-            // Removed static formula ID * 0.2
-            // Now logic is handled in the text randomizer below
-
-            document.querySelectorAll('.case-item').forEach(el => {
-                el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
-                el.classList.add('border-transparent', 'text-slate-600');
-            });
-            const activeItem = document.getElementById(`case-item-${id}`);
-            if (activeItem) {
-                activeItem.classList.remove('border-transparent', 'text-slate-600');
-                activeItem.classList.add('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
-            }
-
-            document.getElementById('workspace-empty').classList.add('hidden');
-            document.getElementById('case-detail').classList.remove('hidden');
-
-            document.getElementById('detail-title').innerText = c.title;
-            document.getElementById('detail-problem').innerText = c.problem;
-
-            document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview || '';
-            document.getElementById('bad-response-analysis').innerHTML = c.badResponseAnalysis || '';
-            document.getElementById('good-result-preview').innerHTML = formatPreviewTable(c.previewResponse);
-
-            const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
-            const badge = document.getElementById('detail-category-badge');
-            badge.innerText = c.category; // Use full category name
-            badge.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${cat.color}-600 border-${cat.color}-100`;
-
-            const aiBadge = document.getElementById('ai-suggestion-badge');
-            const aiName = document.getElementById('ai-name');
-            if (c.suggestedAI) {
-                let niceName = c.suggestedAI.toUpperCase();
-                aiName.innerText = niceName;
-                aiBadge.classList.remove('hidden');
-                aiBadge.classList.add('flex');
-            } else {
-                aiBadge.classList.add('hidden');
-                aiBadge.classList.remove('flex');
-            }
-
-            // Benefit Badge Logic
-            const benefitBadge = document.getElementById('benefit-badge');
-            if (benefitBadge) {
-                if (currentDifficulty === 'beginner') {
-                    benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">bolt</span> Ahorro: ~15 min';
-                    benefitBadge.className = "text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 flex items-center gap-1.5 shadow-sm";
-                } else if (currentDifficulty === 'intermediate') {
-                    benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">rocket_launch</span> Ahorro: ~45 min';
-                    benefitBadge.className = "text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100 flex items-center gap-1.5 shadow-sm";
                 } else {
-                    benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">diamond</span> Ahorro: +2 Horas';
-                    benefitBadge.className = "text-[10px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-100 flex items-center gap-1.5 shadow-sm";
+                    contentBasic.classList.add('hidden');
+                    contentAgia.classList.remove('hidden');
+
+                    // Basic button inactive
+                    btnBasic.classList.remove('bg-slate-600', 'text-white');
+                    btnBasic.classList.add('text-slate-600');
+
+                    // Maestro button active (no CTA)
+                    btnAgia.classList.add('bg-indigo-600', 'text-white');
+                    btnAgia.classList.remove('text-slate-600', 'animate-pulse', 'ring-2', 'ring-emerald-400', 'ring-offset-2');
+
+                    // Hide upgrade badge
+                    if (maestroBadge) maestroBadge.classList.add('hidden');
+
+                    // Show and enable copy button
+                    if (copyBtnContainer) copyBtnContainer.classList.remove('hidden');
+                    copyBtn.disabled = false;
+                    copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
+                    copyBtn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
+
+                    // Show Social Proof with Smoke Effect (consistent per user via localStorage)
+                    const socialProof = document.getElementById('maestro-social-proof');
+                    const counter = document.getElementById('maestro-counter');
+                    const counterText = document.querySelector('#maestro-social-proof .text-\\[9px\\]');
+
+                    if (socialProof && counter && counterText && currentCaseId) {
+                        // Generate consistent random number per prompt (stored in localStorage)
+                        const storageKey = `social-proof-${currentCaseId}`;
+                        let savedCount = localStorage.getItem(storageKey);
+
+                        if (!savedCount) {
+                            // First time visiting this prompt - generate and save
+                            savedCount = Math.floor(Math.random() * (400 - 150 + 1)) + 150;
+                            localStorage.setItem(storageKey, savedCount);
+                        }
+
+                        counter.textContent = savedCount;
+
+                        // Vary action verbs based on prompt ID (consistent but natural)
+                        const phrases = ['copiaron', 'usando', 'aplicaron', 'compartieron'];
+                        const phraseIndex = currentCaseId % phrases.length;
+                        counterText.innerHTML = `<span id="maestro-counter">${savedCount}</span> ${phrases[phraseIndex]}`;
+
+                        // Reset animation by removing and re-adding class
+                        socialProof.classList.remove('smoke-effect');
+                        socialProof.classList.remove('hidden');
+                        socialProof.classList.add('flex');
+
+                        // Trigger reflow to restart animation
+                        void socialProof.offsetWidth;
+
+                        // Add smoke effect animation
+                        socialProof.classList.add('smoke-effect');
+                    }
                 }
             }
 
-            const tipContainer = document.getElementById('tip-container');
-            const validationContainer = document.getElementById('validation-container');
-            const tipText = document.getElementById('detail-example-tip');
-            const valText = document.getElementById('detail-validation-tip');
+            function loadCase(id) {
+                currentCaseId = id;
+                const c = casesData.find(x => x.id === id);
+                if (!c) return;
 
-            if (c.exampleTip) {
-                tipText.innerHTML = c.exampleTip;
-                tipContainer.classList.remove('hidden');
-                tipContainer.classList.add('flex');
-            } else {
-                tipContainer.classList.add('hidden');
-                tipContainer.classList.remove('flex');
-            }
-            if (c.validationTip) {
-                valText.innerHTML = c.validationTip;
-                validationContainer.classList.remove('hidden');
-                validationContainer.classList.add('flex');
-            } else {
-                validationContainer.classList.add('hidden');
-                validationContainer.classList.remove('flex');
-            }
+                // Scroll to Top logic fix
+                const scrollContainer = document.getElementById('detail-scroll-container');
+                if (scrollContainer) scrollContainer.scrollTop = 0;
 
-            currentPromptTemplate = c.agiaPromptTagged;
+                // Determine effective lock state (Database OR User Session)
+                const isLocked = c.locked || !isVaultUnlocked;
 
-            // Decrypt ONLY if unlocked
-            if (isVaultUnlocked && currentPromptTemplate.startsWith("U2F")) {
-                currentPromptTemplate = decryptPrompt(currentPromptTemplate);
-            }
+                currentDifficulty = c.difficulty || 'beginner';
 
-            currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
-            currentVariables = {};
+                // Reset Social Proof Counter specific to prompt ID
+                // Removed static formula ID * 0.2
+                // Now logic is handled in the text randomizer below
 
-            // Si está bloqueado, no intentamos parsear variables porque el texto es basura encriptada
-            if (!currentPromptTemplate.startsWith("U2F")) {
-                const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
-                let match;
-                while ((match = regex.exec(currentPromptTemplate)) !== null) {
-                    currentVariables[match[1]] = match[2];
+                document.querySelectorAll('.case-item').forEach(el => {
+                    el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
+                    el.classList.add('border-transparent', 'text-slate-600');
+                });
+                const activeItem = document.getElementById(`case-item-${id}`);
+                if (activeItem) {
+                    activeItem.classList.remove('border-transparent', 'text-slate-600');
+                    activeItem.classList.add('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
+                }
+
+                document.getElementById('workspace-empty').classList.add('hidden');
+                document.getElementById('case-detail').classList.remove('hidden');
+
+                document.getElementById('detail-title').innerText = c.title;
+                document.getElementById('detail-problem').innerText = c.problem;
+
+                document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview || '';
+                document.getElementById('bad-response-analysis').innerHTML = c.badResponseAnalysis || '';
+                document.getElementById('good-result-preview').innerHTML = formatPreviewTable(c.previewResponse);
+
+                const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
+                const badge = document.getElementById('detail-category-badge');
+                badge.innerText = c.category; // Use full category name
+                badge.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${cat.color}-600 border-${cat.color}-100`;
+
+                const aiBadge = document.getElementById('ai-suggestion-badge');
+                const aiName = document.getElementById('ai-name');
+                if (c.suggestedAI) {
+                    let niceName = c.suggestedAI.toUpperCase();
+                    aiName.innerText = niceName;
+                    aiBadge.classList.remove('hidden');
+                    aiBadge.classList.add('flex');
+                } else {
+                    aiBadge.classList.add('hidden');
+                    aiBadge.classList.remove('flex');
+                }
+
+                // Benefit Badge Logic
+                const benefitBadge = document.getElementById('benefit-badge');
+                if (benefitBadge) {
+                    if (currentDifficulty === 'beginner') {
+                        benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">bolt</span> Ahorro: ~15 min';
+                        benefitBadge.className = "text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 flex items-center gap-1.5 shadow-sm";
+                    } else if (currentDifficulty === 'intermediate') {
+                        benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">rocket_launch</span> Ahorro: ~45 min';
+                        benefitBadge.className = "text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100 flex items-center gap-1.5 shadow-sm";
+                    } else {
+                        benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">diamond</span> Ahorro: +2 Horas';
+                        benefitBadge.className = "text-[10px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-100 flex items-center gap-1.5 shadow-sm";
+                    }
+                }
+
+                const tipContainer = document.getElementById('tip-container');
+                const validationContainer = document.getElementById('validation-container');
+                const tipText = document.getElementById('detail-example-tip');
+                const valText = document.getElementById('detail-validation-tip');
+
+                if (c.exampleTip) {
+                    tipText.innerHTML = c.exampleTip;
+                    tipContainer.classList.remove('hidden');
+                    tipContainer.classList.add('flex');
+                } else {
+                    tipContainer.classList.add('hidden');
+                    tipContainer.classList.remove('flex');
+                }
+                if (c.validationTip) {
+                    valText.innerHTML = c.validationTip;
+                    validationContainer.classList.remove('hidden');
+                    validationContainer.classList.add('flex');
+                } else {
+                    validationContainer.classList.add('hidden');
+                    validationContainer.classList.remove('flex');
+                }
+
+                currentPromptTemplate = c.agiaPromptTagged;
+
+                // Decrypt ONLY if unlocked
+                if (isVaultUnlocked && currentPromptTemplate.startsWith("U2F")) {
+                    currentPromptTemplate = decryptPrompt(currentPromptTemplate);
+                }
+
+                currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
+                currentVariables = {};
+
+                // Si está bloqueado, no intentamos parsear variables porque el texto es basura encriptada
+                if (!currentPromptTemplate.startsWith("U2F")) {
+                    const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
+                    let match;
+                    while ((match = regex.exec(currentPromptTemplate)) !== null) {
+                        currentVariables[match[1]] = match[2];
+                    }
+                }
+
+                // Force Lock if content is encrypted and vault is locked
+                const effectivelyLocked = isLocked || (!isVaultUnlocked && currentPromptTemplate.startsWith("U2F"));
+
+                renderPrompts(effectivelyLocked);
+
+                // Lógica de Bloqueo Visual (Teaser)
+                const lockOverlay = document.getElementById('locked-teaser');
+                const blurWrapper = document.getElementById('prompt-blur-wrapper');
+                const copyBtn = document.getElementById('copy-btn');
+                const resultTeaser = document.getElementById('result-teaser-label');
+                const passwordInput = document.getElementById('vault-password');
+                if (passwordInput) passwordInput.value = ""; // Clear password on new case load
+
+                if (effectivelyLocked) {
+                    lockOverlay.classList.remove('hidden');
+                    blurWrapper.classList.add('blur-prompt');
+                    copyBtn.disabled = true;
+                    copyBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'cursor-pointer');
+                    copyBtn.innerHTML = '<span class="material-symbols-rounded text-sm copy-icon">lock</span><span class="copy-text">Bloqueado</span>';
+                    resultTeaser.classList.remove('hidden');
+                    resultTeaser.classList.add('flex');
+                } else {
+                    lockOverlay.classList.add('hidden');
+                    blurWrapper.classList.remove('blur-prompt');
+                    copyBtn.disabled = false;
+                    copyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'cursor-pointer');
+                    copyBtn.innerHTML = '<span class="material-symbols-rounded text-sm copy-icon">content_copy</span><span class="copy-text">Copiar</span>';
+                    resultTeaser.classList.add('hidden');
+                    resultTeaser.classList.remove('flex');
+                }
+
+                setMode(currentViewMode);
+
+                // Social Proof Randomizer
+                const socialText = document.getElementById('social-proof-text');
+                if (socialText) {
+                    // Deterministic Randomness based on ID
+                    const base = Math.floor(c.id * 0.8);
+                    const variance = ((c.id * 7) % 30) * 5;
+                    const count = base + variance + 45; // Minimum ~125 range
+
+                    // Randomize phrasing slightly based on ID parity
+                    const templates = [
+                        `Usado <span class="text-orange-600 text-xs">${count}</span> veces en la última hora`,
+                        `<span class="text-orange-600 text-xs">${count}</span> personas lo están usando ahora`,
+                        `Tendencia: <span class="text-orange-600 text-xs">${count}</span> usos recientes`
+                    ];
+                    const phraseIndex = c.id % templates.length;
+
+                    socialText.innerHTML = templates[phraseIndex];
+                }
+
+                // Apply same randomizer to header counter with varied phrases
+                const headerCounter = document.getElementById('social-counter-header');
+                if (headerCounter) {
+                    const base = Math.floor(c.id * 0.8);
+                    const variance = ((c.id * 7) % 30) * 5;
+                    const count = base + variance + 45;
+
+                    // Varied action verbs for natural feel - UPDATED with new verbs
+                    const phrases = [
+                        `${count} copiaron`,
+                        `${count} usando`,
+                        `${count} aplicaron`,
+                        `${count} compartieron`
+                    ];
+                    const phraseIndex = c.id % phrases.length;
+                    headerCounter.innerText = phrases[phraseIndex];
                 }
             }
 
-            // Force Lock if content is encrypted and vault is locked
-            const effectivelyLocked = isLocked || (!isVaultUnlocked && currentPromptTemplate.startsWith("U2F"));
+            function downloadPDF() {
+                // Calculate count of unlocked prompts to show value
+                const total = casesData.length;
+                const unlockedCount = casesData.filter(c => !(c.locked || globalLockMode)).length;
 
-            renderPrompts(effectivelyLocked);
-
-            // Lógica de Bloqueo Visual (Teaser)
-            const lockOverlay = document.getElementById('locked-teaser');
-            const blurWrapper = document.getElementById('prompt-blur-wrapper');
-            const copyBtn = document.getElementById('copy-btn');
-            const resultTeaser = document.getElementById('result-teaser-label');
-            const passwordInput = document.getElementById('vault-password');
-            if (passwordInput) passwordInput.value = ""; // Clear password on new case load
-
-            if (effectivelyLocked) {
-                lockOverlay.classList.remove('hidden');
-                blurWrapper.classList.add('blur-prompt');
-                copyBtn.disabled = true;
-                copyBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'cursor-pointer');
-                copyBtn.innerHTML = '<span class="material-symbols-rounded text-sm copy-icon">lock</span><span class="copy-text">Bloqueado</span>';
-                resultTeaser.classList.remove('hidden');
-                resultTeaser.classList.add('flex');
-            } else {
-                lockOverlay.classList.add('hidden');
-                blurWrapper.classList.remove('blur-prompt');
-                copyBtn.disabled = false;
-                copyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'cursor-pointer');
-                copyBtn.innerHTML = '<span class="material-symbols-rounded text-sm copy-icon">content_copy</span><span class="copy-text">Copiar</span>';
-                resultTeaser.classList.add('hidden');
-                resultTeaser.classList.remove('flex');
-            }
-
-            setMode(currentViewMode);
-
-            // Social Proof Randomizer
-            const socialText = document.getElementById('social-proof-text');
-            if (socialText) {
-                // Deterministic Randomness based on ID
-                const base = Math.floor(c.id * 0.8);
-                const variance = ((c.id * 7) % 30) * 5;
-                const count = base + variance + 45; // Minimum ~125 range
-
-                // Randomize phrasing slightly based on ID parity
-                const templates = [
-                    `Usado <span class="text-orange-600 text-xs">${count}</span> veces en la última hora`,
-                    `<span class="text-orange-600 text-xs">${count}</span> personas lo están usando ahora`,
-                    `Tendencia: <span class="text-orange-600 text-xs">${count}</span> usos recientes`
-                ];
-                const phraseIndex = c.id % templates.length;
-
-                socialText.innerHTML = templates[phraseIndex];
-            }
-
-            // Apply same randomizer to header counter with varied phrases
-            const headerCounter = document.getElementById('social-counter-header');
-            if (headerCounter) {
-                const base = Math.floor(c.id * 0.8);
-                const variance = ((c.id * 7) % 30) * 5;
-                const count = base + variance + 45;
-
-                // Varied action verbs for natural feel - UPDATED with new verbs
-                const phrases = [
-                    `${count} copiaron`,
-                    `${count} usando`,
-                    `${count} aplicaron`,
-                    `${count} compartieron`
-                ];
-                const phraseIndex = c.id % phrases.length;
-                headerCounter.innerText = phrases[phraseIndex];
-            }
-        }
-
-        function downloadPDF() {
-            // Calculate count of unlocked prompts to show value
-            const total = casesData.length;
-            const unlockedCount = casesData.filter(c => !(c.locked || globalLockMode)).length;
-
-            const printContent = `
+                const printContent = `
                 <html>
                 <head>
                     <title>Bóveda de Prompts AGIA</title>
@@ -1672,15 +1671,15 @@
                     <p class="subtitle">Reporte Generado el ${new Date().toLocaleDateString()} | ${unlockedCount}/${total} Desbloqueados</p>
                     
                     ${casesData.map(c => {
-                // Check if individual case is locked or if global lock is enabled (now controlled by isVaultUnlocked)
-                // If vault is NOT unlocked, treat as locked.
-                const isLocked = c.locked || !isVaultUnlocked;
+                    // Check if individual case is locked or if global lock is enabled (now controlled by isVaultUnlocked)
+                    // If vault is NOT unlocked, treat as locked.
+                    const isLocked = c.locked || !isVaultUnlocked;
 
-                const content = isLocked
-                    ? `<div class="locked-box">🔒 CONTENIDO EXCLUSIVO - Inicia sesión en AulaGenia para ver este contenido.</div>`
-                    : `<div class="prompt-box">${c.agiaPromptTagged ? decryptPrompt(c.agiaPromptTagged).replace(/{[a-z]+\}|{\/[a-z]+\}/g, '') : ''}</div>`;
+                    const content = isLocked
+                        ? `<div class="locked-box">🔒 CONTENIDO EXCLUSIVO - Inicia sesión en AulaGenia para ver este contenido.</div>`
+                        : `<div class="prompt-box">${c.agiaPromptTagged ? decryptPrompt(c.agiaPromptTagged).replace(/{[a-z]+\}|{\/[a-z]+\}/g, '') : ''}</div>`;
 
-                return `
+                    return `
                             <div class="case">
                                 <div class="title">${c.title}</div>
                                 <div class="meta">${c.category} • ${c.difficulty}</div>
@@ -1689,152 +1688,152 @@
                                 ${content}
                             </div>
                         `;
-            }).join('')}
+                }).join('')}
                     
                     <div class="watermark">Generado por AGIA Generator 3.0</div>
                     <script>window.onload = function() { window.print(); }</sc`+ `ript>
                 </body>
                 </html>
             `;
-            const win = window.open('', '_blank');
-            win.document.write(printContent);
-            win.document.close();
-        }
-
-        // Función para escapar HTML y prevenir XSS
-        function escapeHtml(text) {
-            if (!text) return text;
-            return String(text)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function renderPrompts(isLocked) {
-            // Keep original behavior for hidden element (used for copy)
-            let renderedAgia = escapeHtml(currentPromptTemplate);
-            Object.keys(currentVariables).forEach(key => {
-                const val = currentVariables[key] || "___";
-                const safeVal = escapeHtml(val);
-                const regex = new RegExp(`{${key}\\|[^}]+}`, 'g');
-                renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${safeVal}</span>`);
-            });
-            const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
-            Object.keys(tags).forEach(t => {
-                const className = `hl-${tags[t]}`;
-                const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
-                renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
-            });
-            renderedAgia = renderedAgia.replace(/\n/g, '<br>');
-            document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
-
-            // NEW: Parse and render AGIA sections with colored badges
-            renderAgiaSections(currentPromptTemplate);
-
-            let renderedBad = escapeHtml(currentBadPromptTemplate);
-            Object.keys(currentVariables).forEach(key => {
-                const val = currentVariables[key] || "...";
-                const safeVal = escapeHtml(val);
-                const regex = new RegExp(`{${key}}`, 'g');
-                renderedBad = renderedBad.replace(regex, `<span class="var-highlight-bad">${safeVal}</span>`);
-            });
-            document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
-        }
-
-        // NEW: Function to parse AGIA template and render with INLINE colored highlights + EDITABLE VARIABLES
-        function renderAgiaSections(template) {
-            const container = document.getElementById('agia-sections-container');
-            if (!container) return;
-
-            // AGIA section configuration - Light Theme Pastel Highlights
-            // Using bg-*-100 for subtle highlight on white/light bg, text-*-900 for readability
-            const sectionConfig = {
-                'ROL': { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Rol', desc: 'Dile a la IA quién debe ser (ejemplo: Experto en marketing, Profesor de inglés)' },
-                'CONTEXTO': { bg: 'bg-emerald-100', text: 'text-emerald-800', label: 'Contexto', desc: 'Explica tu situación o da información importante para que la IA entienda tu caso' },
-                'META': { bg: 'bg-amber-100', text: 'text-amber-800', label: 'Meta', desc: 'Qué quieres lograr (ejemplo: Crear una tabla, Escribir un email, Hacer un plan)' },
-                'RESTRICCIONES': { bg: 'bg-rose-100', text: 'text-rose-800', label: 'Restr.', desc: 'Límites o reglas (ejemplo: Máximo 3 líneas, No uses palabras técnicas)' },
-                'FORMATO': { bg: 'bg-violet-100', text: 'text-violet-800', label: 'Formato', desc: 'Cómo quieres la respuesta (ejemplo: Lista, Tabla, Párrafos)' }
-            };
-
-            // Parse the template to extract sections
-            let sections = {};
-
-            // Check if prompt is all in one line (detect by presence of numbered sections)
-            const isSingleLine = template.indexOf('\n') === -1 && /\d+\.\s*(CONTEXTO|META|RESTRICCIONES|FORMATO)/i.test(template);
-
-            if (isSingleLine) {
-                // Single-line parser: split by numbered sections
-                // Example: "Estratega... 2. CONTEXTO: Idea... 3. META: 5 formatos... 4. RESTRICCIONES: Tono... 5. FORMATO: Tabla..."
-                const sectionRegex = /(?:^|(?:\s+|\.)\s*)(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*/gi;
-                let matches = [];
-                let match;
-
-                while ((match = sectionRegex.exec(template)) !== null) {
-                    matches.push({
-                        index: match.index,
-                        sectionName: match[2].toUpperCase(),
-                        fullMatch: match[0]
-                    });
-                }
-
-                // If no numbered sections found, treat entire text as ROL
-                if (matches.length === 0) {
-                    sections['ROL'] = template.trim();
-                } else {
-                    // Extract content between section markers
-                    matches.forEach((current, i) => {
-                        const nextIndex = i < matches.length - 1 ? matches[i + 1].index : template.length;
-                        const content = template.substring(current.index + current.fullMatch.length, nextIndex).trim();
-                        sections[current.sectionName] = content;
-                    });
-
-                    // Check if there's content before first numbered section (implicit ROL)
-                    if (matches[0].index > 0) {
-                        const beforeFirst = template.substring(0, matches[0].index).trim();
-                        if (beforeFirst) {
-                            sections['ROL'] = beforeFirst;
-                        }
-                    }
-                }
-            } else {
-                // Multi-line parser (original logic)
-                const lines = template.split('\n');
-                let currentSection = null;
-                let currentContent = [];
-
-                lines.forEach((line, index) => {
-                    const sectionMatch = line.match(/^(?:\d+\.\s*)?(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*(.*)/i);
-
-                    if (sectionMatch) {
-                        if (currentSection) {
-                            sections[currentSection] = currentContent.join(' ').trim();
-                        }
-                        currentSection = sectionMatch[1].toUpperCase();
-                        currentContent = [sectionMatch[2] || ''];
-                    } else if (currentSection) {
-                        currentContent.push(line.trim());
-                    } else if (index === 0 && line.trim() && !sectionMatch) {
-                        currentSection = 'ROL';
-                        currentContent = [line.trim()];
-                    }
-                });
-
-                if (currentSection) {
-                    sections[currentSection] = currentContent.join(' ').trim();
-                }
+                const win = window.open('', '_blank');
+                win.document.write(printContent);
+                win.document.close();
             }
 
-            // Function to convert [bracketed text] into editable inputs
-            // (Function is defined above, this is reference)
-            function convertBracketsToInputs(text, sectionKey) {
-                let inputIndex = 0;
-                return text.replace(/\[([^\]]+)\]/g, (match, placeholder) => {
-                    const inputId = `var-input-${sectionKey}-${inputIndex++}`;
-                    const displayWidth = Math.max(placeholder.length * 8.5, 40);
+            // Función para escapar HTML y prevenir XSS
+            function escapeHtml(text) {
+                if (!text) return text;
+                return String(text)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
 
-                    return `<input type="text" 
+            function renderPrompts(isLocked) {
+                // Keep original behavior for hidden element (used for copy)
+                let renderedAgia = escapeHtml(currentPromptTemplate);
+                Object.keys(currentVariables).forEach(key => {
+                    const val = currentVariables[key] || "___";
+                    const safeVal = escapeHtml(val);
+                    const regex = new RegExp(`{${key}\\|[^}]+}`, 'g');
+                    renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${safeVal}</span>`);
+                });
+                const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
+                Object.keys(tags).forEach(t => {
+                    const className = `hl-${tags[t]}`;
+                    const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
+                    renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
+                });
+                renderedAgia = renderedAgia.replace(/\n/g, '<br>');
+                document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
+
+                // NEW: Parse and render AGIA sections with colored badges
+                renderAgiaSections(currentPromptTemplate);
+
+                let renderedBad = escapeHtml(currentBadPromptTemplate);
+                Object.keys(currentVariables).forEach(key => {
+                    const val = currentVariables[key] || "...";
+                    const safeVal = escapeHtml(val);
+                    const regex = new RegExp(`{${key}}`, 'g');
+                    renderedBad = renderedBad.replace(regex, `<span class="var-highlight-bad">${safeVal}</span>`);
+                });
+                document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
+            }
+
+            // NEW: Function to parse AGIA template and render with INLINE colored highlights + EDITABLE VARIABLES
+            function renderAgiaSections(template) {
+                const container = document.getElementById('agia-sections-container');
+                if (!container) return;
+
+                // AGIA section configuration - Light Theme Pastel Highlights
+                // Using bg-*-100 for subtle highlight on white/light bg, text-*-900 for readability
+                const sectionConfig = {
+                    'ROL': { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Rol', desc: 'Dile a la IA quién debe ser (ejemplo: Experto en marketing, Profesor de inglés)' },
+                    'CONTEXTO': { bg: 'bg-emerald-100', text: 'text-emerald-800', label: 'Contexto', desc: 'Explica tu situación o da información importante para que la IA entienda tu caso' },
+                    'META': { bg: 'bg-amber-100', text: 'text-amber-800', label: 'Meta', desc: 'Qué quieres lograr (ejemplo: Crear una tabla, Escribir un email, Hacer un plan)' },
+                    'RESTRICCIONES': { bg: 'bg-rose-100', text: 'text-rose-800', label: 'Restr.', desc: 'Límites o reglas (ejemplo: Máximo 3 líneas, No uses palabras técnicas)' },
+                    'FORMATO': { bg: 'bg-violet-100', text: 'text-violet-800', label: 'Formato', desc: 'Cómo quieres la respuesta (ejemplo: Lista, Tabla, Párrafos)' }
+                };
+
+                // Parse the template to extract sections
+                let sections = {};
+
+                // Check if prompt is all in one line (detect by presence of numbered sections)
+                const isSingleLine = template.indexOf('\n') === -1 && /\d+\.\s*(CONTEXTO|META|RESTRICCIONES|FORMATO)/i.test(template);
+
+                if (isSingleLine) {
+                    // Single-line parser: split by numbered sections
+                    // Example: "Estratega... 2. CONTEXTO: Idea... 3. META: 5 formatos... 4. RESTRICCIONES: Tono... 5. FORMATO: Tabla..."
+                    const sectionRegex = /(?:^|(?:\s+|\.)\s*)(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*/gi;
+                    let matches = [];
+                    let match;
+
+                    while ((match = sectionRegex.exec(template)) !== null) {
+                        matches.push({
+                            index: match.index,
+                            sectionName: match[2].toUpperCase(),
+                            fullMatch: match[0]
+                        });
+                    }
+
+                    // If no numbered sections found, treat entire text as ROL
+                    if (matches.length === 0) {
+                        sections['ROL'] = template.trim();
+                    } else {
+                        // Extract content between section markers
+                        matches.forEach((current, i) => {
+                            const nextIndex = i < matches.length - 1 ? matches[i + 1].index : template.length;
+                            const content = template.substring(current.index + current.fullMatch.length, nextIndex).trim();
+                            sections[current.sectionName] = content;
+                        });
+
+                        // Check if there's content before first numbered section (implicit ROL)
+                        if (matches[0].index > 0) {
+                            const beforeFirst = template.substring(0, matches[0].index).trim();
+                            if (beforeFirst) {
+                                sections['ROL'] = beforeFirst;
+                            }
+                        }
+                    }
+                } else {
+                    // Multi-line parser (original logic)
+                    const lines = template.split('\n');
+                    let currentSection = null;
+                    let currentContent = [];
+
+                    lines.forEach((line, index) => {
+                        const sectionMatch = line.match(/^(?:\d+\.\s*)?(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):?\s*(.*)/i);
+
+                        if (sectionMatch) {
+                            if (currentSection) {
+                                sections[currentSection] = currentContent.join(' ').trim();
+                            }
+                            currentSection = sectionMatch[1].toUpperCase();
+                            currentContent = [sectionMatch[2] || ''];
+                        } else if (currentSection) {
+                            currentContent.push(line.trim());
+                        } else if (index === 0 && line.trim() && !sectionMatch) {
+                            currentSection = 'ROL';
+                            currentContent = [line.trim()];
+                        }
+                    });
+
+                    if (currentSection) {
+                        sections[currentSection] = currentContent.join(' ').trim();
+                    }
+                }
+
+                // Function to convert [bracketed text] into editable inputs
+                // (Function is defined above, this is reference)
+                function convertBracketsToInputs(text, sectionKey) {
+                    let inputIndex = 0;
+                    return text.replace(/\[([^\]]+)\]/g, (match, placeholder) => {
+                        const inputId = `var-input-${sectionKey}-${inputIndex++}`;
+                        const displayWidth = Math.max(placeholder.length * 8.5, 40);
+
+                        return `<input type="text" 
                         id="${inputId}"
                         title="✏️ Campo editable: Escribe aquí tu texto personalizado."
                         class="var-input bg-white/50 border-b-2 border-dashed border-current/30 px-1 mx-0.5 text-inherit font-bold placeholder-current/40 focus:outline-none focus:border-current focus:bg-white transition-all h-auto py-0.5 leading-none text-center cursor-text hover:bg-white/80 rounded-sm"
@@ -1842,64 +1841,64 @@
                         placeholder="${escapeHtml(placeholder)}"
                         data-original="[${escapeHtml(placeholder)}]"
                         oninput="this.style.width = Math.max(this.value.length * 9, this.placeholder.length * 8.5, 40) + 'px'">`;
-                });
-            }
+                    });
+                }
 
-            // Build INLINE HTML with colored highlights and editable inputs
-            let html = '';
-            const sectionOrder = ['ROL', 'CONTEXTO', 'META', 'RESTRICCIONES', 'FORMATO'];
+                // Build INLINE HTML with colored highlights and editable inputs
+                let html = '';
+                const sectionOrder = ['ROL', 'CONTEXTO', 'META', 'RESTRICCIONES', 'FORMATO'];
 
-            sectionOrder.forEach(key => {
-                const config = sectionConfig[key];
-                let content = sections[key] || '';
-                if (!content) return;
+                sectionOrder.forEach(key => {
+                    const config = sectionConfig[key];
+                    let content = sections[key] || '';
+                    if (!content) return;
 
-                content = content.replace(/\s+/g, ' ').trim();
+                    content = content.replace(/\s+/g, ' ').trim();
 
-                // Convert brackets to inputs BEFORE escaping (so they become real inputs)
-                const htmlContent = convertBracketsToInputs(content, key);
+                    // Convert brackets to inputs BEFORE escaping (so they become real inputs)
+                    const htmlContent = convertBracketsToInputs(content, key);
 
-                // Escape only non-input text
-                const finalContent = htmlContent.replace(/([^<]*?)(<input[^>]+>)/g, (m, text, input) => {
-                    return escapeHtml(text) + input;
-                }).replace(/(<\/[^>]+>)([^<]*?)(?=<|$)/g, (m, tag, text) => {
-                    return tag + escapeHtml(text);
-                });
+                    // Escape only non-input text
+                    const finalContent = htmlContent.replace(/([^<]*?)(<input[^>]+>)/g, (m, text, input) => {
+                        return escapeHtml(text) + input;
+                    }).replace(/(<\/[^>]+>)([^<]*?)(?=<|$)/g, (m, tag, text) => {
+                        return tag + escapeHtml(text);
+                    });
 
-                // Inline span with hover effect - Stronger interaction for visibility
-                // Added ring-2 on hover to make it really pop as user requested
-                // Also ensures the hover color matches the section color family (derived from bg class)
-                const colorFamily = config.bg.split('-')[1]; // e.g. 'blue' from 'bg-blue-100'
+                    // Inline span with hover effect - Stronger interaction for visibility
+                    // Added ring-2 on hover to make it really pop as user requested
+                    // Also ensures the hover color matches the section color family (derived from bg class)
+                    const colorFamily = config.bg.split('-')[1]; // e.g. 'blue' from 'bg-blue-100'
 
-                html += `<span class="prompt-section ${config.bg} ${config.text} px-1.5 py-0.5 mx-0.5 box-decoration-clone leading-6 text-[14px] font-medium transition-all duration-300 cursor-default hover:ring-2 hover:ring-${colorFamily}-300 hover:bg-${colorFamily}-100 rounded-sm inline relative"
+                    html += `<span class="prompt-section ${config.bg} ${config.text} px-1.5 py-0.5 mx-0.5 box-decoration-clone leading-6 text-[14px] font-medium transition-all duration-300 cursor-default hover:ring-2 hover:ring-${colorFamily}-300 hover:bg-${colorFamily}-100 rounded-sm inline relative"
                     data-section="${key}"
                     onmouseenter="highlightSection('${key}')"
                     onmouseleave="resetLegend()">${htmlContent}</span>`;
-            });
+                });
 
-            // Container with tighter leading
-            container.innerHTML = `<div class="inline leading-6 tracking-tight">${html}</div>` || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
+                // Container with tighter leading
+                container.innerHTML = `<div class="inline leading-6 tracking-tight">${html}</div>` || '<p class="text-slate-400 text-sm italic">No se pudo parsear el prompt</p>';
 
-            // Render Dynamic Inline Legend
-            renderInlineLegend(sectionConfig);
-        }
+                // Render Dynamic Inline Legend
+                renderInlineLegend(sectionConfig);
+            }
 
-        // Render the new inline legend beside the header - Exact Design from Image
-        function renderInlineLegend(config) {
-            const legendContainer = document.getElementById('agia-legend-inline');
-            if (!legendContainer) return;
+            // Render the new inline legend beside the header - Exact Design from Image
+            function renderInlineLegend(config) {
+                const legendContainer = document.getElementById('agia-legend-inline');
+                if (!legendContainer) return;
 
-            legendContainer.innerHTML = Object.entries(config).map(([key, conf]) => {
-                // Map config colors to specific Tailwind shades for the "Dot + Text" style
-                // Image style: Light bg (50), Border (100/200), Strong Text (600/700), Dot (500)
-                let colorName = 'slate';
-                if (conf.bg.includes('blue')) colorName = 'blue';
-                if (conf.bg.includes('emerald')) colorName = 'emerald';
-                if (conf.bg.includes('amber')) colorName = 'amber';
-                if (conf.bg.includes('rose')) colorName = 'rose';
-                if (conf.bg.includes('violet')) colorName = 'violet';
+                legendContainer.innerHTML = Object.entries(config).map(([key, conf]) => {
+                    // Map config colors to specific Tailwind shades for the "Dot + Text" style
+                    // Image style: Light bg (50), Border (100/200), Strong Text (600/700), Dot (500)
+                    let colorName = 'slate';
+                    if (conf.bg.includes('blue')) colorName = 'blue';
+                    if (conf.bg.includes('emerald')) colorName = 'emerald';
+                    if (conf.bg.includes('amber')) colorName = 'amber';
+                    if (conf.bg.includes('rose')) colorName = 'rose';
+                    if (conf.bg.includes('violet')) colorName = 'violet';
 
-                return `<div id="legend-${key}" 
+                    return `<div id="legend-${key}" 
                     title="${conf.desc.replace(/"/g, '&quot;')}"
                     class="legend-item flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-all duration-200 cursor-help
                     bg-${colorName}-50 border-${colorName}-100 text-${colorName}-700 hover:bg-${colorName}-100 hover:border-${colorName}-300 shadow-sm"
@@ -1908,558 +1907,558 @@
                     <span class="w-2 h-2 rounded-full bg-${colorName}-500"></span>
                     <span class="text-[11px] font-bold tracking-wide">${conf.label}</span>
                 </div>`;
-            }).join('');
-        }
-
-        // --- LÓGICA DE NAVEGACIÓN (FLECHAS) ---
-
-        window.scrollCategories = function (offset) {
-            const nav = document.getElementById('category-nav');
-            if (nav) {
-                nav.scrollBy({ left: offset, behavior: 'smooth' });
-                // Verificamos el estado de las flechas después de que termine el scroll
-                setTimeout(window.updateScrollArrows, 350);
-            }
-        };
-
-        window.updateScrollArrows = function () {
-            const nav = document.getElementById('category-nav');
-            const leftBtn = document.getElementById('btn-scroll-left');
-            const rightBtn = document.getElementById('btn-scroll-right');
-            const gradientLeft = document.getElementById('gradient-left');
-            const gradientRight = document.getElementById('gradient-right');
-
-            if (!nav || !leftBtn || !rightBtn) return;
-
-            // Flecha izquierda y gradient: Visible si hay scroll
-            const hasScrollLeft = nav.scrollLeft > 10;
-            leftBtn.style.display = hasScrollLeft ? 'flex' : 'none';
-            if (gradientLeft) {
-                gradientLeft.classList.toggle('hidden', !hasScrollLeft);
+                }).join('');
             }
 
-            // Flecha derecha: SIEMPRE visible y forzada
-            if (rightBtn) {
-                rightBtn.style.setProperty('display', 'flex', 'important');
-                rightBtn.classList.remove('hidden');
-            }
+            // --- LÓGICA DE NAVEGACIÓN (FLECHAS) ---
 
-            // Gradient derecha: visible si hay más contenido
-            const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 5);
-            if (gradientRight) {
-                gradientRight.classList.toggle('hidden', !hasMoreContent);
-            }
-        };
+            window.scrollCategories = function (offset) {
+                const nav = document.getElementById('category-nav');
+                if (nav) {
+                    nav.scrollBy({ left: offset, behavior: 'smooth' });
+                    // Verificamos el estado de las flechas después de que termine el scroll
+                    setTimeout(window.updateScrollArrows, 350);
+                }
+            };
 
-        // Inicialización de eventos
-        document.addEventListener('DOMContentLoaded', () => {
-            const nav = document.getElementById('category-nav');
-            if (nav) {
-                // Scroll listener
-                nav.addEventListener('scroll', window.updateScrollArrows);
-                window.addEventListener('resize', window.updateScrollArrows);
+            window.updateScrollArrows = function () {
+                const nav = document.getElementById('category-nav');
+                const leftBtn = document.getElementById('btn-scroll-left');
+                const rightBtn = document.getElementById('btn-scroll-right');
+                const gradientLeft = document.getElementById('gradient-left');
+                const gradientRight = document.getElementById('gradient-right');
 
-                // Mouse wheel horizontal scroll support
-                nav.addEventListener('wheel', (e) => {
-                    // Only handle horizontal scroll if there's content to scroll
-                    if (nav.scrollWidth > nav.clientWidth) {
-                        e.preventDefault();
-                        nav.scrollBy({
-                            left: e.deltaY < 0 ? -100 : 100,
-                            behavior: 'smooth'
-                        });
-                    }
-                }, { passive: false });
+                if (!nav || !leftBtn || !rightBtn) return;
 
-                // Múltiples verificaciones escalonadas
-                setTimeout(window.updateScrollArrows, 100);
-                setTimeout(window.updateScrollArrows, 500);
-                setTimeout(window.updateScrollArrows, 1000);
+                // Flecha izquierda y gradient: Visible si hay scroll
+                const hasScrollLeft = nav.scrollLeft > 10;
+                leftBtn.style.display = hasScrollLeft ? 'flex' : 'none';
+                if (gradientLeft) {
+                    gradientLeft.classList.toggle('hidden', !hasScrollLeft);
+                }
 
-                // Múltiples verificaciones escalonadas
-                setTimeout(window.updateScrollArrows, 100);
-                setTimeout(window.updateScrollArrows, 500);
-                setTimeout(window.updateScrollArrows, 1000);
-            }
-        });
+                // Flecha derecha: SIEMPRE visible y forzada
+                if (rightBtn) {
+                    rightBtn.style.setProperty('display', 'flex', 'important');
+                    rightBtn.classList.remove('hidden');
+                }
 
-        /**
-         * VERSIÓN REPARADA: FOCO QUIRÚRGICO (Texto Plano) + NAVEGACIÓN
-         * Esta versión garantiza que el contenido no seleccionado sea legible como texto normal,
-         * eliminando únicamente los fondos de color para que parezca texto plano.
-         */
-        window.highlightSection = function (key) {
-            if (!key) return;
-            const targetKey = key.toUpperCase();
-            const container = document.getElementById('agia-sections-container');
+                // Gradient derecha: visible si hay más contenido
+                const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 5);
+                if (gradientRight) {
+                    gradientRight.classList.toggle('hidden', !hasMoreContent);
+                }
+            };
 
-            // 1. Ajuste del texto base (conectores)
-            // Cambiamos a un gris neutro pero con opacidad completa para que sea legible
-            if (container) {
-                container.style.transition = 'all 0.3s ease';
-                container.style.color = '#64748b'; // Slate-500 (Gris legible)
-            }
+            // Inicialización de eventos
+            document.addEventListener('DOMContentLoaded', () => {
+                const nav = document.getElementById('category-nav');
+                if (nav) {
+                    // Scroll listener
+                    nav.addEventListener('scroll', window.updateScrollArrows);
+                    window.addEventListener('resize', window.updateScrollArrows);
 
-            // 2. Leyenda (Items superiores)
-            document.querySelectorAll('.legend-item').forEach(el => {
-                const legendKey = el.id.replace('legend-', '').toUpperCase();
+                    // Mouse wheel horizontal scroll support
+                    nav.addEventListener('wheel', (e) => {
+                        // Only handle horizontal scroll if there's content to scroll
+                        if (nav.scrollWidth > nav.clientWidth) {
+                            e.preventDefault();
+                            nav.scrollBy({
+                                left: e.deltaY < 0 ? -100 : 100,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, { passive: false });
 
-                if (legendKey === targetKey) {
-                    el.style.opacity = '1';
-                    el.style.filter = 'none';
-                    el.style.transform = 'scale(1.08)';
-                    el.style.boxShadow = '0 8px 15px -3px rgba(79, 70, 229, 0.2)';
-                    el.style.zIndex = '20';
-                } else {
-                    // Se mantiene visible pero desaturado
-                    el.style.opacity = '0.4';
-                    el.style.filter = 'grayscale(1)';
-                    el.style.transform = 'scale(0.96)';
-                    el.style.boxShadow = 'none';
+                    // Múltiples verificaciones escalonadas
+                    setTimeout(window.updateScrollArrows, 100);
+                    setTimeout(window.updateScrollArrows, 500);
+                    setTimeout(window.updateScrollArrows, 1000);
+
+                    // Múltiples verificaciones escalonadas
+                    setTimeout(window.updateScrollArrows, 100);
+                    setTimeout(window.updateScrollArrows, 500);
+                    setTimeout(window.updateScrollArrows, 1000);
                 }
             });
 
-            // 3. Secciones del Prompt (Bloques de texto)
-            document.querySelectorAll('.prompt-section').forEach(el => {
-                const sectionKey = (el.dataset.section || '').toUpperCase();
+            /**
+             * VERSIÓN REPARADA: FOCO QUIRÚRGICO (Texto Plano) + NAVEGACIÓN
+             * Esta versión garantiza que el contenido no seleccionado sea legible como texto normal,
+             * eliminando únicamente los fondos de color para que parezca texto plano.
+             */
+            window.highlightSection = function (key) {
+                if (!key) return;
+                const targetKey = key.toUpperCase();
+                const container = document.getElementById('agia-sections-container');
 
-                if (sectionKey === targetKey) {
-                    // EL SELECCIONADO: Resalta con su color original y fondo
+                // 1. Ajuste del texto base (conectores)
+                // Cambiamos a un gris neutro pero con opacidad completa para que sea legible
+                if (container) {
+                    container.style.transition = 'all 0.3s ease';
+                    container.style.color = '#64748b'; // Slate-500 (Gris legible)
+                }
+
+                // 2. Leyenda (Items superiores)
+                document.querySelectorAll('.legend-item').forEach(el => {
+                    const legendKey = el.id.replace('legend-', '').toUpperCase();
+
+                    if (legendKey === targetKey) {
+                        el.style.opacity = '1';
+                        el.style.filter = 'none';
+                        el.style.transform = 'scale(1.08)';
+                        el.style.boxShadow = '0 8px 15px -3px rgba(79, 70, 229, 0.2)';
+                        el.style.zIndex = '20';
+                    } else {
+                        // Se mantiene visible pero desaturado
+                        el.style.opacity = '0.4';
+                        el.style.filter = 'grayscale(1)';
+                        el.style.transform = 'scale(0.96)';
+                        el.style.boxShadow = 'none';
+                    }
+                });
+
+                // 3. Secciones del Prompt (Bloques de texto)
+                document.querySelectorAll('.prompt-section').forEach(el => {
+                    const sectionKey = (el.dataset.section || '').toUpperCase();
+
+                    if (sectionKey === targetKey) {
+                        // EL SELECCIONADO: Resalta con su color original y fondo
+                        el.style.opacity = '1';
+                        el.style.filter = 'none';
+                        el.style.transform = 'scale(1.02)';
+                        el.style.zIndex = '10';
+                        el.style.position = 'relative';
+                        el.style.color = 'rgb(30, 41, 59)'; // Slate-800
+                        el.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                        el.style.backgroundColor = ''; // Muestra el color de fondo original (Tailwind)
+                    } else {
+                        // LOS DEMÁS: Se ven como "Texto Plano"
+                        // Quitamos el fondo por completo y usamos un color de texto neutro
+                        el.style.backgroundColor = 'transparent';
+                        el.style.opacity = '0.8'; // Opacidad alta para que "se vea" claramente
+                        el.style.filter = 'grayscale(1)';
+                        el.style.color = '#475569'; // Slate-600 (Gris oscuro legible)
+                        el.style.transform = 'scale(1)';
+                        el.style.boxShadow = 'none';
+                    }
+                });
+            };
+
+            window.resetLegend = function () {
+                const container = document.getElementById('agia-sections-container');
+
+                // Restaurar contenedor (conectores) a su color original
+                if (container) {
+                    container.style.color = '';
+                }
+
+                // Restaurar Leyenda
+                document.querySelectorAll('.legend-item').forEach(el => {
                     el.style.opacity = '1';
                     el.style.filter = 'none';
-                    el.style.transform = 'scale(1.02)';
-                    el.style.zIndex = '10';
-                    el.style.position = 'relative';
-                    el.style.color = 'rgb(30, 41, 59)'; // Slate-800
-                    el.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
-                    el.style.backgroundColor = ''; // Muestra el color de fondo original (Tailwind)
-                } else {
-                    // LOS DEMÁS: Se ven como "Texto Plano"
-                    // Quitamos el fondo por completo y usamos un color de texto neutro
-                    el.style.backgroundColor = 'transparent';
-                    el.style.opacity = '0.8'; // Opacidad alta para que "se vea" claramente
-                    el.style.filter = 'grayscale(1)';
-                    el.style.color = '#475569'; // Slate-600 (Gris oscuro legible)
                     el.style.transform = 'scale(1)';
                     el.style.boxShadow = 'none';
-                }
-            });
-        };
+                    el.style.zIndex = '';
+                });
 
-        window.resetLegend = function () {
-            const container = document.getElementById('agia-sections-container');
+                // Restaurar Secciones del Prompt
+                document.querySelectorAll('.prompt-section').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.filter = 'none';
+                    el.style.transform = 'scale(1)';
+                    el.style.zIndex = '';
+                    el.style.position = '';
+                    el.style.boxShadow = 'none';
+                    el.style.color = '';
+                    el.style.backgroundColor = ''; // Vuelve al color pastel definido en sus clases CSS
+                });
+            };
 
-            // Restaurar contenedor (conectores) a su color original
-            if (container) {
-                container.style.color = '';
+            // Function to get the prompt text with filled variables
+            function getPromptWithVariables() {
+                const promptRendered = document.getElementById('detail-prompt-rendered');
+                if (!promptRendered) return '';
+
+                let text = promptRendered.innerText;
+
+                // Get all variable inputs and replace placeholders with their values
+                const inputs = document.querySelectorAll('.var-input');
+                inputs.forEach(input => {
+                    const original = input.dataset.original;
+                    const value = input.value.trim() || input.placeholder;
+                    if (original && value) {
+                        text = text.replace(original, value);
+                    }
+                });
+
+                return text;
             }
 
-            // Restaurar Leyenda
-            document.querySelectorAll('.legend-item').forEach(el => {
-                el.style.opacity = '1';
-                el.style.filter = 'none';
-                el.style.transform = 'scale(1)';
-                el.style.boxShadow = 'none';
-                el.style.zIndex = '';
-            });
-
-            // Restaurar Secciones del Prompt
-            document.querySelectorAll('.prompt-section').forEach(el => {
-                el.style.opacity = '1';
-                el.style.filter = 'none';
-                el.style.transform = 'scale(1)';
-                el.style.zIndex = '';
-                el.style.position = '';
-                el.style.boxShadow = 'none';
-                el.style.color = '';
-                el.style.backgroundColor = ''; // Vuelve al color pastel definido en sus clases CSS
-            });
-        };
-
-        // Function to get the prompt text with filled variables
-        function getPromptWithVariables() {
-            const promptRendered = document.getElementById('detail-prompt-rendered');
-            if (!promptRendered) return '';
-
-            let text = promptRendered.innerText;
-
-            // Get all variable inputs and replace placeholders with their values
-            const inputs = document.querySelectorAll('.var-input');
-            inputs.forEach(input => {
-                const original = input.dataset.original;
-                const value = input.value.trim() || input.placeholder;
-                if (original && value) {
-                    text = text.replace(original, value);
-                }
-            });
-
-            return text;
-        }
 
 
+            function setupLegendInteractions() {
+                // setupMagicHover(); // Removed legacy logic
+            }
 
-        function setupLegendInteractions() {
-            // setupMagicHover(); // Removed legacy logic
-        }
+            // Copy with Visual Feedback (Sequential Messages)
+            window.copyPromptWithFeedback = function (button) {
+                if (!button || button.disabled) return;
 
-        // Copy with Visual Feedback (Sequential Messages)
-        window.copyPromptWithFeedback = function (button) {
-            if (!button || button.disabled) return;
+                // Copy to clipboard
+                const rawText = getPromptWithVariables();
+                const textArea = document.createElement("textarea");
+                textArea.value = rawText;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
 
-            // Copy to clipboard
-            const rawText = getPromptWithVariables();
-            const textArea = document.createElement("textarea");
-            textArea.value = rawText;
-            textArea.style.position = 'fixed';
-            textArea.style.left = '-9999px';
-            document.body.appendChild(textArea);
-            textArea.select();
+                try {
+                    const success = document.execCommand('copy');
 
-            try {
-                const success = document.execCommand('copy');
+                    if (success) {
+                        // Get button elements - with null checks
+                        const btnIcon = button.querySelector('.copy-icon');
+                        const btnText = button.querySelector('.copy-text');
 
-                if (success) {
-                    // Get button elements - with null checks
-                    const btnIcon = button.querySelector('.copy-icon');
-                    const btnText = button.querySelector('.copy-text');
+                        if (!btnIcon || !btnText) {
+                            console.warn('Copy button structure missing expected elements');
+                            return;
+                        }
 
-                    if (!btnIcon || !btnText) {
-                        console.warn('Copy button structure missing expected elements');
-                        return;
-                    }
+                        // Store originals
+                        const originalClass = button.className;
+                        const originalIcon = btnIcon.innerHTML;
+                        const originalText = btnText.textContent;
 
-                    // Store originals
-                    const originalClass = button.className;
-                    const originalIcon = btnIcon.innerHTML;
-                    const originalText = btnText.textContent;
+                        // Step 1: Green Success (1.5s)
+                        button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-emerald-500 text-white flex items-center gap-1.5 transition-all';
+                        btnIcon.innerHTML = 'check_circle';
+                        btnText.textContent = '¡Prompt Copiado!';
 
-                    // Step 1: Green Success (1.5s)
-                    button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-emerald-500 text-white flex items-center gap-1.5 transition-all';
-                    btnIcon.innerHTML = 'check_circle';
-                    btnText.textContent = '¡Prompt Copiado!';
-
-                    // Confetti celebration
-                    if (typeof confetti !== 'undefined') {
-                        confetti({
-                            particleCount: 100,
-                            spread: 70,
-                            origin: { y: 0.6 }
-                        });
-                    }
-
-                    setTimeout(() => {
-                        // Step 2: Blue Info (3.5s)
-                        button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-blue-500 text-white flex items-center gap-1.5 transition-all';
-                        btnIcon.innerHTML = 'arrow_forward';
-                        btnText.textContent = 'Pégalo en ChatGPT, Gemini o Claude';
+                        // Confetti celebration
+                        if (typeof confetti !== 'undefined') {
+                            confetti({
+                                particleCount: 100,
+                                spread: 70,
+                                origin: { y: 0.6 }
+                            });
+                        }
 
                         setTimeout(() => {
-                            // Restore original state
-                            button.className = originalClass;
-                            btnIcon.innerHTML = originalIcon;
-                            btnText.textContent = originalText;
-                        }, 3500);
-                    }, 1500);
+                            // Step 2: Blue Info (3.5s)
+                            button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-blue-500 text-white flex items-center gap-1.5 transition-all';
+                            btnIcon.innerHTML = 'arrow_forward';
+                            btnText.textContent = 'Pégalo en ChatGPT, Gemini o Claude';
+
+                            setTimeout(() => {
+                                // Restore original state
+                                button.className = originalClass;
+                                btnIcon.innerHTML = originalIcon;
+                                btnText.textContent = originalText;
+                            }, 3500);
+                        }, 1500);
+                    }
+                } catch (err) {
+                    console.error('Error al copiar:', err);
+                } finally {
+                    // Always cleanup textarea
+                    if (textArea && textArea.parentNode) {
+                        textArea.parentNode.removeChild(textArea);
+                    }
                 }
-            } catch (err) {
-                console.error('Error al copiar:', err);
-            } finally {
-                // Always cleanup textarea
-                if (textArea && textArea.parentNode) {
-                    textArea.parentNode.removeChild(textArea);
+            };
+
+            function copyPrompt() {
+                // Trigger Confetti Celebration!
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                // Increment Social Counter in Real-Time
+                const socialCounter = document.getElementById('social-counter');
+                if (socialCounter) {
+                    let currentCount = parseInt(socialCounter.innerText.replace(/,/g, ''));
+                    socialCounter.innerText = (currentCount + 1).toLocaleString();
                 }
-            }
-        };
 
-        function copyPrompt() {
-            // Trigger Confetti Celebration!
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
+                const rawText = getPromptWithVariables();
+                const textArea = document.createElement("textarea");
+                textArea.value = rawText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('Error al copiar:', err);
+                }
+                document.body.removeChild(textArea);
 
-            // Increment Social Counter in Real-Time
-            const socialCounter = document.getElementById('social-counter');
-            if (socialCounter) {
-                let currentCount = parseInt(socialCounter.innerText.replace(/,/g, ''));
-                socialCounter.innerText = (currentCount + 1).toLocaleString();
+                // Toast feedback is now handled by copyPromptWithFeedback and showSuccessToast
             }
 
-            const rawText = getPromptWithVariables();
-            const textArea = document.createElement("textarea");
-            textArea.value = rawText;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-            } catch (err) {
-                console.error('Error al copiar:', err);
-            }
-            document.body.removeChild(textArea);
+            // Enhanced copy with visual button feedback
+            function copyPromptWithFeedback(btn) {
+                // Call the original copy function
+                copyPrompt();
 
-            // Toast feedback is now handled by copyPromptWithFeedback and showSuccessToast
-        }
+                // Visual feedback on the button itself
+                const icon = btn.querySelector('.copy-icon');
+                const text = btn.querySelector('.copy-text');
 
-        // Enhanced copy with visual button feedback
-        function copyPromptWithFeedback(btn) {
-            // Call the original copy function
-            copyPrompt();
+                // Change to success state
+                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                btn.classList.add('bg-emerald-500', 'scale-105');
+                if (icon) icon.textContent = 'check_circle';
+                if (text) text.textContent = '¡Copiado!';
 
-            // Visual feedback on the button itself
-            const icon = btn.querySelector('.copy-icon');
-            const text = btn.querySelector('.copy-text');
+                // Show floating success toast
+                showSuccessToast();
 
-            // Change to success state
-            btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
-            btn.classList.add('bg-emerald-500', 'scale-105');
-            if (icon) icon.textContent = 'check_circle';
-            if (text) text.textContent = '¡Copiado!';
+                // Update header social counter
+                const headerCounter = document.getElementById('social-counter-header');
+                if (headerCounter) {
+                    let count = parseInt(headerCounter.innerText) || 80;
+                    headerCounter.innerText = count + 1;
+                }
 
-            // Show floating success toast
-            showSuccessToast();
-
-            // Update header social counter
-            const headerCounter = document.getElementById('social-counter-header');
-            if (headerCounter) {
-                let count = parseInt(headerCounter.innerText) || 80;
-                headerCounter.innerText = count + 1;
+                // Revert after 2 seconds
+                setTimeout(() => {
+                    btn.classList.remove('bg-emerald-500', 'scale-105');
+                    btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                    if (icon) icon.textContent = 'content_copy';
+                    if (text) text.textContent = 'Copiar';
+                }, 2000);
             }
 
-            // Revert after 2 seconds
-            setTimeout(() => {
-                btn.classList.remove('bg-emerald-500', 'scale-105');
-                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
-                if (icon) icon.textContent = 'content_copy';
-                if (text) text.textContent = 'Copiar';
-            }, 2000);
-        }
-
-        // Floating success toast notification with sequential messages
-        function showSuccessToast() {
-            // Create toast element
-            const toast = document.createElement('div');
-            toast.className = 'fixed top-20 right-6 bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-[9999] animate-slide-in-right transition-all duration-500';
-            toast.innerHTML = `
+            // Floating success toast notification with sequential messages
+            function showSuccessToast() {
+                // Create toast element
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-20 right-6 bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-[9999] animate-slide-in-right transition-all duration-500';
+                toast.innerHTML = `
                 <span class="material-symbols-rounded text-2xl">check_circle</span>
                 <div>
                     <p class="font-bold text-sm">✅ ¡Prompt Copiado!</p>
                     <p class="text-xs text-white/90">Guardado en el portapapeles</p>
                 </div>
             `;
-            document.body.appendChild(toast);
+                document.body.appendChild(toast);
 
-            // After 1.5s, transition to "Next Step" message
-            setTimeout(() => {
-                toast.style.transform = 'scale(1.05)';
-                toast.className = 'fixed top-20 right-6 bg-indigo-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-start gap-3 z-[9999] transition-all duration-500';
-                toast.innerHTML = `
+                // After 1.5s, transition to "Next Step" message
+                setTimeout(() => {
+                    toast.style.transform = 'scale(1.05)';
+                    toast.className = 'fixed top-20 right-6 bg-indigo-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-start gap-3 z-[9999] transition-all duration-500';
+                    toast.innerHTML = `
                     <span class="material-symbols-rounded text-xl flex-none">lightbulb</span>
                     <div>
                         <p class="font-bold text-xs mb-1">📋 Siguiente paso:</p>
                         <p class="text-xs text-white/90 leading-relaxed">Pega este prompt en <span class="font-bold text-yellow-300">ChatGPT, Claude o Gemini</span></p>
                     </div>
                 `;
+                    setTimeout(() => {
+                        toast.style.transform = 'scale(1)';
+                    }, 100);
+                }, 1500);
+
+                // Auto-remove after 5 seconds total (1.5s first message + 3.5s second message)
                 setTimeout(() => {
-                    toast.style.transform = 'scale(1)';
-                }, 100);
-            }, 1500);
+                    toast.style.animation = 'slide-out-right 0.3s ease-out';
+                    setTimeout(() => toast.remove(), 300);
+                }, 5000);
+            }
 
-            // Auto-remove after 5 seconds total (1.5s first message + 3.5s second message)
-            setTimeout(() => {
-                toast.style.animation = 'slide-out-right 0.3s ease-out';
-                setTimeout(() => toast.remove(), 300);
-            }, 5000);
-        }
+            function updateTotalCounter() {
+                const totalEl = document.getElementById('total-display');
+                if (totalEl) totalEl.innerText = casesData.length;
+            }
 
-        function updateTotalCounter() {
-            const totalEl = document.getElementById('total-display');
-            if (totalEl) totalEl.innerText = casesData.length;
-        }
+            function renderCategories() {
+                const nav = document.getElementById('category-nav');
+                if (!nav) return;
 
-        function renderCategories() {
-            const nav = document.getElementById('category-nav');
-            if (!nav) return;
+                // Extract unique categories from the actual data
+                const uniqueCategories = [...new Set(casesData.map(c => c.category))];
 
-            // Extract unique categories from the actual data
-            const uniqueCategories = [...new Set(casesData.map(c => c.category))];
+                nav.innerHTML = uniqueCategories.map(key => {
+                    const conf = config.categories[key] || { label: key, color: 'slate', icon: 'category' };
+                    // Count cases per category
+                    const count = casesData.filter(x => x.category === key).length;
 
-            nav.innerHTML = uniqueCategories.map(key => {
-                const conf = config.categories[key] || { label: key, color: 'slate', icon: 'category' };
-                // Count cases per category
-                const count = casesData.filter(x => x.category === key).length;
+                    // Add data attribute for robust selection
+                    const isActive = key === window.currentCategory;
+                    const activeClass = isActive ? 'active' : '';
 
-                // Add data attribute for robust selection
-                const isActive = key === window.currentCategory;
-                const activeClass = isActive ? 'active' : '';
-
-                return `<button data-category="${key}" onclick="filterByCategory('${key}')" class="category-item shrink-0 whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-white border border-slate-100 text-slate-500 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-700 transition-all flex items-center gap-1.5 group ${activeClass}">
+                    return `<button data-category="${key}" onclick="filterByCategory('${key}')" class="category-item shrink-0 whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-white border border-slate-100 text-slate-500 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-700 transition-all flex items-center gap-1.5 group ${activeClass}">
                     <span class="material-symbols-rounded text-sm text-slate-300 group-hover:text-teal-600">${conf.icon}</span> 
                     ${key}
                     <span class="badge bg-white border border-slate-100 text-slate-400 text-[9px] px-1.5 py-0.5 rounded-full ml-1 group-hover:bg-teal-100 group-hover:text-teal-700 transition-colors">${count}</span>
                 </button>`;
-            }).join('');
-        }
-
-        function filterByCategory(cat) {
-            window.currentCategory = cat; // Store current category
-            document.getElementById('searchInput').value = '';
-            const filtered = casesData.filter(c => c.category === cat);
-            renderList(filtered);
-            if (filtered.length > 0) loadCase(filtered[0].id); // Auto-select            
-            // Visual Update Active State using data attributes
-            document.querySelectorAll('.category-item').forEach(btn => btn.classList.remove('active'));
-            // Selector seguro sin regex complejos
-            const activeBtn = document.querySelector(`.category-item[data-category="${cat}"]`);
-            if (activeBtn) activeBtn.classList.add('active');
-        }
-
-        // Diccionario de Sinónimos para Búsqueda Inteligente
-        const synonymMap = {
-            "venta": ["vender", "marketing", "comercial", "lead", "cliente", "negocio", "ingreso", "dinero"],
-            "marketing": ["publicidad", "anuncio", "redes", "social", "campaña", "promoción", "difusión"],
-            "texto": ["redacción", "copy", "escribir", "blog", "artículo", "guion", "email", "correo"],
-            "imagen": ["foto", "diseño", "logo", "visual", "arte", "midjourney", "dall-e", "creativo"],
-            "empresa": ["pyme", "emprendimiento", "negocio", "startup", "compañía", "marca"],
-            "legal": ["contrato", "abogado", "ley", "norma", "sii", "impuesto", "tributario"],
-            "curso": ["educación", "aprender", "taller", "clase", "enseñar", "formación"],
-            "ia": ["inteligencia", "gpt", "chatgpt", "midjourney", "claude", "bot", "automatización"],
-            "idea": ["creatividad", "brainstorming", "invención", "innovación", "concepto"],
-            "plan": ["estrategia", "calendario", "cronograma", "organización", "paso a paso"]
-        };
-
-        function filterCases() {
-            const rawInput = document.getElementById('searchInput').value.toLowerCase().trim();
-            if (!rawInput) {
-                renderList(casesData);
-                return;
+                }).join('');
             }
 
-            // 1. Desglosar búsqueda en palabras clave
-            const searchTerms = rawInput.split(/\s+/);
+            function filterByCategory(cat) {
+                window.currentCategory = cat; // Store current category
+                document.getElementById('searchInput').value = '';
+                const filtered = casesData.filter(c => c.category === cat);
+                renderList(filtered);
+                if (filtered.length > 0) loadCase(filtered[0].id); // Auto-select            
+                // Visual Update Active State using data attributes
+                document.querySelectorAll('.category-item').forEach(btn => btn.classList.remove('active'));
+                // Selector seguro sin regex complejos
+                const activeBtn = document.querySelector(`.category-item[data-category="${cat}"]`);
+                if (activeBtn) activeBtn.classList.add('active');
+            }
 
-            // 2. Expandir con sinónimos
-            const expandedTerms = new Set(searchTerms);
-            searchTerms.forEach(term => {
-                // Buscar coincidencia parcial en claves del diccionario
-                Object.keys(synonymMap).forEach(key => {
-                    if (key.includes(term) || term.includes(key)) {
-                        synonymMap[key].forEach(syn => expandedTerms.add(syn));
-                    }
+            // Diccionario de Sinónimos para Búsqueda Inteligente
+            const synonymMap = {
+                "venta": ["vender", "marketing", "comercial", "lead", "cliente", "negocio", "ingreso", "dinero"],
+                "marketing": ["publicidad", "anuncio", "redes", "social", "campaña", "promoción", "difusión"],
+                "texto": ["redacción", "copy", "escribir", "blog", "artículo", "guion", "email", "correo"],
+                "imagen": ["foto", "diseño", "logo", "visual", "arte", "midjourney", "dall-e", "creativo"],
+                "empresa": ["pyme", "emprendimiento", "negocio", "startup", "compañía", "marca"],
+                "legal": ["contrato", "abogado", "ley", "norma", "sii", "impuesto", "tributario"],
+                "curso": ["educación", "aprender", "taller", "clase", "enseñar", "formación"],
+                "ia": ["inteligencia", "gpt", "chatgpt", "midjourney", "claude", "bot", "automatización"],
+                "idea": ["creatividad", "brainstorming", "invención", "innovación", "concepto"],
+                "plan": ["estrategia", "calendario", "cronograma", "organización", "paso a paso"]
+            };
+
+            function filterCases() {
+                const rawInput = document.getElementById('searchInput').value.toLowerCase().trim();
+                if (!rawInput) {
+                    renderList(casesData);
+                    return;
+                }
+
+                // 1. Desglosar búsqueda en palabras clave
+                const searchTerms = rawInput.split(/\s+/);
+
+                // 2. Expandir con sinónimos
+                const expandedTerms = new Set(searchTerms);
+                searchTerms.forEach(term => {
+                    // Buscar coincidencia parcial en claves del diccionario
+                    Object.keys(synonymMap).forEach(key => {
+                        if (key.includes(term) || term.includes(key)) {
+                            synonymMap[key].forEach(syn => expandedTerms.add(syn));
+                        }
+                    });
                 });
-            });
 
-            // Convertir Set a Array para iterar
-            const finalKeywords = Array.from(expandedTerms);
+                // Convertir Set a Array para iterar
+                const finalKeywords = Array.from(expandedTerms);
 
-            const filtered = casesData.filter(c => {
-                // Unir todo el texto buscable en un solo string para eficiencia
-                const content = `${c.title} ${c.problem} ${c.category} ${c.badPrompt}`.toLowerCase();
+                const filtered = casesData.filter(c => {
+                    // Unir todo el texto buscable en un solo string para eficiencia
+                    const content = `${c.title} ${c.problem} ${c.category} ${c.badPrompt}`.toLowerCase();
 
-                // Lógica OR: Si AL MENOS UNA de las palabras expandidas está presente
-                // Lógica AND (opcional): Si TODAS las palabras originales (expandidas) están presentes
-                // Aquí usaremos OR para maximizar resultados (mayor recall)
-                return finalKeywords.some(keyword => content.includes(keyword));
-            });
+                    // Lógica OR: Si AL MENOS UNA de las palabras expandidas está presente
+                    // Lógica AND (opcional): Si TODAS las palabras originales (expandidas) están presentes
+                    // Aquí usaremos OR para maximizar resultados (mayor recall)
+                    return finalKeywords.some(keyword => content.includes(keyword));
+                });
 
-            renderList(filtered, finalKeywords);
+                renderList(filtered, finalKeywords);
 
-            // Update UI Stats
-            const statsEl = document.getElementById('search-stats');
-            const countEl = document.getElementById('results-count');
+                // Update UI Stats
+                const statsEl = document.getElementById('search-stats');
+                const countEl = document.getElementById('results-count');
 
-            if (rawInput.length > 0) {
-                statsEl.classList.remove('hidden');
-                statsEl.classList.add('flex');
-                if (filtered.length === 0) {
-                    countEl.innerText = "0 resultados";
-                    countEl.className = "text-[10px] font-bold text-red-400";
+                if (rawInput.length > 0) {
+                    statsEl.classList.remove('hidden');
+                    statsEl.classList.add('flex');
+                    if (filtered.length === 0) {
+                        countEl.innerText = "0 resultados";
+                        countEl.className = "text-[10px] font-bold text-red-400";
+                    } else {
+                        countEl.innerText = `${filtered.length} encontrados`;
+                        countEl.className = "text-[10px] font-bold text-emerald-500";
+                    }
                 } else {
-                    countEl.innerText = `${filtered.length} encontrados`;
-                    countEl.className = "text-[10px] font-bold text-emerald-500";
-                }
-            } else {
-                statsEl.classList.add('hidden');
-                statsEl.classList.remove('flex');
-            }
-        }
-
-        function highlightText(text, keywords) {
-            if (!keywords || keywords.length === 0) return escapeHtml(text);
-            let escapedText = escapeHtml(text);
-
-            // Crear regex combinada para todas las keywords (case insensitive)
-            // Ordenar por longitud descendente para evitar que una corta rompa una larga
-            const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
-            const pattern = new RegExp(`(${sortedKeywords.join('|')})`, 'gi');
-
-            return escapedText.replace(pattern, match =>
-                `<span class="bg-yellow-200 text-yellow-900 font-bold px-0.5 rounded">${match}</span>`
-            );
-        }
-
-        function getMatchContext(c, keywords) {
-            // Buscar en campos secundarios si no está en título/categoría
-            const fields = [c.problem, c.badPrompt];
-            for (let text of fields) {
-                if (!text) continue;
-                const lower = text.toLowerCase();
-                const hit = keywords.find(k => lower.includes(k));
-                if (hit) {
-                    // Extraer fragmento
-                    const idx = lower.indexOf(hit);
-                    const start = Math.max(0, idx - 15);
-                    const end = Math.min(text.length, idx + hit.length + 25);
-                    let snippet = text.substring(start, end);
-                    if (start > 0) snippet = "..." + snippet;
-                    if (end < text.length) snippet = snippet + "...";
-                    return highlightText(snippet, keywords);
+                    statsEl.classList.add('hidden');
+                    statsEl.classList.remove('flex');
                 }
             }
-            return null;
-        }
 
-        function renderList(cases, highlightKeywords = []) {
-            const list = document.getElementById('case-list');
-            document.getElementById('total-display').innerText = casesData.length;
+            function highlightText(text, keywords) {
+                if (!keywords || keywords.length === 0) return escapeHtml(text);
+                let escapedText = escapeHtml(text);
 
-            if (cases.length === 0) {
-                list.innerHTML = '<div class="p-8 text-center text-xs text-slate-400 flex flex-col items-center"><span class="material-symbols-rounded text-2xl mb-2 opacity-50">search_off</span>Sin resultados.</div>';
-                return;
+                // Crear regex combinada para todas las keywords (case insensitive)
+                // Ordenar por longitud descendente para evitar que una corta rompa una larga
+                const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
+                const pattern = new RegExp(`(${sortedKeywords.join('|')})`, 'gi');
+
+                return escapedText.replace(pattern, match =>
+                    `<span class="bg-yellow-200 text-yellow-900 font-bold px-0.5 rounded">${match}</span>`
+                );
             }
 
-            list.innerHTML = cases.map(c => {
-                let dotColor = 'bg-slate-300';
-                let tooltip = 'Desconocido';
-                if (c.difficulty === 'beginner') { dotColor = 'bg-emerald-400'; tooltip = 'Básico: 15 min'; }
-                else if (c.difficulty === 'intermediate') { dotColor = 'bg-amber-400'; tooltip = 'Intermedio: 45 min'; }
-                else if (c.difficulty === 'advanced') { dotColor = 'bg-rose-400'; tooltip = 'Avanzado: 90-120 min'; }
+            function getMatchContext(c, keywords) {
+                // Buscar en campos secundarios si no está en título/categoría
+                const fields = [c.problem, c.badPrompt];
+                for (let text of fields) {
+                    if (!text) continue;
+                    const lower = text.toLowerCase();
+                    const hit = keywords.find(k => lower.includes(k));
+                    if (hit) {
+                        // Extraer fragmento
+                        const idx = lower.indexOf(hit);
+                        const start = Math.max(0, idx - 15);
+                        const end = Math.min(text.length, idx + hit.length + 25);
+                        let snippet = text.substring(start, end);
+                        if (start > 0) snippet = "..." + snippet;
+                        if (end < text.length) snippet = snippet + "...";
+                        return highlightText(snippet, keywords);
+                    }
+                }
+                return null;
+            }
 
-                // Procesar Highlighting
-                const titleHtml = highlightText(c.title, highlightKeywords);
-                // Use full category name (e.g., "Productividad Ninja")
-                const catHtml = highlightText(c.category, highlightKeywords);
+            function renderList(cases, highlightKeywords = []) {
+                const list = document.getElementById('case-list');
+                document.getElementById('total-display').innerText = casesData.length;
+
+                if (cases.length === 0) {
+                    list.innerHTML = '<div class="p-8 text-center text-xs text-slate-400 flex flex-col items-center"><span class="material-symbols-rounded text-2xl mb-2 opacity-50">search_off</span>Sin resultados.</div>';
+                    return;
+                }
+
+                list.innerHTML = cases.map(c => {
+                    let dotColor = 'bg-slate-300';
+                    let tooltip = 'Desconocido';
+                    if (c.difficulty === 'beginner') { dotColor = 'bg-emerald-400'; tooltip = 'Básico: 15 min'; }
+                    else if (c.difficulty === 'intermediate') { dotColor = 'bg-amber-400'; tooltip = 'Intermedio: 45 min'; }
+                    else if (c.difficulty === 'advanced') { dotColor = 'bg-rose-400'; tooltip = 'Avanzado: 90-120 min'; }
+
+                    // Procesar Highlighting
+                    const titleHtml = highlightText(c.title, highlightKeywords);
+                    // Use full category name (e.g., "Productividad Ninja")
+                    const catHtml = highlightText(c.category, highlightKeywords);
 
 
-                // Determinar si necesitamos mostrar contexto extra (si el match NO está en título ni categoría)
-                let contextHtml = '';
-                if (highlightKeywords.length > 0) {
-                    // Check simple si alguna keyword está en titulo o categoria (ignorando case)
-                    const titleHit = highlightKeywords.some(k => c.title.toLowerCase().includes(k));
-                    const catHit = highlightKeywords.some(k => c.category.toLowerCase().includes(k));
+                    // Determinar si necesitamos mostrar contexto extra (si el match NO está en título ni categoría)
+                    let contextHtml = '';
+                    if (highlightKeywords.length > 0) {
+                        // Check simple si alguna keyword está en titulo o categoria (ignorando case)
+                        const titleHit = highlightKeywords.some(k => c.title.toLowerCase().includes(k));
+                        const catHit = highlightKeywords.some(k => c.category.toLowerCase().includes(k));
 
-                    if (!titleHit && !catHit) {
-                        const matchSnippet = getMatchContext(c, highlightKeywords);
-                        if (matchSnippet) {
-                            contextHtml = `<div class="mt-1.5 text-[10px] text-slate-500 bg-slate-50 p-1.5 rounded border border-slate-100 flex items-start gap-1">
+                        if (!titleHit && !catHit) {
+                            const matchSnippet = getMatchContext(c, highlightKeywords);
+                            if (matchSnippet) {
+                                contextHtml = `<div class="mt-1.5 text-[10px] text-slate-500 bg-slate-50 p-1.5 rounded border border-slate-100 flex items-start gap-1">
                                 <span class="material-symbols-rounded text-[10px] text-indigo-400 mt-0.5">manage_search</span>
                                 <span class="leading-tight break-words has-highlights">${matchSnippet}</span>
                              </div>`;
+                            }
                         }
                     }
-                }
 
-                return `
+                    return `
                 <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item group p-3 rounded-lg cursor-pointer hover:bg-slate-50 hover:shadow-sm transition-all border border-transparent hover:border-indigo-100 relative mb-1">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-colors shadow-sm shrink-0">
@@ -2476,153 +2475,153 @@
                     </div>
                 </div>
             `}).join('');
-        }
-
-        function openPaywall() {
-            // Also trigger confetti for unlocking!
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { y: 0.6 },
-                colors: ['#FFE400', '#FFBD00', '#E89400', '#FFCA6C', '#FDFFB8']
-            });
-            document.getElementById('paywall-modal').classList.remove('hidden');
-        }
-        function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
-        function showTutorial() { document.getElementById('tutorial-modal').classList.remove('hidden'); }
-        function closeTutorial() { document.getElementById('tutorial-modal').classList.add('hidden'); }
-
-        function startCountdown() {
-            let minutes = 14; let seconds = 59;
-            const el = document.getElementById('countdown');
-            if (!el) return; // Exit if element doesn't exist
-            setInterval(() => {
-                if (seconds === 0) { if (minutes === 0) return; minutes--; seconds = 59; } else { seconds--; }
-                el.innerText = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-            }, 1000);
-        }
-
-        function startSocialProof() {
-            // Expanded List of Names (More realistic and varied) - 200+ Mix
-            const globalBuyers = [
-                "Carlos R.", "Maria Jose L.", "StartUp Vision", "David Gonzalez", "Sofia P.",
-                "Agencia Nova", "Mario B.", "Fernanda S.", "Juan Pablo M.", "TechSolution Ltda",
-                "Laura D.", "Pedro A.", "Consuelo V.", "Ignacio R.", "Camila T.",
-                "Estudio Creativo", "Rodrigo F.", "Andrea M.", "Felipe S.", "Gabriela O.",
-                "Nicolas C.", "Valentina H.", "Javier E.", "Digital Growth", "Carolina U.",
-                "Ricardo P.", "Daniela B.", "Sebastian V.", "Francisca A.", "Matias L.",
-                "Jorge M.", "Beatriz S.", "Luis G.", "Global Trends", "Elena K.",
-                "Pablo R.", "Teresa V.", "Hugo C.", "Verónica N.", "Innova Corp",
-                "Diego A.", "Natalia F.", "Roberto S.", "Clara D.", "Smart Biz",
-                "Manuel J.", "Patricia L.", "Gabriel M.", "Isabel T.", "Fusion Media",
-                "Alejandro V.", "Lucía B.", "Fernando R.", "Marta P.", "NextGen Agency",
-                "Alberto D.", "Carmen S.", "Raúl G.", "Silvia M.", "Eco Systems",
-                "Adrián L.", "Lorena C.", "Oscar P.", "Rosa T.", "Data Mind",
-                "Sergio H.", "Paula R.", "Iván F.", "Mónica G.", "Web Solutions",
-                "Antonio M.", "Eva S.", "Francisco J.", "Alicia V.", "Market Pro",
-                "Julián R.", "Cristina B.", "Rubén D.", "Nuria L.", "Cloud Nine",
-                "Héctor S.", "Marina P.", "Emilio C.", "Diana M.", "Alpha Group",
-                "Gonzalo V.", "Pilar R.", "Esteban G.", "Julia T.", "Net Connect",
-                "Álvaro F.", "Raquel S.", "Vicente M.", "Celia D.", "Future Tech",
-                "Santiago L.", "Inés P.", "Tomás R.", "Gloria V.", "Prime Corp",
-                "Rafael G.", "Angela M.", "Joaquín S.", "Olga B.", "Elite Services",
-                "Mariano D.", "Irene C.", "Salvador P.", "Adela R.", "Visionary Labs",
-                "Samuel V.", "Lidia M.", "Isaac G.", "Esther T.", "Quantum Leap",
-                "Félix R.", "Aurora S.", "Gustavo P.", "Blanca D.", "Apex Solutions",
-                "César M.", "Elisa V.", "Arturo L.", "Sara G.", "Nexus Point",
-                "Ramón B.", "Vanesa C.", "Domingo R.", "Fátima P.", "Synergy Hub",
-                "Gregorio S.", "Amalia M.", "Lorenzo D.", "Sonia V.", "Bright Ideas",
-                "Marcos P.", "Noelia R.", "Eugenio G.", "Miriam T.", "Zenith Corp",
-                "Benjamín L.", "Rocío S.", "Alfonso M.", "Virginia D.", "Core Systems",
-                "Cristóbal V.", "Begoña P.", "Leandro R.", "Matilde G.", "Flux Media",
-                "Simón D.", "Ariadna M.", "Damián S.", "Erika V.", "Spark Labs",
-                "Teodoro P.", "Carlota R.", "Fabián G.", "Lara D.", "Velocity Inc",
-                "Mauricio M.", "Daniela S.", "René V.", "Paulina C.", "Titan Group",
-                "Bruno L.", "Valeria P.", "Axel R.", "Camila G.", "Nova Tech",
-                "Ezequiel M.", "Ximena D.", "Dante S.", "Zoe V.", "Omega Corp",
-                "Lucas P.", "Abril R.", "Mateo G.", "Luna D.", "Starlight Co",
-                "Thiago M.", "Mia S.", "Ian V.", "Emma P.", "Blue Sky",
-                "Oliver R.", "Olivia G.", "Noah D.", "Ava M.", "Green Leaf",
-                "Liam S.", "Sophia V.", "Ethan P.", "Isabella R.", "Red Rock",
-                "Mason G.", "Charlotte D.", "Logan M.", "Amelia S.", "Silver Lining",
-                "Jacob P.", "Harper V.", "William R.", "Evelyn G.", "Golden Gate",
-                "Michael D.", "Abigail M.", "Alexander S.", "Emily P.", "Diamond Edge",
-                "James R.", "Elizabeth V.", "Benjamin G.", "Mila D.", "Iron Clad",
-                "Daniel M.", "Ella S.", "Henry P.", "Avery R.", "Steel Works",
-                "Jackson V.", "Sofia G.", "Sebastian D.", "Camila M.", "Bronze Age"
-            ];
-
-            // Expanded Locations
-            const locations = [
-                "Madrid", "CDMX", "Santiago", "Bogotá", "Lima", "Miami", "Barcelona",
-                "Buenos Aires", "Medellín", "Valencia", "Monterrey", "Guadalajara",
-                "Quito", "Montevideo", "Viña del Mar", "Concepción", "Rosario", "Córdoba",
-                "San José", "Panamá", "Asunción", "La Paz", "Bilbao", "Sevilla", "Zaragoza", "Málaga"
-            ];
-
-            // Professional Action Messages
-            const actions = [
-                "se inscribió en el Programa",
-                "comenzó el Curso de IA",
-                "accedió a la Bóveda",
-                "desbloqueó su primer caso",
-                "está optimizando sus procesos",
-                "mejoró su prompt en 90%",
-                "ahorró 4 horas esta semana",
-                "descargó la guía maestra"
-            ];
-
-            // --- SESSION TRACKING LOGIC ---
-            // Prevent repeating names in a single session
-            let usedNames = new Set();
-            try {
-                const stored = sessionStorage.getItem('agia_used_names');
-                if (stored) {
-                    usedNames = new Set(JSON.parse(stored));
-                }
-            } catch (e) {
-                console.warn('Session storage inaccessible');
             }
 
-            function getRandomDetails() {
-                // Filter out used names
-                let availableBuyers = globalBuyers.filter(n => !usedNames.has(n));
+            function openPaywall() {
+                // Also trigger confetti for unlocking!
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.6 },
+                    colors: ['#FFE400', '#FFBD00', '#E89400', '#FFCA6C', '#FDFFB8']
+                });
+                document.getElementById('paywall-modal').classList.remove('hidden');
+            }
+            function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
+            function showTutorial() { document.getElementById('tutorial-modal').classList.remove('hidden'); }
+            function closeTutorial() { document.getElementById('tutorial-modal').classList.add('hidden'); }
 
-                // If we ran out (unlikely with 200+), reset
-                if (availableBuyers.length === 0) {
-                    usedNames.clear();
-                    availableBuyers = globalBuyers;
-                }
+            function startCountdown() {
+                let minutes = 14; let seconds = 59;
+                const el = document.getElementById('countdown');
+                if (!el) return; // Exit if element doesn't exist
+                setInterval(() => {
+                    if (seconds === 0) { if (minutes === 0) return; minutes--; seconds = 59; } else { seconds--; }
+                    el.innerText = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                }, 1000);
+            }
 
-                const buyer = availableBuyers[Math.floor(Math.random() * availableBuyers.length)];
+            function startSocialProof() {
+                // Expanded List of Names (More realistic and varied) - 200+ Mix
+                const globalBuyers = [
+                    "Carlos R.", "Maria Jose L.", "StartUp Vision", "David Gonzalez", "Sofia P.",
+                    "Agencia Nova", "Mario B.", "Fernanda S.", "Juan Pablo M.", "TechSolution Ltda",
+                    "Laura D.", "Pedro A.", "Consuelo V.", "Ignacio R.", "Camila T.",
+                    "Estudio Creativo", "Rodrigo F.", "Andrea M.", "Felipe S.", "Gabriela O.",
+                    "Nicolas C.", "Valentina H.", "Javier E.", "Digital Growth", "Carolina U.",
+                    "Ricardo P.", "Daniela B.", "Sebastian V.", "Francisca A.", "Matias L.",
+                    "Jorge M.", "Beatriz S.", "Luis G.", "Global Trends", "Elena K.",
+                    "Pablo R.", "Teresa V.", "Hugo C.", "Verónica N.", "Innova Corp",
+                    "Diego A.", "Natalia F.", "Roberto S.", "Clara D.", "Smart Biz",
+                    "Manuel J.", "Patricia L.", "Gabriel M.", "Isabel T.", "Fusion Media",
+                    "Alejandro V.", "Lucía B.", "Fernando R.", "Marta P.", "NextGen Agency",
+                    "Alberto D.", "Carmen S.", "Raúl G.", "Silvia M.", "Eco Systems",
+                    "Adrián L.", "Lorena C.", "Oscar P.", "Rosa T.", "Data Mind",
+                    "Sergio H.", "Paula R.", "Iván F.", "Mónica G.", "Web Solutions",
+                    "Antonio M.", "Eva S.", "Francisco J.", "Alicia V.", "Market Pro",
+                    "Julián R.", "Cristina B.", "Rubén D.", "Nuria L.", "Cloud Nine",
+                    "Héctor S.", "Marina P.", "Emilio C.", "Diana M.", "Alpha Group",
+                    "Gonzalo V.", "Pilar R.", "Esteban G.", "Julia T.", "Net Connect",
+                    "Álvaro F.", "Raquel S.", "Vicente M.", "Celia D.", "Future Tech",
+                    "Santiago L.", "Inés P.", "Tomás R.", "Gloria V.", "Prime Corp",
+                    "Rafael G.", "Angela M.", "Joaquín S.", "Olga B.", "Elite Services",
+                    "Mariano D.", "Irene C.", "Salvador P.", "Adela R.", "Visionary Labs",
+                    "Samuel V.", "Lidia M.", "Isaac G.", "Esther T.", "Quantum Leap",
+                    "Félix R.", "Aurora S.", "Gustavo P.", "Blanca D.", "Apex Solutions",
+                    "César M.", "Elisa V.", "Arturo L.", "Sara G.", "Nexus Point",
+                    "Ramón B.", "Vanesa C.", "Domingo R.", "Fátima P.", "Synergy Hub",
+                    "Gregorio S.", "Amalia M.", "Lorenzo D.", "Sonia V.", "Bright Ideas",
+                    "Marcos P.", "Noelia R.", "Eugenio G.", "Miriam T.", "Zenith Corp",
+                    "Benjamín L.", "Rocío S.", "Alfonso M.", "Virginia D.", "Core Systems",
+                    "Cristóbal V.", "Begoña P.", "Leandro R.", "Matilde G.", "Flux Media",
+                    "Simón D.", "Ariadna M.", "Damián S.", "Erika V.", "Spark Labs",
+                    "Teodoro P.", "Carlota R.", "Fabián G.", "Lara D.", "Velocity Inc",
+                    "Mauricio M.", "Daniela S.", "René V.", "Paulina C.", "Titan Group",
+                    "Bruno L.", "Valeria P.", "Axel R.", "Camila G.", "Nova Tech",
+                    "Ezequiel M.", "Ximena D.", "Dante S.", "Zoe V.", "Omega Corp",
+                    "Lucas P.", "Abril R.", "Mateo G.", "Luna D.", "Starlight Co",
+                    "Thiago M.", "Mia S.", "Ian V.", "Emma P.", "Blue Sky",
+                    "Oliver R.", "Olivia G.", "Noah D.", "Ava M.", "Green Leaf",
+                    "Liam S.", "Sophia V.", "Ethan P.", "Isabella R.", "Red Rock",
+                    "Mason G.", "Charlotte D.", "Logan M.", "Amelia S.", "Silver Lining",
+                    "Jacob P.", "Harper V.", "William R.", "Evelyn G.", "Golden Gate",
+                    "Michael D.", "Abigail M.", "Alexander S.", "Emily P.", "Diamond Edge",
+                    "James R.", "Elizabeth V.", "Benjamin G.", "Mila D.", "Iron Clad",
+                    "Daniel M.", "Ella S.", "Henry P.", "Avery R.", "Steel Works",
+                    "Jackson V.", "Sofia G.", "Sebastian D.", "Camila M.", "Bronze Age"
+                ];
 
-                // Mark as used
-                usedNames.add(buyer);
+                // Expanded Locations
+                const locations = [
+                    "Madrid", "CDMX", "Santiago", "Bogotá", "Lima", "Miami", "Barcelona",
+                    "Buenos Aires", "Medellín", "Valencia", "Monterrey", "Guadalajara",
+                    "Quito", "Montevideo", "Viña del Mar", "Concepción", "Rosario", "Córdoba",
+                    "San José", "Panamá", "Asunción", "La Paz", "Bilbao", "Sevilla", "Zaragoza", "Málaga"
+                ];
+
+                // Professional Action Messages
+                const actions = [
+                    "se inscribió en el Programa",
+                    "comenzó el Curso de IA",
+                    "accedió a la Bóveda",
+                    "desbloqueó su primer caso",
+                    "está optimizando sus procesos",
+                    "mejoró su prompt en 90%",
+                    "ahorró 4 horas esta semana",
+                    "descargó la guía maestra"
+                ];
+
+                // --- SESSION TRACKING LOGIC ---
+                // Prevent repeating names in a single session
+                let usedNames = new Set();
                 try {
-                    sessionStorage.setItem('agia_used_names', JSON.stringify([...usedNames]));
-                } catch (e) { }
+                    const stored = sessionStorage.getItem('agia_used_names');
+                    if (stored) {
+                        usedNames = new Set(JSON.parse(stored));
+                    }
+                } catch (e) {
+                    console.warn('Session storage inaccessible');
+                }
 
-                const location = locations[Math.floor(Math.random() * locations.length)];
-                const action = actions[Math.floor(Math.random() * actions.length)];
-                // Random time: "Hace X min" or "Hace instantes"
-                const time = Math.random() > 0.7 ? "Hace instantes" : `Hace ${Math.floor(Math.random() * 59) + 1} min`;
+                function getRandomDetails() {
+                    // Filter out used names
+                    let availableBuyers = globalBuyers.filter(n => !usedNames.has(n));
 
-                return { buyer, location, action, time };
-            }
+                    // If we ran out (unlikely with 200+), reset
+                    if (availableBuyers.length === 0) {
+                        usedNames.clear();
+                        availableBuyers = globalBuyers;
+                    }
 
-            const toast = document.getElementById('sales-toast');
+                    const buyer = availableBuyers[Math.floor(Math.random() * availableBuyers.length)];
 
-            function showToast() {
-                if (!toast || document.hidden) return; // Don't show if tab hidden
+                    // Mark as used
+                    usedNames.add(buyer);
+                    try {
+                        sessionStorage.setItem('agia_used_names', JSON.stringify([...usedNames]));
+                    } catch (e) { }
 
-                const { buyer, location, action, time } = getRandomDetails();
+                    const location = locations[Math.floor(Math.random() * locations.length)];
+                    const action = actions[Math.floor(Math.random() * actions.length)];
+                    // Random time: "Hace X min" or "Hace instantes"
+                    const time = Math.random() > 0.7 ? "Hace instantes" : `Hace ${Math.floor(Math.random() * 59) + 1} min`;
 
-                // Generate Avatar Initial
-                const initial = buyer.charAt(0);
-                const colors = ['bg-indigo-500', 'bg-blue-500', 'bg-emerald-500', 'bg-violet-500', 'bg-rose-500', 'bg-amber-500'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
+                    return { buyer, location, action, time };
+                }
 
-                toast.innerHTML = `
+                const toast = document.getElementById('sales-toast');
+
+                function showToast() {
+                    if (!toast || document.hidden) return; // Don't show if tab hidden
+
+                    const { buyer, location, action, time } = getRandomDetails();
+
+                    // Generate Avatar Initial
+                    const initial = buyer.charAt(0);
+                    const colors = ['bg-indigo-500', 'bg-blue-500', 'bg-emerald-500', 'bg-violet-500', 'bg-rose-500', 'bg-amber-500'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+
+                    toast.innerHTML = `
                 <div class="bg-white rounded-lg shadow-xl border border-slate-100 p-3 flex items-center gap-3 w-80 relative overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer" onclick="openPaywall()">
                      <div class="absolute left-0 top-0 bottom-0 w-1 ${color}"></div>
                      <div class="flex-none w-10 h-10 rounded-full ${color} text-white flex items-center justify-center font-bold text-lg shadow-md relative">
@@ -2640,153 +2639,153 @@
                      </div>
                 </div>`;
 
-                // Show
-                toast.classList.remove('translate-y-24', 'opacity-0');
+                    // Show
+                    toast.classList.remove('translate-y-24', 'opacity-0');
 
-                // Hide after 6s
-                setTimeout(() => {
-                    toast.classList.add('translate-y-24', 'opacity-0');
-                }, 6000);
+                    // Hide after 6s
+                    setTimeout(() => {
+                        toast.classList.add('translate-y-24', 'opacity-0');
+                    }, 6000);
 
-                // Schedule next (random 15-45s)
-                const next = Math.floor(Math.random() * 30000) + 15000;
-                setTimeout(showToast, next);
+                    // Schedule next (random 15-45s)
+                    const next = Math.floor(Math.random() * 30000) + 15000;
+                    setTimeout(showToast, next);
+                }
+
+                // First show delayed
+                setTimeout(showToast, 5000);
             }
 
-            // First show delayed
-            setTimeout(showToast, 5000);
-        }
+            // --- UTILIDAD DE FORMATEO VISUAL (Premium UX for Tables and Text) ---
+            function formatPreviewTable(htmlContent) {
+                if (!htmlContent) return "";
 
-        // --- UTILIDAD DE FORMATEO VISUAL (Premium UX for Tables and Text) ---
-        function formatPreviewTable(htmlContent) {
-            if (!htmlContent) return "";
+                // 1. Normalizar contenido básico
+                let cleanText = htmlContent.replace(/<div[^>]*>/gi, "")
+                    .replace(/<\/div>/gi, "")
+                    .replace(/<br\s*\/?>/gi, "\n");
 
-            // 1. Normalizar contenido básico
-            let cleanText = htmlContent.replace(/<div[^>]*>/gi, "")
-                .replace(/<\/div>/gi, "")
-                .replace(/<br\s*\/?>/gi, "\n");
+                cleanText = cleanText.replace(/&#124;/g, "|");
 
-            cleanText = cleanText.replace(/&#124;/g, "|");
+                // 2. DETECTOR DE TABLAS (Lógica existente robusta)
+                const lines = cleanText.split('\n').filter(l => l.trim().length > 0);
+                const hasPipes = lines.some(l => l.includes('|'));
 
-            // 2. DETECTOR DE TABLAS (Lógica existente robusta)
-            const lines = cleanText.split('\n').filter(l => l.trim().length > 0);
-            const hasPipes = lines.some(l => l.includes('|'));
+                // Si parece una tabla y tiene estructura, usamos el renderizador de tablas
+                if (hasPipes && lines.length > 1 && (lines[0].includes('|') || lines[1].includes('|'))) {
+                    try {
+                        let tableHTML = '<div class="overflow-x-auto my-3 rounded-xl border border-slate-200 shadow-sm"><table class="w-full text-xs text-left border-collapse bg-white">';
+                        let inTbody = false;
+                        let headerProcessed = false;
 
-            // Si parece una tabla y tiene estructura, usamos el renderizador de tablas
-            if (hasPipes && lines.length > 1 && (lines[0].includes('|') || lines[1].includes('|'))) {
-                try {
-                    let tableHTML = '<div class="overflow-x-auto my-3 rounded-xl border border-slate-200 shadow-sm"><table class="w-full text-xs text-left border-collapse bg-white">';
-                    let inTbody = false;
-                    let headerProcessed = false;
+                        lines.forEach((line, index) => {
+                            const trimmed = line.trim();
+                            // Ignorar separadores md (ahora más robusto para :---)
+                            // Detecta líneas que SOLAMENTE contienen: pipes, espacios, guiones, dos puntos
+                            if (trimmed.match(/^\|?[\s\:\-\|]+\|?$/)) return;
 
-                    lines.forEach((line, index) => {
-                        const trimmed = line.trim();
-                        // Ignorar separadores md (ahora más robusto para :---)
-                        // Detecta líneas que SOLAMENTE contienen: pipes, espacios, guiones, dos puntos
-                        if (trimmed.match(/^\|?[\s\:\-\|]+\|?$/)) return;
+                            let cells = trimmed.split('|');
+                            if (trimmed.startsWith('|')) cells.shift();
+                            if (trimmed.endsWith('|')) cells.pop();
 
-                        let cells = trimmed.split('|');
-                        if (trimmed.startsWith('|')) cells.shift();
-                        if (trimmed.endsWith('|')) cells.pop();
+                            if (cells.length === 0) return;
 
-                        if (cells.length === 0) return;
+                            if (!headerProcessed) {
+                                tableHTML += '<thead class="bg-indigo-50/80 text-indigo-900 font-bold border-b border-indigo-100"><tr>';
+                                cells.forEach(c => tableHTML += `<th class="p-3 border-r border-indigo-100/50 last:border-0 whitespace-nowrap first:rounded-tl-lg last:rounded-tr-lg">${c.trim()}</th>`);
+                                tableHTML += '</tr></thead><tbody class="divide-y divide-slate-100">';
+                                inTbody = true;
+                                headerProcessed = true;
+                            } else {
+                                tableHTML += '<tr class="hover:bg-slate-50 transition-colors group">';
+                                cells.forEach(c => {
+                                    // Formato simple dentro de celdas
+                                    let content = c.trim().replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-slate-800">$1</span>');
+                                    tableHTML += `<td class="p-3 border-r border-slate-100 last:border-0 align-top leading-relaxed text-slate-600 group-hover:text-slate-800">${content}</td>`;
+                                });
+                                tableHTML += '</tr>';
+                            }
+                        });
 
-                        if (!headerProcessed) {
-                            tableHTML += '<thead class="bg-indigo-50/80 text-indigo-900 font-bold border-b border-indigo-100"><tr>';
-                            cells.forEach(c => tableHTML += `<th class="p-3 border-r border-indigo-100/50 last:border-0 whitespace-nowrap first:rounded-tl-lg last:rounded-tr-lg">${c.trim()}</th>`);
-                            tableHTML += '</tr></thead><tbody class="divide-y divide-slate-100">';
-                            inTbody = true;
-                            headerProcessed = true;
-                        } else {
-                            tableHTML += '<tr class="hover:bg-slate-50 transition-colors group">';
-                            cells.forEach(c => {
-                                // Formato simple dentro de celdas
-                                let content = c.trim().replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-slate-800">$1</span>');
-                                tableHTML += `<td class="p-3 border-r border-slate-100 last:border-0 align-top leading-relaxed text-slate-600 group-hover:text-slate-800">${content}</td>`;
-                            });
-                            tableHTML += '</tr>';
-                        }
-                    });
+                        if (inTbody) tableHTML += '</tbody>';
+                        tableHTML += '</table></div>';
+                        if (inTbody) return tableHTML;
+                    } catch (e) { console.warn("Error rendering table, falling back to rich text", e); }
+                }
 
-                    if (inTbody) tableHTML += '</tbody>';
-                    tableHTML += '</table></div>';
-                    if (inTbody) return tableHTML;
-                } catch (e) { console.warn("Error rendering table, falling back to rich text", e); }
-            }
+                // 3. RENDERIZADO DE TEXTO ENRIQUECIDO (NUEVO: Superior UX)
 
-            // 3. RENDERIZADO DE TEXTO ENRIQUECIDO (NUEVO: Superior UX)
+                let formattedHTML = '<div class="space-y-3 text-sm text-slate-600 leading-relaxed">';
 
-            let formattedHTML = '<div class="space-y-3 text-sm text-slate-600 leading-relaxed">';
+                // Dividir bloques por doble salto de línea
+                const paragraphs = cleanText.split(/\n\s*\n/);
 
-            // Dividir bloques por doble salto de línea
-            const paragraphs = cleanText.split(/\n\s*\n/);
+                paragraphs.forEach(p => {
+                    let text = p.trim();
+                    // Ignorar líneas vacías o separadores md aislados
+                    if (!text || text.match(/^\|?[\s\:\-\|]+\|?$/)) return;
 
-            paragraphs.forEach(p => {
-                let text = p.trim();
-                // Ignorar líneas vacías o separadores md aislados
-                if (!text || text.match(/^\|?[\s\:\-\|]+\|?$/)) return;
+                    // A. Listas (Bullets) con guiones o asteriscos
+                    const isList = text.match(/^[\-\*]\s/m) || (text.split('\n').every(l => l.trim().match(/^[\-\*]\s/)));
 
-                // A. Listas (Bullets) con guiones o asteriscos
-                const isList = text.match(/^[\-\*]\s/m) || (text.split('\n').every(l => l.trim().match(/^[\-\*]\s/)));
+                    if (isList) {
+                        formattedHTML += '<ul class="space-y-2 my-2 ml-1">';
+                        const listItems = text.split('\n');
+                        listItems.forEach(item => {
+                            // Limpiar viñeta
+                            let content = item.replace(/^[\-\*]\s+/, '').trim();
+                            if (!content) return;
 
-                if (isList) {
-                    formattedHTML += '<ul class="space-y-2 my-2 ml-1">';
-                    const listItems = text.split('\n');
-                    listItems.forEach(item => {
-                        // Limpiar viñeta
-                        let content = item.replace(/^[\-\*]\s+/, '').trim();
-                        if (!content) return;
+                            // Negrita
+                            content = content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-indigo-900">$1</strong>');
+                            // Comillas - Estilo Destacado
+                            content = content.replace(/"([^"]+)"/g, '<span class="text-indigo-600 font-medium tracking-wide">"$1"</span>');
+                            // Highlights tipo `codigo`
+                            content = content.replace(/`([^`]+)`/g, '<code class="bg-indigo-50 text-indigo-700 px-1 py-0.5 rounded text-xs font-bold border border-indigo-100">$1</code>');
 
-                        // Negrita
-                        content = content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-indigo-900">$1</strong>');
-                        // Comillas - Estilo Destacado
-                        content = content.replace(/"([^"]+)"/g, '<span class="text-indigo-600 font-medium tracking-wide">"$1"</span>');
-                        // Highlights tipo `codigo`
-                        content = content.replace(/`([^`]+)`/g, '<code class="bg-indigo-50 text-indigo-700 px-1 py-0.5 rounded text-xs font-bold border border-indigo-100">$1</code>');
-
-                        formattedHTML += `<li class="flex items-start gap-2.5">
+                            formattedHTML += `<li class="flex items-start gap-2.5">
                             <span class="flex-none mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-sm"></span>
                             <span class="flex-1 text-slate-700">${content}</span>
                          </li>`;
-                    });
-                    formattedHTML += '</ul>';
-                    return;
-                }
+                        });
+                        formattedHTML += '</ul>';
+                        return;
+                    }
 
-                // B. Bloques Destacados (Key: Value style)
-                const keyValMatch = text.match(/^\*\*(.*?)\:\*\*\s*(.*)/s);
-                if (keyValMatch) {
-                    const label = keyValMatch[1];
-                    const body = keyValMatch[2];
+                    // B. Bloques Destacados (Key: Value style)
+                    const keyValMatch = text.match(/^\*\*(.*?)\:\*\*\s*(.*)/s);
+                    if (keyValMatch) {
+                        const label = keyValMatch[1];
+                        const body = keyValMatch[2];
 
-                    let styledBody = body
-                        .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
-                        .replace(/"([^"]+)"/g, '<span class="text-indigo-600 font-medium tracking-wide">"$1"</span>');
+                        let styledBody = body
+                            .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
+                            .replace(/"([^"]+)"/g, '<span class="text-indigo-600 font-medium tracking-wide">"$1"</span>');
 
-                    formattedHTML += `<div class="bg-indigo-50/40 rounded-xl p-4 border border-indigo-100/50 relative overflow-hidden group">
+                        formattedHTML += `<div class="bg-indigo-50/40 rounded-xl p-4 border border-indigo-100/50 relative overflow-hidden group">
                         <div class="absolute top-0 left-0 w-1 h-full bg-indigo-400/30"></div>
                         <h4 class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
                             <span class="material-symbols-rounded text-base">auto_awesome</span> ${label}
                         </h4>
                         <p class="text-slate-700 leading-relaxed">${styledBody}</p>
                     </div>`;
-                    return;
-                }
+                        return;
+                    }
 
-                // C. Párrafos Estándar con formato inline extendido
-                let styledParam = text
-                    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 bg-slate-100/50 px-0.5 rounded">$1</strong>') // Negrita
-                    .replace(/\*(.*?)\*/g, '<em class="text-slate-500 italic">$1</em>') // Cursiva
-                    .replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-slate-700 px-1 py-0.5 rounded text-xs font-mono border border-slate-200">$1</code>') // Code
-                    .replace(/"([^"]+)"/g, '<span class="text-indigo-600 font-medium tracking-wide">"$1"</span>') // Quotes color
-                    .replace(/ --/g, ' &mdash;'); // Guiones largos visuales
+                    // C. Párrafos Estándar con formato inline extendido
+                    let styledParam = text
+                        .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 bg-slate-100/50 px-0.5 rounded">$1</strong>') // Negrita
+                        .replace(/\*(.*?)\*/g, '<em class="text-slate-500 italic">$1</em>') // Cursiva
+                        .replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-slate-700 px-1 py-0.5 rounded text-xs font-mono border border-slate-200">$1</code>') // Code
+                        .replace(/"([^"]+)"/g, '<span class="text-indigo-600 font-medium tracking-wide">"$1"</span>') // Quotes color
+                        .replace(/ --/g, ' &mdash;'); // Guiones largos visuales
 
-                formattedHTML += `<p>${styledParam}</p>`;
-            });
+                    formattedHTML += `<p>${styledParam}</p>`;
+                });
 
-            formattedHTML += '</div>';
-            return formattedHTML;
-        }
+                formattedHTML += '</div>';
+                return formattedHTML;
+            }
     </script>
 
 </body>
