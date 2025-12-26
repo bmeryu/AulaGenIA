@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!-- 
-  CAMPUS CURSO · AULA GENIA v4.8.7 (Bug Fix: materialTab Reference)
+  CAMPUS CURSO · AULA GENIA v4.8.8 (Update: Onboarding Module)
   -------------------------------------------------------------------
-  - FIX: Corrección de error "materialTab is not defined".
-  - UPD: Mantenimiento de recursos de Módulos 2, 3 y 4.
-  - INTEGRIDAD: Se mantiene el 100% de la lógica original.
+  - ADD: Módulo de Onboarding como primera lección.
+  - MOV: Recursos "Link ChatGPT" y "Guía de Acceso" de M1 a Onboarding.
+  - INTEGRIDAD: Se mantiene el 100% de la lógica original y estilos.
   -------------------------------------------------------------------
 -->
 <html lang="es-CL">
@@ -766,6 +766,22 @@
                     hasCertificate: true,
                     modules: [
                         {
+                            title: 'Bienvenida al Curso',
+                            badge: 'Alumno Registrado',
+                            lessons: [
+                                {
+                                    id: '0-1',
+                                    title: 'Video de Onboarding: ¡Bienvenido a Aula GenIA!',
+                                    type: 'video',
+                                    videoUrl: 'gs://aulagenia.firebasestorage.app/ONBOARDING-VIDEO-AULA-GENIA.mp4',
+                                    resources: [
+                                        { name: 'Guía de Acceso: ChatGPT', url: 'gs://aulagenia.firebasestorage.app/AccesoChatGPT.pdf', external: false },
+                                        { name: 'Link ChatGPT', url: 'https://chatgpt.com', external: true }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
                             title: 'Módulo 1: ¿Qué es la Inteligencia Artificial?',
                             badge: 'Explorador Conceptual',
                             lessons: [
@@ -781,8 +797,6 @@
                                         { name: '¿Qué hay dentro del Copiloto? 1.0', url: 'gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf', external: false },
                                         { name: 'Listado de Verificación del Módulo', url: 'gs://aulagenia.firebasestorage.app/Listado-Verificacion.pdf', external: false },
                                         { name: 'Fuentes de Autoridad 1.0', url: 'gs://aulagenia.firebasestorage.app/Fuentesde-Autoridad-1.pdf', external: false },
-                                        { name: 'Guía de Acceso: ChatGPT', url: 'gs://aulagenia.firebasestorage.app/AccesoChatGPT.pdf', external: false },
-                                        { name: 'Link ChatGPT', url: 'https://chatgpt.com', external: true },
                                         { name: 'Link Gemini', url: 'https://gemini.google.com', external: true },
                                         { name: 'Link Grok', url: 'https://x.com/i/grok', external: true }
                                     ]
@@ -1397,16 +1411,12 @@
             }
 
             function renderSidebar() {
-                const isCourseComplete = true; 
-                let isPreviousModuleComplete = true;
                 if (!dom.modulesContainer) return;
 
                 dom.modulesContainer.innerHTML = courseData.modules.map((module, moduleIndex) => {
-                    const isModuleLocked = false;
                     const lessonsHtml = module.lessons.map(lesson => {
                         const isCompleted = userProgress.completedLessons.includes(lesson.id);
                         const isActive = userProgress.currentLessonId === lesson.id;
-                        let isLocked = false;
                         let linkClasses = 'text-gray-600 hover:bg-slate-50';
                         let statusIcon = isCompleted ? 'check-circle-2' : (lesson.type === 'quiz' ? 'edit-3' : (lesson.type === 'video' ? 'play' : 'file-text'));
                         let iconColor = isCompleted ? 'text-green-500' : (lesson.type === 'quiz' ? 'text-amber-500' : (lesson.type === 'video' ? 'text-teal-500' : 'text-slate-400'));
@@ -1420,15 +1430,13 @@
                         return `<li class="lesson-item" data-lesson-id="${lesson.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${linkClasses}"><i data-lucide="${statusIcon}" class="h-4 w-4 mr-3 flex-shrink-0 ${iconColor}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${lesson.title}</span><i data-lucide="${typeIcon}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
                     }).join('');
 
-                    const accordionButtonClasses = 'text-gray-800';
                     const accordionIcon = 'chevron-down';
-                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide ${accordionButtonClasses}">${module.title}</span><i data-lucide="${accordionIcon}" class="h-4 w-4 transition-transform text-gray-400"></i></button><div class="accordion-content open"><ul class="py-1 space-y-0.5">${lessonsHtml}</ul></div></div>`;
+                    return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide text-gray-800">${module.title}</span><i data-lucide="${accordionIcon}" class="h-4 w-4 transition-transform text-gray-400"></i></button><div class="accordion-content open"><ul class="py-1 space-y-0.5">${lessonsHtml}</ul></div></div>`;
                 }).join('');
                 addSidebarListeners();
             }
 
             function renderLessonContent(lesson) {
-                const isCourseComplete = getIsCourseComplete();
                 let materialHtml = '';
                 if (currentLessonVideo) { currentLessonVideo.pause(); currentLessonVideo = null; }
 
@@ -2002,7 +2010,6 @@
                 setTimeout(() => { dom.pdfModal.classList.add('hidden'); dom.pdfModalOverlay.classList.add('hidden'); dom.pdfIframe.src = ''; }, 300);
             }
             
-            // FIX: Referencia a materialTab corregida usando dom.tabMaterialPanel
             if (dom.tabMaterialPanel) {
                 dom.tabMaterialPanel.addEventListener('click', (e) => {
                     const button = e.target.closest('.resource-item[data-pdf-url]');
