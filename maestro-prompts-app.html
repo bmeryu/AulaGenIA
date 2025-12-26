@@ -98,6 +98,18 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        /* Scrollbar Hiding but functionality preserving */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
         .custom-scroll::-webkit-scrollbar {
             width: 5px;
             height: 5px;
@@ -1031,15 +1043,33 @@
         window.startAutoScroll = function (speed) {
             console.log('AutoScroll started:', speed);
             const nav = document.getElementById('category-nav');
-            if (!nav) return;
+            if (!nav) {
+                console.error('Nav element not found!');
+                return;
+            }
+
+            // Debug info
+            console.log('Nav scrollWidth:', nav.scrollWidth);
+            console.log('Nav clientWidth:', nav.clientWidth);
+            console.log('Can scroll:', nav.scrollWidth > nav.clientWidth);
+            console.log('Current scrollLeft:', nav.scrollLeft);
 
             autoScrollSpeed = speed;
             if (autoScrollFrame) cancelAnimationFrame(autoScrollFrame);
 
-            nav.style.scrollBehavior = 'auto'; // Disable smooth for continuous
+            nav.style.scrollBehavior = 'auto';
 
+            let iterations = 0;
             const loop = () => {
+                const before = nav.scrollLeft;
                 nav.scrollLeft += autoScrollSpeed;
+                const after = nav.scrollLeft;
+
+                if (iterations < 5) {
+                    console.log(`Scroll attempt ${iterations}: ${before} -> ${after}`);
+                }
+                iterations++;
+
                 autoScrollFrame = requestAnimationFrame(loop);
             };
             loop();
