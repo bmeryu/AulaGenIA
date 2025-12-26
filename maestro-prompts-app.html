@@ -1469,7 +1469,8 @@
 
             document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview || '';
             document.getElementById('bad-response-analysis').innerHTML = c.badResponseAnalysis || '';
-            document.getElementById('good-result-preview').innerHTML = formatPreviewTable(c.previewResponse);
+            // Use new Rich Result Renderer
+            document.getElementById('good-result-preview').innerHTML = renderRichResult(c.previewResponse);
 
             const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
             const badge = document.getElementById('detail-category-badge');
@@ -2549,83 +2550,77 @@
             loop();
         }
 
-        // --- UTILIDAD DE FORMATEO VISUAL (Reparación de Tablas Markdown) ---
+        // --- UTILIDAD DE FORMATEO VISUAL AVANZADO (Rich Document View) ---
+        function renderRichResult(text) {
+            if (!text) return "";
+
+            // 1. Si es HTML explícito de tabla (legacy), intentar usar el formateador de tabla
+            if (text.includes("|") && text.includes("\n") && (text.includes("---") || text.includes("|"))) {
+                return formatPreviewTable(text);
+            }
+
+            // 2. Escapar HTML base para seguridad
+            let clean = escapeHtml(text);
+
+            // 3. Procesamiento de Markdown "Light" para formato Documento
+
+            // A. Headers estilo "Clave: Valor" o "**Título:**"
+            // Transformamos **TEXTO:** en un bloque de título bonito
+            clean = clean.replace(/\*\*([^\*]+?):\*\*/g, (match, title) => {
+                return `<div class="font-black text-indigo-900 text-[10px] uppercase tracking-widest mb-1.5 mt-4 first:mt-0 flex items-center gap-1.5"><span class="w-1 h-3 bg-indigo-500 rounded-full"></span>${title}</div>`;
+            });
+
+            // B. Negritas estándar **texto** (que no sean títulos)
+            clean = clean.replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-slate-800">$1</span>');
+
+            // C. Listas (Guiones o Asteriscos al inicio de línea)
+            // Reemplazamos "- item" por un bloque visual
+            clean = clean.replace(/(?:^|\n)[ \t]*[-•][ \t]+(.*?)(?=(?:\n|$))/g, (match, item) => {
+                return `<div class="flex items-start gap-2 mb-1.5 ml-1"><span class="text-indigo-400 mt-1.5 text-[6px]">●</span><span class="flex-1 text-slate-600">${item}</span></div>`;
+            });
+
+            // D. Párrafos y Saltos de línea
+            // Si no detectamos estructura compleja HTML, convertimos newlines en <br>
+            // Pero tratamos de ser inteligentes para no romper los divs que acabamos de meter
+            clean = clean.replace(/\n\n/g, '<div class="h-2"></div>'); // Doble espacio es un espaciador
+            clean = clean.replace(/\n/g, ' '); // Salto simple lo tratamos como espacio continuo (estilo párrafo) salvo que ya hayamos metido divs
+
+            return `<div class="rich-result-content text-sm leading-relaxed text-slate-600 font-medium">${clean}</div>`;
+        }
+
+        // Mantenemos formatPreviewTable como fallback para tablas reales
         function formatPreviewTable(htmlContent) {
+            // ... (Código anterior de tabla se podría mantener o simplificar, lo mantengo minimalista aquí para fallback)
             if (!htmlContent) return "";
-
-            // Si el contenido es corto o no tiene pipes escapados/reales, devolver original
-            if (!htmlContent.includes("&#124;") && !htmlContent.includes("|")) return htmlContent;
-
-            // 1. Normalizar contenido: quitar wrappers div y convertir <br> a \n
-            let cleanText = htmlContent.replace(/<div[^>]*>/gi, "")
-                .replace(/<\/div>/gi, "")
-                .replace(/<br\s*\/?>/gi, "\n");
-
-            // 2. Decodificar entidades de pipe
-            cleanText = cleanText.replace(/&#124;/g, "|");
-
-            // 3. Analizar líneas para ver si es una tabla candidato
+            let cleanText = htmlContent.replace(/<div[^>]*>/gi, "").replace(/<\/div>/gi, "").replace(/<br\s*\/?>/gi, "\n").replace(/&#124;/g, "|");
             const lines = cleanText.split('\n').filter(l => l.trim().length > 0);
-
-            // Heurística: Si tiene pipes, intentamos renderizar como tabla
-            // Buscamos al menos una línea con pipes separadores
             const hasPipes = lines.some(l => l.includes('|'));
-            if (!hasPipes) return htmlContent;
+            if (!hasPipes) return htmlContent.replace(/\n/g, '<br>'); // Fallback simple
 
             try {
                 let tableHTML = '<div class="overflow-x-auto my-3 rounded-xl border border-slate-200 shadow-sm"><table class="w-full text-xs text-left border-collapse bg-white">';
-                let inTbody = false;
                 let headerProcessed = false;
-
-                lines.forEach((line, index) => {
-                    const trimmed = line.trim();
-                    // Ignorar líneas separadoras de markdown |---|---|
-                    if (trimmed.match(/^\|?[\s-:]+\|[\s-:]+\|?$/) || trimmed.match(/^[\s-:]+\|[\s-:]+$/)) {
-                        return;
-                    }
-
-                    // Separar celdas (ignorando pipes inicial/final si existen)
-                    let cells = trimmed.split('|');
-                    // Limpieza de celdas vacías provocadas por pipes al inicio/final
-                    if (trimmed.startsWith('|')) cells.shift();
-                    if (trimmed.endsWith('|')) cells.pop();
-
+                lines.forEach((line) => {
+                    if (line.match(/^\|?[\s-:]+\|[\s-:]+\|?$/)) return;
+                    let cells = line.split('|');
+                    if (line.startsWith('|')) cells.shift();
+                    if (line.endsWith('|')) cells.pop();
                     if (cells.length === 0) return;
 
                     if (!headerProcessed) {
-                        tableHTML += '<thead class="bg-indigo-50/80 text-indigo-900 font-bold border-b border-indigo-100"><tr>';
-                        cells.forEach(c => tableHTML += `<th class="p-3 border-r border-indigo-100/50 last:border-0 whitespace-nowrap first:rounded-tl-lg last:rounded-tr-lg">${c.trim()}</th>`);
-                        tableHTML += '</tr></thead><tbody class="divide-y divide-slate-100">';
-                        inTbody = true;
+                        tableHTML += '<thead class="bg-indigo-50 text-indigo-900 font-bold border-b border-indigo-100"><tr>';
+                        cells.forEach(c => tableHTML += `<th class="p-3 border-r border-indigo-100 last:border-0 whitespace-nowrap">${c.trim()}</th>`);
+                        tableHTML += '</tr></thead><tbody class="divide-y divide-slate-50">';
                         headerProcessed = true;
                     } else {
-                        tableHTML += '<tr class="hover:bg-slate-50 transition-colors group">';
-                        cells.forEach(c => {
-                            // Procesar formato interno básico
-                            let content = c.trim()
-                                .replace(/&quot;/g, '"')
-                                .replace(/<strong>/g, '<span class="font-bold text-slate-800">')
-                                .replace(/<\/strong>/g, '</span>')
-                                .replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-slate-800">$1</span>');
-
-                            tableHTML += `<td class="p-3 border-r border-slate-100 last:border-0 align-top leading-relaxed text-slate-600 group-hover:text-slate-800">${content}</td>`;
-                        });
+                        tableHTML += '<tr class="hover:bg-slate-50 transition-colors">';
+                        cells.forEach(c => tableHTML += `<td class="p-3 border-r border-slate-100 last:border-0 align-top text-slate-600">${c.trim()}</td>`);
                         tableHTML += '</tr>';
                     }
                 });
-
-                if (inTbody) tableHTML += '</tbody>';
-                tableHTML += '</table></div>';
-
-                // Si la tabla quedó vacía (falló el parseo), fallback al original
-                if (!inTbody) return htmlContent;
-
+                tableHTML += '</tbody></table></div>';
                 return tableHTML;
-
-            } catch (e) {
-                console.warn("Error formateando tabla:", e);
-                return htmlContent; // Fallback seguro
-            }
+            } catch (e) { return htmlContent; }
         }
     </script>
 
