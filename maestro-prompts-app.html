@@ -2561,6 +2561,19 @@
 
             cleanText = cleanText.replace(/&#124;/g, "|");
 
+            // 0. PRE-EXTRACCIÓN DE BLOQUES DE CÓDIGO (Para evitar que se rompan)
+            const codeBlockRegex = /```(\w+)?\n?([\s\S]*?)```/g;
+            let codeBlocks = [];
+            cleanText = cleanText.replace(codeBlockRegex, (match, lang, code) => {
+                const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
+                const language = lang || 'Code';
+                codeBlocks.push({
+                    lang: language.toUpperCase(),
+                    code: code.trim()
+                });
+                return placeholder;
+            });
+
             // 2. DETECTOR DE TABLAS (Lógica existente robusta)
             const lines = cleanText.split('\n').filter(l => l.trim().length > 0);
             const hasPipes = lines.some(l => l.includes('|'));
@@ -2617,6 +2630,30 @@
             paragraphs.forEach(p => {
                 let text = p.trim();
                 if (!text) return;
+
+                // Re-insertar Bloques de Código
+                if (text.startsWith('__CODE_BLOCK_')) {
+                    const blockIdMatch = text.match(/\d+/);
+                    if (blockIdMatch) {
+                        const blockId = parseInt(blockIdMatch[0]);
+                        const block = codeBlocks[blockId];
+                        if (block) {
+                            formattedHTML += `<div class="bg-slate-900 text-slate-50 rounded-xl p-0 my-3 font-mono text-xs shadow-md border border-slate-700/50 relative group overflow-hidden">
+                                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5 bg-gradient-to-r from-white/5 to-transparent">
+                                    <span class="text-[10px] font-bold text-indigo-300 uppercase tracking-wider flex items-center gap-1.5"><span class="material-symbols-rounded text-sm">code</span> ${block.lang}</span>
+                                    <div class="flex gap-1.5 opacity-60">
+                                        <div class="w-2 h-2 rounded-full bg-slate-600"></div>
+                                        <div class="w-2 h-2 rounded-full bg-slate-600"></div>
+                                    </div>
+                                </div>
+                                <div class="p-4 overflow-x-auto custom-scrollbar">
+                                    <pre class="whitespace-pre text-slate-300 font-medium"><code>${escapeHtml(block.code)}</code></pre>
+                                </div>
+                            </div>`;
+                        }
+                    }
+                    return;
+                }
 
                 // A. Listas (Bullets)
                 if (text.match(/^[\-\*]\s/m)) {
