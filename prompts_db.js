@@ -10,6 +10,9 @@ const casesData = [
         "badResponseAnalysis": "La IA actúa como un simple lector pasivo. No ofrece acciones concretas, no redacta borradores y mezcla lo urgente con lo informativo sin un criterio de negocio real.",
         "agiaPromptTagged": "1. ROL: Actúa como un Asistente Ejecutivo de Alta Dirección.\n2. CONTEXTO:\n   📎 ADJUNTO: Captura de pantalla de mi bandeja de entrada con los últimos 15 correos.\n   Mi negocio: [Venta de productos online / Servicios / etc.]\n   Prioridades del día: [Pagos pendientes, consultas de clientes, envíos]\n3. META: Categorizar cada correo por urgencia y redactar borrador de respuesta listo para enviar.\n4. RESTRICCIONES:\n   - Clasifica en: \"Responder HOY\", \"Delegar\", \"Archivar\".\n   - Tono: Profesional pero cercano (estilo chileno).\n   - Máximo 3 líneas por respuesta.\n5. FORMATO: Tabla con columnas: [Remitente] | [Resumen] | [Acción + Borrador].",
         "previewResponse": "| Remitente | Resumen Crítico | Acción Sugerida |\n| :--- | :--- | :--- |\n| Juan Pérez (Cliente) | Reclamo por retraso en envío Starken. El cliente suena molesto por falta de tracking. | **Responder Hoy:** \"Hola Juan, te pido mil disculpas por el retraso. El envío está en tránsito y aquí tienes el número de seguimiento...\" |\n| Tesorería Municipal | Aviso de pago de patentes comerciales vence este viernes. | **Delegar:** Enviar a Contabilidad para pago inmediato y evitar multas. |\n| Newsletter IA | Resumen de novedades de la semana. | **Informativo:** Archivar para lectura de fin de semana. |",
+        "suggestedAI": "ChatGPT Plus",
+        "exampleTip": "Usa esto cuando tengas +20 correos sin leer y poco tiempo.",
+        "validationTip": "Verifica que la prioridad asignada coincida con la fecha de vencimiento real.",
         "metadata": {
             "score": 88
         }
