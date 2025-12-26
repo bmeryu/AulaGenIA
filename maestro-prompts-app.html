@@ -1589,34 +1589,62 @@
                         return para;
                     }
 
-                    // Check if paragraph has list items (lines starting with -)
+                    // Check if paragraph has list items
                     const lines = para.split('\n');
-                    const hasListItems = lines.some(line => line.trim().startsWith('- '));
+                    const hasDashItems = lines.some(line => line.trim().match(/^- /));
+                    const hasNumberedItems = lines.some(line => line.trim().match(/^\d+\.\s/));
 
-                    if (hasListItems) {
-                        // Process mixed content: convert dash lines to list
+                    if (hasDashItems || hasNumberedItems) {
+                        // Process mixed content: convert list lines
                         let html = '';
-                        let inList = false;
+                        let inUnorderedList = false;
+                        let inOrderedList = false;
 
                         lines.forEach(line => {
                             line = line.trim();
-                            if (line.startsWith('- ')) {
-                                if (!inList) {
+
+                            // Unordered list item (-)
+                            if (line.match(/^- /)) {
+                                if (inOrderedList) {
+                                    html += '§§§/OL§§§';
+                                    inOrderedList = false;
+                                }
+                                if (!inUnorderedList) {
                                     html += '§§§UL§§§';
-                                    inList = true;
+                                    inUnorderedList = true;
                                 }
                                 const content = line.substring(2).trim();
                                 html += `§§§LI§§§${content}§§§/LI§§§`;
-                            } else {
-                                if (inList) {
+                            }
+                            // Ordered list item (1. 2. etc)
+                            else if (line.match(/^\d+\.\s/)) {
+                                if (inUnorderedList) {
                                     html += '§§§/UL§§§';
-                                    inList = false;
+                                    inUnorderedList = false;
+                                }
+                                if (!inOrderedList) {
+                                    html += '§§§OL§§§';
+                                    inOrderedList = true;
+                                }
+                                const content = line.replace(/^\d+\.\s+/, '').trim();
+                                html += `§§§LI§§§${content}§§§/LI§§§`;
+                            }
+                            // Regular text
+                            else {
+                                if (inUnorderedList) {
+                                    html += '§§§/UL§§§';
+                                    inUnorderedList = false;
+                                }
+                                if (inOrderedList) {
+                                    html += '§§§/OL§§§';
+                                    inOrderedList = false;
                                 }
                                 if (line) html += `<p>${line}</p>`;
                             }
                         });
 
-                        if (inList) html += '§§§/UL§§§';
+                        if (inUnorderedList) html += '§§§/UL§§§';
+                        if (inOrderedList) html += '§§§/OL§§§';
                         return html;
                     }
 
