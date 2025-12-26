@@ -1469,8 +1469,7 @@
 
             document.getElementById('bad-result-preview').innerHTML = c.badResponsePreview || '';
             document.getElementById('bad-response-analysis').innerHTML = c.badResponseAnalysis || '';
-            // Use new Rich Renderer
-            document.getElementById('good-result-preview').innerHTML = renderRichResponse(c.previewResponse);
+            document.getElementById('good-result-preview').innerHTML = formatPreviewTable(c.previewResponse);
 
             const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
             const badge = document.getElementById('detail-category-badge');
@@ -2550,143 +2549,127 @@
             loop();
         }
 
-        // --- PREMIER VISUAL RENDERER (Markdown-like for PRO UI) ---
-        function renderRichResponse(text) {
-            if (!text) return "";
-
-            // 1. Detect and render Tables first (if any)
-            if (text.includes("|") && (text.includes("---|") || text.includes(":---"))) {
-                const tableMatch = text.match(/(\|.*\|\n\|.*\|[\s\S]*?)(?=\n\n|$)/);
-                if (tableMatch) {
-                    const tableHtml = formatPreviewTable(tableMatch[0]); // Use existing logic helper
-                    text = text.replace(tableMatch[0], `<div class="my-4">${tableHtml}</div>`);
-                }
-            }
-
-            // 2. Pre-process text specific patterns
-            let html = text
-                // Secure HTML
-                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
-                // Restore HTML tags for Table placeholders (reverting safe strictness locally for trusted content logic)
-                .replace(/&lt;div class=&quot;my-4&quot;&gt;/g, '<div class="my-4">')
-                .replace(/&lt;\/div&gt;/g, '</div>')
-                // Re-enable table internal HTML (dangerous but controlled source) 
-                // Note: Ideally we'd parse fully, but this hybrid approach preserves the table format we just made.
-                .replace(/&lt;table/g, '<table').replace(/&lt;\/table&gt;/g, '</table>')
-                .replace(/&lt;thead/g, '<thead').replace(/&lt;\/thead&gt;/g, '</thead>')
-                .replace(/&lt;tbody/g, '<tbody').replace(/&lt;\/tbody&gt;/g, '</tbody>')
-                .replace(/&lt;tr/g, '<tr').replace(/&lt;\/tr&gt;/g, '</tr>')
-                .replace(/&lt;th/g, '<th').replace(/&lt;\/th&gt;/g, '</th>')
-                .replace(/&lt;td/g, '<td').replace(/&lt;\/td&gt;/g, '</td>')
-                // Table auxiliary tags
-                .replace(/&lt;span/g, '<span').replace(/&lt;\/span&gt;/g, '</span>')
-                .replace(/class=&quot;/g, 'class="');
-
-
-            // 3. Render "Pseudo-Headers" (Lines like: **Title:**)
-            // Pattern: start of line or after newline, double asterisks, text, double asterisks, colon?
-            html = html.replace(/(?:^|\n)\*\*(.*?)\*\*:?/g, (match, content) => {
-                return `<p class="mt-4 mb-2 font-bold text-indigo-900 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full"></span>
-                            ${content}
-                        </p>`;
-            });
-
-            // 4. Render Standard Bold (**text**) in body
-            html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-800 bg-indigo-50/80 px-1 py-0.5 rounded text-[0.95em] shadow-sm ring-1 ring-indigo-100">$1</strong>');
-
-            // 5. Render Italics (*text*)
-            html = html.replace(/\*(.*?)\*/g, '<em class="text-slate-600 italic font-medium">$1</em>');
-
-            // 6. Render Lists (- item)
-            // Split by lines to find lists
-            const lines = html.split('\n');
-            let inList = false;
-            let finalHtml = '';
-
-            lines.forEach((line, i) => {
-                const trimmed = line.trim();
-
-                // If line starts with dash or bullet
-                if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
-                    if (!inList) {
-                        finalHtml += '<ul class="space-y-2 mt-2 mb-4 list-none pl-1">'; // Start list
-                        inList = true;
-                    }
-                    const content = trimmed.substring(2);
-                    finalHtml += `<li class="flex items-start gap-2.5 text-slate-600 text-sm leading-relaxed">
-                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
-                                    <span>${content}</span>
-                                  </li>`;
-                } else {
-                    if (inList) {
-                        finalHtml += '</ul>'; // End list
-                        inList = false;
-                    }
-                    // Regular paragraph handling (skip if empty or just table placeholder)
-                    if (trimmed.length > 0 && !trimmed.startsWith('<div class="my-4">') && !trimmed.startsWith('</div>')) {
-                        // Don't wrap headers
-                        if (trimmed.startsWith('<p class="mt-4 mb-2')) {
-                            finalHtml += trimmed;
-                        } else {
-                            finalHtml += `<p class="mb-2 text-slate-600 leading-relaxed">${trimmed}</p>`;
-                        }
-                    } else if (trimmed.startsWith('<div')) {
-                        finalHtml += trimmed;
-                    }
-                }
-            });
-            if (inList) finalHtml += '</ul>';
-
-            return finalHtml;
-        }
-
-        // --- UTILIDAD DE FORMATEO (Helper para renderRichResponse) ---
+        // --- UTILIDAD DE FORMATEO VISUAL (Reparación de Tablas Markdown) ---
+        // --- UTILIDAD DE FORMATEO VISUAL (Premium UX for Tables and Text) ---
         function formatPreviewTable(htmlContent) {
-            // Basic parser purely for the pipe structure to HTML
-            // (Simplified version of previous one for internal use)
             if (!htmlContent) return "";
 
-            let cleanText = htmlContent.replace(/<br\s*\/?>/gi, "\n");
+            // 1. Normalizar contenido básico
+            let cleanText = htmlContent.replace(/<div[^>]*>/gi, "")
+                .replace(/<\/div>/gi, "")
+                .replace(/<br\s*\/?>/gi, "\n");
+
             cleanText = cleanText.replace(/&#124;/g, "|");
+
+            // 2. DETECTOR DE TABLAS (Lógica existente robusta)
             const lines = cleanText.split('\n').filter(l => l.trim().length > 0);
             const hasPipes = lines.some(l => l.includes('|'));
-            if (!hasPipes) return htmlContent;
 
-            let tableHTML = '<div class="overflow-hidden my-3 rounded-xl border border-slate-200 shadow-sm"><table class="w-full text-xs text-left border-collapse bg-white">';
-            let inTbody = false;
-            let headerProcessed = false;
+            // Si parece una tabla y tiene estructura, usamos el renderizador de tablas
+            if (hasPipes && (lines[0].includes('|') || (lines.length > 1 && lines[1].includes('|')))) {
+                try {
+                    let tableHTML = '<div class="overflow-x-auto my-3 rounded-xl border border-slate-200 shadow-sm"><table class="w-full text-xs text-left border-collapse bg-white">';
+                    let inTbody = false;
+                    let headerProcessed = false;
 
-            lines.forEach((line) => {
-                const trimmed = line.trim();
-                // Ignore divider lines
-                if (trimmed.match(/^\|?[\s-:]+\|[\s-:]+\|?$/) || trimmed.match(/^[\s-:]+\|[\s-:]+$/)) return;
+                    lines.forEach((line, index) => {
+                        const trimmed = line.trim();
+                        // Ignorar separadores md
+                        if (trimmed.match(/^\|?[\s-:]+\|[\s-:]+\|?$/) || trimmed.match(/^[\s-:]+\|[\s-:]+$/)) return;
 
-                let cells = trimmed.split('|');
-                if (trimmed.startsWith('|')) cells.shift();
-                if (trimmed.endsWith('|')) cells.pop();
-                if (cells.length === 0) return;
+                        let cells = trimmed.split('|');
+                        if (trimmed.startsWith('|')) cells.shift();
+                        if (trimmed.endsWith('|')) cells.pop();
 
-                if (!headerProcessed) {
-                    tableHTML += '<thead class="bg-indigo-50 text-indigo-900 font-bold border-b border-indigo-100"><tr>';
-                    cells.forEach(c => tableHTML += `<th class="p-3 border-r border-indigo-100/50 last:border-0 whitespace-nowrap">${c.trim()}</th>`);
-                    tableHTML += '</tr></thead><tbody class="divide-y divide-slate-50">';
-                    inTbody = true;
-                    headerProcessed = true;
-                } else {
-                    tableHTML += '<tr class="hover:bg-indigo-50/30 transition-colors">';
-                    cells.forEach(c => {
-                        // Bold parsing inside cells
-                        let content = c.trim().replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-slate-800">$1</span>');
-                        tableHTML += `<td class="p-3 border-r border-slate-100 last:border-0 align-top leading-relaxed text-slate-600">${content}</td>`;
+                        if (cells.length === 0) return;
+
+                        if (!headerProcessed) {
+                            tableHTML += '<thead class="bg-indigo-50/80 text-indigo-900 font-bold border-b border-indigo-100"><tr>';
+                            cells.forEach(c => tableHTML += `<th class="p-3 border-r border-indigo-100/50 last:border-0 whitespace-nowrap first:rounded-tl-lg last:rounded-tr-lg">${c.trim()}</th>`);
+                            tableHTML += '</tr></thead><tbody class="divide-y divide-slate-100">';
+                            inTbody = true;
+                            headerProcessed = true;
+                        } else {
+                            tableHTML += '<tr class="hover:bg-slate-50 transition-colors group">';
+                            cells.forEach(c => {
+                                // Formato simple dentro de celdas
+                                let content = c.trim().replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-slate-800">$1</span>');
+                                tableHTML += `<td class="p-3 border-r border-slate-100 last:border-0 align-top leading-relaxed text-slate-600 group-hover:text-slate-800">${content}</td>`;
+                            });
+                            tableHTML += '</tr>';
+                        }
                     });
-                    tableHTML += '</tr>';
+
+                    if (inTbody) tableHTML += '</tbody>';
+                    tableHTML += '</table></div>';
+                    if (inTbody) return tableHTML;
+                } catch (e) { console.warn("Error rendering table, falling back to rich text", e); }
+            }
+
+            // 3. RENDERIZADO DE TEXTO ENRIQUECIDO (NUEVO: Superior UX)
+            // Transforma Markdown básico en componentes UI profesionales
+
+            let formattedHTML = '<div class="space-y-3 text-sm text-slate-600 leading-relaxed">';
+
+            // Dividir bloques por doble salto de línea
+            const paragraphs = cleanText.split(/\n\s*\n/);
+
+            paragraphs.forEach(p => {
+                let text = p.trim();
+                if (!text) return;
+
+                // A. Listas (Bullets)
+                if (text.match(/^[\-\*]\s/m)) {
+                    formattedHTML += '<ul class="space-y-2 my-2 ml-1">';
+                    const listItems = text.split('\n');
+                    listItems.forEach(item => {
+                        // Limpiar viñeta
+                        let content = item.replace(/^[\-\*]\s+/, '').trim();
+                        if (!content) return;
+
+                        // Negrita dentro de lista
+                        content = content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-indigo-900">$1</strong>');
+
+                        formattedHTML += `<li class="flex items-start gap-2.5">
+                            <span class="flex-none mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-sm"></span>
+                            <span class="flex-1 text-slate-700">${content}</span>
+                         </li>`;
+                    });
+                    formattedHTML += '</ul>';
+                    return;
                 }
+
+                // B. Bloques Destacados (Key: Value style)
+                // Ejemplo: "**RESUMEN:** Contenido..."
+                const keyValMatch = text.match(/^\*\*(.*?)\:\*\*\s*(.*)/s);
+                if (keyValMatch) {
+                    const label = keyValMatch[1];
+                    const body = keyValMatch[2];
+
+                    // Renderizado tipo "Tarjeta de Insight"
+                    let styledBody = body.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>');
+
+                    formattedHTML += `<div class="bg-indigo-50/40 rounded-xl p-4 border border-indigo-100/50 relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-indigo-400/30"></div>
+                        <h4 class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                            <span class="material-symbols-rounded text-base">auto_awesome</span> ${label}
+                        </h4>
+                        <p class="text-slate-700 leading-relaxed">${styledBody}</p>
+                    </div>`;
+                    return;
+                }
+
+                // C. Párrafos Estándar con formato inline
+                let styledParam = text
+                    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 bg-slate-100/50 px-0.5 rounded">$1</strong>') // Negrita
+                    .replace(/\*(.*?)\*/g, '<em class="text-slate-500 italic">$1</em>') // Cursiva
+                    .replace(/`([^`]+)`/g, '<code class="bg-slate-100 text-slate-700 px-1 py-0.5 rounded text-xs font-mono border border-slate-200">$1</code>'); // Code
+
+                formattedHTML += `<p>${styledParam}</p>`;
             });
 
-            if (inTbody) tableHTML += '</tbody>';
-            tableHTML += '</table></div>';
-            return tableHTML;
+            formattedHTML += '</div>';
+            return formattedHTML;
         }
     </script>
 
