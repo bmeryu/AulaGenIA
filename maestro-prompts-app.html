@@ -1478,6 +1478,7 @@
                 if (!rawText) return '';
 
                 let text = String(rawText).trim();
+                console.log('📥 INPUT:', text.substring(0, 200));
 
                 // ═══════════════════════════════════════════════════════
                 // STAGE 1: AGGRESSIVE CLEANUP (Before any processing)
@@ -1502,18 +1503,53 @@
                 // Process markdown tables FIRST (before escaping)
                 text = renderMarkdownTables(text);
 
-                // Now escape HTML for security (but preserve our table HTML)
+                // CRITICAL: Process markdown BEFORE escaping to avoid escaping markdown syntax
+                // Use temporary markers to protect markdown during HTML escape
+
+                // Process code blocks
+                text = text.replace(/```([a-z]*)\n([\s\S]*?)```/gi, (match, lang, code) => {
+                    return `§§§PRE§§§${code.trim()}§§§/PRE§§§`;
+                });
+
+                // Process inline code
+                text = text.replace(/`([^`]+)`/g, '§§§CODE§§§$1§§§/CODE§§§');
+
+                // Process bold (**...**)
+                text = text.replace(/\*\*([^\*]+)\*\*/g, '§§§STRONG§§§$1§§§/STRONG§§§');
+
+                // Process italic (*...*)
+                text = text.replace(/\*([^\*\n]+)\*/g, '§§§EM§§§$1§§§/EM§§§');
+
+                // Process unordered lists (- item)
+                text = text.replace(/((?:^|\n)- .+(?:\n|$))+/g, (match) => {
+                    const items = match.trim().split('\n').map(line => {
+                        const content = line.replace(/^- /, '').trim();
+                        return `§§§LI§§§${content}§§§/LI§§§`;
+                    }).join('');
+                    return `§§§UL§§§${items}§§§/UL§§§`;
+                });
+
+                // Process ordered lists (1. item)
+                text = text.replace(/((?:^|\n)\d+\. .+(?:\n|$))+/g, (match) => {
+                    const items = match.trim().split('\n').map(line => {
+                        const content = line.replace(/^\d+\. /, '').trim();
+                        return `§§§LI§§§${content}§§§/LI§§§`;
+                    }).join('');
+                    return `§§§OL§§§${items}§§§/OL§§§`;
+                });
+
+                // Now escape HTML for security (but preserve our markers and tables)
                 const parts = [];
-                const tablePattern = /(<table>[\s\S]*?<\/table>)/g;
+                const protectedPattern = /(§§§[^§]+§§§|<table>[\s\S]*?<\/table>)/g;
                 let lastIndex = 0;
                 let match;
 
-                while ((match = tablePattern.exec(text)) !== null) {
-                    // Escape text before table
+                while ((match = protectedPattern.exec(text)) !== null) {
+                    // Escape text before protected content
                     if (match.index > lastIndex) {
                         parts.push(escapeHtml(text.substring(lastIndex, match.index)));
                     }
-                    // Keep table HTML as-is
+                    // Keep protected content as-is
                     parts.push(match[0]);
                     lastIndex = match.index + match[0].length;
                 }
@@ -1523,37 +1559,21 @@
                 }
                 text = parts.join('');
 
-                // Process code blocks (```...```)
-                text = text.replace(/```([a-z]*)\n([\s\S]*?)```/gi, (match, lang, code) => {
-                    return `<pre><code>${code.trim()}</code></pre>`;
-                });
-
-                // Process inline code (`...`)
-                text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-                // Process bold (**...**)
-                text = text.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
-
-                // Process italic (*...*)
-                text = text.replace(/\*([^\*\n]+)\*/g, '<em>$1</em>');
-
-                // Process unordered lists (- item)
-                text = text.replace(/((?:^|\n)- .+(?:\n|$))+/g, (match) => {
-                    const items = match.trim().split('\n').map(line => {
-                        const content = line.replace(/^- /, '').trim();
-                        return `<li>${content}</li>`;
-                    }).join('');
-                    return `<ul>${items}</ul>`;
-                });
-
-                // Process ordered lists (1. item)
-                text = text.replace(/((?:^|\n)\d+\. .+(?:\n|$))+/g, (match) => {
-                    const items = match.trim().split('\n').map(line => {
-                        const content = line.replace(/^\d+\. /, '').trim();
-                        return `<li>${content}</li>`;
-                    }).join('');
-                    return `<ol>${items}</ol>`;
-                });
+                // Convert markers to HTML tags
+                text = text.replace(/§§§PRE§§§/g, '<pre><code>');
+                text = text.replace(/§§§\/PRE§§§/g, '</code></pre>');
+                text = text.replace(/§§§CODE§§§/g, '<code>');
+                text = text.replace(/§§§\/CODE§§§/g, '</code>');
+                text = text.replace(/§§§STRONG§§§/g, '<strong>');
+                text = text.replace(/§§§\/STRONG§§§/g, '</strong>');
+                text = text.replace(/§§§EM§§§/g, '<em>');
+                text = text.replace(/§§§\/EM§§§/g, '</em>');
+                text = text.replace(/§§§UL§§§/g, '<ul>');
+                text = text.replace(/§§§\/UL§§§/g, '</ul>');
+                text = text.replace(/§§§OL§§§/g, '<ol>');
+                text = text.replace(/§§§\/OL§§§/g, '</ol>');
+                text = text.replace(/§§§LI§§§/g, '<li>');
+                text = text.replace(/§§§\/LI§§§/g, '</li>');
 
                 // ═══════════════════════════════════════════════════════
                 // STAGE 3: FINAL FORMATTING
@@ -1572,7 +1592,9 @@
                 }).join('');
 
                 // Wrap in markdown-content class for styling
-                return `<div class="markdown-content">${text}</div>`;
+                const result = `<div class="markdown-content">${text}</div>`;
+                console.log('📤 OUTPUT:', result.substring(0, 300));
+                return result;
             }
 
             function renderMarkdownTables(text) {
