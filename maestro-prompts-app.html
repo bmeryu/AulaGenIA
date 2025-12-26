@@ -2134,12 +2134,14 @@
                 let sections = {};
 
                 // CONVERSATIONAL MODE: Auto-detect sections by keywords
+                // CONVERSATIONAL MODE: Auto-detect sections by keywords
+                // UPDATED: Now supports both conversational hooks AND explicit headers (1. ROL, 🎯 CONTEXTO, etc.)
                 const conversationalPatterns = {
-                    'ROL': /^(Actúa como|Eres un|Act como)/i,
-                    'CONTEXTO': /(📎|📄|🎤)\s*ADJUNTO:|Mi negocio:|Mi situación:|Origen:|Destino:|Participantes:|Objetivo de/i,
-                    'META': /Necesito que|Necesito un|Necesito una|debo|quiero|busco/i,
-                    'RESTRICCIONES': /Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites/i,
-                    'FORMATO': /Tabla con columnas?:|Formato:|Lista|usar el formato/i
+                    'ROL': /^(Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:)/i,
+                    'CONTEXTO': /(📎|📄|🎤|🎯|📱|📹|💻|🧲|🛒|💰|📉|🛡️|🏷️|🪜|⏳)\s*CON(?:TEXTO)?|Mi negocio:|Mi situación:|Origen:|Destino:|Participantes:|Objetivo de|^2\.\s*CON(?:TEXTO)?:/i,
+                    'META': /Necesito que|Necesito un|Necesito una|debo|quiero|busco|^3\.\s*META:|Meta:/i,
+                    'RESTRICCIONES': /Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|Restricciones Obligatorias|^4\.\s*RESTRICCIONES:|Restricciones:/i,
+                    'FORMATO': /Tabla con columnas?:|Formato:|Lista|usar el formato|^5\.\s*FORMATO:|Formato de Salida:/i
                 };
 
                 // Try conversational detection first
@@ -2231,6 +2233,16 @@
                             return tableHtml;
                         });
                     }
+
+                    // 2.5 Handle Editable Variables [Bracketed]
+                    // Replace [Text] with contenteditable span
+                    // We look for brackets that are NOT markdown links (which look like [text](url))
+                    // Simplification: Match [Text] that is not followed by (
+                    processedContent = processedContent.replace(/\[([^\]\n]+)\](?!\()/g, (match, content) => {
+                        // Don't replace if it looks like a checkbox [ ] or [x]
+                        if (content === ' ' || content.toLowerCase() === 'x') return match;
+                        return `<span contenteditable="true" class="variable-input bg-indigo-50 border-b-2 border-indigo-300 text-indigo-700 px-1 mx-0.5 outline-none focus:bg-indigo-100 focus:border-indigo-500 transition-colors cursor-text" data-original="${escapeHtml(content)}" onclick="document.execCommand('selectAll',false,null)">${content}</span>`;
+                    });
 
                     // 3. Variables Highlight
                     if (typeof currentVariables === 'undefined') window.currentVariables = {};
