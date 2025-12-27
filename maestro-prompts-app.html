@@ -2164,11 +2164,11 @@
                 } else {
                     for (let i = 0; i < markers.length; i++) {
                         const currentMarker = markers[i];
-                        // Si el marcador encontró un espacio/punto antes de la palabra clave, 
-                        // ajustamos el inicio para que no se vea feo.
                         const nextMarkerIndex = (i + 1 < markers.length) ? markers[i + 1].index : template.length;
 
-                        const startPos = currentMarker.index + currentMarker.length;
+                        // CRÍTICO: Incluimos el texto desde el INICIO del marcador (no después)
+                        // Esto preserva frases como "Necesito que..." y "Eres un..." completas
+                        const startPos = currentMarker.index;
                         let content = template.substring(startPos, nextMarkerIndex).trim();
 
                         if (content) {
