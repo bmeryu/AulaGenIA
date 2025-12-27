@@ -648,12 +648,57 @@
                             Tu confianza es nuestra prioridad. Si el curso no cumple tus expectativas, <strong>te
                                 devolvemos el 100% de tu pago</strong>. Sin preguntas ni complicaciones.
                         </p>
+                                        
+                    <!-- Componente de Cupón de Descuento -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">
+                            ¿Tienes un cupón de descuento?
+                        </label>
+                        <div class="flex gap-2">
+                            <input 
+                                type="text" 
+                                id="coupon-input"
+                                placeholder="Ingresa tu código"
+                                class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 uppercase font-mono text-lg"
+                                maxlength="20"
+                            >
+                            <button 
+                                id="apply-coupon-btn"
+                                class="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-bold whitespace-nowrap"
+                            >
+                                Aplicar
+                            </button>
+                        </div>
+                        
+                        <!-- Mensaje de resultado -->
+                        <div id="coupon-message" class="mt-2 text-sm font-medium hidden"></div>
+                        
+                        <!-- Resumen de descuento -->
+                        <div id="discount-summary" class="mt-4 p-4 bg-green-50 border-2 border-green-200 rounded-lg hidden">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-600">Precio original:</span>
+                                <span class="text-gray-900 font-bold" id="original-price">$20 USD</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-green-600 font-bold">Descuento (<span id="discount-label"></span>):</span>
+                                <span class="text-green-600 font-bold text-xl" id="discount-amount">-$10 USD</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t-2 border-green-300">
+                                <span class="text-gray-900 font-black text-lg">Total a pagar:</span>
+                                <span class="text-3xl font-black text-green-600" id="final-price">$10 USD</span>
+                            </div>
+                            <button 
+                                id="remove-coupon-btn"
+                                class="mt-3 text-sm text-red-600 hover:text-red-700 font-medium"
+                            >
+                                ✕ Quitar cupón
+                            </button>
+                        </div>
                     </div>
+</div>
 
-                    <a href="https://mpago.la/2atUzLp"
-                        class="gradient-btn block text-center px-12 py-6 text-white text-2xl font-black rounded-2xl shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300">
-                        🚀 Inscribirme Ahora
-                    </a>
+                    <button onclick="handlePurchaseWithCoupon()"
+                        class="gradient-btn block text-center px-12 py-6 text-white text-2xl font-black rounded-2xl shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300">🚀 Inscribirme Ahora</button>
 
                     <p class="text-center text-sm text-gray-500 mt-6">
                         Pago único • Acceso 12 meses • Plan Esencial
@@ -838,7 +883,126 @@
         // Check for ?action=buy on load (Return from Login)
         document.addEventListener('DOMContentLoaded', () => {
             // Wait for Auth to initialize
-            auth.onAuthStateChanged(user => {
+            
+            // ============================================
+            // SISTEMA DE CUPONES - FRONTEND
+            // ============================================
+            let appliedCoupon = null;
+
+            document.getElementById('apply-coupon-btn')?.addEventListener('click', async () => {
+                const couponInput = document.getElementById('coupon-input');
+                const couponCode = couponInput.value.trim().toUpperCase();
+                
+                if (!couponCode) {
+                    showCouponMessage('Por favor ingresa un código', 'error');
+                    return;
+                }
+
+                const user = auth.currentUser;
+                if (!user) {
+                    showCouponMessage('Debes iniciar sesión para usar cupones', 'error');
+                    return;
+                }
+
+                const btn = document.getElementById('apply-coupon-btn');
+                const originalText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = 'Validando...';
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+                try {
+                    const validateCoupon = functions.httpsCallable('validateCoupon');
+                    const result = await validateCoupon({
+                        couponCode: couponCode,
+                        courseId: 'ia-aplicada-esencial'
+                    });
+
+                    if (result.data.valid) {
+                        appliedCoupon = result.data;
+                        
+                        document.getElementById('original-price').textContent = `${result.data.originalPrice} USD`;
+                        
+                        const discountLabel = result.data.discountType === 'percentage' 
+                            ? `${result.data.discountValue}%` 
+                            : `${result.data.discountValue} USD`;
+                        document.getElementById('discount-label').textContent = discountLabel;
+                        
+                        document.getElementById('discount-amount').textContent = `-${result.data.discountAmount.toFixed(2)} USD`;
+                        document.getElementById('final-price').textContent = `${result.data.finalPrice.toFixed(2)} USD`;
+                        document.getElementById('discount-summary').classList.remove('hidden');
+                        
+                        showCouponMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, 'success');
+                        
+                        couponInput.disabled = true;
+                        btn.textContent = '✓ Aplicado';
+                        btn.classList.add('bg-green-600', 'hover:bg-green-700');
+                        btn.classList.remove('bg-teal-600', 'hover:bg-teal-700');
+                    }
+
+                } catch (error) {
+                    console.error('Error validating coupon:', error);
+                    let errorMessage = 'Cupón inválido';
+                    
+                    if (error.message.includes('expirado')) errorMessage = 'Cupón expirado';
+                    else if (error.message.includes('agotado')) errorMessage = 'Cupón agotado';
+                    else if (error.message.includes('Ya usaste')) errorMessage = 'Ya usaste este cupón';
+                    
+                    showCouponMessage(errorMessage, 'error');
+                    btn.disabled = false;
+                    btn.textContent = originalText;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            });
+
+            document.getElementById('remove-coupon-btn')?.addEventListener('click', () => {
+                appliedCoupon = null;
+                document.getElementById('discount-summary').classList.add('hidden');
+                document.getElementById('coupon-input').value = '';
+                document.getElementById('coupon-input').disabled = false;
+                document.getElementById('coupon-message').classList.add('hidden');
+                
+                const btn = document.getElementById('apply-coupon-btn');
+                btn.disabled = false;
+                btn.textContent = 'Aplicar';
+                btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'opacity-50', 'cursor-not-allowed');
+                btn.classList.add('bg-teal-600', 'hover:bg-teal-700');
+            });
+
+            function showCouponMessage(message, type) {
+                const messageEl = document.getElementById('coupon-message');
+                messageEl.textContent = message;
+                messageEl.classList.remove('hidden', 'text-red-600', 'text-green-600');
+                messageEl.classList.add(type === 'error' ? 'text-red-600' : 'text-green-600');
+            }
+
+            async function handlePurchaseWithCoupon() {
+                const user = auth.currentUser;
+                
+                if (!user) {
+                    sessionStorage.setItem('pendingPurchase', JSON.stringify({
+                        courseId: 'ia-aplicada-esencial',
+                        couponId: appliedCoupon ? appliedCoupon.couponId : null
+                    }));
+                    window.location.href = '/acceso.html?action=buy';
+                    return;
+                }
+
+                try {
+                    const createPreference = functions.httpsCallable('createMercadoPagoPreference');
+                    const result = await createPreference({
+                        courseId: 'ia-aplicada-esencial',
+                        couponId: appliedCoupon ? appliedCoupon.couponId : null
+                    });
+
+                    window.location.href = result.data.init_point;
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error al procesar el pago. Por favor intenta nuevamente.');
+                }
+            }
+
+auth.onAuthStateChanged(user => {
                 setupBuyButtons();
 
                 const urlParams = new URLSearchParams(window.location.search);
