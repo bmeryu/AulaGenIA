@@ -2137,74 +2137,89 @@
                     'FORMATO': { bg: 'bg-violet-100', text: 'text-violet-800', label: 'Formato', desc: 'Cómo quieres la respuesta (ejemplo: Lista, Tabla, Párrafos)' }
                 };
 
-                // Parse the template to extract sections
+                // MARKER-BASED PARSER: Find section positions instead of splitting by paragraphs
                 let sections = {};
 
-                // CONVERSATIONAL MODE: Auto-detect sections by keywords
-                // CONVERSATIONAL MODE: Auto-detect sections by keywords
-                // UPDATED: Now supports both conversational hooks AND explicit headers (1. ROL, 🎯 CONTEXTO, etc.)
-                // Fixed: Added specific emoji support for ADJUNTO and stronger FORMATO delimiters
-                const conversationalPatterns = {
-                    'ROL': /^(Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:|🔸 ROL)/i,
-                    'CONTEXTO': /(📎|📄|🎤|🎯|📱|📹|💻|🧲|🛒|💰|📉|🛡️|🏷️|🪜|⏳|📊|📷)\s*(?:ADJUNTO|CON(?:TEXTO)?)|Mi negocio:|Mi situación:|Origen:|Destino:|Participantes:|Objetivo de|^2\.\s*CON(?:TEXTO)?:/i,
-                    'META': /Necesito que|Necesito un|Necesito una|debo|quiero|busco|^3\.\s*META:|Meta:/i,
-                    'RESTRICCIONES': /Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|Restricciones Obligatorias|RESTRICCIONES CRÍTICAS|^4\.\s*RESTRICCIONES:|Restricciones:/i,
-                    'FORMATO': /Tabla con columnas?:|Formato:|Lista|usar el formato|^5\.\s*FORMATO:|Formato de Salida|FORMATO DE SALIDA/i
+                // Step 1: Define patterns for each section (priority order: explicit tags -> natural patterns)
+                const sectionPatterns = {
+                    'ROL': [
+                        /{r}/i,                                    // Explicit tag (highest priority)
+                        /^Actúa como/im,                          // Natural conversational
+                        /^Eres un/im,
+                        /^1\.\s*ROL:/im                           // Numbered format
+                    ],
+                    'CONTEXTO': [
+                        /{c}/i,
+                        /(📎|📄|🎤|🎯|📱|📹|💻|🧲|🛒|💰|📉|🛡️|🏷️|🪜|⏳|📊|📷)\s*(?:ADJUNTO|CON(?:TEXTO)?)/im,
+                        /^2\.\s*CON(?:TEXTO)?:/im,
+                        /Mi negocio:/im,
+                        /Mi situación:/im
+                    ],
+                    'META': [
+                        /{m}/i,
+                        /^Necesito que/im,
+                        /^Necesito un/im,
+                        /^3\.\s*META:/im
+                    ],
+                    'RESTRICCIONES': [
+                        /{l}/i,
+                        /^RESTRICCIONES OBLIGATORIAS:/im,
+                        /^RESTRICCIONES CRÍTICAS:/im,
+                        /^4\.\s*RESTRICCIONES:/im,
+                        /^Tono:/im,
+                        /^Máximo/im
+                    ],
+                    'FORMATO': [
+                        /{f}/i,
+                        /^FORMATO DE SALIDA OBLIGATORIO:/im,
+                        /^FORMATO DE SALIDA:/im,
+                        /^5\.\s*FORMATO:/im,
+                        /^Tabla con columnas?:/im
+                    ]
                 };
 
-                // Try conversational detection first
-                const paragraphs = template.split(/\n\n+/);
-                let detectedSections = {};
+                // Step 2: Scan template and find all markers with their positions
+                let markers = [];
 
-                paragraphs.forEach(para => {
-                    para = para.trim();
-                    if (!para) return;
-
-                    // Check which section this paragraph belongs to
-                    let matched = false;
-                    for (const [section, pattern] of Object.entries(conversationalPatterns)) {
-                        if (pattern.test(para)) {
-                            if (!detectedSections[section]) detectedSections[section] = [];
-                            detectedSections[section].push(para);
-                            matched = true;
-                            break; // Found match, move to next paragraph
+                for (const [sectionName, patterns] of Object.entries(sectionPatterns)) {
+                    for (const pattern of patterns) {
+                        const match = template.match(pattern);
+                        if (match) {
+                            markers.push({
+                                section: sectionName,
+                                position: match.index,
+                                matchText: match[0],
+                                isExplicitTag: pattern.source.includes('{')
+                            });
+                            break; // Found this section, move to next
                         }
                     }
-
-                    if (!matched) {
-                        // If no pattern matched, add to last section or ROL as default
-                        const lastSection = Object.keys(detectedSections).pop() || 'ROL';
-                        if (!detectedSections[lastSection]) detectedSections[lastSection] = [];
-                        detectedSections[lastSection].push(para);
-                    }
-                });
-
-                // Detect implicit "ROL" if detectedSections is empty but we have content
-                if (Object.keys(detectedSections).length === 0 && template.trim().length > 0) {
-                    // If no keywords found, default to 'Prompt' or 'ROL'
-                    detectedSections['Prompt'] = [template.trim()];
                 }
 
-                if (Object.keys(detectedSections).length > 0) {
-                    sections = Object.fromEntries(
-                        Object.entries(detectedSections).map(([key, val]) => {
-                            // Strip the header text to avoid repetition
-                            // We join the array first
-                            let fullText = val.join('\n').trim();
-                            // Get the pattern associated with this key
-                            const pattern = conversationalPatterns[key];
-                            if (pattern) {
-                                // Replace the matched header at the start of the string
-                                fullText = fullText.replace(pattern, '').trim();
-                                // Clean up leading delimiters like ":" or "-" just in case
-                                fullText = fullText.replace(/^[:\s-]+/, '').trim();
-                            }
-                            return [key, fullText];
-                        })
-                    );
+                // Step 3: Sort markers by position (ascending)
+                markers.sort((a, b) => a.position - b.position);
+
+                // Step 4: Slice content between markers
+                if (markers.length > 0) {
+                    for (let i = 0; i < markers.length; i++) {
+                        const currentMarker = markers[i];
+                        const nextMarker = markers[i + 1];
+
+                        const startPos = currentMarker.position;
+                        const endPos = nextMarker ? nextMarker.position : template.length;
+
+                        let content = template.substring(startPos, endPos).trim();
+
+                        // Remove the marker text itself from the content
+                        content = content.replace(currentMarker.matchText, '').trim();
+                        // Clean up leading delimiters
+                        content = content.replace(/^[:\s-]+/, '').trim();
+
+                        sections[currentMarker.section] = content;
+                    }
                 } else {
-                    // Fallback for extremely unstructured text
-                    sections['Prompt'] = template;
+                    // Fallback: No markers found, treat entire text as ROL
+                    sections['ROL'] = template.trim();
                 }
 
                 // Render Sections
