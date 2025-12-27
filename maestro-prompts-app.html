@@ -2132,7 +2132,7 @@
                     'ROL': { bg: 'bg-blue-50', text: 'text-blue-800', label: 'Rol' },
                     'CONTEXTO': { bg: 'bg-emerald-50', text: 'text-emerald-800', label: 'Contexto' },
                     'META': { bg: 'bg-amber-50', text: 'text-amber-800', label: 'Meta' },
-                    'RESTRICCIONES': { bg: 'bg-rose-50', text: 'text-rose-800', label: 'Restr.' },
+                    'RESTRICCIONES': { bg: 'bg-rose-50', text: 'text-rose-800', label: 'Restricciones' },
                     'FORMATO': { bg: 'bg-violet-50', text: 'text-violet-800', label: 'Formato' }
                 };
 
@@ -2141,7 +2141,7 @@
                 const patterns = {
                     'ROL': /{r}|(?:^|\s|[.,;])(?:Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:|🔸 ROL)/i,
                     'CONTEXTO': /{c}|(?:^|\s|[.,;])(?:📎|📄|🎤|🎯|ADJUNTO|CON(?:TEXTO)?|Mi negocio:|Mi situación:|2\.\s*CON(?:TEXTO)?:)/i,
-                    'META': /{m}|(?:^|\s|[.,;])(?:Necesito que|Necesito un|Necesito una|Necesito|Objetivo|debo|quiero|busco|3\.\s*META:|Meta:)/i,
+                    'META': /{m}|(?:^|\s|[.,;])(?:Necesito que me|Necesito un|Necesito una|Objetivo|debo|quiero|busco|3\.\s*META:|Meta:)/i,
                     'RESTRICCIONES': /{l}|(?:^|\s|[.,;])(?:Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|RESTRICCIONES|4\.\s*RESTRICCIONES:)/i,
                     'FORMATO': /{f}|(?:^|\s|[.,;])(?:Tabla con columnas?:|Formato:|Lista|usar el formato|5\.\s*FORMATO:|FORMATO DE SALIDA)/i
                 };
@@ -2179,12 +2179,15 @@
                     }
                 }
 
-                // Renderizado visual de las cajas
-                Object.entries(sections).forEach(([key, content]) => {
+                // Renderizado visual de las cajas (orden fijo: ROL, CONTEXTO, META, FORMATO, RESTRICCIONES)
+                const orderedSections = ['ROL', 'CONTEXTO', 'META', 'FORMATO', 'RESTRICCIONES'];
+                orderedSections.forEach(key => {
+                    const content = sections[key];
+                    if (!content) return; // Skip if section doesn't exist
                     const conf = sectionConfig[key] || { bg: 'bg-slate-50', text: 'text-slate-800', label: key };
                     const wrapper = document.createElement('div');
                     wrapper.className = `my-1 rounded-md border border-transparent hover:border-indigo-100 transition-colors ${conf.bg} px-3 py-2`;
-                    let html = content
+                    let html = escapeHtml(content)
                         .replace(/^-{3,}\s*$/gm, '')
                         .replace(/{\/?[rcmlf]}/gi, '')
                         .replace(/\[([^\]\n]+)\](?!\()/g, '<span class="var-highlight">$1</span>')
