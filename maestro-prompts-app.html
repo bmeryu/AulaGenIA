@@ -1923,15 +1923,22 @@
 
                 currentPromptTemplate = c.agiaPromptTagged;
 
-                // Decrypt ONLY if unlocked
-                if (isVaultUnlocked && currentPromptTemplate.startsWith("U2F")) {
-                    currentPromptTemplate = decryptPrompt(currentPromptTemplate);
+                // Handle both encrypted (U2F prefix) and plain text prompts
+                if (currentPromptTemplate.startsWith("U2F")) {
+                    // Encrypted prompt - only decrypt if vault is unlocked
+                    if (isVaultUnlocked) {
+                        currentPromptTemplate = decryptPrompt(currentPromptTemplate);
+                    }
+                    // If vault is locked, keep it encrypted (will show as locked)
+                } else {
+                    // Plain text prompt - always use as-is (no decryption needed)
+                    // This allows new conversational prompts to work immediately
                 }
 
                 currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
                 currentVariables = {};
 
-                // Si está bloqueado, no intentamos parsear variables porque el texto es basura encriptada
+                // Parse variables only if we have decrypted/plain text (not encrypted U2F)
                 if (!currentPromptTemplate.startsWith("U2F")) {
                     const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
                     let match;
