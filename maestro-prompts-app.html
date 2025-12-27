@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maestro Prompts - Aula GenIA (v3.1)</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Maestro Prompts - Aula GenIA (v3.3 - Parser Fixed)</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -2123,185 +2126,66 @@
             function renderAgiaSections(template) {
                 const container = document.getElementById('agia-sections-container');
                 if (!container) return;
-
-                // Clear container first
                 container.innerHTML = '';
 
-                // AGIA section configuration - Light Theme Pastel Highlights
-                // Using bg-*-100 for subtle highlight on white/light bg, text-*-900 for readability
                 const sectionConfig = {
-                    'ROL': { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Rol', desc: 'Dile a la IA quién debe ser (ejemplo: Experto en marketing, Profesor de inglés)' },
-                    'CONTEXTO': { bg: 'bg-emerald-100', text: 'text-emerald-800', label: 'Contexto', desc: 'Explica tu situación o da información importante para que la IA entienda tu caso' },
-                    'META': { bg: 'bg-amber-100', text: 'text-amber-800', label: 'Meta', desc: 'Qué quieres lograr (ejemplo: Crear una tabla, Escribir un email, Hacer un plan)' },
-                    'RESTRICCIONES': { bg: 'bg-rose-100', text: 'text-rose-800', label: 'Restr.', desc: 'Límites o reglas (ejemplo: Máximo 3 líneas, No uses palabras técnicas)' },
-                    'FORMATO': { bg: 'bg-violet-100', text: 'text-violet-800', label: 'Formato', desc: 'Cómo quieres la respuesta (ejemplo: Lista, Tabla, Párrafos)' }
+                    'ROL': { bg: 'bg-blue-50', text: 'text-blue-800', label: 'Rol' },
+                    'CONTEXTO': { bg: 'bg-emerald-50', text: 'text-emerald-800', label: 'Contexto' },
+                    'META': { bg: 'bg-amber-50', text: 'text-amber-800', label: 'Meta' },
+                    'RESTRICCIONES': { bg: 'bg-rose-50', text: 'text-rose-800', label: 'Restr.' },
+                    'FORMATO': { bg: 'bg-violet-50', text: 'text-violet-800', label: 'Formato' }
                 };
 
-                // Parse the template to extract sections
+                // Patrones que identifican dónde empieza cada sección
+                const patterns = {
+                    'ROL': /{r}|(?:^|\n)(?:Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:|🔸 ROL)/i,
+                    'CONTEXTO': /{c}|(?:^|\n)(?:📎|📄|🎤|🎯|ADJUNTO|CON(?:TEXTO)?|Mi negocio:|Mi situación:|2\.\s*CON(?:TEXTO)?:)/i,
+                    'META': /{m}|(?:^|\n)(?:Necesito que|Necesito un|Necesito una|debo|quiero|busco|3\.\s*META:|Meta:)/i,
+                    'RESTRICCIONES': /{l}|(?:^|\n)(?:Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|RESTRICCIONES|4\.\s*RESTRICCIONES:)/i,
+                    'FORMATO': /{f}|(?:^|\n)(?:Tabla con columnas?:|Formato:|Lista|usar el formato|5\.\s*FORMATO:|FORMATO DE SALIDA)/i
+                };
+
+                let markers = [];
+                Object.entries(patterns).forEach(([key, pattern]) => {
+                    let match;
+                    const globalPattern = new RegExp(pattern.source, 'gi');
+                    while ((match = globalPattern.exec(template)) !== null) {
+                        markers.push({ index: match.index, length: match[0].length, section: key });
+                    }
+                });
+
+                // Ordenamos los marcadores por posición en el texto
+                markers.sort((a, b) => a.index - b.index);
+
                 let sections = {};
-
-                // CONVERSATIONAL MODE: Auto-detect sections by keywords
-                // CONVERSATIONAL MODE: Auto-detect sections by keywords
-                // UPDATED: Now supports both conversational hooks AND explicit headers (1. ROL, 🎯 CONTEXTO, etc.)
-                // Fixed: Added specific emoji support for ADJUNTO and stronger FORMATO delimiters
-                const conversationalPatterns = {
-                    'ROL': /^(Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:|🔸 ROL)/i,
-                    'CONTEXTO': /(📎|📄|🎤|🎯|📱|📹|💻|🧲|🛒|💰|📉|🛡️|🏷️|🪜|⏳|📊|📷)\s*(?:ADJUNTO|CON(?:TEXTO)?)|Mi negocio:|Mi situación:|Origen:|Destino:|Participantes:|Objetivo de|^2\.\s*CON(?:TEXTO)?:/i,
-                    'META': /Necesito que|Necesito un|Necesito una|debo|quiero|busco|^3\.\s*META:|Meta:/i,
-                    'RESTRICCIONES': /Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|Restricciones Obligatorias|RESTRICCIONES CRÍTICAS|^4\.\s*RESTRICCIONES:|Restricciones:/i,
-                    'FORMATO': /Tabla con columnas?:|Formato:|Lista|usar el formato|^5\.\s*FORMATO:|Formato de Salida|FORMATO DE SALIDA/i
-                };
-
-                // Try conversational detection first
-                const paragraphs = template.split(/\n\n+/);
-                let detectedSections = {};
-
-                paragraphs.forEach(para => {
-                    para = para.trim();
-                    if (!para) return;
-
-                    // Check which section this paragraph belongs to
-                    let matched = false;
-                    for (const [section, pattern] of Object.entries(conversationalPatterns)) {
-                        if (pattern.test(para)) {
-                            if (!detectedSections[section]) detectedSections[section] = [];
-                            detectedSections[section].push(para);
-                            matched = true;
-                            break; // Found match, move to next paragraph
+                if (markers.length === 0) {
+                    sections['ROL'] = template;
+                } else {
+                    for (let i = 0; i < markers.length; i++) {
+                        const currentMarker = markers[i];
+                        const nextMarkerIndex = (i + 1 < markers.length) ? markers[i + 1].index : template.length;
+                        const startPos = currentMarker.index + currentMarker.length;
+                        const content = template.substring(startPos, nextMarkerIndex).trim();
+                        if (content) {
+                            if (!sections[currentMarker.section]) sections[currentMarker.section] = "";
+                            sections[currentMarker.section] += (sections[currentMarker.section] ? "\n" : "") + content;
                         }
                     }
-
-                    if (!matched) {
-                        // If no pattern matched, add to last section or ROL as default
-                        const lastSection = Object.keys(detectedSections).pop() || 'ROL';
-                        if (!detectedSections[lastSection]) detectedSections[lastSection] = [];
-                        detectedSections[lastSection].push(para);
-                    }
-                });
-
-                // Detect implicit "ROL" if detectedSections is empty but we have content
-                if (Object.keys(detectedSections).length === 0 && template.trim().length > 0) {
-                    // If no keywords found, default to 'Prompt' or 'ROL'
-                    detectedSections['Prompt'] = [template.trim()];
                 }
 
-                if (Object.keys(detectedSections).length > 0) {
-                    sections = Object.fromEntries(
-                        Object.entries(detectedSections).map(([key, val]) => {
-                            // Strip the header text to avoid repetition
-                            // We join the array first
-                            let fullText = val.join('\n').trim();
-                            // Get the pattern associated with this key
-                            const pattern = conversationalPatterns[key];
-                            if (pattern) {
-                                // Replace the matched header at the start of the string
-                                fullText = fullText.replace(pattern, '').trim();
-                                // Clean up leading delimiters like ":" or "-" just in case
-                                fullText = fullText.replace(/^[:\s-]+/, '').trim();
-                            }
-                            return [key, fullText];
-                        })
-                    );
-                } else {
-                    // Fallback for extremely unstructured text
-                    sections['Prompt'] = template;
-                }
-
-                // Render Sections
+                // Renderizado visual de las cajas
                 Object.entries(sections).forEach(([key, content]) => {
-                    const config = sectionConfig[key] || {
-                        bg: 'bg-indigo-50',
-                        text: 'text-indigo-900',
-                        label: key,
-                        desc: ''
-                    };
-
+                    const conf = sectionConfig[key] || { bg: 'bg-slate-50', text: 'text-slate-800', label: key };
                     const wrapper = document.createElement('div');
-                    // PILLAR 3: Aesthetic Tuning - Compact Margins (my-1 instead of my-3)
-                    wrapper.className = `my-1 rounded-md overflow-hidden border border-transparent hover:border-indigo-100 transition-colors duration-200`;
-
-                    // Content Processing - PILLAR 1: Syntax Cleaning & PILLAR 2: Dynamic Table Construction
-                    let processedContent = escapeHtml(content);
-
-                    // 1. Remove Markdown Artifacts (---)
-                    processedContent = processedContent.replace(/^-{3,}\s*$/gm, ''); // Remove standalone --- lines
-
-                    // 2. Handle Markdown Tables properly inside sections
-                    if (processedContent.includes('|')) {
-                        // Simple table detector for visual rendering
-                        const tableRegex = /(\|[^\n]+\|\n(?:\|[\s:-]+\|[\s\S]*?\n)?(?:\|[^\n]+\|\n?)*)/g;
-                        processedContent = processedContent.replace(tableRegex, (match) => {
-                            // Use our robust table renderer logic here or a simplified version
-                            // For inside badges, we want it compact.
-                            const rows = match.trim().split('\n').filter(line => line.trim() && !line.match(/^\|[\s:-]+\|$/));
-                            if (rows.length === 0) return '';
-
-                            let tableHtml = '<div class="overflow-x-auto my-2 rounded-lg border border-slate-200"><table class="w-full text-xs text-left">';
-
-                            rows.forEach((row, idx) => {
-                                const cells = row.split('|').filter(c => c.trim() !== '');
-                                if (idx === 0) {
-                                    tableHtml += '<thead class="bg-slate-100 text-slate-700 font-semibold"><tr>';
-                                    cells.forEach(c => tableHtml += `<th class="px-2 py-1.5 border-b border-slate-200">${c.trim()}</th>`);
-                                    tableHtml += '</tr></thead><tbody>';
-                                } else {
-                                    tableHtml += '<tr class="border-b border-slate-100 last:border-0 hover:bg-slate-50">';
-                                    cells.forEach(c => tableHtml += `<td class="px-2 py-1.5 align-top">${c.trim()}</td>`);
-                                    tableHtml += '</tr>';
-                                }
-                            });
-                            tableHtml += '</tbody></table></div>';
-                            return tableHtml;
-                        });
-                    }
-
-                    // 2.5 Handle Editable Variables [Bracketed]
-                    // Replace [Text] with contenteditable span
-                    // We look for brackets that are NOT markdown links (which look like [text](url))
-                    // Simplification: Match [Text] that is not followed by (
-                    processedContent = processedContent.replace(/\[([^\]\n]+)\](?!\()/g, (match, content) => {
-                        // Don't replace if it looks like a checkbox [ ] or [x]
-                        if (content === ' ' || content.toLowerCase() === 'x') return match;
-                        return `<span contenteditable="true" class="variable-input bg-indigo-50 border-b-2 border-indigo-300 text-indigo-700 px-1 mx-0.5 outline-none focus:bg-indigo-100 focus:border-indigo-500 transition-colors cursor-text" data-original="${escapeHtml(content)}" onclick="document.execCommand('selectAll',false,null)">${content}</span>`;
-                    });
-
-                    // 3. Variables Highlight
-                    if (typeof currentVariables === 'undefined') window.currentVariables = {};
-                    Object.keys(currentVariables).forEach(vKey => {
-                        const val = currentVariables[vKey];
-                        // Regex to replace {variable} but be careful about HTML
-                        const regex = new RegExp(`{${vKey}\\|?[^}]*}`, 'g');
-                        processedContent = processedContent.replace(regex, `<span class="var-highlight px-1 rounded bg-yellow-100 text-yellow-800 font-medium border border-yellow-200">${escapeHtml(val || '...')}</span>`);
-                    });
-
-                    // 4. Line Breaks -> Tight Paragraphs
-                    // Split by newlines but filter out empty ones resulting from separators
-                    const cleanLines = processedContent.split('\n').filter(line => line.trim().length > 0);
-                    const finalHtml = cleanLines.map(line => {
-                        // Check if line is just HTML table from previous step
-                        if (line.startsWith('<div class="overflow-x-auto')) return line;
-                        return `<div class="leading-snug mb-0.5">${line}</div>`;
-                    }).join('');
-
-                    wrapper.innerHTML = `
-                        <div class="${config.bg} px-3 py-2">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] font-bold uppercase tracking-wider ${config.text} opacity-80 border border-${config.text.split('-')[1]}-200 px-1.5 rounded bg-white/50">
-                                    ${config.label}
-                                </span>
-                            </div>
-                            <div class="${config.text} text-sm font-medium tracking-wide space-y-0.5">
-                                ${finalHtml}
-                            </div>
-                        </div>
-                    `;
+                    wrapper.className = `my-1 rounded-md border border-transparent hover:border-indigo-100 transition-colors ${conf.bg} px-3 py-2`;
+                    let html = content
+                        .replace(/^-{3,}\s*$/gm, '')
+                        .replace(/{\/?[rcmlf]}/gi, '')
+                        .replace(/\[([^\]\n]+)\](?!\()/g, '<span class="var-highlight">$1</span>')
+                        .replace(/\n/g, '<br>');
+                    wrapper.innerHTML = `<span class="text-[9px] font-bold uppercase tracking-widest ${conf.text} opacity-60 border border-current px-1 rounded mr-2">${conf.label}</span><span class="${conf.text} text-sm leading-snug">${html}</span>`;
                     container.appendChild(wrapper);
                 });
-
-                // Render Dynamic Inline Legend
-                if (typeof renderInlineLegend === 'function') {
-                    renderInlineLegend(sectionConfig);
-                }
             }
 
 
