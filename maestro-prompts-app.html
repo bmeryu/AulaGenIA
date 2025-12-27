@@ -2136,13 +2136,14 @@
                     'FORMATO': { bg: 'bg-violet-50', text: 'text-violet-800', label: 'Formato' }
                 };
 
-                // Patrones que identifican dónde empieza cada sección
+                // Patrones mejorados: eliminamos el ancla obligatoria de inicio de línea (^|\n)
+                // y permitimos que detecte etiquetas después de espacios, puntos o comas.
                 const patterns = {
-                    'ROL': /{r}|(?:^|\n)(?:Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:|🔸 ROL)/i,
-                    'CONTEXTO': /{c}|(?:^|\n)(?:📎|📄|🎤|🎯|ADJUNTO|CON(?:TEXTO)?|Mi negocio:|Mi situación:|2\.\s*CON(?:TEXTO)?:)/i,
-                    'META': /{m}|(?:^|\n)(?:Necesito que|Necesito un|Necesito una|debo|quiero|busco|3\.\s*META:|Meta:)/i,
-                    'RESTRICCIONES': /{l}|(?:^|\n)(?:Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|RESTRICCIONES|4\.\s*RESTRICCIONES:)/i,
-                    'FORMATO': /{f}|(?:^|\n)(?:Tabla con columnas?:|Formato:|Lista|usar el formato|5\.\s*FORMATO:|FORMATO DE SALIDA)/i
+                    'ROL': /{r}|(?:^|\s|[.,;])(?:Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:|🔸 ROL)/i,
+                    'CONTEXTO': /{c}|(?:^|\s|[.,;])(?:📎|📄|🎤|🎯|ADJUNTO|CON(?:TEXTO)?|Mi negocio:|Mi situación:|2\.\s*CON(?:TEXTO)?:)/i,
+                    'META': /{m}|(?:^|\s|[.,;])(?:Necesito que|Necesito un|Necesito una|debo|quiero|busco|3\.\s*META:|Meta:)/i,
+                    'RESTRICCIONES': /{l}|(?:^|\s|[.,;])(?:Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|RESTRICCIONES|4\.\s*RESTRICCIONES:)/i,
+                    'FORMATO': /{f}|(?:^|\s|[.,;])(?:Tabla con columnas?:|Formato:|Lista|usar el formato|5\.\s*FORMATO:|FORMATO DE SALIDA)/i
                 };
 
                 let markers = [];
@@ -2163,12 +2164,17 @@
                 } else {
                     for (let i = 0; i < markers.length; i++) {
                         const currentMarker = markers[i];
+                        // Si el marcador encontró un espacio/punto antes de la palabra clave, 
+                        // ajustamos el inicio para que no se vea feo.
                         const nextMarkerIndex = (i + 1 < markers.length) ? markers[i + 1].index : template.length;
+
                         const startPos = currentMarker.index + currentMarker.length;
-                        const content = template.substring(startPos, nextMarkerIndex).trim();
+                        let content = template.substring(startPos, nextMarkerIndex).trim();
+
                         if (content) {
+                            // Si la sección ya existe (por ejemplo, dos frases de META), las unimos.
                             if (!sections[currentMarker.section]) sections[currentMarker.section] = "";
-                            sections[currentMarker.section] += (sections[currentMarker.section] ? "\n" : "") + content;
+                            sections[currentMarker.section] += (sections[currentMarker.section] ? " " : "") + content;
                         }
                     }
                 }
