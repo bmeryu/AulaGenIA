@@ -898,10 +898,15 @@
                     return;
                 }
 
-                const user = firebase.auth().currentUser;
+                                const user = firebase.auth().currentUser;
                 if (!user) {
-                    showCouponMessage('Debes iniciar sesión para usar cupones', 'error');
-                    return;
+                    // Esperar un momento por si auth está inicializando
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    const userRetry = firebase.auth().currentUser;
+                    if (!userRetry) {
+                        showCouponMessage('Debes iniciar sesión para usar cupones', 'error');
+                        return;
+                    }
                 }
 
                 const btn = document.getElementById('apply-coupon-btn');
