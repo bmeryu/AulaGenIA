@@ -832,7 +832,7 @@
 
         // Logic for Auth-Gated Payment
         async function handlePurchaseIntent() {
-            const user = auth.currentUser;
+            const user = firebase.auth().currentUser;
             if (!user) {
                 // Not logged in -> Redirect to Login with specific return action
                 console.log("User not logged in. Redirecting to login...");
@@ -848,7 +848,7 @@
             });
 
             try {
-                const createPreference = functions.httpsCallable('createMercadoPagoPreference');
+                const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
                 const result = await createPreference({ courseId: 'ia-aplicada-esencial' }); // Correct ID based on investigation
 
                 if (result.data && result.data.init_point) {
@@ -898,7 +898,7 @@
                     return;
                 }
 
-                const user = auth.currentUser;
+                const user = firebase.auth().currentUser;
                 if (!user) {
                     showCouponMessage('Debes iniciar sesión para usar cupones', 'error');
                     return;
@@ -911,7 +911,7 @@
                 btn.classList.add('opacity-50', 'cursor-not-allowed');
 
                 try {
-                    const validateCoupon = functions.httpsCallable('validateCoupon');
+                    const validateCoupon = firebase.functions().httpsCallable('validateCoupon');
                     const result = await validateCoupon({
                         couponCode: couponCode,
                         courseId: 'ia-aplicada-esencial'
@@ -976,7 +976,7 @@
             }
 
             window.handlePurchaseWithCoupon = async function() {
-                const user = auth.currentUser;
+                const user = firebase.auth().currentUser;
                 
                 if (!user) {
                     sessionStorage.setItem('pendingPurchase', JSON.stringify({
@@ -988,7 +988,7 @@
                 }
 
                 try {
-                    const createPreference = functions.httpsCallable('createMercadoPagoPreference');
+                    const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
                     const result = await createPreference({
                         courseId: 'ia-aplicada-esencial',
                         couponId: appliedCoupon ? appliedCoupon.couponId : null
