@@ -2136,14 +2136,14 @@
                     'FORMATO': { bg: 'bg-violet-50', text: 'text-violet-800', label: 'Formato' }
                 };
 
-                // Patrones mejorados: eliminamos el ancla obligatoria de inicio de línea (^|\n)
-                // y permitimos que detecte etiquetas después de espacios, puntos o comas.
+                // Patrones mejorados: más precisos para evitar cortes incorrectos
+                // Emojis deben ir seguidos de la palabra clave, no solos
                 const patterns = {
-                    'ROL': /{r}|(?:^|\s|[.,;])(?:Actúa como|Eres un|Act como|1\.\s*ROL:|Rol:|🔸 ROL)/i,
-                    'CONTEXTO': /{c}|(?:^|\s|[.,;])(?:📎|📄|🎤|🎯|ADJUNTO|CON(?:TEXTO)?|Mi negocio:|Mi situación:|2\.\s*CON(?:TEXTO)?:)/i,
-                    'META': /{m}|(?:^|\s|[.,;])(?:Necesito que me|Necesito un|Necesito una|Objetivo|debo|quiero|busco|3\.\s*META:|Meta:)/i,
-                    'RESTRICCIONES': /{l}|(?:^|\s|[.,;])(?:Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|RESTRICCIONES|4\.\s*RESTRICCIONES:)/i,
-                    'FORMATO': /{f}|(?:^|\s|[.,;])(?:Tabla con columnas?:|Formato:|Lista|usar el formato|5\.\s*FORMATO:|FORMATO DE SALIDA)/i
+                    'ROL': /{r}|(?:^|\s|[.,;:\n])(?:Actúa como|Eres un|Act como|Tu expertise|Tu especialidad|1\.\s*ROL:|Rol:|🔸\s*ROL)/i,
+                    'CONTEXTO': /{c}|(?:^|\s|[.,;:\n])(?:(?:📎|📄|🎤|🎯|📊|📷)\s*(?:ADJUNTO|CONTEXTO)|Mi negocio:|Mi situación:|El tema de|Mi audiencia|Origen:|Destino:|Participantes:|Situación:|2\.\s*CON(?:TEXTO)?:)/i,
+                    'META': /{m}|(?:^|\s|[.,;:\n])(?:Necesito que me|Necesito que escribas|Necesito un|Necesito una|Objetivo:|debo|quiero que|busco|3\.\s*META:|Meta:)/i,
+                    'RESTRICCIONES': /{l}|(?:^|\s|[.,;:\n])(?:Cada slide debe|Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|Para cada|RESTRICCIONES OBLIGATORIAS|RESTRICCIONES CRÍTICAS|4\.\s*RESTRICCIONES:|Restricciones:)/i,
+                    'FORMATO': /{f}|(?:^|\s|[.,;:\n])(?:FORMATO DE SALIDA OBLIGATORIO|Tabla con columnas?:|Formato de Salida:|Formato:|Lista ordenada|usar el formato|5\.\s*FORMATO:)/i
                 };
 
                 let markers = [];
