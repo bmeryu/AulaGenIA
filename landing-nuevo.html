@@ -825,6 +825,7 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
 
     <script>
@@ -845,7 +846,39 @@
         let appliedCoupon = null;
 
         // 1. Funciones del Modal
-        function showCouponModal() {
+        async function showCouponModal() {
+            // Verificar si el usuario está logueado
+            const user = firebase.auth().currentUser;
+
+            if (!user) {
+                // No está logueado → Redirigir a login
+                sessionStorage.setItem('pendingAction', 'showCouponModal');
+                window.location.href = 'acceso.html?redirect=landing-nuevo.html';
+                return;
+            }
+
+            // Usuario logueado → Verificar si ya compró el curso
+            try {
+                const db = firebase.firestore();
+                const userDoc = await db.collection('users').doc(user.uid).get();
+
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    const hasCourse = userData.courses && userData.courses['ia-aplicada-esencial'];
+
+                    if (hasCourse) {
+                        // Ya compró el curso → Redirigir al campus
+                        if (confirm('¡Ya estás inscrito en este curso! ¿Deseas ir al campus para continuar tu aprendizaje?')) {
+                            window.location.href = '/campus.html';
+                        }
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.error('Error verificando estado del curso:', error);
+            }
+
+            // Usuario logueado y NO ha comprado → Mostrar modal
             const modal = document.getElementById('coupon-modal');
             if (modal) {
                 modal.classList.remove('hidden');
@@ -1031,9 +1064,19 @@
 
         // 5. Setup Inicial
         document.addEventListener('DOMContentLoaded', () => {
-            // A. Escuchar Auth para retomar compras
+            // A. Escuchar Auth para retomar compras o mostrar modal
             auth.onAuthStateChanged((user) => {
                 const urlParams = new URLSearchParams(window.location.search);
+
+                // Verificar si hay una acción pendiente después del login
+                const pendingAction = sessionStorage.getItem('pendingAction');
+                if (pendingAction === 'showCouponModal' && user) {
+                    sessionStorage.removeItem('pendingAction');
+                    // Dar tiempo a que Firebase se inicialice completamente
+                    setTimeout(() => showCouponModal(), 500);
+                    return;
+                }
+
                 if (urlParams.get('action') === 'buy' && user) {
                     console.log("Retomando compra pendiente...");
                     const pending = sessionStorage.getItem('pendingPurchase');
