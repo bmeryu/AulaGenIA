@@ -566,7 +566,9 @@
                 <div
                     class="bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 text-white p-8 text-center relative overflow-hidden">
                     <!-- Decorative pattern -->
-                    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Ccircle cx=\'10\' cy=\'10\' r=\'1.5\'%3E%3C/circle%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
+                    <div
+                        class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Ccircle cx=\'10\' cy=\'10\' r=\'1.5\'%3E%3C/circle%3E%3C/g%3E%3C/svg%3E')] opacity-50">
+                    </div>
                     <div class="relative z-10">
                         <p class="text-sm uppercase tracking-wider mb-2 opacity-90">Precio Normal</p>
                         <p class="text-3xl line-through opacity-75 mb-4">$120 USD</p>
@@ -757,8 +759,7 @@
     </footer>
     <!-- Modal de Cupón -->
     <div id="coupon-modal"
-        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4"
-        style="display: none;">
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl transform transition-all">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-black text-gray-900">¿Tienes un cupón?</h3>
@@ -857,7 +858,7 @@
             if (modal) {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
-                
+
                 // Reset UI
                 const input = document.getElementById('modal-coupon-input');
                 if (input) input.value = '';
@@ -865,16 +866,16 @@
                 if (msg) msg.classList.add('hidden');
                 const summary = document.getElementById('modal-discount-summary');
                 if (summary) summary.classList.add('hidden');
-                
+
                 // Reset button state
                 const btn = document.getElementById('modal-apply-btn');
-                if(btn) {
+                if (btn) {
                     btn.textContent = 'Aplicar y continuar';
                     btn.onclick = applyModalCoupon;
                     btn.disabled = false;
                 }
             }
-            appliedCoupon = null; 
+            appliedCoupon = null;
         }
 
         // 2. Aplicar Cupón
@@ -917,15 +918,15 @@
 
                     // Mostrar resumen
                     document.getElementById('modal-original-price').textContent = `$${result.data.originalPrice} USD`;
-                    
+
                     const discountLabel = result.data.discountType === 'percentage'
                         ? `${result.data.discountValue}%`
                         : `$${result.data.discountValue} USD`;
-                        
+
                     document.getElementById('modal-discount-label').textContent = discountLabel;
                     document.getElementById('modal-discount-amount').textContent = `-$${result.data.discountAmount.toFixed(2)} USD`;
                     document.getElementById('modal-final-price').textContent = `$${result.data.finalPrice.toFixed(2)} USD`;
-                    
+
                     document.getElementById('modal-discount-summary').classList.remove('hidden');
 
                     showModalMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, 'success');
@@ -936,9 +937,9 @@
                     btn.disabled = false;
                 } else {
                     // Fallback si valid es false
-                     showModalMessage('Cupón no válido', 'error');
-                     btn.textContent = originalText;
-                     btn.disabled = false;
+                    showModalMessage('Cupón no válido', 'error');
+                    btn.textContent = originalText;
+                    btn.disabled = false;
                 }
 
             } catch (error) {
@@ -969,16 +970,16 @@
         async function proceedWithoutCoupon() {
             appliedCoupon = null;
             const modal = document.getElementById('coupon-modal');
-            if(modal) modal.classList.add('hidden'); // Ocultar visualmente rapido
-            
+            if (modal) modal.classList.add('hidden'); // Ocultar visualmente rapido
+
             await handlePurchase();
         }
 
         async function proceedWithCoupon() {
-             const modal = document.getElementById('coupon-modal');
-             if(modal) modal.classList.add('hidden');
-             
-             await handlePurchase();
+            const modal = document.getElementById('coupon-modal');
+            if (modal) modal.classList.add('hidden');
+
+            await handlePurchase();
         }
 
         // 4. Lógica Core de Pago
@@ -998,7 +999,7 @@
             // Feedback Visual Global
             const btns = document.querySelectorAll('.gradient-btn');
             btns.forEach(b => {
-                if(!b.dataset.original) b.dataset.original = b.innerHTML;
+                if (!b.dataset.original) b.dataset.original = b.innerHTML;
                 b.innerHTML = '⏳ Procesando...';
                 b.classList.add('opacity-75', 'cursor-not-allowed');
             });
@@ -1019,10 +1020,10 @@
             } catch (error) {
                 console.error('Error de pago:', error);
                 alert('Hubo un error al iniciar el pago. Por favor intenta nuevamente.');
-                
+
                 // Restaurar botones
                 btns.forEach(b => {
-                    if(b.dataset.original) b.innerHTML = b.dataset.original;
+                    if (b.dataset.original) b.innerHTML = b.dataset.original;
                     b.classList.remove('opacity-75', 'cursor-not-allowed');
                 });
             }
