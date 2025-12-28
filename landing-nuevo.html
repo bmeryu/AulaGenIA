@@ -56,8 +56,8 @@
         }
 
         .gradient-btn::before {
-            content: ';
- position: absolute;
+            content: '';
+            position: absolute;
             inset: 0;
             background: linear-gradient(90deg, #0e9488 0%, #d97706 100%);
             opacity: 0;
@@ -99,8 +99,8 @@
         }
 
         .timeline-line::before {
-            content: ';
- position: absolute;
+            content: '';
+            position: absolute;
             left: 19px;
             top: 60px;
             bottom: -20px;
@@ -566,10 +566,7 @@
                 <div
                     class="bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 text-white p-8 text-center relative overflow-hidden">
                     <!-- Decorative pattern -->
-                    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=" 20" height="20"
-                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" %3E%3Cg fill="%23ffffff"
-                        fill-opacity="0.05" %3E%3Ccircle cx="10" cy="10" r="1.5" %3E%3C/circle%3E%3C/g%3E%3C/svg%3E')]
-                        opacity-50"></div>
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Ccircle cx=\'10\' cy=\'10\' r=\'1.5\'%3E%3C/circle%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
                     <div class="relative z-10">
                         <p class="text-sm uppercase tracking-wider mb-2 opacity-90">Precio Normal</p>
                         <p class="text-3xl line-through opacity-75 mb-4">$120 USD</p>
@@ -784,15 +781,15 @@
             <div id="modal-discount-summary" class="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg hidden">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-gray-600">Precio original:</span>
-                    <span class="text-gray-900 font-bold" id="modal-original-price"></footer> USD</span>
+                    <span class="text-gray-900 font-bold" id="modal-original-price"></span>
                 </div>
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-green-600 font-bold">Descuento (<span id="modal-discount-label"></span>):</span>
-                    <span class="text-green-600 font-bold text-xl" id="modal-discount-amount">-</footer>.50 USD</span>
+                    <span class="text-green-600 font-bold text-xl" id="modal-discount-amount"></span>
                 </div>
                 <div class="flex justify-between items-center pt-2 border-t-2 border-green-300">
                     <span class="text-gray-900 font-black text-lg">Total a pagar:</span>
-                    <span class="text-3xl font-black text-green-600" id="modal-final-price"></footer>.50 USD</span>
+                    <span class="text-3xl font-black text-green-600" id="modal-final-price"></span>
                 </div>
                 <p class="mt-3 text-xs text-gray-500 italic">
                     * El descuento se aplicará automáticamente en Mercado Pago. Si el cupón no se aplica correctamente,
@@ -842,22 +839,34 @@
         const functions = firebase.functions();
 
         // ============================================
-        // MODAL DE CUPÓN
+        // MODAL DE CUPÓN & LÓGICA DE PAGO (UNIFICADO)
         // ============================================
         let appliedCoupon = null;
 
         function showCouponModal() {
-            document.getElementById('coupon-modal').classList.remove('hidden');
-            document.getElementById('coupon-modal').classList.add('flex');
+            const modal = document.getElementById('coupon-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
         }
 
         function closeCouponModal() {
-            document.getElementById('coupon-modal').classList.add('hidden');
-            document.getElementById('coupon-modal').classList.remove('flex');
-            document.getElementById('modal-coupon-input').value = '';
-
-            document.getElementById('modal-coupon-message').classList.add('hidden');
-            document.getElementById('modal-discount-summary').classList.add('hidden');
+            const modal = document.getElementById('coupon-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                
+                // Limpiar inputs
+                const input = document.getElementById('modal-coupon-input');
+                if (input) input.value = '';
+                
+                const msg = document.getElementById('modal-coupon-message');
+                if (msg) msg.classList.add('hidden');
+                
+                const summary = document.getElementById('modal-discount-summary');
+                if (summary) summary.classList.add('hidden');
+            }
             appliedCoupon = null;
         }
 
@@ -866,6 +875,8 @@
             const couponCode = couponInput.value.trim().toUpperCase();
 
             if (!couponCode) {
+                // Si está vacío, asumimos que quiere seguir sin cupón si hace clic en aplicar (aunque el botón dice aplicar)
+                // Pero por UX, mejor avisar o simplemente proceder
                 proceedWithoutCoupon();
                 return;
             }
@@ -895,29 +906,32 @@
                 if (result.data.valid) {
                     appliedCoupon = result.data;
 
-                    document.getElementById('modal-original-price').textContent = `${result.data.originalPrice} USD`;
+                    document.getElementById('modal-original-price').textContent = `$${result.data.originalPrice} USD`;
+                    
                     const discountLabel = result.data.discountType === 'percentage'
                         ? `${result.data.discountValue}%`
-                        : `${result.data.discountValue} USD`;
+                        : `$${result.data.discountValue} USD`;
+                        
                     document.getElementById('modal-discount-label').textContent = discountLabel;
-                    document.getElementById('modal-discount-amount').textContent = `-${result.data.discountAmount.toFixed(2)} USD`;
-                    document.getElementById('modal-final-price').textContent = `${result.data.finalPrice.toFixed(2)} USD`;
+                    document.getElementById('modal-discount-amount').textContent = `-$${result.data.discountAmount.toFixed(2)} USD`;
+                    document.getElementById('modal-final-price').textContent = `$${result.data.finalPrice.toFixed(2)} USD`;
+                    
                     document.getElementById('modal-discount-summary').classList.remove('hidden');
 
                     showModalMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, 'success');
 
                     btn.textContent = 'Continuar al pago';
+                    btn.onclick = proceedWithCoupon; // Cambiamos comportamiento
                     btn.disabled = false;
-                    btn.onclick = proceedWithCoupon;
                 }
 
             } catch (error) {
                 console.error('Error validating coupon:', error);
                 let errorMessage = 'Cupón inválido';
 
-                if (error.message.includes('expirado')) errorMessage = 'Cupón expirado';
-                else if (error.message.includes('agotado')) errorMessage = 'Cupón agotado';
-                else if (error.message.includes('Ya usaste')) errorMessage = 'Ya usaste este cupón';
+                if (error.message && error.message.includes('expirado')) errorMessage = 'Cupón expirado';
+                else if (error.message && error.message.includes('agotado')) errorMessage = 'Cupón agotado';
+                else if (error.message && error.message.includes('Ya usaste')) errorMessage = 'Ya usaste este cupón';
 
                 showModalMessage(errorMessage, 'error');
                 btn.disabled = false;
@@ -927,9 +941,12 @@
 
         function showModalMessage(message, type) {
             const messageEl = document.getElementById('modal-coupon-message');
-            messageEl.textContent = message;
-            messageEl.classList.remove('hidden', 'text-red-600', 'text-green-600');
-            messageEl.classList.add(type === 'error' ? 'text-red-600' : 'text-green-600');
+            if (messageEl) {
+                messageEl.textContent = message;
+                messageEl.classList.remove('hidden', 'text-red-600', 'text-green-600');
+                messageEl.classList.add(type === 'error' ? 'text-red-600' : 'text-green-600');
+                messageEl.classList.remove('hidden');
+            }
         }
 
         async function proceedWithoutCoupon() {
@@ -954,283 +971,91 @@
                 window.location.href = '/acceso.html?action=buy';
                 return;
             }
-
-            try {
-                const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
-                const result = await createPreference({
-                    courseId: 'ia-aplicada-esencial',
-                    couponId: appliedCoupon ? appliedCoupon.couponId : null
-                });
-
-                window.location.href = result.data.init_point;
-
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al procesar el pago. Por favor intenta nuevamente.');
-                document.getElementById('modal-original-price').textContent = `$${result.data.originalPrice} USD`;
-                const discountLabel = result.data.discountType === 'percentage'
-                    ? `${result.data.discountValue}%`
-                    : `$${result.data.discountValue} USD`;
-                document.getElementById('modal-discount-label').textContent = discountLabel;
-                document.getElementById('modal-discount-amount').textContent = `-$${result.data.discountAmount.toFixed(2)} USD`;
-                document.getElementById('modal-final-price').textContent = `$${result.data.finalPrice.toFixed(2)} USD`;
-                document.getElementById('modal-discount-summary').classList.remove('hidden');
-
-                showModalMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, 'success');
-
-                btn.textContent = 'Continuar al pago';
-                btn.disabled = false;
-                btn.onclick = proceedWithCoupon;
-            }
-
-        } catch (error) {
-            console.error('Error validating coupon:', error);
-            let errorMessage = 'Cupón inválido';
-
-            if (error.message.includes('expirado')) errorMessage = 'Cupón expirado';
-            else if (error.message.includes('agotado')) errorMessage = 'Cupón agotado';
-            else if (error.message.includes('Ya usaste')) errorMessage = 'Ya usaste este cupón';
-
-            showModalMessage(errorMessage, 'error');
-            btn.disabled = false;
-            btn.textContent = originalText;
-        }
-        }
-
-        function showModalMessage(message, type) {
-            const messageEl = document.getElementById('modal-coupon-message');
-            messageEl.textContent = message;
-            messageEl.classList.remove('hidden', 'text-red-600', 'text-green-600');
-            messageEl.classList.add(type === 'error' ? 'text-red-600' : 'text-green-600');
-        }
-
-        async function proceedWithoutCoupon() {
-            appliedCoupon = null;
-            closeCouponModal();
-            await handlePurchaseWithCoupon();
-        }
-
-        async function proceedWithCoupon() {
-            closeCouponModal();
-            await handlePurchaseWithCoupon();
-        }
-
-        window.handlePurchaseWithCoupon = async function () {
-            const user = firebase.auth().currentUser;
-
-            if (!user) {
-                sessionStorage.setItem('pendingPurchase', JSON.stringify({
-                    courseId: 'ia-aplicada-esencial',
-                    couponId: appliedCoupon ? appliedCoupon.couponId : null
-                }));
-                window.location.href = '/acceso.html?action=buy';
-                return;
-            }
-
-            try {
-                const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
-                const result = await createPreference({
-                    courseId: 'ia-aplicada-esencial',
-                    couponId: appliedCoupon ? appliedCoupon.couponId : null
-                });
-
-                window.location.href = result.data.init_point;
-
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al procesar el pago. Por favor intenta nuevamente.');
-            }
-        }
-
-
-
-        // Logic for Auth-Gated Payment
-        async function handlePurchaseIntent() {
-            const user = firebase.auth().currentUser;
-            if (!user) {
-                // Not logged in -> Redirect to Login with specific return action
-                console.log("User not logged in. Redirecting to login...");
-                window.location.href = "acceso.html?redirect=landing-nuevo.html?action=buy";
-                return;
-            }
-
-            // User Logged In -> Trigger Payment Function
-            const btns = document.querySelectorAll('.purchase-btn');
+            
+            // Mostrar feedback visual en los botones
+            const btns = document.querySelectorAll('.gradient-btn');
             btns.forEach(b => {
-                b.disabled = true;
-                b.innerHTML = '<span class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span> Generando...';
+                 // Guardar texto original si quieres restaurarlo luego
+                 b.dataset.originalText = b.innerText;
+                 b.innerText = 'Procesando...';
+                 b.classList.add('opacity-75', 'cursor-not-allowed');
             });
 
             try {
                 const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
-                const result = await createPreference({ courseId: 'ia-aplicada-esencial' }); // Correct ID based on investigation
+                const result = await createPreference({
+                    courseId: 'ia-aplicada-esencial',
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                });
 
                 if (result.data && result.data.init_point) {
                     window.location.href = result.data.init_point;
                 } else {
-                    throw new Error("No payment link returned");
+                    throw new Error("No se recibió link de pago");
                 }
+
             } catch (error) {
-                console.error("Payment Error:", error);
-                alert("Hubo un error al generar el pago. Por favor intenta nuevamente o contacta soporte.");
+                console.error('Error:', error);
+                alert('Error al procesar el pago. Por favor intenta nuevamente.');
+                
+                // Restaurar botones
                 btns.forEach(b => {
-                    b.disabled = false;
-                    b.innerHTML = '🚀 Inscribirme Ahora';
+                     b.innerText = b.dataset.originalText || 'Inscribirme Ahora';
+                     b.classList.remove('opacity-75', 'cursor-not-allowed');
                 });
             }
         }
 
-        // Attach listeners to all "Buy" buttons
-        function setupBuyButtons() {
-            const buyButtons = document.querySelectorAll('a[href*="mpago"]');
-            buyButtons.forEach(btn => {
-                btn.removeAttribute('href'); // Remove static link
-                btn.href = "#";
-                btn.classList.add('purchase-btn');
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    handlePurchaseIntent();
-                });
-            });
-        }
-
-        // Check for ?action=buy on load (Return from Login)
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        
+        // Manejar retorno del login
         document.addEventListener('DOMContentLoaded', () => {
-            // Wait for Auth to initialize
-
-            // ============================================
-            // SISTEMA DE CUPONES - FRONTEND
-            // ============================================
-            let appliedCoupon = null;
-
-            document.getElementById('apply-coupon-btn')?.addEventListener('click', async () => {
-                const couponInput = document.getElementById('coupon-input');
-                const couponCode = couponInput.value.trim().toUpperCase();
-
-                if (!couponCode) {
-                    showCouponMessage('Por favor ingresa un código', 'error');
-                    return;
-                }
-
-                const user = firebase.auth().currentUser;
-                if (!user) {
-                    // Esperar un momento por si auth está inicializando
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    const userRetry = firebase.auth().currentUser;
-                    if (!userRetry) {
-                        showCouponMessage('Debes iniciar sesión para usar cupones', 'error');
-                        return;
-                    }
-                }
-
-                const btn = document.getElementById('apply-coupon-btn');
-                const originalText = btn.textContent;
-                btn.disabled = true;
-                btn.textContent = 'Validando...';
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-
-                try {
-                    const validateCoupon = firebase.functions().httpsCallable('validateCoupon');
-                    const result = await validateCoupon({
-                        couponCode: couponCode,
-                        courseId: 'ia-aplicada-esencial'
-                    });
-
-                    if (result.data.valid) {
-                        appliedCoupon = result.data;
-
-                        document.getElementById('original-price').textContent = `${result.data.originalPrice} USD`;
-
-                        const discountLabel = result.data.discountType === 'percentage'
-                            ? `${result.data.discountValue}%`
-                            : `${result.data.discountValue} USD`;
-                        document.getElementById('discount-label').textContent = discountLabel;
-
-                        document.getElementById('discount-amount').textContent = `-${result.data.discountAmount.toFixed(2)} USD`;
-                        document.getElementById('final-price').textContent = `${result.data.finalPrice.toFixed(2)} USD`;
-                        document.getElementById('discount-summary').classList.remove('hidden');
-
-                        showCouponMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, 'success');
-
-                        couponInput.disabled = true;
-                        btn.textContent = '✓ Aplicado';
-                        btn.classList.add('bg-green-600', 'hover:bg-green-700');
-                        btn.classList.remove('bg-teal-600', 'hover:bg-teal-700');
-                    }
-
-                } catch (error) {
-                    console.error('Error validating coupon:', error);
-                    let errorMessage = 'Cupón inválido';
-
-                    if (error.message.includes('expirado')) errorMessage = 'Cupón expirado';
-                    else if (error.message.includes('agotado')) errorMessage = 'Cupón agotado';
-                    else if (error.message.includes('Ya usaste')) errorMessage = 'Ya usaste este cupón';
-
-                    showCouponMessage(errorMessage, 'error');
-                    btn.disabled = false;
-                    btn.textContent = originalText;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                }
-            });
-
-            document.getElementById('remove-coupon-btn')?.addEventListener('click', () => {
-                appliedCoupon = null;
-                document.getElementById('discount-summary').classList.add('hidden');
-                document.getElementById('coupon-input').value = ';
-                document.getElementById('coupon-input').disabled = false;
-                document.getElementById('coupon-message').classList.add('hidden');
-
-                const btn = document.getElementById('apply-coupon-btn');
-                btn.disabled = false;
-                btn.textContent = 'Aplicar';
-                btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'opacity-50', 'cursor-not-allowed');
-                btn.classList.add('bg-teal-600', 'hover:bg-teal-700');
-            });
-
-            function showCouponMessage(message, type) {
-                const messageEl = document.getElementById('coupon-message');
-                messageEl.textContent = message;
-                messageEl.classList.remove('hidden', 'text-red-600', 'text-green-600');
-                messageEl.classList.add(type === 'error' ? 'text-red-600' : 'text-green-600');
-            }
-
-            window.handlePurchaseWithCoupon = async function () {
-                const user = firebase.auth().currentUser;
-
-                if (!user) {
-                    sessionStorage.setItem('pendingPurchase', JSON.stringify({
-                        courseId: 'ia-aplicada-esencial',
-                        couponId: appliedCoupon ? appliedCoupon.couponId : null
-                    }));
-                    window.location.href = '/acceso.html?action=buy';
-                    return;
-                }
-
-                try {
-                    const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
-                    const result = await createPreference({
-                        courseId: 'ia-aplicada-esencial',
-                        couponId: appliedCoupon ? appliedCoupon.couponId : null
-                    });
-
-                    window.location.href = result.data.init_point;
-
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Error al procesar el pago. Por favor intenta nuevamente.');
-                }
-            }
-
-            auth.onAuthStateChanged(user => {
-                setupBuyButtons();
-
+             auth.onAuthStateChanged(async (user) => {
                 const urlParams = new URLSearchParams(window.location.search);
+                
+                // Si volvemos del login con action=buy
                 if (urlParams.get('action') === 'buy' && user) {
                     console.log("Auto-triggering purchase after login...");
-                    handlePurchaseIntent();
+                    
+                    // Recuperar cupón pendiente si existe
+                    const pending = sessionStorage.getItem('pendingPurchase');
+                    if(pending) {
+                        try {
+                            const data = JSON.parse(pending);
+                            if(data.couponId) {
+                                appliedCoupon = { couponId: data.couponId };
+                            }
+                        } catch(e) {
+                            console.error("Error parsing pending purchase", e);
+                        }
+                        sessionStorage.removeItem('pendingPurchase');
+                    }
+                    
+                    handlePurchaseWithCoupon();
                 }
             });
+            
+            // Configurar botones de compra directos (los que no abren modal, si existen)
+            // En tu diseño actual el botón principal abre el modal (showCouponModal),
+            // pero el botón flotante o el del footer redirigen directo a MercadoPago.
+            // Vamos a interceptar esos para que usen nuestra lógica.
+            
+            const directBuyLinks = document.querySelectorAll('a[href*="mpago"]');
+            directBuyLinks.forEach(link => {
+                link.removeAttribute('href');
+                link.href = "#";
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Opcional: ¿Quieres que estos también abran el modal?
+                    // Si quieres que abran el modal: showCouponModal();
+                    // Si quieres que vayan directo al pago: handlePurchaseWithCoupon();
+                    showCouponModal(); // Mejor abrir modal siempre para ofrecer cupón
+                });
+            });
         });
+
     </script>
 
 
