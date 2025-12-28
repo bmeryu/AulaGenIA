@@ -649,58 +649,18 @@
                                 devolvemos el 100% de tu pago</strong>. Sin preguntas ni complicaciones.
                         </p>
 
-                        <!-- Componente de Cupón de Descuento -->
-                        <div class="mb-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">
-                                ¿Tienes un cupón de descuento?
-                            </label>
-                            <div class="flex gap-2">
-                                <input type="text" id="coupon-input" placeholder="Ingresa tu código"
-                                    class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 uppercase font-mono text-lg"
-                                    maxlength="20">
-                                <button id="apply-coupon-btn"
-                                    class="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-bold whitespace-nowrap">
-                                    Aplicar
-                                </button>
-                            </div>
 
-                            <!-- Mensaje de resultado -->
-                            <div id="coupon-message" class="mt-2 text-sm font-medium hidden"></div>
+                        <button onclick="showCouponModal()"
+                            class="gradient-btn block text-center px-12 py-6 text-white text-2xl font-black rounded-2xl shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300">🚀
+                            Inscribirme Ahora</button>
 
-                            <!-- Resumen de descuento -->
-                            <div id="discount-summary"
-                                class="mt-4 p-4 bg-green-50 border-2 border-green-200 rounded-lg hidden">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-gray-600">Precio original:</span>
-                                    <span class="text-gray-900 font-bold" id="original-price">$20 USD</span>
-                                </div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-green-600 font-bold">Descuento (<span
-                                            id="discount-label"></span>):</span>
-                                    <span class="text-green-600 font-bold text-xl" id="discount-amount">-$10 USD</span>
-                                </div>
-                                <div class="flex justify-between items-center pt-2 border-t-2 border-green-300">
-                                    <span class="text-gray-900 font-black text-lg">Total a pagar:</span>
-                                    <span class="text-3xl font-black text-green-600" id="final-price">$10 USD</span>
-                                </div>
-                                <button id="remove-coupon-btn"
-                                    class="mt-3 text-sm text-red-600 hover:text-red-700 font-medium">
-                                    ✕ Quitar cupón
-                                </button>
-                            </div>
-                        </div>
+
+                        <p class="text-center text-sm text-gray-500 mt-6">
+                            Pago único • Acceso 12 meses • Plan Esencial
+                        </p>
                     </div>
-
-                    <button onclick="handlePurchaseWithCoupon()"
-                        class="gradient-btn block text-center px-12 py-6 text-white text-2xl font-black rounded-2xl shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300">🚀
-                        Inscribirme Ahora</button>
-
-                    <p class="text-center text-sm text-gray-500 mt-6">
-                        Pago único • Acceso 12 meses • Plan Esencial
-                    </p>
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- FAQs -->
@@ -798,6 +758,64 @@
             </div>
         </div>
     </footer>
+
+    
+    <!-- Modal de Cupón -->
+    <div id="coupon-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-black text-gray-900">¿Tienes un cupón?</h3>
+                <button onclick="closeCouponModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Código de descuento (opcional)</label>
+                <input 
+                    type="text" 
+                    id="modal-coupon-input"
+                    placeholder="Ingresa tu código"
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 uppercase font-mono text-lg"
+                    maxlength="20"
+                >
+                <div id="modal-coupon-message" class="mt-2 text-sm font-medium hidden"></div>
+            </div>
+
+            <div id="modal-discount-summary" class="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg hidden">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-gray-600">Precio original:</span>
+                    <span class="text-gray-900 font-bold" id="modal-original-price"><!-- Sticky Mobile CTA --> USD</span>
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-green-600 font-bold">Descuento (<span id="modal-discount-label"></span>):</span>
+                    <span class="text-green-600 font-bold text-xl" id="modal-discount-amount">-<!-- Sticky Mobile CTA -->.50 USD</span>
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t-2 border-green-300">
+                    <span class="text-gray-900 font-black text-lg">Total a pagar:</span>
+                    <span class="text-3xl font-black text-green-600" id="modal-final-price"><!-- Sticky Mobile CTA -->.50 USD</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button 
+                    onclick="proceedWithoutCoupon()"
+                    class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-bold"
+                >
+                    Sin cupón
+                </button>
+                <button 
+                    id="modal-apply-btn"
+                    onclick="applyModalCoupon()"
+                    class="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-bold"
+                >
+                    Aplicar y continuar
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Sticky Mobile CTA -->
     <div
