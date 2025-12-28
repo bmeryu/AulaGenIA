@@ -845,7 +845,29 @@
         // ============================================
         let appliedCoupon = null;
 
+
         // 1. Funciones del Modal
+
+        // Helper: Verificar si el usuario ya compró el curso
+        async function checkUserPurchaseStatus(user) {
+            if (!user) return { hasCourse: false, error: null };
+
+            try {
+                const db = firebase.firestore();
+                const userDoc = await db.collection('users').doc(user.uid).get();
+
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    const hasCourse = userData.courses && userData.courses['ia-aplicada-esencial'];
+                    return { hasCourse: !!hasCourse, error: null };
+                }
+                return { hasCourse: false, error: null };
+            } catch (error) {
+                console.error('Error verificando estado del curso:', error);
+                return { hasCourse: false, error };
+            }
+        }
+
         async function showCouponModal() {
             // Verificar si el usuario está logueado
             const user = firebase.auth().currentUser;
@@ -857,25 +879,15 @@
                 return;
             }
 
-            // Usuario logueado → Verificar si ya compró el curso
-            try {
-                const db = firebase.firestore();
-                const userDoc = await db.collection('users').doc(user.uid).get();
+            // Usuario logueado → Verificar si ya compró el curso ANTES de mostrar el modal
+            const { hasCourse } = await checkUserPurchaseStatus(user);
 
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    const hasCourse = userData.courses && userData.courses['ia-aplicada-esencial'];
-
-                    if (hasCourse) {
-                        // Ya compró el curso → Redirigir al campus
-                        if (confirm('¡Ya estás inscrito en este curso! ¿Deseas ir al campus para continuar tu aprendizaje?')) {
-                            window.location.href = '/campus.html';
-                        }
-                        return;
-                    }
+            if (hasCourse) {
+                // Ya compró el curso → Redirigir al campus
+                if (confirm('¡Ya estás inscrito en este curso! ¿Deseas ir al campus para continuar tu aprendizaje?')) {
+                    window.location.href = 'campus.html';
                 }
-            } catch (error) {
-                console.error('Error verificando estado del curso:', error);
+                return;
             }
 
             // Usuario logueado y NO ha comprado → Mostrar modal
@@ -1065,15 +1077,17 @@
         // 5. Setup Inicial
         document.addEventListener('DOMContentLoaded', () => {
             // A. Escuchar Auth para retomar compras o mostrar modal
-            auth.onAuthStateChanged((user) => {
+            auth.onAuthStateChanged(async (user) => {
                 const urlParams = new URLSearchParams(window.location.search);
 
                 // Verificar si hay una acción pendiente después del login
                 const pendingAction = sessionStorage.getItem('pendingAction');
                 if (pendingAction === 'showCouponModal' && user) {
                     sessionStorage.removeItem('pendingAction');
-                    // Dar tiempo a que Firebase se inicialice completamente
-                    setTimeout(() => showCouponModal(), 500);
+                    // Dar tiempo a que Firebase se inicialice completamente y luego verificar
+                    setTimeout(async () => {
+                        await showCouponModal();
+                    }, 500);
                     return;
                 }
 
