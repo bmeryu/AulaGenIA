@@ -968,6 +968,134 @@
         }
 
 
+
+        // ============================================
+        // MODAL DE CUPÓN
+        // ============================================
+        let appliedCoupon = null;
+
+        function showCouponModal() {
+            document.getElementById(''coupon-modal'').classList.remove(''hidden'');
+            document.getElementById(''coupon-modal'').classList.add(''flex'');
+        }
+
+        function closeCouponModal() {
+            document.getElementById(''coupon-modal'').classList.add(''hidden'');
+            document.getElementById(''coupon-modal'').classList.remove(''flex'');
+            document.getElementById(''modal-coupon-input'').value = '''';
+            document.getElementById(''modal-coupon-message'').classList.add(''hidden'');
+            document.getElementById(''modal-discount-summary'').classList.add(''hidden'');
+            appliedCoupon = null;
+        }
+
+        async function applyModalCoupon() {
+            const couponInput = document.getElementById(''modal-coupon-input'');
+            const couponCode = couponInput.value.trim().toUpperCase();
+            
+            if (!couponCode) {
+                proceedWithoutCoupon();
+                return;
+            }
+
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                const userRetry = firebase.auth().currentUser;
+                if (!userRetry) {
+                    showModalMessage(''Debes iniciar sesión primero'', ''error'');
+                    return;
+                }
+            }
+
+            const btn = document.getElementById(''modal-apply-btn'');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = ''Validando...'';
+
+            try {
+                const validateCoupon = firebase.functions().httpsCallable(''validateCoupon'');
+                const result = await validateCoupon({
+                    couponCode: couponCode,
+                    courseId: ''ia-aplicada-esencial''
+                });
+
+                if (result.data.valid) {
+                    appliedCoupon = result.data;
+                    
+                    document.getElementById(''modal-original-price'').textContent = `$${result.data.originalPrice} USD`;
+                    const discountLabel = result.data.discountType === ''percentage'' 
+                        ? `${result.data.discountValue}%` 
+                        : `$${result.data.discountValue} USD`;
+                    document.getElementById(''modal-discount-label'').textContent = discountLabel;
+                    document.getElementById(''modal-discount-amount'').textContent = `-$${result.data.discountAmount.toFixed(2)} USD`;
+                    document.getElementById(''modal-final-price'').textContent = `$${result.data.finalPrice.toFixed(2)} USD`;
+                    document.getElementById(''modal-discount-summary'').classList.remove(''hidden'');
+                    
+                    showModalMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, ''success'');
+                    
+                    btn.textContent = ''Continuar al pago'';
+                    btn.onclick = proceedWithCoupon;
+                }
+
+            } catch (error) {
+                console.error(''Error validating coupon:'', error);
+                let errorMessage = ''Cupón inválido'';
+                
+                if (error.message.includes(''expirado'')) errorMessage = ''Cupón expirado'';
+                else if (error.message.includes(''agotado'')) errorMessage = ''Cupón agotado'';
+                else if (error.message.includes(''Ya usaste'')) errorMessage = ''Ya usaste este cupón'';
+                
+                showModalMessage(errorMessage, ''error'');
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        }
+
+        function showModalMessage(message, type) {
+            const messageEl = document.getElementById(''modal-coupon-message'');
+            messageEl.textContent = message;
+            messageEl.classList.remove(''hidden'', ''text-red-600'', ''text-green-600'');
+            messageEl.classList.add(type === ''error'' ? ''text-red-600'' : ''text-green-600'');
+        }
+
+        async function proceedWithoutCoupon() {
+            appliedCoupon = null;
+            closeCouponModal();
+            await handlePurchaseWithCoupon();
+        }
+
+        async function proceedWithCoupon() {
+            closeCouponModal();
+            await handlePurchaseWithCoupon();
+        }
+
+        window.handlePurchaseWithCoupon = async function() {
+            const user = firebase.auth().currentUser;
+            
+            if (!user) {
+                sessionStorage.setItem(''pendingPurchase'', JSON.stringify({
+                    courseId: ''ia-aplicada-esencial'',
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                }));
+                window.location.href = ''/acceso.html?action=buy'';
+                return;
+            }
+
+            try {
+                const createPreference = firebase.functions().httpsCallable(''createMercadoPagoPreference'');
+                const result = await createPreference({
+                    courseId: ''ia-aplicada-esencial'',
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                });
+
+                window.location.href = result.data.init_point;
+
+            } catch (error) {
+                console.error(''Error:'', error);
+                alert(''Error al procesar el pago. Por favor intenta nuevamente.'');
+            }
+        }
+
         // Logic for Auth-Gated Payment
         async function handlePurchaseIntent() {
             const user = firebase.auth().currentUser;
