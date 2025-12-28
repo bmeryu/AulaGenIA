@@ -839,10 +839,11 @@
         const functions = firebase.functions();
 
         // ============================================
-        // MODAL DE CUPÓN & LÓGICA DE PAGO (UNIFICADO)
+        // LÓGICA UNIFICADA: MODAL, CUPONES Y PAGOS
         // ============================================
         let appliedCoupon = null;
 
+        // 1. Funciones del Modal
         function showCouponModal() {
             const modal = document.getElementById('coupon-modal');
             if (modal) {
@@ -857,32 +858,41 @@
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
                 
-                // Limpiar inputs
+                // Reset UI
                 const input = document.getElementById('modal-coupon-input');
                 if (input) input.value = '';
-                
                 const msg = document.getElementById('modal-coupon-message');
                 if (msg) msg.classList.add('hidden');
-                
                 const summary = document.getElementById('modal-discount-summary');
                 if (summary) summary.classList.add('hidden');
+                
+                // Reset button state
+                const btn = document.getElementById('modal-apply-btn');
+                if(btn) {
+                    btn.textContent = 'Aplicar y continuar';
+                    btn.onclick = applyModalCoupon;
+                    btn.disabled = false;
+                }
             }
-            appliedCoupon = null;
+            appliedCoupon = null; 
         }
 
+        // 2. Aplicar Cupón
         async function applyModalCoupon() {
             const couponInput = document.getElementById('modal-coupon-input');
             const couponCode = couponInput.value.trim().toUpperCase();
 
+            // Si el usuario no puso codigo y le dio a aplicar
             if (!couponCode) {
-                // Si está vacío y da click, asume que no quiere cupón
                 proceedWithoutCoupon();
                 return;
             }
 
             const user = firebase.auth().currentUser;
             if (!user) {
-                await new Promise(resolve => setTimeout(resolve, 500));
+                showModalMessage('Iniciando sesión...', 'text-blue-600');
+                // Esperar un poco
+                await new Promise(r => setTimeout(r, 1000));
                 const userRetry = firebase.auth().currentUser;
                 if (!userRetry) {
                     showModalMessage('Debes iniciar sesión primero', 'error');
@@ -905,6 +915,7 @@
                 if (result.data.valid) {
                     appliedCoupon = result.data;
 
+                    // Mostrar resumen
                     document.getElementById('modal-original-price').textContent = `$${result.data.originalPrice} USD`;
                     
                     const discountLabel = result.data.discountType === 'percentage'
@@ -919,50 +930,62 @@
 
                     showModalMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, 'success');
 
-                    btn.textContent = 'Continuar al pago';
-                    btn.onclick = proceedWithCoupon; // Asignar función de continuación
+                    // Cambiar botón a "Pagar"
+                    btn.textContent = 'Confirmar y Pagar';
+                    btn.onclick = proceedWithCoupon;
                     btn.disabled = false;
+                } else {
+                    // Fallback si valid es false
+                     showModalMessage('Cupón no válido', 'error');
+                     btn.textContent = originalText;
+                     btn.disabled = false;
                 }
 
             } catch (error) {
                 console.error('Error validating coupon:', error);
                 let errorMessage = 'Cupón inválido';
-
-                if (error.message && error.message.includes('expirado')) errorMessage = 'Cupón expirado';
-                else if (error.message && error.message.includes('agotado')) errorMessage = 'Cupón agotado';
-                else if (error.message && error.message.includes('Ya usaste')) errorMessage = 'Ya usaste este cupón';
-
+                if (error.message) {
+                    if (error.message.includes('expirado')) errorMessage = 'Cupón expirado';
+                    else if (error.message.includes('agotado')) errorMessage = 'Cupón agotado';
+                    else if (error.message.includes('Ya usaste')) errorMessage = 'Ya usaste este cupón';
+                }
                 showModalMessage(errorMessage, 'error');
-                btn.disabled = false;
                 btn.textContent = originalText;
+                btn.disabled = false;
             }
         }
 
+        // Helper mensajes
         function showModalMessage(message, type) {
             const messageEl = document.getElementById('modal-coupon-message');
             if (messageEl) {
                 messageEl.textContent = message;
-                messageEl.classList.remove('hidden', 'text-red-600', 'text-green-600');
-                messageEl.classList.add(type === 'error' ? 'text-red-600' : 'text-green-600');
+                messageEl.className = `mt-2 text-sm font-medium ${type === 'error' ? 'text-red-600' : 'text-green-600'}`;
                 messageEl.classList.remove('hidden');
             }
         }
 
+        // 3. Flujos de salida del modal
         async function proceedWithoutCoupon() {
             appliedCoupon = null;
-            closeCouponModal();
-            await window.handlePurchaseWithCoupon();
+            const modal = document.getElementById('coupon-modal');
+            if(modal) modal.classList.add('hidden'); // Ocultar visualmente rapido
+            
+            await handlePurchase();
         }
 
         async function proceedWithCoupon() {
-            closeCouponModal();
-            await window.handlePurchaseWithCoupon();
+             const modal = document.getElementById('coupon-modal');
+             if(modal) modal.classList.add('hidden');
+             
+             await handlePurchase();
         }
 
-        // Definida globalmente en window para evitar problemas de scope
-        window.handlePurchaseWithCoupon = async function () {
+        // 4. Lógica Core de Pago
+        async function handlePurchase() {
             const user = firebase.auth().currentUser;
 
+            // Si no hay usuario, guardamos estado y mandamos al login
             if (!user) {
                 sessionStorage.setItem('pendingPurchase', JSON.stringify({
                     courseId: 'ia-aplicada-esencial',
@@ -971,13 +994,13 @@
                 window.location.href = '/acceso.html?action=buy';
                 return;
             }
-            
-            // Mostrar feedback visual en los botones
+
+            // Feedback Visual Global
             const btns = document.querySelectorAll('.gradient-btn');
             btns.forEach(b => {
-                 b.dataset.originalText = b.innerText;
-                 b.innerText = 'Procesando...';
-                 b.classList.add('opacity-75', 'cursor-not-allowed');
+                if(!b.dataset.original) b.dataset.original = b.innerHTML;
+                b.innerHTML = '⏳ Procesando...';
+                b.classList.add('opacity-75', 'cursor-not-allowed');
             });
 
             try {
@@ -990,63 +1013,50 @@
                 if (result.data && result.data.init_point) {
                     window.location.href = result.data.init_point;
                 } else {
-                    throw new Error("No se recibió link de pago");
+                    throw new Error("Respuesta inválida del servidor de pagos");
                 }
 
             } catch (error) {
-                console.error('Error:', error);
-                alert('Error al procesar el pago. Por favor intenta nuevamente.');
+                console.error('Error de pago:', error);
+                alert('Hubo un error al iniciar el pago. Por favor intenta nuevamente.');
                 
                 // Restaurar botones
                 btns.forEach(b => {
-                     b.innerText = b.dataset.originalText || 'Inscribirme Ahora';
-                     b.classList.remove('opacity-75', 'cursor-not-allowed');
+                    if(b.dataset.original) b.innerHTML = b.dataset.original;
+                    b.classList.remove('opacity-75', 'cursor-not-allowed');
                 });
             }
         }
 
-        // ============================================
-        // INICIALIZACIÓN
-        // ============================================
-        
+        // 5. Setup Inicial
         document.addEventListener('DOMContentLoaded', () => {
-             auth.onAuthStateChanged(async (user) => {
+            // A. Escuchar Auth para retomar compras
+            auth.onAuthStateChanged((user) => {
                 const urlParams = new URLSearchParams(window.location.search);
-                
-                // Si volvemos del login con action=buy
                 if (urlParams.get('action') === 'buy' && user) {
-                    console.log("Retomando compra tras login...");
-                    
-                    // Recuperar cupón pendiente si existe
+                    console.log("Retomando compra pendiente...");
                     const pending = sessionStorage.getItem('pendingPurchase');
-                    if(pending) {
+                    if (pending) {
                         try {
                             const data = JSON.parse(pending);
-                            if(data.couponId) {
-                                appliedCoupon = { couponId: data.couponId };
-                            }
-                        } catch(e) {
-                            console.error("Error parsing pending purchase", e);
-                        }
+                            if (data.couponId) appliedCoupon = { couponId: data.couponId };
+                        } catch (e) { console.error(e); }
                         sessionStorage.removeItem('pendingPurchase');
                     }
-                    
-                    window.handlePurchaseWithCoupon();
+                    handlePurchase();
                 }
             });
-            
-            // Configurar todos los botones de compra (incluido sticky y footer) para abrir el modal
-            const directBuyLinks = document.querySelectorAll('a[href*="mpago"]');
-            directBuyLinks.forEach(link => {
-                link.removeAttribute('href');
-                link.href = "#";
+
+            // B. Interceptar botones de compra
+            const links = document.querySelectorAll('a[href*="mpago"], a[href*="mercadopago"]');
+            links.forEach(link => {
+                link.href = "javascript:void(0)";
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    showCouponModal(); 
+                    showCouponModal();
                 });
             });
         });
-
     </script>
 
 
