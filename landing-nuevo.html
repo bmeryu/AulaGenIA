@@ -875,8 +875,7 @@
             const couponCode = couponInput.value.trim().toUpperCase();
 
             if (!couponCode) {
-                // Si está vacío, asumimos que quiere seguir sin cupón si hace clic en aplicar (aunque el botón dice aplicar)
-                // Pero por UX, mejor avisar o simplemente proceder
+                // Si está vacío y da click, asume que no quiere cupón
                 proceedWithoutCoupon();
                 return;
             }
@@ -921,7 +920,7 @@
                     showModalMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, 'success');
 
                     btn.textContent = 'Continuar al pago';
-                    btn.onclick = proceedWithCoupon; // Cambiamos comportamiento
+                    btn.onclick = proceedWithCoupon; // Asignar función de continuación
                     btn.disabled = false;
                 }
 
@@ -952,14 +951,15 @@
         async function proceedWithoutCoupon() {
             appliedCoupon = null;
             closeCouponModal();
-            await handlePurchaseWithCoupon();
+            await window.handlePurchaseWithCoupon();
         }
 
         async function proceedWithCoupon() {
             closeCouponModal();
-            await handlePurchaseWithCoupon();
+            await window.handlePurchaseWithCoupon();
         }
 
+        // Definida globalmente en window para evitar problemas de scope
         window.handlePurchaseWithCoupon = async function () {
             const user = firebase.auth().currentUser;
 
@@ -975,7 +975,6 @@
             // Mostrar feedback visual en los botones
             const btns = document.querySelectorAll('.gradient-btn');
             btns.forEach(b => {
-                 // Guardar texto original si quieres restaurarlo luego
                  b.dataset.originalText = b.innerText;
                  b.innerText = 'Procesando...';
                  b.classList.add('opacity-75', 'cursor-not-allowed');
@@ -1010,14 +1009,13 @@
         // INICIALIZACIÓN
         // ============================================
         
-        // Manejar retorno del login
         document.addEventListener('DOMContentLoaded', () => {
              auth.onAuthStateChanged(async (user) => {
                 const urlParams = new URLSearchParams(window.location.search);
                 
                 // Si volvemos del login con action=buy
                 if (urlParams.get('action') === 'buy' && user) {
-                    console.log("Auto-triggering purchase after login...");
+                    console.log("Retomando compra tras login...");
                     
                     // Recuperar cupón pendiente si existe
                     const pending = sessionStorage.getItem('pendingPurchase');
@@ -1033,25 +1031,18 @@
                         sessionStorage.removeItem('pendingPurchase');
                     }
                     
-                    handlePurchaseWithCoupon();
+                    window.handlePurchaseWithCoupon();
                 }
             });
             
-            // Configurar botones de compra directos (los que no abren modal, si existen)
-            // En tu diseño actual el botón principal abre el modal (showCouponModal),
-            // pero el botón flotante o el del footer redirigen directo a MercadoPago.
-            // Vamos a interceptar esos para que usen nuestra lógica.
-            
+            // Configurar todos los botones de compra (incluido sticky y footer) para abrir el modal
             const directBuyLinks = document.querySelectorAll('a[href*="mpago"]');
             directBuyLinks.forEach(link => {
                 link.removeAttribute('href');
                 link.href = "#";
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    // Opcional: ¿Quieres que estos también abran el modal?
-                    // Si quieres que abran el modal: showCouponModal();
-                    // Si quieres que vayan directo al pago: handlePurchaseWithCoupon();
-                    showCouponModal(); // Mejor abrir modal siempre para ofrecer cupón
+                    showCouponModal(); 
                 });
             });
         });
