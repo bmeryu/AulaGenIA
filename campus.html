@@ -1195,38 +1195,43 @@
               const doc = new jsPDF();
               const pw = doc.internal.pageSize.getWidth(), ph = doc.internal.pageSize.getHeight(), m = 20, mw = pw - 40;
               const teal = [20, 184, 166], yellow = [251, 191, 36], dark = [30, 41, 59], light = [148, 163, 184];
+              // Color teal de marca Aula GenIA (igual al del logo)
+              const brandTeal = [20, 184, 166]; // RGB de #14B8A6
 
-              // PORTADA
-              doc.setFillColor(...teal); doc.rect(0, 0, pw, 80, 'F');
+              // PORTADA con color de marca
+              doc.setFillColor(...brandTeal);
+              doc.rect(0, 0, pw, ph, 'F'); // Fondo completo en teal
 
-              // Logo Aula GenIA - Dimensiones correctas en mm
+              // Logo Aula GenIA - Más grande y centrado
               try {
                 const logoImg = new Image();
                 logoImg.crossOrigin = 'Anonymous';
-                logoImg.src = 'Logo_AGIA.png'; // PNG tiene mejor calidad y transparencia
+                // Intentar PNG primero, fallback a JPG
+                logoImg.src = 'Logo_AGIA.png';
 
                 await new Promise((resolve, reject) => {
                   logoImg.onload = resolve;
-                  logoImg.onerror = reject;
-                  setTimeout(reject, 5000); // timeout 5s
+                  logoImg.onerror = () => {
+                    // Si PNG falla, intentar JPG
+                    logoImg.src = 'Logo_AGIA.jpg';
+                    logoImg.onload = resolve;
+                    logoImg.onerror = reject;
+                  };
+                  setTimeout(reject, 5000);
                 });
 
-                // Dimensiones en mm (no px)
-                const logoWidth = 15; // 15mm de ancho
-                const logoHeight = 0; // Auto-calcula proporción
-
-                // jsPDF calcula automáticamente la altura manteniendo aspect ratio
+                // Logo más grande: 40mm de ancho
+                const logoWidth = 40;
                 const aspectRatio = logoImg.height / logoImg.width;
                 const calculatedHeight = logoWidth * aspectRatio;
 
-                // Centrar horizontalmente
+                // Centrar horizontalmente, más arriba
                 const logoX = (pw - logoWidth) / 2;
-                const logoY = 10; // 10mm desde arriba
+                const logoY = 20; // 20mm desde arriba
 
-                doc.addImage(logoImg, 'PNG', logoX, logoY, logoWidth, calculatedHeight);
+                doc.addImage(logoImg, logoImg.src.endsWith('.png') ? 'PNG' : 'JPEG', logoX, logoY, logoWidth, calculatedHeight);
               } catch (e) {
                 console.warn('No se pudo cargar el logo:', e);
-                // Continuar sin logo
               }
 
 
