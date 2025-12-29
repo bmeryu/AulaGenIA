@@ -1817,5 +1817,18 @@ const casesData = [
 
 ];
 
-// Make casesData available globally for campus.html
-window.casesData = casesData;
+// UMD Pattern: Support both ES6 modules and global script loading
+// For maestro-prompts-app.html (module) and campus.html (script)
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    // CommonJS
+    module.exports = casesData;
+} else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define([], function () { return casesData; });
+} else {
+    // Global script (for campus.html)
+    window.casesData = casesData;
+}
+
+// ES6 Module export (for maestro-prompts-app.html)
+export default casesData;
