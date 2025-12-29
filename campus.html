@@ -1191,15 +1191,19 @@
                 return;
               }
 
-              // Cargar datos seguros si no están disponibles
-              if (!window.casesData || window.casesData.length === 0) {
-                console.log('Cargando prompts de forma segura...');
-                const loaded = await loadSecurePromptsData();
-                if (!loaded) {
-                  console.error('No se pudieron cargar los prompts');
-                  return;
-                }
+              // DEBUG: Verificar estado de casesData
+              console.log('🔍 DEBUG - casesData existe?:', typeof window.casesData !== 'undefined');
+              console.log('🔍 DEBUG - Cantidad inicial:', window.casesData?.length || 0);
+
+              // Cargar datos seguros SIEMPRE (forzado para pruebas)
+              console.log('📥 Cargando prompts de forma segura...');
+              const loaded = await loadSecurePromptsData();
+              if (!loaded) {
+                console.error('❌ No se pudieron cargar los prompts');
+                return;
               }
+
+              console.log('✅ Datos cargados, cantidad final:', window.casesData.length);
 
               const { jsPDF } = window.jspdf;
               const doc = new jsPDF();
