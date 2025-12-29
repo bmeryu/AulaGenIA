@@ -1140,15 +1140,31 @@
 
               // PORTADA
               doc.setFillColor(...teal); doc.rect(0, 0, pw, 80, 'F');
+
+              // Logo Aula GenIA
+              try {
+                const logoImg = new Image();
+                logoImg.src = 'https://aulagenia.cl/Logo_AGIA.png';
+                logoImg.crossOrigin = 'Anonymous';
+                await new Promise((resolve, reject) => {
+                  logoImg.onload = resolve;
+                  logoImg.onerror = reject;
+                });
+                // Add logo centered at top
+                doc.addImage(logoImg, 'PNG', pw / 2 - 20, 10, 40, 40);
+              } catch (e) {
+                console.warn('No se pudo cargar el logo, continuando sin él:', e);
+              }
+
               doc.setTextColor(255, 255, 255); doc.setFontSize(32); doc.setFont('helvetica', 'bold');
-              doc.text('Maestro Prompts', pw / 2, 35, { align: 'center' });
+              doc.text('Maestro Prompts', pw / 2, 65, { align: 'center' });
               doc.setFontSize(16); doc.setFont('helvetica', 'normal');
-              doc.text('100 Prompts Optimizados AGIA', pw / 2, 50, { align: 'center' });
-              doc.setFillColor(...yellow); doc.roundedRect(pw / 2 - 35, 58, 70, 12, 3, 3, 'F');
+              doc.text('100 Prompts Optimizados AGIA', pw / 2, 80, { align: 'center' });
+              doc.setFillColor(...yellow); doc.roundedRect(pw / 2 - 35, 88, 70, 12, 3, 3, 'F');
               doc.setTextColor(...dark); doc.setFontSize(10); doc.setFont('helvetica', 'bold');
-              doc.text('EXCLUSIVE PREMIUM', pw / 2, 66, { align: 'center' });
+              doc.text('EXCLUSIVE PREMIUM', pw / 2, 96, { align: 'center' });
               doc.setTextColor(...dark); doc.setFontSize(24); doc.setFont('helvetica', 'bold');
-              doc.text('Aula GenIA', pw / 2, 110, { align: 'center' });
+              doc.text('Aula GenIA', pw / 2, 120, { align: 'center' });
               doc.setFontSize(11); doc.setFont('helvetica', 'normal'); doc.setTextColor(...light);
               const uname = user.displayName || user.email.split('@')[0];
               doc.text(`Generado para: ${uname}`, pw / 2, 130, { align: 'center' });
@@ -1216,6 +1232,47 @@
                   }
                   doc.text(promptLines[li], m, cy); cy += 3.5;
                 }
+
+                // METADATOS: Modelo Ideal, Estrategia, Validación
+                cy += 8;
+                if (cy > ph - 60) { doc.addPage(); cy = m; }
+
+                // Separador
+                doc.setDrawColor(220, 220, 220); doc.setLineWidth(0.5); doc.line(m, cy, pw - m, cy); cy += 8;
+
+                // Modelo Ideal
+                if (p.suggestedAI) {
+                  doc.setFillColor(239, 246, 255); doc.roundedRect(m, cy, mw, 10, 2, 2, 'F');
+                  doc.setFontSize(8); doc.setTextColor(37, 99, 235); doc.setFont('helvetica', 'bold');
+                  doc.text('🤖 MODELO IDEAL', m + 3, cy + 4);
+                  doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40);
+                  doc.text(p.suggestedAI, m + 3, cy + 8);
+                  cy += 12;
+                }
+
+                // Estrategia
+                if (p.metadata?.technique || p.exampleTip) {
+                  doc.setFillColor(255, 251, 235); doc.roundedRect(m, cy, mw, 10, 2, 2, 'F');
+                  doc.setFontSize(8); doc.setTextColor(217, 119, 6); doc.setFont('helvetica', 'bold');
+                  doc.text('💡 ESTRATEGIA', m + 3, cy + 4);
+                  doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40);
+                  const strategy = p.metadata?.technique || p.exampleTip || '';
+                  const strategyLines = doc.splitTextToSize(strategy, mw - 6);
+                  doc.text(strategyLines, m + 3, cy + 8);
+                  cy += Math.max(12, 6 + strategyLines.length * 3);
+                }
+
+                // Validación
+                if (p.validationTip) {
+                  doc.setFillColor(240, 253, 244); doc.roundedRect(m, cy, mw, 10, 2, 2, 'F');
+                  doc.setFontSize(8); doc.setTextColor(22, 163, 74); doc.setFont('helvetica', 'bold');
+                  doc.text('✓ VALIDACIÓN', m + 3, cy + 4);
+                  doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40);
+                  const validationLines = doc.splitTextToSize(p.validationTip, mw - 6);
+                  doc.text(validationLines, m + 3, cy + 8);
+                  cy += Math.max(12, 6 + validationLines.length * 3);
+                }
+
                 doc.setFontSize(8); doc.setTextColor(...light);
                 doc.text('aulagenia.cl', pw / 2, ph - 10, { align: 'center' });
               }
