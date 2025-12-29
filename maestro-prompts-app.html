@@ -1134,37 +1134,42 @@
 
         async function loadDatabase() {
             try {
-                // Load prompts_db.js as a script tag dynamically
-                if (typeof window.casesData !== 'undefined' && Array.isArray(window.casesData)) {
-                    // Already loaded
-                    casesData = window.casesData;
+                // Verificar si ya hay usuario autenticado
+                const user = auth.currentUser;
+
+                // Si no hay usuario y no estamos esperando auth 
+                // (esto podría necesitar ajuste si auth es asíncrono, pero initApp maneja logins)
+
+                console.log('🔒 Secure Load: Solicitando prompts a Cloud Function...');
+
+                const getPromptsData = firebase.functions().httpsCallable('getPromptsData');
+                const result = await getPromptsData();
+
+                if (result.data.success) {
+                    casesData = result.data.data;
+                    console.log(`✅ Secure Load Success: ${casesData.length} prompts loaded.`);
+
                     setTimeout(() => {
                         statusOverlay.classList.add('hidden');
                         initApp();
                     }, 800);
                 } else {
-                    // Load the script dynamically
-                    const script = document.createElement('script');
-                    script.src = externalDBUrl;
-                    script.onload = () => {
-                        if (typeof window.casesData !== 'undefined' && Array.isArray(window.casesData)) {
-                            casesData = window.casesData;
-                            setTimeout(() => {
-                                statusOverlay.classList.add('hidden');
-                                initApp();
-                            }, 800);
-                        } else {
-                            throw new Error("Formato de base de datos inválido.");
-                        }
-                    };
-                    script.onerror = () => {
-                        throw new Error("Failed to load prompts database.");
-                    };
-                    document.head.appendChild(script);
+                    throw new Error("Respuesta inválida del servidor seguro.");
                 }
+
             } catch (err) {
-                console.error("System Error:", err);
-                showSystemError(err);
+                console.error("Secure Load Error:", err);
+                // Manejo específico de errores de Firebase Functions
+                if (err.code === 'functions/permission-denied') {
+                    showSystemError(new Error("Acceso denegado: Necesitas inscripción activa."));
+                    // Opcional: Redirigir o mostrar modal de venta
+                    // window.location.href = 'landing-nuevo.html#pricing';
+                } else if (err.code === 'functions/unauthenticated') {
+                    showSystemError(new Error("No autenticado: Inicia sesión para acceder."));
+                    // window.location.href = 'acceso.html'; 
+                } else {
+                    showSystemError(err);
+                }
             }
         }
 
