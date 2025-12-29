@@ -1259,15 +1259,21 @@
                 const userDoc = await userRef.get();
 
                 if (!userDoc.exists) {
-                    alert('⚠️ Usuario no encontrado. Contacta soporte.');
+                    alert('⚠️ Debes inscribirte en el curso "IA Aplicada · Esencial" para acceder a esta función.\n\n¿Deseas obtener acceso completo?');
+                    window.location.href = 'landing-nuevo.html';
                     return;
                 }
 
                 const userData = userDoc.data();
-                const isEnrolled = userData.enrolledCourses && userData.enrolledCourses.includes('ia-aplicada-esencial');
+                const courseId = 'ia-aplicada-esencial';
+                const oldCourseId = 'inteligencia-aplicada';
+
+                const isEnrolled = userData.enrollments &&
+                    (userData.enrollments[courseId] === true ||
+                        userData.enrollments[oldCourseId] === true);
 
                 if (!isEnrolled) {
-                    alert('🔒 Esta función es exclusiva para usuarios Premium.\n\n¿Deseas obtener acceso completo?');
+                    alert('🔒 Debes inscribirte en el curso "IA Aplicada · Esencial" para descargar el PDF completo.\n\n¿Deseas obtener acceso ahora?');
                     window.location.href = 'landing-nuevo.html';
                     return;
                 }
