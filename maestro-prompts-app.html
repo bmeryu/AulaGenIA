@@ -1577,6 +1577,9 @@
                     return `§§§OL§§§${items}§§§/OL§§§`;
                 });
 
+                // Process horizontal rules (---)
+                text = text.replace(/^---$/gm, '§§§HR§§§');
+
                 // Now escape HTML for security (but preserve our markers and tables)
                 const parts = [];
                 const protectedPattern = /(§§§[^§]+§§§|<table>[\s\S]*?<\/table>)/g;
@@ -1597,6 +1600,13 @@
                     parts.push(escapeHtml(text.substring(lastIndex)));
                 }
                 text = parts.join('');
+
+                // ═══════════════════════════════════════════════════════
+                // STAGE 3: RESTORE MARKERS TO HTML
+                // ═══════════════════════════════════════════════════════
+
+                // Restore horizontal rules
+                text = text.replace(/§§§HR§§§/g, '<hr class="my-6 border-t-2 border-dashed border-slate-200 w-full">');
 
                 // Convert markers to HTML tags
                 text = text.replace(/§§§PRE§§§/g, '<pre><code>');
@@ -1622,9 +1632,9 @@
                 text = text.split('\n\n').map(para => {
                     para = para.trim();
                     if (!para) return '';
-                    // Don't wrap structural elements
+                    // Don't wrap structural elements (include <hr> in protection)
                     if (para.startsWith('<table') || para.startsWith('<pre') ||
-                        para.startsWith('<ul') || para.startsWith('<ol')) {
+                        para.startsWith('<ul') || para.startsWith('<ol') || para.startsWith('<hr')) {
                         return para;
                     }
 
@@ -1639,63 +1649,67 @@
                         let inUnorderedList = false;
                         let inOrderedList = false;
 
-                        // PILLAR 3: Aesthetic Tuning - Tight spacing context
-                        // Enforce tight spacing within the block
-                        const spacingClass = 'mb-1';
+                        // List styles (Tailwind)
+                        const ulClass = 'list-disc ml-5 space-y-1 text-slate-600 my-2';
+                        const olClass = 'list-decimal ml-5 space-y-1 text-slate-600 my-2';
+                        const divClass = 'mb-1 leading-snug text-slate-600';
 
                         lines.forEach(line => {
                             let cleanLine = line.trim();
 
-                            // PILLAR 1: Syntax Cleaning - The "Anti-Garbage" Filter
-                            // 1. Remove Markdown horizontal rules '---'
-                            if (cleanLine.match(/^-{3,}$/)) return;
+                            // 1. Handle Markdown horizontal rules '---' gracefully
+                            if (cleanLine.match(/^-{3,}$/)) {
+                                if (inUnorderedList) { html += '</ul>'; inUnorderedList = false; }
+                                if (inOrderedList) { html += '</ol>'; inOrderedList = false; }
+                                html += '<hr class="my-6 border-t-2 border-dashed border-slate-200 w-full">';
+                                return;
+                            }
 
-                            // 2. Remove table separator lines like '|---|---|' or '| :--- |'
-                            // Logic: If line has pipes/dashes but no real alphanumeric content
+                            // 2. Remove table separator lines like '|---|---|'
                             if (cleanLine.includes('|') && cleanLine.includes('-') && cleanLine.replace(/[\s\:\-\|]/g, '').length === 0) return;
 
                             // Unordered list item (-)
                             if (cleanLine.match(/^- /)) {
                                 if (inOrderedList) {
-                                    html += '§§§/OL§§§';
+                                    html += '</ol>';
                                     inOrderedList = false;
                                 }
                                 if (!inUnorderedList) {
-                                    html += '§§§UL§§§';
+                                    html += `<ul class="${ulClass}">`;
                                     inUnorderedList = true;
                                 }
                                 const content = cleanLine.substring(2).trim();
-                                html += `§§§LI§§§${content}§§§/LI§§§`;
+                                html += `<li>${content}</li>`;
                             }
                             // Ordered list item (1. 2. etc)
                             else if (cleanLine.match(/^\d+\.\s/)) {
                                 if (inUnorderedList) {
-                                    html += '§§§/UL§§§';
+                                    html += '</ul>';
                                     inUnorderedList = false;
                                 }
                                 if (!inOrderedList) {
-                                    html += '§§§OL§§§';
+                                    html += `<ol class="${olClass}">`;
                                     inOrderedList = true;
                                 }
                                 const content = cleanLine.replace(/^\d+\.\s+/, '').trim();
-                                html += `§§§LI§§§${content}§§§/LI§§§`;
+                                html += `<li>${content}</li>`;
                             }
-                            // Regular text lines (Cleaned)
+                            // Regular text lines
                             else {
                                 if (inUnorderedList) {
-                                    html += '§§§/UL§§§';
+                                    html += '</ul>';
                                     inUnorderedList = false;
                                 }
                                 if (inOrderedList) {
-                                    html += '§§§/OL§§§';
+                                    html += '</ol>';
                                     inOrderedList = false;
                                 }
-                                if (cleanLine) html += `<div class="${spacingClass} leading-snug text-slate-600">${cleanLine}</div>`;
+                                if (cleanLine) html += `<div class="${divClass}">${cleanLine}</div>`;
                             }
                         });
 
-                        if (inUnorderedList) html += '§§§/UL§§§';
-                        if (inOrderedList) html += '§§§/OL§§§';
+                        if (inUnorderedList) html += '</ul>';
+                        if (inOrderedList) html += '</ol>';
                         return html;
                     }
 
