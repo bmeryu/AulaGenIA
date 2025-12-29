@@ -1105,6 +1105,48 @@
                 errorColor: 'bg-red-500'
               });
 
+              // Función para desbloquear tarjeta Generador si tiene enrollment
+              async function unlockGeneratorCard(user) {
+                try {
+                  const userRef = db.collection('users').doc(user.uid);
+                  const userDoc = await userRef.get();
+
+                  if (!userDoc.exists) return;
+
+                  const userData = userDoc.data();
+                  const courseId = 'ia-aplicada-esencial';
+                  const oldCourseId = 'inteligencia-aplicada';
+
+                  const hasEnrollment = userData.enrollments &&
+                    (userData.enrollments[courseId] === true ||
+                      userData.enrollments[oldCourseId] === true);
+
+                  if (hasEnrollment) {
+                    // Desbloquear botón Acceder al Generador
+                    const accessBtn = document.querySelector('a[href="#"][onclick*="showCouponModal"]');
+                    if (accessBtn) {
+                      accessBtn.href = 'maestro-prompts-app.html';
+                      accessBtn.onclick = null;
+                      accessBtn.className = 'mt-auto block text-center bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5';
+                      accessBtn.innerHTML = '⚡ Acceder al Generador';
+                    }
+
+                    // Desbloquear botón Descargar PDF
+                    const pdfBtn = document.querySelector('button[onclick*="showCouponModal"]');
+                    if (pdfBtn) {
+                      pdfBtn.onclick = downloadPromptsPDF;
+                      pdfBtn.className = 'mt-3 block w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1';
+                      pdfBtn.innerHTML = '📥 Descargar 100 Prompts PDF';
+                    }
+                  }
+                } catch (error) {
+                  console.error('Error al verificar enrollment:', error);
+                }
+              }
+
+              // Llamar a desbloquear cuando el usuario esté autenticado
+              unlockGeneratorCard(user);
+
             } else {
               window.location.href = 'acceso.html';
             }
