@@ -47,7 +47,7 @@ exports.getPromptsData = functions.https.onCall(async (data, context) => {
 
         // 3. Leer datos desde Firebase Storage
         const bucket = admin.storage().bucket();
-        const file = bucket.file('private/prompts_data.json');
+        const file = bucket.file('private/prompts_db.json');
 
         const [contents] = await file.download();
         const promptsData = JSON.parse(contents.toString('utf-8'));
