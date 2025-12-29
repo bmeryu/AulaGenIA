@@ -1188,9 +1188,10 @@
                 doc.setTextColor(...teal); doc.setFont('helvetica', 'bold');
                 doc.text(`${idx + 1}. ${cat}`, m, cy); cy += 6;
                 doc.setTextColor(80, 80, 80); doc.setFont('helvetica', 'normal');
-                cats[cat].forEach(p => {
+                cats[cat].forEach((p, idx) => {
                   if (cy > ph - 20) { doc.addPage(); cy = m; }
-                  doc.text(`   - Prompt #${p.id}: ${p.title}`, m + 5, cy); cy += 5;
+                  const promptNum = casesData.findIndex(prompt => prompt.id === p.id) + 1;
+                  doc.text(`   - Prompt #${promptNum}: ${p.title}`, m + 5, cy); cy += 5;
                 });
                 cy += 3;
               });
@@ -1244,7 +1245,7 @@
                 if (p.suggestedAI) {
                   doc.setFillColor(239, 246, 255); doc.roundedRect(m, cy, mw, 10, 2, 2, 'F');
                   doc.setFontSize(8); doc.setTextColor(37, 99, 235); doc.setFont('helvetica', 'bold');
-                  doc.text('🤖 MODELO IDEAL', m + 3, cy + 4);
+                  doc.text('>> MODELO IDEAL', m + 3, cy + 4);
                   doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40);
                   doc.text(p.suggestedAI, m + 3, cy + 8);
                   cy += 12;
@@ -1254,7 +1255,7 @@
                 if (p.metadata?.technique || p.exampleTip) {
                   doc.setFillColor(255, 251, 235); doc.roundedRect(m, cy, mw, 10, 2, 2, 'F');
                   doc.setFontSize(8); doc.setTextColor(217, 119, 6); doc.setFont('helvetica', 'bold');
-                  doc.text('💡 ESTRATEGIA', m + 3, cy + 4);
+                  doc.text('* ESTRATEGIA', m + 3, cy + 4);
                   doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40);
                   const strategy = p.metadata?.technique || p.exampleTip || '';
                   const strategyLines = doc.splitTextToSize(strategy, mw - 6);
@@ -1266,7 +1267,7 @@
                 if (p.validationTip) {
                   doc.setFillColor(240, 253, 244); doc.roundedRect(m, cy, mw, 10, 2, 2, 'F');
                   doc.setFontSize(8); doc.setTextColor(22, 163, 74); doc.setFont('helvetica', 'bold');
-                  doc.text('✓ VALIDACIÓN', m + 3, cy + 4);
+                  doc.text('v VALIDACION', m + 3, cy + 4);
                   doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40);
                   const validationLines = doc.splitTextToSize(p.validationTip, mw - 6);
                   doc.text(validationLines, m + 3, cy + 8);
