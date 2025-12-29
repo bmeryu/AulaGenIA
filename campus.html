@@ -1155,40 +1155,50 @@
           // ================================================
           // FUNCIÓN DESCARGA PDF - 100 PROMPTS MAESTROS
           // ================================================
-          // ================================================
-          // FUNCIÓN DESCARGA PDF - 100 PROMPTS MAESTROS
-          // ================================================
+
+          // Función para cargar datos de prompts de forma segura desde Cloud Function
+          async function loadSecurePromptsData() {
+            try {
+              const getPromptsData = firebase.functions().httpsCallable('getPromptsData');
+              const result = await getPromptsData();
+
+              if (result.data.success) {
+                window.casesData = result.data.data;
+                console.log('✅ Prompts cargados de forma segura:', window.casesData.length);
+                return true;
+              }
+              return false;
+            } catch (error) {
+              console.error('Error al cargar prompts:', error);
+
+              if (error.code === 'functions/permission-denied') {
+                alert('⚠️ Acceso Premium Requerido\n\nPara acceder a los prompts necesitas estar inscrito en el curso.\n\n¿Deseas inscribirte ahora?');
+                window.location.href = 'landing-nuevo.html#pricing';
+              } else if (error.code === 'functions/unauthenticated') {
+                window.location.href = 'acceso.html';
+              } else {
+                alert('Error al cargar los datos. Por favor intenta nuevamente.');
+              }
+              return false;
+            }
+          }
+
           window.downloadPromptsPDF = async function () {
             try {
               const user = auth.currentUser;
-              if (!user || typeof casesData === 'undefined') {
-                if (!user) {
-                  window.location.href = 'acceso.html';
+              if (!user) {
+                window.location.href = 'acceso.html';
+                return;
+              }
+
+              // Cargar datos seguros si no están disponibles
+              if (!window.casesData || window.casesData.length === 0) {
+                console.log('Cargando prompts de forma segura...');
+                const loaded = await loadSecurePromptsData();
+                if (!loaded) {
+                  console.error('No se pudieron cargar los prompts');
+                  return;
                 }
-                return;
-              }
-
-              // VERIFICAR ENROLLMENT - Solo usuarios que han pagado pueden descargar
-              const userRef = db.collection('users').doc(user.uid);
-              const userDoc = await userRef.get();
-
-              if (!userDoc.exists) {
-                alert('No se encontró tu perfil. Por favor contacta a soporte.');
-                return;
-              }
-
-              const userData = userDoc.data();
-              const courseId = 'ia-aplicada-esencial';
-              const oldCourseId = 'inteligencia-aplicada';
-
-              const hasEnrollment = userData.enrollments &&
-                (userData.enrollments[courseId] === true ||
-                  userData.enrollments[oldCourseId] === true);
-
-              if (!hasEnrollment) {
-                alert('⚠️ Acceso Premium Requerido\n\nPara descargar el PDF de 100 Prompts necesitas estar inscrito en el curso.\n\n¿Deseas inscribirte ahora?');
-                window.location.href = 'landing-nuevo.html#pricing';
-                return;
               }
 
               const { jsPDF } = window.jspdf;
