@@ -1817,4 +1817,5 @@ const casesData = [
 
 ];
 
-export default casesData;
+// Make casesData available globally for campus.html
+window.casesData = casesData;
