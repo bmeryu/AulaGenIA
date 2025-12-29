@@ -1830,5 +1830,4 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     window.casesData = casesData;
 }
 
-// ES6 Module export (for maestro-prompts-app.html)
-export default casesData;
+

@@ -1134,16 +1134,33 @@
 
         async function loadDatabase() {
             try {
-                // Import dinámico del módulo
-                const module = await import(externalDBUrl);
-                if (module && module.default && Array.isArray(module.default)) {
-                    casesData = module.default;
+                // Load prompts_db.js as a script tag dynamically
+                if (typeof window.casesData !== 'undefined' && Array.isArray(window.casesData)) {
+                    // Already loaded
+                    casesData = window.casesData;
                     setTimeout(() => {
                         statusOverlay.classList.add('hidden');
                         initApp();
                     }, 800);
                 } else {
-                    throw new Error("Formato de base de datos inválido.");
+                    // Load the script dynamically
+                    const script = document.createElement('script');
+                    script.src = externalDBUrl;
+                    script.onload = () => {
+                        if (typeof window.casesData !== 'undefined' && Array.isArray(window.casesData)) {
+                            casesData = window.casesData;
+                            setTimeout(() => {
+                                statusOverlay.classList.add('hidden');
+                                initApp();
+                            }, 800);
+                        } else {
+                            throw new Error("Formato de base de datos inválido.");
+                        }
+                    };
+                    script.onerror = () => {
+                        throw new Error("Failed to load prompts database.");
+                    };
+                    document.head.appendChild(script);
                 }
             } catch (err) {
                 console.error("System Error:", err);
