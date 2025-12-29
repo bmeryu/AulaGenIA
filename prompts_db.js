@@ -20,7 +20,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Puedes identificar qué hacer en menos de 10 segundos mirando la tabla?",
-        "exampleTip": "Classification & Zero-Shot (Clasificación de datos lógicas sin ejemplos previos)."
+        "exampleTip": "Classification & Zero-Shot (Clasificación de datos lógicas sin ejemplos previos).",
+        "description": ""
     },
     {
         "id": 2,
@@ -39,7 +40,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT (GPT-4o) / Perplexity",
         "validationTip": "¿Si alguien no fue a la reunión, entiende perfectamente qué debe hacer?",
-        "exampleTip": "Information Extraction & Structured Output (Extracción de datos para formatos organizados)."
+        "exampleTip": "Information Extraction & Structured Output (Extracción de datos para formatos organizados).",
+        "description": ""
     },
     {
         "id": 4,
@@ -58,7 +60,8 @@ const casesData = [
         },
         "suggestedAI": "Claude 3.5 Sonnet / Gemini 1.5 Pro",
         "validationTip": "¿Sientes que ya no necesitas leer todo el PDF para decidir el siguiente paso?",
-        "exampleTip": "Targeted Summarization (Resumen dirigido a lo que afecta al negocio)."
+        "exampleTip": "Targeted Summarization (Resumen dirigido a lo que afecta al negocio).",
+        "description": ""
     },
     {
         "id": 5,
@@ -77,7 +80,8 @@ const casesData = [
         },
         "suggestedAI": "Gemini / ChatGPT",
         "validationTip": "¿Se entiende el éxito del mes leyendo solo las primeras 2 líneas?",
-        "exampleTip": "BLUF Strategy (Bottom Line Up Front: Conclusión al principio)."
+        "exampleTip": "BLUF Strategy (Bottom Line Up Front: Conclusión al principio).",
+        "description": ""
     },
     {
         "id": 7,
@@ -96,7 +100,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Sabes exactamente qué frase pedir que cambien en el documento?",
-        "exampleTip": "Risk Assessment (Evaluación de peligros legales en lenguaje simple)."
+        "exampleTip": "Risk Assessment (Evaluación de peligros legales en lenguaje simple).",
+        "description": ""
     },
     {
         "id": 8,
@@ -115,7 +120,8 @@ const casesData = [
         },
         "suggestedAI": "Gamma / ChatGPT",
         "validationTip": "¿La presentación cuenta una historia o es solo una lista de bullets?",
-        "exampleTip": "Visual Storylining (Estructura narrativa visual para mantener la atención)."
+        "exampleTip": "Visual Storylining (Estructura narrativa visual para mantener la atención).",
+        "description": ""
     },
     {
         "id": 10,
@@ -134,7 +140,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT (Data Analysis) / Claude",
         "validationTip": "¿Puedes copiar el código y pegarlo directo en una celda de Excel sin errores?",
-        "exampleTip": "Data Normalization (Estandarización de patrones y formatos de datos crudos)."
+        "exampleTip": "Data Normalization (Estandarización de patrones y formatos de datos crudos).",
+        "description": ""
     },
     {
         "id": 11,
@@ -153,7 +160,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿El correo vende la reunión o intenta vender el producto de inmediato?",
-        "exampleTip": "PAS Framework (Estructura Problema-Agitación-Solución)."
+        "exampleTip": "PAS Framework (Estructura Problema-Agitación-Solución).",
+        "description": ""
     },
     {
         "id": 12,
@@ -171,7 +179,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿El gancho inicial logra que el usuario detenga su dedo al navegar?",
-        "exampleTip": "AIDA Framework (Atención-Interés-Deseo-Acción para Ads)."
+        "exampleTip": "AIDA Framework (Atención-Interés-Deseo-Acción para Ads).",
+        "description": ""
     },
     {
         "id": 13,
@@ -189,7 +198,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿La descripción genera el antojo de probar el producto?",
-        "exampleTip": "Feature-to-Benefit (Traducción de técnica a emoción sensorial)."
+        "exampleTip": "Feature-to-Benefit (Traducción de técnica a emoción sensorial).",
+        "description": ""
     },
     {
         "id": 14,
@@ -207,7 +217,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Enganchaste en los primeros 3 segundos sin decir 'Hola'?",
-        "exampleTip": "High-Retention Scripting (Estructura para retención máxima)."
+        "exampleTip": "High-Retention Scripting (Estructura para retención máxima).",
+        "description": ""
     },
     {
         "id": 16,
@@ -225,7 +236,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿El cliente entiende el beneficio principal en menos de 3 segundos?",
-        "exampleTip": "Value Proposition Focus (Enfoque en promesa de transformación)."
+        "exampleTip": "Value Proposition Focus (Enfoque en promesa de transformación).",
+        "description": ""
     },
     {
         "id": 17,
@@ -243,7 +255,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿El anuncio responde exactamente a lo que el usuario escribió en el buscador?",
-        "exampleTip": "Search Intent Matching (Alineación con la intención de búsqueda)."
+        "exampleTip": "Search Intent Matching (Alineación con la intención de búsqueda).",
+        "description": ""
     },
     {
         "id": 18,
@@ -261,7 +274,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Sientes el impulso físico de descargar el archivo ahora mismo?",
-        "exampleTip": "Curiosity Gap (Creación de brecha de curiosidad irresistible)."
+        "exampleTip": "Curiosity Gap (Creación de brecha de curiosidad irresistible).",
+        "description": ""
     },
     {
         "id": 19,
@@ -279,7 +293,8 @@ const casesData = [
         },
         "suggestedAI": "Claude / ChatGPT",
         "validationTip": "¿El cliente ahora cuestiona el precio o el riesgo de NO comprar?",
-        "exampleTip": "Reframing (Reencuadre de costo a inversión)."
+        "exampleTip": "Reframing (Reencuadre de costo a inversión).",
+        "description": ""
     },
     {
         "id": 20,
@@ -297,7 +312,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿El tono parece de una amiga avisando de algo bueno o de un bot corporativo?",
-        "exampleTip": "Scarcity & Risk Reversal (Escasez real y eliminación de miedos)."
+        "exampleTip": "Scarcity & Risk Reversal (Escasez real y eliminación de miedos).",
+        "description": ""
     },
     {
         "id": 21,
@@ -315,7 +331,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Lograste que el aumento de precio parezca una ganancia financiera para el cliente?",
-        "exampleTip": "Price Anchoring (Uso de anclajes de valor para justificar tickets altos)."
+        "exampleTip": "Price Anchoring (Uso de anclajes de valor para justificar tickets altos).",
+        "description": ""
     },
     {
         "id": 22,
@@ -333,7 +350,8 @@ const casesData = [
         },
         "suggestedAI": "Claude 3.5 Sonnet / ChatGPT",
         "validationTip": "¿El cliente siente que está perdiendo dinero cada día que no te contrata?",
-        "exampleTip": "Value-Based Framing (Presentar el impacto financiero final)."
+        "exampleTip": "Value-Based Framing (Presentar el impacto financiero final).",
+        "description": ""
     },
     {
         "id": 23,
@@ -351,7 +369,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Lograste aislar la duda real o el cliente solo se está escapando por compromiso?",
-        "exampleTip": "Socratic Questioning (Método socrático para autodescubrimiento)."
+        "exampleTip": "Socratic Questioning (Método socrático para autodescubrimiento).",
+        "description": ""
     },
     {
         "id": 24,
@@ -369,7 +388,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Hay una progresión emocional que justifica el clic final de compra?",
-        "exampleTip": "6-Step VSL Formula (Gancho-Herida-Solución-Prueba-Oferta-CTA)."
+        "exampleTip": "6-Step VSL Formula (Gancho-Herida-Solución-Prueba-Oferta-CTA).",
+        "description": ""
     },
     {
         "id": 26,
@@ -387,7 +407,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿La garantía hace que parezca irracional NO probar el servicio?",
-        "exampleTip": "Risk Reversal Strategy (Reversión total del riesgo)."
+        "exampleTip": "Risk Reversal Strategy (Reversión total del riesgo).",
+        "description": ""
     },
     {
         "id": 27,
@@ -405,7 +426,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿El plan que realmente quieres vender parece ahora la opción más inteligente?",
-        "exampleTip": "Decoy Effect (Uso de opción 'mala' para guiar la decisión)."
+        "exampleTip": "Decoy Effect (Uso de opción 'mala' para guiar la decisión).",
+        "description": ""
     },
     {
         "id": 28,
@@ -423,7 +445,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Tienes una oferta lista para el cliente un segundo después de que te compre lo más barato?",
-        "exampleTip": "Value Ladder Architecture (Diseño de camino de compra ascendente)."
+        "exampleTip": "Value Ladder Architecture (Diseño de camino de compra ascendente).",
+        "description": ""
     },
     {
         "id": 29,
@@ -441,7 +464,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿La urgencia se percibe como una oportunidad real de valor o como presión barata?",
-        "exampleTip": "Social Proof & Genuine Scarcity (Urgencia justificada)."
+        "exampleTip": "Social Proof & Genuine Scarcity (Urgencia justificada).",
+        "description": ""
     },
     {
         "id": 30,
@@ -459,7 +483,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Tu propuesta suena a una inversión que se paga sola o a un costo operativo para el cliente?",
-        "exampleTip": "Results-Oriented Pitching (Vender el destino, no el viaje)."
+        "exampleTip": "Results-Oriented Pitching (Vender el destino, no el viaje).",
+        "description": ""
     },
     {
         "id": 32,
@@ -478,7 +503,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Una sola idea central es capaz de alimentar toda tu semana de contenido?",
-        "exampleTip": "Content Repurposing (Reciclaje masivo de ideas)."
+        "exampleTip": "Content Repurposing (Reciclaje masivo de ideas).",
+        "description": ""
     },
     {
         "id": 33,
@@ -496,7 +522,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿El usuario siente que aprendió algo valioso que puede aplicar en menos de un minuto?",
-        "exampleTip": "Micro-learning Scripting (Escritura para 'victorias rápidas')."
+        "exampleTip": "Micro-learning Scripting (Escritura para 'victorias rápidas').",
+        "description": ""
     },
     {
         "id": 34,
@@ -514,7 +541,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Te sientes obligado a hacer clic pero tienes la seguridad de recibir valor real?",
-        "exampleTip": "Headline Psychology (Gatillos mentales sin engaño)."
+        "exampleTip": "Headline Psychology (Gatillos mentales sin engaño).",
+        "description": ""
     },
     {
         "id": 35,
@@ -532,7 +560,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Canva",
         "validationTip": "¿La secuencia visual invita a seguir deslizando el dedo hasta llegar al CTA final?",
-        "exampleTip": "Sequential Storytelling (Retención y guardados)."
+        "exampleTip": "Sequential Storytelling (Retención y guardados).",
+        "description": ""
     },
     {
         "id": 36,
@@ -549,7 +578,8 @@ const casesData = [
             "technique": "Narrative SEO (Historias reales vs keywords)."
         },
         "validationTip": "¿El texto suena a una conversación de experto o a un fragmento de enciclopedia robótica?",
-        "exampleTip": "Narrative SEO (Historias reales vs keywords)."
+        "exampleTip": "Narrative SEO (Historias reales vs keywords).",
+        "description": ""
     },
     {
         "id": 39,
@@ -567,7 +597,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Los clips seleccionados son capaces de generar interés por sí solos fuera de contexto?",
-        "exampleTip": "Hook-Point Identification (Análisis de contenido para extraer micro-momentos)."
+        "exampleTip": "Hook-Point Identification (Análisis de contenido para extraer micro-momentos).",
+        "description": ""
     },
     {
         "id": 40,
@@ -585,7 +616,8 @@ const casesData = [
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿El regalo propuesto es tan bueno que el cliente se siente 'tonto' al no descargarlo?",
-        "exampleTip": "High-Value Exchange (Diseño de activos gratuitos que resuelven dolores)."
+        "exampleTip": "High-Value Exchange (Diseño de activos gratuitos que resuelven dolores).",
+        "description": ""
     },
     {
         "id": 41,
@@ -596,14 +628,15 @@ const casesData = [
         "badResponsePreview": "Lunes: Frase motivacional. Martes: Tip de tu negocio. Miércoles: Foto de tu equipo. Jueves: TBT de un evento. Viernes: Oferta especial de fin de semana. Sábado: Descanso.",
         "badResponseAnalysis": "Contenido \"de relleno\" sin arco narrativo. No existe una progresión que prepare al cliente para la venta (calentamiento) ni considera el contexto local (ej: el \"caos de marzo\" en Chile o las vacaciones de enero).",
         "agiaPromptTagged": "Eres un Content Strategist Senior especializado en calendarios editoriales con arco narrativo. Tu expertise es diseñar contenido que no sea \"de relleno\" sino que prepare estratégicamente al cliente para una venta futura.\n\nCONTEXTO:\nMes a planificar: [Ej: Marzo / Enero / Diciembre]\n\nContexto local relevante: [Ej: \"Marzo en Chile = caos de gastos escolares\" / \"Enero = vacaciones y poco engagement\" / \"Diciembre = Black Friday y Navidad\"]\n\nMi negocio/servicio: [Ej: \"Curso de IA para Pymes\" / \"Automatización de ventas\" / \"Consultoría financiera\" / etc.]\n\nObjetivo del mes: [Ej: \"Lanzar curso nuevo\" / \"Llenar webinar\" / \"Vender mentoría\" / etc.]\n\nMETA:\nNecesito un calendario editorial de 4 semanas que siga un arco narrativo estratégico: Semana 1 (Empatía/Conexión) -> Semana 2 (Educación/Valor) -> Semana 3 (Venta Suave) -> Semana 4 (Cierre/Urgencia).\n\nRESTRICCIONES:\n- Equilibrio 40% educativo / 30% entretenimiento / 30% venta\n- Considera el contexto local chileno/latino\n- Cada semana debe preparar el terreno para la siguiente\n- Incluye tipos de contenido variados (posts, stories, reels, etc.)\n\nFORMATO:\n**Semana 1 (Empatía):**\n- Tema central: [...]\n- Lunes: [Tipo de contenido + tema]\n- Martes: [...]\n[...]\n\n**Semana 2 (Educación):**\n[Mismo formato]\n\n**Semana 3 (Venta Suave):**\n[Mismo formato]\n\n**Semana 4 (Cierre):**\n[Mismo formato]",
-        "previewResponse": "**Storytelling - Estructura Hero's Journey (Post LinkedIn)**\n\n**1. El Mundo Ordinario:**\nHace 5 años, yo era el empleado que llegaba primero y se iba último. Creía que si trabajaba duro, me ascenderían. Spoiler: No pasó.\n\n**2. La Llamada a la Aventura (El Quiebre):**\nUn viernes a las 8 PM, mi jefe me tiró un informe en el escritorio: \"Para el lunes\". Me perdí el cumpleaños de mi hija. Ese día dije BASTA.\n\n**3. El Mentor / La Herramienta:**\nDescubrí la Automatización de Procesos (RPA). Entendí que no tenía que trabajar MÁS, sino MEJOR.\n\n**4. El Desafío:**\nAprender Python a los 35 años no fue fácil. Madrugadas, frustración, errores. Casi renuncio 3 veces.\n\n**5. La Transformación:**\nPero a los 3 meses, creé mi primer script. Hizo en 5 minutos lo que yo hacía en 4 horas. Lloré de emoción. Literal.\n\n**6. El Regreso:**\nHoy tengo mi agencia de automatización. Trabajo 5 horas al día. No me pierdo ningún cumpleaños.\n\n**Moraleja:**\nLa tecnología no te va a reemplazar. Te va a reemplazar alguien que use la tecnología mejor que tú.\n\n**Pregunta:** ¿Qué tarea repetitiva odias hacer hoy? Te leo 👇",
+        "previewResponse": "**Calendario Editorial Estratégico - Ejemplo Completo (4 Semanas)**\n\n**NICHO:** Curso de Automatización con IA para Pymes\n**OBJETIVO:** Lanzar curso nuevo en Semana 4\n**CONTEXTO:** Marzo en Chile (gastos escolares, estrés financiero post-verano)\n\n---\n\n**SEMANA 1: EMPATÍA Y CONEXIÓN**\n**Tema Central:** \"Te entiendo, marzo es cabeza\"\n\n**Lunes (Post Instagram):**\n¿Alguien más llegó a marzo con la cuenta en rojo? 🔴\nEntre útiles, uniformes y matrículas, siento que trabajé todo enero para pagar marzo.\n¿Qué gasto escolar te dolió más este año? Te leo 👇\n\n**Martes (Reel):**\nPOV: Eres dueño de Pyme y marzo te destruye\n[Visual: Persona con calculadora, cara de pánico]\n- Útiles hijos: $200k\n- Matrícula: $500k\n- Patente municipal: $300k\n= Estrés máximo 📈\n\n**Miércoles (Story):**\nEncuesta: \"¿Cuánto gastaste en marzo?\"\n- Menos $500k\n- $500k - $1M\n- Más $1M (F en el chat)\n\n**Jueves (Post LinkedIn):**\nMarzo es el mes más caro del año para emprendedores chilenos.\nGastos escolares + Patente + Arriendos = La tormenta perfecta.\n¿Cómo lo manejas tú? Comparte tu estrategia.\n\n**Viernes (Carrusel):**\n\"5 Gastos de Marzo que Olvidaste Presupuestar\"\n1. Útiles escolares extras\n2. Patente municipal\n3. IVA de febrero\n4. Seguro obligatorio auto\n5. Regalos cumpleaños (marzo tiene hartos)\n\n---\n\n**SEMANA 2: EDUCACIÓN Y VALOR**\n**Tema Central:** \"Hay una forma más inteligente\"\n\n**Lunes (Post + Video):**\n\"Cómo la IA me ahorró $500k en marzo (Caso Real)\"\nAutomaticé 3 tareas que me sacaban 10 horas semanales.\nEsas 10 horas las usé para vender más.\nResultado: +$500k en ventas extra.\n\n**Martes (Reel Tutorial):**\n\"3 Tareas que puedes automatizar HOY con ChatGPT (Gratis)\"\n1. Responder emails repetitivos\n2. Crear facturas\n3. Recordatorios de cobranza\n\n**Miércoles (Story + Link):**\n\"Descarga Gratis: Checklist de 10 Tareas Automatizables\"\n[Lead Magnet]\n\n**Jueves (Post LinkedIn - Caso de Éxito):**\nCase Study: \"Cómo Juan (Ferretería Maipú) recuperó 15h semanales con IA\"\nAntes: 60h/semana\nDespués: 45h/semana\nAhorro: $600k/mes (su hora = $10k)\n\n**Viernes (Live/Q&A):**\n\"Pregúntame lo que quieras sobre Automatización\"\nRespondo dudas en vivo 30 minutos.\n\n---\n\n**SEMANA 3: VENTA SUAVE**\n**Tema Central:** \"Tengo algo para ti\"\n\n**Lunes (Anuncio Curso):**\nDurante 6 meses trabajé en algo especial.\nUn curso que enseña TODO lo que sé sobre automatización con IA.\nDesde cero. Para Pymes. En chileno.\nLanzamiento: Lunes 25 de marzo.\n\n**Martes (Testimonios):**\n3 alumnos beta probaron el curso.\nResultados:\n- Carolina: Automatizó cobranza, recuperó $800k en 2 semanas\n- Pedro: Eliminó 12h/semana de admin\n- Ana: Creó chatbot WhatsApp sin programar\n\n**Miércoles (Behind the Scenes):**\nStory: Mostrando grabación del curso\n\"90 horas de grabación → 8 horas de puro valor\"\n\n**Jueves (Post - Problema/Solución):**\nSi estás cansado de:\n- Responder lo mismo 50 veces al día\n- Perder clientes por responder tarde\n- Trabajar fines de semana\nEste curso es para ti.\n\n**Viernes (Sneak Peek):**\nVideo: \"Clase 1 del curso completa (GRATIS)\"\nAdelanto de valor para calentar.\n\n---\n\n**SEMANA 4: CIERRE Y URGENCIA**\n**Tema Central:** \"Última oportunidad\"\n\n**Lunes (LANZAMIENTO):**\n🚀 ABRIMOS INSCRIPCIONES\nCurso \"Automatización IA para Pymes\"\n- 8 semanas\n- Soporte grupal\n- Plantillas listas\nPrecio Early Bird: $150k (30% OFF)\nSolo hasta el viernes.\n[LINK]\n\n**Martes (Bonus Limitado):**\nLos primeros 20 inscritos reciben:\n+ Sesión 1-on-1 conmigo (Valor $80k)\n+ Acceso de por vida\nQuedan 12 cupos.\n\n**Miércoles (Vencimiento Bonus):**\n⏰ ÚLTIMA LLAMADA BONUS\nQuedan 6 horas para el bonus 1-on-1.\nDespués solo queda el curso sin extras.\n\n**Jueves (Testimonial en Vivo):**\nLive con Carolina (alumna beta):\n\"Cómo recuperé $800k en 2 semanas\"\nElla cuenta su experiencia real.\n\n**Viernes (CIERRE FINAL):**\n🔴 CIERRA EN 6 HORAS\nPróxima camada: Junio\nPrecio sube a $220k\nEsta es tu última oportunidad de 2024.\n\n---\n\n**MÉTRICAS ESPERADAS:**\n- Semana 1: Engagement +40% (empatía conecta)\n- Semana 2: 200 leads (por lead magnet)\n- Semana 3: 500 visitas landing\n- Semana 4: 30 ventas = $4.5M\n\n**REGLA DE ORO:**\nCada post de la semana 1 prepara para la semana 2.\nCada valor de la semana 2 justifica la venta de la semana 3.\nCada prueba de la semana 3 elimina objeciones para el cierre de la semana 4.",
         "metadata": {
             "score": 88,
             "technique": "Narrative Arc Planning (Calentar-Educar-Vender)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Tu contenido de la primera semana prepara el terreno para la oferta de la tercera?",
-        "exampleTip": "Narrative Arc Planning (Calentar-Educar-Vender)."
+        "exampleTip": "Narrative Arc Planning (Calentar-Educar-Vender).",
+        "description": ""
     },
     {
         "id": 42,
@@ -614,14 +647,15 @@ const casesData = [
         "badResponsePreview": "Tu estilo de escritura es profesional, amable y organizado. Utilizas párrafos cortos y te diriges al lector de forma directa. Se nota que tienes experiencia en tu rubro.",
         "badResponseAnalysis": "Análisis superficial. No detecta muletillas, no identifica el ritmo de las oraciones (cortas vs largas), no analiza el uso de humor/sarcasmo ni el vocabulario específico que el usuario suele evitar o repetir.",
         "agiaPromptTagged": "Eres un Ghostwriter experto en análisis de estilo de escritura. Tu especialidad es extraer el \"ADN lingüístico\" de una persona para poder replicar su voz de forma indistinguible.\n\nCONTEXTO:\nTe voy a compartir 5 muestras de texto que he escrito yo mismo: [Pega aquí 5 párrafos o emails que hayas escrito]\n\nContexto de uso: [Ej: \"Emails a clientes\" / \"Posts de LinkedIn\" / \"Newsletters\" / etc.]\n\nMETA:\nNecesito que analices profundamente mi estilo de escritura y extraigas mi \"ADN\" para crear una guía que permita a la IA escribir exactamente como yo.\n\nRESTRICCIONES:\n- Analiza: ritmo de oraciones (cortas vs largas), vocabulario específico, muletillas, tono (formal/informal), uso de humor/sarcasmo\n- Identifica palabras que NUNCA uso y palabras que uso en exceso\n- Detecta patrones de estructura (cómo empiezo párrafos, cómo cierro ideas)\n- Tono: Técnico pero claro\n\nFORMATO:\n**Análisis de Estilo:**\n\n**Ritmo:**\n[Descripción del ritmo de oraciones]\n\n**Vocabulario Característico:**\n- Palabras que uso frecuentemente: [...]\n- Palabras que evito: [...]\n\n**Muletillas y Expresiones:**\n[Lista]\n\n**Tono General:**\n[Descripción]\n\n**Estructura de Párrafos:**\n[Patrones identificados]\n\n**Guía para Replicación:**\n[Instrucciones claras para que la IA escriba como tú]",
-        "previewResponse": "**Respuesta a Haters/Críticas y Crisis**\n\n**Escenario 1: Comentario Hater (\"Tu curso es una estafa\")**\n**Respuesta:** \"Hola [Nombre], lamento que tengas esa impresión. Mi curso tiene garantía de 30 días: si no te sirve, devuelvo la plata. ¿Lo compraste y tuviste una mala experiencia? Si es así, escríbeme por DM y lo soluciono ahora mismo. Si no, te invito a probarlo sin riesgo. Saludos.\"\n(Elegante, muestra seguridad, mata al troll con amabilidad).\n\n**Escenario 2: Error Público (Ej: Web caída en lanzamiento)**\n**Post/Comunicado:** \"🔴 LO LAMENTAMOS. Nuestra web se cayó por el alto tráfico. Es nuestra culpa, no calculamos bien el servidor. Estamos migrando ahora mismo. Como disculpa, extendemos el descuento 24 horas más y agregamos un Bonus extra a todos por la paciencia. Gracias por el interés masivo (y perdón de nuevo).\" \n(Asumir culpa rápido + Solución + Compensación).\n\n**Escenario 3: Cliente insatisfecho vocal**\n**Respuesta:** \"Hola [Nombre], entiendo totalmente tu molestia y te pido disculpas públicas. Te acabo de mandar un DM para procesar tu reembolso y ver cómo podemos compensarte. Tu feedback nos ayuda a no repetir este error.\"\n(Sacar la discusión de lo público, validar emoción, solucionar).",
+        "previewResponse": "**Extractor de ADN de Voz - Análisis Profundo**\n\n**MUESTRAS ANALIZADAS (5 emails del usuario):**\n\n[Se analizan los 5 textos del usuario]\n\n---\n\n**ANÁLISIS DE ESTILO:**\n\n**1. RITMO DE ORACIONES:**\n- Preferencia: Frases cortas (10-15 palabras)\n- Patrón: Idea completa → Punto → Nueva idea\n- Ejemplo identificado: \"Hola Juan. Te cuento. Tenemos un problema.\"\n- Evitas: Oraciones de más de 25 palabras con múltiples cláusulas\n\n**2. VOCABULARIO CARACTERÍSTICO:**\n\n**Palabras que usas frecuentemente:**\n- \"Concretamente\" (aparece 3 veces en 5 muestras)\n- \"Te cuento\" (inicio de explicaciones)\n- \"Básicamente\" (para simplificar)\n- \"En simple\" (antes de explicaciones técnicas)\n\n**Palabras que NUNCA usas:**\n- \"Estimado/a\" (prefieres \"Hola\")\n- \"Cordialmente\" (cierres formales rígidos)\n- \"A la brevedad\" (prefieres \"pronto\" o \"esta semana\")\n\n**3. MULETILLAS Y EXPRESIONES:**\n- \"Ojo que...\" (para advertencias)\n- \"Lo que pasa es que...\" (explicaciones)\n- \"Para que te hagas una idea...\" (contexto)\n- \"En resumen:\" (antes de conclusiones)\n\n**4. TONO GENERAL:**\nProfesional-cercano (70% profesional / 30% coloquial chileno)\n- Usas \"tú\" en vez de \"usted\"\n- Incluyes modismos: \"cacha\", \"onda\", \"bacán\"\n- Pero mantienes estructura clara y profesional\n\n**5. ESTRUCTURA DE PÁRRAFOS:**\n\n**Patrón identificado:**\n1. Saludo corto (sin \"Estimado\")\n2. Contexto en 1-2 líneas\n3. Problema/Punto principal\n4. Solución o siguiente paso\n5. Despedida simple (\"Saludos\" o \"Avísame\")\n\n**Ejemplo de estructura típica tuya:**\n```\nHola María,\n\nTe cuento. Revisé el reporte de ventas.\n\nEl problema: Las ventas de marzo bajaron 15% vs febrero.\n\nLo que propongo:\n1. Reunión mañana para analizar\n2. Ajustar estrategia pricing\n3. Lanzar promo fin de mes\n\n¿Te tinca? Avísame.\n\nSaludos,\n[Tu nombre]\n```\n\n---\n\n**GUÍA DE REPLICACIÓN PARA LA IA:**\n\n**PROMPT PARA QUE LA IA ESCRIBA COMO TÚ:**\n\n\"Escribe como si fueras [Tu Nombre]. Características obligatorias:\n\n1. **Ritmo:** Frases cortas. Máximo 15 palabras por oración.\n2. **Tono:** Profesional pero cercano. Usa 'tú', no 'usted'.\n3. **Estructura:** Saludo simple → Contexto breve → Problema/Punto → Solución → Cierre directo.\n4. **Muletillas permitidas:** 'Te cuento', 'Ojo que', 'En simple', 'Concretamente'.\n5. **Palabras prohibidas:** 'Estimado/a', 'Cordialmente', 'A la brevedad'.\n6. **Modismos chilenos:** Usa ocasionalmente 'cacha', 'onda', 'bacán' (1 por email máximo).\n\nEjemplo:\nHola Pedro,\n\nTe cuento. Revisé tu propuesta.\n\nEstá bacán, pero hay un tema. El precio está muy alto para el mercado actual.\n\nConcretamente: Bajar de $500k a $380k y compensar con volumen.\n\n¿Cachai la onda? Avísame qué opinas.\n\nSaludos,\n[Nombre]\"\n\n---\n\n**VALIDACIÓN:**\n\nEmail generado por IA usando esta guía:\n\n\"Hola Carolina,\n\nTe cuento. Necesito el reporte de marzo antes del viernes.\n\nOjo que el jefe lo pidió urgente para la reunión del lunes.\n\nEn simple: Excel con ventas por producto + gráfico comparativo feb-mar.\n\n¿Cachai? Avísame si necesitas algo.\n\nSaludos,\nJuan\"\n\n**¿Podrías haberlo escrito tú?** ✅ SÍ (100% match de estilo)",
         "metadata": {
             "score": 94,
             "technique": "Style Mimicry (Análisis y réplica de patrones lingüísticos)."
         },
         "suggestedAI": "Claude 3.5 Sonnet / ChatGPT",
         "validationTip": "¿Leíste el análisis y pensaste: 'Realmente esto lo pude haber escrito yo'?",
-        "exampleTip": "Style Mimicry (Análisis y réplica de patrones lingüísticos)."
+        "exampleTip": "Style Mimicry (Análisis y réplica de patrones lingüísticos).",
+        "description": ""
     },
     {
         "id": 43,
@@ -632,14 +666,15 @@ const casesData = [
         "badResponsePreview": "Usas mucho las palabras 'importante', 'clientes', 'negocio' y 'oportunidad'. Si las sigues usando, la gente reconocerá tu estilo de inmediato en los correos.",
         "badResponseAnalysis": "Se enfoca en palabras de contenido y no en palabras funcionales o estructuras. No crea una 'huella' lingüística que sirva para que la IA escriba por el usuario sin ser detectada.",
         "agiaPromptTagged": "Eres un Ghostwriter experto + Analista Lingüístico especializado en crear \"huellas digitales\" de escritura. Tu trabajo es ir más allá del análisis superficial y extraer patrones profundos que permitan a la IA escribir de forma indistinguible del autor original.\n\nCONTEXTO:\nMuestras de texto variadas: [Pega aquí múltiples ejemplos de diferentes contextos: emails, posts, artículos, mensajes, etc.]\n\nObjetivo: [Ej: \"Que la IA escriba mis emails sin que nadie note que no soy yo\" / \"Crear contenido de LinkedIn que suene 100% auténtico\" / etc.]\n\nMETA:\nNecesito una guía exhaustiva de mi \"huella lingüística\" que capture no solo qué digo, sino CÓMO lo digo a nivel profundo.\n\nRESTRICCIONES:\n- Analiza nivel de formalidad en diferentes contextos\n- Identifica uso de sarcasmo, ironía o humor\n- Detecta longitud promedio de frases y variación\n- Analiza palabras funcionales (conectores, transiciones)\n- Identifica estructuras sintácticas preferidas\n- Detecta patrones de puntuación\n\nFORMATO:\n**Huella Lingüística Profunda:**\n\n**Nivel de Formalidad:**\n[Análisis por contexto]\n\n**Uso de Humor/Sarcasmo:**\n[Patrones identificados]\n\n**Estructura de Frases:**\n- Longitud promedio: [...]\n- Variación: [...]\n- Preferencias sintácticas: [...]\n\n**Palabras Funcionales:**\n[Conectores y transiciones preferidas]\n\n**Puntuación:**\n[Patrones de uso]\n\n**Palabras Prohibidas:**\n[Lista de palabras que NUNCA usas]\n\n**Guía de Replicación Avanzada:**\n[Instrucciones detalladas para escritura indistinguible]",
-        "previewResponse": "**Bio de Instagram Optimizada (Perfil de Alto Impacto)**\n\n**Nombre (SEO):** Marketing y Ventas B2B | Juan Pérez\n(Para que te encuentren cuando buscan \"Marketing\" o \"Ventas\")\n\n**Línea 1 (Propuesta de Valor Clara):**\nAyudo a Agencias a escalar a $10M/mes sin Ads 🚀\n\n**Línea 2 (Autoridad/Prueba):**\n🎓 Ex-Gerente Coca-Cola | +500 alumnos felices\n\n**Línea 3 (Gancho/Humanización):**\n📍 Santiago | Amante del café ☕\n\n**Línea 4 (CTA - Llamado a la Acción):**\n👇 Clase Gratis: Cómo conseguir clientes en LinkedIn\n[Enlace linktree/web]\n\n**Historias Destacadas (Obligatorias):**\n1. **Empieza Aquí:** Quién soy y qué hago.\n2. **Testimonios:** Pruebas de que tu método funciona.\n3. **Servicios:** Qué vendes claramente.\n4. **Tips Gratis:** Valor inmediato.\n5. **Lifestyle:** Detrás de escena (conexión).",
+        "previewResponse": "**Huella Lingüística Profunda - Análisis Exhaustivo**\n\n**CONTEXTO:** Se analizaron 10 muestras variadas (emails, posts LinkedIn, mensajes WhatsApp)\n\n---\n\n**1. NIVEL DE FORMALIDAD POR CONTEXTO:**\n\n**Email clientes B2B:** 85% formal\n- Usas: \"Estimados\", estructura completa\n- Evitas: slang, emojis\n\n**LinkedIn:** 60% formal / 40% conversacional\n- Usas: Storytelling personal, preguntas retóricas\n- Emojis: Sí, pero max 2 por post\n\n**WhatsApp equipo:** 30% formal / 70% coloquial\n- Usas: \"wena\", \"dale\", \"cacha\"\n- Emojis: Frecuentes (👍 ✅ 🔥)\n\n---\n\n**2. USO DE HUMOR/SARCASMO:**\n\n**Frecuencia:** Media-baja (1 de cada 5 mensajes)\n\n**Estilo de humor:**\n- Auto-depreciativo: \"Yo que creía que Excel era difícil...\"\n- Exageración: \"Literal me querría morir si...\"\n- Ironía suave: \"Obvio que el servidor se cayó justo hoy...\"\n\n**Nunca usas:** Sarcasmo agresivo o burlas directas\n\n---\n\n**3. ESTRUCTURA DE FRASES:**\n\n**Longitud promedio:** 12 palabras/frase\n\n**Variación:**\n- 40% frases cortas (5-10 palabras): Para énfasis\n- 50% frases medias (11-18 palabras): Explicaciones\n- 10% frases largas (19-25 palabras): Contexto complejo\n\n**Preferencias sintácticas:**\n- Sujeto → Verbo → Complemento (orden directo)\n- Evitas voz pasiva\n- Usas listas numeradas frecuentemente\n\n---\n\n**4. PALABRAS FUNCIONALES (Conectores):**\n\n**Más usados:**\n- \"Entonces\" (transición lógica)\n- \"Básicamente\" (simplificación)\n- \"Por ejemplo\" (antes de casos)\n- \"En resumen\" (conclusiones)\n\n**Evitas:**\n- \"No obstante\", \"sin embargo\" (muy formales)\n- \"Asimismo\", \"por consiguiente\" (legal/técnico)\n\n---\n\n**5. PUNTUACIÓN:**\n\n**Patrón identificado:**\n- Punto frecuente (oraciones cortas)\n- Dos puntos antes de listas\n- Puntos suspensivos: Raramente\n- Signos de exclamación: Solo en WhatsApp informal\n\n---\n\n**6. PALABRAS PROHIBIDAS (Nunca usas):**\n\n❌ \"Proactivo\"\n❌ \"Sinergia\"  \n❌ \"Win-win\"\n❌ \"Pensar fuera de la caja\"\n❌ \"Dar el 110%\"\n❌ \"En el vasto mundo\"\n❌ \"Revolucionando\"\n\n---\n\n**GUÍA DE REPLICACIÓN AVANZADA:**\n\n**PROMPT MAESTRO:**\n\n\"Eres un ghostwriter que debe escribir EXACTAMENTE como [Tu Nombre].\n\n**NIVEL DE FORMALIDAD (CRÍTICO):**\n- Email B2B: 85% formal (Señor/Señora, estructura completa)\n- LinkedIn: 60% formal (storytelling, 1-2 emojis)\n- WhatsApp: 30% formal (slang chileno ok)\n\n**ESTRUCTURA OBLIGATORIA:**\n1. Frases cortas (promedio 12 palabras)\n2. Orden directo (Sujeto-Verbo-Complemento)\n3. Evita voz pasiva\n4. Listas numeradas para pasos\n\n**CONECTORES PERMITIDOS:**\n✅ 'Entonces', 'Básicamente', 'Por ejemplo', 'En resumen'\n❌ 'No obstante', 'Asimismo', 'Por consiguiente'\n\n**PUNTUACIÓN:**\n- Punto frecuente (no comas complejas)\n- Dos puntos antes de listas\n- Sin puntos suspensivos\n\n**HUMOR (Ocasional):**\n- Auto-depreciativo: 'Yo que pensaba que...'\n- Exageración: 'Literal me...'\n- Nunca sarcasmo agresivo\n\n**PALABRAS PROHIBIDAS:**\nProactivo, Sinergia, Win-win, Pensar fuera de la caja\n\n**EJEMPLO CORRECTO:**\n\n'Hola equipo,\n\nRevisé las métricas de marzo.\n\nTenemos un problema. Las ventas bajaron 15%.\n\n**Causas identificadas:**\n1. Competencia bajó precios\n2. Nuestra web lenta  \n3. Falta seguimiento leads\n\n**Plan:**\n- Optimizar web esta semana\n- Igualar precio competencia\n- Contratar SDR para seguimiento\n\n¿Dudas? Reunión mañana 10 AM.\n\nSaludos,\n[Nombre]'\n\n**VALIDACIÓN:**\n¿Tiene frases cortas? ✅\n¿Evita palabras prohibidas? ✅  \n¿Usa conectores permitidos? ✅\n¿Estructura clara? ✅\"",
         "metadata": {
             "score": 95,
             "technique": "Linguistic Fingerprinting (Extracción profunda de rasgos)."
         },
         "suggestedAI": "Claude / ChatGPT",
         "validationTip": "¿La IA ahora es capaz de generar un texto nuevo que nadie sospeche que no es tuyo?",
-        "exampleTip": "Linguistic Fingerprinting (Extracción profunda de rasgos)."
+        "exampleTip": "Linguistic Fingerprinting (Extracción profunda de rasgos).",
+        "description": ""
     },
     {
         "id": 44,
@@ -650,14 +685,15 @@ const casesData = [
         "badResponsePreview": "Aquí tienes una versión más natural: Hola amigos, hoy quiero contarles que la inteligencia artificial es una gran ayuda para todos nosotros en el mundo de hoy. Es muy buena.",
         "badResponseAnalysis": "Mantiene la estructura de 'Hola amigos', carece de anécdotas, no usa jerga local y sigue pareciendo un texto de relleno generado por una máquina, solo que más corto.",
         "agiaPromptTagged": "Eres un Editor Jefe especializado en detectar y eliminar texto generado por IA. Tu expertise es transformar contenido robótico en prosa humana y natural que conecte emocionalmente con el lector.\n\nCONTEXTO:\nTexto original (generado por IA o que suena robótico): [Pega aquí el texto que quieres humanizar]\n\nAudiencia objetivo: [Ej: \"Dueños de Pyme chilenos\" / \"Emprendedores latinos\" / \"Profesionales de marketing\" / etc.]\n\nTono deseado: [Ej: \"Conversacional como en un café\" / \"Profesional pero cercano\" / \"Amigo experto\" / etc.]\n\nMETA:\nNecesito que reescribas este texto eliminando TODOS los clichés y frases predecibles de IA, y que lo transformes en algo que suene genuinamente humano.\n\nRESTRICCIONES:\n- PROHIBIDO usar: \"En el vasto mundo\", \"Exploremos\", \"En la era digital\", \"Es clave\", \"Transformando el panorama\", \"Revolucionando\"\n- Elimina estructuras robóticas como \"Aquí tienes...\", \"A continuación...\"\n- Agrega anécdotas, ejemplos específicos o jerga local chilena/latina cuando sea apropiado\n- Usa contracciones y lenguaje coloquial donde tenga sentido\n- Tono: Como si le estuvieras contando esto a un amigo en un café\n\nFORMATO:\n**Texto Humanizado:**\n[Versión reescrita]\n\n**Cambios Principales:**\n- [Lista de qué eliminaste/agregaste para humanizar]",
-        "previewResponse": "**Hooks Virales (Ganchos para Videos)**\n\n**Tipo: Negativo / Miedo**\n1. \"Deja de hacer ESTO en Excel si no quieres ser despedido...\"\n2. \"3 errores que me costaron $5 millones (no los cometas)...\"\n3. \"Por esto tu tienda online no vende (dure realidad)...\"\n\n**Tipo: Curiosidad / Secreto**\n4. \"El secreto que los bancos no quieren que sepas sobre tu tarjeta...\"\n5. \"Cómo viajar gratis (legalmente) usando puntos...\"\n6. \"La herramienta de IA que es ilegalmente buena...\"\n\n**Tipo: Promesa / Beneficio Rápido**\n7. \"Cómo aprender inglés en 3 meses sin estudiar gramática...\"\n8. \"La rutina exacta para perder 5kg antes del verano...\"\n9. \"Gana $500k extra al mes con este side-hustle...\"\n\n**Tipo: Contraintuitivo (Romper Creencias)**\n10. \"Por qué levantarse a las 5AM es una estafa...\"\n11. \"No necesitas página web para vender online...\"\n12. \"El cardio NO es lo mejor para bajar de peso...\"\n\n**Estructura del Hook Visual:**\n- Texto en pantalla llamativo\n- Movimiento en los primeros 3 segundos\n- \"Loop\" visual (acción que se repite)",
+        "previewResponse": "**Des-Robotizador - Transformación Texto IA → Humano**\n\n**TEXTO ORIGINAL (IA Robótica):**\n\n\"En el vasto mundo del emprendimiento digital actual, resulta clave comprender que la inteligencia artificial representa una herramienta transformacional. A continuación, exploraremos cómo esta tecnología está revolucionando el panorama empresarial...\"\n\n---\n\n**TEXTO HUMANIZADO:**\n\n\"Mira, voy a ser directo.\n\nLa IA no es magia. Es una herramienta, como Excel o el teléfono.\n\nLa diferencia es que esta herramienta hace en 5 minutos lo que tú haces en 3 horas.\n\n**¿Suena exagerado?**\n\nTe doy un ejemplo real.\n\nAyer pasé 2 horas respondiendo 40 emails de clientes. Todas preguntas básicas repetitivas:\n- ¿Cuánto cuesta?\n- ¿Hacen envíos a regiones?  \n- ¿Tienen disponible color azul?\n\nHoy usé ChatGPT. Le copié las preguntas. En 10 minutos tenía las 40 respuestas listas.\n\nSolo revisé, ajusté detalles y envié.\n\n**Resultado:** De 2 horas a 15 minutos.\n\n¿Es perfecto? No. Tuve que corregir 3 respuestas que sonaban raras.\n\n¿Vale la pena? Obvio. Recuperé casi 2 horas que usé para llamar a clientes y cerrar ventas.\n\n**La pregunta real no es si la IA funciona.**\n\nLa pregunta es: **¿Cuánto tiempo estás perdiendo en tareas que un bot puede hacer?**\n\nPorque mientras tú respondes el mismo email por décima vez, tu competencia ya está vendiendo.\"\n\n---\n\n**CAMBIOS PRINCIPALES:**\n\n**ELIMINADOS:**\n❌ \"En el vasto mundo\" → Cliché de IA\n❌ \"Resulta clave\" → Frase robótica\n❌ \"A continuación exploraremos\" → Estructura académica\n❌ \"Revolucionando el panorama\" → Lenguaje genérico\n\n**AGREGADOS:**\n✅ Anécdota personal específica (40 emails, 2 horas)  \n✅ Números concretos (10 min, 15 min, 3 respuestas)\n✅ Lenguaje conversacional (\"Mira\", \"Obvio\")\n✅ Pregunta retórica final (genera reflexión)\n✅ Contexto chileno/latino (competencia activa)\n\n**TÉCNICAS APLICADAS:**\n1. **Inicio directo:** Sin prólogos académicos\n2. **Evidencia concreta:** Caso real con números\n3. **Admisión de imperfección:** \"Tuve que corregir 3\"\n4. **Cierre con urgencia:** Comparación con competencia\n\n**VALIDACIÓN:**\n¿Leído en voz alta suena natural? ✅\n¿Usa ejemplos específicos no genéricos? ✅\n¿Conecta emocionalmente? ✅",
         "metadata": {
             "score": 90,
             "technique": "Cliché Filtering (Limpieza de frases predecibles de IA)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Eliminaste las palabras que le dicen al lector que esto lo hizo una máquina?",
-        "exampleTip": "Cliché Filtering (Limpieza de frases predecibles de IA)."
+        "exampleTip": "Cliché Filtering (Limpieza de frases predecibles de IA).",
+        "description": ""
     },
     {
         "id": 46,
@@ -668,14 +704,15 @@ const casesData = [
         "badResponsePreview": "Estoy muy feliz de compartir que he lanzado Aula GenIA. Es una plataforma donde aprenderán sobre inteligencia artificial. Espero que les guste mucho y me sigan para más actualizaciones.",
         "badResponseAnalysis": "El post es puramente informativo y egocéntrico. No ofrece valor al lector, no utiliza el formato de LinkedIn (espaciado) y no genera una conversación o debate profesional.",
         "agiaPromptTagged": "Eres un Ghostwriter de CEOs y líderes empresariales especializado en LinkedIn. Tu expertise es crear posts que generen autoridad profesional sin sonar egocéntricos, y que inviten genuinamente a la conversación.\n\nCONTEXTO:\nTema del post: [Ej: \"Lanzamiento de Aula GenIA\" / \"Lección aprendida sobre delegación\" / \"Reflexión sobre automatización en Pymes\" / etc.]\n\nTu posición/expertise: [Ej: \"Fundador de startup de IA\" / \"Consultor de productividad\" / \"Experto en ventas B2B\" / etc.]\n\nObjetivo: [Generar autoridad / Iniciar conversación / Compartir aprendizaje / Vender sutilmente]\n\nMETA:\nNecesito un post de LinkedIn que posicione como líder de pensamiento (thought leader) pero con humildad, que ofrezca valor real al lector y que genere conversación genuina en los comentarios.\n\nRESTRICCIONES:\n- Usa el formato LinkedIn: párrafos de UNA línea (espaciado visual)\n- Empieza con un gancho (pregunta, dato sorprendente o afirmación controversial)\n- NO seas egocéntrico (\"Estoy muy feliz de compartir...\")\n- Incluye una pregunta reflexiva al final para generar comentarios\n- Tono: Autoridad con humildad\n\nFORMATO:\n**Gancho (Primera línea):**\n[Pregunta o afirmación impactante]\n\n**Cuerpo:**\n[Desarrollo con espaciado LinkedIn]\n\n**Cierre:**\n[Pregunta reflexiva para comentarios]",
-        "previewResponse": "**Analítica y Métricas (KPIs)**\n\n**Métricas de Vanidad (Ignorar):**\n- Likes totales (no pagan cuentas)\n- Vistas totales (si no retienen, no sirven)\n- Seguidores (pueden ser bots o irrelevantes)\n\n**Métricas de Negocio (Enfocarse):**\n\n**1. Tasa de Conversión (CR):**\n¿De cada 100 visitas a tu perfil, cuántos hacen clic en el enlace?\n- Meta: >20% en visitas a perfil.\n- Acción: Mejorar Bio y CTA.\n\n**2. Costo por Lead (CPL):**\n¿Cuánto te cuesta conseguir un email/teléfono?\n- Meta: <$1.000 CLP (depende rubro).\n- Acción: Mejorar Lead Magnet o Anuncio.\n\n**3. Engagement Rate Real:**\n(Comentarios + Guardados + Compartidos) / Alcance\n- Meta: >5%\n- Acción: Crear contenido más accionable o polémico.\n\n**4. Valor de Vida del Cliente (LTV):**\n¿Cuánto gasta un cliente contigo en total?\n- Importante: Puedes pagar más por adquirir clientes si tu LTV es alto.\n\n**Reporte Semanal Requerido:**\n- Alcance Cuentas No Seguidores (¿Estamos creciendo?)\n- Clics en el enlace (¿Estamos vendiendo?)\n- Mensajes Directos (¿Estamos conversando?)",
+        "previewResponse": "**Post LinkedIn Profesional - Estructura Completa**\n\n**TEMA:** Lanzamiento Aula GenIA\n\n---\n\n**GANCHO (Primera línea):**\n\n¿Cuántas horas perdiste esta semana en tareas que un bot podría hacer?\n\n---\n\n**CUERPO (Espaciado visual - 1 línea por párrafo):**\n\nYo perdía 15 horas semanales.\n\nRespondiendo emails repetitivos.\n\nCreando facturas manualmente.\n\nPersiguiendo pagos atrasados.\n\nHasta que dije BASTA.\n\n**El problema no era trabajar poco.**\n\nEl problema era trabajar en las cosas equivocadas.\n\nEntonces automaticé.\n\nChatGPT responde mis emails básicos.\n\nZapier crea facturas automáticas.\n\nNotion me recuerda cobrar a los morosos.\n\n**Resultado:**\n\nDe 60h/semana → 40h/semana.\n\nMismas ventas. Menos estrés.\n\n**Pero había un problema.**\n\nCuando intenté enseñar esto a otros emprendedores, se perdían.\n\nLa info estaba dispersa. Tutoriales en inglés. Herramientas complejas.\n\nPor eso creé **Aula GenIA**.\n\nUn curso que enseña automatización para Pymes.\n\nEn chileno. Desde cero. Con plantillas listas.\n\n**No es magia.**\n\nEs aplicar las herramientas correctas a los problemas correctos.\n\n**3 cosas que aprenderás:**\n\n1. Automatizar atención cliente con IA\n2. Eliminar tareas administrativas repetitivas  \n3. Crear sistemas que trabajen mientras duermes\n\nLanzamiento oficial: Lunes 1 abril.\n\n---\n\n**CIERRE (Pregunta reflexiva):**\n\n¿Qué tarea repetitiva odias hacer que te gustaría eliminar?\n\nCuéntame en comentarios. Capaz te doy un tip gratis 👇\n\n---\n\n**POR QUÉ FUNCIONA:**\n\n✅ **Gancho:** Pregunta que activa dolor (tiempo perdido)\n✅ **Problema relatable:** Confesión de debilidad (15h perdidas)\n✅ **Transformación clara:** Antes/Después con números\n✅ **Espaciado visual:** Fácil de scanear en móvil\n✅ **No egocéntrico:** Enfoque en el problema del lector\n✅ **Pregunta final:** Genera conversación genuina\n✅ **CTA suave:** No vende directamente, ofrece valor",
         "metadata": {
             "score": 93,
             "technique": "Thought Leadership Framing (Posicionamiento experto)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿El post invita genuinamente a que otros profesionales comenten su experiencia?",
-        "exampleTip": "Thought Leadership Framing (Posicionamiento experto)."
+        "exampleTip": "Thought Leadership Framing (Posicionamiento experto).",
+        "description": ""
     },
     {
         "id": 47,
@@ -686,14 +723,15 @@ const casesData = [
         "badResponsePreview": "Empecé en 2024 en la cocina de mi casa. Al principio no tenía clientes, pero luego hice un Instagram y me empezó a ir bien. Ahora tengo un local en el centro y soy feliz.",
         "badResponseAnalysis": "Narrativa lineal y aburrida. No hay conflicto, no hay vulnerabilidad ni detalles sensoriales que conecten con la audiencia a un nivel emocional.",
         "agiaPromptTagged": "Eres un Guionista experto en la estructura del \"Viaje del Héroe\" (Hero's Journey). Tu especialidad es transformar hechos aburridos en historias inspiradoras que conectan emocionalmente con la audiencia.\n\nCONTEXTO:\nHecho/evento que quiero contar: [Ej: \"Cómo fundé mi pastelería\" / \"El día que casi pierdo mi negocio\" / \"Mi primer cliente difícil\" / \"Cuando decidí automatizar mi empresa\" / etc.]\n\nAudiencia: [Emprendedores / Dueños de negocio / Profesionales / etc.]\n\nEmoción que quiero generar: [Inspiración / Empatía / Motivación / Reflexión]\n\nMETA:\nNecesito que transformes este hecho en una historia con estructura de 3 actos que incluya: conflicto, vulnerabilidad, detalles sensoriales y una transformación clara.\n\nRESTRICCIONES:\n- Usa la estructura: Mundo Ordinario -> Conflicto/Crisis -> Transformación\n- Incluye detalles sensoriales (olores, sonidos, sensaciones físicas)\n- Muestra vulnerabilidad y dudas reales (no todo perfecto)\n- Evita narrativa lineal aburrida (\"Primero hice X, luego Y...\")\n- Máximo 400 palabras\n\nFORMATO:\n**Acto 1 (Mundo Ordinario):**\n[Establece el contexto con detalle sensorial]\n\n**Acto 2 (Conflicto/Crisis):**\n[El momento de duda, el obstáculo, la vulnerabilidad]\n\n**Acto 3 (Transformación):**\n[Cómo cambió todo, la lección aprendida]\n\n**Mensaje Final:**\n[Reflexión o llamado a la acción]",
-        "previewResponse": "**Colaboración con Influencers (Outreach)**\n\n**Asunto:** Propuesta de colaboración pagada: [Tu Marca] x [Nombre Influencer]\n\n**Cuerpo:**\n\nHola [Nombre],\n\nLlevo tiempo siguiendo tu contenido sobre [Tema]. Me encantó tu último video sobre [Video específico], especialmente cuando dijiste [Cita real]. Se nota que eres auténtico.\n\nSoy fundador de [Tu Marca]. Hacemos [Qué hacen] para ayudar a [Audiencia] a [Beneficio].\n\nCreo que a tu audiencia le encantaría nuestro producto porque [Razón específica de fit].\n\n**Propuesta:**\nQueremos enviarte nuestro [Producto Estrella] (Valor $X) de regalo, sin compromiso.\n\nSi te gusta de verdad, nos gustaría pagarte por:\n- 1 Reel nativo (estilo UGC)\n- 3 Stories con enlace\n\n¿Te tinca que te lo mandemos para que lo pruebes primero?\n\nAvísame y coordinamos envío.\n\nUn abrazo,\n[Tu Nombre]\n\n**Claves:**\n- No pedir post gratis.\n- Validar que conocen su contenido.\n- Ofrecer producto sin compromiso primero.\n- Ser claro que es pagado (profesionalismo).",
+        "previewResponse": "**Storytelling: Del Hecho Aburrido a Historia Inspiradora**\n\n**HECHO SIMPLE:**\n\"Fundé mi pastelería en 2024 en mi casa. No tenía clientes. Hice Instagram. Me fue bien. Ahora tengo local.\"\n\n---\n\n**HISTORIA TRANSFORMADA (Hero's Journey):**\n\n**ACTO 1: MUNDO ORDINARIO (Contexto sensorial)**\n\nEra las 3 AM un martes de enero.\n\nEstaba en la cocina de mi departamento, con harina hasta en el pelo, horneando mi cuarta tanda de brownies.\n\nEl olor a chocolate llenaba todo el pasillo del edificio.\n\nMi hija de 5 años se despertó y preguntó: \"Mami, ¿por qué estás cocinando de noche?\"\n\nNo supe qué responder.\n\nLa verdad era simple y dolorosa: **Estaba desesperada.**\n\nAcababan de despedirme de la oficina. 12 años trabajados. Un email de 3 líneas.\n\nTenía $200.000 en la cuenta. Arriendo vence en 15 días.\n\n---\n\n**ACTO 2: CONFLICTO/CRISIS (Vulnerabilidad)**\n\nSiempre me habían dicho que mis brownies eran \"los mejores del mundo\".\n\nEntonces pensé: ¿Y si vendo?\n\nPrimera semana: 0 ventas.\n\nHice un Instagram. Subí fotos.\n\n0 seguidores. 0 likes.\n\nMe sentí ridícula.\n\n**El punto de quiebre:**\n\nDía 12. Tenía $50.000 en la cuenta.\n\nUna amiga me pregunta: \"¿Por qué tus brownies son mejores?\"\n\nRespondí sin pensar: \"Porque uso chocolate belga real y los horneo individualmente.\"\n\nElla dijo: \"ESO deberías escribir en Instagram.\"\n\n---\n\n**ACTO 3: TRANSFORMACIÓN (El cambio)**\n\nCambié mi bio:\n\"Brownies con chocolate belga. Horneados individualmente. Porque tus cumpleaños merecen lo mejor.\"\n\nSubí un video mostrando el proceso manual.\n\nA las 6 horas: Primera venta.\n\n$15.000.\n\nLloré.\n\nUna semana después: 8 clientes.\n\nUn mes después: 40 pedidos semanales.\n\nHoy, 8 meses después:\n\nTengo local en Providencia. 3 empleados. Lista de espera los fines de semana.\n\nPero lo más importante:\n\n**Ya no cocino a las 3 AM por desesperación.**\n\nLo hago porque amo lo que hago.\n\n---\n\n**MENSAJE FINAL:**\n\nNo necesitas un plan perfecto.\n\nNecesitas dar el primer paso imperfecto.\n\nY estar dispuesto a aprender rápido.\n\n**¿Qué primer paso imperfecto estás postergando tú?\"**",
         "metadata": {
             "score": 92,
             "technique": "Narrative Arc Construction (Transformación en 'Viaje del Héroe')."
         },
         "suggestedAI": "Claude / ChatGPT",
         "validationTip": "¿Te sentiste identificado y conmovido al leer tu propia historia editada?",
-        "exampleTip": "Narrative Arc Construction (Transformación en 'Viaje del Héroe')."
+        "exampleTip": "Narrative Arc Construction (Transformación en 'Viaje del Héroe').",
+        "description": ""
     },
     {
         "id": 53,
@@ -705,14 +743,15 @@ const casesData = [
         "badResponsePreview": "Gastaste mucho en restaurantes, Uber y suscripciones de streaming. Mi consejo es que cocines más en casa y revises si realmente usas todas las plataformas que pagas.",
         "badResponseAnalysis": "Análisis genérico. No detecta cobros duplicados, no identifica \"gastos vampiro\" específicos de software y no prioriza el ahorro según el impacto en el flujo de caja del negocio.",
         "agiaPromptTagged": "Eres un Auditor Financiero especializado en Pymes chilenas. Tu expertise es detectar \"fugas de dinero\" ocultas: gastos vampiro, cobros duplicados y suscripciones olvidadas que están drenando el flujo de caja sin que el dueño se dé cuenta.\n\nCONTEXTO:\n📸 Adjunto captura de mi cartola bancaria o lista de cargos de tarjeta de crédito (oculta datos sensibles)\n\nPeríodo analizado: [Últimos 3 meses]\n\nMi negocio: [Tipo de negocio, ej: \"E-commerce de ropa\" / \"Pastelería artesanal\" / \"Consultoría\" / etc.]\n\nMETA:\nNecesito que identifiques todos los gastos \"vampiro\" (que drenan dinero sin aportar valor), cobros duplicados y suscripciones olvidadas. Calcula cuánto pierdo AL AÑO por cada fuga.\n\nRESTRICCIONES:\n- Clasifica cada gasto en: Crítico (no se puede eliminar), Necesario (se puede optimizar), Prescindible (eliminar ya)\n- Calcula el impacto anualizado de cada fuga\n- Sugiere alternativas más baratas o gratuitas cuando existan\n\nFORMATO:\n**Informe de Fugas Detectadas:**\n\n**Fugas Críticas (Eliminar YA):**\n- [Gasto] - Monto mensual: $X - Impacto anual: $Y - Alternativa: [...]\n\n**Optimizables:**\n- [Gasto] - Ahorro potencial: $X/año - Cómo: [...]\n\n**Total Recuperable:** $X/año",
-        "previewResponse": "**Análisis de KPIs Financieros**\n\n**Tablero de Control Mensual:**\n\n**1. Margen Bruto Real:** 42% (Meta: 50%)\n*Alerta:* Costos subieron.\n\n**2. Punto de Equilibrio:** $3.5M\n*Estado:* Ventas $4.2M (Superado ✅)\n\n**3. Días Calle:** 45 días\n*Crítico:* Deberías cobrar a 30 días.\n\n**Acción:** Enfocarse en cobranza.",
+        "previewResponse": "**Informe de Fugas Detectadas: \"Auditoría Vampiro\"**\n\n**FUGA 1: SUSCRIPCIONES FANTASMA (CRÍTICO)**\n- **Item:** Adobe Creative Cloud (Plan Equipo)\n- **Detalle:** Estás pagando 3 licencias, solo usas 1.\n- **Monto Mensual:** $90.000 ($30k x 3)\n- **Impacto Anual:** $1.080.000\n- **Acción:** Bajar a Plan Individual hoy mismo.\n\n**FUGA 2: COMISIONES BANCARIAS OCULTAS (NECESARIO)**\n- **Item:** Mantención Cta Cte Banco X\n- **Detalle:** Te cobran 0.5 UF por no cumplir requisitos de abono.\n- **Monto Mensual:** $18.500 aprox.\n- **Impacto Anual:** $222.000\n- **Acción:** Negociar con ejecutivo o cambiar a Cuenta FAN Emprendedor (costo $0 con uso).\n\n**FUGA 3: MICRO-GASTOS \"HORMIGA\" (PRESCINDIBLE)**\n- **Item:** Uber Eats Oficina + Cafés\n- **Detalle:** Promedio 3 veces por semana ($12.000 c/u).\n- **Monto Mensual:** $144.000\n- **Impacto Anual:** $1.728.000 !!!!!\n- **Acción:** Establecer presupuesto fijo de $40k/mes o llevar almuerzo.\n\n---\n\n**RESUMEN DE SANGRAMIENTO:**\n💸 Estás perdiendo **$3.030.000 al año** en gastos que no aportan valor a tu negocio.\n\n**ALTERNATIVAS RECOMENDADAS:**\n1. **Software:** Usar Canva Pro ($8.000) en vez de Adobe si no haces diseño complejo.\n2. **Banco:** Evaluar Banco Estado o Santander Life (planes Pyme costo cero).\n\n**VEREDICTO:**\nCon lo recuperado ($3M) podrías pagar:\n- 1 mes de arriendo de local\n- O un sueldo extra al año (Aguinaldo)",
         "metadata": {
             "score": 95,
             "technique": "Financial Categorization (Clasificación estratégica para hallar desperdicios)."
         },
         "suggestedAI": "ChatGPT (Data) / Gemini",
         "validationTip": "¿Identificaste al menos un gasto que puedes eliminar hoy mismo?",
-        "exampleTip": "Financial Categorization (Clasificación estratégica para hallar desperdicios)."
+        "exampleTip": "Financial Categorization (Clasificación estratégica para hallar desperdicios).",
+        "description": ""
     },
     {
         "id": 54,
@@ -723,14 +762,15 @@ const casesData = [
         "badResponsePreview": "Deberías venderla a 20 o 30 mil pesos para que tengas un buen margen de ganancia. Recuerda sumar el costo de la luz y el gas que usaste.",
         "badResponseAnalysis": "Ignora por completo el IVA (19% en Chile), las comisiones de Transbank/Flow, el costo de la hora del dueño y el punto de equilibrio para cubrir costos fijos (arriendo, patente).",
         "agiaPromptTagged": "Eres un Consultor de Pricing especializado en Pymes chilenas. Tu expertise es calcular el precio REAL que debe tener un producto/servicio considerando TODOS los costos ocultos que los emprendedores olvidan (IVA, comisiones, costos fijos, sueldo del dueño).\n\nCONTEXTO:\nProducto/Servicio: [Ej: \"Torta personalizada\" / \"Sesión de consultoría\" / \"Curso online\" / etc.]\n\nCostos directos: [Ej: \"Ingredientes $10.000\" / \"Materiales $5.000\" / etc.]\n\nCostos fijos mensuales: [Ej: \"Arriendo $300.000, Luz $50.000, Patente $30.000\"]\n\nMeta de sueldo líquido mensual: [Ej: \"$800.000\"]\n\nVentas mensuales promedio: [Ej: \"30 unidades\"]\n\nMETA:\nNecesito que calcules el precio MÍNIMO que debo cobrar para cubrir TODOS los costos (incluyendo IVA 19%, comisiones de Transbank/Flow, mi sueldo y costos fijos) y alcanzar mi meta de sueldo líquido.\n\nRESTRICCIONES:\n- Considera IVA 19% en Chile\n- Considera comisiones de pasarelas de pago (3-4%)\n- Calcula punto de equilibrio (cuántas ventas necesito para no perder)\n- Explica en lenguaje simple, sin tecnicismos\n\nFORMATO:\n**Desglose de Costos:**\n[Lista detallada]\n\n**Precio Mínimo Recomendado:** $X\n\n**Punto de Equilibrio:** X unidades/mes\n\n**Escenarios:**\n- Si vendes X unidades: Ganas $Y líquido\n- Si vendes Y unidades: Ganas $Z líquido",
-        "previewResponse": "**Fondo de Emergencia Pyme**\n\n**Cálculo:**\nGastos Fijos: $2.5M\n**Meta (3 Meses):** $7.5M\n**Estado:** $0 (🔴)\n\n**Plan \"Goteo\":**\nTransfiere $10k diarios a ahorro.\n- Acumula $300k/mes.\n- En 1 año tendrás $3.6M.\n\n\"Mejor crecer lento pero tranquilo.\"",
+        "previewResponse": "**Simulador de Rentabilidad Real**\n\n**PRODUCTO:** Torta Personalizada 20 Personas\n**PRECIO VENTA ACTUAL:** $35.000\n\n---\n\n**DESGLOSE DE COSTOS REALES (La Verdad Dolorosa):**\n\n1. **Costos Directos (Materia Prima):** $12.000\n   (Harina, chocolate belga, crema, gas, caja, blonda)\n\n2. **Costos Ocultos (Lo que olvidas):**\n   - Comisión Transbank (3.5%): $1.225\n   - IVA (19% del precio neto): $5.588\n   - Tu hora de trabajo (3 horas a $5.000/h): $15.000\n\n**COSTO TOTAL REAL:** $33.813\n\n---\n\n**RESULTADO FINAL:**\n**Ganancia por Torta:** $1.187 😱\n**Margen Real:** 3.4%\n\n---\n\n**ANÁLISIS DE QUIEBRE:**\nEstás trabajando \"por amor al arte\". Si se te cae una torta o sube el chocolate un 10%, **PIERDES DINERO**.\n\n**CORRECCIÓN DE PRECIO MÍNIMA:**\nPara ganar un 30% limpio ($10.000 por torta) y cubrir tu sueldo:\n\n- Costo Total Base: $33.813 + $10.000 (meta ganancia) = $43.813\n- Ajuste IVA: Precio Final Sugerido = **$48.000**\n\n**PUNTO DE EQUILIBRIO (Con Gastos Fijos $500k):**\n- A $35.000: Necesitas vender 421 tortas/mes (IMPOSIBLE)\n- A $48.000: Necesitas vender 35 tortas/mes (VIABLE)\n\n**CONSEJO:**\nSube el precio YA. Tu cliente valora el arte, no la harina.",
         "metadata": {
             "score": 93,
             "technique": "Reverse Engineering (Ingeniería inversa hacia el sueldo meta)."
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Tu precio actual realmente deja dinero en tu bolsillo después de pagar todo?",
-        "exampleTip": "Reverse Engineering (Ingeniería inversa hacia el sueldo meta)."
+        "exampleTip": "Reverse Engineering (Ingeniería inversa hacia el sueldo meta).",
+        "description": ""
     },
     {
         "id": 55,
@@ -741,14 +781,15 @@ const casesData = [
         "badResponsePreview": "El reporte indica que tienes varias facturas emitidas y recibidas este mes. Dice que el monto total a pagar por el formulario 29 es de $145.000 pesos.",
         "badResponseAnalysis": "El resultado solo repite los números sin explicarlos. No desglosa cuánto de IVA cobraste (Débito) vs cuánto pagaste en compras (Crédito), no menciona el PPM (pago provisional mensual) ni avisa si tienes multas pendientes.",
         "agiaPromptTagged": "Eres un Contador Auditor experto en tributación chilena. Tu especialidad es traducir reportes técnicos del SII a lenguaje simple y accionable para dueños de Pyme que no son contadores.\n\nCONTEXTO:\n📸 Adjunto captura de pantalla de mi reporte del SII (Formulario 29 o propuesta de pago)\n\nMi situación: Soy [Pyme / Profesional independiente] que emite [boletas / facturas]\n\nMETA:\nNecesito que me expliques EN SIMPLE cuánto debo pagar, POR QUÉ debo pagar esa cantidad y CUÁNDO vence el plazo.\n\nRESTRICCIONES:\n- Cero tecnicismos - explícalo como si estuviéramos tomando un café\n- Desglosa el IVA (Débito Fiscal - Crédito Fiscal) por separado\n- Explica qué es el PPM (Pago Provisional Mensual) en palabras simples\n- Avisa si hay algo raro, multas pendientes o inconsistencias\n\nFORMATO:\n**Resumen: Lo que debes pagar este mes**\nTotal: $X\n\n**Desglose:**\n- IVA: $Y (vendiste más de lo que compraste en productos/servicios)\n- PPM: $Z (tu ahorro obligatorio para el impuesto a la renta anual)\n\n**Fecha de vencimiento:** [Día exacto]\n\n**Alertas:** [Si hay algo raro o multas]",
-        "previewResponse": "**Análisis Flujo de Caja**\n\n**Proyección 4 Semanas:**\n\n**Sem 1:** ✅ Superávit\n**Sem 2:** ⚠️ Alerta (IVA)\n**Sem 3:** 🔴 DÉFICIT -$1.5M\n**Sem 4:** ✅ Recuperación\n\n**Acción:** Llama a Proveedor A hoy para mover pago al día 25.",
+        "previewResponse": "**Traductor SII: Reporte Formulario 29 (Enero)**\n\n**RESUMEN EJECUTIVO:**\n💰 **Total a Pagar:** $245.890\n📅 **Vencimiento:** 20 de Febrero\n\n---\n\n**DESGLOSE SIMPLE (¿Por qué pago esto?):**\n\n**1. EL IVA (La plata que cobraste pero no es tuya):**\n- **Vendiste (Débito):** $4.000.000 + IVA ($760.000)\n- **Compraste (Crédito):** $2.500.000 + IVA ($475.000)\n- **Resta:** $760.000 - $475.000 = **$285.000** (A pagar)\n\n*Nota: Tienes $475.000 de \"saldo a favor\" por tus compras que rebajaron el impuesto.*\n\n**2. EL PPM (Tu chanchito de ahorro forzoso):**\n- Tasa: 0.25% sobre tus ventas netas ($4.000.000)\n- **Monto:** **$10.000**\n- *Este dinero es tuyo. Se guarda para pagar tu impuesto a la renta en abril del próximo año.*\n\n**3. RETENCIÓN BOLETAS HONORARIOS:**\n- Contrataste un diseñador por $385.000 brutos.\n- Retención (13.75%): **$52.937**\n- *Tú pagas esta retención al SII por él.*\n\n**4. REMANENTE ANTERIOR (Tu salvavidas):**\n- Tenías un saldo a favor del mes pasado: **-$102.047**\n\n---\n\n**SUMA FINAL:**\n$285.000 (IVA) + $10.000 (PPM) + $52.937 (Honorarios) - $102.047 (Remanente)\n= **$245.890**\n\n**ALERTA ⚠️:**\nVeo una factura de \"Supermercado Lider\" por $200.000.\nOjo: Si compraste mercadería para la casa, el SII puede rechazar ese IVA (\"Gasto Rechazado\") y cobrarte multas (40%). Asegúrate que sea para la oficina (café, confort, útiles).",
         "metadata": {
             "score": 91,
             "technique": "Knowledge Translation (Traducción técnica tributaria a lenguaje accionable)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Entendiste por qué estás pagando la cifra que te indica el SII?",
-        "exampleTip": "Knowledge Translation (Traducción técnica tributaria a lenguaje accionable)."
+        "exampleTip": "Knowledge Translation (Traducción técnica tributaria a lenguaje accionable).",
+        "description": ""
     },
     {
         "id": 56,
@@ -759,14 +800,15 @@ const casesData = [
         "badResponsePreview": "El Producto A vendió 100 unidades y el Producto B vendió 50. Por lo tanto, el Producto A es mucho mejor para tu negocio y deberías enfocarte en él.",
         "badResponseAnalysis": "Solo analiza volumen de ventas. Ignora el margen de contribución, el tiempo de ejecución y el costo de oportunidad. El Producto A podría estar dándote pérdidas si requiere demasiadas horas de trabajo manual.",
         "agiaPromptTagged": "Eres un Experto en Análisis de Rentabilidad de Productos. Tu especialidad es calcular cuánto gana realmente un emprendedor POR HORA de trabajo en cada producto/servicio, considerando costos ocultos y tiempo invertido.\n\nCONTEXTO:\n📊 Adjunto Excel con mis productos, precios de venta, costos y tiempo que me toma hacer cada uno\n\nMi negocio: [Ej: \"Pastelería\" / \"Servicios de diseño\" / \"Cursos online\" / etc.]\n\nMETA:\nNecesito que calcules cuánto gano POR HORA de trabajo real en cada producto para saber cuál priorizar, cuál optimizar y cuál ELIMINAR de mi catálogo.\n\nRESTRICCIONES:\n- Considera costos ocultos: empaque, luz, gas, post-venta, tiempo de atención al cliente\n- Identifica productos que \"parecen buenos\" pero me quitan demasiado tiempo\n- Dame recomendación clara: Eliminar / Mantener / Potenciar / Subir precio\n\nFORMATO:\n**Análisis de Rentabilidad por Hora:**\n\nTabla con columnas: Producto | Ganancia/Hora | Tiempo Total | Veredicto\n\n**Recomendaciones:**\n1. [Producto A]: [Acción específica]\n2. [Producto B]: [Acción específica]\n\n**Producto Estrella:** [El más rentable por hora]\n**Producto Vampiro:** [El que más tiempo quita vs ganancia]",
-        "previewResponse": "**Evaluación de Deudas**\n\n**Inventario:**\n1. Tarjeta: $500k (35% tasa) -> **MATAR PRIMERO**\n2. Línea: $1M (25%)\n3. Crédito COVID: $5M (0%) -> **Mínimos**\n\n**Estrategia:** Método Bola de Nieve.",
+        "previewResponse": "**Análisis de Rentabilidad: ¿Hora vs Dinero?**\n\n**TABLA DE LA VERDAD (Ganancia Real por Hora Trabajada):**\n\n| PRODUCTO | Precio Venta | Costo Material | Tiempo Tuyo | **GANANCIA/HORA** |\n| :--- | :--- | :--- | :--- | :--- |\n| **A. Pack Asesoría** | $150.000 | $5.000 (Zoom) | 10 horas | **$14.500/h** ⚠️ |\n| **B. Curso Grabado** | $45.000 | $2.000 (Hosting) | 0.5 horas | **$86.000/h** 🏆 |\n| **C. Taller Presencial**| $80.000 | $30.000 (Sala/Coffee)| 8 horas | **$6.250/h** ☠️ |\n\n---\n\n**DIAGNÓSTICO:**\n\n🏆 **PRODUCTO ESTRELLA (Curso Grabado):**\nEs tu mina de oro. Vendes barato ($45k) pero el margen es infinito porque no usas tu tiempo.\n**Acción:** Invertir el 80% de tu publicidad aquí.\n\n☠️ **PRODUCTO VAMPIRO (Taller Presencial):**\n¡Cuidado! Ganas $6.250 la hora. Ganas menos que un Uber en hora punta.\nEl costo logístico y tu tiempo de preparación se comen toda la ganancia.\n**Acción:** Eliminarlo o subir precio a $180.000 mínimo.\n\n⚠️ **TRAMPA DE EGO (Pack Asesoría):**\nParece que ganas harto ($150k), pero te esclaviza 10 horas. Tiene techo (no puedes vender 100 al mes).\n**Acción:** Estandarizar. Crea plantillas para reducir el tiempo a 5 horas.\n\n**CONCLUSIÓN:**\nDeja de obsesionarte con vender el Taller Presencial. Te estás auto-explotando.\nVende 2 Cursos Grabados y ganas más que con 1 Taller de 8 horas.",
         "metadata": {
             "score": 94,
             "technique": "Opportunity Cost (Cálculo de rentabilidad basado en el tiempo humano)."
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Descubriste que tu producto estrella te está haciendo perder dinero en tiempo?",
-        "exampleTip": "Opportunity Cost (Cálculo de rentabilidad basado en el tiempo humano)."
+        "exampleTip": "Opportunity Cost (Cálculo de rentabilidad basado en el tiempo humano).",
+        "description": ""
     },
     {
         "id": 57,
@@ -777,14 +819,15 @@ const casesData = [
         "badResponsePreview": "Hola, necesito un crédito de 5 millones para comprar máquinas nuevas para mi pyme. Siempre pago a tiempo y mi negocio está creciendo. Quedo atento a su respuesta.",
         "badResponseAnalysis": "Tono informal y carente de respaldo. No menciona el ROI (retorno de la inversión: cuánto ganarás por cada peso invertido), la capacidad de repago (cuánto puedes pagar al mes), el EBITDA (la ganancia real del negocio antes de impuestos) ni cómo el crédito mejorará tus números.",
         "agiaPromptTagged": "Eres un Ex-Agente Bancario Senior especializado en aprobación de créditos para Pymes. Tu expertise es redactar solicitudes de financiamiento que usan el lenguaje técnico que los bancos QUIEREN escuchar para aprobar créditos.\n\nCONTEXTO:\nMonto solicitado: [Ej: \"$5.000.000\"]\n\nDestino del crédito: [Ej: \"Compra de maquinaria\" / \"Capital de trabajo\" / \"Ampliación de local\" / etc.]\n\nVentas anuales actuales: [Ej: \"$60.000.000\"]\n\nMargen operativo: [Ej: \"45%\" o \"No sé calcularlo\"]\n\nMETA:\nNecesito una justificación técnica profesional que demuestre al banco que tengo CAPACIDAD DE REPAGO y que el crédito generará ROI (retorno de inversión) suficiente para ser bajo riesgo.\n\nRESTRICCIONES:\n- Usa lenguaje bancario técnico pero claro\n- Enfócate en: Capacidad de repago, ROI proyectado, Cobertura de deuda\n- Incluye proyección de cómo el crédito mejorará los números del negocio\n- Tono: Profesional y confiable\n\nFORMATO:\n**Resumen Ejecutivo para Solicitud de Crédito**\n\n**Monto Solicitado:** $X\n**Destino:** [...]\n**Plazo Propuesto:** [X meses]\n\n**Justificación Financiera:**\n[Explicación técnica del ROI]\n\n**Capacidad de Repago:**\n[Demostración con números]\n\n**Proyección de Impacto:**\n[Cómo mejorará el negocio]",
-        "previewResponse": "**Estrategia de Precios**\n\n**Análisis:**\nCosto: $5k | Precio: $8k | Margen: 37%\n\n**Escalera de Valor:**\n1. **Gancho ($8k):** Básico.\n2. **Estrella ($12k):** Premium + Guía. Margen 54%.\n3. **Upsell ($3.990):** Accesorio.\n\n**Impacto:** Subir ticket promedio +40%.",
+        "previewResponse": "**Resumen Ejecutivo para Solicitud de Crédito (Formato Comité Bancario)**\n\n**MONTO SOLICITADO:** $12.000.000 (Doce millones de pesos)\n**DESTINO:** Inversión en Activo Fijo (Máquina Envasadora Automática)\n**PLAZO:** 24 meses\n\n---\n\n**1. JUSTIFICACIÓN DEL NEGOCIO (El \"Por qué\" Técnico):**\nActualmente, nuestra capacidad productiva está topada en 500 unidades/mes debido al envasado manual (cuello de botella). \nLa demanda actual rechazada es de 300 unidades adicionales mensuales.\nLa máquina permitirá aumentar producción a 2.000 unidades/mes sin aumentar costos fijos de personal.\n\n**2. INDICADORES DE SOLVENCIA (Lo que el banco mira):**\n\n*   **Ventas Anuales (IVA incluído):** $85.000.000 (Carpeta Tributaria Ok)\n*   **EBITDA Operativo:** 28% (Margen saludable para el sector)\n*   **Carga Financiera Actual:** 4% de las ventas (Tenemos cupo, el tope sano es 15%)\n\n**3. PROYECCIÓN DE RETORNO (ROI):**\n*   Couta Crédito Estimada: $580.000/mes\n*   Margen Extra por Nueva Venta (300 unid): $1.500.000/mes\n*   **Cobertura:** El flujo adicional cubre 2.5 veces la cuota del crédito.\n\n**4. MITIGACIÓN DE RIESGOS:**\nLa máquina actúa como garantía prendaria (Leaseback o Prenda) por el 70% del valor.\nContratos de compra firmados por 6 meses con 2 clientes corporativos aseguran la salida de la nueva producción.\n\n**CONCLUSIÓN EN SIMPLE:**\nEl crédito se paga solo con el aumento de ventas del primer mes. No afecta el flujo de caja actual. Solicitamos evaluación tasa preferencial Pyme.",
         "metadata": {
             "score": 92,
             "technique": "Financial Persuasion (Uso de indicadores de riesgo para avalar financiamiento)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Tu propuesta suena a una inversión de bajo riesgo para el banco?",
-        "exampleTip": "Financial Persuasion (Uso de indicadores de riesgo para avalar financiamiento)."
+        "exampleTip": "Financial Persuasion (Uso de indicadores de riesgo para avalar financiamiento).",
+        "description": ""
     },
     {
         "id": 58,
@@ -795,14 +838,15 @@ const casesData = [
         "badResponsePreview": "Puedes sacar unos 1.5 millones para tu sueldo personal y dejar el otro 1.5 millones en la cuenta de la empresa para pagar los gastos que vengan el próximo mes.",
         "badResponseAnalysis": "Sugerencia peligrosa. No considera el IVA por pagar (19% de tus ventas que debes al Estado), el PPM (pago provisional mensual: un ahorro obligatorio para tu declaración anual), las imposiciones de los empleados ni el fondo de reserva para emergencias.",
         "agiaPromptTagged": "Eres un Consultor de Finanzas Personales especializado en Emprendedores. Tu expertise es calcular el \"sueldo seguro\" que un dueño de Pyme puede retirarse sin comprometer el flujo de caja operativo de su negocio.\n\nCONTEXTO:\nVentas mensuales promedio: [Ej: \"$3.000.000\"]\n\nCostos de insumos/productos: [Ej: \"$800.000\"]\n\nGastos fijos mensuales: [Ej: \"$500.000\" (arriendo, luz, internet, etc.)]\n\nEmpleados y sueldos: [Ej: \"1 empleado a $500.000\"]\n\nMETA:\nNecesito que calcules el sueldo MÁXIMO que puedo retirarme de forma segura, considerando que debo dejar reserva para imprevistos y pagar todos los impuestos (IVA, PPM).\n\nRESTRICCIONES:\n- Considera reserva de emergencia (mínimo 20% del flujo)\n- Descuenta IVA por pagar (19% de ventas)\n- Descuenta PPM (Pago Provisional Mensual)\n- Explica qué pasa si retiro MÁS de lo recomendado\n\nFORMATO:\n**Plan de Retiro Mensual Seguro:**\n\n**Sueldo Líquido Recomendado:** $X\n\n**Desglose:**\n- Ventas: $A\n- Menos costos: $B\n- Menos gastos fijos: $C\n- Menos reserva 20%: $D\n- Menos impuestos: $E\n= Disponible para retiro: $X\n\n**Advertencia:** Si retiras más de $X, comprometes [explicación del riesgo]",
-        "previewResponse": "**Estructura Sueldos**\n\n**Propuesta Vendedor:**\n**Base:** $500k\n**Variable:**\n- 3% venta cobrada.\n- +$100k Meta.\n- +1% Prod. antiguos.\n\n**Lógica:** Gana más si la empresa cobra y limpia bodega.",
+        "previewResponse": "**Plan de Retiro Mensual Seguro (\"Sueldo de Dueño\")**\n\n**CONTEXTO:**\nVentas Promedio: $3.000.000\nCostos + Gastos Fijos: $1.300.000\nUtilidad Bruta Aparente: $1.700.000 (¡OJO, esto no es tuyo!)\n\n---\n\n**CÁLCULO DEL SUELDO MÁXIMO SEGURO:**\n\n1.  **Utilidad Bruta:** **$1.700.000**\n\n2.  **Menos Impuestos (Sagrados):**\n    *   IVA por pagar (aprox): -$470.000\n    *   PPM (Ahorro empresa): -$15.000\n    *   *Nota: No gastarse el IVA es la regla #1 de supervivencia.*\n\n3.  **Menos Fondo de Emergencia (20%):**\n    *   Reserva para meses malos: -$340.000\n    *   *Sin esto, cualquier imprevisto te quiebra.*\n\n4.  **Menos Reinversión (10%):**\n    *   Marketing/Mejoras: -$170.000\n    *   *Si no siembras, no cosechas mañana.*\n\n---\n\n**DISPONIBLE REAL PARA RETIRO:**\n**$705.000** (Sueldo Líquido Recomendado)\n\n---\n\n**ADVERTENCIA ☠️:**\nTú pensabas sacar $1.500.000.\nSi lo haces, te estarás gastando el IVA ($470k) y el fondo de emergencia.\nEn 3 meses, cuando toque pagar IVA o bajen las ventas, tendrás que pedir crédito o usar la tarjeta para cubrir el hoyo.\n\n**ESTRATEGIA:**\nFíjate un sueldo de **$700.000** cerrado.\nSi sobra plata a fin de mes, SE QUEDA EN LA EMPRESA como utilidades acumuladas para repartir (con bono) a fin de año si todo sale bien.",
         "metadata": {
             "score": 88,
             "technique": "Conservative Financial Planning (Planificación conservadora)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Tu sueldo actual deja a tu empresa con aire para crecer este mes?",
-        "exampleTip": "Conservative Financial Planning (Planificación conservadora)."
+        "exampleTip": "Conservative Financial Planning (Planificación conservadora).",
+        "description": ""
     },
     {
         "id": 59,
@@ -820,7 +864,8 @@ const casesData = [
         },
         "suggestedAI": "Perplexity / ChatGPT",
         "validationTip": "¿Redujiste al menos $400 por cada envío con estos cambios?",
-        "exampleTip": "Cost Optimization (Optimización logística basada en convenios)."
+        "exampleTip": "Cost Optimization (Optimización logística basada en convenios).",
+        "description": ""
     },
     {
         "id": 60,
@@ -831,14 +876,15 @@ const casesData = [
         "badResponsePreview": "Podrías cancelar Zoom si usas la versión gratuita y revisar si realmente necesitas Netflix en la oficina. También mira tu cuenta bancaria por si hay seguros que no conoces.",
         "badResponseAnalysis": "Análisis superficial. No detecta que estés pagando dos programas que hacen lo mismo (ej. Google Workspace y Microsoft 365) ni sugiere alternativas gratuitas o pagos únicos en vez de suscripciones mensuales.",
         "agiaPromptTagged": "Eres un Consultor de Eficiencia en Tecnología (TI) especializado en Pymes. Tu expertise es detectar software redundante, suscripciones innecesarias y consolidar herramientas para ahorrar dinero sin perder funcionalidad.\n\nCONTEXTO:\nSuscripciones actuales de software/herramientas: [Ej: \"Shopify $29/mes, Klaviyo $45/mes, Canva Pro $13/mes, Adobe Express $10/mes, Zoom $15/mes\"]\n\nTamaño del negocio: [Ej: \"E-commerce con 500 clientes/mes\" / \"Agencia con 3 empleados\" / etc.]\n\nMETA:\nNecesito que identifiques software redundante (que hace lo mismo), suscripciones innecesarias para mi tamaño de negocio y alternativas gratuitas o más baratas que cumplan la misma función.\n\nRESTRICCIONES:\n- Busca herramientas que hagan MÚLTIPLES funciones (consolidación)\n- Sugiere alternativas gratuitas cuando existan\n- Calcula ahorro anual real\n- No sacrifiques funcionalidad crítica\n\nFORMATO:\n**Plan de Limpieza Tecnológica:**\n\n**Software a Cancelar:**\n1. [Herramienta] - Razón: [redundante con X] - Ahorro: $Y/año\n\n**Alternativas Recomendadas:**\n- En vez de [X + Y], usa [Z] que hace ambas cosas - Ahorro: $A/año\n\n**Software a Mantener:**\n[Lista con justificación]\n\n**Ahorro Total Anual:** $X",
-        "previewResponse": "**Analista Suscripciones**\n\n**Auditoría:**\n- Zoom Pro -> Usa Google Meet (Gratis).\n- App X -> Sin uso.\n**Acción:** Cancelar. Ahorro $420k/año.",
+        "previewResponse": "**Plan de Limpieza Tecnológica: \"Adiós Vampiros Digitales\"**\n\n**AUDITORÍA DE STACK TECNOLÓGICO:**\n\n**1. SOFTWARE REDUNDANTE (Eliminar YA):**\n*   **Tienes:** Monday.com ($30/mes) Y Trello Gold ($10/mes).\n*   **Problema:** Hacen lo mismo (gestión de tareas). Tu equipo se confunde usando ambos.\n*   **Acción:** Migrar todo a Notion (Plan Team $8/mes) que ya lo pagas para documentos.\n*   **Ahorro Anual:** $384 USD ($360k CLP aprox).\n\n**2. SUSCRIPCIONES SOBREDIMENSIONADAS (Optimizar):**\n*   **Tienes:** Zoom Business ($20/mes).\n*   **Realidad:** Tus reuniones son 1 a 1 y duran 40 mins.\n*   **Acción:** Bajar a Plan Gratuito o usar Google Meet (incluido en tu correo).\n*   **Ahorro Anual:** $240 USD ($225k CLP aprox).\n\n**3. ALTERNATIVAS GRATUITAS (Downgrade):**\n*   **Tienes:** Typeform ($25/mes) para 1 formulario al mes.\n*   **Acción:** Usar Google Forms o Tally.so (Gratis y muy estético).\n*   **Ahorro Anual:** $300 USD ($280k CLP aprox).\n\n---\n\n**RESUMEN DEL PLAN:**\n\n*   **Software a Cancelar:** Monday, Trello, Zoom Paid, Typeform.\n*   **Software a Mantener (Core):** Google Workspace + Shopify.\n\n**AHORRO TOTAL ANUAL:**\n💰 **$865.000 CLP** (Casi 1 millón de pesos directo a la utilidad).\n\n**CONSEJO DE EXPERTO:**\nLas herramientas no venden por ti. Tener 10 apps no te hace más productivo, te hace más lento. Simplifica.",
         "metadata": {
             "score": 90,
             "technique": "Stack Optimization (Consolidación de herramientas)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Ahorraste más de 100 mil pesos anuales con esta revisión?",
-        "exampleTip": "Stack Optimization (Consolidación de herramientas)."
+        "exampleTip": "Stack Optimization (Consolidación de herramientas).",
+        "description": ""
     },
     {
         "id": 61,
@@ -849,14 +895,15 @@ const casesData = [
         "badResponsePreview": "Si tienes el dinero en la cuenta ahora mismo, puedes hacerlo. Solo asegúrate de que el asistente sea productivo y te ayude a vender más para que se pague solo.",
         "badResponseAnalysis": "Error crítico de cálculo. No considera el 'Costo Empresa' real (lo que pagas extra por cada empleado: gratificación, AFP, salud, seguro de accidentes y vacaciones), que en Chile es aproximadamente un 25-30% más que el sueldo.",
         "agiaPromptTagged": "Eres un Consultor de Recursos Humanos especializado en costos de contratación en Chile. Tu expertise es calcular el \"Costo Empresa\" REAL de contratar un empleado, incluyendo todos los costos ocultos que los emprendedores olvidan.\n\nCONTEXTO:\nSueldo bruto propuesto: [Ej: \"$500.000\"]\n\nTipo de contrato: [Plazo fijo / Indefinido / Part-time]\n\nVentas mensuales actuales: [Ej: \"$3.000.000\"]\n\nMargen neto actual: [Ej: \"30%\" o \"No sé calcularlo\"]\n\nMETA:\nNecesito saber si REALMENTE puedo costear esta contratación considerando TODOS los costos (gratificación, AFP, salud, seguro de accidentes, vacaciones) y si mi flujo de caja lo soporta.\n\nRESTRICCIONES:\n- Calcula el \"Costo Empresa\" real (sueldo + todos los costos adicionales en Chile)\n- Considera gratificación (25% del sueldo si aplica)\n- Considera AFP empleador, salud, seguro\n- Calcula cuánto deben aumentar las ventas para cubrir este costo\n- Tono: Honesto y directo\n\nFORMATO:\n**Simulador de Contratación:**\n\n**Sueldo Bruto:** $X\n**Costo Empresa Real:** $Y (incluye todos los costos)\n\n**Desglose de Costos Adicionales:**\n- Gratificación: $A\n- AFP empleador: $B\n- Salud: $C\n- Seguro accidentes: $D\n- Vacaciones proporcionales: $E\n\n**Veredicto:**\n[Puedes / No puedes] costear esta contratación porque [explicación con números]\n\n**Ventas Necesarias:** Debes aumentar ventas en $Z/mes para cubrir este costo sin afectar tu sueldo",
-        "previewResponse": "**Simulador Contratación**\n\n**Caso:** Ayudante ($600k costo).\n**Pregunta:** ¿Generará $1.8M extra en ventas?\n**Regla x3:** Si no paga 3 veces su sueldo, es gasto, no inversión.",
+        "previewResponse": "**Simulador de Contratación: \"¿Me alcanza para el Asistente?\"**\n\n**DATOS DE ENTRADA:**\nSueldo Líquido Prometido: $500.000\nVentas Actuales: $3.000.000\nMargen Neto (Estimado): 30%\n\n---\n\n**1. EL COSTO EMPRESA REAL (Lo que sale de tu caja):**\nNo son solo $500k. En Chile debes sumar:\n\n*   **Sueldo Base Bruto:** $610.000 (aprox, para dar 500k líquido)\n*   **Gratificación (Tope 4.75 IMM):** +$125.000\n*   **SIS + Seguro Cesantía + Mutual:** +$25.000 aprox.\n*   **Provisión Vacaciones/Indemnización:** +$50.000 (Guardar esto es vital)\n*   **Colación/Movilización (No imponible):** +$60.000\n\n💰 **COSTO MENSUAL REAL:** **$870.000**\n*(Es casi un 75% más de lo que pensabas pagarle en mano)*\n\n---\n\n**2. ANÁLISIS DE VIABILIDAD (El baldazo de agua fría):**\nTu costo es **$870.000**.\nTu margen es **30%**.\n\nPara pagar ese sueldo, necesitas vender EXTRA:\n$870.000 / 0.30 = **$2.900.000**\n\n**VEREDICTO:** ⛔ **NO CONTRATES AÚN**\nNecesitas prácticamente **DUPLICAR** tus ventas ($3M actuales + $2.9M nuevos) solo para que el asistente se pague a sí mismo y quedes igual que ahora (Break-even).\n\n**ESCENARIOS:**\n1.  **Si el asistente vende:** ¿Puede él traer $2.9M en ventas nuevas el primer mes? (Difícil).\n2.  **Si el asistente opera:** ¿Te libera a TI 80 horas para que TÚ vendas esos $2.9M extra?\n\n**RECOMENDACIÓN:**\nContrata un Freelance por proyecto o un Part-time por $250k. No te amarres con un costo fijo de casi $1M si no tienes el flujo asegurado.",
         "metadata": {
             "score": 91,
             "technique": "Break-even Labor Analysis (Cálculo del salto en ventas para pagar talento)."
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Entendiste el volumen de ventas extra que necesitas para pagar ese sueldo?",
-        "exampleTip": "Break-even Labor Analysis (Cálculo del salto en ventas para pagar talento)."
+        "exampleTip": "Break-even Labor Analysis (Cálculo del salto en ventas para pagar talento).",
+        "description": ""
     },
     {
         "id": 63,
@@ -867,14 +914,15 @@ const casesData = [
         "badResponsePreview": "Entra a la página, elige el tipo de empresa, llena el formulario con tus datos y los de tus socios, y luego ve a una notaría para firmar el documento final.",
         "badResponseAnalysis": "Omite detalles críticos: no explica la diferencia entre SpA (Sociedad por Acciones: más flexible) y Ltda (Limitada: más tradicional), no menciona el capital inicial que piden los bancos para abrirte una cuenta, ni cómo sacar tu RUT de empresa en el SII (Servicio de Impuestos Internos).",
         "agiaPromptTagged": "Eres un Abogado Corporativo especializado en constitución de empresas en Chile. Tu expertise es guiar a emprendedores a través del proceso de \"Tu Empresa en un Día\" y ayudarles a elegir el tipo de sociedad correcto.\n\nCONTEXTO:\nTipo de emprendimiento: [Ej: \"Servicios de consultoría\" / \"E-commerce\" / \"Restaurante\" / etc.]\n\nNúmero de socios: [Ej: \"Solo yo\" / \"2 socios\" / \"3 socios\" / etc.]\n\nPlan a futuro: [Ej: \"Vender acciones más adelante\" / \"Mantenerlo pequeño\" / \"Buscar inversión\" / etc.]\n\nMETA:\nNecesito una guía paso a paso técnica para constituir mi empresa, incluyendo qué tipo de sociedad me conviene más (SpA vs Ltda) y todos los costos involucrados.\n\nRESTRICCIONES:\n- Explica la diferencia entre SpA y Ltda en términos simples\n- Incluye costos de firma y trámites\n- Menciona el capital inicial que piden los bancos\n- Explica cómo sacar RUT de empresa en el SII\n\nFORMATO:\n**Tipo de Sociedad Recomendada:** [SpA / Ltda]\n**Por qué:** [Explicación]\n\n**Pasos:**\n1. [Paso 1 con detalles]\n2. [Paso 2 con detalles]\n...\n\n**Costos Totales:** $X\n\n**Tabla Comparativa SpA vs Ltda:**\n[Tabla con diferencias clave]",
-        "previewResponse": "**Empresa: SpA vs Ltda**\n\n**Veredicto: SpA**\n- Flexibilidad socios.\n- Giro amplio.\n- Ideal moderna.\n\n**Ltda:** Rígida, para familias.\n\n**Trámite:** Usa \"Tu Empresa en un Día\".",
+        "previewResponse": "**Guía Técnica: SpA vs Ltda (Tu Empresa en un Día)**\n\n**TIPO DE SOCIEDAD RECOMENDADA: SpA (Sociedad por Acciones)**\n\n**POR QUÉ:**\nEres un emprendimiento moderno con potencial de crecimiento.\n- **Flexibilidad:** Puedes tener 1 solo socio (tú) o vender acciones mañana.\n- **Giro Amplio:** \"Objeto Social\" permite múltiples actividades (venta, consultoría, inversión).\n- **Nombre de Fantasía:** No estás obligado a usar el nombre de los socios.\n\n**TABLA COMPARATIVA TÉCNICA:**\n| Aspecto | SpA (Recomendada) | Ltda (Tradicional) |\n| :--- | :--- | :--- |\n| **Socios** | 1 a 499 | Mínimo 2 |\n| **Admin** | Flexible (Gerente) | Rígida (Todos o designados) |\n| **Ingreso Socios** | Venta de acciones simple | Modificación de escritura (Lento) |\n| **Ideal para** | Startups, Pymes | Empresas familiares cerradas |\n\n**PASOS EN \"TU EMPRESA EN UN DÍA\":**\n1.  **Ingreso:** ClaveÚnica -> \"Constituir\" -> \"SpA\".\n2.  **Capital:** Declara $1.000.000 (mínimo serio para bancos).\n    *   *Tip:* Pon \"Capital por enterar en 24 meses\" para no depositarlo hoy.\n3.  **Firma:** 100% online con Firma Electrónica Avanzada ($2.000).\n\n**RUT e INICIO ACTIVIDADES:**\nEl RUT es inmediato (te llega al mail).\nEl Inicio de Actividades se hace en sii.cl con la clave que te envían.\n\n**COSTOS TOTALES REALES:**\n- Notaría Digital: $2.000 - $4.000\n- Estatutos: Gratis (Plataforma)\n- Firma Electrónica: $2.000\n- **Total:** Menos de $10.000 CLP",
         "metadata": {
             "score": 94,
             "technique": "Procedural Logic (Navegación de burocracia digital)."
         },
         "suggestedAI": "ChatGPT / Perplexity",
         "validationTip": "¿Sabes qué tipo de sociedad te conviene más hoy mismo?",
-        "exampleTip": "Procedural Logic (Navegación de burocracia digital)."
+        "exampleTip": "Procedural Logic (Navegación de burocracia digital).",
+        "description": ""
     },
     {
         "id": 64,
@@ -885,14 +933,15 @@ const casesData = [
         "badResponsePreview": "Debes ir a la página de INAPI, buscar si el nombre está disponible, pagar las tasas correspondientes y esperar unos meses a que te den el certificado de registro.",
         "badResponseAnalysis": "No identifica las 'Clases Niza' (las categorías en que debes registrar tu marca: ropa, comida, servicios, etc.). Podrías registrar tu marca en la categoría equivocada y quedar desprotegido ante competidores de tu mismo rubro.",
         "agiaPromptTagged": "Eres un Especialista en Propiedad Intelectual y registro de marcas en Chile (INAPI). Tu expertise es ayudar a emprendedores a proteger sus marcas correctamente eligiendo las \"Clases Niza\" adecuadas.\n\nCONTEXTO:\nNombre de mi marca: [Ej: \"Calma Real\"]\n\nTipo de negocio: [Ej: \"Ropa de yoga\" / \"Cafetería\" / \"Software\" / \"Servicios de consultoría\" / etc.]\n\nProductos/Servicios específicos: [Ej: \"Vendo ropa deportiva online y planeo abrir tienda física\"]\n\nMETA:\nNecesito saber en qué Clases Niza debo registrar mi marca para estar protegido, cuánto cuesta y qué riesgos tengo de que INAPI rechace mi solicitud.\n\nRESTRICCIONES:\n- Explica qué son las Clases Niza en lenguaje simple\n- Dame las clases específicas para mi tipo de negocio\n- Explica el costo en UTM\n- Advierte si mi nombre es muy genérico y puede ser rechazado\n\nFORMATO:\n**Clases Niza Recomendadas:**\n- Clase X: [Descripción] - Por qué: [...]\n- Clase Y: [Descripción] - Por qué: [...]\n\n**Costo Total:** X UTM (aprox $Y pesos)\n\n**Riesgos de Rechazo:**\n[Análisis de distintividad del nombre]\n\n**Próximos Pasos:**\n[Guía de proceso INAPI]",
-        "previewResponse": "**Registro Marca**\n\n**Clases Niza:**\nSi tienes tienda ropa:\n- Clase 25 (Ropa).\n- Clase 35 (Tienda/Venta).\nRegistra AMBAS para evitar copias. Inversión ~6 UTM.",
+        "previewResponse": "**Estrategia de Blindaje de Marca (INAPI)**\n\n**MARCA:** \"Calma Real\" (Ropa de Yoga)\n\n**ANÁLISIS DE RIESGO:**\nNombre \"Calma Real\" es evocativo, no descriptivo.\n**Probabilidad de Registro:** ALTA (Si no existe \"Calma\" en ropa).\n\n---\n\n**CLASES NIZA RECOMENDADAS (Cobertura Total):**\n\n**PRIORIDAD 1: CLASE 25 (Productos)**\n- **Cobertura:** Ropa, calzado, sombrerería.\n- **Por qué:** Es tu core business. Sin esto, cualquiera vende poleras con tu nombre.\n\n**PRIORIDAD 2: CLASE 35 (Comercialización)**\n- **Cobertura:** Venta de productos, gestión de negocios, tiendas online.\n- **Por qué:** Protege el nombre DE TU TIENDA, no solo la etiqueta de la ropa.\n\n**PRIORIDAD 3: CLASE 41 (Educación/Eventos)**\n- **Cobertura:** Clases de yoga, talleres, workshops.\n- **Por qué:** Si planeas hacer retiros o cursos en el futuro.\n\n---\n\n**PRESUPUESTO OFICIAL (En UTM):**\n1.  **Solicitud Inicial:** 1 UTM por clase ($64.000 aprox) x 2 Clases = $128.000\n2.  **Publicación Diario Oficial:** ~$30.000 (Variable)\n3.  **Pago Final:** 2 UTM por clase ($128.000) x 2 Clases = $256.000 (Solo si aprueban)\n\n**COSTO TOTAL ESTIMADO:** $414.000 (Para blindar 2 clases).\n\n**PRÓXIMO PASO:**\nEntrar a inapi.cl -> \"Buscador de Marcas\" -> Revisar si existe \"Calma\" en Clase 25.",
         "metadata": {
             "score": 89,
             "technique": "Classification Logic (Identificación de clases Niza para blindaje)."
         },
         "suggestedAI": "Perplexity",
         "validationTip": "¿Protegiste tu marca en la categoría que realmente genera tus ingresos?",
-        "exampleTip": "Classification Logic (Identificación de clases Niza para blindaje)."
+        "exampleTip": "Classification Logic (Identificación de clases Niza para blindaje).",
+        "description": ""
     },
     {
         "id": 65,
@@ -903,14 +952,15 @@ const casesData = [
         "badResponsePreview": "Contrato de Trabajo: El empleador contrata al trabajador como vendedor. El sueldo será de $500.000 más comisiones. El horario es de lunes a viernes. Firma aquí.",
         "badResponseAnalysis": "Contrato legalmente débil en Chile. No incluye la cláusula de gratificación legal (el bono obligatorio que debes pagar al trabajador), no define bien cómo se calculan las comisiones ni protege los datos de tus clientes si el vendedor se va a la competencia.",
         "agiaPromptTagged": "Eres un Abogado Laboral especializado en contratos de trabajo en Chile. Tu expertise es crear contratos robustos que protejan al empleador cumpliendo con el Código del Trabajo chileno.\n\nCONTEXTO:\nCargo del trabajador: [Ej: \"Vendedor B2B\" / \"Administrativo\" / \"Diseñador\" / etc.]\n\nSueldo bruto: [Ej: \"$500.000\"]\n\nTipo de contrato: [Plazo fijo / Indefinido / Part-time]\n\nInformación sensible que manejará: [Ej: \"Base de datos de clientes\" / \"Estrategias comerciales\" / \"Fórmulas de productos\" / etc.]\n\nMETA:\nNecesito un borrador de contrato de trabajo que sea legalmente robusto, que incluya todas las cláusulas obligatorias y que proteja mi información confidencial.\n\nRESTRICCIONES:\n- Incluye cláusula de gratificación legal (25% si aplica)\n- Incluye cláusula de confidencialidad robusta\n- Especifica jornada laboral (considera Ley 40 horas progresiva)\n- Protege bases de datos y secretos comerciales\n- Tono: Legal pero claro\n\nFORMATO:\n**Contrato de Trabajo**\n\n**Cláusulas Obligatorias:**\n1. Identificación de las partes\n2. Naturaleza de los servicios\n3. Remuneración: [Desglose]\n4. Jornada laboral: [Horario]\n5. Gratificación: [Cálculo]\n\n**Cláusulas de Protección:**\n- Confidencialidad: [Texto]\n- No competencia: [Texto]\n\n**Duración y Término:**\n[Condiciones]",
-        "previewResponse": "**Contrato Trabajo**\n\n**Blindaje:**\n1. Polifuncionalidad.\n2. Confidencialidad.\n3. Propiedad Intelectual (todo es de la empresa).\n4. Gratificación Art 50 (25% tope).",
+        "previewResponse": "**Contrato de Trabajo: \"Muralla China\" (Vendedor B2B)**\n\n**ESTRATEGIA LEGAL:**\nEste contrato no solo define sueldo, blinda tu cartera de clientes.\n\n---\n\n**CLÁUSULAS DE PROTECCIÓN CRÍTICAS (No Negociables):**\n\n**1. CLÁUSULA DE CONFIDENCIALIDAD Y NO DIVULGACIÓN:**\n\"El trabajador se obliga a mantener reserva absoluta de: bases de datos, listas de precios, márgenes y estrategias comerciales. Esta obligación persiste por 2 años después del despido.\"\n*   *Multa:* Indemnización por perjuicios.\n\n**2. CLÁUSULA DE NO COMPETENCIA DESLEAL (Post-Contractual):**\n\"Queda prohibido contactar clientes de la empresa para ofrecer servicios similares por cuenta propia o ajena durante la vigencia del contrato.\"\n\n**3. PROPIEDAD INTELECTUAL:**\n\"Todo material, base de datos o estrategia creada durante el horario laboral pertenece 100% al empleador.\"\n\n---\n\n**ESTRUCTURA DE REMUNERACIÓN (Clara y Motivante):**\n*   **Sueldo Base:** $500.000\n*   **Gratificación Legal:** Art. 50 (25% tope 4.75 IMM) - *Esto te ahorra reliquidaciones.*\n*   **Semana Corrida:** Aplica sobre la parte variable (Ojo aquí).\n*   **Comisión:** X% sobre venta NETA cobrada (sin IVA).\n\n**JORNADA (Ley 40 Horas):**\n\"Lunes a Jueves 09:00 a 18:00 y Viernes 09:00 a 17:00 (Con 1 hora colación).\"\n*Nota:* Si es vendedor de terreno, usa Art. 22 inciso 2 (sin horario), pero cuidado con la fiscalización nueva.",
         "metadata": {
             "score": 92,
             "technique": "Template Generation (Generación de plantillas conformes al Código del Trabajo)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Tu contrato protege tus bases de datos si el trabajador se va mañana?",
-        "exampleTip": "Template Generation (Generación de plantillas conformes al Código del Trabajo)."
+        "exampleTip": "Template Generation (Generación de plantillas conformes al Código del Trabajo).",
+        "description": ""
     },
     {
         "id": 66,
@@ -922,14 +972,15 @@ const casesData = [
         "badResponsePreview": "1. YogaStyle. 2. ZenWear. 3. Respirar Yoga. 4. FlexiRopa. 5. Paz Interior. 6. YogaMundo. 7. Loto Ropa. 8. Equilibrio. 9. Namaste. 10. Om Wear.",
         "badResponseAnalysis": "Nombres genéricos, aburridos y probablemente ya registrados en INAPI. No tienen un concepto de marca detrás ni una sonoridad que los haga memorables o fáciles de pronunciar.",
         "agiaPromptTagged": "Eres un Experto en Naming y Branding especializado en crear nombres de marca memorables y registrables. Tu expertise es generar nombres que sean cortos, sonoros, significativos y disponibles para registro.\n\nCONTEXTO:\nTipo de negocio: [Ej: \"Ropa de yoga para cuerpos reales (inclusiva)\" / \"Cafetería artesanal\" / \"App de finanzas\" / etc.]\n\nValores de marca: [Ej: \"Autenticidad, Calma, Movimiento\" / \"Innovación, Cercanía\" / etc.]\n\nPúblico objetivo: [Ej: \"Mujeres 25-45 años que buscan bienestar\" / \"Emprendedores tech\" / etc.]\n\nMETA:\nNecesito 10 opciones de nombres originales y potentes que sean memorables, fáciles de pronunciar y que transmitan los valores de mi marca.\n\nRESTRICCIONES:\n- Evita palabras trilladas o genéricas (ej: \"Zen\", \"Yoga\", \"Tech\", \"Pro\")\n- Nombres cortos (máximo 3 sílabas idealmente)\n- Que suenen bien en español\n- Verifica disponibilidad de dominio .cl cuando sea posible\n\nFORMATO:\n**Opción 1: [Nombre]**\n- Significado: [...]\n- Por qué funciona: [...]\n- Disponibilidad .cl: [Sí/No/Verificar]\n\n**Opción 2: [Nombre]**\n[Mismo formato]\n\n[...hasta 10 opciones]\n\n**Recomendación Top 3:**\n[Los 3 mejores con justificación]",
-        "previewResponse": "**Naming Maestro**\n\n**Criterios:**\n1. Corto (2 sílabas).\n2. Disponible (.cl).\n3. Evocativo.\n\n**Test:** Si lo tienes que deletrear por teléfono, no sirve.",
+        "previewResponse": "**Naming Maestro: Opciones de Marca**\n\n**BRIEF:** Ropa de Yoga Inclusiva\n**VALORES:** Calma, Movimiento, Cuerpos Reales\n\n---\n\n**OPCIÓN 1: \"FLUYE\"**\n- **Tipo:** Verbo evocativo.\n- **Por qué funciona:** Corto, español, invita a la acción.\n- **Vibe:** Dinámico pero suave.\n- **Disponibilidad .cl:** Verificar \"fluyeyoga.cl\" o \"fluyewear.cl\".\n\n**OPCIÓN 2: \"ALMA VIVA\"**\n- **Tipo:** Nombre compuesto con rima asonante.\n- **Por qué funciona:** Conecta espiritualidad (yoga) con vitalidad.\n- **Vibe:** Premium y etéreo.\n- **Disponibilidad .cl:** Alta probabilidad.\n\n**OPCIÓN 3: \"MATIZ\"**\n- **Tipo:** Sustantivo abstracto.\n- **Significado:** \"Cada cuerpo tiene su matiz\". Celebra la diversidad sin decirlo explícitamente.\n- **Vibe:** Moderno, minimalista, inclusivo.\n\n---\n\n**RECOMENDACIÓN TOP 3:**\n1.  **MATIZ:** Es la más defendible como marca registrada y permite expansión a otros rubros (cremas, decoración).\n2.  **ALMA VIVA:** Muy potente para nicho específico, pero puede sonar a \"terapia\".\n3.  **FLUYE:** Excelente, pero difícil de registrar por ser palabra común.\n\n**CONSEJO LEGAL:**\nAntes de imprimir etiquetas, paga $4.000 en nic.cl y compra el dominio. Es tu primera defensa.",
         "metadata": {
             "score": 89,
             "technique": "Compliance-Driven Copywriting (Adaptación a la Ley del Consumidor)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Aclaraste que el cliente tiene 6 meses para fallas técnicas de fábrica?",
-        "exampleTip": "Compliance-Driven Copywriting (Adaptación a la Ley del Consumidor)."
+        "exampleTip": "Compliance-Driven Copywriting (Adaptación a la Ley del Consumidor).",
+        "description": ""
     },
     {
         "id": 67,
@@ -940,13 +991,14 @@ const casesData = [
         "badResponsePreview": "Yo, [Nombre], prometo no contarle a nadie la idea de [Tu Nombre] ni usarla para mi propio beneficio. Si lo hago, tendré que pagar una multa de 1 millón de pesos.",
         "badResponseAnalysis": "Documento sin validez ejecutiva. No define qué se considera 'Información Confidencial', no establece jurisdicción ni incluye excepciones estándar, lo que lo hace fácil de anular en un juicio.",
         "agiaPromptTagged": "Eres un Abogado de Negocios y Startups especializado en acuerdos de confidencialidad (NDA). Tu expertise es crear NDAs ejecutables que realmente protejan secretos comerciales.\n\nCONTEXTO:\nInformación a proteger: [Ej: \"Algoritmo de IA\" / \"Estrategia comercial\" / \"Base de datos de clientes\" / \"Fórmula de producto\" / etc.]\n\nPersona que firmará: [Ej: \"Socio potencial\" / \"Inversor\" / \"Proveedor\" / \"Empleado clave\" / etc.]\n\nDuración de confidencialidad: [Ej: \"2 años\" / \"5 años\" / \"Indefinida\" / etc.]\n\nMETA:\nNecesito un NDA mutuo (ambas partes protegidas) con multas disuasorias reales que sea ejecutable en Chile.\n\nRESTRICCIONES:\n- Define claramente qué es \"Información Confidencial\"\n- Incluye multas en UF (no en pesos)\n- Establece jurisdicción (Santiago, Chile)\n- Incluye excepciones estándar (información pública, desarrollo independiente)\n- Máximo 1 página\n\nFORMATO:\n**Acuerdo de Confidencialidad Mutuo**\n\n**Partes:**\n[Identificación]\n\n**Definición de Información Confidencial:**\n[Texto legal]\n\n**Obligaciones:**\n[Lista de prohibiciones]\n\n**Multas por Incumplimiento:**\n[Monto en UF]\n\n**Jurisdicción:**\nSantiago, Chile\n\n**Vigencia:**\n[Duración]",
-        "previewResponse": "**Acuerdo NDA**\n\n**Claves:**\n1. Definición amplia de confidencialidad.\n2. Duración mín 2 años.\n3. **Multa en UF** (Disuasivo).\n4. Jurisdicción local.\n\n*Házlo firmar ANTES de revelar secretos.*",
+        "previewResponse": "**Acuerdo de Confidencialidad (NDA) - Formato Ejecutivo**\n\n**PARTES:**\n- **Revelador:** Tu Empresa SpA\n- **Receptor:** Posible Inversionista / Socio / Desarrollador\n\n---\n\n**DEFINICIÓN DE \"INFORMACIÓN CONFIDENCIAL\":**\n\"Se considera confidencial: Todo código fuente, algoritmo, lista de clientes, métricas financieras, plan de marketing y 'Know-How' operativo entregado de forma escrita, verbal o digital.\"\n\n**OBLIGACIONES DEL RECEPTOR:**\n1.  No divulgar a terceros sin permiso escrito.\n2.  No usar la información para competir (copia del negocio).\n3.  Devolver o destruir la información si no se concreta el negocio.\n\n**EXCEPCIONES (Estándar):**\n- Información ya pública en internet.\n- Información que el receptor ya tenía antes de firmar.\n\n---\n\n**LA CLÁUSULA DEL MILLÓN (La que duele):**\n**\"MULTA POR INCUMPLIMIENTO:\"**\n\"En caso de violación probada de confidencialidad, el Receptor pagará una multa inmediata de **1.000 UF** (aprox $37 millones) sin perjuicio de las acciones legales indemnizatorias mayores.\"\n\n**JURISDICCIÓN:**\nTribunales de Justicia de Santiago, Chile.\n\n**VIGENCIA:**\n2 años desde la fecha de firma.\n\n*Nota: Si no firman esto, no les muestres el \"ingrediente secreto\".*",
         "metadata": {
             "score": 88,
             "technique": "Protective Clause Engineering (Blindaje de secretos industriales)."
         },
         "validationTip": "¿Firmaste este acuerdo antes de mostrar tu estrategia a inversores?",
-        "exampleTip": "Protective Clause Engineering (Blindaje de secretos industriales)."
+        "exampleTip": "Protective Clause Engineering (Blindaje de secretos industriales).",
+        "description": ""
     },
     {
         "id": 68,
@@ -957,14 +1009,15 @@ const casesData = [
         "badResponsePreview": "El Régimen ProPyme General es el que usa la mayoría de las empresas en Chile. Te permite llevar contabilidad completa y pagar impuestos según tus utilidades anuales.",
         "badResponseAnalysis": "Recomendación a ciegas. No menciona el régimen 'ProPyme Transparente' (14D8), que puede ahorrar millones en impuestos finales al socio si la empresa tiene utilidades pero el socio no tiene otros ingresos altos.",
         "agiaPromptTagged": "Eres un Contador Tributario Senior especializado en regímenes tributarios para Pymes en Chile. Tu expertise es ayudar a emprendedores a elegir el régimen del SII que les ahorre más impuestos.\n\nCONTEXTO:\nVentas anuales proyectadas: [Ej: \"$20.000.000\"]\n\nPerfil de ingresos del socio: [Ej: \"Solo tengo ingresos de esta empresa\" / \"Tengo sueldo de $2M en otra empresa\" / etc.]\n\nNúmero de socios: [Ej: \"1 socio\" / \"2 socios\" / etc.]\n\nMETA:\nNecesito que me expliques qué régimen tributario me conviene más: ProPyme General (14D3) vs ProPyme Transparente (14D8), enfocándote en cuál me ahorra más impuestos.\n\nRESTRICCIONES:\n- Explica en lenguaje simple, sin tecnicismos\n- Enfócate en el ahorro de caja inmediata\n- Compara ambos regímenes con números reales\n- Dame un veredicto claro\n\nFORMATO:\n**Veredicto:** Régimen [14D3 / 14D8]\n\n**Por qué:**\n[Explicación simple]\n\n**Comparación:**\n| Aspecto | 14D3 (General) | 14D8 (Transparente) |\n| Impuesto empresa | X% | Y% |\n| Impuesto socio | ... | ... |\n\n**Ahorro Estimado:** $X/año\n\n**Recomendación:**\n[Acción específica]",
-        "previewResponse": "**Régimen Tributario**\n\n**Recomendado: Pro Pyme Transparente (14 D8)**\n- Empresa paga 0% impuesto.\n- Utilidad pasa al socio.\n- Ideal si ganas <$50M/año.\n\n**Ahorro:** Liquidez inmediata vs Régimen General (14 D3).",
+        "previewResponse": "**Veredicto Tributario: ¿Qué Régimen Elegir?**\n\n**CONCLUSIÓN DIRECTA:**\nPara tu nivel de ventas ($20M/año) y perfil (socio único), te conviene:\n\n🏆 **RÉGIMEN PRO PYME TRANSPARENTE (14 D8)**\n\n---\n\n**POR QUÉ (La Lógica del Ahorro):**\nEn este sistema, la empresa **NO PAGA IMPUESTO DE PRIMERA CATEGORÍA**.\nLa utilidad pasa directa al socio y paga Global Complementario.\n\n**MATEMÁTICA REAL:**\n**Utilidad del Año:** $5.000.000\n\n**Opción A: Régimen General (14 D3)**\n- Empresa paga 10% impuesto: $500.000\n- Socio paga Global: $0 (Quedó exento)\n- **Caja Final:** Pierdes $500.000 que el fisco se queda hasta que pidas devolución en Abril.\n\n**Opción B: Transparente (14 D8)**\n- Empresa paga: $0\n- Socio paga Global: $0 (Tramo exento hasta $10M al año)\n- **Caja Final:** Te quedas con los $500.000 HOY.\n\n---\n\n**AHORRO INMEDIATO DE CAJA:**\n**$500.000** (Es dinero que no sale de tu bolsillo).\n\n**REQUISITO CLAVE:**\nTodos los socios deben ser personas naturales (humanos, no otras empresas).\n\n**ACCIÓN:**\nAl hacer Inicio de Actividades, selecciona manualmente \"Régimen Pro Pyme Transparente art. 14 D8\".",
         "metadata": {
             "score": 91,
             "technique": "Tax Optimization Logic (Elección basada en beneficio fiscal pyme)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Elegiste el régimen que menos impuestos te hace pagar a fin de año?",
-        "exampleTip": "Tax Optimization Logic (Elección basada en beneficio fiscal pyme)."
+        "exampleTip": "Tax Optimization Logic (Elección basada en beneficio fiscal pyme).",
+        "description": ""
     },
     {
         "id": 71,
@@ -975,14 +1028,15 @@ const casesData = [
         "badResponsePreview": "A partir de hoy, el trabajador podrá realizar sus labores desde su domicilio particular. Debe cumplir con el mismo horario y estar disponible por WhatsApp y correo electrónico.",
         "badResponseAnalysis": "Incumple la Ley de Teletrabajo. No establece el derecho a desconexión de 12 horas, no asigna el pago de costos operacionales (internet/luz) ni define las medidas de seguridad y salud laboral necesarias.",
         "agiaPromptTagged": "Eres un Abogado Laboral experto en la Ley de Teletrabajo chilena (Ley 21.220). Tu expertise es crear anexos de contrato que cumplan con todos los requisitos legales.\n\nCONTEXTO:\nModalidad: [100% remoto / Híbrido (X días remoto, Y días presencial)]\n\nCargo del trabajador: [Ej: \"Administrativo\" / \"Diseñador\" / \"Programador\" / etc.]\n\nHorario: [Ej: \"9:00 a 18:00\" / \"Flexible\" / etc.]\n\nMETA:\nNecesito un anexo de teletrabajo que cumpla con la Ley 21.220 y que proteja tanto al empleador como al trabajador.\n\nRESTRICCIONES:\n- Incluye derecho a desconexión (12 horas continuas)\n- Incluye asignación de costos (internet/luz)\n- Define medidas de seguridad y salud laboral\n- Especifica equipamiento proporcionado por la empresa\n- Tono: Legal pero claro\n\nFORMATO:\n**Anexo de Teletrabajo**\n(Ley 21.220)\n\n**Modalidad:**\n[Descripción]\n\n**Horario y Desconexión:**\n- Horario: [...]\n- Derecho a desconexión: [19:00 a 07:00 / personalizado]\n\n**Asignación de Costos:**\n- Monto mensual: $X (exento de impuestos)\n- Concepto: Internet y electricidad proporcional\n\n**Equipamiento:**\n[Lista de lo que proporciona la empresa]\n\n**Medidas de Seguridad:**\n[Requisitos ergonómicos y de salud]",
-        "previewResponse": "**Anexo Teletrabajo**\n\n**Ley 21.220:**\n1. Domicilio fijo.\n2. Derecho Desconexión (12h).\n3. **Bono Costos:** Obligatorio (Internet/Luz ~15k).",
+        "previewResponse": "**Anexo de Teletrabajo: Cumplimiento Ley 21.220**\n\n**MODALIDAD:** Trabajo Híbrido (3 días casa, 2 días oficina)\n\n---\n\n**1. DERECHO A DESCONEXIÓN (Obligatorio 12h):**\n\"El trabajador tendrá derecho a desconexión digital de al menos 12 horas continuas entre una jornada y otra. Durante este tiempo, no está obligado a responder comunicaciones del empleador.\"\n*   *Horario bloqueo:* 19:00 a 07:00 hrs.\n\n**2. ASIGNACIÓN DE COSTOS (Bono Compensatorio):**\n\"El empleador pagará una asignación mensual de **$15.000** líquidos para compensar gastos de internet y electricidad. Este monto NO constituye remuneración (no paga imposiciones).\"\n\n**3. LUGAR DE PRESTACIÓN:**\n\"Domicilio del trabajador: Calle Falsa 123, Providencia.\"\n*Nota: Si se cambia de casa, debe avisar para actualizar el anexo (por seguro accidente).*\n\n**4. EQUIPAMIENTO ENTREGADO:**\n- Notebook Marca X, Serie Y.\n- Pantalla Adicional.\n- Silla Ergonómica (Si el trabajador no tiene).\n\n**5. SEGURIDAD Y SALUD (Autoevaluación):**\n\"El trabajador declara que su puesto de trabajo cumple con las condiciones básicas de seguridad (iluminación, ventilación, espacio libre de riesgos) según la matriz de autoevaluación de la Mutual.\"\n\n---\n\n**RECUERDA:**\nSin este anexo, si el trabajador tiene un accidente en su casa (se cae en el baño en horario laboral), la Mutual puede rechazar la cobertura y te multan.",
         "metadata": {
             "score": 92,
             "technique": "Regulatory Compliance (Adaptación a la Ley 21.220)."
         },
         "suggestedAI": "Claude / ChatGPT",
         "validationTip": "¿Tu anexo deja claro que la empresa paga el proporcional de internet?",
-        "exampleTip": "Regulatory Compliance (Adaptación a la Ley 21.220)."
+        "exampleTip": "Regulatory Compliance (Adaptación a la Ley 21.220).",
+        "description": ""
     },
     {
         "id": 73,
@@ -1000,7 +1054,8 @@ const casesData = [
         },
         "suggestedAI": "Ideogram / Midjourney",
         "validationTip": "¿El logo generado parece de una agencia o un dibujo de clip-art genérico?",
-        "exampleTip": "Text-to-Image Engineering (Traducción de marca a parámetros visuales técnicos)."
+        "exampleTip": "Text-to-Image Engineering (Traducción de marca a parámetros visuales técnicos).",
+        "description": ""
     },
     {
         "id": 74,
@@ -1012,10 +1067,11 @@ const casesData = [
         "badResponsePreview": "Puedes usar una aplicación como Zapier. Tienes que crear una cuenta, seleccionar Google Forms como origen y luego buscar una integración con WhatsApp para enviar el mensaje.",
         "badResponseAnalysis": "Respuesta genérica. No explica la lógica de los datos (mapeo de campos), no advierte sobre los costos de la API de WhatsApp ni sugiere alternativas más baratas para Pymes (como usar Sheets de intermedio).",
         "agiaPromptTagged": "Eres un Ingeniero de Automatización No-Code especializado en Zapier, Make y herramientas de integración. Tu expertise es diseñar flujos lógicos que eliminen trabajo manual.\n\nCONTEXTO:\nProceso a automatizar: [Ej: \"Lead llena formulario de Google → Quiero alerta en mi celular\" / \"Nueva venta en Shopify → Crear factura en sistema contable\" / etc.]\n\nHerramientas que uso: [Ej: \"Google Forms, WhatsApp, Sheets\" / \"Shopify, Gmail, Trello\" / etc.]\n\nPresupuesto: [Gratis / Hasta $20/mes / Sin límite]\n\nMETA:\nNecesito el diseño de un flujo lógico paso a paso con mapeo de campos y alternativas gratuitas cuando sea posible.\n\nRESTRICCIONES:\n- Explica el mapeo de variables/campos\n- Advierte sobre costos de APIs\n- Sugiere alternativas gratuitas (ej: Pushbullet en vez de WhatsApp API)\n- Identifica posibles errores comunes\n\nFORMATO:\n**Workflow Automatizado:**\n\n**Trigger (Disparador):**\n[Qué inicia el proceso]\n\n**Acciones:**\n1. [Acción 1] - Herramienta: [...] - Mapeo: [...]\n2. [Acción 2] - Herramienta: [...] - Mapeo: [...]\n3. [Acción 3] - Herramienta: [...] - Mapeo: [...]\n\n**Alternativas Gratuitas:**\n[Si aplica]\n\n**Errores Comunes a Evitar:**\n[Lista]",
-        "previewResponse": "**Arquitecto Zapier**\n\n**Flujo Lead -> Ventas:**\n1. Trigger: Lead Facebook.\n2. Acción: WhatsApp Auto (\"Hola!\").\n3. Acción: Tarjeta Trello.\n4. Acción: Mailchimp.\n\n**Resultado:** Contacto en <1 min.",
+        "previewResponse": "**Workflow Automatizado: Lead → Alerta WhatsApp**\n\n**TRIGGER (Disparador):**\nNuevo Lead llena Formulario en Facebook Ads (Meta).\n\n**ACCIONES (Paso a Paso):**\n\n**Paso 1: Captura de Datos**\n- **Herramienta:** Zapier (Trigger: Facebook Lead Ads).\n- **Mapeo:** Nombre, Teléfono, Correo, Motivo Consulta.\n\n**Paso 2: Filtrado Inteligente**\n- **Herramienta:** Zapier Filter.\n- **Regla:** Continuar SOLO si \"Teléfono\" existe Y \"Motivo\" contiene \"Cotización\".\n- *Por qué: Evitas basura y gastar mensajes en leads fríos.*\n\n**Paso 3: Notificación Inmediata al Vendedor**\n- **Herramienta:** WhatsApp (vía Twilio o Wati) o Telegram (Gratis).\n- **Acción:** Enviar mensaje a [Tu Celular].\n- **Plantilla Mensaje:**\n  \"🔥 Nuevo Lead Hot: [Nombre]\n  📞 Tel: [Teléfono]\n  💬 Pide: [Motivo Consulta]\n  ⏳ ¡Llama en menos de 5 min!\"\n\n**Paso 4: Respaldo en Base de Datos**\n- **Herramienta:** Google Sheets.\n- **Acción:** Crear nueva fila.\n- **Mapeo:** Fecha | Nombre | Teléfono | Estado: \"Pendiente\".\n\n---\n\n**ALTERNATIVAS GRATUITAS (Ahorra $20 USD/mes):**\n- trigger: Google Forms (en vez de Facebook Lead Ads).\n- acción: Notificación por Email (Gmail) en vez de WhatsApp API (que cobra).\n- herramienta: Usar Make.com (Plan gratuito más generoso que Zapier).\n\n**ERROR COMÚN:**\nNo formatear el número de teléfono con el código de país (+569).\n*Solución:* Usa un paso de \"Formatter\" para limpiar el teléfono antes de enviar a WhatsApp.",
         "metadata": {
             "score": 93
-        }
+        },
+        "description": ""
     },
     {
         "id": 75,
@@ -1027,14 +1083,15 @@ const casesData = [
         "badResponsePreview": "Los que tienen empresas grandes parecen mejores. Los que escribieron hoy también son prioridad.",
         "badResponseAnalysis": "Criterio subjetivo y vago. No asigna un puntaje numérico basado en datos objetivos (presupuesto, urgencia, cargo) ni define una acción inmediata.",
         "agiaPromptTagged": "Eres un Director de Ventas (VP of Sales) especializado en calificación de leads. Tu expertise es crear sistemas de scoring que prioricen prospectos con mayor probabilidad de cierre.\n\nCONTEXTO:\nLista de leads: [Pega aquí tu lista o describe: \"10 leads con nombre, empresa, presupuesto estimado, urgencia\"]\n\nCriterios de calificación: [Ej: \"Presupuesto +$500k, Urgencia Alta, Cargo decisor\"]\n\nProducto/Servicio: [Ej: \"Software B2B $1M/año\" / \"Consultoría $300k\" / etc.]\n\nMETA:\nNecesito que califiques cada lead del 1 al 10 y me digas qué acción tomar con cada uno (Llamar YA / Email / Descartar).\n\nRESTRICCIONES:\n- Justifica cada puntaje con datos objetivos\n- Define acción inmediata específica\n- Prioriza por impacto en ventas (no solo por tamaño de empresa)\n\nFORMATO:\n**Tabla de Calificación:**\n\n| Nombre | Empresa | Score | Justificación | Acción Inmediata |\n|--------|---------|-------|---------------|------------------|\n| Juan   | Pyme X  | 9/10  | Presupuesto OK + Urgencia por multa | **Llamar HOY 10 AM** |\n| Ana    | Corp Y  | 3/10  | Sin presupuesto confirmado | Email genérico |\n\n**Top 3 Prioridades:**\n[Los 3 leads más calientes con plan de acción]",
-        "previewResponse": "**Filtro Prospectos**\n\n**Matriz Prioridad:**\n- **A (Hot):** Plata + Urgencia -> **Llamar YA.**\n- **B (Warm):** Interés -> Nutrir.\n- **C (Cold):** Mirando -> Bot.\n\nRegla: Vendedor solo atiende A.",
+        "previewResponse": "**Matriz de Scoring de Leads (Priorización)**\n\n**OBJETIVO:** Vendedor solo llama a Leads \"A\" (Hot).\n\n**TABLA DE CALIFICACIÓN:**\n\n| Nombre Lead | Empresa | Puntaje | Justificación Técnica | ACCIÓN INMEDIATA |\n| :--- | :--- | :--- | :--- | :--- |\n| **Juan Pérez** | Const. Alfa | **9/10** | ✅ Presupuesto validado ($2M)<br>✅ Urgencia: Multa inminente<br>✅ Cargo: Dueño (Decisor) | **LLAMAR AHORA (Prioridad 1)**<br>Objetivo: Agendar reunión mañana. |\n| **María G.** | Freelance | **4/10** | ❌ Presupuesto bajo ($300k)<br>✅ Urgencia media<br>❌ Cargo: Asistente | **NUTRIR (Automático)**<br>Enviar secuencia de emails educativos. |\n| **Pedro S.** | S/Info | **2/10** | ❌ Correo Gmail personal<br>❌ Sin teléfono<br>❌ \"Solo mirando\" | **DESCARTAR**<br>No gastar tiempo humano. |\n\n---\n\n**REGLA DE ORO DEL DIRECTOR DE VENTAS:**\n\"Si tu vendedor pasa el 80% del tiempo hablando con María (4/10) o Pedro (2/10), estás perdiendo dinero.\nEl trabajo del vendedor NO es educar curiosos, es cerrar a los Juan Pérez (9/10).\"",
         "metadata": {
             "score": 91,
             "technique": "CTR Optimization (Diseño visual para maximizar la tasa de clic)."
         },
         "suggestedAI": "DALL-E 3 / Ideogram",
         "validationTip": "¿Tu portada resalta sobre todos los otros videos de la misma búsqueda?",
-        "exampleTip": "CTR Optimization (Diseño visual para maximizar la tasa de clic)."
+        "exampleTip": "CTR Optimization (Diseño visual para maximizar la tasa de clic).",
+        "description": ""
     },
     {
         "id": 76,
@@ -1045,14 +1102,15 @@ const casesData = [
         "badResponsePreview": "Te recomiendo usar azul y gris, porque el azul transmite confianza y el gris se ve profesional y serio para una empresa de tecnología.",
         "badResponseAnalysis": "Recomendación perezosa. El \"azul tech\" está saturado. No ofrece códigos HEX, no sugiere una jerarquía de colores (primario, secundario, acento) ni tipografías que complementen la emoción de la marca.",
         "agiaPromptTagged": "Eres un Branding Specialist Senior con experiencia en startups y diseño de identidad visual. Tu expertise es crear paletas de colores y tipografías que transmitan emoción y posicionen marcas.\n\nCONTEXTO:\nMi negocio: [Ej: \"App de IA para emprendedores chilenos\" / \"Marca de ropa sostenible\" / etc.]\n\nValores de marca: [Ej: \"Innovación + Cercanía + Accesibilidad\" / \"Lujo + Sostenibilidad\" / etc.]\n\nPúblico objetivo: [Ej: \"Dueños de Pymes 30-50 años\" / \"Millennials conscientes\" / etc.]\n\nCompetencia a evitar: [Ej: \"Evitar el azul corporativo clásico\" / etc.]\n\nMETA:\nNecesito una paleta de colores completa (3-4 colores) con códigos HEX exactos y 2 tipografías que complementen la emoción de mi marca.\n\nRESTRICCIONES:\n- Dame códigos HEX exactos para usar en Canva/Figma\n- Evita colores saturados o clichés de la industria\n- Sugiere Google Fonts gratuitas\n- Explica la psicología detrás de cada color\n\nFORMATO:\n**Paleta de Colores:**\n- Color Primario: [Nombre] (#HEX) - Emoción: [...]\n- Color Secundario: [Nombre] (#HEX) - Emoción: [...]\n- Color Acento: [Nombre] (#HEX) - Uso: [...]\n- Color Neutro: [Nombre] (#HEX) - Uso: [...]\n\n**Tipografías:**\n- Títulos: [Google Font] - Por qué: [...]\n- Cuerpo: [Google Font] - Por qué: [...]\n\n**Aplicación:**\n[Ejemplo de cómo combinar]",
-        "previewResponse": "**Kit de Marca**\n\n**Mínimo Viable:**\n1. Logo Versátil (Vector).\n2. Paleta (1 Main, 1 Sec, 1 Action).\n3. Tipografía (Título/Cuerpo).\n\nNo compliques. Consistencia > Perfección.",
+        "previewResponse": "**Kit de Identidad Visual: \"Startup Tech Humana\"**\n\n**PALETA DE COLORES (Psicología y HEX):**\n\n**1. Primario: \"Deep Ocean\" (#0F4C81)**\n- **Uso:** Logos, Encabezados, Botones principales.\n- **Psicología:** Confianza, Estabilidad, Inteligencia (sin ser el azul aburrido de banco).\n\n**2. Secundario: \"Electric Coral\" (#FF6B6B)**\n- **Uso:** Call to Actions (CTAs), Alertas, Destacados.\n- **Psicología:** Energía, Innovación, Urgencia (contraste alto con el azul).\n\n**3. Neutro/Fondo: \"Soft Grey\" (#F7F9FC)**\n- **Uso:** Fondos de web, Bloques de contenido.\n- **Psicología:** Limpieza, Modernidad, Espacio para respirar.\n\n---\n\n**TIPOGRAFÍAS (Google Fonts Gratuitas):**\n\n**A. Títulos: \"Montserrat\" (Bold / ExtraBold)**\n- **Por qué:** Geométrica, moderna, se lee perfecto en móviles. Transmite solidez tech.\n\n**B. Cuerpo: \"Inter\" (Regular / Medium)**\n- **Por qué:** La fuente más legible para pantallas hoy. Neutral, invisible, profesional.\n\n**APLICACIÓN RECOMENDADA:**\nUsa el Azul (#0F4C81) para transmitir seriedad en la propuesta de valor.\nUsa el Coral (#FF6B6B) SOLO para donde quieres que hagan clic (\"Comprar\", \"Ver Demo\").\n*No mezcles más de 3 colores principales.*",
         "metadata": {
             "score": 90,
             "technique": "Color Psychology (Uso de psicología del color para posicionamiento)."
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Los colores elegidos transmiten la emoción que quieres que el cliente sienta?",
-        "exampleTip": "Color Psychology (Uso de psicología del color para posicionamiento)."
+        "exampleTip": "Color Psychology (Uso de psicología del color para posicionamiento).",
+        "description": ""
     },
     {
         "id": 77,
@@ -1064,10 +1122,11 @@ const casesData = [
         "badResponsePreview": "Podrías ir primero a Santiago Centro porque está al medio, luego a Las Condes y terminar en Maipú.",
         "badResponseAnalysis": "No considera el tráfico de hora punta en Santiago, ni el punto de partida específico, ni la agrupación lógica por zonas (Norte, Oriente, Poniente) para evitar cruzar la ciudad dos veces.",
         "agiaPromptTagged": "Eres un Coordinador Logístico especializado en optimización de rutas urbanas en Santiago, Chile. Tu expertise es diseñar rutas que eviten tacos y ahorren combustible.\n\nCONTEXTO:\nPunto de partida: [Ej: \"Independencia, Santiago\"]\n\nDestinos: [Ej: \"Maipú, Vitacura, Santiago Centro\"]\n\nHora de salida: [Ej: \"10:00 AM\"]\n\nDía de la semana: [Lunes-Viernes / Sábado / Domingo]\n\nMETA:\nNecesito una ruta optimizada que agrupe por sectores, evite tacos de hora punta y minimice el tiempo total de viaje.\n\nRESTRICCIONES:\n- Considera tráfico de Santiago (hora punta 8-10 AM y 18-20 PM)\n- Agrupa por zonas (Norte, Sur, Oriente, Poniente, Centro)\n- Sugiere vías rápidas (Costanera, Autopistas)\n- Dame tiempos estimados\n\nFORMATO:\n**Ruta Optimizada:**\n\n1. **[Destino 1] (Hora estimada: X)**\n   - Por qué primero: [...]\n   - Vía sugerida: [...]\n\n2. **[Destino 2] (Hora estimada: Y)**\n   - Conexión: [...]\n\n3. **[Destino 3] (Hora estimada: Z)**\n   - Regreso: [...]\n\n**Tiempo Total:** X horas\n**Ahorro vs ruta lineal:** Y minutos",
-        "previewResponse": "**Optimizador Rutas**\n\n**Lógica:**\n1. Agrupar por Comuna.\n2. Ruta Circular (Salida -> Lejos -> Cerca).\n3. Horario Anti-taco (10 AM - 4 PM).\n\n**KPI:** >4 entregas/hora.",
+        "previewResponse": "**Ruta Logística Optimizada: Zona Norte y Centro**\n\n**ESTRATEGIA:** Agrupación Geográfica + Sentido Anti-Horario.\n\n**SALIDA:** 10:00 AM (Post Hora Punta) desde Independencia.\n\n---\n\n**PARADA 1: SANTIAGO CENTRO (10:20 - 11:00)**\n- **Destino:** Cliente A (Alameda).\n- **Por qué primero:** Está de paso hacia el sector sur/oriente. Aprovechar flujo bajando por Independencia.\n- **Estacionamiento:** Buscar antes de llegar (calle lateral).\n\n**PARADA 2: MAIPÚ (11:30 - 12:30)**\n- **Destino:** Cliente B (Plaza Maipú).\n- **Conexión:** Autopista del Sol (Vía rápida). Evitar Pajaritos si hay taco.\n- **Por qué:** Es el punto más lejano Oeste. Sacarlo rápido.\n\n**PARADA 3: VITACURA (13:15 - 14:00)**\n- **Destino:** Cliente C (Alonso de Córdova).\n- **Conexión:** Vespucio Norte (Anillo rápido) desde Maipú hacia Oriente.\n- **Por qué:** Dejar última milla cerca de autopistas de retorno rápido.\n\n---\n\n**RESUMEN DE EFICIENCIA:**\n- **Tiempo Total Estimado:** 4 Horas (incluyendo descargas).\n- **Kilómetros Ahorrados:** 15 km vs ir Centro -> Vitacura -> Maipú.\n- **Combustible:** Ahorro aprox 15% por uso de flujo constante (Autopistas) vs semáforos.",
         "metadata": {
             "score": 88
-        }
+        },
+        "description": ""
     },
     {
         "id": 78,
@@ -1079,10 +1138,11 @@ const casesData = [
         "badResponsePreview": "El candidato 2 se ve bien porque trabajó en Falabella. El candidato 1 tiene poca experiencia.",
         "badResponseAnalysis": "Análisis superficial basado en marcas. No evalúa estabilidad laboral (rotación), logros numéricos concretos (cuánto vendió) ni brechas temporales sospechosas en el CV.",
         "agiaPromptTagged": "Eres un Headhunter Senior especializado en selección de talento comercial. Tu expertise es analizar CVs detectando fortalezas reales y banderas rojas que otros reclutadores pasan por alto.\n\nCONTEXTO:\nCargo a cubrir: [Ej: \"Vendedor B2B\" / \"Community Manager\" / \"Diseñador\" / etc.]\n\nCVs a analizar: [Pega aquí los 3 CVs o describe: \"CV 1: Juan, 5 años experiencia retail...\" / etc.]\n\nLo que más me importa: [Ej: \"Estabilidad laboral + Logros numéricos concretos\"]\n\nMETA:\nNecesito un ranking de candidatos con fortalezas, banderas rojas y recomendación final de a quién entrevistar.\n\nRESTRICCIONES:\n- Detecta \"Job Hopping\" (muchos trabajos en poco tiempo)\n- Busca logros numéricos concretos (ej: \"superé meta en 15%\")\n- Identifica gaps sospechosos (períodos sin trabajar)\n- Evalúa coherencia de carrera\n\nFORMATO:\n**Ranking de Candidatos:**\n\n| Candidato | Fortaleza Principal | Bandera Roja 🚩 | Score |\n|-----------|---------------------|-----------------|-------|\n| Juan      | Experiencia retail grande | 4 trabajos en 2 años (Baja lealtad) | 6/10 |\n| Ana       | **Logro: +15% meta anual** | Vive lejos (Riesgo atrasos) | **8/10** |\n\n**Recomendación:**\nEntrevista a [Nombre] porque [justificación con peso en logros]",
-        "previewResponse": "**Filtro CVs**\n\n**Flags:**\n🚩 **Red:** Job Hopping (5 pegas/2 años).\n🟢 **Green:** Números concretos (\"Vendí +30%\").\n\nBusca logros, no tareas.",
+        "previewResponse": "**Ranking de Candidatos: Vendedor B2B**\n\n**ANÁLISIS DE HEADHUNTER (Fortalezas vs Banderas Rojas):**\n\n| Candidato | Score | Fortaleza Principal (El \"Gancho\") | Bandera Roja 🚩 (El Riesgo) |\n| :--- | :--- | :--- | :--- |\n| **Juan (35 años)** | **8.5/10** | **Logrador:** \"Aumenté cartera en 20% el 2023\" (Dato duro). Viene de competencia directa. | **Mercenario:** Pide sueldo base muy alto + comisiones agresivas. |\n| **Ana (26 años)** | **5/10** | **Actitud:** Muy proactiva en entrevista, buena energía. | **Job Hopping:** 4 trabajos en 2 años. Promedio de permanencia: 6 meses. (Riesgo de fuga). |\n| **Pedro (40 años)** | **4/10** | **Estabilidad:** 10 años en misma empresa anterior. | **Oxidado:** Acostumbrado a \"tomar pedidos\", no a \"salir a cazar\". No usa CRM. |\n\n---\n\n**VEREDICTO Y RECOMENDACIÓN:**\n\n**ENTREVISTA A JUAN HOY MISMO.**\n*Justificación:* Tienes un problema de ventas AHORA. Juan trae cartera y metodología. Si le pagas bien, venderá.\n*Descarte:* Ana es riesgo alto de inversión perdida. Pedro requerirá 6 meses de entrenamiento digital.\n\n**PREGUNTA CLAVE PARA JUAN:**\n\"¿Cómo planificarías tu primera semana para cerrar tu primera venta antes del viernes?\" (Prueba de realidad).",
         "metadata": {
             "score": 92
-        }
+        },
+        "description": ""
     },
     {
         "id": 79,
@@ -1094,10 +1154,11 @@ const casesData = [
         "badResponsePreview": "Haz 20 tortas cada día de lunes a viernes y así terminas a tiempo.",
         "badResponseAnalysis": "Planificación lineal irreal. No considera tiempos de enfriado, decoración ni empaquetado. Ignora la capacidad limitada de los hornos y el riesgo de cuellos de botella.",
         "agiaPromptTagged": "Eres un Jefe de Producción Industrial experto en Manufactura y planificación de lotes. Tu expertise es crear cronogramas que eviten cuellos de botella y colapsos de último minuto.\n\nCONTEXTO:\nPedidos de la semana: [Ej: \"100 tortas para el viernes 5 PM\"]\n\nCapacidad de producción: [Ej: \"2 hornos, 1 decorador, trabajo de 8 AM a 6 PM\"]\n\nEtapas del proceso: [Ej: \"Horneado (2h) → Enfriado (3h) → Relleno (1h) → Decoración (2h) → Empaquetado (30min)\"]\n\nMETA:\nNecesito un plan de producción por lotes día a día que no colapse el último día y que identifique cuellos de botella.\n\nRESTRICCIONES:\n- Considera tiempos de enfriado/secado entre etapas\n- Identifica el cuello de botella (dónde se atora todo)\n- Deja margen para imprevistos (10-15%)\n- Distribuye carga de trabajo equitativamente\n\nFORMATO:\n**Plan de Producción Semanal:**\n\n**Lunes:**\n- AM: [Tarea]\n- PM: [Tarea]\n\n**Martes:**\n[...]\n\n**Cuello de Botella Identificado:**\n[Dónde se atora + Solución]\n\n**Margen de Seguridad:**\n[Horas extra disponibles si algo falla]",
-        "previewResponse": "**Planificador Producción**\n\n**Bloques:**\n- Lun/Mar: Base pesada.\n- Mié: Detalle.\n- Jue: QC/Pack.\n- Vie: Despacho.\n**Regla 85%:** Deja margen para incendios.",
+        "previewResponse": "**Plan de Producción Semanal: \"Sin Incendios\"**\n\n**META:** 100 Tortas para Viernes 5 PM.\n**CUELLO DE BOTELLA:** Decoración (Solo 1 decorador).\n\n---\n\n**CRONOGRAMA POR LOTES (Batching):**\n\n**Lunes: \"Día de Masas\" (Mise en Place)**\n- AM: Pesaje de ingredientes para las 100 tortas. (Evita sacar/guardar 100 veces).\n- PM: Horneado Lote 1 (50 tortas). Enfriado nocturno.\n\n**Martes: \"Día de Estructura\"**\n- AM: Horneado Lote 2 (50 tortas).\n- PM: Relleno y montaje de Lote 1 (50 tortas). *A refrigeración.*\n\n**Miércoles: \"Cadena de Montaje\"**\n- AM: Relleno y montaje de Lote 2 (50 tortas).\n- PM: **INICIO DECORACIÓN** Lote 1 (25 tortas). *Aquí empieza el cuello de botella.*\n\n**Jueves: \"Full Decoración\"**\n- AM: Decoración Lote 1 restante (25 tortas).\n- PM: Decoración Lote 2 (25 tortas).\n\n**Viernes: \"Remate y Despacho\"**\n- AM: Decoración final Lote 2 (25 tortas). Embalaje total.\n- **14:00:** Todo listo. Margen de seguridad de 3 horas.\n\n---\n\n**MARGEN DE SEGURIDAD:**\nSi el horno falla el lunes, tenemos el miércoles AM de holgura.\nSi el decorador se enferma, tenemos que contratar externo el jueves sí o sí.\n\n**REGLA DE ORO:**\n\"Nunca decores el viernes lo que se entrega el viernes.\"",
         "metadata": {
             "score": 90
-        }
+        },
+        "description": ""
     },
     {
         "id": 80,
@@ -1109,14 +1170,15 @@ const casesData = [
         "badResponsePreview": "Usa el formato condicional. Selecciona las celdas, busca 'reglas para resaltar' y pon que sea igual a 'Vencido'.",
         "badResponseAnalysis": "Instrucción vaga para un usuario no experto. No entrega la fórmula exacta ni explica cómo aplicarla a toda una columna automáticamente.",
         "agiaPromptTagged": "Eres un Experto en Excel Avanzado especializado en automatización con fórmulas y formato condicional. Tu expertise es crear soluciones paso a paso \"a prueba de tontos\" para usuarios no expertos.\n\nCONTEXTO:\nTarea a automatizar: [Ej: \"Pintar de rojo las facturas vencidas\" / \"Calcular comisiones automáticamente\" / \"Alertar cuando stock < 10 unidades\" / etc.]\n\nDatos disponibles: [Ej: \"Columna A: Fechas, Columna B: Estado (Pendiente/Pagado)\"]\n\nMETA:\nNecesito la fórmula exacta y los pasos precisos para configurarla, explicados como si fuera para alguien que apenas usa Excel.\n\nRESTRICCIONES:\n- Paso a paso numerado\n- Incluye la fórmula exacta para copiar/pegar\n- Explica dónde hacer clic (nombres de menús exactos)\n- Anticipa errores comunes\n\nFORMATO:\n**Solución Excel:**\n\n**Pasos:**\n1. Selecciona [rango de celdas exacto]\n2. Ve a [Menú] > [Opción]\n3. Elige [...]\n\n**Fórmula Exacta:**\n```\n=[Fórmula completa]\n```\n\n**Explicación:**\n[Qué hace cada parte]\n\n**Errores Comunes:**\n- [Error 1] → Solución: [...]",
-        "previewResponse": "**Scripts Excel**\n\n**Prompt:**\n\"Actúa como experto VBA. Crea macro que filtre 'Estado=Vencido' en hoja Ventas, copie a hoja Cobranza y genere email Outlook. Dame código listo.\"",
+        "previewResponse": "**Solución Excel: Alerta de Stock Crítico (Semáforo)**\n\n**PROBLEMA:** Se te olvida reponer productos y pierdes ventas.\n**SOLUCIÓN:** Que Excel te grite visualmente cuando queda poco.\n\n---\n\n**PASO A PASO \"A PRUEBA DE TODO\":**\n\n1.  **Selecciona** la columna donde tienes las cantidades de stock (Ej: Columna C, desde C2 hacia abajo).\n2.  Ve al menú **Inicio** -> **Formato Condicional** -> **Resaltar reglas de celdas** -> **Es menor que...**\n3.  En el cuadro escribe: **5** (O tu stock mínimo crítico).\n4.  En el desplegable de al lado elige: **\"Relleno rojo claro con texto rojo oscuro\"**.\n5.  Clic en **Aceptar**.\n\n**FÓRMULA MÁS AVANZADA (Si quieres texto de alerta):**\nEn la columna de al lado (D), pega esta fórmula:\n```excel\n=SI(C2<5; \"¡COMPRAR URGENTE!\"; \"Stock OK\")\n```\n*(Arrastra la fórmula hacia abajo)*\n\n---\n\n**RESULTADO:**\n- Si tienes 4 unidades o menos, la celda se pondrá roja sola.\n- Al lado aparecerá el mensaje \"¡COMPRAR URGENTE!\".\n- Imposible ignorarlo.",
         "metadata": {
             "score": 89,
             "technique": "Spatial Design Constraints (Respeto a las zonas seguras de interfaz)."
         },
         "suggestedAI": "Midjourney",
         "validationTip": "¿Tu banner se ve perfecto tanto en el computador como en el celular?",
-        "exampleTip": "Spatial Design Constraints (Respeto a las zonas seguras de interfaz)."
+        "exampleTip": "Spatial Design Constraints (Respeto a las zonas seguras de interfaz).",
+        "description": ""
     },
     {
         "id": 81,
@@ -1128,10 +1190,11 @@ const casesData = [
         "badResponsePreview": "No, es muy insegura. Deberías ponerle mayúsculas, números y símbolos como 'Empresa2024!'.",
         "badResponseAnalysis": "Consejo cosmético. Agregar un signo de exclamación no protege contra ataques modernos. No menciona la autenticación de dos pasos (2FA) ni gestores de contraseñas.",
         "agiaPromptTagged": "Eres un Consultor de Ciberseguridad para Pymes especializado en \"higiene digital\" básica. Tu expertise es crear planes de choque de seguridad usando herramientas gratuitas.\n\nCONTEXTO:\nSituación actual: [Ej: \"Tengo las claves en un Excel compartido\" / \"Uso la misma contraseña para todo\" / \"No tengo 2FA activado\" / etc.]\n\nActivos críticos: [Ej: \"Instagram de la empresa, Cuenta bancaria, Base de datos de clientes\"]\n\nMETA:\nNecesito un plan de choque de seguridad con prioridades críticas y herramientas gratuitas para implementar HOY.\n\nRESTRICCIONES:\n- Solo herramientas gratuitas (Bitwarden, Google Authenticator, etc.)\n- Prioriza por riesgo (qué puede quebrar el negocio)\n- Pasos accionables inmediatos\n- Tono: Urgente pero no alarmista\n\nFORMATO:\n**Plan de Choque Ciberseguridad:**\n\n🔴 **CRÍTICO (Hacer HOY):**\n1. [Acción] - Riesgo: [...] - Herramienta: [...]\n2. [Acción] - Riesgo: [...] - Herramienta: [...]\n\n🟡 **IMPORTANTE (Esta semana):**\n[...]\n\n🟢 **PREVENTIVO (Este mes):**\n[...]\n\n**Herramientas Recomendadas (Gratis):**\n- [Herramienta 1]: [Para qué]\n- [Herramienta 2]: [Para qué]",
-        "previewResponse": "**Auditor Ciberseguridad**\n\n**Higiene:**\n1. **2FA:** Obligatorio Gmail/Banco.\n2. **Pass Manager:** Bitwarden.\n3. **No Clic:** Links en SMS/Email.\n4. **Backup:** 3-2-1.",
+        "previewResponse": "**Plan de Choque Ciberseguridad Pyme**\n\n**SITUACIÓN CRÍTICA:** \"Tengo todas mis claves en un Excel y uso la misma pass para todo\".\n\n---\n\n**🔴 NIVEL 1: URGENCIAS QUE MATAN NEGOCIOS (Hacer HOY)**\n\n1.  **Activar 2FA (Doble Factor) en el Correo Principal:**\n    - *Riesgo:* Si te roban el Gmail, recuperan todas tus otras claves (Bancos, Instagram, SII).\n    - *Acción:* Ve a Seguridad de Google -> Verificación en 2 pasos -> Activar con tu celular.\n\n2.  **Activar 2FA en Instagram/Facebook Business:**\n    - *Riesgo:* Secuestro de cuenta y extorsión. Pierdes tu canal de ventas.\n    - *Acción:* Configuración -> Seguridad -> Autenticación. Usa App (Google Authenticator), NO SMS (es hackeable).\n\n**🟡 NIVEL 2: HIGIENE BÁSICA (Esta semana)**\n\n3.  **Matar el Excel de claves:**\n    - *Acción:* Instala **Bitwarden** (Gestor de contraseñas gratuito).\n    - Mueve tus claves ahí. Crea una \"Clave Maestra\" larga y difícil.\n    - *Beneficio:* Ahora puedes tener claves distintas y complejas para cada sitio sin tener que recordarlas.\n\n**🟢 NIVEL 3: PREVENCIÓN (Mes)**\n\n4.  **Respaldo 3-2-1:**\n    - Ten una copia de tus archivos importantes (Facturas, Clientes) en un Disco Duro externo desconectado (Offline).\n    - *Por qué:* Si te entra un virus Ransomware que encripta todo, el disco desconectado te salva.",
         "metadata": {
             "score": 94
-        }
+        },
+        "description": ""
     },
     {
         "id": 82,
@@ -1143,14 +1206,15 @@ const casesData = [
         "badResponsePreview": "Ponle un nombre corto y un número. Por ejemplo: Polera1, Polera2.",
         "badResponseAnalysis": "Sistema no escalable. Cuando tengas 100 poleras, 'Polera99' no te dirá nada sobre la talla, color o modelo, causando caos en bodega.",
         "agiaPromptTagged": "Eres un Gestor de Inventarios especializado en sistemas de códigos SKU (Stock Keeping Unit). Tu expertise es crear sistemas de nomenclatura lógicos y escalables.\n\nCONTEXTO:\nTipo de productos: [Ej: \"Ropa de bebé\" / \"Repuestos de auto\" / \"Alimentos\" / etc.]\n\nVariables a codificar: [Ej: \"Categoría, Talla, Color, Material\" / \"Marca, Modelo, Año\" / etc.]\n\nCantidad de productos: [Ej: \"50 productos ahora, 500 en 2 años\"]\n\nMETA:\nNecesito un sistema de códigos SKU que sea legible por humanos, escalable y que permita ordenar lógicamente el inventario.\n\nRESTRICCIONES:\n- Códigos cortos (máximo 15 caracteres)\n- Legibles por humanos (no solo números)\n- Escalable (que funcione con 10 y con 1000 productos)\n- Incluye glosario de abreviaturas\n\nFORMATO:\n**Sistema SKU Propuesto:**\n\n**Estructura:**\n[CATEGORÍA]-[ATRIBUTO1]-[ATRIBUTO2]-[ATRIBUTO3]\n\n**Glosario de Códigos:**\n- Categorías: BEB (Bebé), NIÑ (Niño), etc.\n- Tallas: 03M (3 meses), 06M (6 meses), etc.\n- Colores: AZU (Azul), ROJ (Rojo), etc.\n\n**Ejemplos:**\n- BEB-BODY-03M-AZU = Body Bebé 3 Meses Azul\n- NIÑ-POL-04T-ROJ = Polera Niño Talla 4 Roja\n\n**Ventajas:**\n[Por qué este sistema funciona]",
-        "previewResponse": "**Estandarizador SKU**\n\n**Fórmula:** [CAT]-[PROD]-[VAR]-[AÑO]\nEj: POL-BAS-NEG-24\nLegible y escalable.",
+        "previewResponse": "**Sistema de Códigos SKU: Lógico y Escalable**\n\n**ESTRUCTURA MÁSTER:**\n[CATEGORÍA (3)] - [PRODUCTO (3)] - [VARIANTE (3)] - [TALLA/MEDIDA (2)]\n\n**EJEMPLOS APLICADOS (Ropa):**\n\n1.  **Producto:** Polera Básica Roja Talla M\n    - SKU: **ROPA-POL-ROJ-TM**\n    - *Lectura:* Ropa > Polera > Roja > Talla M\n\n2.  **Producto:** Pantalón Jeans Slim Talla 42\n    - SKU: **ROPA-JEA-AZU-42**\n\n**EJEMPLOS APLICADOS (Repuestos):**\n\n1.  **Producto:** Filtro de Aceite Toyota Yaris\n    - SKU: **FIL-ACE-TOY-YA**\n\n---\n\n**GLOSARIO DE ABREVIATURAS (Para imprimir en bodega):**\n\n*   **Categorías:**\n    *   ROPA (Vestuario)\n    *   ACC (Accesorios)\n    *   REP (Repuestos)\n\n*   **Variantes (Colores/Material):**\n    *   NEG (Negro)\n    *   BLA (Blanco)\n    *   AZU (Azul)\n\n**VENTAJAS DE ESTE SISTEMA:**\n1.  **Busca rápido:** Si escribes \"POL\" en el sistema, te salen todas las poleras.\n2.  **Orden visual:** En la estantería puedes ordenar alfabéticamente.\n3.  **Sin código de barras:** Cualquier humano puede leer \"ROPA-POL-ROJ\" y saber qué es.",
         "metadata": {
             "score": 88,
             "technique": "Vector-Style Consistency (Mantenimiento de estilo uniforme)."
         },
         "suggestedAI": "Midjourney --no background",
         "validationTip": "¿Todos tus iconos parecen ser parte de la misma familia visual?",
-        "exampleTip": "Vector-Style Consistency (Mantenimiento de estilo uniforme)."
+        "exampleTip": "Vector-Style Consistency (Mantenimiento de estilo uniforme).",
+        "description": ""
     },
     {
         "id": 83,
@@ -1162,14 +1226,15 @@ const casesData = [
         "badResponsePreview": "Hola, necesito que desde mañana revises mi correo y me avises si hay algo urgente. Gracias.",
         "badResponseAnalysis": "Delegación 'abierta' peligrosa. No define qué es 'urgente', no establece límites de decisión ni crea un sistema de reporte.",
         "agiaPromptTagged": "Eres un Experto en Liderazgo Situacional y delegación efectiva. Tu expertise es crear protocolos de delegación con niveles de autoridad claros que liberen tiempo del líder sin perder control.\n\nCONTEXTO:\nTarea a delegar: [Ej: \"Revisar mi inbox y responder correos\" / \"Gestionar redes sociales\" / \"Atender reclamos\" / etc.]\n\nPersona que recibirá la tarea: [Ej: \"Asistente junior sin experiencia\" / \"Empleado senior confiable\" / etc.]\n\nMETA:\nNecesito una instrucción clara con límites de autoridad definidos usando el modelo de 3 niveles: Nivel 1 (Investiga y reporta), Nivel 2 (Propone y espera aprobación), Nivel 3 (Actúa y reporta después).\n\nRESTRICCIONES:\n- Define qué puede decidir solo y qué necesita aprobación\n- Incluye ejemplos concretos de cada nivel\n- Establece sistema de reporte\n- Tono: Claro y empoderador\n\nFORMATO:\n**Protocolo de Delegación:**\n\n**Tarea:** [Descripción]\n\n**Niveles de Autoridad:**\n\n**Nivel 3 (Actúa Directo):**\n- [Ejemplo: \"Facturas < $50k → Envíalas a contabilidad sin consultar\"]\n\n**Nivel 2 (Propone):**\n- [Ejemplo: \"Reclamos → Redacta borrador de respuesta, yo lo apruebo antes de enviar\"]\n\n**Nivel 1 (Investiga):**\n- [Ejemplo: \"Solicitudes especiales → Investiga y tráeme opciones\"]\n\n**Sistema de Reporte:**\n[Cómo y cuándo reportar]",
-        "previewResponse": "**Delegación Niveles**\n\n1. **Mandado:** Investiga, yo decido.\n2. **Propone:** Investiga, propón, yo apruebo.\n3. **Ejecuta:** Haz y avisa.\n4. **Autónomo:** Gestiona y reporta mensual.",
+        "previewResponse": "**Protocolo de Delegación: \"Niveles de Libertad\"**\n\n**TAREA:** Gestión del Correo de Soporte Clientes.\n**DELEGADO A:** Asistente Nuevo.\n\n---\n\n**NIVEL 1: \"INVESTIGA Y REPORTA\" (Semanas 1-2)**\n*Instrucción:* \"Lee los correos. Redacta un borrador de respuesta en Word. NO envíes nada. Reúneta conmigo a las 11 AM para revisar tus borradores.\"\n*Objetivo:* Calibrar criterio y tono de voz.\n\n**NIVEL 2: \"PROPONE Y ACTÚA SI...\" (Semanas 3-4)**\n*Instrucción:* \"Responde solo las preguntas frecuentes (Precios, Horarios) usando las plantillas aprobadas.\nPara Reclamos o Casos Raros: Redacta borrador y mándamelo por WhatsApp para aprobación rápida antes de enviar.\"\n*Objetivo:* Velocidad con red de seguridad.\n\n**NIVEL 3: \"ACTÚA Y REPORTA\" (Mes 2 en adelante)**\n*Instrucción:* \"Gestiona todo el correo autónomamente.\nSolo escala a mí si:\nA) Un cliente pide devolución de dinero.\nB) Hay amenaza de demanda/SERNAC.\nEnvíame un reporte los viernes con el resumen de la semana.\"\n*Objetivo:* Libertad total con control de excepciones.\n\n**SISTEMA DE SEMÁFORO:**\n🟢 (Fácil) -> Responde tú.\n🟡 (Duda) -> Pregunta por chat.\n🔴 (Grave) -> Llámame.",
         "metadata": {
             "score": 96,
             "technique": "Strategic Stack Architecture (Diseño de ecosistemas compatibles)."
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Las herramientas sugeridas se conectan para ahorrarte pasos manuales hoy?",
-        "exampleTip": "Strategic Stack Architecture (Diseño de ecosistemas compatibles)."
+        "exampleTip": "Strategic Stack Architecture (Diseño de ecosistemas compatibles).",
+        "description": ""
     },
     {
         "id": 84,
@@ -1181,14 +1246,15 @@ const casesData = [
         "badResponsePreview": "Busco Community Manager que sepa usar Instagram y TikTok. Pago conversable. Mandar currículum al correo.",
         "badResponseAnalysis": "Aviso plano que atraerá a cualquiera. No vende la visión de la empresa ni desafía al candidato, resultando en postulaciones de baja calidad.",
         "agiaPromptTagged": "Eres un Reclutador Senior especializado en crear avisos de trabajo que atraigan talento de calidad. Tu expertise es escribir ofertas laborales que filtren mediocres y atraigan proactivos alineados con la cultura.\n\nCONTEXTO:\nCargo a cubrir: [Ej: \"Community Manager\" / \"Vendedor\" / \"Diseñador\" / etc.]\n\nCultura de la empresa: [Ej: \"Pyme educativa innovadora que odia la mediocridad\" / \"Startup tech de ritmo rápido\" / etc.]\n\nMisión del cargo: [Ej: \"Convertir seguidores en alumnos usando storytelling\" / etc.]\n\nMETA:\nNecesito un aviso de trabajo que venda la visión de la empresa, desafíe al candidato y filtre a los que solo buscan \"calentar el asiento\".\n\nRESTRICCIONES:\n- Incluye \"Misión del Cargo\" (no solo tareas)\n- Desafía al candidato (ej: \"Si buscas 9 a 5, esto no es para ti\")\n- Tono: Inspirador pero honesto\n- Evita clichés (\"Buscamos talentos apasionados...\")\n\nFORMATO:\n**Aviso de Trabajo:**\n\n**Título Provocador:**\n[Ej: \"¿Eres el CM que odia el contenido aburrido?\"]\n\n**Tu Misión (No tu trabajo):**\n[Qué va a lograr, no qué va a hacer]\n\n**Lo que NO buscamos:**\n[Filtro de mediocres]\n\n**Lo que SÍ buscamos:**\n[Características del candidato ideal]\n\n**Beneficios:**\n[Qué gana además del sueldo]\n\n**Cómo Postular:**\n[Instrucción específica]",
-        "previewResponse": "**Perfil Cargo**\n\n**Anti-Anuncio:**\n\"Buscamos Cazador de Negocios - Sueldo sin tope\".\n- Desafío: \"¿Puedes vender 10/mes?\".\n- Filtro: \"No apto para acomodados\".",
+        "previewResponse": "**Aviso de Trabajo: \"El Anti-Anuncio\"**\n\n**TÍTULO:**\n**¿Eres el Community Manager que odia los posts aburridos? (No buscamos un publicador, buscamos un creador)**\n\n**TU MISIÓN (Si decides aceptarla):**\nTu trabajo NO es \"subir 3 posts a la semana\". Eso lo hace un bot.\nTu misión real es: **Convertir seguidores fantasmas en clientes que amen la marca.**\nTendrás libertad creativa total para probar formatos, memes, reels y storytelling.\n\n---\n\n**LO QUE NO BUSCAMOS (Ahórranos el tiempo a ambos):**\n❌ Gente que necesita aprobación para cada coma.\n❌ \"Expertos\" que solo saben usar Canva y no saben escribir con persuasión.\n❌ Personas que dicen \"ese no es mi trabajo\" cuando hay que apagar un incendio.\n❌ Horario 9 a 5 estricto (somos una startup, a veces hay lanzamientos).\n\n**LO QUE SÍ BUSCAMOS (Perfil ADN):**\n✅ **Obsesión por métricas:** Te duele la guata si un post tiene 0 comentarios.\n✅ **Autonomía:** Vienes con soluciones, no con problemas.\n✅ **Ortografía Impecable:** Eres la persona que corrige los menús de los restaurantes mentalmente.\n\n**BENEFICIOS REALES:**\n- Trabajo 100% Remoto (desde casa o la playa, si cumples).\n- Sueldo competitivo + Bonos por metas de Engagement.\n- Cursos pagados (te compramos el curso que quieras aprender).\n\n**¿TE ATREVES?**\nNo mandes CV aburrido. Mándanos un video de 1 minuto o un Reel explicando por qué deberíamos contratarte a ti y no a los otros 50 postulantes.\n[Correo]",
         "metadata": {
             "score": 91,
             "technique": "Benchmarking (Análisis comparativo basado en capacidades técnicas)."
         },
         "suggestedAI": "Perplexity / ChatGPT",
         "validationTip": "¿Usaste el modelo correcto para la tarea específica que tenías pendiente?",
-        "exampleTip": "Benchmarking (Análisis comparativo basado en capacidades técnicas)."
+        "exampleTip": "Benchmarking (Análisis comparativo basado en capacidades técnicas).",
+        "description": ""
     },
     {
         "id": 85,
@@ -1200,14 +1266,15 @@ const casesData = [
         "badResponsePreview": "Dile que no te gustó, que se ve poco profesional y que esperabas algo mejor. Sé honesto para que aprenda.",
         "badResponseAnalysis": "Feedback destructivo y subjetivo ('feo'). Genera defensa y desmotivación en el empleado.",
         "agiaPromptTagged": "Eres un Coach de Alto Rendimiento especializado en feedback constructivo. Tu expertise es usar el modelo SBI (Situación-Comportamiento-Impacto) para corregir errores sin dañar la moral.\n\nCONTEXTO:\nSituación: [Ej: \"Mi diseñador entregó un logo que no cumple con la identidad de marca\"]\n\nComportamiento específico: [Ej: \"Usó Comic Sans en vez de la tipografía del manual\"]\n\nImpacto: [Ej: \"Afecta nuestra percepción de seriedad ante clientes corporativos\"]\n\nMETA:\nNecesito un guion de feedback que sea correctivo pero motivante, usando la técnica SBI y evitando lenguaje destructivo.\n\nRESTRICCIONES:\n- Usa el modelo SBI (Situación-Comportamiento-Impacto)\n- Empieza con algo positivo (técnica Sandwich)\n- Sé específico (no digas \"feo\", di qué exactamente está mal)\n- Termina con confianza en que puede mejorar\n\nFORMATO:\n**Guion de Feedback:**\n\n**Pan (Positivo):**\n\"[Reconocimiento genuino de algo que hizo bien]\"\n\n**Relleno (Correctivo - Modelo SBI):**\n- Situación: \"En el logo que entregaste ayer...\"\n- Comportamiento: \"Usaste Comic Sans...\"\n- Impacto: \"Esto afecta nuestra percepción de seriedad ante clientes corporativos\"\n\n**Pan (Confianza):**\n\"[Expresión de confianza en que puede ajustarlo]\"\n\n**Acción Siguiente:**\n[Qué debe hacer específicamente]",
-        "previewResponse": "**Feedback Sandwich**\n\n1. **Pan:** \"Bien por X.\"\n2. **Carne:** \"Mejora Y (Puntualidad).\"\n3. **Pan:** \"Confío en ti.\"\nCorrige sin dañar.",
+        "previewResponse": "**Guion de Feedback Constructivo: Modelo SBI (Sándwich Pro)**\n\n**SITUACIÓN:** Diseñador entregó web con errores ortográficos.\n\n---\n\n**1. PAN SUPERIOR (Validación Genuina):**\n\"Hola [Nombre], quería decirte que la estructura visual de la web quedó increíble. Los colores y la carga rápida están perfectos, justo lo que buscábamos en experiencia de usuario.\"\n\n**2. RELLENO (El Problema - Modelo SBI):**\n- **Situación:** \"Sin embargo, al revisar los textos de la sección 'Nosotros'...\"\n- **Comportamiento:** \"...encontré 3 faltas de ortografía y dos frases cortadas.\"\n- **Impacto:** \"Esto es crítico porque, aunque el diseño sea lindo, los errores de texto nos hacen ver poco profesionales y generan desconfianza inmediata en el cliente que va a comprar.\"\n\n**3. PAN INFERIOR (Confianza y Cierre):**\n\"Sé que fue un descuido por el apuro y sé que eres detallista. Confío plenamente en que puedes dejarlo impecable.\"\n\n**ACCIÓN SIGUIENTE (Commitment):**\n\"Por favor, dale una revisión final de lectura a todo el sitio y avísame antes de las 3 PM cuando esté corregido. ¿Te parece?\"",
         "metadata": {
             "score": 90,
             "technique": "Prompt Chaining (División de tareas complejas en pasos lógicos)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿El resultado final es de calidad profesional gracias a la división de tareas?",
-        "exampleTip": "Prompt Chaining (División de tareas complejas en pasos lógicos)."
+        "exampleTip": "Prompt Chaining (División de tareas complejas en pasos lógicos).",
+        "description": ""
     },
     {
         "id": 86,
@@ -1219,14 +1286,15 @@ const casesData = [
         "badResponsePreview": "Haz un calendario donde la usen mitad y mitad. Si siguen peleando, amenaza con despedirlos.",
         "badResponseAnalysis": "Solución parche. No investiga la causa raíz (¿las rutas se solapan?) y el calendario arbitrario puede afectar las ventas.",
         "agiaPromptTagged": "Eres un Mediador Laboral especializado en resolución de conflictos operativos. Tu expertise es encontrar soluciones \"gana-gana\" que prioricen la eficiencia del negocio sobre egos personales.\n\nCONTEXTO:\nConflicto: [Ej: \"Dos empleados pelean por usar la camioneta de reparto\"]\n\nPartes involucradas: [Ej: \"Vendedor vs Repartidor\"]\n\nImpacto en el negocio: [Ej: \"Las entregas se atrasan\"]\n\nMETA:\nNecesito un guion de reunión de mediación que enfoque el conflicto en la eficiencia del negocio, no en quién \"gana\" el recurso.\n\nRESTRICCIONES:\n- Enfoca en el objetivo del negocio (no en egos)\n- Busca solución operativa (no emocional)\n- Propón alternativas creativas\n- Tono: Neutral pero firme\n\nFORMATO:\n**Guion de Mediación:**\n\n**Apertura:**\n\"[Reencuadre: El objetivo no es quién gana X, es cómo logramos Y]\"\n\n**Análisis de Causa Raíz:**\n[Por qué realmente están peleando - ¿las rutas se solapan?]\n\n**Solución Propuesta:**\n[Alternativa operativa que beneficie al negocio]\n\n**Ejemplo:**\n\"Vendedor usa Uber corporativo para visitas cercanas (más barato), camioneta queda para cargas pesadas\"\n\n**Acuerdo:**\n[Qué hará cada uno]",
-        "previewResponse": "**Mediador Conflictos**\n\n**Gana-Gana:**\nReconocer validez ambos lados.\n**Acuerdo SLA:** Ventas pregunta antes de vender raro. Ops deja cupo express.",
+        "previewResponse": "**Mediación de Conflictos: \"Eficiencia vs Ego\"**\n\n**CONFLICTO:** Vendedor y Repartidor pelean por uso de la camioneta única.\n\n---\n\n**GUION DEL MEDIADOR (Dueño):**\n\n**Apertura (Reencuadre):**\n\"Muchachos, los cité porque estamos teniendo atrapes con la camioneta.\nQuiero aclarar algo: **El objetivo aquí no es quién gana la camioneta.**\nEl objetivo es que **el pedido llegue al cliente a tiempo y barato.** Si peleamos, el cliente espera y perdemos todos.\"\n\n**Análisis de Causa (Datos, no culpas):**\n\"Veo que el Vendedor la usa para visitar clientes pequeños en el centro (tacos, estacionamiento caro).\nY el Repartidor la necesita para llevar cajas grandes a la zona industrial.\nEl conflicto es que ambos la piden a las 10 AM.\"\n\n**SOLUCIÓN OPERATIVA (Propuesta Gana-Gana):**\n\n\"Vamos a probar esto por 2 semanas:\n\n1.  **Cargas Grandes (Prioridad Camioneta):** La camioneta se queda EXCLUSIVA para el Repartidor y entregas de volumen. Es donde más ahorramos flete.\n2.  **Visitas de Venta (Uber Corporativo):** Vendedor, te habilité una cuenta de Uber Empresa. Para ir al centro a ver clientes, usa Uber.\n    *   *Ventaja:* No pagas estacionamiento, no pierdes tiempo manejando en el taco, puedes ir contestando correos. Es más productivo para ti.\n\n**ACUERDO:**\n¿Vendedor, te sirve moverte en Uber y olvidarte de buscar estacionamiento?\n¿Repartidor, te comprometes a tener los pedidos grandes listos a las 10 AM?\nExcelente. A trabajar.\"",
         "metadata": {
             "score": 92,
             "technique": "Feature Overlap Analysis (Eliminación de software redundante)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Lograste consolidar tus gastos de software en menos de 2 suscripciones pagas?",
-        "exampleTip": "Feature Overlap Analysis (Eliminación de software redundante)."
+        "exampleTip": "Feature Overlap Analysis (Eliminación de software redundante).",
+        "description": ""
     },
     {
         "id": 87,
@@ -1238,14 +1306,15 @@ const casesData = [
         "badResponsePreview": "¿Tienes experiencia? ¿Sabes usar Excel? ¿Dónde vives? ¿Cuánto quieres ganar?",
         "badResponseAnalysis": "Preguntas cerradas o hipotéticas que se responden con un simple 'Sí'. No predicen comportamiento real.",
         "agiaPromptTagged": "Eres un Psicólogo Organizacional especializado en entrevistas de selección conductuales. Tu expertise es crear preguntas basadas en comportamientos pasados que predigan desempeño futuro.\n\nCONTEXTO:\nCargo a cubrir: [Ej: \"Asistente administrativo\" / \"Vendedor\" / \"Diseñador\" / etc.]\n\nMiedo principal: [Ej: \"Que sea lento\" / \"Que sea deshonesto\" / \"Que no sea proactivo\" / etc.]\n\nCompetencias clave: [Ej: \"Honestidad, Velocidad, Proactividad\"]\n\nMETA:\nNecesito 5 preguntas conductuales (basadas en hechos pasados, no hipotéticas) que revelen si el candidato tiene las competencias que busco.\n\nRESTRICCIONES:\n- Preguntas abiertas (no Sí/No)\n- Basadas en comportamientos pasados reales (ej: \"Cuéntame de la última vez que...\")\n- Incluye qué buscar en la respuesta\n- Evita preguntas hipotéticas (\"¿Qué harías si...?\")\n\nFORMATO:\n**Preguntas Conductuales:**\n\n**Pregunta 1:**\n\"[Pregunta basada en comportamiento pasado]\"\n- Qué buscar: [Señales positivas vs banderas rojas]\n\n**Pregunta 2:**\n[Mismo formato]\n\n[...hasta 5 preguntas]\n\n**Señales de Alerta:**\n[Respuestas que indican problemas]",
-        "previewResponse": "**Entrevista STAR**\n\n1. **Proactividad:** \"¿Problema que resolviste sin que te pidieran?\".\n2. **Conflicto:** \"¿Desacuerdo con jefe?\".\n3. **Fracaso:** \"¿Error cometido?\".",
+        "previewResponse": "**Guía de Entrevista: Preguntas Conductuales (Anti-Mentiras)**\n\n**COMPETENCIA: PROACTIVIDAD**\n**Pregunta:** \"Cuéntame de alguna vez en tu último trabajo donde viste un problema que nadie más veía y tomaste la iniciativa de arreglarlo sin que tu jefe te lo pidiera.\"\n- *Busca:* Acciones concretas (\"Creé un Excel\", \"Llamé al cliente\"), no generalidades (\"Siempre ayudo\").\n- *Red Flag:* \"Yo hacía lo que me decían\".\n\n**COMPETENCIA: MANEJO DE FRUSTRACIÓN / RESILIENCIA**\n**Pregunta:** \"Háblame del error más grande que cometiste en el último año. ¿Qué pasó y cómo lo manejaste?\"\n- *Busca:* Honestidad, asunción de responsabilidad y aprendizaje (\"Pedí disculpas y propuse solución\").\n- *Red Flag:* \"Nunca me equivoco\" o \"Fue culpa de mi compañero\".\n\n**COMPETENCIA: HONESTIDAD / ÉTICA**\n**Pregunta:** \"Alguna vez tuviste que decirle 'No' a un cliente o a un jefe porque lo que pedían no era correcto o posible? ¿Cómo fue?\"\n- *Busca:* Capacidad de poner límites con respeto y ética profesional.\n\n**COMPETENCIA: CAPACIDAD DE APRENDIZAJE**\n**Pregunta:** \"¿Qué habilidad técnica aprendiste por tu cuenta en los últimos 6 meses y cómo?\"\n- *Busca:* Curiosidad, autodidacta (\"Vi un tutorial en YouTube\", \"Hice un curso\").\n- *Red Flag:* \"La empresa no me capacitó\".",
         "metadata": {
             "score": 93,
             "technique": "System Prompting (Diseño de reglas de comportamiento fijas)."
         },
         "suggestedAI": "ChatGPT Custom GPT",
         "validationTip": "¿Tu asistente responde siempre con el mismo tono y rigor técnico definido?",
-        "exampleTip": "System Prompting (Diseño de reglas de comportamiento fijas)."
+        "exampleTip": "System Prompting (Diseño de reglas de comportamiento fijas).",
+        "description": ""
     },
     {
         "id": 88,
@@ -1257,14 +1326,15 @@ const casesData = [
         "badResponsePreview": "Hola, gracias por escribir. Las tortas de chocolate valen $15.000 y las de manjar $18.000. Puedes pagar por transferencia y enviarme el comprobante por aquí mismo. ¿Cuál quieres?",
         "badResponseAnalysis": "Es una respuesta estática. No califica al cliente, no gestiona la urgencia (fecha de entrega) ni ofrece alternativas si el producto no está disponible, lo que obliga al dueño a intervenir manualmente de todas formas.",
         "agiaPromptTagged": "Eres un Integrador de Chatbots de Conversión especializado en WhatsApp Business. Tu expertise es diseñar flujos lógicos que califiquen leads y cierren ventas sin intervención humana.\n\nCONTEXTO:\nTipo de negocio: [Ej: \"Pastelería con alta demanda por WhatsApp\" / \"Servicios de consultoría\" / etc.]\n\nProducto/Servicio: [Ej: \"Tortas personalizadas\" / \"Sesiones de coaching\" / etc.]\n\nObjetivo: [Ej: \"Calificar al cliente y cerrar venta automáticamente\" / \"Agendar citas\" / etc.]\n\nMETA:\nNecesito un flujo lógico de conversación (decision tree) que califique al cliente, maneje objeciones básicas y sepa cuándo pasar a un humano.\n\nRESTRICCIONES:\n- Define cuándo el bot pasa a humano (solo reclamos/casos complejos)\n- Incluye calificación (fecha, presupuesto, urgencia)\n- Maneja objeciones comunes (precio, disponibilidad)\n- Termina con link de pago o agendamiento\n\nFORMATO:\n**Flujo Lógico del Bot:**\n\n**1. Saludo + Calificación:**\n\"¡Hola! Bienvenido a [Marca]. ¿Para qué fecha necesitas [producto]?\"\n\n**2. Filtro de Urgencia:**\n- Si < 48h → \"Lo siento, estamos a full. Mira opciones de entrega inmediata: [Link]\"\n- Si > 48h → Continuar\n\n**3. Calificación de Necesidad:**\n\"Es para: A) Regalo 🎁 | B) Disfrute personal 🍰\"\n\n**4. Presentación de Opciones:**\n[Menú de productos con precios]\n\n**5. Cierre:**\n\"Perfecto, paga en 30 segundos aquí: [Link Flow/Transbank]\"\n\n**6. Cuándo Pasar a Humano:**\n- Reclamos\n- Solicitudes personalizadas complejas\n- [Otros casos]",
-        "previewResponse": "**Bots WhatsApp**\n\n**Flujo:**\n1. Menú (1. Comprar, 2. Pedido, 3. Humano).\n2. Estado Pedido -> API.\n3. Humano -> Solo hora laboral.\n*Herramienta:* ManyChat.",
+        "previewResponse": "**Flujo Lógico Chatbot WhatsApp (Ventas)**\n\n**META:** Calificar y cerrar venta de Torta sin intervención humana.\n\n**PASO 1: SALUDO + MENÚ PRINCIPAL**\n\"¡Hola! 🎂 Bienvenido a Pastelería Dulce.\nSoy tu asistente virtual. Para atenderte rápido, ¿qué necesitas?\n1.  Ver Catálogo y Precios 🍰\n2.  Cotizar Torta Personalizada 🎨\n3.  Estado de mi Pedido 🚚\n4.  Hablar con Humano 🙋‍♀️\"\n\n---\n\n**SI ELIGE 1 (Catálogo - Venta Rápida):**\n*Bot:* \"¡Buenísimo! Aquí están nuestros best-sellers:\nA) Torta Chocolate Trufa (15 personas) - $25.000\nB) Torta Tres Leches (20 personas) - $28.000\nResponde A o B para ver foto.\"\n\n**SI ELIGE 2 (Personalizada - Filtro Urgencia):**\n*Bot:* \"¿Para cuándo la necesitas?\nA) Para HOY o MAÑANA (Urgente) 🚨\nB) Para después de 48 horas 📅\"\n\n*   *Si responde A (Urgente):* \"Uff, estamos a full capacidad 😓 Para pedidos urgentes solo tenemos disponibles las tortas de catálogo. ¿Te sirven esas? (Sí/No)\"\n*   *Si responde B (Con tiempo):* \"¡Perfecto! Cuéntame sabor y diseño y un humano te cotiza en 2 horas.\"\n\n---\n\n**CIERRE AUTOMÁTICO (Link de Pago):**\n*Bot:* \"¿La quieres? Confirma tu pedido pagando aquí: [Link Transbank Webpay]\nUna vez pagado, manda el comprobante y queda agendada. ¡Así de simple!\"\n\n**REGLA DE ESCALAMIENTO A HUMANO:**\nEl bot solo pasa a humano si:\n- El cliente escribe \"Reclamo\".\n- El cliente elige opción 4.\n- El cliente pregunta 3 veces algo que el bot no entiende (Loop).",
         "metadata": {
             "score": 95,
             "technique": "Decision Trees (Diseño de flujos lógicos para guiar la conversación al pago)."
         },
         "suggestedAI": "ManyChat / Botpress",
         "validationTip": "¿El bot es capaz de calificar al cliente antes de quitarte tiempo a ti?",
-        "exampleTip": "Decision Trees (Diseño de flujos lógicos para guiar la conversación al pago)."
+        "exampleTip": "Decision Trees (Diseño de flujos lógicos para guiar la conversación al pago).",
+        "description": ""
     },
     {
         "id": 89,
@@ -1276,14 +1346,15 @@ const casesData = [
         "badResponsePreview": "Dale las llaves, preséntalo al equipo y pásale los manuales para que lea.",
         "badResponseAnalysis": "Onboarding frío. El empleado pasará el día leyendo sin entender, sintiéndose solo y sin producir valor real.",
         "agiaPromptTagged": "Eres un Gerente de Cultura Organizacional especializado en onboarding efectivo. Tu expertise es crear primeros días memorables que aceleren la productividad y generen pertenencia.\n\nCONTEXTO:\nTipo de empresa: [Ej: \"Pyme de servicios\" / \"Startup tech\" / \"Retail\" / etc.]\n\nCargo del nuevo empleado: [Ej: \"Vendedor\" / \"Diseñador\" / \"Administrativo\" / etc.]\n\nObjetivo: [Ej: \"Que cierre su primera tarea con éxito antes de almorzar\"]\n\nMETA:\nNecesito un cronograma hora a hora del primer día que combine gesto humano (bienvenida cálida) con configuración técnica (que tenga todo listo para trabajar).\n\nRESTRICCIONES:\n- Incluye momento de conexión humana (no solo trabajo)\n- Asegura que tenga todas las claves/accesos listos (nada de esperar al informático)\n- Asigna una \"primera victoria\" (tarea simple que pueda completar con éxito)\n- Máximo 4 horas de onboarding activo\n\nFORMATO:\n**Cronograma Onboarding - Primer Día:**\n\n**09:00 - 09:30: Bienvenida Humana**\n- Café de bienvenida (NO trabajo)\n- Presentación del equipo\n\n**09:30 - 10:30: Configuración Técnica**\n- Entrega \"Kit Supervivencia\" (claves listas, nada de esperar)\n\n**10:30 - 12:00: Primera Victoria**\n- Asignar tarea simple que pueda cerrar antes de almorzar\n- [Ejemplo de tarea]\n\n**12:00 - 13:00: Almuerzo con el equipo**\n\n**Resultado Esperado:**\n[Qué debe haber logrado al final del día]",
-        "previewResponse": "**Onboarding Día 1**\n\n- PC listo antes de llegar.\n- 9:00 Café jefe.\n- 10:00 Manuales.\n- 13:00 Almuerzo equipo.\n- 15:00 Victoria rápida.\nEnamorar y habilitar.",
+        "previewResponse": "**Cronograma de Onboarding: \"El Primer Día Perfecto\"**\n\n**OBJETIVO:** Que el nuevo llegue a su casa diciendo \"Tomé la mejor decisión\".\n\n---\n\n**09:00 - 09:30 | LA BIENVENIDA CÁLIDA (Conexión)**\n- Recibimiento por el Jefe directo (No lo dejes en recepción esperando).\n- Café de desayuno con el equipo.\n- *Prohibido:* Hablar de trabajo o tareas todavía. Solo conocerse.\n\n**09:30 - 10:30 | EL KIT DE SUPERVIVENCIA (Habilitación)**\n- Entrega de puesto de trabajo LISTO (Computador configurado, correo creado ANTES de que llegue).\n- Entrega de accesos y claves (Bitwarden o lista impresa).\n- *Efecto Wow:* Un regalo pequeño de marca (taza, polera, libreta).\n\n**10:30 - 12:30 | INMERSIÓN EN CULTURA & PRODUCTO**\n- Sesión \"Quiénes Somos\": Visión, Misión y por qué existimos.\n- Demo del Producto: Que use/pruebe lo que vendemos como si fuera cliente.\n\n**12:30 - 13:00 | ASIGNACIÓN DE \"PRIMERA VICTORIA\"**\n- Asignar una tarea simple y realizable HOY.\n- *Ejemplo:* \"Manda tu primer correo de presentación al equipo\" o \"Configura tu firma de email\".\n- *Objetivo:* Sensación de logro inmediato dopamínico.\n\n**13:00 - 14:30 | ALMUERZO DE EQUIPO**\n- Invita la casa. Instancia informal de integración.\n\n**15:00 en adelante | SOMBRA (Shadowing)**\n- Sentarse al lado de un compañero senior y observar cómo trabaja (sin presión de hacer).\n\n**17:30 | CHECK-OUT DE CIERRE**\n- Reunión de 10 min con jefe: \"¿Cómo te sentiste? ¿Tienes todo lo que necesitas?\".\n- Fin del día.",
         "metadata": {
             "score": 91,
             "technique": "RAG Logic (Uso de datos frescos externos para enriquecer la respuesta)."
         },
         "suggestedAI": "Perplexity.ai",
         "validationTip": "¿Los datos entregados por la IA coinciden con la realidad actual del mercado?",
-        "exampleTip": "RAG Logic (Uso de datos frescos externos para enriquecer la respuesta)."
+        "exampleTip": "RAG Logic (Uso de datos frescos externos para enriquecer la respuesta).",
+        "description": ""
     },
     {
         "id": 90,
@@ -1295,14 +1366,15 @@ const casesData = [
         "badResponsePreview": "Junta a todos y que cada uno cuente en qué está. Trata de que no hablen mucho.",
         "badResponseAnalysis": "Sin estructura, las 'Dailys' se convierten en sesiones de quejas interminables.",
         "agiaPromptTagged": "Eres un Scrum Master especializado en reuniones ágiles (Daily Standups). Tu expertise es facilitar reuniones de 15 minutos exactos enfocadas en desbloqueo, no en reportes.\n\nCONTEXTO:\nTipo de equipo: [Ej: \"Equipo remoto de 5 personas\" / \"Equipo presencial de 3\" / etc.]\n\nProblema actual: [Ej: \"Las reuniones se alargan a 40 minutos\" / \"Se convierten en sesiones de quejas\" / etc.]\n\nMETA:\nNecesito las reglas del juego para una Daily de 15 minutos exactos enfocada en las 3 preguntas clave y en identificar bloqueos.\n\nRESTRICCIONES:\n- Máximo 15 minutos total\n- Las 3 preguntas clave (Qué logré / Qué haré / Qué me bloquea)\n- PROHIBIDO solucionar problemas en la Daily (se agenda después)\n- Cada persona máximo 2 minutos\n\nFORMATO:\n**Reglas de la Daily (15 min exactos):**\n\n**Estructura:**\n- Cada persona tiene 2 minutos máximo\n- Responde 3 preguntas:\n  1. ¿Qué logré ayer?\n  2. ¿Qué haré hoy?\n  3. **¿Qué me lo impide? (Bloqueo)**\n\n**Rol del Facilitador:**\n[Qué hace cuando alguien se desvía]\n\n**Bloqueos Identificados:**\n[Cómo se manejan - NO se resuelven en la Daily]\n\n**Prohibido:**\n- Solucionar problemas ahí\n- Discusiones técnicas\n- Quejas sin acción\n\n**Resultado:**\nLista de bloqueos para resolver después",
-        "previewResponse": "**Daily Standup**\n\n**15 min, de pie:**\n1. ¿Qué hice?\n2. ¿Qué haré?\n3. **¿Trabas?**\nSin debates técnicos.",
+        "previewResponse": "**Reglas de la Daily Standup (15 Minutos)**\n\n**FILOSOFÍA:** No es un reporte al jefe. Es una sincronización entre compañeros para desbloquear el trabajo.\n\n---\n\n**LAS 3 REGLAS DE ORO:**\n1.  **De Pie:** La reunión se hace de pie (o con cámara prendida). Si te cansas, es que está durando mucho.\n2.  **El Facilitador Rotativo:** Cada semana dirige uno distinto.\n3.  **Parking Lot:** Si dos personas empiezan a discutir una solución técnica: \"Paren. Eso va al estacionamiento (Parking Lot). Lo ven ustedes dos solos después de la Daily.\"\n\n---\n\n**LA RONDA RÁPIDA (Max 90 segundos por persona):**\n\n**1. ¿QUÉ LOGRÉ AYER? (Valor entregado)**\n- *Bien:* \"Terminé el diseño de la home.\"\n- *Mal:* \"Estuve en reuniones y contestando mails.\" (Eso es actividad, no logro).\n\n**2. ¿QUÉ HARÉ HOY? (Compromiso)**\n- *Bien:* \"Voy a maquetar el CSS de la home.\"\n- *Mal:* \"Seguir avanzando.\" (Vago).\n\n**3. ¿QUÉ ME BLOQUEA? (Ayuda necesaria)**\n- *El punto más importante:* \"No puedo avanzar porque me falta el texto del copywriter.\"\n- *Acción:* El Facilitador anota el bloqueo para resolverlo apenas termine la ronda.\n\n---\n\n**RESULTADO FINAL:**\nAl minuto 15, todos saben:\n- Qué está haciendo el de al lado.\n- Quién necesita ayuda urgente.\n- Nadie perdió tiempo.",
         "metadata": {
             "score": 94,
             "technique": "Advanced Data Analysis (Detección de patrones estadísticos en hojas de cálculo)."
         },
         "suggestedAI": "ChatGPT Plus / Claude",
         "validationTip": "¿Descubriste qué productos te hacen perder dinero aunque se vendan mucho?",
-        "exampleTip": "Advanced Data Analysis (Detección de patrones estadísticos en hojas de cálculo)."
+        "exampleTip": "Advanced Data Analysis (Detección de patrones estadísticos en hojas de cálculo).",
+        "description": ""
     },
     {
         "id": 91,
@@ -1314,14 +1386,15 @@ const casesData = [
         "badResponsePreview": "Mira cuánto vendió al mes y compáralo con el mes pasado.",
         "badResponseAnalysis": "Indicador tardío (Lagging). Si esperas a fin de mes para saber que no vendió, ya perdiste el mes.",
         "agiaPromptTagged": "Eres un Director de Operaciones especializado en definición de KPIs (Key Performance Indicators). Tu expertise es crear métricas predictivas que permitan actuar antes de que sea tarde.\n\nCONTEXTO:\nRol a medir: [Ej: \"Vendedor B2B\" / \"Community Manager\" / \"Repartidor\" / etc.]\n\nObjetivo del negocio: [Ej: \"Aumentar ventas\" / \"Mejorar engagement\" / \"Reducir tiempos de entrega\" / etc.]\n\nMETA:\nNecesito 3 KPIs balanceados: 1 de Actividad (qué hace), 1 de Calidad (qué tan bien lo hace), 1 de Resultado (qué logra).\n\nRESTRICCIONES:\n- Métricas predictivas (que permitan actuar antes de fin de mes)\n- Medibles diariamente o semanalmente\n- Específicas y cuantificables\n- Evita métricas de vanidad\n\nFORMATO:\n**KPIs Propuestos:**\n\n**1. Actividad (Control Diario):**\n- Métrica: [Ej: \"Llamadas salientes por día\"]\n- Meta: [Número]\n- Por qué: [Permite actuar rápido]\n\n**2. Calidad (Control Semanal):**\n- Métrica: [Ej: \"Tasa de conversión Cita→Venta\"]\n- Meta: [Porcentaje]\n- Por qué: [Mide efectividad]\n\n**3. Resultado (Control Mensual):**\n- Métrica: [Ej: \"Margen generado (no solo venta bruta)\"]\n- Meta: [Monto]\n- Por qué: [Impacto real en el negocio]\n\n**Dashboard Simple:**\n[Cómo visualizar estos 3 KPIs]",
-        "previewResponse": "**Definidor KPIs**\n\n**Top 3:**\n1. Resultado: Ventas.\n2. Proceso: Cotizaciones.\n3. Calidad: NPS.\nMenos es más.",
+        "previewResponse": "**Dashboard de KPIs Predictivos: Control Total**\n\n**FILOSOFÍA:** No mires por el retrovisor (ventas mes pasado). Mira por el parabrisas (actividad hoy).\n\n**ROL: VENDEDOR B2B**\n\n---\n\n**KPI 1: ACTIVIDAD (Lo que controla el vendedor)**\n*   **Métrica:** \"Nuevas Conversaciones Iniciadas\" (Llamadas/Emails).\n*   **Meta Diaria:** 10 contactos nuevos.\n*   **Por qué:** Si hoy no siembras 10, en 3 meses no cosecharás ventas. Es un indicador predictivo de futuro.\n\n**KPI 2: CALIDAD (Conversión)**\n*   **Métrica:** \"% de Reuniones Agendadas sobre Contactados\".\n*   **Meta:** 20% (De cada 10 llamadas, 2 reuniones).\n*   **Diagnóstico:**\n    *   Si es bajo: Tu pitch/guion es malo.\n    *   Si es alto: Sube el volumen de llamadas.\n\n**KPI 3: RESULTADO (La consecuencia)**\n*   **Métrica:** \"Monto Propuestas Enviadas en la semana (Pipeline)\".\n*   **Meta:** $5.000.000 en propuestas vivas.\n*   **Por qué:** Las ventas cerradas son consecuencia de propuestas enviadas. Si el tubo está lleno, la venta cae sola.\n\n---\n\n**RUTINA DE CONTROL:**\n- Viernes 4 PM: Revisar los 3 números.\n- Si falló Actividad: Problema de disciplina.\n- Si falló Calidad: Problema de capacitación.",
         "metadata": {
             "score": 92,
             "technique": "Threat Modeling (Identificación de puntos débiles en el flujo digital)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Ya activaste la verificación en dos pasos en tus cuentas maestras?",
-        "exampleTip": "Threat Modeling (Identificación de puntos débiles en el flujo digital)."
+        "exampleTip": "Threat Modeling (Identificación de puntos débiles en el flujo digital).",
+        "description": ""
     },
     {
         "id": 92,
@@ -1332,14 +1405,15 @@ const casesData = [
         "badResponsePreview": "Aquí está el texto limpio: Pedro dijo que el proyecto va bien, pero María dice que falta el presupuesto. Acordaron verse el próximo martes a las 10.",
         "badResponseAnalysis": "El resultado pierde el contexto de quién debe ejecutar qué tarea. No elimina las muletillas 'eeh', 'o sea' de forma inteligente y no estructura el acta bajo un formato profesional de compromisos.",
         "agiaPromptTagged": "Eres un Especialista en Transcripciones y Actas Ejecutivas. Tu expertise es limpiar transcripciones automáticas de audio (Zoom, Meet, Whisper) eliminando muletillas y creando actas profesionales con compromisos claros.\n\nCONTEXTO:\nAudio/Transcripción: [Pega aquí la transcripción automática o describe: \"Reunión de 30 minutos sobre proyecto X\"]\n\nParticipantes: [Nombres si los conoces]\n\nObjetivo de la reunión: [Ej: \"Definir plan de marketing\" / \"Resolver problema de stock\" / etc.]\n\nMETA:\nNecesito un acta limpia que elimine muletillas (\"eeh\", \"o sea\", \"básicamente\") y extraiga SOLO los compromisos con responsable y fecha.\n\nRESTRICCIONES:\n- Elimina muletillas y repeticiones\n- Mantén el tono original (no lo hagas sonar robot)\n- Extrae SOLO compromisos accionables\n- Identifica bloqueadores\n\nFORMATO:\n**Acta de Reunión [Fecha]:**\n\n**Resumen Ejecutivo:**\n[1 línea: qué se decidió]\n\n**Acuerdos y Compromisos:**\n1. **[Responsable]** - [Acción específica] - Plazo: [Fecha]\n2. **[Responsable]** - [Acción específica] - Plazo: [Fecha]\n\n**Bloqueadores Identificados:**\n- [Qué está frenando el avance]\n\n**Próxima Reunión:**\n[Fecha y objetivo]",
-        "previewResponse": "**Transcripciones IA**\n\n**Prompt:**\n\"Limpia esta reunión. Genera Acta Ejecutiva: Resumen, Decisiones, Tareas (Quién/Cuándo). Elimina ruido.\"",
+        "previewResponse": "**Acta de Reunión Ejecutiva (Sin Paja)**\n\n**REUNIÓN:** Comité de Marketing Semanal\n**FECHA:** 24 Octubre | **DURACIÓN:** 30 min\n\n---\n\n**RESUMEN EJECUTIVO (1 Línea):**\nSe aprobó el presupuesto para CyberDay pero se pospone lanzamiento de TikTok por falta de videos.\n\n---\n\n**ACUERDOS Y COMPROMISOS (Quién - Qué - Cuándo):**\n\n1.  **[JUAN]** - Configurar campañas Meta Ads para CyberDay.\n    - *Plazo:* Jueves 26, 12:00 PM.\n    - *Status:* Prioridad Alta 🔥\n\n2.  **[MARÍA]** - Enviar grilla de correos corregida (sin faltas ortog.).\n    - *Plazo:* Miércoles 25, End of Day.\n\n3.  **[PEDRO]** - Cotizar 3 agencias para edición de video externa.\n    - *Plazo:* Lunes 30.\n\n---\n\n**BLOQUEADORES (Lo que nos frena):**\n- No tenemos las claves de la tarjeta de crédito nueva. **[JUAN]** debe pedirla a Finanzas hoy.\n\n**TEMAS APARCADOS (Parking Lot):**\n- Discusión sobre cambio de logo (Se agendará reunión específica).\n\n**PRÓXIMA REUNIÓN:**\nLunes 30, 09:00 AM. Revisión métricas Cyber.",
         "metadata": {
             "score": 89,
             "technique": "ASR Cleaning (Limpieza de transcripciones de voz a texto legible)."
         },
         "suggestedAI": "Whisper / ChatGPT",
         "validationTip": "¿El texto final parece escrito por una persona y no por un bot de transcripción?",
-        "exampleTip": "ASR Cleaning (Limpieza de transcripciones de voz a texto legible)."
+        "exampleTip": "ASR Cleaning (Limpieza de transcripciones de voz a texto legible).",
+        "description": ""
     },
     {
         "id": 93,
@@ -1351,14 +1425,15 @@ const casesData = [
         "badResponsePreview": "Vendiste 5 millones. El producto más vendido fue la polera roja.",
         "badResponseAnalysis": "Reporte descriptivo básico. No cruza variables (hora de compra, productos combinados) para dar insights accionables.",
         "agiaPromptTagged": "Eres un Experto en Business Intelligence especializado en análisis de ventas. Tu expertise es detectar patrones ocultos en datos de ventas que permitan aumentar ticket promedio y frecuencia de compra.\n\nCONTEXTO:\nDatos de ventas: [Pega aquí tu Excel o describe: \"Ventas del mes con fecha, producto, monto, cliente\"]\n\nMi negocio: [Ej: \"Tienda de ropa online\" / \"Pastelería\" / \"Servicios de consultoría\" / etc.]\n\nMETA:\nNecesito que encuentres 3 patrones ocultos accionables: productos que se compran juntos, horarios/días de mayor venta, clientes que más repiten.\n\nRESTRICCIONES:\n- Cruza variables (no solo \"qué se vendió más\")\n- Busca oportunidades de combos o upsell\n- Identifica horarios/días óptimos\n- Dame acción inmediata para cada hallazgo\n\nFORMATO:\n**Análisis de Ventas - Hallazgos:**\n\n**Hallazgo 1: [Título]**\n- Patrón: [Ej: \"40% de quienes compran Polera Roja también llevan Calcetines Negros\"]\n- Acción: [Ej: \"Crea Pack 'Urbano' con ambos y sube ticket promedio 15%\"]\n\n**Hallazgo 2: [Título]**\n[Mismo formato]\n\n**Hallazgo 3: [Título]**\n[Mismo formato]\n\n**Impacto Estimado:**\n[Cuánto podrías aumentar ventas aplicando estos hallazgos]",
-        "previewResponse": "**Analista Ventas**\n\n**Patrones:**\n\"Analiza dataset. Dime qué productos se compran juntos (Bundles) y mejores horas venta.\"",
+        "previewResponse": "**Análisis Business Intelligence (BI): Patrones Ocultos**\n\n**HALLAZGO 1: Oportunidad de Upsell (\"El Combo Cafetería\")**\n- **Patrón Detectado:** El 42% de los clientes que compraron \"Torta de Zapallo\" también compraron \"Café Grano 250g\".\n- **Comportamiento:** Comen el postre y se llevan el café para la casa.\n- **ACCIÓN INMEDIATA:** Crear Pack \"Tarde de Lluvia\" (Torta + Café) con 5% de descuento. Subirás el ticket promedio sin esfuerzo.\n\n**HALLAZGO 2: Horario Muerto Rentable**\n- **Patrón Detectado:** Los Sábados entre 10:00 y 11:30 AM tienes pocas ventas, PERO el ticket promedio es el más alto de la semana ($45.000).\n- **Comportamiento:** Son clientes \"relajados\" que compran para la semana.\n- **ACCIÓN INMEDIATA:** Email Marketing los Viernes PM promocionando \"Desayuno Sabatino\" para llenar ese horario con clientes de alto valor.\n\n**HALLAZGO 3: Fuga de Clientes Nuevos**\n- **Patrón Detectado:** Clientes que compran el \"Kit Inicial\" no vuelven en 90 días.\n- **ACCIÓN INMEDIATA:** Configurar email automático a los 30 días con cupón de \"Repuesto\" o \"Recarga\".\n\n---\n\n**IMPACTO ESTIMADO:**\nAplicando solo el Hallazgo 1, proyector un aumento del **15% en ventas mes el próximo mes**.",
         "metadata": {
             "score": 96,
             "technique": "Stress Testing (Sometimiento de un modelo de negocio a sus peores escenarios)."
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Identificaste al menos una razón por la cual tu negocio podría fallar este mes?",
-        "exampleTip": "Stress Testing (Sometimiento de un modelo de negocio a sus peores escenarios)."
+        "exampleTip": "Stress Testing (Sometimiento de un modelo de negocio a sus peores escenarios).",
+        "description": ""
     },
     {
         "id": 94,
@@ -1370,14 +1445,15 @@ const casesData = [
         "badResponsePreview": "A la mayoría le gusta, pero algunos se quejan del envío.",
         "badResponseAnalysis": "Demasiado general. No especifica qué del envío (¿lento? ¿roto? ¿caro?) ni cuantifica la gravedad del problema.",
         "agiaPromptTagged": "Eres un Especialista en Customer Experience y Análisis de Sentimientos. Tu expertise es analizar feedback masivo de clientes para identificar dolores recurrentes y quejas implícitas.\n\nCONTEXTO:\nReviews/Comentarios: [Pega aquí los últimos 30-50 comentarios de clientes de Google, Instagram, WhatsApp, etc.]\n\nMi producto/servicio: [Ej: \"Cursos online\" / \"Pastelería\" / \"Servicios de diseño\" / etc.]\n\nMETA:\nNecesito saber qué les encanta y qué odian de mi negocio, con énfasis en dolores recurrentes y quejas implícitas (lo que no dicen pero se nota).\n\nRESTRICCIONES:\n- Identifica dolores recurrentes (lo que se repite)\n- Busca quejas implícitas (ej: \"el producto está bien\" pero se queja del empaque)\n- Cuantifica: ¿cuántos mencionan cada problema?\n- Prioriza por impacto en experiencia\n\nFORMATO:\n**Análisis de Sentimientos:**\n\n**Tabla de Categorías:**\n| Categoría | Sentimiento | Frecuencia | Citas Textuales |\n|-----------|-------------|------------|-----------------|\n| Empaque   | 😠 Negativo | 8/50       | \"Caja llegó aplastada\" |\n| Sabor     | 😍 Positivo | 42/50      | \"Delicioso\" |\n\n**Top 3 Acciones Urgentes:**\n1. [Acción basada en dolor crítico]\n2. [Acción basada en oportunidad]\n3. [Acción preventiva]\n\n**Dolor Crítico:**\n[El problema más grave que debes resolver YA]",
-        "previewResponse": "**Sentimientos Reviews**\n\n**Prompt:**\n\"Clasifica reviews en Promotores/Detractores. Identifica motivo principal queja (Envío/Precio).\"",
+        "previewResponse": "**Análisis de Sentimientos: Lo que Aman y Odian**\n\n**RESUMEN EJECUTIVO DE 50 REVIEWS:**\n\n**TABLA DE CALIFICACIÓN EMOCIONAL:**\n\n| Categoría | Sentimiento | Frecuencia | Cita Real (La Voz del Cliente) |\n| :--- | :--- | :--- | :--- |\n| **Sabor / Calidad** | 😍 Positivo | 42/50 | \"Es la mejor torta que he probado, húmeda y rica\". |\n| **Empaque** | 😠 Negativo | **15/50** | \"Llegó la caja aplastada\", \"Se desarmó en el camino\". |\n| **Atención** | 😐 Neutro | 5/50 | \"Contestaron pero se demoraron un poco\". |\n\n---\n\n**DOLOR CRÍTICO (Queja Implícita):**\nAunque aman el sabor, **tienen miedo de pedir a domicilio** porque el empaque no protege la torta. Muchos dicen \"mejor la voy a buscar\". Estás perdiendo ventas de delivery por esto.\n\n**TOP 3 ACCIONES URGENTES:**\n1.  **Cambiar Caja:** Buscar proveedor de cartón micro-corrugado más rígido (Costo extra $100 pesos, vale la pena).\n2.  **Sello de Seguridad:** Poner sticker \"Frágil\" grande para el motorista.\n3.  **Campaña Confianza:** Subir video story tirando la caja nueva (vacía) al suelo para mostrar resistencia.",
         "metadata": {
             "score": 90,
             "technique": "Psychographic Profiling (Análisis de miedos y motivaciones ocultas)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Conoces a esa persona tan bien que sabes qué palabras usar para que te compre?",
-        "exampleTip": "Psychographic Profiling (Análisis de miedos y motivaciones ocultas)."
+        "exampleTip": "Psychographic Profiling (Análisis de miedos y motivaciones ocultas).",
+        "description": ""
     },
     {
         "id": 95,
@@ -1389,14 +1465,15 @@ const casesData = [
         "badResponsePreview": "Juan y María han comprado harto.",
         "badResponseAnalysis": "Análisis lineal. No cruza rentabilidad ni riesgo de fuga.",
         "agiaPromptTagged": "Eres un Estratega de Rentabilidad especializado en la Regla de Pareto (80/20). Tu expertise es identificar el 20% de clientes que generan el 80% de la utilidad para optimizar recursos.\n\nCONTEXTO:\nLista de clientes y ventas: [Pega aquí tu lista o describe: \"Cliente A: $5M/año, Cliente B: $500k/año...\"]\n\nPeríodo analizado: [Ej: \"Último año\"]\n\nMETA:\nNecesito identificar el 20% de clientes VIP que hacen el 80% de mi utilidad y una estrategia de retención específica para ellos.\n\nRESTRICCIONES:\n- Cruza rentabilidad (no solo volumen de ventas)\n- Identifica riesgo de fuga\n- Propón estrategia de \"mimo\" VIP\n- Calcula impacto si pierdes a uno\n\nFORMATO:\n**Análisis Pareto 80/20:**\n\n**Clientes VIP (20% que hace 80%):**\n1. [Cliente A] - Utilidad: $X/año - Riesgo fuga: [Alto/Medio/Bajo]\n2. [Cliente B] - Utilidad: $Y/año - Riesgo fuga: [...]\n\n**Alerta:**\nSolo [X] clientes te generan el [Y]% de tu sueldo\n\n**Estrategia de Retención VIP:**\n- [Acción específica para cada VIP]\n- [Ej: \"Enviar regalo físico fin de año\"]\n\n**Impacto si pierdes a uno:**\n[Cálculo del riesgo]",
-        "previewResponse": "**Pareto 80/20**\n\n20% Prod = 80% Margen -> Potenciar.\n20% Clientes = 80% Problemas -> Despedir.",
+        "previewResponse": "**Análisis Pareto 80/20: Tus Clientes VIP**\n\n**ALERTA ESTRATÉGICA:**\nDe tu lista de 100 clientes, solo **12 clientes (12%)** ge neraron el **75% de tu utilidad** este año.\n*Si pierdes a 2 de estos, tu negocio entra en pérdidas.*\n\n---\n\n**TUS CLIENTES \"BALLEINA\" (VIP):**\n\n**1. Constructora Alfa SpA**\n- **Utilidad Anual:** $8.500.000\n- **Riesgo Fuga:** **ALTO** (No les has hablado en 3 meses).\n- **Acción:** Enviar regalo físico premium (Vino + Nota a mano) HOY. Agendar almuerzo de fin de año.\n\n**2. Inversiones Beta Ltda**\n- **Utilidad Anual:** $5.200.000\n- **Riesgo Fuga:** MEDIO (Pagan al día, pero piden poco feedback).\n- **Acción:** Llamada de \"Salud del Cliente\" no para vender, solo para preguntar cómo están.\n\n**3. Juan Pérez (Particular)**\n- **Utilidad Anual:** $3.100.000\n- **Riesgo Fuga:** BAJO (Fan de la marca).\n- **Acción:** Darle acceso anticipado exclusivo a nuevos lanzamientos.\n\n---\n\n**ESTRATEGIA DE RETENCIÓN \"MIMO VIP\":**\nA estos 12 no se les manda email masivo. Se les llama por nombre. Se les invita a comer. Se les resuelve el problema antes que ocurra.",
         "metadata": {
             "score": 97,
             "technique": "Creative Ideation (Generación de nombres basados en fonética y significado)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿El nombre es corto, suena bien y tiene un dominio web disponible hoy?",
-        "exampleTip": "Creative Ideation (Generación de nombres basados en fonética y significado)."
+        "exampleTip": "Creative Ideation (Generación de nombres basados en fonética y significado).",
+        "description": ""
     },
     {
         "id": 96,
@@ -1408,14 +1485,15 @@ const casesData = [
         "badResponsePreview": "Mejora el diseño y baja los precios.",
         "badResponseAnalysis": "Diagnóstico de escopeta. No analiza métricas para saber DÓNDE se van.",
         "agiaPromptTagged": "Eres un Experto en CRO (Conversion Rate Optimization) especializado en análisis de embudos de venta. Tu expertise es diagnosticar dónde se fugan las ventas en un sitio web o proceso de compra.\n\nCONTEXTO:\nDatos del embudo: [Ej: \"1000 visitas → 100 carritos → 2 ventas\" / \"500 leads → 50 citas → 5 ventas\" / etc.]\n\nTipo de negocio: [Ej: \"E-commerce\" / \"Servicios B2B\" / \"Cursos online\" / etc.]\n\nMETA:\nNecesito un diagnóstico de dónde está la fuga más grande y una hipótesis de causa + solución accionable.\n\nRESTRICCIONES:\n- Identifica el punto de mayor caída (%)\n- Propón hipótesis de causa (fricción técnica, precio sorpresa, etc.)\n- Sugiere solución específica y testeable\n- Prioriza por impacto\n\nFORMATO:\n**Análisis de Embudo:**\n\n**Datos:**\n- Visitas: 1000\n- Carritos: 100 (10% conversión)\n- Ventas: 2 (2% conversión de carrito)\n\n**Diagnóstico:**\n**Fuga Crítica:** Caída del 98% en Checkout\n\n**Hipótesis de Causa:**\n[Ej: \"Costo de envío sorpresa al final asusta al cliente\"]\n\n**Solución Propuesta:**\n[Ej: \"Poner calculador de envíos en la ficha de producto\"]\n\n**Impacto Estimado:**\n[Si subes conversión de checkout de 2% a 5%, ventas suben a X]",
-        "previewResponse": "**Fugas Embudo**\n\n**Fuga:** Carrito -> Pago.\n**Causa:** Sorpresa envío.\n**Acción:** Mostrar costo antes.",
+        "previewResponse": "**Diagnóstico de Embudo: ¿Dónde está la fuga?**\n\n**DATOS DEL EMBUDO:**\n- Visitas Web: 2.000 (100%)\n- Agregan al Carrito: 150 (7.5%) -> *Buen ratio.*\n- Inician Pago (Checkout): 40 (2%) -> *Aquí perdemos 110 personas.*\n- **Compran:** 5 (0.25%) -> **¡FUGA MASIVA!**\n\n---\n\n**DIAGNÓSTICO CRÍTICO:**\nEntre \"Agregar al Carrito\" y \"Comprar\" se cae el **96% de la gente**.\nNo es problema de tu producto (lo agregan), es problema de tu **PROCESO DE PAGO**.\n\n**HIPÓTESIS DE CAUSA:**\n1.  **Costo de Envío Sorpresa:** El cliente ve $20.000, va a pagar y pum, son $28.000. Se va indignado.\n2.  **Registro Obligatorio:** Pides crear cuenta con contraseña antes de pagar. Nadie quiere crear cuentas.\n\n**SOLUCIÓN ACCIONABLE:**\n1.  **Calculadora Anticipada:** Poner \"Estimar Envío\" en la ficha de producto.\n2.  **Checkout Invitado:** Habilitar compra sin registro.\n\n**IMPACTO ESTIMADO:**\nSi recuperamos solo la mitad de esa fuga, pasamos de 5 ventas a **22 ventas**.\nEso es **cuadruplicar la facturación** sin gastar un peso más en publicidad.",
         "metadata": {
             "score": 95,
             "technique": "UVP Design (Articulación del beneficio principal que te separa)."
         },
         "suggestedAI": "ChatGPT / Gemini",
         "validationTip": "¿Si le dices esta frase a un cliente, entiende de inmediato qué te hace especial?",
-        "exampleTip": "UVP Design (Articulación del beneficio principal que te separa)."
+        "exampleTip": "UVP Design (Articulación del beneficio principal que te separa).",
+        "description": ""
     },
     {
         "id": 97,
@@ -1427,14 +1505,15 @@ const casesData = [
         "badResponsePreview": "Seguramente vendas parecido a este mes, unos 4 millones.",
         "badResponseAnalysis": "Proyección estática. No considera tendencia de crecimiento mensual ni estacionalidad.",
         "agiaPromptTagged": "Eres un Data Scientist Retail especializado en pronóstico de demanda (forecasting). Tu expertise es proyectar ventas futuras considerando tendencias y estacionalidad.\n\nCONTEXTO:\nVentas históricas: [Pega aquí ventas de últimos 6-12 meses o describe: \"Mes 1: $3M, Mes 2: $3.3M, Mes 3: $3.6M...\"]\n\nTendencia observada: [Ej: \"Crecimiento mensual del 10%\" / \"Estable\" / \"Bajando\" / etc.]\n\nMETA:\nNecesito una proyección de ventas para los próximos 3 meses con escenario conservador y optimista, más una alerta de stock necesario.\n\nRESTRICCIONES:\n- Considera tasa de crecimiento promedio\n- Identifica estacionalidad si existe\n- Da escenario conservador y optimista\n- Alerta sobre stock necesario\n\nFORMATO:\n**Pronóstico de Demanda:**\n\n**Tendencia Identificada:**\n[Ej: \"Crecimiento mensual del 10%\"]\n\n**Proyección (3 meses):**\n- Mes 1: $X (Conservador) / $Y (Optimista)\n- Mes 2: $X (Conservador) / $Y (Optimista)\n- Mes 3: $X (Conservador) / $Y (Optimista)\n\n**Alerta de Stock:**\nNecesitas comprar un [X]% más de stock HOY para no quebrar en Mes [Y]\n\n**Estacionalidad:**\n[Si aplica, ej: \"Diciembre sube 30% por Navidad\"]",
-        "previewResponse": "**Forecasting**\n\n**Prompt:**\n\"Proyecta ventas Q3 basado en histórico 12 meses. Identifica estacionalidad.\"",
+        "previewResponse": "**Pronóstico de Demanda (Forecasting Q3)**\n\n**TENDENCIA OBSERVADA:**\nCrecimiento sostenido del 8% mensual en los últimos 6 meses.\nEstacionalidad detectada: Caída del 15% en Septiembre (Fiestas Patrias).\n\n---\n\n**PROYECCIÓN PRÓXIMOS 3 MESES:**\n\n**JULIO (Mes Normal):**\n- Escenario Conservador: $4.500.000\n- Escenario Optimista: $5.100.000\n- *Stock Necesario:* 450 unidades.\n\n**AGOSTO (Mes Fuerte - Día del Niño):**\n- Escenario Conservador: $5.200.000\n- Escenario Optimista: $6.000.000 (+20%)\n- *Stock Necesario:* **600 unidades** (¡Ojo aquí! Comprar ahora).\n\n**SEPTIEMBRE (Mes Bajo - Fiestas Patrias):**\n- Escenario Conservador: $3.800.000 (-20%)\n- Escenario Optimista: $4.200.000\n- *Acción:* Lanzar promo \"Endieciochada\" para mitigar caída.\n\n**ALERTA DE CAJA:**\nEn Agosto necesitarás liquidez para comprar el stock de Septiembre, pero Septiembre será lento. Guarda caja en Julio.",
         "metadata": {
             "score": 91,
             "technique": "MVP Scoping (Reducción de la idea a lo esencial para validar)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Identificaste qué es lo mínimo que puedes vender hoy para probar interés real?",
-        "exampleTip": "MVP Scoping (Reducción de la idea a lo esencial para validar)."
+        "exampleTip": "MVP Scoping (Reducción de la idea a lo esencial para validar).",
+        "description": ""
     },
     {
         "id": 98,
@@ -1446,14 +1525,15 @@ const casesData = [
         "badResponsePreview": "Sí, triplicaste tu inversión. Sigue así.",
         "badResponseAnalysis": "Falso positivo peligroso. No descuenta costo producto ni impuestos.",
         "agiaPromptTagged": "Eres un Performance Manager especializado en auditoría de campañas publicitarias. Tu expertise es calcular el ROI real de publicidad considerando TODOS los costos (producto, impuestos, comisiones).\n\nCONTEXTO:\nInversión en publicidad: [Ej: \"$100.000\"]\n\nVentas generadas: [Ej: \"$300.000\"]\n\nCosto del producto: [Ej: \"50% del precio de venta\"]\n\nOtros costos: [Ej: \"IVA 19%, Comisión pasarela 3%\"]\n\nMETA:\nNecesito saber la utilidad NETA real después de descontar todos los costos, y un veredicto claro: ¿la campaña fue rentable o trabajé gratis?\n\nRESTRICCIONES:\n- Considera IVA (19% en Chile)\n- Considera costo de producto\n- Considera comisiones de pasarela\n- Dame veredicto claro: Rentable / No rentable\n\nFORMATO:\n**Auditoría de ROI Real:**\n\n**Cálculo:**\n- Venta Bruta: $300k\n- Menos IVA (19%): -$48k\n- Menos Costo Producto (50%): -$150k\n- Menos Publicidad: -$100k\n- Menos Comisiones (3%): -$9k\n= **Utilidad Neta: $X**\n\n**Veredicto:**\n[Rentable / No rentable] porque [explicación]\n\n**Acción:**\n[Ej: \"Sube precios 15% o apaga la campaña\"]",
-        "previewResponse": "**Auditoría Ads**\n\n**Métrica:** MER (Ingreso Total / Gasto Ads).\n>3: Escala.\n<1.5: Frena.",
+        "previewResponse": "**Auditoría de ROI Real: La Verdad Dolorosa**\n\n**CAMPAÑA:** Facebook Ads \"Promo Invierno\"\n**INVERSIÓN:** $200.000\n\n---\n\n**MATEMÁTICA DE SERVILLETA (Realista):**\n\n1.  **Ventas Brutas generadas:** **$800.000**\n    *(Parece bueno, es un ROAS de 4x. ¡Pero espera!)*\n\n2.  **DESCUENTOS REALES:**\n    - **IVA (19%):** -$127.731 (Esa plata es del fisco).\n    - **Costo Producto (40%):** -$320.000 (Reposición).\n    - **Publicidad:** -$200.000 (Lo que pagaste a Meta).\n    - **Transbank (3%):** -$24.000\n    - **Despacho Gratis (Absorbido):** -$40.000\n\n3.  **UTILIDAD NETA FINAL:**\n    $800k - $127k - $320k - $200k - $24k - $40k = **$88.269**\n\n---\n\n**VEREDICTO: RIESGOSO ⚠️**\nEstás moviendo casi un millón de pesos para ganar **$88 lucas**.\nTu margen real es del 11%.\nCualquier devolución o producto dañado te deja en pérdidas.\n\n**ACCIÓN:**\nSube el precio del pack o elimina el \"Despacho Gratis\" para pedidos menores a $50k.",
         "metadata": {
             "score": 98,
             "technique": "Gap Analysis (Identificación de espacios desatendidos)."
         },
         "suggestedAI": "Perplexity",
         "validationTip": "¿Encontraste algo que todos tus competidores hacen mal y tú puedes hacer bien?",
-        "exampleTip": "Gap Analysis (Identificación de espacios desatendidos)."
+        "exampleTip": "Gap Analysis (Identificación de espacios desatendidos).",
+        "description": ""
     },
     {
         "id": 99,
@@ -1464,14 +1544,15 @@ const casesData = [
         "badResponsePreview": "Hola, mi negocio se llama Aula GenIA y enseñamos a la gente a usar ChatGPT y otras herramientas para que puedan ser más productivos en sus trabajos y empresas hoy.",
         "badResponseAnalysis": "Aburrido y genérico. No empieza con un problema impactante, no menciona un resultado tangible y no deja a la otra persona con ganas de hacer una pregunta de seguimiento.",
         "agiaPromptTagged": "Eres un Coach de Pitch de Inversión especializado en crear \"Elevator Pitches\" (guiones de ascensor) de alto impacto. Tu expertise es comprimir la esencia de un negocio en 30 segundos memorables.\n\nCONTEXTO:\nMi negocio/proyecto: [Ej: \"Aula GenIA - Cursos de IA para emprendedores\" / \"App de delivery local\" / \"Consultoría de automatización\" / etc.]\n\nPúblico al que me dirijo: [Ej: \"Inversores\" / \"Clientes potenciales\" / \"Socios estratégicos\" / etc.]\n\nProblema que resuelvo: [Ej: \"Dueños de Pyme que trabajan 12h pero rinden 4h\" / etc.]\n\nMETA:\nNecesito un guion de 30 segundos (máximo 80 palabras) que enganche desde la primera frase y deje a la otra persona con ganas de saber más.\n\nRESTRICCIONES:\n- Estructura: Gancho (problema impactante) → Solución (tu negocio) → Resultado tangible\n- Empieza con una pregunta retórica o dato sorprendente\n- Termina con un CTA suave (ej: \"¿Te doy mi tarjeta?\")\n- Tono: Conversacional pero profesional\n\nFORMATO:\n**Guion Elevator Pitch (30s):**\n\"[Texto fluido listo para memorizar]\"\n\n**Desglose:**\n- Gancho: [Primera frase]\n- Problema: [...]\n- Solución: [...]\n- CTA: [...]",
-        "previewResponse": "**Pitch Elevator**\n\n1. Dolor (\"Sabías que...\").\n2. Solución (\"Hacemos X\").\n3. Prueba (\"Recuperan $1M\").\n4. CTA (\"Te muestro?\").",
+        "previewResponse": "**Guion Pitch Elevator (30 Segundos)**\n\n**GANCHO (El Problema):**\n\"¿Sabías que el 70% de las Pymes chilenas quiebran antes de los 3 años, no por falta de ventas, sino por desorden financiero?\"\n\n**SOLUCIÓN (Tu Negocio):**\n\"Nosotros creamos 'Finanzas a Prueba de Balas', un software que automatiza el flujo de caja y te avisa 3 meses antes si te vas a quedar sin plata.\"\n\n**RESULTADO (Tangible):**\n\"Ya hemos salvado a más de 200 empresas de la quiebra este año, recuperando en promedio 5 millones de pesos mal gastados en el primer mes.\"\n\n**CIERRE (CTA Suave):**\n\"Tengo una demo de 2 minutos en mi celular. ¿Te la muestro mientras subimos?\"",
         "metadata": {
             "score": 90,
             "technique": "Pitch Framing (Estructura narrativa comprimida)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Si dices este guion en un ascensor, la persona te pediría tu contacto?",
-        "exampleTip": "Pitch Framing (Estructura narrativa comprimida)."
+        "exampleTip": "Pitch Framing (Estructura narrativa comprimida).",
+        "description": ""
     },
     {
         "id": 100,
@@ -1483,14 +1564,15 @@ const casesData = [
         "badResponsePreview": "Instagram porque tienes más likes.",
         "badResponseAnalysis": "Confunde métricas de vanidad (likes) con métricas de negocio (ventas).",
         "agiaPromptTagged": "Eres un Estratega de Marketing Digital especializado en atribución de canales. Tu expertise es identificar qué canal de marketing realmente genera ventas rentables (no solo likes).\n\nCONTEXTO:\nCanales actuales: [Ej: \"Instagram, Email, Google Ads, WhatsApp\"]\n\nDatos disponibles: [Ej: \"Instagram: 1000 seguidores, 50 clics/mes, 2 ventas promedio $20k\" / \"Email: 200 suscriptores, 30 clics/mes, 5 ventas promedio $50k\"]\n\nMETA:\nNecesito un ranking de canales por rentabilidad real (considerando calidad del cliente y LTV), no por métricas de vanidad.\n\nRESTRICCIONES:\n- Considera calidad del cliente (LTV, ticket promedio)\n- No solo volumen (likes, seguidores)\n- Calcula costo de oportunidad (tiempo invertido)\n- Dame acción clara: dónde enfocar esfuerzo\n\nFORMATO:\n**Ranking de Canales:**\n\n**1. [Canal]**\n- Métricas: [Clics, ventas]\n- Calidad: [Ticket promedio, LTV]\n- Veredicto: [Por qué es #1]\n\n**2. [Canal]**\n[Mismo formato]\n\n**Acción Recomendada:**\n[Ej: \"Mueve esfuerzo de crear Reels a escribir correos porque generan clientes 2x más valiosos\"]\n\n**Impacto:**\n[Cuánto podrías aumentar ventas optimizando]",
-        "previewResponse": "**Análisis Canales**\n\nMirar **LTV** no Likes.\nInstagram = Ruido.\nEmail = Venta.",
+        "previewResponse": "**Ranking de Canales: Atribución Real**\n\n**FILOSOFÍA:** No me importan los Likes, me importa la Billetera.\n\n---\n\n**RANKING DE RENTABILIDAD (LTV):**\n\n🥇 **1. EMAIL MARKETING (El Rey Silencioso)**\n- **Métricas:** Solo 200 clics, pero 15 ventas.\n- **Calidad:** Ticket promedio de $85.000. Clientes fieles.\n- **Veredicto:** Es tu canal más rentable. Dedícale el 50% de tu tiempo.\n\n🥈 **2. GOOGLE ADS (Intención Alta)**\n- **Métricas:** Clic caro ($500), pero conversión alta (5%).\n- **Calidad:** Buscan comprar YA. Ciclo de venta corto.\n- **Veredicto:** Mantener optimizado.\n\n🥉 **3. INSTAGRAM (Mucho Ruido, Pocas Nueces)**\n- **Métricas:** 10.000 likes, 50 comentarios \"precio\".\n- **Calidad:** Ticket bajo ($15.000). Preguntan mucho, compran poco.\n- **Veredicto:** Úsalo para marca, no esperes pagar el arriendo con esto.\n\n---\n\n**ACCIÓN ESTRATÉGICA:**\nDeja de obsesionarte con los algoritmos de Reels.\nMueve a tus seguidores de Instagram a tu lista de Email (Lead Magnet).\nUn suscriptor de email vale por 10 seguidores de Instagram.",
         "metadata": {
             "score": 91,
             "technique": "Offer Stacking (Agregación de bonos y garantías)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Tu oferta es tan buena que el cliente se siente tonto negándola?",
-        "exampleTip": "Offer Stacking (Agregación de bonos y garantías)."
+        "exampleTip": "Offer Stacking (Agregación de bonos y garantías).",
+        "description": ""
     },
     {
         "id": 101,
@@ -1502,14 +1584,15 @@ const casesData = [
         "badResponsePreview": "Ganarás más por unidad, pero quizás vendas menos.",
         "badResponseAnalysis": "Respuesta obvia cualitativa. Necesitamos saber *cuánto* menos podemos vender antes de perder dinero.",
         "agiaPromptTagged": "Eres un Modelador Financiero especializado en simulación de escenarios \"What If\". Tu expertise es calcular el impacto de decisiones de negocio antes de tomarlas.\n\nCONTEXTO:\nSituación actual: [Ej: \"Vendo 100 unidades a $20k cada una\"]\n\nDecisión a evaluar: [Ej: \"Subir precios 10%\" / \"Contratar un empleado\" / \"Abrir sucursal\" / etc.]\n\nSupuesto de impacto: [Ej: \"Perderé 5% de clientes si subo precio\"]\n\nMETA:\nNecesito una comparación numérica clara entre Escenario A (actual) vs Escenario B (con el cambio) para saber si la decisión es rentable.\n\nRESTRICCIONES:\n- Calcula utilidad final en ambos escenarios\n- Considera todos los costos\n- Dame conclusión clara: Hazlo / No lo hagas\n- Muestra el punto de equilibrio\n\nFORMATO:\n**Simulador de Escenarios:**\n\n**Escenario A (Actual):**\n- Ventas: 100u × $20k = $2M\n- Costos: $X\n- Utilidad: $Y\n\n**Escenario B (Con cambio):**\n- Ventas: 95u × $22k = $2.09M\n- Costos: $X\n- Utilidad: $Z\n\n**Conclusión:**\n[Hazlo / No lo hagas] porque [explicación con números]\n\n**Punto de Equilibrio:**\n[Cuántos clientes puedes perder antes de que deje de ser rentable]",
-        "previewResponse": "**Simulador Escenarios**\n\n**Prompt:**\n\"Simula: 1. Subir precio 10%. 2. Bajar venta 20%. ¿Qué pasa con utilidad?\"",
+        "previewResponse": "**Simulador de Escenarios \"What If\"**\n\n**DECISIÓN A EVALUAR:** Contratar un Vendedor Full-Time ($800.000 costo empresa).\n\n---\n\n**ESCENARIO A (Actual - Sin Vendedor):**\n- Ventas Mensuales: $5.000.000\n- Costos Fijos: $2.000.000\n- **Utilidad Operativa:** **$3.000.000**\n\n**ESCENARIO B (Con Vendedor - Pesimista):**\n- El vendedor vende lo mismo que tú (no agrega valor extra al inicio).\n- Costos suben a $2.800.000\n- **Utilidad:** $2.200.000 (Pierdes $800k de tu bolsillo).\n\n**ESCENARIO C (Con Vendedor - Meta Break-even):**\n- Para que el vendedor se pague solo (y quedes igual que antes), debe vender **$2.600.000 EXTRA** al mes (con margen 30%).\n- ¿Es realista vender $2.6M más desde el mes 1?\n\n**CONCLUSIÓN:**\nNo contrates fijo todavía.\n**Prueba un Freelance a comisión pura.**\nSi logra vender $2M, recién ahí contrata fijo.",
         "metadata": {
             "score": 93,
             "technique": "Launch Sequencing (Planificación gradual de la anticipación)."
         },
         "suggestedAI": "ChatGPT",
         "validationTip": "¿Sabes exactamente qué postear hoy para preparar la venta de la próxima semana?",
-        "exampleTip": "Launch Sequencing (Planificación gradual de la anticipación)."
+        "exampleTip": "Launch Sequencing (Planificación gradual de la anticipación).",
+        "description": ""
     },
     {
         "id": 102,
@@ -1521,10 +1604,11 @@ const casesData = [
         "badResponsePreview": "Va bien, vendes harto.",
         "badResponseAnalysis": "Optimismo ciego. No mira la deuda ni el flujo de caja.",
         "agiaPromptTagged": "Eres un CEO Interino especializado en diagnósticos rápidos de salud empresarial. Tu expertise es crear reportes \"semáforo\" que muestren el estado real del negocio en una página.\n\nCONTEXTO:\nDatos del negocio: [Ej: \"Ventas: $5M/mes, Gastos: $4M/mes, Deuda: $2M, Facturas por cobrar: $3M\"]\n\nPeríodo: [Ej: \"Último trimestre\"]\n\nMETA:\nNecesito un diagnóstico de salud del negocio usando sistema de semáforo (🟢🟡🔴) y la prioridad #1 de acción inmediata.\n\nRESTRICCIONES:\n- Evalúa: Ventas, Flujo de caja, Deuda, Cobranza\n- Sistema semáforo claro\n- Identifica LA prioridad #1\n- Tono: Honesto y directo\n\nFORMATO:\n**Reporte de Salud del Negocio:**\n\n🟢 **Ventas:** Creciendo [X]% mensual\n\n🟡 **Gastos:** Controlados pero ajustados\n\n🔴 **Caja:** PELIGRO - Tienes muchas facturas por cobrar. Estás vendiendo pero no cobrando.\n\n🟡 **Deuda:** Manejable si mejora la caja\n\n**Diagnóstico:**\n[Resumen en 2 líneas]\n\n**PRIORIDAD #1:**\n[Acción inmediata más crítica]\n\n**Impacto si no actúas:**\n[Consecuencia de no hacer nada]",
-        "previewResponse": "**Reporte Salud**\n\n**Semáforo:**\n🟢 Caja (2 meses).\n🟢 Ventas (Meta).\n🔴 Clientes (Quejas).",
+        "previewResponse": "**Reporte de Salud del Negocio (Semáforo Mensual)**\n\n**FECHA:** Cierre Octubre\n\n---\n\n🟢 **VENTAS (Sano):**\nCerraste en $12M. Un 10% arriba de la meta. ¡Bien!\n\n🔴 **CAJA (Peligro Crítico):**\nAunque vendiste $12M, solo entraron $4M al banco.\nTienes $8M en facturas por cobrar a 60 días.\n**Riesgo:** No alcanzas a pagar sueldos el día 30.\n\n🟡 **DEUDA (Alerta):**\nLínea de crédito usada al 80%. Los intereses se están comiendo tu margen.\n\n---\n\n**DIAGNÓSTICO:**\n\"Empresa rica, caja pobre\". Vendes bien, cobras mal. Estás financiando a tus clientes a costa de tu estrés.\n\n**PRIORIDAD #1 (ACCIÓN INMEDIATA):**\n**Factorización (Factoring) o Cobranza Agresiva.**\nLlama hoy a los 3 clientes más grandes y ofrece 5% de descuento por pago anticipado inmediato. Necesitas liquidez HOY, no utilidad mañana.\n\n**IMPACTO SI NO ACTÚAS:**\nBicicleta financiera. Tendrás que pedir crédito personal para pagar sueldos.",
         "metadata": {
             "score": 94
-        }
+        },
+        "description": ""
     },
     {
         "id": 103,
@@ -1535,14 +1619,15 @@ const casesData = [
         "badResponsePreview": "Pon una foto de un gato con el texto 'Cuando llega el cliente difícil' arriba y 'Yo fingiendo que todo está bien' abajo",
         "badResponseAnalysis": "Meme genérico sin conexión con tendencias actuales ni contexto local. No considera el formato óptimo para cada red social ni el timing de las tendencias.",
         "agiaPromptTagged": "Eres un Creador de Contenido Viral especializado en memes y cultura de internet. Sabes qué está de moda en internet y cómo hacer que la gente comparta.\n\nCONTEXTO:\nMi negocio es de: [Ej: \"Vendo tortas\" / \"Doy clases de IA\" / \"Vendo ropa\" / etc.]\n\nMeme que está de moda ahora: [Ej: \"El de 'Literalmente nadie:'\" / \"El de comparar dos cosas\" / \"El de Drake eligiendo\" / etc.]\n\nDónde lo voy a publicar: [Instagram / TikTok / Twitter / LinkedIn]\n\nMETA:\nDame 3 ideas de memes que conecten mi negocio con algo que esté de moda AHORA, que se vean naturales (no forzados) y que la gente quiera compartir.\n\nRESTRICCIONES:\n- Usa memes que estén de moda en 2024-2025 (nada viejo)\n- Si puedes, incluye algo típico de Chile o Latinoamérica\n- Que no se vea como publicidad obvia\n- Dime exactamente qué texto poner y qué imagen usar\n- Piensa en dónde funciona mejor cada meme\n\nFORMATO:\n**Meme 1: [Cómo se llama el meme]**\n- Mejor para: [Instagram / TikTok / etc.]\n- Qué imagen usar: [Descripción clara]\n- Texto de arriba: [...]\n- Texto de abajo: [...]\n- Por qué la gente lo va a compartir: [...]",
-        "previewResponse": "**Meme Viral (Estructura)**\n\n**Formato: \"Expectativa vs Realidad\"**\n\n**Panel 1 (Expectativa):**\nImagen: Persona trajeada, oficina futurista tipo Tony Stark.\nTexto: \"Lo que mi mamá cree que hago como Emprendedor\"\n\n**Panel 2 (Realidad):**\nImagen: Pedro Pascal llorando/riéndose, rodeado de cajas, comiendo fideos instantáneos a las 3 AM.\nTexto: \"Yo tratando de cuadrar la caja y responder 50 whatsapps a la vez\"\n\n**Por qué funciona:**\n- Identificación imediata (dolor compartido).\n- Uso de figura pop actual (Pedro Pascal).\n- Humor autodespreciativo.\n\n**Caption:** \"Confirmen 👇 #EmprendedorChile #VidaReal\"",
+        "previewResponse": "**Meme Viral: \"Expectativa vs Realidad\"**\n\n**ESTRUCTURA VISUAL:**\n**Panel Superior (Expectativa):**\n- **Imagen:** Tony Stark tecleando en pantallas holográficas futuristas.\n- **Texto:** \"Lo que mis amigos creen que hago como Freelance\"\n\n**Panel Inferior (Realidad):**\n- **Imagen:** Un mono intentando abrir un coco con una piedra o Pedro Pascal llorando.\n- **Texto:** \"Yo tratando de que el cliente me pague la factura vencida hace 3 meses\"\n\n**POR QUÉ FUNCIONA:**\n- **Identificación:** Todo freelancer sufre con cobros.\n- **Contraste:** La brecha entre el glamour imaginado y la realidad precaria es comedia pura.\n- **Llamado a compartir:** \"Etiqueta a tu amigo freelance que necesita un abrazo 👇\".",
         "metadata": {
             "score": 89,
             "technique": "Trend Hijacking (Aprovechamiento de tendencias virales actuales)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿El meme se siente natural o parece publicidad forzada?",
-        "exampleTip": "Trend Hijacking (Aprovechamiento de tendencias virales actuales)."
+        "exampleTip": "Trend Hijacking (Aprovechamiento de tendencias virales actuales).",
+        "description": ""
     },
     {
         "id": 104,
@@ -1553,14 +1638,15 @@ const casesData = [
         "badResponsePreview": "Pon tu cara sonriendo con el título del video en letras grandes",
         "badResponseAnalysis": "No considera psicología del click, contraste visual, ni elementos probados de alto engagement como flechas, círculos rojos, expresiones faciales exageradas.",
         "agiaPromptTagged": "Eres un Diseñador que sabe hacer portadas de video que la gente NO PUEDE ignorar. Conoces los trucos que hacen que la gente haga click.\n\nCONTEXTO:\nMi video es sobre: [Ej: \"Cómo vender más con IA\" / \"Receta rápida de torta\" / \"Trucos de Excel\" / etc.]\n\nDura: [Ej: \"1 minuto\" / \"10 minutos\" / \"30 minutos\"]\n\nProblema: [Ej: \"Hay mil videos del mismo tema, necesito destacar\"]\n\nQué quiero que sienta la gente: [Curiosidad / Sorpresa / Urgencia / Intriga]\n\nMETA:\nDame las instrucciones exactas para crear con IA una portada que haga que la gente TENGA que hacer click, usando trucos que funcionan.\n\nRESTRICCIONES:\n- Incluye cosas que llamen la atención: flechas, círculos rojos, caras con expresiones fuertes, colores que resalten\n- Máximo 5 palabras de texto (que se lean en el celular)\n- Colores fuertes que se vean en el feed\n- Nada de mentiras (no prometas lo que no cumples)\n- Dame los códigos de color exactos\n\nFORMATO:\n**Instrucciones para crear la portada con IA:**\n\"[Instrucciones completas en inglés para Midjourney o DALL-E]\"\n\n**Qué debe tener:**\n- Expresión de la cara: [Ej: \"Cara de sorpresa, boca abierta\"]\n- Texto en la portada: [Máximo 5 palabras grandes]\n- Colores: [Códigos exactos]\n- Cosas que llamen la atención: [Ej: \"Flecha roja apuntando al producto\"]",
-        "previewResponse": "**Portada YouTube (Thumbnail) Clickbait Ético**\n\n**Elementos Clave:**\n\n**1. Rostro:** Primer plano, expresión extremada (Sorpresa/Miedo/Felicidad). Ojos mirando a cámara.\n**2. Contraste:** Fondo oscuro + Ropa brillante. O Fondo amarillo + Letras negras.\n**3. Texto:** Máximo 4 palabras. Grande. Sans Serif. Borde negro.\nEj: \"PERDÍ TODO\" o \"GANA $1M\"\n**4. Elemento de Intriga:** Una flecha roja señalando un gráfico que cae o un número borroso.\n\n**Ejemplo para Video de Finanzas:**\nImagen: Tú agarrándote la cabeza con preocupación.\nFondo: Rojo alerta.\nTexto: \"NO HAGAS ESTO\"\nFlecha: Señalando una tarjeta de crédito.\n\n**Objetivo:** CTR > 8%.",
+        "previewResponse": "**Portada Clickbait Ético (YouTube/Reels)**\n\n**ELEMENTOS VISUALES:**\n1.  **Cara:** Primer plano tuyo con expresión exagerada de \"Miedo\" o \"Stop\". (Mirando a cámara).\n2.  **Elemento de Intriga:** Una flecha roja gruesa señalando un gráfico que cae en picada.\n3.  **Fondo:** Amarillo neón o Rojo alerta (Alto contraste).\n\n**TEXTO (Máximo 4 palabras):**\n\"PERDÍ TODO\"\n*(Letras blancas con borde negro grueso)*\n\n**TÍTULO DEL VIDEO (Complemento):**\n\"El error de $5 millones que casi quiebra mi negocio (No lo cometas)\"\n\n**PSICOLOGÍA DEL CLICK:**\nCombina la emoción del miedo a perder dinero con la curiosidad mórbida del fracaso ajeno. CTR esperado > 10%.",
         "metadata": {
             "score": 92,
             "technique": "Visual Attention Engineering (Diseño basado en psicología de la atención)."
         },
         "suggestedAI": "Midjourney / DALL-E 3 / Ideogram",
         "validationTip": "¿La portada destaca entre 20 videos similares en el feed?",
-        "exampleTip": "Visual Attention Engineering (Diseño basado en psicología de la atención)."
+        "exampleTip": "Visual Attention Engineering (Diseño basado en psicología de la atención).",
+        "description": ""
     },
     {
         "id": 105,
@@ -1571,14 +1657,15 @@ const casesData = [
         "badResponsePreview": "Pon los números en una tabla con colores bonitos",
         "badResponseAnalysis": "No cuenta una historia visual, no usa jerarquía de información ni elementos que inviten a compartir.",
         "agiaPromptTagged": "Eres un Diseñador que sabe convertir datos aburridos en imágenes que la gente QUIERE guardar y compartir.\n\nCONTEXTO:\nLos datos que tengo: [Ej: \"El 70% de los dueños de negocio trabaja 12 horas pero rinde 4\" / \"Estadísticas de uso de IA en Chile\" / etc.]\n\nPara quién es: [Ej: \"Dueños de negocio en LinkedIn\" / \"Emprendedores en Instagram\" / etc.]\n\nQué quiero lograr: [Educar / Sorprender / Generar conversación / Mostrar que sé del tema]\n\nMETA:\nDame el diseño completo de una infografía que cuente una historia visual clara, que no abrume con información y que la gente quiera guardar.\n\nRESTRICCIONES:\n- Que cuente una historia: Problema → Datos → Solución\n- Máximo 5 datos importantes (no más, abruma)\n- Usa dibujitos e íconos (no solo texto)\n- Que se vea bien en formato vertical (para Stories e Instagram)\n- Pon de dónde sacaste los datos (para que crean)\n\nFORMATO:\n**Estructura Visual:**\n\n**Parte 1 (Gancho):**\n- Título impactante: [Ej: \"7 de cada 10 dueños de negocio está quemado\"]\n- Dibujito: [Ej: \"Persona agotada\"]\n\n**Parte 2 (Datos):**\n- Dato 1: [Número grande + contexto]\n- Visualización: [Gráfico de barras / Dibujitos / etc.]\n\n**Parte 3 (Conclusión):**\n- Qué significa: [...]\n- Llamado: [Ej: \"¿Te pasa? Comenta 👇\"]",
-        "previewResponse": "**Infografía Guardable (Shareable)**\n\n**Título:** \"Ruta del Emprendedor 2024\"\n**Diseño:** Camino tipo serpiente con hitos.\n\n**Hito 1:** La Idea 💡 (Validar antes de gastar)\n**Hito 2:** Formalización 📝 (SpA en un día)\n**Hito 3:** Primera Venta 💰 (Amigos y familia)\n**Hito 4:** El Valle de la Muerte 💀 (Mes 6-12, resistir)\n**Hito 5:** Delegar 🤝 (Contratar al primero)\n**Hito 6:** Libertad 🚀 (El negocio funciona solo)\n\n**Footer:** @TuMarca - Guarda esto para cuando quieras renunciar.\n\n**Por qué se guarda:** Es un mapa de ruta útil que la gente quiere tener de referencia.",
+        "previewResponse": "**Infografía Guardable: \"La Ruta del Éxito\"**\n\n**ESTILO VISUAL:** Mapa de juego de mesa (Serpientes y Escaleras).\n\n**HITOS DEL CAMINO (Datos):**\n- **Casilla 1 (La Idea):** \"El 90% de ideas mueren por no validar. Habla con 10 clientes antes de gastar un peso.\"\n- **Casilla 2 (El Valle de la Muerte):** \"Meses 6-12. Aquí renuncia la mayoría. ¡Resiste!\"\n- **Casilla 3 (Primer Sueldo):** \"No te compres lujos. Reinversión total.\"\n- **Casilla 4 (Delegar):** \"El hito más difícil: soltar el control.\"\n- **Casilla 5 (Libertad):** \"El negocio funciona sin ti.\"\n\n**PIE DE PÁGINA:**\n\"@TuMarca - Guarda este mapa para cuando quieras renunciar.\"\n\n**POR QUÉ SE GUARDA:**\nEs una referencia de largo plazo. La gente lo guarda como \"mapa de ruta\" para consultar cuando se siente perdida.",
         "metadata": {
             "score": 90,
             "technique": "Data Storytelling (Narrativa visual de datos complejos)."
         },
         "suggestedAI": "Canva AI / Ideogram / ChatGPT",
         "validationTip": "¿La infografía cuenta una historia o solo muestra números?",
-        "exampleTip": "Data Storytelling (Narrativa visual de datos complejos)."
+        "exampleTip": "Data Storytelling (Narrativa visual de datos complejos).",
+        "description": ""
     },
     {
         "id": 106,
@@ -1589,14 +1676,15 @@ const casesData = [
         "badResponsePreview": "Pon tu producto sobre una mesa blanca con buena luz",
         "badResponseAnalysis": "No considera contexto de uso, lifestyle photography ni elementos que generen deseo de compra.",
         "agiaPromptTagged": "Eres un Fotógrafo de Productos que sabe hacer fotos que hacen que la gente QUIERA comprar. Sabes mostrar productos en situaciones reales de la vida.\n\nCONTEXTO:\nMi producto es: [Ej: \"Taza de cerámica hecha a mano\" / \"Curso online\" / \"App de celular\" / etc.]\n\nPara quién es: [Ej: \"Gente que trabaja desde la casa\" / \"Mamás ocupadas\" / etc.]\n\nQué sentimiento quiero dar: [Aspiracional / Acogedor / Profesional / Aventurero]\n\nMETA:\nDame las instrucciones para crear con IA una foto realista que muestre el producto en la vida real, en una situación donde la gente se imagine usándolo.\n\nRESTRICCIONES:\n- Que se vea en uso real (no sobre fondo blanco aburrido)\n- Incluye elementos de la vida real (manos, ambiente, objetos)\n- Luz natural y cálida\n- Que se vea actual (no como foto de stock vieja)\n- Dime desde qué ángulo tomar la foto\n\nFORMATO:\n**Instrucciones para la IA (Midjourney/DALL-E):**\n\"[Instrucciones completas en inglés]\"\n\n**Qué debe aparecer:**\n- El producto: [Descripción detallada]\n- El ambiente: [Ej: \"Escritorio minimalista con laptop Mac\"]\n- Manos/Persona: [Ej: \"Manos de mujer sosteniendo la taza\"]\n- Desde dónde se ve: [Ej: \"Desde arriba a 45 grados\"]\n- La luz: [Ej: \"Luz natural de ventana\"]",
-        "previewResponse": "**Foto Producto (Estilo Lifestyle)**\n\n**Producto:** Vela Aromática Artesanal\n\n❌ **Mala Foto:** La vela sola en una mesa con flash directo. Se ve prolija pero fría.\n\n✅ **Foto Que Vende:**\n- **Ambiente:** Noche, luz cálida tenue.\n- **Contexto:** Al lado de una tina con espuma, un libro abierto y una copa de vino.\n- **Sensación:** \"Relax total\". No vendes cera, vendes un momento de paz.\n- **Detalle:** Humo saliendo suavemente (movimiento).\n\n**Texto en foto (opcional):** \"Tu Spa en casa\".",
+        "previewResponse": "**Foto Producto Lifestyle: \"Vela Aromática\"**\n\n**INSTRUCCIONES PARA IA (Midjourney v6):**\n\"A cozy aesthetic photo of a lavender scented candle on a rustic wooden bathtub tray, next to an open book and a glass of red wine. Soft warm candlelight illumination, steam rising gently from a hot bath, blurred background of a spa-like bathroom, cinematic lighting, 8k, photorealistic --ar 4:5\"\n\n**POR QUÉ VENDE:**\n- **No vende cera:** Vende un \"momento de paz\" para una mamá estresada.\n- **Contexto:** Ubica el producto en su lugar de uso ideal (baño relajante).\n- **Sensación:** Calidez, silencio, autocuidado.\n\n**TEXTO SOBREPUESTO:**\n\"Tu spa en casa por menos de $15.000\".",
         "metadata": {
             "score": 91,
             "technique": "Lifestyle Product Photography (Fotografía de producto en contexto de uso)."
         },
         "suggestedAI": "Midjourney / DALL-E 3",
         "validationTip": "¿La foto hace que te imagines usando el producto?",
-        "exampleTip": "Lifestyle Product Photography (Fotografía de producto en contexto de uso)."
+        "exampleTip": "Lifestyle Product Photography (Fotografía de producto en contexto de uso).",
+        "description": ""
     },
     {
         "id": 107,
@@ -1607,14 +1695,15 @@ const casesData = [
         "badResponsePreview": "Pon una foto del producto con un sticker de 'Desliza arriba'",
         "badResponseAnalysis": "No considera retención, elementos interactivos nativos ni secuencias que mantengan al usuario viendo.",
         "agiaPromptTagged": "Eres un Diseñador de Stories de Instagram que sabe hacer que la gente vea todas las stories completas y que interactúe con ellas.\n\nCONTEXTO:\nPara qué es la story: [Ej: \"Promocionar mi curso\" / \"Mostrar detrás de cámaras\" / \"Hacer una encuesta\" / etc.]\n\nCuántas stories: [Ej: \"5 stories seguidas\"]\n\nPara quién: [Ej: \"Emprendedores de 25-40 años\"]\n\nMETA:\nDame el diseño de una secuencia de stories con las herramientas interactivas de Instagram que hagan que la gente vea todas y que participe.\n\nRESTRICCIONES:\n- Usa las herramientas de Instagram (encuestas, preguntas, sliders, quiz)\n- Cada story debe conectar con la siguiente (que quieran seguir viendo)\n- Máximo 10 palabras de texto por story (que se lea rápido)\n- Incluye movimiento o animación\n- Usa los colores de mi marca\n\nFORMATO:\n**Story 1: [Gancho]**\n- Qué se ve: [Descripción]\n- Texto: [Máximo 10 palabras]\n- Herramienta interactiva: [Ej: \"Encuesta: ¿Te pasa esto? Sí/No\"]\n- Duración: [Segundos]\n\n**Story 2-5:** [Mismo formato]\n\n**Cómo conectan:**\n[Explicación de retención]",
-        "previewResponse": "**Instagram Story (Secuencia Venta)**\n\n**Slide 1 (Problema):**\nEncuesta: \"¿Te cuesta dormir los domingos por ansiedad del lunes?\" [SÍ / NO]\n\n**Slide 2 (Empatía):**\nVideo selfie: \"Yo igual. Esa sensación de guata apretada es horrible. Pero descubrí algo...\"\n\n**Slide 3 (Solución):**\nFoto producto (Spray de Lavanda almohada): \"Este spray natural baja la ansiedad en 5 minutos. Comprobado.\"\n\n**Slide 4 (Prueba):**\nCaptura de review cliente: \"Dormí como guagua por primera vez en meses\".\n\n**Slide 5 (CTA):**\n\"Quedan 5 unidades en stock. Link aquí para dormir mejor hoy. 👇\"",
+        "previewResponse": "**Secuencia Stories Interactivas (Venta Curso)**\n\n**STORY 1 (Gancho + Encuesta):**\n- **Visual:** Tú con cara de cansancio frente al PC.\n- **Texto:** \"¿Te cuesta concentrarte después de almuerzo?\"\n- **Sticker:** [SÍ, ES HORRIBLE / NO, SOY ROBOT]\n\n**STORY 2 (Empatía):**\n- **Visual:** Video corto hablando.\n- **Texto:** \"A mí me pasaba igual. A las 3 PM mi cerebro se apagaba y perdía la tarde entera procastinando.\"\n\n**STORY 3 (La Solución - Momento Aha):**\n- **Visual:** Foto de la técnica/método.\n- **Texto:** \"Hasta que probé la técnica 'Pomodoro Invertido' de 50/10.\"\n\n**STORY 4 (Prueba Social):**\n- **Visual:** Captura de pantalla de chat de alumno.\n- **Texto:** \"Mira lo que logró Juan en una semana usándola 👇\"\n\n**STORY 5 (Venta):**\n- **Texto:** \"Enseño esta técnica completa en el Módulo 2.\"\n- **Sticker Link:** [VER CURSO]",
         "metadata": {
             "score": 93,
             "technique": "Interactive Storytelling (Narrativa interactiva para retención)."
         },
         "suggestedAI": "Canva / ChatGPT (para guion)",
         "validationTip": "¿Cada story hace que quieras ver la siguiente?",
-        "exampleTip": "Interactive Storytelling (Narrativa interactiva para retención)."
+        "exampleTip": "Interactive Storytelling (Narrativa interactiva para retención).",
+        "description": ""
     },
     {
         "id": 108,
@@ -1625,14 +1714,15 @@ const casesData = [
         "badResponsePreview": "Un muñequito sonriente con los colores de tu logo",
         "badResponseAnalysis": "No considera personalidad de marca, storytelling ni versatilidad del personaje en diferentes contextos.",
         "agiaPromptTagged": "Eres un Diseñador de Personajes que sabe crear mascotas de marca que la gente recuerda y quiere. Sabes darles personalidad real.\n\nCONTEXTO:\nMi marca: [Nombre y qué hace]\n\nPersonalidad de mi marca: [Ej: \"Innovadora pero cercana\" / \"Profesional con humor\" / etc.]\n\nValores: [Ej: \"Honestidad, Empoderamiento, Diversión\"]\n\nPara quién: [Ej: \"Emprendedores millennials\"]\n\nMETA:\nDame el concepto completo de un personaje o mascota que represente mi marca, que sea memorable y que pueda usar en diferentes lugares (redes, productos, etc.).\n\nRESTRICCIONES:\n- Que funcione en todos lados (redes, empaques, merchandising)\n- Nada de clichés (no más mascotas genéricas)\n- Que sea inclusivo y diverso\n- Que pueda mostrar diferentes emociones\n- Estilo visual moderno\n\nFORMATO:\n**El Personaje:**\n- Nombre: [...]\n- Qué es: [Ej: \"Persona estilizada\" / \"Criatura abstracta\"]\n- Personalidad: [3 rasgos]\n- Su historia: [2 líneas]\n\n**Cómo se ve:**\n- Descripción: [...]\n- Colores: [Códigos]\n- Estilo: [Ej: \"Flat design\" / \"3D\"]\n\n**Instrucciones para IA:**\n\"[Prompt para Midjourney/DALL-E]\"",
-        "previewResponse": "**Personaje de Marca (Mascota/Avatar)**\n\n**Concepto: \"El Búho Contable\"**\n\n**Personalidad:**\n- Sabio pero gruñón si eres desordenado.\n- Usa lentes grandes y corbata chueca.\n- Toma mucho café.\n\n**Rol:** Traduce el \"idioma SII\" a español chileno.\n\n**Ejemplo Contenido:**\nBúho dice: \"Huu-Huu! 🦉 ¿Declaraste el Formulario 29? Si no, te va a caer la multa... y no tengo plata para pagarla.\"\n\n**Ventaja:** Permite decir cosas \"duras\" (como cobrar o advertir multas) de forma simpática.",
+        "previewResponse": "**Personaje de Marca: \"El Gato Zen\"**\n\n**CONCEPTO:**\nMascota para marca de Té y Relajación.\n\n**PERSONALIDAD:**\n- Extremadamente relajado (casi líquido).\n- Habla lento y con sabiduría milenaria... pero a veces se le sale el gato y bota cosas.\n- Odia el estrés, el tráfico y las reuniones de Zoom.\n\n**APARIENCIA:**\n- Gato gordo y esponjoso, color gris nube.\n- Siempre tiene una taza de té humeante en la pata.\n- A veces levita en posición de loto.\n\n**USO EN REDES:**\n- Cuando hay una noticia estresante (dólar sube), el Gato Zen aparece diciendo: \"Respira. Nada es real. Tómate un té.\"\n- Humaniza la marca y permite usar humor para vender calma.",
         "metadata": {
             "score": 90,
             "technique": "Character Design for Branding (Diseño de personajes memorables)."
         },
         "suggestedAI": "Midjourney / DALL-E 3",
         "validationTip": "¿El personaje encarna los valores de tu marca?",
-        "exampleTip": "Character Design for Branding (Diseño de personajes memorables)."
+        "exampleTip": "Character Design for Branding (Diseño de personajes memorables).",
+        "description": ""
     },
     {
         "id": 109,
@@ -1643,14 +1733,15 @@ const casesData = [
         "badResponsePreview": "Empieza diciendo 'Hola amigos, hoy les voy a enseñar...'",
         "badResponseAnalysis": "El 'Hola amigos' es muerte instantánea en Reels/TikTok. No usa patrones de hooks probados ni genera curiosidad inmediata.",
         "agiaPromptTagged": "Eres un Experto en crear los primeros segundos de videos que OBLIGAN a la gente a parar de hacer scroll. Sabes qué funciona en Reels y TikTok.\n\nCONTEXTO:\nMi video es sobre: [Ej: \"Cómo vender más con IA\" / \"Receta rápida\" / \"Error común en Excel\"]\n\nPara quién: [Ej: \"Emprendedores estresados\" / \"Mamás ocupadas\" / \"Gente de oficina\"]\n\nQué quiero que sientan: [Curiosidad / Controversia / Sorpresa / Miedo de perderse algo]\n\nMETA:\nDame 5 formas diferentes de empezar mi video (primeros 3 segundos) que hagan que la gente TENGA que seguir viendo.\n\nRESTRICCIONES:\n- PROHIBIDO: \"Hola amigos\", \"Hoy les voy a enseñar\", presentaciones\n- Máximo 10 palabras en el inicio\n- Usa formas que funcionan: Pregunta polémica, Afirmación controversial, Dato sorprendente, \"POV:\", \"Nadie habla de...\"\n- Dime también qué debe verse en el primer frame\n\nFORMATO:\n**Forma 1: [Tipo de inicio]**\n- Qué dices: \"[Frase exacta]\"\n- Qué se ve: [Descripción]\n- Por qué funciona: [Psicología]\n\n**Forma 2-5:** [Mismo formato]\n\n**Cuál usar:**\n[Cuál tiene más potencial viral]",
-        "previewResponse": "**Gancho Video (3 Segundos)**\n\n**Opción A (Visual):**\nTirar un montón de papeles al aire y que caigan en cámara lenta. (Rompe patrón).\n\n**Opción B (Auditiva):**\nSonido de caja registradora \"Cha-Ching!\" fuerte al inicio.\n\n**Opción C (Texto):**\n\"Tu contador te está mintiendo.\" (Polémico).\n\n**Opción D (Acción):**\nEmpezar el video caminando rápido hacia la cámara y decir \"¡Para! Tienes que ver esto.\"\n\n**Objetivo:** Evitar que el dedo deslice hacia el siguiente video (Thumb-stopping).",
+        "previewResponse": "**Gancho Viral (Hook) - 3 Segundos**\n\n**OPCIÓN A (Visual - Polémica):**\n- **Acción:** Rompes un papel con un gráfico de \"Marketing Tradicional\".\n- **Texto:** \"El Marketing ha MUERTO (y nadie te avisa).\"\n- **Por qué:** Desafía una creencia establecida.\n\n**OPCIÓN B (Auditiva - ASMR):**\n- **Acción:** Sonido fuerte de escribir en teclado mecánico rápido + Zoom a pantalla con código verde tipo Matrix.\n- **Texto:** \"Cómo programar tu sitio web en 30 segundos con IA.\"\n- **Por qué:** Promesa de velocidad extrema + satisfacción auditiva.\n\n**OPCIÓN C (Texto - Negación):**\n- **Texto en pantalla grande:** \"NO compres iPhone 15.\"\n- **Tú:** Mirando a cámara serio y negando con el dedo.\n- **Por qué:** Curiosidad inversa. Si me dices que no haga algo, quiero saber por qué.",
         "metadata": {
             "score": 95,
             "technique": "Hook Psychology (Psicología de ganchos virales)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿El hook te hace querer seguir viendo o te da ganas de saltar?",
-        "exampleTip": "Hook Psychology (Psicología de ganchos virales)."
+        "exampleTip": "Hook Psychology (Psicología de ganchos virales).",
+        "description": ""
     },
     {
         "id": 110,
@@ -1661,14 +1752,15 @@ const casesData = [
         "badResponsePreview": "Haz que la gente baile con tu producto",
         "badResponseAnalysis": "No considera viabilidad (¿la gente realmente lo hará?), ni elementos que hacen viral un challenge (música pegajosa, movimiento simple, recompensa social).",
         "agiaPromptTagged": "Eres un Experto en crear desafíos de TikTok que se vuelven virales. Sabes qué hace que la gente QUIERA participar y grabar su propio video.\n\nCONTEXTO:\nMi marca/producto: [Ej: \"Bebida energética\" / \"App de productividad\" / \"Curso online\"]\n\nObjetivo: [Que me conozcan / Que compren / Que hagan videos / Que me vean como experto]\n\nPara quién: [Ej: \"Jóvenes 16-24 años\" / \"Emprendedores millennials\"]\n\nMETA:\nDame el diseño completo de un desafío de TikTok que sea fácil de hacer, divertido y que la gente quiera grabar.\n\nRESTRICCIONES:\n- Debe ser SIMPLE (que cualquiera pueda hacerlo en 30 segundos)\n- Incluye qué canción o sonido usar\n- Que haga quedar bien a quien lo hace\n- Que se sienta natural con la marca (no forzado)\n- Un hashtag que se pegue\n\nFORMATO:\n**Nombre del Desafío:**\n#[HashtagPegajoso]\n\n**De qué se trata:**\n[2 líneas]\n\n**Cómo se hace:**\n1. [Paso 1 - 5 segundos]\n2. [Paso 2]\n3. [Paso 3]\n\n**Música/Sonido:**\n[Canción específica]\n\n**Por qué es viral:**\n- Simplicidad: [...]\n- Recompensa social: [...]",
-        "previewResponse": "**Desafío Viral (Challenge)**\n\n**Nombre:** #AhorroChallenge30Dias\n\n**Dinámica:**\n1. Imprime nuestra plantilla de calendario.\n2. Cada día que no gastes en \"gastos hormiga\" (café, uber, kiosco), marcas una X verde.\n3. El dinero que ahorraste, lo transfieres a una cuenta aparte.\n4. Sube tu foto del día 30.\n\n**Premio:** Sorteo de $100.000 entre quienes completen el calendario.\n\n**Viralidad:** La gente sube sus avances diarios (Stories) etiquetando a la marca. Genera hábito y comunidad.",
+        "previewResponse": "**Desafío Viral: \"#AhorroChallenge30Dias\"**\n\n**DINÁMICA SIMPLE:**\n1.  **Imprime:** Sube una plantilla de calendario con 30 casillas vacías a tu web (Lead Magnet).\n2.  **Marca:** Cada día que logras NO gastar en \"gastos hormiga\" (café, uber, kiosco), marcas una X verde.\n3.  **Transfiere:** Esas 2 lucas que no gastaste, las mueves a una \"Cuenta Aparte\".\n\n**RECOMPENSA:**\n- Al día 30, sube tu foto con el total ahorrado y etiquétanos.\n- **Premio:** Sorteamos pagar la cuenta de luz de un ganador.\n\n**POR QUÉ ES VIRAL:**\n- **Status:** Muestra disciplina.\n- **Comunidad:** \"Estamos sufriendo/ahorrando juntos\".\n- **Visual:** Llenar casillas genera satisfacción (Gamificación).",
         "metadata": {
             "score": 91,
             "technique": "Viral Challenge Design (Diseño de desafíos replicables)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Tú mismo grabarías este challenge?",
-        "exampleTip": "Viral Challenge Design (Diseño de desafíos replicables)."
+        "exampleTip": "Viral Challenge Design (Diseño de desafíos replicables).",
+        "description": ""
     },
     {
         "id": 111,
@@ -1679,14 +1771,15 @@ const casesData = [
         "badResponsePreview": "Slide 1: Título. Slide 2-9: Consejos. Slide 10: Sígueme",
         "badResponseAnalysis": "No hay progresión narrativa, diseño visual plano, no genera el deseo de 'guardar para después'.",
         "agiaPromptTagged": "Eres un Creador de Contenido que sabe hacer posts de Instagram que la gente QUIERE guardar porque le sirven de verdad.\n\nCONTEXTO:\nTema: [Ej: \"5 formas de usar ChatGPT que todo emprendedor debe conocer\" / \"Cómo calcular el precio real de tu producto\"]\n\nPara quién: [Ej: \"Dueños de negocio\" / \"Diseñadores freelance\"]\n\nObjetivo: [Educar + Que me vean como experto + Que guarden el post]\n\nMETA:\nDame la estructura completa de un carrusel de 8-10 slides que la gente QUIERA guardar porque le da valor real.\n\nRESTRICCIONES:\n- Cada slide debe valer la pena (nada de relleno)\n- Diseño visual bonito y consistente\n- Máximo 20 palabras por slide\n- Incluye ejemplos concretos (no teoría vaga)\n- Último slide: llamado a acción claro\n\nFORMATO:\n**Slide 1: Gancho**\n- Título: [Frase que promete valor]\n- Visual: [Descripción]\n\n**Slides 2-9: Contenido**\n- Título: [Concepto]\n- Contenido: [Explicación + Ejemplo]\n- Visual: [Ícono]\n\n**Slide 10: CTA**\n- Mensaje: [Acción]\n\n**Colores:**\n[3 colores + códigos]",
-        "previewResponse": "**Post Guardable (Checklist)**\n\n**Título:** \"La Mochila de Emergencia Digital (Qué tener si te roban el celu)\"\n\n**Contenido (Swipe):**\n1. IMEI anotado en un papel en casa.\n2. \"Encontrar mi dispositivo\" activado.\n3. Clave de tarjeta SIM (PIN) activada.\n4. Apps bancarias con 2FA y límites bajos.\n5. Copia de seguridad de WhatsApp en nube diaria.\n\n**Slide Final:** \"Guarda esto por si acaso (ojalá nunca lo uses).\"\n\n**Por qué funciona:** Es información de seguridad \"por si acaso\" que la gente siente la obligación de guardar.",
+        "previewResponse": "**Carrusel Check: \"Mochila Digital de Emergencia\"**\n\n**SLIDE 1 (Gancho):**\n- **Título:** \"Si te roban el celular HOY... ¿Pierdes todo?\"\n- **Imagen:** Celular con pantalla rota o ícono de ladrón.\n\n**SLIDE 2 (El Problema):**\n- \"El 80% de la gente pierde acceso a su banco y fotos por no tener esto activado.\"\n\n**SLIDE 3 (Item 1):**\n- **Título:** \"IMEI Anotado\"\n- **Acción:** Marca *#06# y anótalo en un papel en tu casa. Es lo único que bloquea el aparato real.\n\n**SLIDE 4 (Item 2):**\n- **Título:** \"SIM con PIN\"\n- **Acción:** Ponle clave a tu chip. Si lo sacan y lo ponen en otro celu, no sirve.\n\n**SLIDE 5 (Item 3):**\n- **Título:** \"Google Fotos\"\n- **Acción:** Activa la copia de seguridad automática. Los recuerdos valen más que el aparato.\n\n**SLIDE 8 (Cierre):**\n- **Texto:** \"Guarda este post 'Por si acaso' (Ojalá nunca lo uses).\"\n- **Icono:** Botón de Guardar gigante.",
         "metadata": {
             "score": 94,
             "technique": "Value-First Content (Contenido de valor tangible)."
         },
         "suggestedAI": "ChatGPT / Canva AI",
         "validationTip": "¿Guardarías este carrusel para consultarlo después?",
-        "exampleTip": "Value-First Content (Contenido de valor tangible)."
+        "exampleTip": "Value-First Content (Contenido de valor tangible).",
+        "description": ""
     },
     {
         "id": 112,
@@ -1697,14 +1790,15 @@ const casesData = [
         "badResponsePreview": "Los Reels y TikTok están muy populares",
         "badResponseAnalysis": "Información obvia y atrasada. No identifica tendencias emergentes ni señales tempranas de viralidad.",
         "agiaPromptTagged": "Eres un Cazador de Tendencias que sabe identificar qué va a ser viral ANTES de que explote. Ves las señales tempranas.\n\nCONTEXTO:\nMi tema/industria: [Ej: \"Emprendimiento\" / \"Comida\" / \"Tecnología\" / \"Fitness\"]\n\nRedes que uso: [TikTok / Instagram / Twitter / YouTube]\n\nRegión: [Chile / Latinoamérica / Global]\n\nMETA:\nDame 3 tendencias que están empezando a crecer AHORA (no las que ya explotaron) que pueda aprovechar antes de que se saturen.\n\nRESTRICCIONES:\n- Tendencias EMERGENTES (que están empezando, no las que ya todos hacen)\n- Señales de crecimiento (vistas, interacciones, menciones)\n- Que aplique a mi tema\n- Cuánto tiempo tengo para aprovecharlas\n\nFORMATO:\n**Tendencia 1: [Nombre]**\n- Qué es: [Explicación simple]\n- Dónde está creciendo: [Plataforma + región]\n- Señales: [Ej: \"Creció 300% en 2 semanas\"]\n- Cómo aprovecharlo: [Acción específica]\n- Ventana: [Ej: \"2-3 semanas antes de saturación\"]\n- Ejemplos: [Cuentas que lo hacen]\n\n**Tendencia 2-3:** [Mismo formato]",
-        "previewResponse": "**Tendencia Predictiva (Trend Surfing)**\n\n**Cómo identificarla:**\n1. Ir a TikTok Creative Center -> Trends.\n2. Ver qué audios están subiendo con flecha verde rápido.\n3. Buscar videos con pocas vistas pero con ese audio (significa que está empezando).\n\n**Ejemplo Aplicado a Negocio Serio:**\nTendencia: Audio de \"Pedro Pedro Pedro\" (Mapache bailando).\nAplicación: Poner al \"Búho Contable\" girando con ese audio mientras aparece texto: \"Yo celebrando que el SII me aceptó la renta a la primera\".\n\n**Clave:** Adaptar el trend a tu nicho, no solo copiar el baile.",
+        "previewResponse": "**Tendencia Emergente: \"UGC Caótico\"**\n\n**QUÉ ES:**\nVideos que parecen mal grabados a propósito. Cámara movida, cortes rápidos, sin trípode, iluminación natural a veces mala.\n\n**DÓNDE CRECE:**\nTikTok y Reels (Gen Z).\n\n**POR QUÉ FUNCIONA AHORA:**\nLa gente está harta de la estética perfecta y falsa de Instagram 2018.\nLo \"caótico\" se siente **REAL** y confiable. \"Si no te esforzaste en la producción, quizás dices la verdad\".\n\n**CÓMO APROVECHARLO (Antes que sature):**\nGraba un unboxing de tu producto *mientras caminas* o *mientras se te caen cosas*.\nNo edites los errores pequeños (trabarse al hablar, risa nerviosa). Déjalos. Eso conecta.",
         "metadata": {
             "score": 92,
             "technique": "Trend Forecasting (Predicción de tendencias emergentes)."
         },
         "suggestedAI": "Perplexity / ChatGPT",
         "validationTip": "¿La tendencia está empezando o ya la hace todo el mundo?",
-        "exampleTip": "Trend Forecasting (Predicción de tendencias emergentes)."
+        "exampleTip": "Trend Forecasting (Predicción de tendencias emergentes).",
+        "description": ""
     },
     {
         "id": 113,
@@ -1715,14 +1809,15 @@ const casesData = [
         "badResponsePreview": "Hola chicos, hoy les traigo este producto increíble que me encanta...",
         "badResponseAnalysis": "Suena a publicidad obvia. El contenido efectivo debe parecer recomendación genuina de amigo, no ad.",
         "agiaPromptTagged": "Eres un Creador de Contenido que sabe hacer videos promocionales que parecen recomendaciones genuinas de un amigo, no publicidad.\n\nCONTEXTO:\nMi producto/servicio: [Ej: \"App de productividad\" / \"Curso online\" / \"Producto físico\"]\n\nQuién lo va a grabar: [Ej: \"Mamá emprendedora\" / \"Estudiante\" / \"Profesional\"]\n\nRed social: [TikTok / Instagram Reels / YouTube Shorts]\n\nProblema que resuelve: [Ej: \"Falta de tiempo\" / \"Desorganización\" / \"Estrés\"]\n\nMETA:\nDame un guion de 30-60 segundos que cuente una historia real donde el producto aparece como solución natural (no forzada).\n\nRESTRICCIONES:\n- PROHIBIDO: \"Les traigo\", \"Me encanta\", \"Es increíble\"\n- Estructura: Problema relatable → Momento \"aha\" → Solución natural\n- Que suene a conversación con amigo (no presentación)\n- Mostrar el producto en uso (no solo hablar)\n- Incluir \"prueba social sutil\" (ej: \"Mi hermana me lo recomendó\")\n\nFORMATO:\n**Inicio (0-3s):**\n[Frase que conecta con problema]\n\n**Problema (3-15s):**\n[Historia relatable]\n\n**Solución Natural (15-25s):**\n[Cómo descubrió el producto]\n\n**Resultado (25-30s):**\n[Beneficio real]\n\n**Notas de Filmación:**\n- Dónde: [...]\n- Cómo: [...]",
-        "previewResponse": "**Video UGC (User Generated Content) Auténtico**\n\n**Guion para Cliente/Influencer:**\n\n\"No quiero que parezca anuncio. Grábate con el celular en mano, caminando o en el auto, luz natural.\"\n\n**Script:**\n\"Oigan, ¿se acuerdan que les conté que tenía la piel horrible? Miren esto (Zoom a la cara). Llevo 1 semana usando el serum de [Marca] y estoy en shock. No es canje, me lo compré yo, pero necesitaba compartirlo porque sé que a muchas les pasa lo mismo. Les dejo el dato.\"\n\n**Clave:** Imperfección = Confianza. Si se ve muy producido, el cerebro lo filtra como publicidad.",
+        "previewResponse": "**Video UGC Auténtico: \"No es Canje\"**\n\n**ESCENA:**\nGrabado dentro de un auto (lugar clásico de confidencias) o caminando en la calle. Celular en mano (selfie), un poco movido.\n\n**GUION (30s):**\n\n**(0-5s):** \"Oigan, tengo que mostrarles esto porque estoy en shock. Miren mi cara.\" *(Zoom a la piel/pelo/resultado)*.\n\n**(5-15s):** \"Yo juraba que estas cremas de Instagram eran pura estafa, pero llevo 1 semana usando la de [Marca] y... miren el brillo. O sea, real.\"\n\n**(15-25s):** \"Lo mejor es que me salió súper barata y llegó al día siguiente. No es canje, me la compré yo con mi plata, pero necesitaba compartir el dato porque sé que muchas sufren con [Problema piel].\"\n\n**(25-30s):** \"Les dejo el link abajo por si quieren probar. Chau.\"\n\n**CLAVE:**\nNo usa palabras de vendedor (\"Increíble\", \"Oferta\", \"Líder en mercado\"). Habla como amiga.",
         "metadata": {
             "score": 93,
             "technique": "Authentic UGC Scripting (Guiones de contenido auténtico)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿Suena a recomendación de amigo o a publicidad?",
-        "exampleTip": "Authentic UGC Scripting (Guiones de contenido auténtico)."
+        "exampleTip": "Authentic UGC Scripting (Guiones de contenido auténtico).",
+        "description": ""
     },
     {
         "id": 114,
@@ -1733,14 +1828,15 @@ const casesData = [
         "badResponsePreview": "Pon una foto de tu producto con el precio y un botón de 'Comprar ahora'",
         "badResponseAnalysis": "Anuncio genérico que se mezcla con el feed. No usa trucos visuales ni psicología del contraste.",
         "agiaPromptTagged": "Eres un Experto en crear anuncios de redes sociales que usan trucos visuales para hacer que la gente PARE de hacer scroll.\n\nCONTEXTO:\nMi producto/servicio: [Ej: \"Curso de IA\" / \"Producto físico\" / \"Servicio para empresas\"]\n\nRed social: [Facebook / Instagram / TikTok]\n\nPara quién: [Ej: \"Emprendedores 30-45 años\"]\n\nObjetivo: [Clicks / Ventas / Que dejen datos]\n\nMETA:\nDame el diseño de un anuncio que use trucos visuales para detener el scroll y hacer que la gente haga click.\n\nRESTRICCIONES:\n- Usa trucos que llamen la atención: Contraste extremo, Cosas inesperadas, Movimiento, Caras con emociones fuertes\n- Que NO parezca anuncio (que parezca contenido normal)\n- Texto mínimo en imagen (máximo 5 palabras)\n- Optimizado para celular (donde está el 90% de la gente)\n- Que cumpla las reglas de la red social\n\nFORMATO:\n**Cómo se ve:**\n- Truco principal: [Ej: \"Contraste extremo: fondo negro con producto en neón\"]\n- Elemento inesperado: [Ej: \"Mano saliendo de la pantalla\"]\n- Expresión facial: [Si hay persona]\n\n**Texto en Imagen:**\n[Máximo 5 palabras]\n\n**Texto del Anuncio:**\n- Gancho: [...]\n- Cuerpo: [...]\n- CTA: [...]",
-        "previewResponse": "**Anuncio Scroll-Stopper**\n\n**Formato:** Video cortado por la mitad (Split Screen).\n\n**Arriba:** Video satisfactorio (ASMR, cortando jabón, limpiando alfombra).\n**Abajo:** Tú hablando del problema.\n\n**Texto:** \"Deja de ver esto y escucha.\"\n\n**Por qué funciona:** El video de arriba retiene la atención visual (dopamina) mientras el audio entrega el mensaje de venta.\n\n**Uso:** Perfecto para explicaciones largas o aburridas.",
+        "previewResponse": "**Anuncio Scroll-Stopper: \"Split Screen\"**\n\n**VISUAL (Pantalla Dividida):**\n- **Mitad Superior:** Video \"Satisfactorio\" (ASMR). Alguien cortando jabón en cubitos ideales o limpiando una alfombra muy sucia. (Atrapa el cerebro reptil).\n- **Mitad Inferior:** Tú hablando sobre el problema de tu cliente (ej: Deudas).\n\n**TEXTO FLOTANTE:**\n\"Deja de ver el jabón y escúchame 10 segundos.\"\n\n**POR QUÉ DETIENE EL SCROLL:**\nEl cerebro busca dopamina visual (video de arriba) y se queda atrapado. Mientras mira eso, el audio del video de abajo entra en su subconsciente.\n\n**USO IDEAL:**\nPara mensajes \"aburridos\" o complejos (Finanzas, Legal, Seguros) que nadie vería si sales solo tú hablando.",
         "metadata": {
             "score": 94,
             "technique": "Pattern Interrupt Advertising (Publicidad disruptiva)."
         },
         "suggestedAI": "Midjourney / DALL-E 3",
         "validationTip": "¿El anuncio te hace parar el scroll o lo ignoras?",
-        "exampleTip": "Pattern Interrupt Advertising (Publicidad disruptiva)."
+        "exampleTip": "Pattern Interrupt Advertising (Publicidad disruptiva).",
+        "description": ""
     },
     {
         "id": 115,
@@ -1751,14 +1847,15 @@ const casesData = [
         "badResponsePreview": "Pon '20% OFF' en letras grandes con fondo rojo",
         "badResponseAnalysis": "Descuento genérico sin urgencia, sin contexto de valor, sin elementos de persuasión visual.",
         "agiaPromptTagged": "Eres un Experto en crear ofertas visuales que usan urgencia y valor para hacer que la gente compre AHORA.\n\nCONTEXTO:\nMi oferta: [Ej: \"20% descuento\" / \"2x1\" / \"Envío gratis\" / \"Regalo gratis\"]\n\nProducto/Servicio: [Ej: \"Curso online $100.000\" / \"Producto físico $50.000\"]\n\nCuánto dura: [Ej: \"48 horas\" / \"Hasta que se acaben\"]\n\nDónde: [Web / Instagram / Email]\n\nMETA:\nDame el diseño de un banner de oferta que use urgencia, escasez y valor para hacer que la gente compre ahora.\n\nRESTRICCIONES:\n- Incluye contador de tiempo o algo que muestre urgencia\n- Muestra el valor total (no solo el descuento)\n- Usa colores de urgencia (rojo, naranja, amarillo)\n- Di el \"por qué ahora\" (razón de la oferta)\n- Botón de acción claro y grande\n\nFORMATO:\n**Diseño del Banner:**\n\n**Elemento 1: Urgencia**\n[Ej: \"Contador: Quedan 23:45:12\"]\n\n**Elemento 2: Valor**\n[Ej: \"Precio normal $100.000 → HOY $80.000\"]\n\n**Elemento 3: Por Qué Ahora**\n[Ej: \"Black Friday Exclusivo\"]\n\n**Elemento 4: CTA**\n[Ej: \"Quiero mi descuento AHORA\"]",
-        "previewResponse": "**Oferta Irresistible (Urgency)**\n\n**Copy de Venta:**\n\n**Título:** \"No compres esto mañana (Te costará el doble)\"\n\n**Cuerpo:**\n\"Quedan exactamente 3 horas para que cierre el carrito del Black Friday.\n\nSi compras ahora:\n- 40% OFF ($20k en vez de $35k)\n- Envío Gratis\n- Regalo Sorpresa\n\nSi compras mañana:\n- Precio Full ($35k)\n- Pagas envío\n\nEl reloj no para: [Countdown GIF]\"\n\n**Botón:** \"Ahorrar $15.000 Ahora\" (Beneficio en el botón).",
+        "previewResponse": "**Banner Oferta Urgencia: \"El Reloj no Para\"**\n\n**ELEMENTOS DE DISEÑO:**\n1.  **Fondo:** Rojo oscuro o Negro (Seriedad).\n2.  **Texto Principal (Grande):** \"ÚLTIMA OPORTUNIDAD\" (Amarillo).\n3.  **Contador Regresivo:** GIF animado bajando segundos.\n\n**COPY (Texto):**\n\"Quedan 3 horas para que cierre el carrito de CyberDay.\nMañana este curso vuelve a valer $150.000.\nHoy te lo llevas por $49.990.\n\n¿Vas a dejar pasar $100.000 de ahorro?\"\n\n**BOTÓN (CTA):**\n\"Ahorrar $100.000 AHORA\"\n*(El beneficio está en el clic, no dice 'Comprar')*\n\n**DISPARADOR MENTAL:**\nAversión a la pérdida. No es que ganes el curso, es que pierdes el ahorro.",
         "metadata": {
             "score": 95,
             "technique": "Urgency & Scarcity Marketing (Marketing de urgencia y escasez)."
         },
         "suggestedAI": "Canva AI / Ideogram",
         "validationTip": "¿El banner te hace sentir que TIENES que comprar ahora?",
-        "exampleTip": "Urgency & Scarcity Marketing (Marketing de urgencia y escasez)."
+        "exampleTip": "Urgency & Scarcity Marketing (Marketing de urgencia y escasez).",
+        "description": ""
     },
     {
         "id": 116,
@@ -1769,14 +1866,15 @@ const casesData = [
         "badResponsePreview": "Copia y pega las reseñas de 5 estrellas en un fondo blanco",
         "badResponseAnalysis": "Testimonios genéricos sin rostro, sin contexto, sin resultado específico. Parecen falsos.",
         "agiaPromptTagged": "Eres un Diseñador de Testimonios visuales que sabe cómo hacer que la gente les crea de verdad.\n\nCONTEXTO:\nTestimonios que tengo: [Pega 3-5 testimonios reales]\n\nMi producto/servicio: [Ej: \"Curso de IA\" / \"Consultoría\" / \"Producto físico\"]\n\nResultado principal: [Ej: \"Ahorró 10 horas semanales\" / \"Aumentó ventas 30%\"]\n\nDónde: [Instagram / Web / Email]\n\nMETA:\nDame el diseño de testimonios visuales que incluyan foto real, resultado específico y contexto para que la gente les crea.\n\nRESTRICCIONES:\n- Incluye foto del cliente (o dibujo si no hay foto)\n- Resultado con números específicos (no \"me encantó\")\n- Contexto del cliente (nombre, profesión, ciudad)\n- Frase corta del testimonio (máximo 30 palabras)\n- Diseño que no parezca foto de stock\n\nFORMATO:\n**Testimonio Visual 1:**\n\n**Foto:**\n[Descripción: \"Mujer 35 años, profesional\"]\n\n**Frase Destacada:**\n\"[Máximo 30 palabras]\"\n\n**Resultado:**\n[Ej: \"Ahorré 10 horas semanales\"]\n\n**Quién es:**\n- Nombre: [...]\n- Profesión: [...]\n- Ciudad: [...]",
-        "previewResponse": "**Testimonio de Confianza (Social Proof)**\n\n**Estructura del Testimonio Perfecto:**\n\n**1. El Escepticismo (Antes):**\n\"Yo no creía en estos cursos online, pensaba que eran humo...\"\n\n**2. El Descubrimiento (Durante):**\n\"...pero me arriesgué por la garantía y me sorprendió lo práctico que fue.\"\n\n**3. El Resultado (Después):**\n\"En 2 semanas recuperé la inversión vendiendo mis primeros 3 productos.\"\n\n**4. La Recomendación:**\n\"Si estás dudando, dale. Vale cada peso.\"\n\n**Formato:** Video selfie vertical, sonido ambiente. Nombre y cargo visible.",
+        "previewResponse": "**Testimonio Visual: Creíble**\n\n**FORMATO:** Captura de Pantalla + Foto Real.\n\n**VISUAL:**\n- Una captura de pantalla de una conversación de WhatsApp real (con permiso).\n- Se debe ver la hora y el doble check azul.\n\n**CONTENIDO DEL CHAT:**\nCliente: \"Hola Cami! Oye, quería contarte que apliqué lo que me enseñaste en la asesoría...\"\nCliente: \"...y acabo de cerrar mi primer cliente de 1 millón!! 😭 estoy tiritando jaja gracias!!\"\nTú: \"¡¡Mentira!! Qué emoción!! Te lo dije!!\"\n\n**ELEMENTO DE CONFIANZA:**\nLa imperfección del chat (emojis, hora, lenguaje informal) valida que es real.\nAl lado, pones la foto de la persona sonriendo (para humanizar).\n\n**TITULAR:**\n\"Resultados reales, no promesas.\"",
         "metadata": {
             "score": 93,
             "technique": "Social Proof Design (Diseño de prueba social creíble)."
         },
         "suggestedAI": "Canva / Midjourney (para avatar si no hay foto)",
         "validationTip": "¿El testimonio parece real o parece inventado?",
-        "exampleTip": "Social Proof Design (Diseño de prueba social creíble)."
+        "exampleTip": "Social Proof Design (Diseño de prueba social creíble).",
+        "description": ""
     },
     {
         "id": 117,
@@ -1787,14 +1885,15 @@ const casesData = [
         "badResponsePreview": "Las imágenes coloridas y con buena luz funcionan bien",
         "badResponseAnalysis": "Consejo genérico sin datos. No identifica estilos específicos ni tendencias actuales de diseño.",
         "agiaPromptTagged": "Eres un Cazador de Tendencias visuales que sabe identificar qué estilos de diseño están generando más interacción en este momento.\n\nCONTEXTO:\nMi tema/industria: [Ej: \"Emprendimiento\" / \"Comida\" / \"Fitness\" / \"Tecnología\"]\n\nRed social: [Instagram / TikTok / Pinterest / LinkedIn]\n\nTipo de contenido: [Posts / Stories / Reels / Pins]\n\nMETA:\nDame un análisis de las tendencias visuales actuales (2024-2025) que están generando más interacción en mi tema, con ejemplos específicos que pueda copiar.\n\nRESTRICCIONES:\n- Tendencias ACTUALES (no de hace 6 meses)\n- Elementos específicos que pueda copiar (colores, letras, diseños)\n- Ejemplos de cuentas que lo están haciendo bien\n- Números de interacción cuando sea posible\n\nFORMATO:\n**Tendencia Visual 1: [Nombre del estilo]**\n- Descripción: [Qué caracteriza este estilo]\n- Elementos clave:\n  - Colores: [Códigos HEX]\n  - Letras: [Fuentes específicas]\n  - Diseño: [Composición]\n  - Filtros: [Si aplica]\n- Ejemplos: [3 cuentas]\n- Interacción: [Si hay datos]\n- Cómo copiarlo: [Pasos]",
-        "previewResponse": "**Estilos Visuales (Tendencias Diseño)**\n\n**Tendencia: \"Anti-Design\" / \"Feo pero Rico\":**\nUso de letras desordenadas, colores neón chillones, fotos flash directo, collages mal recortados.\n\n**Para quién sirve:**\nMarcas de ropa urbana, comida rápida, eventos, público Gen Z.\n\n**Mensaje que transmite:**\n\"Somos reales, rebeldes, no corporativos, divertidos.\"\n\n**No usar si:**\nEres abogado, médico o vendes lujo clásico.",
+        "previewResponse": "**Estilo Visual Tendencia: \"Anti-Design\"**\n\n**DESCRIPCIÓN:**\nRebelión contra el minimalismo corporativo y perfecto. Es desordenado, crudo, humano.\n\n**ELEMENTOS CLAVE:**\n- **Tipografías:** Mezcla de fuentes Serif (clásicas) con Sans Serif (modernas) y letras manuscritas feas.\n- **Colores:** Neón sobre fondos oscuros o combinaciones que \"vibran\" (Rosa con Verde).\n- **Fotos:** Con flash directo, sin retoque excesivo, recortes tipo collage mal hecho.\n- **Texturas:** Papel arrugado, cinta adhesiva (tape), ruido digital (grain).\n\n**EJEMPLO DE USO:**\nMarca de ropa urbana o hamburguesas.\nImagen: Foto de la hamburguesa mordida (no perfecta), fondo negro flash, letras amarillas gigantes encima: \"CHORREA QUESO\".\n\n**POR QUÉ FUNCIONA:**\nEn un mar de perfección artificial (IA), lo \"feo\" y crudo se siente humano y honesto.",
         "metadata": {
             "score": 91,
             "technique": "Visual Trend Analysis (Análisis de tendencias de diseño)."
         },
         "suggestedAI": "Perplexity / ChatGPT",
         "validationTip": "¿Las tendencias son actuales o ya pasaron de moda?",
-        "exampleTip": "Visual Trend Analysis (Análisis de tendencias de diseño)."
+        "exampleTip": "Visual Trend Analysis (Análisis de tendencias de diseño).",
+        "description": ""
     },
     {
         "id": 118,
@@ -1805,14 +1904,15 @@ const casesData = [
         "badResponsePreview": "Sí, se ve bien, publícalo",
         "badResponseAnalysis": "Respuesta sin criterio. No evalúa elementos probados de viralidad ni da score cuantificable.",
         "agiaPromptTagged": "Eres un Analista que sabe predecir qué tan viral será un contenido ANTES de publicarlo. Das un puntaje y razones específicas.\n\nCONTEXTO:\nContenido a evaluar: [Pega aquí el texto + descripción de la imagen / o link al borrador]\n\nRed social: [Instagram / TikTok / LinkedIn / Twitter]\n\nTu audiencia actual: [Tamaño + cuánta interacción tienes normalmente]\n\nObjetivo: [Alcance / Interacción / Conversión]\n\nMETA:\nDame un análisis predictivo de qué tan viral será este contenido con puntaje del 1-100 y recomendaciones específicas para mejorarlo.\n\nRESTRICCIONES:\n- Evalúa elementos probados: Inicio, Emoción, Timing, Formato, Duración\n- Puntaje del 1-100\n- Identifica qué le falta para ser viral\n- Recomendaciones específicas que pueda aplicar\n\nFORMATO:\n**Puntaje de Viralidad: [X/100]**\n\n**Análisis por Elemento:**\n\n**Inicio/Gancho (0-20 puntos):**\n- Puntaje: [X/20]\n- Evaluación: [Qué tan fuerte es]\n- Mejora: [Cómo optimizarlo]\n\n**Emoción (0-20):** [Mismo formato]\n**Timing (0-20):** [Mismo formato]\n**Formato (0-20):** [Mismo formato]\n**Duración (0-20):** [Mismo formato]\n\n**Predicción:**\n- Alcance estimado: [X vistas]\n- Interacción estimada: [X]\n- Probabilidad viral: [Baja/Media/Alta]\n\n**Top 3 Cambios:**\n1. [Cambio más impactante]\n2. [Segundo]\n3. [Tercero]",
-        "previewResponse": "**Predicción Virality**\n\n**Checklist antes de publicar:**\n\n1. **¿Tiene Gancho Visual?** (Algo se mueve o cambia en seg 0-3) [ ] SÍ\n2. **¿Es Relatable?** (La gente dice \"Soy yo\") [ ] SÍ\n3. **¿Es Polemico/Debatible?** (La gente comentará para corregirte o discutir) [ ] SÍ\n4. **¿Es Corto?** (< 30 seg o retención altísima) [ ] SÍ\n5. **¿Audio Trending?** (Ayuda al algoritmo) [ ] SÍ\n\n**Puntaje:**\n5/5: Viral Seguro.\n3/5: Buen desempeño.\n<3/5: Probablemente flopee.",
+        "previewResponse": "**Predicción de Viralidad: Score 92/100**\n\n**ANÁLISIS PRE-POST:**\n\n**1. Gancho Visual (20/20):**\n*Excelente.* Empiezas rompiendo algo. Eso detiene el scroll en 0.5 segundos.\n\n**2. Relatabilidad (18/20):**\n*Muy alta.* Hablas de \"deudas de tarjeta\", algo que el 80% de la gente sufre en silencio. Genera \"ese soy yo\".\n\n**3. Polémica (15/20):**\n*Media.* Dices que los bancos son el enemigo. Generará comentarios de gente defendiéndolos o atacándolos (bueno para el algoritmo).\n\n**4. Retención (19/20):**\nEl video dura 25 segundos. Es casi imposible que se aburran antes de terminar. Loop perfecto.\n\n**VEREDICTO:**\nEste video tiene **Alta Probabilidad Viral**.\nSe estima alcance de +10k vistas orgánicas mínimo.\n\n**RECOMENDACIÓN:**\nPublicar a las 7 PM (hora que la gente revisa sus gastos en casa).\nResponder los primeros 10 comentarios con preguntas para inflar la interacción.",
         "metadata": {
             "score": 96,
             "technique": "Virality Prediction (Predicción de potencial viral)."
         },
         "suggestedAI": "ChatGPT / Claude",
         "validationTip": "¿El análisis te ayuda a mejorar el contenido antes de publicar?",
-        "exampleTip": "Virality Prediction (Predicción de potencial viral)."
+        "exampleTip": "Virality Prediction (Predicción de potencial viral).",
+        "description": ""
     }
 
 ];
