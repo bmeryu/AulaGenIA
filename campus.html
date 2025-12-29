@@ -1234,14 +1234,14 @@
                   setTimeout(reject, 5000);
                 });
 
-                // Logo más grande: 40mm de ancho
-                const logoWidth = 40;
+                // Logo más grande: 50mm de ancho
+                const logoWidth = 50;
                 const aspectRatio = logoImg.height / logoImg.width;
                 const calculatedHeight = logoWidth * aspectRatio;
 
-                // Centrar horizontalmente, más arriba
+                // Centrar horizontalmente
                 const logoX = (pw - logoWidth) / 2;
-                const logoY = 20; // 20mm desde arriba
+                const logoY = 25; // 25mm desde arriba
 
                 doc.addImage(logoImg, logoImg.src.endsWith('.png') ? 'PNG' : 'JPEG', logoX, logoY, logoWidth, calculatedHeight);
               } catch (e) {
@@ -1250,30 +1250,32 @@
 
 
               doc.setTextColor(255, 255, 255); doc.setFontSize(32); doc.setFont('helvetica', 'bold');
-              doc.text('Maestro Prompts', pw / 2, 70, { align: 'center' });
+              doc.text('Maestro Prompts', pw / 2, 90, { align: 'center' });
               doc.setFontSize(16); doc.setFont('helvetica', 'normal');
-              doc.text('100 Prompts Optimizados AGIA', pw / 2, 85, { align: 'center' });
-              doc.setFillColor(...yellow); doc.roundedRect(pw / 2 - 35, 93, 70, 12, 3, 3, 'F');
+              doc.text('100 Prompts Optimizados AGIA', pw / 2, 105, { align: 'center' });
+              doc.setFillColor(...yellow); doc.roundedRect(pw / 2 - 35, 113, 70, 12, 3, 3, 'F');
               doc.setTextColor(...dark); doc.setFontSize(10); doc.setFont('helvetica', 'bold');
-              doc.text('EXCLUSIVE PREMIUM', pw / 2, 101, { align: 'center' });
-              doc.setTextColor(...dark); doc.setFontSize(24); doc.setFont('helvetica', 'bold');
-              doc.text('Aula GenIA', pw / 2, 125, { align: 'center' });
-              doc.setFontSize(11); doc.setFont('helvetica', 'normal'); doc.setTextColor(...light);
+              doc.text('EXCLUSIVE PREMIUM', pw / 2, 121, { align: 'center' });
+
+              // Información de usuario
+              doc.setTextColor(...dark); doc.setFontSize(11); doc.setFont('helvetica', 'normal');
               const uname = user.displayName || user.email.split('@')[0];
-              doc.text(`Generado para: ${uname}`, pw / 2, 138, { align: 'center' });
-              doc.text(`Email: ${user.email}`, pw / 2, 148, { align: 'center' });
-              doc.text(`Fecha de descarga: ${new Date().toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' })}`, pw / 2, 158, { align: 'center' });
-              doc.setDrawColor(...teal); doc.setLineWidth(1); doc.line(pw / 2 - 40, 168, pw / 2 + 40, 168);
+              doc.text(`Generado para: ${uname}`, pw / 2, 145, { align: 'center' });
+              doc.text(`Email: ${user.email}`, pw / 2, 155, { align: 'center' });
+              doc.text(`Fecha: ${new Date().toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' })}`, pw / 2, 165, { align: 'center' });
+
+              doc.setDrawColor(...teal); doc.setLineWidth(1); doc.line(pw / 2 - 40, 175, pw / 2 + 40, 175);
+
               doc.setFontSize(10); doc.setTextColor(100, 100, 100); doc.setFont('helvetica', 'normal');
-              doc.text(doc.splitTextToSize('Esta colección contiene 100 prompts optimizados con la metodología AGIA. Cada prompt diseñado para maximizar respuestas de ChatGPT, Claude, Gemini.', mw - 20), m + 10, 178);
+              doc.text(doc.splitTextToSize('Esta colección contiene 100 prompts optimizados con la metodología AGIA. Cada prompt diseñado para maximizar respuestas de ChatGPT, Claude, Gemini.', mw - 20), m + 10, 188);
 
-              // Disclaimer legal profesional
-              doc.setFontSize(7); doc.setTextColor(120, 120, 120); doc.setFont('helvetica', 'italic');
-              const disclaimer = doc.splitTextToSize('Los prompts incluidos son herramientas de apoyo. Las respuestas generadas por modelos de IA pueden contener inexactitudes. Se recomienda validar toda información crítica con fuentes confiables y supervisión profesional cuando corresponda.', mw - 30);
-              doc.text(disclaimer, pw / 2, ph - 25, { align: 'center', maxWidth: mw - 30 });
+              // Disclaimer profesional sobre IA
+              doc.setFontSize(8); doc.setTextColor(120, 120, 120); doc.setFont('helvetica', 'italic');
+              const disclaimer = doc.splitTextToSize('Importante: Los resultados generados por IA pueden contener errores o imprecisiones. Siempre revise y valide la información antes de utilizarla en contextos críticos.', mw - 20);
+              doc.text(disclaimer, pw / 2, ph - 25, { align: 'center', maxWidth: mw - 20 });
 
-              doc.setFontSize(9); doc.setTextColor(...light);
-              doc.text('aulagenia.cl | Todos los derechos reservados', pw / 2, ph - 10, { align: 'center' });
+              doc.setFontSize(9); doc.setTextColor(...light); doc.setFont('helvetica', 'normal');
+              doc.text('aulagenia.cl | Todos los derechos reservados', pw / 2, ph - 15, { align: 'center' });
 
               // ÍNDICE
               doc.addPage(); let cy = m;
