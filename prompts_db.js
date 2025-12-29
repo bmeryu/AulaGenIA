@@ -1525,6 +1525,294 @@ const casesData = [
         "metadata": {
             "score": 94
         }
+    },
+    {
+        "id": 103,
+        "category": "Diseño & Arte Digital",
+        "title": "Creador de Memes que se Comparten Solos",
+        "icon": "lightbulb",
+        "badPrompt": "Hazme un meme gracioso sobre mi negocio",
+        "badResponsePreview": "Pon una foto de un gato con el texto 'Cuando llega el cliente difícil' arriba y 'Yo fingiendo que todo está bien' abajo",
+        "badResponseAnalysis": "Meme genérico sin conexión con tendencias actuales ni contexto local. No considera el formato óptimo para cada red social ni el timing de las tendencias.",
+        "agiaPromptTagged": "Eres un Creador de Contenido Viral especializado en memes y cultura de internet. Sabes qué está de moda en internet y cómo hacer que la gente comparta.\n\nCONTEXTO:\nMi negocio es de: [Ej: \"Vendo tortas\" / \"Doy clases de IA\" / \"Vendo ropa\" / etc.]\n\nMeme que está de moda ahora: [Ej: \"El de 'Literalmente nadie:'\" / \"El de comparar dos cosas\" / \"El de Drake eligiendo\" / etc.]\n\nDónde lo voy a publicar: [Instagram / TikTok / Twitter / LinkedIn]\n\nMETA:\nDame 3 ideas de memes que conecten mi negocio con algo que esté de moda AHORA, que se vean naturales (no forzados) y que la gente quiera compartir.\n\nRESTRICCIONES:\n- Usa memes que estén de moda en 2024-2025 (nada viejo)\n- Si puedes, incluye algo típico de Chile o Latinoamérica\n- Que no se vea como publicidad obvia\n- Dime exactamente qué texto poner y qué imagen usar\n- Piensa en dónde funciona mejor cada meme\n\nFORMATO:\n**Meme 1: [Cómo se llama el meme]**\n- Mejor para: [Instagram / TikTok / etc.]\n- Qué imagen usar: [Descripción clara]\n- Texto de arriba: [...]\n- Texto de abajo: [...]\n- Por qué la gente lo va a compartir: [...]",
+        "previewResponse": "**Meme 1: Drake Eligiendo**\n- Mejor para: Instagram/LinkedIn\n- Imagen: Drake rechazando vs aprobando\n- Arriba (rechaza): \"Contratar 3 empleados más\"\n- Abajo (aprueba): \"Automatizar con IA y dormir tranquilo\"\n- Por qué funciona: Conecta con el dolor real de emprendedores que están colapsados.",
+        "metadata": {
+            "score": 89,
+            "technique": "Trend Hijacking (Aprovechamiento de tendencias virales actuales)."
+        },
+        "suggestedAI": "ChatGPT / Claude",
+        "validationTip": "¿El meme se siente natural o parece publicidad forzada?",
+        "exampleTip": "Trend Hijacking (Aprovechamiento de tendencias virales actuales)."
+    },
+    {
+        "id": 104,
+        "category": "Diseño & Arte Digital",
+        "title": "Creador de Portadas que Hacen Click",
+        "icon": "lightbulb",
+        "badPrompt": "Diseña una portada para mi video de marketing",
+        "badResponsePreview": "Pon tu cara sonriendo con el título del video en letras grandes",
+        "badResponseAnalysis": "No considera psicología del click, contraste visual, ni elementos probados de alto engagement como flechas, círculos rojos, expresiones faciales exageradas.",
+        "agiaPromptTagged": "Eres un diseñador que sabe hacer portadas de video que la gente NO PUEDE ignorar. Conoces los trucos que hacen que la gente haga click.\n\nCONTEXTO:\nMi video es sobre: [Ej: \"Cómo vender más con IA\" / \"Receta rápida de torta\" / \"Trucos de Excel\" / etc.]\n\nDura: [Ej: \"1 minuto\" / \"10 minutos\" / \"30 minutos\"]\n\nProblema: [Ej: \"Hay mil videos del mismo tema, necesito destacar\"]\n\nQué quiero que sienta la gente: [Curiosidad / Sorpresa / Urgencia / Intriga]\n\nMETA:\nDame las instrucciones exactas para crear con IA una portada que haga que la gente TENGA que hacer click, usando trucos que funcionan.\n\nRESTRICCIONES:\n- Incluye cosas que llamen la atención: flechas, círculos rojos, caras con expresiones fuertes, colores que resalten\n- Máximo 5 palabras de texto (que se lean en el celular)\n- Colores fuertes que se vean en el feed\n- Nada de mentiras (no prometas lo que no cumples)\n- Dame los códigos de color exactos\n\nFORMATO:\n**Instrucciones para crear la portada con IA:**\n\"[Instrucciones completas en inglés para Midjourney o DALL-E]\"\n\n**Qué debe tener:**\n- Expresión de la cara: [Ej: \"Cara de sorpresa, boca abierta\"]\n- Texto en la portada: [Máximo 5 palabras grandes]\n- Colores: [Códigos exactos]\n- Cosas que llamen la atención: [Ej: \"Flecha roja apuntando al producto\"]",
+        "previewResponse": "**Prompt para IA:** \"YouTube thumbnail, shocked facial expression, mouth wide open, pointing finger at text, bright yellow background #FFEB3B, red arrow pointing down, text 'ESTO CAMBIÓ TODO', high contrast, professional photography, 16:9 --v 6.0\"\n\n**Elementos:** Expresión: Sorpresa extrema | Texto: \"ESTO CAMBIÓ TODO\" | Colores: Amarillo #FFEB3B, Rojo #FF0000 | Flecha roja gigante apuntando abajo",
+        "metadata": {
+            "score": 92,
+            "technique": "Visual Attention Engineering (Diseño basado en psicología de la atención)."
+        },
+        "suggestedAI": "Midjourney / DALL-E 3 / Ideogram",
+        "validationTip": "¿La portada destaca entre 20 videos similares en el feed?",
+        "exampleTip": "Visual Attention Engineering (Diseño basado en psicología de la atención)."
+    },
+    {
+        "id": 105,
+        "category": "Diseño & Arte Digital",
+        "title": "Creador de Infografías que se Guardan",
+        "icon": "lightbulb",
+        "badPrompt": "Haz una infografía con estos datos de ventas",
+        "badResponsePreview": "Pon los números en una tabla con colores bonitos",
+        "badResponseAnalysis": "No cuenta una historia visual, no usa jerarquía de información ni elementos que inviten a compartir.",
+        "agiaPromptTagged": "Eres un diseñador que sabe convertir datos aburridos en imágenes que la gente QUIERE guardar y compartir.\n\nCONTEXTO:\nLos datos que tengo: [Ej: \"El 70% de los dueños de negocio trabaja 12 horas pero rinde 4\" / \"Estadísticas de uso de IA en Chile\" / etc.]\n\nPara quién es: [Ej: \"Dueños de negocio en LinkedIn\" / \"Emprendedores en Instagram\" / etc.]\n\nQué quiero lograr: [Educar / Sorprender / Generar conversación / Mostrar que sé del tema]\n\nMETA:\nDame el diseño completo de una infografía que cuente una historia visual clara, que no abrume con información y que la gente quiera guardar.\n\nRESTRICCIONES:\n- Que cuente una historia: Problema → Datos → Solución\n- Máximo 5 datos importantes (no más, abruma)\n- Usa dibujitos e íconos (no solo texto)\n- Que se vea bien en formato vertical (para Stories e Instagram)\n- Pon de dónde sacaste los datos (para que crean)\n\nFORMATO:\n**Estructura Visual:**\n\n**Parte 1 (Gancho):**\n- Título impactante: [Ej: \"7 de cada 10 dueños de negocio está quemado\"]\n- Dibujito: [Ej: \"Persona agotada\"]\n\n**Parte 2 (Datos):**\n- Dato 1: [Número grande + contexto]\n- Visualización: [Gráfico de barras / Dibujitos / etc.]\n\n**Parte 3 (Conclusión):**\n- Qué significa: [...]\n- Llamado: [Ej: \"¿Te pasa? Comenta 👇\"]",
+        "previewResponse": "**Parte 1:** Título: \"70% de los Emprendedores Chilenos Está Quemado\" | Ícono: Persona agotada con laptop\n\n**Parte 2:** Dato 1: \"Trabajan 12h pero rinden 4h\" (Gráfico de reloj) | Dato 2: \"80% no delega nada\" (Íconos de personas)\n\n**Parte 3:** \"La IA puede automatizar el 60% de esas tareas\" | CTA: \"¿Cuál tarea automatizarías primero? 👇\"",
+        "metadata": {
+            "score": 90,
+            "technique": "Data Storytelling (Narrativa visual de datos complejos)."
+        },
+        "suggestedAI": "Canva AI / Ideogram / ChatGPT",
+        "validationTip": "¿La infografía cuenta una historia o solo muestra números?",
+        "exampleTip": "Data Storytelling (Narrativa visual de datos complejos)."
+    },
+    {
+        "id": 106,
+        "category": "Diseño & Arte Digital",
+        "title": "Creador de Fotos de Producto que Venden",
+        "icon": "lightbulb",
+        "badPrompt": "Muestra mi producto en una foto bonita",
+        "badResponsePreview": "Pon tu producto sobre una mesa blanca con buena luz",
+        "badResponseAnalysis": "No considera contexto de uso, lifestyle photography ni elementos que generen deseo de compra.",
+        "agiaPromptTagged": "Eres un fotógrafo de productos que sabe hacer fotos que hacen que la gente QUIERA comprar. Sabes mostrar productos en situaciones reales de la vida.\n\nCONTEXTO:\nMi producto es: [Ej: \"Taza de cerámica hecha a mano\" / \"Curso online\" / \"App de celular\" / etc.]\n\nPara quién es: [Ej: \"Gente que trabaja desde la casa\" / \"Mamás ocupadas\" / etc.]\n\nQué sentimiento quiero dar: [Aspiracional / Acogedor / Profesional / Aventurero]\n\nMETA:\nDame las instrucciones para crear con IA una foto realista que muestre el producto en la vida real, en una situación donde la gente se imagine usándolo.\n\nRESTRICCIONES:\n- Que se vea en uso real (no sobre fondo blanco aburrido)\n- Incluye elementos de la vida real (manos, ambiente, objetos)\n- Luz natural y cálida\n- Que se vea actual (no como foto de stock vieja)\n- Dime desde qué ángulo tomar la foto\n\nFORMATO:\n**Instrucciones para la IA (Midjourney/DALL-E):**\n\"[Instrucciones completas en inglés]\"\n\n**Qué debe aparecer:**\n- El producto: [Descripción detallada]\n- El ambiente: [Ej: \"Escritorio minimalista con laptop Mac\"]\n- Manos/Persona: [Ej: \"Manos de mujer sosteniendo la taza\"]\n- Desde dónde se ve: [Ej: \"Desde arriba a 45 grados\"]\n- La luz: [Ej: \"Luz natural de ventana\"]",
+        "previewResponse": "**Prompt:** \"Product photography, ceramic handmade mug on minimalist desk, MacBook laptop, succulent plant, female hands holding mug, natural window light, warm tones, 45-degree angle from above, cozy home office, soft shadows, lifestyle photography, professional quality --ar 4:5 --v 6.0\"\n\n**Por qué vende:** Muestra el producto en contexto aspiracional (trabajo remoto acogedor) que genera deseo de compra.",
+        "metadata": {
+            "score": 91,
+            "technique": "Lifestyle Product Photography (Fotografía de producto en contexto de uso)."
+        },
+        "suggestedAI": "Midjourney / DALL-E 3",
+        "validationTip": "¿La foto hace que te imagines usando el producto?",
+        "exampleTip": "Lifestyle Product Photography (Fotografía de producto en contexto de uso)."
+    },
+    {
+        "id": 107,
+        "category": "Diseño & Arte Digital",
+        "title": "Creador de Stories que la Gente Ve Completas",
+        "icon": "lightbulb",
+        "badPrompt": "Diseña una story para promocionar mi producto",
+        "badResponsePreview": "Pon una foto del producto con un sticker de 'Desliza arriba'",
+        "badResponseAnalysis": "No considera retención, elementos interactivos nativos ni secuencias que mantengan al usuario viendo.",
+        "agiaPromptTagged": "Eres un diseñador de Stories de Instagram que sabe hacer que la gente vea todas las stories completas y que interactúe con ellas.\n\nCONTEXTO:\nPara qué es la story: [Ej: \"Promocionar mi curso\" / \"Mostrar detrás de cámaras\" / \"Hacer una encuesta\" / etc.]\n\nCuántas stories: [Ej: \"5 stories seguidas\"]\n\nPara quién: [Ej: \"Emprendedores de 25-40 años\"]\n\nMETA:\nDame el diseño de una secuencia de stories con las herramientas interactivas de Instagram que hagan que la gente vea todas y que participe.\n\nRESTRICCIONES:\n- Usa las herramientas de Instagram (encuestas, preguntas, sliders, quiz)\n- Cada story debe conectar con la siguiente (que quieran seguir viendo)\n- Máximo 10 palabras de texto por story (que se lea rápido)\n- Incluye movimiento o animación\n- Usa los colores de mi marca\n\nFORMATO:\n**Story 1: [Gancho]**\n- Qué se ve: [Descripción]\n- Texto: [Máximo 10 palabras]\n- Herramienta interactiva: [Ej: \"Encuesta: ¿Te pasa esto? Sí/No\"]\n- Duración: [Segundos]\n\n**Story 2-5:** [Mismo formato]\n\n**Cómo conectan:**\n[Explicación de retención]",
+        "previewResponse": "**Story 1:** Visual: Persona estresada frente a laptop | Texto: \"¿Trabajas 12h pero rindes 4?\" | Sticker: Encuesta Sí/No | Retención: El 'Sí' lleva a Story 2\n\n**Story 2:** Visual: Gráfico animado | Texto: \"El 70% dijo SÍ (tú también)\" | Sticker: Slider \"¿Cuántas horas pierdes al día?\" | Conecta mostrando el problema común",
+        "metadata": {
+            "score": 93,
+            "technique": "Interactive Storytelling (Narrativa interactiva para retención)."
+        },
+        "suggestedAI": "Canva / ChatGPT (para guion)",
+        "validationTip": "¿Cada story hace que quieras ver la siguiente?",
+        "exampleTip": "Interactive Storytelling (Narrativa interactiva para retención)."
+    },
+    {
+        "id": 108,
+        "category": "Diseño & Arte Digital",
+        "title": "Creador de Personajes para tu Marca",
+        "icon": "lightbulb",
+        "badPrompt": "Crea un personaje para mi marca",
+        "badResponsePreview": "Un muñequito sonriente con los colores de tu logo",
+        "badResponseAnalysis": "No considera personalidad de marca, storytelling ni versatilidad del personaje en diferentes contextos.",
+        "agiaPromptTagged": "Eres un diseñador de personajes que sabe crear mascotas de marca que la gente recuerda y quiere. Sabes darles personalidad real.\n\nCONTEXTO:\nMi marca: [Nombre y qué hace]\n\nPersonalidad de mi marca: [Ej: \"Innovadora pero cercana\" / \"Profesional con humor\" / etc.]\n\nValores: [Ej: \"Honestidad, Empoderamiento, Diversión\"]\n\nPara quién: [Ej: \"Emprendedores millennials\"]\n\nMETA:\nDame el concepto completo de un personaje o mascota que represente mi marca, que sea memorable y que pueda usar en diferentes lugares (redes, productos, etc.).\n\nRESTRICCIONES:\n- Que funcione en todos lados (redes, empaques, merchandising)\n- Nada de clichés (no más mascotas genéricas)\n- Que sea inclusivo y diverso\n- Que pueda mostrar diferentes emociones\n- Estilo visual moderno\n\nFORMATO:\n**El Personaje:**\n- Nombre: [...]\n- Qué es: [Ej: \"Persona estilizada\" / \"Criatura abstracta\"]\n- Personalidad: [3 rasgos]\n- Su historia: [2 líneas]\n\n**Cómo se ve:**\n- Descripción: [...]\n- Colores: [Códigos]\n- Estilo: [Ej: \"Flat design\" / \"3D\"]\n\n**Instrucciones para IA:**\n\"[Prompt para Midjourney/DALL-E]\"",
+        "previewResponse": "**Personaje:** Nombre: \"Chispa\" | Qué es: Pequeña llama antropomórfica | Personalidad: Curiosa, Empoderada, Divertida | Historia: Nació del deseo de emprendedores de encender su potencial\n\n**Visual:** Llama naranja/amarilla con ojos grandes expresivos, brazos y piernas simples | Colores: #FF6B35, #FFD23F | Estilo: Flat design con bordes suaves",
+        "metadata": {
+            "score": 90,
+            "technique": "Character Design for Branding (Diseño de personajes memorables)."
+        },
+        "suggestedAI": "Midjourney / DALL-E 3",
+        "validationTip": "¿El personaje encarna los valores de tu marca?",
+        "exampleTip": "Character Design for Branding (Diseño de personajes memorables)."
+    },
+    {
+        "id": 109,
+        "category": "Contenido & Redes",
+        "title": "Creador de Primeros 3 Segundos que Detienen el Scroll",
+        "icon": "lightbulb",
+        "badPrompt": "Dame ideas de cómo empezar mis videos",
+        "badResponsePreview": "Empieza diciendo 'Hola amigos, hoy les voy a enseñar...'",
+        "badResponseAnalysis": "El 'Hola amigos' es muerte instantánea en Reels/TikTok. No usa patrones de hooks probados ni genera curiosidad inmediata.",
+        "agiaPromptTagged": "Eres un experto en crear los primeros segundos de videos que OBLIGAN a la gente a parar de hacer scroll. Sabes qué funciona en Reels y TikTok.\n\nCONTEXTO:\nMi video es sobre: [Ej: \"Cómo vender más con IA\" / \"Receta rápida\" / \"Error común en Excel\"]\n\nPara quién: [Ej: \"Emprendedores estresados\" / \"Mamás ocupadas\" / \"Gente de oficina\"]\n\nQué quiero que sientan: [Curiosidad / Controversia / Sorpresa / Miedo de perderse algo]\n\nMETA:\nDame 5 formas diferentes de empezar mi video (primeros 3 segundos) que hagan que la gente TENGA que seguir viendo.\n\nRESTRICCIONES:\n- PROHIBIDO: \"Hola amigos\", \"Hoy les voy a enseñar\", presentaciones\n- Máximo 10 palabras en el inicio\n- Usa formas que funcionan: Pregunta polémica, Afirmación controversial, Dato sorprendente, \"POV:\", \"Nadie habla de...\"\n- Dime también qué debe verse en el primer frame\n\nFORMATO:\n**Forma 1: [Tipo de inicio]**\n- Qué dices: \"[Frase exacta]\"\n- Qué se ve: [Descripción]\n- Por qué funciona: [Psicología]\n\n**Forma 2-5:** [Mismo formato]\n\n**Cuál usar:**\n[Cuál tiene más potencial viral]",
+        "previewResponse": "**Forma 1: Afirmación Controversial**\n- Qué dices: \"El 90% de los emprendedores hace esto MAL\"\n- Qué se ve: Primer plano de tu cara seria, señalando a cámara\n- Por qué funciona: Genera curiosidad inmediata + FOMO (miedo a estar haciendo algo mal)\n\n**Recomendación:** Usar Forma 1 - tiene mayor potencial viral por controversia",
+        "metadata": {
+            "score": 95,
+            "technique": "Hook Psychology (Psicología de ganchos virales)."
+        },
+        "suggestedAI": "ChatGPT / Claude",
+        "validationTip": "¿El hook te hace querer seguir viendo o te da ganas de saltar?",
+        "exampleTip": "Hook Psychology (Psicología de ganchos virales)."
+    },
+    {
+        "id": 110,
+        "category": "Contenido & Redes",
+        "title": "Creador de Desafíos Virales para Marcas",
+        "icon": "lightbulb",
+        "badPrompt": "Crea un challenge para mi marca",
+        "badResponsePreview": "Haz que la gente baile con tu producto",
+        "badResponseAnalysis": "No considera viabilidad (¿la gente realmente lo hará?), ni elementos que hacen viral un challenge (música pegajosa, movimiento simple, recompensa social).",
+        "agiaPromptTagged": "Eres un experto en crear desafíos de TikTok que se vuelven virales. Sabes qué hace que la gente QUIERA participar y grabar su propio video.\n\nCONTEXTO:\nMi marca/producto: [Ej: \"Bebida energética\" / \"App de productividad\" / \"Curso online\"]\n\nObjetivo: [Que me conozcan / Que compren / Que hagan videos / Que me vean como experto]\n\nPara quién: [Ej: \"Jóvenes 16-24 años\" / \"Emprendedores millennials\"]\n\nMETA:\nDame el diseño completo de un desafío de TikTok que sea fácil de hacer, divertido y que la gente quiera grabar.\n\nRESTRICCIONES:\n- Debe ser SIMPLE (que cualquiera pueda hacerlo en 30 segundos)\n- Incluye qué canción o sonido usar\n- Que haga quedar bien a quien lo hace\n- Que se sienta natural con la marca (no forzado)\n- Un hashtag que se pegue\n\nFORMATO:\n**Nombre del Desafío:**\n#[HashtagPegajoso]\n\n**De qué se trata:**\n[2 líneas]\n\n**Cómo se hace:**\n1. [Paso 1 - 5 segundos]\n2. [Paso 2]\n3. [Paso 3]\n\n**Música/Sonido:**\n[Canción específica]\n\n**Por qué es viral:**\n- Simplicidad: [...]\n- Recompensa social: [...]",
+        "previewResponse": "**#DesafíoProductividadReal**\n\n**Concepto:** Muestra tu escritorio caótico vs organizado en 3 segundos\n\n**Pasos:** 1. Muestra tu escritorio desordenado (2s) | 2. Chasquido de dedos | 3. Muestra escritorio organizado (2s)\n\n**Música:** \"Glow Up\" (trending sound)\n\n**Por qué funciona:** Simple, relatable, hace quedar bien (\"soy organizado\")",
+        "metadata": {
+            "score": 91,
+            "technique": "Viral Challenge Design (Diseño de desafíos replicables)."
+        },
+        "suggestedAI": "ChatGPT / Claude",
+        "validationTip": "¿Tú mismo grabarías este challenge?",
+        "exampleTip": "Viral Challenge Design (Diseño de desafíos replicables)."
+    },
+    {
+        "id": 111,
+        "category": "Contenido & Redes",
+        "title": "Creador de Posts que la Gente Guarda",
+        "icon": "lightbulb",
+        "badPrompt": "Haz un carrusel sobre mi tema",
+        "badResponsePreview": "Slide 1: Título. Slide 2-9: Consejos. Slide 10: Sígueme",
+        "badResponseAnalysis": "No hay progresión narrativa, diseño visual plano, no genera el deseo de 'guardar para después'.",
+        "agiaPromptTagged": "Eres un creador de contenido que sabe hacer posts de Instagram que la gente QUIERE guardar porque le sirven de verdad.\n\nCONTEXTO:\nTema: [Ej: \"5 formas de usar ChatGPT que todo emprendedor debe conocer\" / \"Cómo calcular el precio real de tu producto\"]\n\nPara quién: [Ej: \"Dueños de negocio\" / \"Diseñadores freelance\"]\n\nObjetivo: [Educar + Que me vean como experto + Que guarden el post]\n\nMETA:\nDame la estructura completa de un carrusel de 8-10 slides que la gente QUIERA guardar porque le da valor real.\n\nRESTRICCIONES:\n- Cada slide debe valer la pena (nada de relleno)\n- Diseño visual bonito y consistente\n- Máximo 20 palabras por slide\n- Incluye ejemplos concretos (no teoría vaga)\n- Último slide: llamado a acción claro\n\nFORMATO:\n**Slide 1: Gancho**\n- Título: [Frase que promete valor]\n- Visual: [Descripción]\n\n**Slides 2-9: Contenido**\n- Título: [Concepto]\n- Contenido: [Explicación + Ejemplo]\n- Visual: [Ícono]\n\n**Slide 10: CTA**\n- Mensaje: [Acción]\n\n**Colores:**\n[3 colores + códigos]",
+        "previewResponse": "**Slide 1:** \"5 Prompts de ChatGPT que me ahorraron 10 horas esta semana\" | Visual: Reloj con IA\n\n**Slide 2:** Título: \"1. Resumir reuniones\" | Contenido: \"Pega la transcripción y pide: 'Extrae las tareas con responsables'\" | Visual: Ícono de reunión\n\n**Slide 10:** \"¿Cuál vas a usar primero? Comenta 👇\" | Visual: Diferente, color de acento",
+        "metadata": {
+            "score": 94,
+            "technique": "Value-First Content (Contenido de valor tangible)."
+        },
+        "suggestedAI": "ChatGPT / Canva AI",
+        "validationTip": "¿Guardarías este carrusel para consultarlo después?",
+        "exampleTip": "Value-First Content (Contenido de valor tangible)."
+    },
+    {
+        "id": 112,
+        "category": "Contenido & Redes",
+        "title": "Descubridor de Qué Será Viral Mañana",
+        "icon": "lightbulb",
+        "badPrompt": "Qué está de moda en redes sociales",
+        "badResponsePreview": "Los Reels y TikTok están muy populares",
+        "badResponseAnalysis": "Información obvia y atrasada. No identifica tendencias emergentes ni señales tempranas de viralidad.",
+        "agiaPromptTagged": "Eres un cazador de tendencias que sabe identificar qué va a ser viral ANTES de que explote. Ves las señales tempranas.\n\nCONTEXTO:\nMi tema/industria: [Ej: \"Emprendimiento\" / \"Comida\" / \"Tecnología\" / \"Fitness\"]\n\nRedes que uso: [TikTok / Instagram / Twitter / YouTube]\n\nRegión: [Chile / Latinoamérica / Global]\n\nMETA:\nDame 3 tendencias que están empezando a crecer AHORA (no las que ya explotaron) que pueda aprovechar antes de que se saturen.\n\nRESTRICCIONES:\n- Tendencias EMERGENTES (que están empezando, no las que ya todos hacen)\n- Señales de crecimiento (vistas, interacciones, menciones)\n- Que aplique a mi tema\n- Cuánto tiempo tengo para aprovecharlas\n\nFORMATO:\n**Tendencia 1: [Nombre]**\n- Qué es: [Explicación simple]\n- Dónde está creciendo: [Plataforma + región]\n- Señales: [Ej: \"Creció 300% en 2 semanas\"]\n- Cómo aprovecharlo: [Acción específica]\n- Ventana: [Ej: \"2-3 semanas antes de saturación\"]\n- Ejemplos: [Cuentas que lo hacen]\n\n**Tendencia 2-3:** [Mismo formato]",
+        "previewResponse": "**Tendencia 1: \"IA Fails\" (Errores graciosos de IA)**\n- Qué es: Videos mostrando respuestas absurdas de ChatGPT/IA\n- Dónde: TikTok Latinoamérica\n- Señales: +400% menciones últimas 3 semanas\n- Cómo: Graba tus errores graciosos de IA en tu negocio\n- Ventana: 2-3 semanas\n- Ejemplos: @emprendedorIA, @techfails_latam",
+        "metadata": {
+            "score": 92,
+            "technique": "Trend Forecasting (Predicción de tendencias emergentes)."
+        },
+        "suggestedAI": "Perplexity / ChatGPT",
+        "validationTip": "¿La tendencia está empezando o ya la hace todo el mundo?",
+        "exampleTip": "Trend Forecasting (Predicción de tendencias emergentes)."
+    },
+    {
+        "id": 113,
+        "category": "Contenido & Redes",
+        "title": "Creador de Videos que Parecen Recomendación de Amigo",
+        "icon": "lightbulb",
+        "badPrompt": "Escribe un guion para que un influencer promocione mi producto",
+        "badResponsePreview": "Hola chicos, hoy les traigo este producto increíble que me encanta...",
+        "badResponseAnalysis": "Suena a publicidad obvia. El contenido efectivo debe parecer recomendación genuina de amigo, no ad.",
+        "agiaPromptTagged": "Eres un creador de contenido que sabe hacer videos promocionales que parecen recomendaciones genuinas de un amigo, no publicidad.\n\nCONTEXTO:\nMi producto/servicio: [Ej: \"App de productividad\" / \"Curso online\" / \"Producto físico\"]\n\nQuién lo va a grabar: [Ej: \"Mamá emprendedora\" / \"Estudiante\" / \"Profesional\"]\n\nRed social: [TikTok / Instagram Reels / YouTube Shorts]\n\nProblema que resuelve: [Ej: \"Falta de tiempo\" / \"Desorganización\" / \"Estrés\"]\n\nMETA:\nDame un guion de 30-60 segundos que cuente una historia real donde el producto aparece como solución natural (no forzada).\n\nRESTRICCIONES:\n- PROHIBIDO: \"Les traigo\", \"Me encanta\", \"Es increíble\"\n- Estructura: Problema relatable → Momento \"aha\" → Solución natural\n- Que suene a conversación con amigo (no presentación)\n- Mostrar el producto en uso (no solo hablar)\n- Incluir \"prueba social sutil\" (ej: \"Mi hermana me lo recomendó\")\n\nFORMATO:\n**Inicio (0-3s):**\n[Frase que conecta con problema]\n\n**Problema (3-15s):**\n[Historia relatable]\n\n**Solución Natural (15-25s):**\n[Cómo descubrió el producto]\n\n**Resultado (25-30s):**\n[Beneficio real]\n\n**Notas de Filmación:**\n- Dónde: [...]\n- Cómo: [...]",
+        "previewResponse": "**Inicio:** \"Literal ayer me pasó la vergüenza de mi vida...\"\n\n**Problema:** \"Olvidé la reunión con un cliente importante porque tengo 3 calendarios diferentes y ninguno me avisó\"\n\n**Solución:** \"Mi hermana me dijo 'usa esta app' y la verdad es que ahora todo está en un solo lugar\"\n\n**Resultado:** \"Llevo 2 semanas sin olvidar nada. Cero estrés.\"\n\n**Filmación:** Cocina, selfie mode, casual",
+        "metadata": {
+            "score": 93,
+            "technique": "Authentic UGC Scripting (Guiones de contenido auténtico)."
+        },
+        "suggestedAI": "ChatGPT / Claude",
+        "validationTip": "¿Suena a recomendación de amigo o a publicidad?",
+        "exampleTip": "Authentic UGC Scripting (Guiones de contenido auténtico)."
+    },
+    {
+        "id": 114,
+        "category": "Ventas & Persuasión",
+        "title": "Creador de Anuncios que Detienen el Scroll",
+        "icon": "lightbulb",
+        "badPrompt": "Diseña un anuncio para Facebook",
+        "badResponsePreview": "Pon una foto de tu producto con el precio y un botón de 'Comprar ahora'",
+        "badResponseAnalysis": "Anuncio genérico que se mezcla con el feed. No usa trucos visuales ni psicología del contraste.",
+        "agiaPromptTagged": "Eres un experto en crear anuncios de redes sociales que usan trucos visuales para hacer que la gente PARE de hacer scroll.\n\nCONTEXTO:\nMi producto/servicio: [Ej: \"Curso de IA\" / \"Producto físico\" / \"Servicio para empresas\"]\n\nRed social: [Facebook / Instagram / TikTok]\n\nPara quién: [Ej: \"Emprendedores 30-45 años\"]\n\nObjetivo: [Clicks / Ventas / Que dejen datos]\n\nMETA:\nDame el diseño de un anuncio que use trucos visuales para detener el scroll y hacer que la gente haga click.\n\nRESTRICCIONES:\n- Usa trucos que llamen la atención: Contraste extremo, Cosas inesperadas, Movimiento, Caras con emociones fuertes\n- Que NO parezca anuncio (que parezca contenido normal)\n- Texto mínimo en imagen (máximo 5 palabras)\n- Optimizado para celular (donde está el 90% de la gente)\n- Que cumpla las reglas de la red social\n\nFORMATO:\n**Cómo se ve:**\n- Truco principal: [Ej: \"Contraste extremo: fondo negro con producto en neón\"]\n- Elemento inesperado: [Ej: \"Mano saliendo de la pantalla\"]\n- Expresión facial: [Si hay persona]\n\n**Texto en Imagen:**\n[Máximo 5 palabras]\n\n**Texto del Anuncio:**\n- Gancho: [...]\n- Cuerpo: [...]\n- CTA: [...]",
+        "previewResponse": "**Visual:** Fondo negro puro (#000000) con producto en neón verde (#00FF00) | Mano saliendo hacia el espectador | Cara de sorpresa extrema\n\n**Texto en Imagen:** \"ESTO CAMBIÓ TODO\"\n\n**Copy:** Gancho: \"El 90% lo hace mal...\" | Cuerpo: \"Descubre el error que te cuesta $2M al mes\" | CTA: \"Ver cómo solucionarlo\"",
+        "metadata": {
+            "score": 94,
+            "technique": "Pattern Interrupt Advertising (Publicidad disruptiva)."
+        },
+        "suggestedAI": "Midjourney / DALL-E 3",
+        "validationTip": "¿El anuncio te hace parar el scroll o lo ignoras?",
+        "exampleTip": "Pattern Interrupt Advertising (Publicidad disruptiva)."
+    },
+    {
+        "id": 115,
+        "category": "Ventas & Persuasión",
+        "title": "Creador de Ofertas que Hacen Comprar YA",
+        "icon": "lightbulb",
+        "badPrompt": "Haz un banner de 20% de descuento",
+        "badResponsePreview": "Pon '20% OFF' en letras grandes con fondo rojo",
+        "badResponseAnalysis": "Descuento genérico sin urgencia, sin contexto de valor, sin elementos de persuasión visual.",
+        "agiaPromptTagged": "Eres un experto en crear ofertas visuales que usan urgencia y valor para hacer que la gente compre AHORA.\n\nCONTEXTO:\nMi oferta: [Ej: \"20% descuento\" / \"2x1\" / \"Envío gratis\" / \"Regalo gratis\"]\n\nProducto/Servicio: [Ej: \"Curso online $100.000\" / \"Producto físico $50.000\"]\n\nCuánto dura: [Ej: \"48 horas\" / \"Hasta que se acaben\"]\n\nDónde: [Web / Instagram / Email]\n\nMETA:\nDame el diseño de un banner de oferta que use urgencia, escasez y valor para hacer que la gente compre ahora.\n\nRESTRICCIONES:\n- Incluye contador de tiempo o algo que muestre urgencia\n- Muestra el valor total (no solo el descuento)\n- Usa colores de urgencia (rojo, naranja, amarillo)\n- Di el \"por qué ahora\" (razón de la oferta)\n- Botón de acción claro y grande\n\nFORMATO:\n**Diseño del Banner:**\n\n**Elemento 1: Urgencia**\n[Ej: \"Contador: Quedan 23:45:12\"]\n\n**Elemento 2: Valor**\n[Ej: \"Precio normal $100.000 → HOY $80.000\"]\n\n**Elemento 3: Por Qué Ahora**\n[Ej: \"Black Friday Exclusivo\"]\n\n**Elemento 4: CTA**\n[Ej: \"Quiero mi descuento AHORA\"]",
+        "previewResponse": "**Urgencia:** Contador animado \"⏰ Quedan 23:45:12\" (rojo #FF0000)\n\n**Valor:** \"Valor $100.000\" (tachado) → \"HOY $80.000\" (verde #00FF00, 2x más grande)\n\n**Razón:** \"Cyber Monday Exclusivo - Solo hoy\"\n\n**CTA:** Botón naranja #FF6B35 \"QUIERO MI 20% AHORA\" (pulsando)\n\n**Jerarquía:** 1. Precio HOY (más grande) 2. Contador 3. CTA",
+        "metadata": {
+            "score": 95,
+            "technique": "Urgency & Scarcity Marketing (Marketing de urgencia y escasez)."
+        },
+        "suggestedAI": "Canva AI / Ideogram",
+        "validationTip": "¿El banner te hace sentir que TIENES que comprar ahora?",
+        "exampleTip": "Urgency & Scarcity Marketing (Marketing de urgencia y escasez)."
+    },
+    {
+        "id": 116,
+        "category": "Ventas & Persuasión",
+        "title": "Creador de Testimonios que Generan Confianza",
+        "icon": "lightbulb",
+        "badPrompt": "Pon los testimonios de mis clientes en una imagen",
+        "badResponsePreview": "Copia y pega las reseñas de 5 estrellas en un fondo blanco",
+        "badResponseAnalysis": "Testimonios genéricos sin rostro, sin contexto, sin resultado específico. Parecen falsos.",
+        "agiaPromptTagged": "Eres un diseñador de testimonios visuales que sabe cómo hacer que la gente les crea de verdad.\n\nCONTEXTO:\nTestimonios que tengo: [Pega 3-5 testimonios reales]\n\nMi producto/servicio: [Ej: \"Curso de IA\" / \"Consultoría\" / \"Producto físico\"]\n\nResultado principal: [Ej: \"Ahorró 10 horas semanales\" / \"Aumentó ventas 30%\"]\n\nDónde: [Instagram / Web / Email]\n\nMETA:\nDame el diseño de testimonios visuales que incluyan foto real, resultado específico y contexto para que la gente les crea.\n\nRESTRICCIONES:\n- Incluye foto del cliente (o dibujo si no hay foto)\n- Resultado con números específicos (no \"me encantó\")\n- Contexto del cliente (nombre, profesión, ciudad)\n- Frase corta del testimonio (máximo 30 palabras)\n- Diseño que no parezca foto de stock\n\nFORMATO:\n**Testimonio Visual 1:**\n\n**Foto:**\n[Descripción: \"Mujer 35 años, profesional\"]\n\n**Frase Destacada:**\n\"[Máximo 30 palabras]\"\n\n**Resultado:**\n[Ej: \"Ahorré 10 horas semanales\"]\n\n**Quién es:**\n- Nombre: [...]\n- Profesión: [...]\n- Ciudad: [...]",
+        "previewResponse": "**Foto:** Mujer 35 años, profesional, sonrisa genuina, foto casual (no corporativa)\n\n**Frase:** \"Pasé de trabajar 12 horas a 8 horas y vender el doble. No lo podía creer.\"\n\n**Resultado:** \"↑ 100% ventas en 3 meses\"\n\n**Quién:** María P. | Dueña E-commerce | Santiago, Chile\n\n**Diseño:** Foto circular izquierda, texto derecha, 5 estrellas doradas, comillas grandes, colores de marca",
+        "metadata": {
+            "score": 93,
+            "technique": "Social Proof Design (Diseño de prueba social creíble)."
+        },
+        "suggestedAI": "Canva / Midjourney (para avatar si no hay foto)",
+        "validationTip": "¿El testimonio parece real o parece inventado?",
+        "exampleTip": "Social Proof Design (Diseño de prueba social creíble)."
+    },
+    {
+        "id": 117,
+        "category": "Otros / Análisis",
+        "title": "Descubridor de Qué Estilos Visuales Funcionan Ahora",
+        "icon": "lightbulb",
+        "badPrompt": "Qué tipo de imágenes funcionan en redes sociales",
+        "badResponsePreview": "Las imágenes coloridas y con buena luz funcionan bien",
+        "badResponseAnalysis": "Consejo genérico sin datos. No identifica estilos específicos ni tendencias actuales de diseño.",
+        "agiaPromptTagged": "Eres un cazador de tendencias visuales que sabe identificar qué estilos de diseño están generando más interacción en este momento.\n\nCONTEXTO:\nMi tema/industria: [Ej: \"Emprendimiento\" / \"Comida\" / \"Fitness\" / \"Tecnología\"]\n\nRed social: [Instagram / TikTok / Pinterest / LinkedIn]\n\nTipo de contenido: [Posts / Stories / Reels / Pins]\n\nMETA:\nDame un análisis de las tendencias visuales actuales (2024-2025) que están generando más interacción en mi tema, con ejemplos específicos que pueda copiar.\n\nRESTRICCIONES:\n- Tendencias ACTUALES (no de hace 6 meses)\n- Elementos específicos que pueda copiar (colores, letras, diseños)\n- Ejemplos de cuentas que lo están haciendo bien\n- Números de interacción cuando sea posible\n\nFORMATO:\n**Tendencia Visual 1: [Nombre del estilo]**\n- Descripción: [Qué caracteriza este estilo]\n- Elementos clave:\n  - Colores: [Códigos HEX]\n  - Letras: [Fuentes específicas]\n  - Diseño: [Composición]\n  - Filtros: [Si aplica]\n- Ejemplos: [3 cuentas]\n- Interacción: [Si hay datos]\n- Cómo copiarlo: [Pasos]",
+        "previewResponse": "**Tendencia 1: \"Glassmorphism Minimalista\"**\n- Descripción: Fondos con efecto vidrio esmerilado, colores pastel, mucho espacio blanco\n- Elementos: Colores #E8F5E9, #F3E5F5, #E1F5FE | Fuente: Inter, Poppins | Layout: Centro con mucho aire | Filtro: Blur sutil\n- Ejemplos: @minimalsetups, @cleandesign.co, @airy.studio\n- Interacción: +45% vs posts tradicionales\n- Cómo: Usa Figma/Canva, aplica blur 20px a fondos, paleta pastel",
+        "metadata": {
+            "score": 91,
+            "technique": "Visual Trend Analysis (Análisis de tendencias de diseño)."
+        },
+        "suggestedAI": "Perplexity / ChatGPT",
+        "validationTip": "¿Las tendencias son actuales o ya pasaron de moda?",
+        "exampleTip": "Visual Trend Analysis (Análisis de tendencias de diseño)."
+    },
+    {
+        "id": 118,
+        "category": "Otros / Análisis",
+        "title": "Medidor de Qué Tan Viral Será tu Contenido",
+        "icon": "lightbulb",
+        "badPrompt": "¿Este post se hará viral?",
+        "badResponsePreview": "Sí, se ve bien, publícalo",
+        "badResponseAnalysis": "Respuesta sin criterio. No evalúa elementos probados de viralidad ni da score cuantificable.",
+        "agiaPromptTagged": "Eres un analista que sabe predecir qué tan viral será un contenido ANTES de publicarlo. Das un puntaje y razones específicas.\n\nCONTEXTO:\nContenido a evaluar: [Pega aquí el texto + descripción de la imagen / o link al borrador]\n\nRed social: [Instagram / TikTok / LinkedIn / Twitter]\n\nTu audiencia actual: [Tamaño + cuánta interacción tienes normalmente]\n\nObjetivo: [Alcance / Interacción / Conversión]\n\nMETA:\nDame un análisis predictivo de qué tan viral será este contenido con puntaje del 1-100 y recomendaciones específicas para mejorarlo.\n\nRESTRICCIONES:\n- Evalúa elementos probados: Inicio, Emoción, Timing, Formato, Duración\n- Puntaje del 1-100\n- Identifica qué le falta para ser viral\n- Recomendaciones específicas que pueda aplicar\n\nFORMATO:\n**Puntaje de Viralidad: [X/100]**\n\n**Análisis por Elemento:**\n\n**Inicio/Gancho (0-20 puntos):**\n- Puntaje: [X/20]\n- Evaluación: [Qué tan fuerte es]\n- Mejora: [Cómo optimizarlo]\n\n**Emoción (0-20):** [Mismo formato]\n**Timing (0-20):** [Mismo formato]\n**Formato (0-20):** [Mismo formato]\n**Duración (0-20):** [Mismo formato]\n\n**Predicción:**\n- Alcance estimado: [X vistas]\n- Interacción estimada: [X]\n- Probabilidad viral: [Baja/Media/Alta]\n\n**Top 3 Cambios:**\n1. [Cambio más impactante]\n2. [Segundo]\n3. [Tercero]",
+        "previewResponse": "**Puntaje: 72/100**\n\n**Inicio (15/20):** Hook fuerte pero predecible | Mejora: Usa dato sorprendente en vez de pregunta\n\n**Emoción (18/20):** Genera curiosidad alta | Mejora: Añade controversia sutil\n\n**Timing (12/20):** No conecta con tendencia actual | Mejora: Menciona tema trending de la semana\n\n**Predicción:** 15k vistas | 800 interacciones | Probabilidad: Media-Alta\n\n**Top 3:** 1. Cambia hook por dato sorprendente 2. Conecta con trend actual 3. Acorta 10 segundos",
+        "metadata": {
+            "score": 96,
+            "technique": "Virality Prediction (Predicción de potencial viral)."
+        },
+        "suggestedAI": "ChatGPT / Claude",
+        "validationTip": "¿El análisis te ayuda a mejorar el contenido antes de publicar?",
+        "exampleTip": "Virality Prediction (Predicción de potencial viral)."
     }
 
 ];
