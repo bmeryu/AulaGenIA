@@ -1154,6 +1154,28 @@
                 return;
               }
 
+              // VERIFICAR ENROLLMENT - Solo usuarios que han pagado pueden descargar
+              const userRef = db.collection('users').doc(user.uid);
+              const userDoc = await userRef.get();
+
+              if (!userDoc.exists) {
+                alert('No se encontró tu perfil. Por favor contacta a soporte.');
+                return;
+              }
+
+              const userData = userDoc.data();
+              const courseId = 'ia-aplicada-esencial';
+              const oldCourseId = 'inteligencia-aplicada';
+
+              const hasEnrollment = userData.enrollments &&
+                (userData.enrollments[courseId] === true ||
+                  userData.enrollments[oldCourseId] === true);
+
+              if (!hasEnrollment) {
+                alert('⚠️ Acceso Premium Requerido\n\nPara descargar el PDF de 100 Prompts necesitas estar inscrito en el curso.\n\n¿Deseas inscribirte ahora?');
+                window.location.href = 'landing-nuevo.html#pricing';
+                return;
+              }
 
               const { jsPDF } = window.jspdf;
               const doc = new jsPDF();
@@ -1163,7 +1185,7 @@
               // PORTADA
               doc.setFillColor(...teal); doc.rect(0, 0, pw, 80, 'F');
 
-              // Logo Aula GenIA (más grande)
+              // Logo Aula GenIA (más grande y mejor calidad)
               try {
                 const logoImg = new Image();
                 logoImg.src = 'https://aulagenia.cl/Logo_AGIA.png';
@@ -1171,9 +1193,10 @@
                 await new Promise((resolve, reject) => {
                   logoImg.onload = resolve;
                   logoImg.onerror = reject;
+                  setTimeout(reject, 5000); // timeout 5s
                 });
-                // Add logo centered at top - tamaño aumentado 50x50
-                doc.addImage(logoImg, 'PNG', pw / 2 - 25, 8, 50, 50);
+                // Add logo centered at top - tamaño aumentado 50x50 con mejor compresión
+                doc.addImage(logoImg, 'PNG', pw / 2 - 25, 8, 50, 50, undefined, 'FAST');
               } catch (e) {
                 console.warn('No se pudo cargar el logo, continuando sin él:', e);
               }
