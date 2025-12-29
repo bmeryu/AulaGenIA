@@ -2129,21 +2129,45 @@
                 container.innerHTML = '';
 
                 const sectionConfig = {
-                    'ROL': { bg: 'bg-blue-50', text: 'text-blue-800', label: 'Rol' },
-                    'CONTEXTO': { bg: 'bg-emerald-50', text: 'text-emerald-800', label: 'Contexto' },
-                    'META': { bg: 'bg-amber-50', text: 'text-amber-800', label: 'Meta' },
-                    'RESTRICCIONES': { bg: 'bg-rose-50', text: 'text-rose-800', label: 'Restricciones' },
-                    'FORMATO': { bg: 'bg-violet-50', text: 'text-violet-800', label: 'Formato' }
+                    'ROL': {
+                        bg: 'bg-blue-50',
+                        text: 'text-blue-800',
+                        label: 'Rol',
+                        border: 'border-blue-200'
+                    },
+                    'CONTEXTO': {
+                        bg: 'bg-emerald-50',
+                        text: 'text-emerald-800',
+                        label: 'Contexto',
+                        border: 'border-emerald-200'
+                    },
+                    'META': {
+                        bg: 'bg-amber-50',
+                        text: 'text-amber-800',
+                        label: 'Meta',
+                        border: 'border-amber-200'
+                    },
+                    'RESTRICCIONES': {
+                        bg: 'bg-rose-50',
+                        text: 'text-rose-800',
+                        label: 'Límites',  // ✅ ACORTADO para mejor UX
+                        border: 'border-rose-200'
+                    },
+                    'FORMATO': {
+                        bg: 'bg-violet-50',
+                        text: 'text-violet-800',
+                        label: 'Formato',
+                        border: 'border-violet-200'
+                    }
                 };
 
-                // Patrones mejorados: más precisos para evitar cortes incorrectos
-                // Emojis deben ir seguidos de la palabra clave, no solos
+                // ✅ PATRONES MEJORADOS: Capturan SOLO el inicio del marcador, no todo el contenido
                 const patterns = {
-                    'ROL': /{r}|(?:^|\s|[.,;:\n])(?:Actúa como|Eres un|Act como|Tu expertise|Tu especialidad|1\.\s*ROL:|Rol:|🔸\s*ROL)/i,
-                    'CONTEXTO': /{c}|(?:^|\s|[.,;:\n])(?:(?:📎|📄|🎤|🎯|📊|📷)\s*(?:ADJUNTO|CONTEXTO)|Mi negocio:|Mi situación:|El tema de|Mi audiencia|Origen:|Destino:|Participantes:|Situación:|2\.\s*CON(?:TEXTO)?:)/i,
-                    'META': /{m}|(?:^|\s|[.,;:\n])(?:Necesito que me|Necesito que escribas|Necesito un|Necesito una|Objetivo:|debo|quiero que|busco|3\.\s*META:|Meta:)/i,
-                    'RESTRICCIONES': /{l}|(?:^|\s|[.,;:\n])(?:Cada slide debe|Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|Para cada|RESTRICCIONES OBLIGATORIAS|RESTRICCIONES CRÍTICAS|4\.\s*RESTRICCIONES:|Restricciones:)/i,
-                    'FORMATO': /{f}|(?:^|\s|[.,;:\n])(?:FORMATO DE SALIDA OBLIGATORIO|Tabla con columnas?:|Formato de Salida:|Formato:|Lista ordenada|usar el formato|5\.\s*FORMATO:)/i
+                    'ROL': /{r}|(?:^|\n)(?:Actúa como|Eres un|Act como|Tu expertise|Tu especialidad|1\.\s*ROL:|Rol:|🔸\s*ROL)/i,
+                    'CONTEXTO': /{c}|(?:^|\n)(?:(?:📎|📄|🎤|🎯|📊|📷)\s*(?:ADJUNTO|CONTEXTO)|CONTEXTO:|Mi negocio:|Mi situación:|El tema de|Mi audiencia|Origen:|Destino:|Participantes:|Situación:|2\.\s*CON(?:TEXTO)?:)/i,
+                    'META': /{m}|(?:^|\n)(?:META:|Necesito que me|Necesito que escribas|Necesito un|Necesito una|Objetivo:|debo|quiero que|busco|3\.\s*META:)/i,
+                    'RESTRICCIONES': /{l}|(?:^|\n)(?:RESTRICCIONES:|Cada slide debe|Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|Para cada|RESTRICCIONES OBLIGATORIAS|RESTRICCIONES CRÍTICAS|4\.\s*RESTRICCIONES:)/i,
+                    'FORMATO': /{f}|(?:^|\n)(?:FORMATO:|FORMATO DE SALIDA OBLIGATORIO|Tabla con columnas?:|Formato de Salida:|Lista ordenada|usar el formato|5\.\s*FORMATO:)/i
                 };
 
                 let markers = [];
@@ -2166,33 +2190,59 @@
                         const currentMarker = markers[i];
                         const nextMarkerIndex = (i + 1 < markers.length) ? markers[i + 1].index : template.length;
 
-                        // CRÍTICO: Incluimos el texto desde el INICIO del marcador (no después)
-                        // Esto preserva frases como "Necesito que..." y "Eres un..." completas
-                        const startPos = currentMarker.index;
+                        // ✅ MEJORA: Extraemos contenido DESPUÉS del marcador para evitar duplicación
+                        const startPos = currentMarker.index + currentMarker.length;
                         let content = template.substring(startPos, nextMarkerIndex).trim();
 
+                        // ✅ LIMPIEZA: Removemos keywords redundantes al inicio
+                        content = content
+                            .replace(/^(ROL:|CONTEXTO:|META:|RESTRICCIONES:|FORMATO:)\s*/i, '')
+                            .replace(/^(Actúa como|Eres un|Necesito que|Objetivo:|Tono:)\s*/i, '$1 ')
+                            .trim();
+
                         if (content) {
-                            // Si la sección ya existe (por ejemplo, dos frases de META), las unimos.
+                            // Si la sección ya existe, las unimos
                             if (!sections[currentMarker.section]) sections[currentMarker.section] = "";
                             sections[currentMarker.section] += (sections[currentMarker.section] ? " " : "") + content;
                         }
                     }
                 }
 
-                // Renderizado visual de las cajas (orden fijo: ROL, CONTEXTO, META, FORMATO, RESTRICCIONES)
+                // ✅ Renderizado visual mejorado con borders y mejor spacing
                 const orderedSections = ['ROL', 'CONTEXTO', 'META', 'FORMATO', 'RESTRICCIONES'];
                 orderedSections.forEach(key => {
                     const content = sections[key];
-                    if (!content) return; // Skip if section doesn't exist
-                    const conf = sectionConfig[key] || { bg: 'bg-slate-50', text: 'text-slate-800', label: key };
+                    if (!content) return;
+
+                    const conf = sectionConfig[key] || {
+                        bg: 'bg-slate-50',
+                        text: 'text-slate-800',
+                        label: key,
+                        border: 'border-slate-200'
+                    };
+
                     const wrapper = document.createElement('div');
-                    wrapper.className = `my-1 rounded-md border border-transparent hover:border-indigo-100 transition-colors ${conf.bg} px-3 py-2`;
+                    wrapper.className = `my-2 rounded-lg border ${conf.border} hover:border-indigo-300 transition-all ${conf.bg} px-4 py-3 shadow-sm`;
+
+                    // ✅ MEJORA: Procesamos el HTML de forma más limpia
                     let html = escapeHtml(content)
-                        .replace(/^-{3,}\s*$/gm, '')
-                        .replace(/{\/?[rcmlf]}/gi, '')
-                        .replace(/\[([^\]\n]+)\](?!\()/g, '<span class="var-highlight">$1</span>')
-                        .replace(/\n/g, '<br>');
-                    wrapper.innerHTML = `<span class="text-[9px] font-bold uppercase tracking-widest ${conf.text} opacity-60 border border-current px-1 rounded mr-2">${conf.label}</span><span class="${conf.text} text-sm leading-snug">${html}</span>`;
+                        .replace(/^-{3,}\s*$/gm, '')  // Remover separadores
+                        .replace(/{\/?[rcmlf]}/gi, '')  // Remover tags de estructura
+                        .replace(/\[([^\]\n]+)\](?!\()/g, '<span class="var-highlight">$1</span>')  // Variables
+                        .replace(/\n/g, '<br>');  // Saltos de línea
+
+                    // ✅ BADGE MEJORADO: Más compacto y legible
+                    wrapper.innerHTML = `
+                        <div class="flex items-start gap-2">
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider ${conf.text} bg-white/60 px-2 py-1 rounded border ${conf.border} flex-shrink-0 shadow-sm">
+                                ${conf.label}
+                            </span>
+                            <span class="${conf.text} text-sm leading-relaxed flex-1" style="word-wrap: break-word; overflow-wrap: break-word;">
+                                ${html}
+                            </span>
+                        </div>
+                    `;
+
                     container.appendChild(wrapper);
                 });
             }
