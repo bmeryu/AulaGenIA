@@ -2161,54 +2161,68 @@
                     }
                 };
 
-                // ✅ PATRONES MEJORADOS: Capturan SOLO el inicio del marcador, no todo el contenido
-                const patterns = {
-                    'ROL': /{r}|(?:^|\n)(?:Actúa como|Eres un|Act como|Tu expertise|Tu especialidad|1\.\s*ROL:|Rol:|🔸\s*ROL)/i,
-                    'CONTEXTO': /{c}|(?:^|\n)(?:(?:📎|📄|🎤|🎯|📊|📷)\s*(?:ADJUNTO|CONTEXTO)|CONTEXTO:|Mi negocio:|Mi situación:|El tema de|Mi audiencia|Origen:|Destino:|Participantes:|Situación:|2\.\s*CON(?:TEXTO)?:)/i,
-                    'META': /{m}|(?:^|\n)(?:META:|Necesito que me|Necesito que escribas|Necesito un|Necesito una|Objetivo:|debo|quiero que|busco|3\.\s*META:)/i,
-                    'RESTRICCIONES': /{l}|(?:^|\n)(?:RESTRICCIONES:|Cada slide debe|Clasifica en:|clasificaciones son|Tono:|Máximo|Sin jerga|No uses|Ignora|límites|Para cada|RESTRICCIONES OBLIGATORIAS|RESTRICCIONES CRÍTICAS|4\.\s*RESTRICCIONES:)/i,
-                    'FORMATO': /{f}|(?:^|\n)(?:FORMATO:|FORMATO DE SALIDA OBLIGATORIO|Tabla con columnas?:|Formato de Salida:|Lista ordenada|usar el formato|5\.\s*FORMATO:)/i
-                };
-
-                let markers = [];
-                Object.entries(patterns).forEach(([key, pattern]) => {
-                    let match;
-                    const globalPattern = new RegExp(pattern.source, 'gi');
-                    while ((match = globalPattern.exec(template)) !== null) {
-                        markers.push({ index: match.index, length: match[0].length, section: key });
-                    }
-                });
-
-                // Ordenamos los marcadores por posición en el texto
-                markers.sort((a, b) => a.index - b.index);
-
+                // ✅ NUEVO: Detectar y parsear formato numerado "1. ROL:", "2. CONTEXTO:", etc.
                 let sections = {};
-                if (markers.length === 0) {
-                    sections['ROL'] = template;
+                const hasNumberedFormat = /\d+\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):/i.test(template);
+
+                if (hasNumberedFormat) {
+                    // Formato numerado encontrado - parsear directamente
+                    const numberedPattern = /(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):\s*([^]*?)(?=\d+\.\s*(?:ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):|$)/gi;
+                    let match;
+
+                    while ((match = numberedPattern.exec(template)) !== null) {
+                        const sectionName = match[2].toUpperCase();
+                        const content = match[3].trim();
+                        sections[sectionName] = content;
+                    }
                 } else {
-                    for (let i = 0; i < markers.length; i++) {
-                        const currentMarker = markers[i];
-                        const nextMarkerIndex = (i + 1 < markers.length) ? markers[i + 1].index : template.length;
+                    // Formato conversacional - usar patterns originales
+                    const patterns = {
+                        'ROL': /{r}|(?:^|\n)(?:Actúa como|Eres un|Act como|Tu expertise|Tu especialidad|ROL:|Rol:|🔸\s*ROL)/i,
+                        'CONTEXTO': /{c}|(?:^|\n)(?:(?:📎|📄|🎤|🎯|📊|📷)\s*(?:ADJUNTO|CONTEXTO)|CONTEXTO:|Mi negocio:|Mi situación:|El tema de)/i,
+                        'META': /{m}|(?:^|\n)(?:META:|Necesito que me|Necesito que escribas|Necesito un|Necesito una|Objetivo:)/i,
+                        'RESTRICCIONES': /{l}|(?:^|\n)(?:RESTRICCIONES:|Cada slide debe|Clasifica en:|Tono:|Máximo|Sin jerga|No uses)/i,
+                        'FORMATO': /{f}|(?:^|\n)(?:FORMATO:|FORMATO DE SALIDA OBLIGATORIO|Tabla con columnas?:|Formato de Salida:)/i
+                    };
 
-                        // ✅ MEJORA: Extraemos contenido DESPUÉS del marcador para evitar duplicación
-                        const startPos = currentMarker.index + currentMarker.length;
-                        let content = template.substring(startPos, nextMarkerIndex).trim();
+                    let markers = [];
+                    Object.entries(patterns).forEach(([key, pattern]) => {
+                        let match;
+                        const globalPattern = new RegExp(pattern.source, 'gi');
+                        while ((match = globalPattern.exec(template)) !== null) {
+                            markers.push({ index: match.index, length: match[0].length, section: key });
+                        }
+                    });
 
-                        // ✅ LIMPIEZA: Removemos keywords redundantes al inicio
-                        content = content
-                            .replace(/^(ROL:|CONTEXTO:|META:|RESTRICCIONES:|FORMATO:)\s*/i, '')
-                            .replace(/^(Actúa como|Eres un|Necesito que|Objetivo:|Tono:)\s*/i, '$1 ')
-                            .trim();
+                    markers.sort((a, b) => a.index - b.index);
 
-                        if (content) {
-                            // Si la sección ya existe, las unimos
-                            if (!sections[currentMarker.section]) sections[currentMarker.section] = "";
-                            sections[currentMarker.section] += (sections[currentMarker.section] ? " " : "") + content;
+                    if (markers.length === 0) {
+                        sections['ROL'] = template;
+                    } else {
+                        for (let i = 0; i < markers.length; i++) {
+                            const currentMarker = markers[i];
+                            const nextMarkerIndex = (i + 1 < markers.length) ? markers[i + 1].index : template.length;
+                            const startPos = currentMarker.index + currentMarker.length;
+                            let content = template.substring(startPos, nextMarkerIndex).trim();
+
+                            content = content
+                                .replace(/^(ROL:|CONTEXTO:|META:|RESTRICCIONES:|FORMATO:)\s*/i, '')
+                                .replace(/^(Actúa como|Eres un|Necesito que|Objetivo:|Tono:)\s*/i, '$1 ')
+                                .trim();
+
+                            if (content) {
+                                if (!sections[currentMarker.section]) sections[currentMarker.section] = "";
+                                sections[currentMarker.section] += (sections[currentMarker.section] ? " " : "") + content;
+                            }
                         }
                     }
                 }
 
+                // Continuar con el renderizado (no cambiar nada después de aquí)
+                const orderedSections = ['ROL', 'CONTEXTO', 'META', 'FORMATO', 'RESTRICCIONES'];
+
                 // ✅ Renderizado visual mejorado con borders y mejor spacing
+
                 const orderedSections = ['ROL', 'CONTEXTO', 'META', 'FORMATO', 'RESTRICCIONES'];
                 orderedSections.forEach(key => {
                     const content = sections[key];
