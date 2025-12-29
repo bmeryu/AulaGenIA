@@ -1199,21 +1199,36 @@
               // PORTADA
               doc.setFillColor(...teal); doc.rect(0, 0, pw, 80, 'F');
 
-              // Logo Aula GenIA (más grande y mejor calidad)
+              // Logo Aula GenIA - Dimensiones correctas en mm
               try {
                 const logoImg = new Image();
-                logoImg.src = 'https://aulagenia.cl/Logo_AGIA.png';
                 logoImg.crossOrigin = 'Anonymous';
+                logoImg.src = 'Logo_AGIA.png'; // PNG tiene mejor calidad y transparencia
+
                 await new Promise((resolve, reject) => {
                   logoImg.onload = resolve;
                   logoImg.onerror = reject;
                   setTimeout(reject, 5000); // timeout 5s
                 });
-                // Add logo centered at top - tamaño aumentado 50x50 con mejor compresión
-                doc.addImage(logoImg, 'PNG', pw / 2 - 25, 8, 50, 50, undefined, 'FAST');
+
+                // Dimensiones en mm (no px)
+                const logoWidth = 15; // 15mm de ancho
+                const logoHeight = 0; // Auto-calcula proporción
+
+                // jsPDF calcula automáticamente la altura manteniendo aspect ratio
+                const aspectRatio = logoImg.height / logoImg.width;
+                const calculatedHeight = logoWidth * aspectRatio;
+
+                // Centrar horizontalmente
+                const logoX = (pw - logoWidth) / 2;
+                const logoY = 10; // 10mm desde arriba
+
+                doc.addImage(logoImg, 'PNG', logoX, logoY, logoWidth, calculatedHeight);
               } catch (e) {
-                console.warn('No se pudo cargar el logo, continuando sin él:', e);
+                console.warn('No se pudo cargar el logo:', e);
+                // Continuar sin logo
               }
+
 
               doc.setTextColor(255, 255, 255); doc.setFontSize(32); doc.setFont('helvetica', 'bold');
               doc.text('Maestro Prompts', pw / 2, 70, { align: 'center' });
