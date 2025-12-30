@@ -1528,10 +1528,13 @@
                             console.error("❌ Error verificando enrollment:", error);
                         }
 
-                        // ✅ FREEMIUM MODEL: Desbloquear para TODOS los usuarios autenticados
-                        // El backend ya maneja qué prompts son premium vs free
-                        isVaultUnlocked = true;
-                        console.log("🔓 Desbloqueando vault para usuario autenticado...");
+                        // ✅ MODELO PREMIUM: Solo desbloquear si tiene enrollment
+                        isVaultUnlocked = hasEnrollment;
+                        if (isVaultUnlocked) {
+                            console.log("🔓 Desbloqueando vault (Usuario Premium)...");
+                        } else {
+                            console.log("🔒 Vault bloqueado (Usuario Freemium)...");
+                        }
 
                         if (unlockBtn) unlockBtn.classList.add('hidden');
 
