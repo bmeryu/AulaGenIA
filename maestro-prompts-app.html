@@ -1167,12 +1167,27 @@
                 }
 
                 // --- MODO PRODUCCIÓN (POR DEFECTO) ---
-                // Verificar si ya hay usuario autenticado
+                // CRÍTICO: Esperar a que Firebase Auth esté listo
+                console.log('⏳ Esperando autenticación de Firebase...');
+
+                // Esperar hasta que auth esté inicializado
+                await new Promise((resolve) => {
+                    const unsubscribe = auth.onAuthStateChanged((user) => {
+                        unsubscribe();
+                        resolve(user);
+                    });
+                });
+
                 const user = auth.currentUser;
 
-                // Si no hay usuario y no estamos esperando auth 
-                // (esto podría necesitar ajuste si auth es asíncrono, pero initApp maneja logins)
+                if (!user) {
+                    console.log('❌ Usuario no autenticado, redirigiendo a login...');
+                    const returnUrl = encodeURIComponent(window.location.href);
+                    window.location.href = `acceso.html?redirect=${returnUrl}`;
+                    return;
+                }
 
+                console.log('✅ Usuario autenticado:', user.email);
                 console.log('🔒 Secure Load: Solicitando prompts a Cloud Function...');
 
                 const getPromptsData = firebase.functions().httpsCallable('getPromptsData');
