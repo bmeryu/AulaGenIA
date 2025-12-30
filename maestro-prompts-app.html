@@ -2062,8 +2062,20 @@
                 const scrollContainer = document.getElementById('detail-scroll-container');
                 if (scrollContainer) scrollContainer.scrollTop = 0;
 
-                // Determine effective lock state (Database OR User Session)
-                const isLocked = c.locked || !isVaultUnlocked;
+                // --- LOGICA DE BLOQUEO ROBUSTA (FREEMIUM) ---
+                // 1. Lista blanca de Prompts Gratuitos (Ids 1-15)
+                const FREE_PROMPT_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+                // 2. Determinar si el usuario tiene acceso
+                const isFreePrompt = FREE_PROMPT_IDS.includes(c.id);
+                const userHasAccess = isVaultUnlocked || isFreePrompt;
+
+                // 3. Resultado final de bloqueo
+                // Si NO tiene acceso, está efectivamente bloqueado.
+                const effectivelyLocked = !userHasAccess;
+
+                // Debugging claro
+                // console.log(`🔒 Check Prompt #${id}: Free=${isFreePrompt}, PaidUser=${isVaultUnlocked} => Locked=${effectivelyLocked}`);
 
                 currentDifficulty = c.difficulty || 'beginner';
 
@@ -2149,8 +2161,9 @@
 
                 // Handle both encrypted (U2F prefix) and plain text prompts
                 if (currentPromptTemplate.startsWith("U2F")) {
-                    // Encrypted prompt - only decrypt if vault is unlocked
-                    if (isVaultUnlocked) {
+                    // Encrypted prompt - only decrypt if vault is unlocked (PREMIUM)
+                    // ADDED: Or if it is a FREE prompt that happens to be encrypted
+                    if (userHasAccess) {
                         currentPromptTemplate = decryptPrompt(currentPromptTemplate);
                     }
                     // If vault is locked, keep it encrypted (will show as locked)
@@ -2171,21 +2184,28 @@
                     }
                 }
 
-                // Force Lock if content is encrypted and vault is locked
-                const effectivelyLocked = isLocked || (!isVaultUnlocked && currentPromptTemplate.startsWith("U2F"));
-
                 renderPrompts(effectivelyLocked);
 
                 // --- UPDATE UI FOR TIER (BASIC vs MASTER) ---
                 const tierBadge = document.getElementById('detail-tier-badge');
                 if (tierBadge) {
-                    const isMaster = c.locked || currentPromptTemplate.startsWith("U2F");
-                    if (isMaster) {
-                        tierBadge.innerHTML = '<span class="material-symbols-rounded text-[10px] filled">lock</span> MAESTRO';
-                        tierBadge.className = "text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-indigo-600 text-white border-indigo-700";
-                    } else {
-                        tierBadge.innerHTML = '<span class="material-symbols-rounded text-[10px]">lock_open</span> BÁSICO';
+                    // Check logic consistent with new Freemium model
+                    const isFree = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].includes(c.id);
+
+                    if (isFree) {
+                        tierBadge.innerHTML = '<span class="material-symbols-rounded text-[10px]">campaign</span> GRATUITO';
                         tierBadge.className = "text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-emerald-100 text-emerald-700 border-emerald-200";
+                    } else {
+                        // Premium Tier
+                        if (effectivelyLocked) {
+                            // Locked
+                            tierBadge.innerHTML = '<span class="material-symbols-rounded text-[10px] filled">lock</span> MAESTRO';
+                            tierBadge.className = "text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-indigo-600 text-white border-indigo-700";
+                        } else {
+                            // Unlocked Premium
+                            tierBadge.innerHTML = '<span class="material-symbols-rounded text-[10px] filled">lock_open</span> MAESTRO';
+                            tierBadge.className = "text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-indigo-100 text-indigo-700 border-indigo-200";
+                        }
                     }
                 }
 
@@ -2267,16 +2287,16 @@
             }
 
             function downloadPDF() {
-                // Verificar si el usuario tiene permiso (enrollment)
-                if (!isVaultUnlocked) {
-                    // Si está bloqueado, mostrar modal de venta
-                    window.showCouponModal();
-                    return;
-                }
+                // --- LOGICA DE BLOQUEO ROBUSTA (FREEMIUM) ---
+                const FREE_PROMPT_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+                // Verificar si el usuario tiene permiso GLOBAL (enrollment)
+                // O si estamos en el caso de querer bajar solo los gratuitos
 
                 // Calculate count of unlocked prompts to show value
                 const total = casesData.length;
-                const unlockedCount = casesData.filter(c => !(c.locked || globalLockMode)).length;
+                // Count how many are accessible to THIS user
+                const unlockedCount = casesData.filter(c => isVaultUnlocked || FREE_PROMPT_IDS.includes(c.id)).length;
 
                 const printContent = `
                 <html>
@@ -2301,13 +2321,24 @@
                     <p class="subtitle">Reporte Generado el ${new Date().toLocaleDateString()} | ${unlockedCount}/${total} Desbloqueados</p>
                     
                     ${casesData.map(c => {
-                    // Check if individual case is locked or if global lock is enabled (now controlled by isVaultUnlocked)
-                    // If vault is NOT unlocked, treat as locked.
-                    const isLocked = c.locked || !isVaultUnlocked;
+                    // Check logic consistent with UI
+                    const isFreePrompt = FREE_PROMPT_IDS.includes(c.id);
+                    const userHasAccess = isVaultUnlocked || isFreePrompt;
+                    const effectivelyLocked = !userHasAccess;
 
-                    const content = isLocked
+                    // Decrypt if accessible and encrypted
+                    let promptText = "";
+                    if (!effectivelyLocked) {
+                        if (c.agiaPromptTagged && c.agiaPromptTagged.startsWith("U2F")) {
+                            promptText = decryptPrompt(c.agiaPromptTagged);
+                        } else {
+                            promptText = c.agiaPromptTagged || "";
+                        }
+                    }
+
+                    const content = effectivelyLocked
                         ? `<div class="locked-box">🔒 CONTENIDO EXCLUSIVO - Inicia sesión en AulaGenia para ver este contenido.</div>`
-                        : `<div class="prompt-box">${c.agiaPromptTagged ? decryptPrompt(c.agiaPromptTagged).replace(/{[a-z]+\}|{\/[a-z]+\}/g, '') : ''}</div>`;
+                        : `<div class="prompt-box">${promptText.replace(/{[a-z]+\}|{\/[a-z]+\}/g, '')}</div>`;
 
                     return `
                             <div class="case">
