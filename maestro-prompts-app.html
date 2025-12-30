@@ -1293,13 +1293,16 @@
                 const user = auth.currentUser;
 
                 if (!user) {
-                    console.log('❌ Usuario no autenticado, redirigiendo a login...');
-                    const returnUrl = encodeURIComponent(window.location.href);
-                    window.location.href = `acceso.html?redirect=${returnUrl}`;
-                    return;
+                    console.log('👀 Modo Invitado (Sin sesión) - Inicializando app en modo limitado...');
+                    // No redirigir. Permitir carga para visualización "Freemium"
                 }
 
-                console.log('✅ Usuario autenticado:', user.email);
+                if (user) console.log('✅ Usuario autenticado:', user.email);
+
+                // Intentar carga segura (si hay usuario) O carga pública (si no hay)
+                // NOTA: getPromptsData actualmente requiere auth. 
+                // Si es invitado, o usamos una función pública o manejamos el error elegantemente.
+                console.log('🔒 Secure Load: Solicitando prompts...');
                 console.log('🔒 Secure Load: Solicitando prompts a Cloud Function...');
 
                 const getPromptsData = firebase.functions().httpsCallable('getPromptsData');
@@ -1319,16 +1322,13 @@
             } catch (err) {
                 console.error("Secure Load Error:", err);
 
-                // Manejar error de autenticación redirigiendo a login
-                if (err.code === 'functions/unauthenticated') {
-                    console.log('Usuario no autenticado, redirigiendo a login...');
-                    const returnUrl = encodeURIComponent(window.location.href);
-                    window.location.href = `acceso.html?redirect=${returnUrl}`;
-                    return;
-                }
-
-                // Otros errores
-                if (err.code === 'functions/permission-denied') {
+                // Si falla por auth (Invitado), cargar datos mínimos o manejar UI
+                if (err.code === 'functions/unauthenticated' || err.message.includes('unauthenticated')) {
+                    console.warn('⚠️ Usuario no autenticado en Cloud Function. Cargando modo vista previa...');
+                    // AQUÍ PODRÍAS CARGAR DATOS FICTICIOS O PUBLICOS SI TUVIERAS.
+                    // Por ahora, el error evitará que se muestren prompts, lo cual es "seguro" pero feo.
+                    showSystemError(new Error("Inicia sesión para ver el contenido."));
+                } else if (err.code === 'functions/permission-denied') {
                     showSystemError(new Error("Acceso denegado: Necesitas inscripción activa."));
                 } else {
                     showSystemError(err);
@@ -2157,8 +2157,9 @@
                     }
                 }
 
-                // Force Lock if content is encrypted and vault is locked
-                const effectivelyLocked = isLocked || (!isVaultUnlocked && currentPromptTemplate.startsWith("U2F"));
+                // Force Lock if user is not enrolled (Strict Freemium)
+                // Lock everything if vault is not unlocked, regardless of encryption
+                const effectivelyLocked = !isVaultUnlocked;
 
                 renderPrompts(effectivelyLocked);
 
