@@ -12,31 +12,25 @@ const serviceAccount = require('./serviceAccountKey.json'); // Descarga esto des
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    storageBucket: 'aulagenia-e44b4.appspot.com' // Reemplaza con tu bucket
+    storageBucket: 'aulagenia.firebasestorage.app'
 });
 
 async function uploadPromptsToStorage() {
     try {
-        console.log('📤 Subiendo prompts_db.js a Firebase Storage...');
+        console.log('📤 Subiendo prompts_db.json a Firebase Storage...');
 
-        // Leer datos de prompts_db.js
-        const promptsPath = path.join(__dirname, '..', 'prompts_db.js');
+        // Leer datos de prompts_db.json
+        const promptsPath = path.join(__dirname, '..', 'prompts_db.json');
         let promptsContent = fs.readFileSync(promptsPath, 'utf-8');
 
-        // Extraer solo el array casesData (quitar export, etc)
-        const match = promptsContent.match(/const\s+casesData\s*=\s*(\[[\s\S]*?\]);/);
-        if (!match) {
-            throw new Error('No se pudo extraer casesData de prompts_db.js');
-        }
-
-        const casesDataStr = match[1];
-        const casesData = eval(casesDataStr); // SOLO para migración, no uses eval en producción normal
+        // Parsear JSON directamente
+        const casesData = JSON.parse(promptsContent);
 
         console.log(`✅ Encontrados ${casesData.length} prompts`);
 
         // Subir a Storage
         const bucket = admin.storage().bucket();
-        const file = bucket.file('private/prompts_data.json');
+        const file = bucket.file('private/prompts_db.json');
 
         await file.save(JSON.stringify(casesData), {
             metadata: {
@@ -49,7 +43,7 @@ async function uploadPromptsToStorage() {
             }
         });
 
-        console.log('✅ Prompts subidos exitosamente a Storage en /private/prompts_data.json');
+        console.log('✅ Prompts subidos exitosamente a Storage en /private/prompts_db.json');
         console.log('🔒 Archivo configurado como privado (solo accesible vía Cloud Functions)');
 
         process.exit(0);
