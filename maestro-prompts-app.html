@@ -1063,27 +1063,145 @@
         const db = firebase.firestore();
         const functions = firebase.functions();
 
-        window.triggerUnlockPayment = async function () {
-            const btn = document.getElementById('unlock-btn-modal');
-            const user = auth.currentUser;
+        // ============================================
+        // LÓGICA DE CUPONES Y PAGO (Unified)
+        // ============================================
+        let appliedCoupon = null;
 
+        // 1. Mostrar Modal
+        window.showCouponModal = async function () {
+            const user = auth.currentUser;
             if (!user) {
-                console.log("User not logged in. Redirecting...");
-                // Redirigir a login y luego volver aquí para iniciar pago
+                // Si no está logueado, login primero
+                sessionStorage.setItem('pendingAction', 'showCouponModal');
+                const returnUrl = encodeURIComponent(window.location.href);
+                window.location.href = `acceso.html?redirect=${returnUrl}`;
+                return;
+            }
+
+            // Si está logueado, mostrar modal direct
+            const modal = document.getElementById('coupon-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        };
+
+        window.closeCouponModal = function () {
+            const modal = document.getElementById('coupon-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+
+                // Reset UI
+                const input = document.getElementById('modal-coupon-input');
+                if (input) input.value = '';
+                const msg = document.getElementById('modal-coupon-message');
+                if (msg) msg.classList.add('hidden');
+                const summary = document.getElementById('modal-discount-summary');
+                if (summary) summary.classList.add('hidden');
+
+                const btn = document.getElementById('modal-apply-btn');
+                if (btn) {
+                    btn.textContent = 'Aplicar y continuar';
+                    btn.onclick = window.applyModalCoupon;
+                    btn.disabled = false;
+                }
+            }
+            appliedCoupon = null;
+        };
+
+        // 2. Aplicar Cupón
+        window.applyModalCoupon = async function () {
+            const couponInput = document.getElementById('modal-coupon-input');
+            const couponCode = couponInput.value.trim().toUpperCase();
+
+            if (!couponCode) {
+                window.proceedWithoutCoupon();
+                return;
+            }
+
+            const btn = document.getElementById('modal-apply-btn');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Validando...';
+
+            try {
+                const validateCoupon = functions.httpsCallable('validateCoupon');
+                const result = await validateCoupon({
+                    couponCode: couponCode,
+                    courseId: 'ia-aplicada-esencial'
+                });
+
+                if (result.data.valid) {
+                    appliedCoupon = result.data;
+                    document.getElementById('modal-original-price').textContent = `$${result.data.originalPrice} USD`;
+                    const discountLabel = result.data.discountType === 'percentage'
+                        ? `${result.data.discountValue}%`
+                        : `$${result.data.discountValue} USD`;
+
+                    document.getElementById('modal-discount-label').textContent = discountLabel;
+                    document.getElementById('modal-discount-amount').textContent = `-$${result.data.discountAmount.toFixed(2)} USD`;
+                    document.getElementById('modal-final-price').textContent = `$${result.data.finalPrice.toFixed(2)} USD`;
+
+                    document.getElementById('modal-discount-summary').classList.remove('hidden');
+                    window.showModalMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, 'success');
+
+                    btn.textContent = 'Confirmar y Pagar';
+                    btn.onclick = window.proceedWithCoupon;
+                    btn.disabled = false;
+                } else {
+                    window.showModalMessage('Cupón no válido', 'error');
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error validating coupon:', error);
+                window.showModalMessage('Error al validar cupón', 'error');
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        window.showModalMessage = function (message, type) {
+            const messageEl = document.getElementById('modal-coupon-message');
+            if (messageEl) {
+                messageEl.textContent = message;
+                messageEl.className = `mt-2 text-sm font-medium ${type === 'error' ? 'text-red-600' : 'text-green-600'}`;
+                messageEl.classList.remove('hidden');
+            }
+        };
+
+        // 3. Proceder al Pago
+        window.proceedWithoutCoupon = async function () {
+            appliedCoupon = null;
+            document.getElementById('coupon-modal').classList.add('hidden');
+            await window.triggerUnlockPayment();
+        };
+
+        window.proceedWithCoupon = async function () {
+            document.getElementById('coupon-modal').classList.add('hidden');
+            await window.triggerUnlockPayment();
+        };
+
+        // Core Payment Logic (Modified to support coupons)
+        window.triggerUnlockPayment = async function () {
+            const user = auth.currentUser;
+            if (!user) {
+                // Redirigir a login
                 const returnUrl = encodeURIComponent('maestro-prompts-app.html?action=buy');
                 window.location.href = `acceso.html?redirect=${returnUrl}`;
                 return;
             }
 
-            // Logged in
-            if (btn) {
-                btn.disabled = true;
-                btn.textContent = "Generando...";
-            }
+            // Visual Feedback global (optional)
 
             try {
                 const createPreference = functions.httpsCallable('createMercadoPagoPreference');
-                const result = await createPreference({ courseId: 'ia-aplicada-esencial' }); // Correct ID
+                const result = await createPreference({
+                    courseId: 'ia-aplicada-esencial',
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                });
 
                 if (result.data && result.data.init_point) {
                     window.location.href = result.data.init_point;
@@ -1093,14 +1211,8 @@
             } catch (error) {
                 console.error("Payment Error:", error);
                 alert("Error al generar pago. Intenta más tarde.");
-                if (btn) {
-                    btn.disabled = false;
-                    btn.textContent = "Desbloquear por $20 USD";
-                }
             }
         };
-
-
     </script>
 
     <script type="module">
@@ -1433,8 +1545,17 @@
 
                         // Actualizar botón del header según enrollment
                         const headerBtn = document.getElementById('unlock-btn');
-                        if (headerBtn && !hasEnrollment) {
-                            headerBtn.innerHTML = '<span class="material-symbols-rounded text-sm text-emerald-400">rocket_launch</span><span class="hidden sm:inline">Acceso Premium</span>';
+                        if (headerBtn) {
+                            if (!hasEnrollment) {
+                                headerBtn.innerHTML = '<span class="material-symbols-rounded text-sm text-emerald-400">rocket_launch</span><span class="hidden sm:inline">Acceso Premium</span>';
+                                headerBtn.onclick = (e) => {
+                                    e.preventDefault();
+                                    window.showCouponModal();
+                                };
+                            } else {
+                                // Si ya tiene enrollment, ocultar o cambiar acción
+                                headerBtn.classList.add('hidden');
+                            }
                         }
 
                         // --- AUTO TRIGGER PAYMENT LOGIC (Moved here for safety) ---
@@ -1459,16 +1580,7 @@
                                 console.log("User NOT enrolled. Auto-triggering payment...");
 
                                 // Show Modal Feedback
-                                const modal = document.getElementById('paywall-modal');
-                                if (modal) modal.classList.remove('hidden');
-
-                                const btn = document.getElementById('unlock-btn-modal');
-                                if (btn) {
-                                    btn.textContent = "Generando link de pago...";
-                                    btn.disabled = true;
-                                }
-
-                                triggerUnlockPayment();
+                                window.showCouponModal();
                             }
                         }
 
@@ -1488,7 +1600,7 @@
                             teaserActionBtn.href = '#';
                             teaserActionBtn.onclick = (e) => {
                                 e.preventDefault();
-                                window.triggerUnlockPayment();
+                                window.showCouponModal(); // Nuevo flujo
                             };
                         }
 
@@ -2119,6 +2231,13 @@
             }
 
             function downloadPDF() {
+                // Verificar si el usuario tiene permiso (enrollment)
+                if (!isVaultUnlocked) {
+                    // Si está bloqueado, mostrar modal de venta
+                    window.showCouponModal();
+                    return;
+                }
+
                 // Calculate count of unlocked prompts to show value
                 const total = casesData.length;
                 const unlockedCount = casesData.filter(c => !(c.locked || globalLockMode)).length;
