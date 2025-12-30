@@ -693,6 +693,9 @@
                     <div class="flex items-center gap-3 min-w-0 flex-1">
                         <span id="detail-category-badge"
                             class="flex-none text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-indigo-50 text-indigo-600 border-indigo-100">CAT</span>
+
+                        <!-- Tier Badge (New) -->
+                        <div id="detail-tier-badge" class="hidden sm:flex items-center gap-1"></div>
                         <div class="min-w-0">
                             <h2 id="detail-title" class="text-sm md:text-lg font-bold text-slate-900 truncate">Título
                                 del Caso</h2>
@@ -2165,11 +2168,33 @@
 
                 renderPrompts(effectivelyLocked);
 
+                // --- UPDATE UI FOR TIER (BASIC vs MASTER) ---
+                const tierBadge = document.getElementById('detail-tier-badge');
+                if (tierBadge) {
+                    const isMaster = c.locked || currentPromptTemplate.startsWith("U2F");
+                    if (isMaster) {
+                        tierBadge.innerHTML = '<span class="material-symbols-rounded text-[10px] filled">lock</span> MAESTRO';
+                        tierBadge.className = "text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-indigo-600 text-white border-indigo-700";
+                    } else {
+                        tierBadge.innerHTML = '<span class="material-symbols-rounded text-[10px]">lock_open</span> BÁSICO';
+                        tierBadge.className = "text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-emerald-100 text-emerald-700 border-emerald-200";
+                    }
+                }
+
                 // Lógica de Bloqueo Visual (Teaser)
                 const lockOverlay = document.getElementById('locked-teaser');
                 const blurWrapper = document.getElementById('prompt-blur-wrapper');
                 const copyBtn = document.getElementById('copy-btn');
                 const resultTeaser = document.getElementById('result-teaser-label');
+
+                // FIX: Ensure Teaser Button ALWAYS works
+                const teaserBtn = document.getElementById('teaser-action-btn');
+                if (teaserBtn) {
+                    teaserBtn.onclick = (e) => {
+                        e.preventDefault();
+                        window.showCouponModal();
+                    }
+                }
                 const passwordInput = document.getElementById('vault-password');
                 if (passwordInput) passwordInput.value = ""; // Clear password on new case load
 
