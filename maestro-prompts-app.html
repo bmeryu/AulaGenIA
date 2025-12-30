@@ -828,26 +828,34 @@
                                 </div>
 
                                 <div id="locked-teaser"
-                                    class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center transition-all duration-500 backdrop-blur-[2px] bg-white/60">
+                                    class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm bg-black/30 transition-all duration-500">
                                     <div
-                                        class="bg-white/90 backdrop-blur-xl p-5 rounded-xl border border-slate-200 shadow-2xl max-w-xs text-center transform hover:scale-[1.02] transition-transform">
+                                        class="bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-xl px-8 py-10 rounded-3xl border-2 border-gray-200 shadow-2xl max-w-md w-full text-center transform transition-all hover:scale-[1.01] animate-in fade-in zoom-in duration-300">
+                                        <!-- Icono premium con gradiente -->
                                         <div
-                                            class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
-                                            <span class="material-symbols-rounded text-2xl text-slate-400">lock</span>
+                                            class="relative w-20 h-20 bg-gradient-to-br from-teal-400 via-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-cyan-500/30 rotate-3 hover:rotate-6 transition-transform">
+                                            <span
+                                                class="material-symbols-rounded text-4xl text-white">workspace_premium</span>
                                         </div>
-                                        <h3 class="text-lg font-bold text-slate-800 mb-1.5">Contenido Protegido</h3>
-                                        <p id="teaser-message" class="text-slate-500 text-xs mb-4 leading-relaxed">
-                                            Inscríbete en el curso "IA Aplicada · Esencial" para desbloquear todas las
-                                            fórmulas maestras.
+
+                                        <h3 class="text-2xl font-black text-gray-900 mb-2">Contenido Protegido</h3>
+                                        <p class="text-cyan-600 font-bold text-sm uppercase tracking-wider mb-4">🎁
+                                            Acceso Premium</p>
+
+                                        <p id="teaser-message" class="text-gray-600 text-sm mb-6 leading-relaxed">
+                                            andalucia Aprende a usar IA sin saber programar. Accede al Curso + Bóveda de
+                                            Prompts con descuento especial.
                                         </p>
 
-                                        <a id="teaser-action-btn" href="campus.html"
-                                            class="inline-flex items-center justify-center w-full gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold rounded-xl transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 border border-slate-700">
-                                            <span id="teaser-action-text">Inscríbete para Acceder</span>
-                                            <span
-                                                class="material-symbols-rounded text-base text-yellow-400">arrow_forward_ios</span>
-                                        </a>
-                                        <p class="text-[9px] text-slate-400 mt-3">
+                                        <!-- CTA Button con gradiente de marca -->
+                                        <button onclick="showCouponModal()" id="teaser-action-btn"
+                                            class="w-full gradient-btn flex items-center justify-center gap-2 px-8 py-4 text-white text-base font-black rounded-xl transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 mb-4">
+                                            <span class="material-symbols-rounded text-xl">rocket_launch</span>
+                                            <span id="teaser-action-text">Aprovechar Oferta</span>
+                                            <span class="material-symbols-rounded text-lg">arrow_forward</span>
+                                        </button>
+
+                                        <p class="text-xs text-gray-500">
                                             ¿Ya tienes cuenta? Tu sesión se detectará automáticamente.
                                         </p>
                                     </div>
@@ -3316,6 +3324,241 @@
                         closeSidebar();
                     }
                 });
+            }
+        });
+    </script>
+
+    <!-- Modal de Cupón -->
+    <div id="coupon-modal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-black text-gray-900">¿Tienes un cupón?</h3>
+                <button onclick="closeCouponModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Código de descuento (opcional)</label>
+                <input type="text" id="modal-coupon-input" placeholder="Ingresa tu código"
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 uppercase font-mono text-lg"
+                    maxlength="20">
+                <div id="modal-coupon-message" class="mt-2 text-sm font-medium hidden"></div>
+            </div>
+
+            <div id="modal-discount-summary" class="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg hidden">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-gray-600">Precio original:</span>
+                    <span class="text-gray-900 font-bold" id="modal-original-price"></span>
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-green-600 font-bold">Descuento (<span id="modal-discount-label"></span>):</span>
+                    <span class="text-green-600 font-bold text-xl" id="modal-discount-amount"></span>
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t-2 border-green-300">
+                    <span class="text-gray-900 font-black text-lg">Total a pagar:</span>
+                    <span class="text-3xl font-black text-green-600" id="modal-final-price"></span>
+                </div>
+                <p class="mt-3 text-xs text-gray-500 italic">
+                    * El descuento se aplicará automáticamente en Mercado Pago. Si el cupón no se aplica correctamente,
+                    contáctanos antes de completar el pago.
+                </p>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="proceedWithoutCoupon()"
+                    class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-bold">
+                    Sin cupón
+                </button>
+                <button id="modal-apply-btn" onclick="applyModalCoupon()"
+                    class="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-bold">
+                    Aplicar y continuar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // LÓGICA DE MODAL, CUPONES Y PAGOS
+        // ============================================
+        let appliedCoupon = null;
+
+        async function checkUserPurchaseStatus(user) {
+            if (!user) return { hasCourse: false, error: null };
+            try {
+                const db = firebase.firestore();
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    const hasCourse = userData.courses && userData.courses['ia-aplicada-esencial'];
+                    return { hasCourse: !!hasCourse, error: null };
+                }
+                return { hasCourse: false, error: null };
+            } catch (error) {
+                console.error('Error verificando estado del curso:', error);
+                return { hasCourse: false, error };
+            }
+        }
+
+        async function showCouponModal() {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                sessionStorage.setItem('pendingAction', 'showCouponModal');
+                window.location.href = 'acceso.html?redirect=maestro-prompts-app.html';
+                return;
+            }
+            const { hasCourse } = await checkUserPurchaseStatus(user);
+            if (hasCourse) {
+                if (confirm('¡Ya estás inscrito en este curso! ¿Deseas ir al campus para continuar tu aprendizaje?')) {
+                    window.location.href = 'campus.html';
+                }
+                return;
+            }
+            const modal = document.getElementById('coupon-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeCouponModal() {
+            const modal = document.getElementById('coupon-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                const input = document.getElementById('modal-coupon-input');
+                if (input) input.value = '';
+                const msg = document.getElementById('modal-coupon-message');
+                if (msg) msg.classList.add('hidden');
+                const summary = document.getElementById('modal-discount-summary');
+                if (summary) summary.classList.add('hidden');
+                const btn = document.getElementById('modal-apply-btn');
+                if (btn) {
+                    btn.textContent = 'Aplicar y continuar';
+                    btn.onclick = applyModalCoupon;
+                    btn.disabled = false;
+                }
+            }
+            appliedCoupon = null;
+        }
+
+        async function applyModalCoupon() {
+            const couponInput = document.getElementById('modal-coupon-input');
+            const couponCode = couponInput.value.trim().toUpperCase();
+            if (!couponCode) {
+                proceedWithoutCoupon();
+                return;
+            }
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                showModalMessage('Debes iniciar sesión primero', 'error');
+                return;
+            }
+            const btn = document.getElementById('modal-apply-btn');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Validando...';
+            try {
+                const validateCoupon = firebase.functions().httpsCallable('validateCoupon');
+                const result = await validateCoupon({
+                    couponCode: couponCode,
+                    courseId: 'ia-aplicada-esencial'
+                });
+                if (result.data.valid) {
+                    appliedCoupon = result.data;
+                    document.getElementById('modal-original-price').textContent = `$${result.data.originalPrice} USD`;
+                    const discountLabel = result.data.discountType === 'percentage'
+                        ? `${result.data.discountValue}%`
+                        : `$${result.data.discountValue} USD`;
+                    document.getElementById('modal-discount-label').textContent = discountLabel;
+                    document.getElementById('modal-discount-amount').textContent = `-$${result.data.discountAmount.toFixed(2)} USD`;
+                    document.getElementById('modal-final-price').textContent = `$${result.data.finalPrice.toFixed(2)} USD`;
+                    document.getElementById('modal-discount-summary').classList.remove('hidden');
+                    showModalMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, 'success');
+                    btn.textContent = 'Confirmar y Pagar';
+                    btn.onclick = proceedWithCoupon;
+                    btn.disabled = false;
+                } else {
+                    showModalMessage('Cupón no válido', 'error');
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error validating coupon:', error);
+                let errorMessage = 'Cupón inválido';
+                if (error.message) {
+                    if (error.message.includes('expirado')) errorMessage = 'Cupón expirado';
+                    else if (error.message.includes('agotado')) errorMessage = 'Cupón agotado';
+                    else if (error.message.includes('Ya usaste')) errorMessage = 'Ya usaste este cupón';
+                }
+                showModalMessage(errorMessage, 'error');
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function showModalMessage(message, type) {
+            const messageEl = document.getElementById('modal-coupon-message');
+            if (messageEl) {
+                messageEl.textContent = message;
+                messageEl.className = `mt-2 text-sm font-medium ${type === 'error' ? 'text-red-600' : 'text-green-600'}`;
+                messageEl.classList.remove('hidden');
+            }
+        }
+
+        async function proceedWithoutCoupon() {
+            appliedCoupon = null;
+            const modal = document.getElementById('coupon-modal');
+            if (modal) modal.classList.add('hidden');
+            await handlePurchase();
+        }
+
+        async function proceedWithCoupon() {
+            const modal = document.getElementById('coupon-modal');
+            if (modal) modal.classList.add('hidden');
+            await handlePurchase();
+        }
+
+        async function handlePurchase() {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                sessionStorage.setItem('pendingPurchase', JSON.stringify({
+                    courseId: 'ia-aplicada-esencial',
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                }));
+                window.location.href = '/acceso.html?action=buy';
+                return;
+            }
+            try {
+                const createPreference = firebase.functions().httpsCallable('createMercadoPagoPreference');
+                const result = await createPreference({
+                    courseId: 'ia-aplicada-esencial',
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                });
+                if (result.data && result.data.init_point) {
+                    window.location.href = result.data.init_point;
+                } else {
+                    throw new Error("Respuesta inválida del servidor de pagos");
+                }
+            } catch (error) {
+                console.error('Error de pago:', error);
+                alert('Hubo un error al iniciar el pago. Por favor intenta nuevamente.');
+            }
+        }
+
+        // Listener para acciones pendientes después de login
+        firebase.auth().onAuthStateChanged(async (user) => {
+            const pendingAction = sessionStorage.getItem('pendingAction');
+            if (pendingAction === 'showCouponModal' && user) {
+                sessionStorage.removeItem('pendingAction');
+                setTimeout(async () => {
+                    await showCouponModal();
+                }, 500);
             }
         });
     </script>
