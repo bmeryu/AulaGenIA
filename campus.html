@@ -634,13 +634,14 @@
           const COURSE_CONFIG = {
             'ia-aplicada-esencial': {
               title: 'IA Aplicada · Esencial',
-              totalLessons: 20,
+              totalLessons: 19,
               modules: [
+                { title: 'Bienvenida al Curso', lessons: [{ id: '0-1' }, { id: '0-2' }] },
                 { title: 'Módulo 1: ¿Qué es la Inteligencia Artificial?', lessons: [{ id: '1-1' }, { id: '1-2' }, { id: '1-3' }, { id: 'q-1' }] },
                 { title: 'Módulo 2: La IA para ti, en tu día a día', lessons: [{ id: '2-1' }, { id: '2-2' }, { id: '2-3' }, { id: '2-taller' }, { id: 'q-2' }] },
                 { title: 'Módulo 3: Preparando tus herramientas', lessons: [{ id: '3-1' }, { id: '3-2' }, { id: '3-3' }, { id: 'q-3' }] },
                 { title: 'Módulo 4: Arquitectura de Ideas', lessons: [{ id: '4-1' }, { id: '4-2' }, { id: 'q-4' }] },
-                { title: 'Módulo 5: Estrategias Avanzadas', lessons: [{ id: '5-1' }, { id: '5-2' }, { id: '5-3' }] },
+                // { title: 'Módulo 5: Estrategias Avanzadas', lessons: [{ id: '5-1' }, { id: '5-2' }, { id: '5-3' }] }, // Oculto temporalmente
                 { title: 'Final del Camino: Certificación', lessons: [{ id: 'final-exam' }] }
               ]
             }
@@ -972,16 +973,27 @@
                 // Lógica de progreso del curso
                 progressRef.onSnapshot(doc => {
                   let completedCount = 0;
-                  if (doc.exists) {
+                  const courseConfig = COURSE_CONFIG[courseId];
+                  const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
+
+                  if (doc.exists && courseConfig) {
                     const data = doc.data();
                     const courseProgress = data[courseId];
                     if (courseProgress && Array.isArray(courseProgress.completedLessons)) {
-                      completedCount = new Set(courseProgress.completedLessons).size;
+                      // Obtener todos los IDs de lecciones válidas de la configuración actual
+                      const validLessonIds = new Set();
+                      courseConfig.modules.forEach(m => m.lessons.forEach(l => validLessonIds.add(l.id)));
+
+                      // Contar solo las lecciones completadas que son válidas en la configuración actual
+                      const userCompletedSet = new Set(courseProgress.completedLessons);
+                      let validCompletedCount = 0;
+                      userCompletedSet.forEach(id => {
+                        if (validLessonIds.has(id)) validCompletedCount++;
+                      });
+                      completedCount = validCompletedCount;
                     }
                   }
 
-                  const courseConfig = COURSE_CONFIG[courseId];
-                  const totalLessons = courseConfig ? courseConfig.totalLessons : 0;
                   const percentage = totalLessons > 0 ? Math.min(Math.round((completedCount / totalLessons) * 100), 100) : 0;
                   updateCardForEnrolledUser(courseCard, percentage, courseId);
                 });
@@ -1325,7 +1337,7 @@
               doc.addPage(); let cy = m;
               doc.setFillColor(245, 247, 250); doc.rect(0, 0, pw, 25, 'F');
               doc.setTextColor(...dark); doc.setFontSize(18); doc.setFont('helvetica', 'bold');
-              doc.text('Indice de Contenidos', m, 18); cy = 35;
+              doc.text('Índice de Contenidos', m, 18); cy = 35;
               const cats = {}; casesData.forEach(p => { if (!cats[p.category]) cats[p.category] = []; cats[p.category].push(p); });
               doc.setFontSize(10); doc.setFont('helvetica', 'normal');
               Object.keys(cats).forEach((cat, idx) => {
@@ -1425,7 +1437,7 @@
                 if (p.validationTip) {
                   doc.setFillColor(240, 253, 244); doc.roundedRect(m, cy, mw, 10, 2, 2, 'F');
                   doc.setFontSize(8); doc.setTextColor(22, 163, 74); doc.setFont('helvetica', 'bold');
-                  doc.text('\u2022 VALIDACION', m + 3, cy + 4);
+                  doc.text('\u2022 VALIDACIÓN', m + 3, cy + 4);
                   doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40);
                   const validationLines = doc.splitTextToSize(p.validationTip, mw - 6);
                   doc.text(validationLines, m + 3, cy + 8);
@@ -1440,14 +1452,14 @@
               doc.addPage();
               doc.setFillColor(...teal); doc.rect(0, 0, pw, ph, 'F');
               doc.setTextColor(255, 255, 255); doc.setFontSize(28); doc.setFont('helvetica', 'bold');
-              doc.text('Gracias!', pw / 2, 80, { align: 'center' });
+              doc.text('¡Gracias!', pw / 2, 80, { align: 'center' });
               doc.setFontSize(12); doc.setFont('helvetica', 'normal');
               doc.text(doc.splitTextToSize('Esperamos que estos 100 prompts optimizados te ayuden a aprovechar al máximo la inteligencia artificial.', mw - 40), pw / 2, 100, { align: 'center' });
               doc.setFontSize(14); doc.setFont('helvetica', 'bold');
-              doc.text('Necesitas ayuda?', pw / 2, 130, { align: 'center' });
+              doc.text('¿Necesitas ayuda?', pw / 2, 130, { align: 'center' });
               doc.setFontSize(11); doc.setFont('helvetica', 'normal');
-              doc.text('Contactanos en: contacto@aulagenia.cl', pw / 2, 145, { align: 'center' });
-              doc.text('Visitanos en: aulagenia.cl', pw / 2, 155, { align: 'center' });
+              doc.text('Contáctanos en: contacto@aulagenia.cl', pw / 2, 145, { align: 'center' });
+              doc.text('Visítanos en: aulagenia.cl', pw / 2, 155, { align: 'center' });
 
               doc.save(`Maestro_Prompts_100_AGIA_${new Date().toISOString().split('T')[0]}.pdf`);
               console.log('PDF descargado exitosamente');
