@@ -1126,7 +1126,13 @@
                     const accessBtn = document.querySelector('a[href="#"][onclick*="showCouponModal"]');
                     if (accessBtn) {
                       accessBtn.href = 'maestro-prompts-app.html';
-                      accessBtn.onclick = null;
+                      // Loader simple para UX
+                      accessBtn.onclick = function (e) {
+                        const btn = e.currentTarget;
+                        btn.innerHTML = '⚡ Entrando al Generador...';
+                        btn.classList.add('opacity-75', 'cursor-wait');
+                        btn.style.pointerEvents = 'none';
+                      };
                       accessBtn.className = 'mt-auto block text-center bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5';
                       accessBtn.innerHTML = '⚡ Acceder al Generador';
                     }
@@ -1183,7 +1189,18 @@
             }
           }
 
-          window.downloadPromptsPDF = async function () {
+          window.downloadPromptsPDF = async function (event) {
+            // Manejo de estado del botón
+            const btn = event ? event.currentTarget : null;
+            let originalText = '';
+
+            if (btn) {
+              originalText = btn.innerHTML;
+              btn.disabled = true;
+              btn.innerHTML = '⏳ Generando y Descargando PDF...';
+              btn.classList.add('cursor-wait', 'opacity-75');
+            }
+
             try {
               const user = auth.currentUser;
               if (!user) {
@@ -1197,7 +1214,15 @@
 
               // Cargar datos seguros SIEMPRE (forzado para pruebas)
               console.log('📥 Cargando prompts de forma segura...');
+
+              if (btn) btn.innerHTML = '⏳ Descargando datos seguros...';
               const loaded = await loadSecurePromptsData();
+              if (loaded) {
+                if (btn) btn.innerHTML = '⏳ Creando PDF...';
+              } else {
+                throw new Error("No se pudieron cargar los datos");
+              }
+
               if (!loaded) {
                 console.error('❌ No se pudieron cargar los prompts');
                 return;
@@ -1426,7 +1451,16 @@
 
               doc.save(`Maestro_Prompts_100_AGIA_${new Date().toISOString().split('T')[0]}.pdf`);
               console.log('PDF descargado exitosamente');
-            } catch (e) { console.error('Error PDF:', e); }
+            } catch (e) {
+              console.error('Error PDF:', e);
+              alert('Si el PDF no descarga, asegúrate de permitir ventanas emergentes.');
+            } finally {
+              if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                btn.classList.remove('cursor-wait', 'opacity-75');
+              }
+            }
           }
 
           // DESCARGA AUTOMÁTICA AL INSCRIBIRSE
