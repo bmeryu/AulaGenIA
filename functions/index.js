@@ -480,7 +480,7 @@ exports.createCoupon = onCall(
 );
 
 // ============================================
-// APP PROMPTS (MODO FREEMIUM)
+// APP PROMPTS
 // ============================================
 
 exports.getPromptsData = onCall(
@@ -489,7 +489,7 @@ exports.getPromptsData = onCall(
     },
     async (request) => {
         if (!request.auth) {
-            throw new HttpsError('unauthenticated', 'Debes estar autenticado para acceder a los prompts');
+            throw new HttpsError('unauthenticated', 'Debes estar autenticado');
         }
 
         try {
@@ -506,8 +506,7 @@ exports.getPromptsData = onCall(
                 (userData.enrollments[courseId] === true ||
                     userData.enrollments[oldCourseId] === true);
 
-            // ✅ FREEMIUM ACTIVADO: No bloqueamos por falta de enrollment. 
-            // Devolvemos todos los prompts, pero el cliente (frontend) decidirá cuáles mostrar desbloqueados.
+            // ✅ FREEMIUM MODEL ACTIVADO: NO bloqueamos si no hay enrollment
 
             const bucket = admin.storage().bucket();
             const [contents] = await bucket.file('private/prompts_db.json').download();
@@ -522,7 +521,7 @@ exports.getPromptsData = onCall(
             return {
                 success: true,
                 data: JSON.parse(contents.toString('utf-8')),
-                hasEnrollment: hasEnrollment // Frontend usa esto para saber si desbloquea TODO o solo parcial
+                hasEnrollment: hasEnrollment // Frontend usa esto para desbloquear lo premium
             };
 
         } catch (error) {
