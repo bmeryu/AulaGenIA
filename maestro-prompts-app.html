@@ -8,7 +8,3170 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Maestro Prompts - Aula GenIA (v3.3 - Parser Fixed)</title>
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Maestro Prompts - Aula GenIA (v3.3 - Parser Fixed)</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Crypto JS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- jsPDF for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Aula GenIA Brand Variables */
+        :root {
+            --brand-teal: #14b8a6;
+            --brand-blue: #3b82f6;
+            --brand-yellow: #f59e0b;
+            --brand-gradient: linear-gradient(90deg, #2DD4BF 0%, #FBBF24 100%);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --primary: #4f46e5;
+            --bg-canvas: #f8fafc;
+        }
+
+        /* Brand Gradient Button */
+        .gradient-btn {
+            background: linear-gradient(90deg, #2DD4BF 0%, #FBBF24 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #0e9488 0%, #d97706 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gradient-btn:hover::before {
+            opacity: 1;
+        }
+
+        .gradient-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(20, 184, 166, 0.25), 0 0 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .gradient-btn>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Premium Glassmorphism */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Card Hover Effect with Brand Colors */
+        .card-hover-brand:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(20, 184, 166, 0.15);
+        }
+
+        /* Gradient Text with Brand Colors */
+        .gradient-text-brand {
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-blue), var(--brand-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-canvas);
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Scrollbar Hiding but functionality preserving */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.99);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Interactive Legend Effects - Softer Pastels */
+        .hl-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin: 0 3px;
+            font-weight: 600;
+            font-size: 0.9em;
+            cursor: default;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            line-height: 1.8;
+        }
+
+        .hl-rol {
+            color: #1e3a8a;
+            background: #f0f9ff;
+            border-color: #e0f2fe;
+        }
+
+        .hl-contexto {
+            color: #047857;
+            background: #f0fdfa;
+            border-color: #ccfbf1;
+        }
+
+        .hl-meta {
+            color: #92400e;
+            background: #fffbeb;
+            border-color: #fef3c7;
+        }
+
+        .hl-restricciones {
+            color: #991b1b;
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .hl-formato {
+            color: #6b21a8;
+            background: #faf5ff;
+            border-color: #e9d5ff;
+        }
+
+        /* Dimming effect for non-hovered items */
+        .dimmed {
+            opacity: 0.3;
+            filter: grayscale(0.5);
+        }
+
+        .highlighted {
+            transform: scale(1.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            position: relative;
+        }
+
+        .var-highlight {
+            background-color: #e0f2fe;
+            border-bottom: 2px solid #0284c7;
+            color: #0c4a6e;
+            font-weight: 700;
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+
+        .var-highlight-bad {
+            background-color: #f1f5f9;
+            border-bottom: 2px dotted #94a3b8;
+            color: #64748b;
+            font-weight: 600;
+            padding: 0 2px;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Blur Content Logic */
+        .blur-prompt {
+            filter: blur(8px);
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: all 0.5s ease;
+        }
+
+        /* Magic Switch Animation */
+        .switch-toggle {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Attention Animation for Magic Switch */
+        @keyframes subtle-bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(3px);
+            }
+        }
+
+        .motivate-click {
+            animation: subtle-bounce 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 6px rgba(79, 70, 229, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+            }
+        }
+
+        .pulse-attention {
+            animation: pulse-ring 2s infinite;
+        }
+
+        /* Search Glow Animation */
+        .search-container:focus-within {
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            border-color: #818cf8;
+        }
+
+        /* Toast Animations */
+        @keyframes slide-in-right {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-out-right {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        .animate-slide-in-right {
+            animation: slide-in-right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Tooltips instantáneos - Sin delay */
+        [title]:hover::before,
+        [title]:hover::after {
+            transition-delay: 0ms !important;
+        }
+
+        /* Smoke Effect Animation */
+        @keyframes smoke-rise {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+                filter: blur(4px);
+            }
+
+            50% {
+                opacity: 1;
+                filter: blur(0px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+            }
+        }
+
+        .smoke-effect {
+            animation: smoke-rise 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Category Number Badge - Floating Notification Style */
+        #category-nav>* {
+            position: relative;
+            padding-right: 8px !important;
+        }
+
+        #category-nav>*>span:last-child {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #f0fdfa;
+            /* teal-50 */
+            color: #0d9488;
+            /* teal-700 */
+            font-size: 9px;
+            font-weight: 800;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            box-shadow: 0 1px 2px rgba(13, 148, 136, 0.1);
+            border: 1px solid #ccfbf1;
+            /* teal-100 */
+        }
+
+        /* Active Category Styling */
+        /* Active Category Styling - Soft & Clean */
+        .category-item.active {
+            background: #f0fdfa !important;
+            /* teal-50 */
+            color: #0f766e !important;
+            /* teal-700 */
+            border-color: #14b8a6 !important;
+            /* teal-500 */
+            box-shadow: 0 2px 4px rgba(20, 184, 166, 0.1) !important;
+        }
+
+        .category-item.active .badge {
+            background: #14b8a6 !important;
+            /* teal-500 */
+            color: white !important;
+        }
+
+        /* Markdown Content Styles - Professional Output Rendering */
+        .markdown-content {
+            line-height: 1.7;
+            color: #334155;
+        }
+
+        .markdown-content strong {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .markdown-content em {
+            font-style: italic;
+            color: #475569;
+        }
+
+        .markdown-content code {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.9em;
+            color: #be123c;
+        }
+
+        .markdown-content pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 12px 0;
+            border: 1px solid #334155;
+        }
+
+        .markdown-content pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            color: #e2e8f0;
+            font-size: 0.875rem;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .markdown-content table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .markdown-content table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75em;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #5a67d8;
+        }
+
+        .markdown-content table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        .markdown-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .markdown-content table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        .markdown-content ul {
+            list-style-type: disc;
+        }
+
+        .markdown-content ol {
+            list-style-type: decimal;
+        }
+
+        .markdown-content li {
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+
+        .markdown-content p {
+            margin: 12px 0;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid #14b8a6;
+            padding-left: 16px;
+            margin: 16px 0;
+            color: #64748b;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
+
+
+
+    <!-- LOADING OVERLAY -->
+    <div id="system-status-overlay"
+        class="fixed inset-0 z-[100] bg-white/90 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500">
+        <div
+            class="bg-white p-8 rounded-[2rem] shadow-2xl shadow-slate-200 border border-slate-100 max-w-md w-full animate-in zoom-in duration-300">
+            <div id="status-icon"
+                class="w-12 h-12 bg-white border border-slate-100 text-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <span class="material-symbols-rounded text-2xl animate-spin">sync</span>
+            </div>
+            <h2 id="status-title" class="text-lg font-extrabold text-slate-900 mb-1">Conectando Bóveda...</h2>
+            <p id="status-desc" class="text-xs text-slate-500 mb-6">Sincronizando recursos de inteligencia.</p>
+            <div
+                class="bg-slate-50 p-3 rounded-lg text-left text-[10px] font-mono text-slate-500 overflow-hidden border border-slate-100">
+                <p>> System: <span class="text-indigo-600 font-semibold">Secure Vault Connected</span></p>
+                <p>> Status: <span id="status-code" class="text-slate-600 font-bold">FETCHING...</span></p>
+            </div>
+            <button id="retry-btn" onclick="window.location.reload()"
+                class="hidden w-full mt-4 py-2 bg-slate-900 text-white rounded-lg font-bold text-xs">Reintentar</button>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-gray-100 z-30 flex-none h-14 shadow-sm relative z-[60]">
+        <div class="h-full pl-0 pr-4 flex items-center gap-2 md:gap-4">
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-toggle"
+                class="lg:hidden p-2 ml-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
+                <span class="material-symbols-rounded text-xl">menu</span>
+            </button>
+
+            <!-- Logo + Title alineados a la izquierda -->
+            <div class="min-w-max flex items-center gap-2">
+                <img src="https://aulagenia.cl/Logo_AGIA_big.png" alt="AulaGenIA" class="h-8 md:h-12 w-auto">
+                <div class="hidden xs:block">
+                    <h1 class="text-sm font-bold text-slate-900 leading-none tracking-tight">AGIA Generator <span
+                            class="text-indigo-600">3.0</span></h1>
+                    <p class="text-[10px] text-slate-500 font-medium tracking-wider uppercase mt-0.5">Powered by
+                        AulaGenIA</p>
+                </div>
+            </div>
+
+            <!-- PRO BANNER in Header (light version) -->
+            <div
+                class="hidden lg:flex flex-1 mx-4 min-w-0 items-center gap-3 bg-gradient-to-r from-indigo-50 via-blue-50 to-teal-50 rounded-lg px-4 py-2 border border-indigo-100 shadow-sm relative overflow-hidden">
+                <div
+                    class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5">
+                </div>
+                <div class="flex items-center gap-2 shrink-0 relative z-10">
+                    <span
+                        class="bg-yellow-400 text-yellow-900 text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm animate-pulse">Pro</span>
+                    <h4 class="text-slate-900 font-bold text-xs truncate">Pide lo que necesitas</h4>
+                </div>
+                <p class="text-[10px] text-slate-600 font-medium truncate flex-1 relative z-10">
+                    ¿Quieres dominar la ingeniería de prompts y crear herramientas a medida?
+                </p>
+                <a href="landing-nuevo.html"
+                    class="gradient-btn shrink-0 text-white text-[10px] uppercase font-bold px-3 py-1.5 rounded-lg whitespace-nowrap flex items-center gap-1 relative z-10">
+                    <span>Ver Método</span>
+                    <span class="material-symbols-rounded text-sm">arrow_forward</span>
+                </a>
+            </div>
+
+            <div class="flex gap-1 md:gap-2 items-center ml-auto">
+                <!-- Global Lock Simulator (Test Mode) -->
+
+                <button onclick="generateFullPDF()"
+                    class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                    title="Descargar 100 Prompts Maestros (PDF)">
+                    <span class="material-symbols-rounded">download</span>
+                </button>
+                <button id="unlock-btn" onclick="triggerUnlockPayment()"
+                    class="bg-slate-900 hover:bg-slate-800 text-white px-2 py-1.5 md:px-3 rounded-lg text-xs font-bold shadow-md flex items-center gap-1.5 transition-transform hover:-translate-y-0.5">
+                    <span class="material-symbols-rounded text-sm text-emerald-400">rocket_launch</span>
+                    <span class="hidden sm:inline">Acceso Premium</span>
+                </button>
+
+                <!-- User Profile (hidden by default, shown when authenticated) -->
+                <div id="user-profile" class="hidden items-center gap-3 ml-2">
+                    <span id="user-display-name"
+                        class="hidden md:block text-sm font-semibold text-slate-700 truncate max-w-[12ch]"></span>
+                    <button id="user-avatar-btn" class="relative">
+                        <img id="user-avatar"
+                            class="w-8 h-8 md:w-9 md:h-9 rounded-full border-2 border-indigo-500 cursor-pointer hover:opacity-90 transition-opacity"
+                            alt="Avatar" />
+                    </button>
+                    <button id="logout-btn"
+                        class="hidden md:block text-xs text-slate-500 hover:text-red-600 transition-colors font-medium">
+                        Cerrar sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CATEGORY CAROUSEL (Full Width) -->
+    <div class="bg-white border-b border-slate-200 shadow-sm flex-none z-40 relative group">
+        <div class="w-full h-12 flex items-center relative">
+            <!-- Left scroll arrow (Floating Bubble) -->
+            <button id="btn-scroll-left" onclick="window.scrollCategories(-200)"
+                onmouseenter="window.startAutoScroll(-15)" onmouseleave="window.stopAutoScroll()"
+                class="hidden lg:hidden absolute left-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center bg-white/90 backdrop-blur-sm border border-slate-200 text-indigo-600 hover:text-indigo-800 hover:scale-110 rounded-full shadow-md transition-all">
+                <span class="material-symbols-rounded text-xl font-bold">chevron_left</span>
+            </button>
+
+            <!-- Scrollable container -->
+            <div class="overflow-x-auto no-scrollbar flex items-center space-x-2 scroll-smooth w-full px-4 h-full"
+                id="category-nav"></div>
+
+            <!-- Right scroll arrow (Floating Bubble) -->
+            <button id="btn-scroll-right" onclick="window.scrollCategories(200)"
+                onmouseenter="window.startAutoScroll(15)" onmouseleave="window.stopAutoScroll()"
+                style="display: flex !important;"
+                class="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 z-50 flex-none w-8 h-8 items-center justify-center bg-white/90 backdrop-blur-sm border border-slate-200 text-indigo-600 hover:text-indigo-800 hover:scale-110 rounded-full shadow-md transition-all">
+                <span class="material-symbols-rounded text-xl font-bold">chevron_right</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- APP LAYOUT -->
+    <div class="flex flex-1 overflow-hidden w-full relative bg-slate-50">
+
+        <!-- SIDEBAR -->
+        <aside
+            class="fixed inset-0 z-50 flex flex-col bg-white md:relative md:inset-auto md:w-72 lg:w-80 border-r border-slate-200 transform -translate-x-full md:translate-x-0 transition-transform duration-300 shadow-2xl md:shadow-none"
+            id="sidebar">
+
+            <!-- Mobile Sidebar Header -->
+            <div class="md:hidden flex items-center justify-between p-4 border-b border-slate-100 bg-white">
+                <span class="font-bold text-slate-800">Menú de Casos</span>
+                <button id="close-sidebar-btn" class="p-2 text-slate-500 hover:text-slate-700 bg-slate-50 rounded-lg">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+
+            <!-- BUSCADOR CORREGIDO (Limpio y Elegante) -->
+            <div class="px-5 pt-5 pb-3 border-b border-slate-100">
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="material-symbols-rounded text-indigo-500 text-xl">search</span>
+                    </div>
+                    <input type="text" id="searchInput"
+                        class="w-full pl-10 pr-4 py-3 bg-white border-2 border-slate-100 rounded-xl text-sm font-medium focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all placeholder:text-slate-400 text-slate-700 shadow-sm search-container"
+                        placeholder="¿Qué desafío tienes hoy?" onkeyup="filterCases()">
+                </div>
+                <!-- Search Feedback -->
+                <div id="search-stats" class="hidden mt-2 px-1 flex justify-between items-center animate-pulse">
+                    <span class="text-[10px] uppercase font-bold text-indigo-500 tracking-wider">Buscando...</span>
+                    <span class="text-[10px] font-bold text-slate-400" id="results-count"></span>
+                </div>
+            </div>
+
+            <!-- Case list starts directly after search -->
+
+            <div class="flex-1 overflow-y-auto custom-scroll p-3 space-y-1" id="case-list"></div>
+            <div
+                class="p-3 border-t border-slate-100 bg-slate-50/50 text-[10px] text-slate-400 flex justify-between px-4 font-medium">
+                <span>Estado: Online</span>
+                <span>Casos: <span id="total-display" class="text-slate-700 font-bold">0</span></span>
+            </div>
+
+        </aside>
+
+        <!-- WORKSPACE -->
+        <main class="flex-1 flex flex-col overflow-hidden relative w-full h-full bg-slate-100/50">
+            <div id="workspace-empty" class="hidden flex-col items-center justify-center h-full text-center p-4 md:p-8">
+                <div
+                    class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-4 shadow-xl text-indigo-200">
+                    <span class="material-symbols-rounded text-5xl">compare_arrows</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800">Selecciona un caso</h3>
+                <p class="text-xs text-slate-500">Comienza tu comparativa en el menú lateral.</p>
+            </div>
+
+            <div id="case-detail" class="flex flex-col h-full w-full p-3 gap-2 overflow-hidden max-w-5xl mx-auto">
+
+                <!-- COMPACT RESPONSIVE HEADER -->
+                <div
+                    class="flex-none flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white rounded-xl px-4 py-3 md:py-2 border border-slate-200 shadow-sm">
+                    <!-- Left: Category + Title -->
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <span id="detail-category-badge"
+                            class="flex-none text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-indigo-50 text-indigo-600 border-indigo-100">CAT</span>
+                        <div class="min-w-0">
+                            <h2 id="detail-title" class="text-sm md:text-lg font-bold text-slate-900 truncate">Título
+                                del Caso</h2>
+                            <p id="detail-problem" class="text-[11px] text-slate-500 hidden md:block leading-snug"></p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Switch + Badge + Copy (Responsive Grid/Flex) -->
+                    <div
+                        class="flex items-center justify-between md:justify-end gap-2 flex-none w-full md:w-auto border-t md:border-t-0 border-slate-100 pt-2 md:pt-0 mt-1 md:mt-0">
+                        <!-- Mode Switch -->
+                        <div class="relative bg-slate-100 rounded-lg p-0.5 flex items-center">
+                            <button onclick="setMode('basic')"
+                                class="relative z-10 px-2 md:px-3 py-1.5 text-[10px] font-bold transition-colors duration-200 rounded-md flex items-center gap-1 text-slate-600"
+                                id="btn-basic">
+                                <span class="material-symbols-rounded text-xs">cancel</span> <span
+                                    class="hidden xs:inline">Básico</span>
+                            </button>
+                            <!-- Maestro button -->
+                            <div class="relative group">
+                                <button onclick="setMode('agia')"
+                                    class="relative z-10 px-2 md:px-3 py-1.5 text-[10px] font-bold transition-all duration-300 rounded-md flex items-center gap-1 bg-indigo-600 text-white"
+                                    id="btn-agia">
+                                    <span class="material-symbols-rounded text-xs">verified</span>
+                                    <span>Maestro</span>
+                                    <span id="maestro-cta-badge"
+                                        class="hidden absolute -top-2 -right-2 bg-emerald-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full shadow-lg animate-bounce">!</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <!-- Time Saved Badge (Hidden on very small screens) -->
+                            <span id="benefit-badge"
+                                class="hidden xs:flex text-[9px] font-bold px-2 py-1 rounded-md border items-center gap-1 bg-emerald-50 text-emerald-600 border-emerald-100">
+                                <span class="material-symbols-rounded text-xs">bolt</span> ~15m
+                            </span>
+
+                            <!-- Copy Button -->
+                            <!-- OCULTO POR DEFECTO: Solo visible en modo Maestro -->
+                            <div class="relative hidden" id="copy-btn-container">
+                                <button onclick="copyPromptWithFeedback(this)" id="copy-btn"
+                                    class="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-slate-300 text-slate-500 flex items-center gap-1.5 transition-all cursor-not-allowed opacity-60"
+                                    disabled>
+                                    <span class="material-symbols-rounded text-sm copy-icon">content_copy</span>
+                                    <span class="copy-text hidden sm:inline">Copiar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAIN CONTENT CARD (No extra switch header needed) -->
+                <div class="flex-1 bg-white rounded-xl border border-slate-200 shadow-lg flex flex-col overflow-hidden"
+                    id="main-card-container">
+
+                    <!-- CONTENT AREA -->
+                    <div id="detail-scroll-container" class="flex-1 overflow-y-auto custom-scroll relative bg-white">
+
+                        <!-- BASIC CONTENT -->
+                        <div id="content-basic" class="p-6 md:p-8 space-y-6 fade-in">
+                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 relative overflow-hidden">
+                                <div
+                                    class="absolute top-0 right-0 bg-red-100 text-red-700 text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider border-l border-b border-red-200">
+                                    ❌ Prompt Deficiente</div>
+                                <div id="bad-prompt-rendered"
+                                    class="font-mono text-sm text-slate-600 italic leading-relaxed"></div>
+                            </div>
+
+                            <!-- Resultado del Prompt Básico -->
+                            <div class="border-l-4 border-amber-300 bg-amber-50/50 p-4 rounded-r-lg relative">
+                                <div class="absolute top-2 right-2 text-[9px] text-amber-400 font-mono">v3.0 (Updated)
+                                </div>
+                                <label
+                                    class="text-[10px] font-bold text-amber-600 uppercase mb-2 block tracking-wider flex items-center gap-1">
+                                    <span class="material-symbols-rounded text-sm">chat</span> Muestra de respuesta
+                                    Típica
+                                </label>
+                                <div id="bad-result-preview" class="text-sm text-slate-600 leading-relaxed italic">
+                                </div>
+                            </div>
+
+                            <!-- Diagnóstico del Fallo -->
+                            <div class="border-l-4 border-red-300 bg-red-50/50 p-4 rounded-r-lg">
+                                <label
+                                    class="text-[10px] font-bold text-red-500 uppercase mb-2 block tracking-wider flex items-center gap-1">
+                                    <span class="material-symbols-rounded text-sm">bug_report</span> ¿Por qué falla este
+                                    prompt?
+                                </label>
+                                <div id="bad-response-analysis" class="text-sm text-slate-600 leading-relaxed"></div>
+                            </div>
+                        </div>
+
+                        <!-- AGIA MASTER CONTENT (AULAGENIA COLOR THEME) -->
+                        <div id="content-agia" class="hidden p-0 fade-in flex flex-col h-full">
+
+                            <!-- Prompt Box Container - Compact & Full Width -->
+                            <div
+                                class="relative bg-white rounded-xl p-4 md:p-5 border border-slate-100 flex-none w-full shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] ring-1 ring-slate-400/5">
+                                <!-- Prompt Text with Blur Wrapper -->
+                                <div id="prompt-blur-wrapper" class="transition-all duration-500 relative">
+                                    <div class="flex items-center gap-4 mb-4 border-b border-slate-50 pb-3">
+                                        <label
+                                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2 flex-none translate-y-[1px]">
+                                            <span
+                                                class="material-symbols-rounded text-sm text-indigo-500">auto_awesome</span>
+                                            Prompt Maestro
+                                        </label>
+                                        <!-- Social Proof with Smoke Effect (appears on Maestro mode) -->
+                                        <div id="maestro-social-proof"
+                                            class="hidden items-center gap-1.5 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-full px-3 py-1 smoke-effect">
+                                            <span
+                                                class="material-symbols-rounded text-xs text-orange-600 animate-pulse">local_fire_department</span>
+                                            <span class="text-[9px] font-bold text-orange-600"><span
+                                                    id="maestro-counter">0</span> usando este</span>
+                                        </div>
+                                        <!-- Dynamic Inline Legend (Inserted by JS) -->
+                                        <div id="agia-legend-inline"
+                                            class="flex items-center gap-1.5 overflow-x-auto no-scrollbar mask-gradient-r flex-1">
+                                        </div>
+                                    </div>
+
+                                    <!-- INLINE HIGHLIGHTS AGIA PROMPT (Light Theme) -->
+                                    <div id="agia-sections-container" class="text-[14px] text-slate-800">
+                                        <!-- Sections will be rendered dynamically by JS -->
+                                    </div>
+
+                                    <!-- Hidden original for copy functionality -->
+                                    <div id="detail-prompt-rendered" class="hidden"></div>
+                                </div>
+
+                                <div id="locked-teaser"
+                                    class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center transition-all duration-500 backdrop-blur-[2px] bg-white/60">
+                                    <div
+                                        class="bg-white/90 backdrop-blur-xl p-5 rounded-xl border border-slate-200 shadow-2xl max-w-xs text-center transform hover:scale-[1.02] transition-transform">
+                                        <div
+                                            class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
+                                            <span class="material-symbols-rounded text-2xl text-slate-400">lock</span>
+                                        </div>
+                                        <h3 class="text-lg font-bold text-slate-800 mb-1.5">Contenido Protegido</h3>
+                                        <p id="teaser-message" class="text-slate-500 text-xs mb-4 leading-relaxed">
+                                            Inscríbete en el curso "IA Aplicada · Esencial" para desbloquear todas las
+                                            fórmulas maestras.
+                                        </p>
+
+                                        <a id="teaser-action-btn" href="campus.html"
+                                            class="inline-flex items-center justify-center w-full gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold rounded-xl transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 border border-slate-700">
+                                            <span id="teaser-action-text">Inscríbete para Acceder</span>
+                                            <span
+                                                class="material-symbols-rounded text-base text-yellow-400">arrow_forward_ios</span>
+                                        </a>
+                                        <p class="text-[9px] text-slate-400 mt-3">
+                                            ¿Ya tienes cuenta? Tu sesión se detectará automáticamente.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Result Preview (Now Integrated & Visible) -->
+                            <div class="mt-4 relative bg-slate-50 rounded-xl p-5 border border-slate-200">
+                                <div
+                                    class="absolute -top-3 left-4 bg-white text-indigo-600 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-indigo-100 shadow-sm flex items-center gap-1 z-10">
+                                    <span class="material-symbols-rounded text-sm">auto_awesome</span>
+                                    Muestra de respuesta Optimizada
+                                </div>
+                                <div id="good-result-preview"
+                                    class="text-sm text-slate-700 leading-relaxed font-medium mt-2"></div>
+
+                                <!-- Result Teaser Label if Locked -->
+                                <div id="result-teaser-label"
+                                    class="hidden absolute top-3 right-3 bg-indigo-50 text-indigo-700 text-[9px] font-bold px-2 py-0.5 rounded border border-indigo-100 flex items-center gap-1">
+                                    <span class="material-symbols-rounded text-[10px] filled">visibility</span> PREVIEW
+                                </div>
+                            </div>
+
+                            <!-- NEW CLEANER METADATA FOOTER (Unified & Aligned) -->
+                            <div class="mt-4 bg-white border-t-2 border-slate-50 pt-4 pb-2">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                                    <!-- Recommended Model - Blue (Brand Primary) -->
+                                    <div id="ai-suggestion-badge" class="flex items-start gap-3 group">
+                                        <div
+                                            class="flex-none w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors border border-blue-100">
+                                            <span class="material-symbols-rounded text-lg">psychology</span>
+                                        </div>
+                                        <div>
+                                            <h5
+                                                class="text-[10px] font-bold text-blue-800 uppercase tracking-wider mb-0.5">
+                                                Modelo Ideal</h5>
+                                            <div id="ai-name" class="text-xs font-bold text-slate-700">GPT-4 / Claude 3
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tip / Idea - Amber (Brand Tertiary/Lightbulb) -->
+                                    <div id="tip-container" class="flex items-start gap-3 group">
+                                        <div
+                                            class="flex-none w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-colors border border-amber-100">
+                                            <span class="material-symbols-rounded text-lg">lightbulb</span>
+                                        </div>
+                                        <div>
+                                            <h5
+                                                class="text-[10px] font-bold text-amber-700 uppercase tracking-wider mb-0.5">
+                                                Estrategia</h5>
+                                            <p id="detail-example-tip" class="text-xs text-slate-600 leading-snug"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Verification - Teal (Brand Secondary) -->
+                                    <div id="validation-container" class="flex items-start gap-3 group">
+                                        <div
+                                            class="flex-none w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center group-hover:bg-teal-600 group-hover:text-white transition-colors border border-teal-100">
+                                            <span class="material-symbols-rounded text-lg">fact_check</span>
+                                        </div>
+                                        <div>
+                                            <h5
+                                                class="text-[10px] font-bold text-teal-700 uppercase tracking-wider mb-0.5">
+                                                Validación</h5>
+                                            <p id="detail-validation-tip" class="text-xs text-slate-600 leading-snug">
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Spacing fix for bottom scroll -->
+                        <div class="h-12"></div>
+
+                    </div>
+
+                    <!-- Tech Specs -->
+                    <!-- Tech Specs Moved Up -->
+                </div>
+
+            </div>
+
+    </div>
+    </div>
+    </div>
+    </main>
+    </div>
+
+    <!-- MODALS & TOAST -->
+    <div id="toast" class="fixed bottom-10 right-10 z-[70] transform translate-x-full transition-all duration-500">
+    </div>
+    <!-- MOVED TO RIGHT to avoid Sidebar Overlap -->
+    <div id="sales-toast"
+        class="fixed bottom-24 right-6 z-[50] pointer-events-none md:pointer-events-auto transition-all duration-500 translate-y-24 opacity-0">
+    </div>
+
+    <div id="tutorial-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closeTutorial()">
+        </div>
+        <div
+            class="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden animate-in zoom-in duration-200">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-bold text-lg text-indigo-900">Protocolo de Aprendizaje: Las 3 C</h3>
+                <button onclick="closeTutorial()" class="text-slate-400 hover:text-slate-600"><span
+                        class="material-symbols-rounded">close</span></button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[75vh]">
+                <div
+                    class="w-full max-w-[320px] mx-auto aspect-video bg-slate-100 rounded-xl mb-8 flex items-center justify-center text-slate-300 relative group cursor-pointer overflow-hidden shadow-inner border border-slate-200">
+                    <div
+                        class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-50">
+                    </div>
+                    <span
+                        class="material-symbols-rounded text-5xl relative z-10 bg-white/20 p-4 rounded-full backdrop-blur text-white shadow-xl group-hover:scale-110 transition-transform">play_arrow</span>
+                </div>
+
+                <!-- 3C PROTOCOL GRID (UPDATED: Interactive Cards) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+                    <div
+                        class="group p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl hover:border-indigo-200 hover:-translate-y-2 transition-all duration-300 cursor-default relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 group-hover:bg-white group-hover:text-indigo-700">
+                                <span class="material-symbols-rounded text-2xl">psychology</span>
+                            </div>
+                            <div class="font-black text-indigo-800 text-lg mb-2">1. Confrontar</div>
+                            <p class="text-xs text-slate-500 leading-relaxed group-hover:text-slate-700">Antes de ver la
+                                solución, pregúntate: <strong>"¿Qué le pediría yo a la IA?"</strong>. Intenta resolverlo
+                                mentalmente.</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl hover:border-emerald-200 hover:-translate-y-2 transition-all duration-300 cursor-default relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-emerald-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 group-hover:bg-white group-hover:text-emerald-700">
+                                <span class="material-symbols-rounded text-2xl">manage_search</span>
+                            </div>
+                            <div class="font-black text-emerald-800 text-lg mb-2">2. Comprender</div>
+                            <p class="text-xs text-slate-500 leading-relaxed group-hover:text-slate-700">Analiza el
+                                Prompt Maestro. Identifica los <strong>5 ingredientes clave</strong>: Rol, Contexto,
+                                Meta, Restricciones y Formato.</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="group p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl hover:border-amber-200 hover:-translate-y-2 transition-all duration-300 cursor-default relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 group-hover:bg-white group-hover:text-amber-700">
+                                <span class="material-symbols-rounded text-2xl">handshake</span>
+                            </div>
+                            <div class="font-black text-amber-800 text-lg mb-2">3. Colaborar</div>
+                            <p class="text-xs text-slate-500 leading-relaxed group-hover:text-slate-700">¡Acción! Copia
+                                la estructura maestra y <strong>sustituye los datos</strong> por tu problema real del
+                                día a día.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="paywall-modal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity" onclick="closePaywall()">
+        </div>
+        <div
+            class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-8 text-center animate-in zoom-in duration-200">
+            <div
+                class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4 font-black text-xl shadow-lg">
+                %</div>
+            <h3 class="text-xl font-black text-slate-900 mb-2">¡Oportunidad Única!</h3>
+            <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                Obtén acceso inmediato a la <strong class="text-slate-800">Bóveda de Prompts</strong> + <strong
+                    class="text-slate-800">Curso IA Aplicada</strong>.<br>
+                <span class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded mt-2 inline-block">🔥 80% OFF
+                    - Cupos Limitados</span>
+            </p>
+            <button id="unlock-btn-modal" onclick="triggerUnlockPayment()"
+                class="w-full bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl font-bold text-sm shadow-xl hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                <span>Desbloquear Todo</span>
+                <span class="bg-yellow-400 text-slate-900 text-[10px] px-1.5 py-0.5 rounded font-black">-80%</span>
+            </button>
+            <button onclick="closePaywall()" class="mt-3 text-xs text-slate-400 hover:text-slate-600">No
+                gracias</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
+
+    <script>
+        // Firebase Config (Same as landing)
+        const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" };
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const functions = firebase.functions();
+
+        window.triggerUnlockPayment = async function () {
+            const btn = document.getElementById('unlock-btn-modal');
+            const user = auth.currentUser;
+
+            if (!user) {
+                console.log("User not logged in. Redirecting...");
+                // Redirigir a login y luego volver aquí para iniciar pago
+                const returnUrl = encodeURIComponent('maestro-prompts-app.html?action=buy');
+                window.location.href = `acceso.html?redirect=${returnUrl}`;
+                return;
+            }
+
+            // Logged in
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "Generando...";
+            }
+
+            try {
+                const createPreference = functions.httpsCallable('createMercadoPagoPreference');
+                const result = await createPreference({ courseId: 'ia-aplicada-esencial' }); // Correct ID
+
+                if (result.data && result.data.init_point) {
+                    window.location.href = result.data.init_point;
+                } else {
+                    throw new Error("No payment link returned");
+                }
+            } catch (error) {
+                console.error("Payment Error:", error);
+                alert("Error al generar pago. Intenta más tarde.");
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = "Desbloquear por $20 USD";
+                }
+            }
+        };
+
+
+    </script>
+
+    <script type="module">
+        let casesData = [];
+        // Se asume que el archivo prompts_db.js está en la misma ubicación
+        const externalDBUrl = './prompts_db.js';
+
+
+
+        // UI Elements
+        const statusOverlay = document.getElementById('system-status-overlay');
+        const statusIcon = document.getElementById('status-icon');
+        const statusTitle = document.getElementById('status-title');
+        const statusDesc = document.getElementById('status-desc');
+        const statusCode = document.getElementById('status-code');
+        const retryBtn = document.getElementById('retry-btn');
+
+        function showSystemError(err) {
+            statusOverlay.classList.remove('hidden');
+            statusOverlay.classList.add('flex');
+            statusIcon.innerHTML = '<span class="material-symbols-rounded text-3xl text-red-500">error</span>';
+            statusIcon.className = "w-16 h-16 bg-white border border-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm";
+            statusTitle.innerText = "Error de Conexión";
+
+            if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
+                statusDesc.innerText = "No pudimos conectar con el servidor de AulaGenia. Verifica tu conexión o que prompts_db.js exista.";
+                statusCode.innerText = "NETWORK_ERROR";
+            } else {
+                statusDesc.innerText = "Error al procesar la base de datos de prompts.";
+                statusCode.innerText = "DATA_ERROR: " + err.message;
+            }
+            statusCode.className = "text-red-500 font-bold";
+            retryBtn.classList.remove('hidden');
+        }
+
+        async function loadDatabase() {
+            try {
+                // Verificar modo desarrollador en URL (?dev=true)
+                const urlParams = new URLSearchParams(window.location.search);
+                const isDevMode = urlParams.get('dev') === 'true';
+
+                if (isDevMode) {
+                    console.warn('🚧 DEV MODE: Intentando cargar prompts_db.js localmente...');
+
+                    // Lógica antigua para cargar script local
+                    const script = document.createElement('script');
+                    script.src = "prompts_db.js"; // Carga local
+                    script.onload = () => {
+                        if (typeof window.casesData !== 'undefined' && Array.isArray(window.casesData)) {
+                            casesData = window.casesData;
+                            console.log('✅ Local Load Success');
+                            setTimeout(() => {
+                                statusOverlay.classList.add('hidden');
+                                initApp();
+                            }, 800);
+                        }
+                    };
+                    script.onerror = () => {
+                        console.error("❌ Falló carga local. Asegúrate de tener prompts_db.js");
+                        showSystemError(new Error("Falló carga local en modo dev"));
+                    };
+                    document.head.appendChild(script);
+                    return; // Salir, no intentar Cloud Function
+                }
+
+                // --- MODO PRODUCCIÓN (POR DEFECTO) ---
+                // Verificar si ya hay usuario autenticado
+                const user = auth.currentUser;
+
+                // Si no hay usuario y no estamos esperando auth 
+                // (esto podría necesitar ajuste si auth es asíncrono, pero initApp maneja logins)
+
+                console.log('🔒 Secure Load: Solicitando prompts a Cloud Function...');
+
+                const getPromptsData = firebase.functions().httpsCallable('getPromptsData');
+                const result = await getPromptsData();
+
+                if (result.data.success) {
+                    casesData = result.data.data;
+                    console.log(`✅ Secure Load Success: ${casesData.length} prompts loaded.`);
+
+                    setTimeout(() => {
+                        statusOverlay.classList.add('hidden');
+                        initApp();
+                    }, 800);
+                } else {
+                    throw new Error("Respuesta inválida del servidor seguro.");
+                }
+            } catch (err) {
+                console.error("Secure Load Error:", err);
+
+                // Manejar error de autenticación redirigiendo a login
+                if (err.code === 'functions/unauthenticated') {
+                    console.log('Usuario no autenticado, redirigiendo a login...');
+                    const returnUrl = encodeURIComponent(window.location.href);
+                    window.location.href = `acceso.html?redirect=${returnUrl}`;
+                    return;
+                }
+
+                // Otros errores
+                if (err.code === 'functions/permission-denied') {
+                    showSystemError(new Error("Acceso denegado: Necesitas inscripción activa."));
+                } else {
+                    showSystemError(err);
+                }
+            }
+        }
+
+        loadDatabase();
+
+        const config = {
+            categories: {
+                "Productividad Ninja": { label: "Productividad", color: "emerald", icon: "rocket_launch" },
+                "Ventas & Persuasión": { label: "Ventas", color: "rose", icon: "campaign" },
+                "Contenido & Redes": { label: "Marketing", color: "fuchsia", icon: "share" },
+                "Finanzas Inteligentes": { label: "Finanzas", color: "amber", icon: "payments" },
+                "Legal & Formalización": { label: "Legal", color: "slate", icon: "gavel" },
+                "Estrategia & Lanzamiento": { label: "Estrategia", color: "violet", icon: "flag" },
+                "Diseño & Arte Digital": { label: "Diseño", color: "pink", icon: "palette" },
+                "Operaciones & Procesos": { label: "Operaciones", color: "cyan", icon: "settings_suggest" },
+                "Liderazgo & Equipos": { label: "Liderazgo", color: "blue", icon: "groups" },
+                "Tecnología & Herramientas": { label: "Tecnología", color: "indigo", icon: "terminal" },
+                "Otros / Análisis": { label: "Análisis", color: "gray", icon: "analytics" }
+            }
+        };
+
+        // Global References
+        let currentPromptTemplate = "";
+        let currentBadPromptTemplate = "";
+        let currentVariables = {};
+        let currentDifficulty = 'beginner';
+        let currentViewMode = 'basic'; // 'basic' or 'agia'
+        // --- GLOBAL SCROLL CONTROLS ---
+        let autoScrollFrame;
+        let autoScrollSpeed = 0;
+
+        window.startAutoScroll = function (speed) {
+            console.log('AutoScroll started:', speed);
+            const nav = document.getElementById('category-nav');
+            if (!nav) {
+                console.error('Nav element not found!');
+                return;
+            }
+
+            // Debug info
+            console.log('Nav scrollWidth:', nav.scrollWidth);
+            console.log('Nav clientWidth:', nav.clientWidth);
+            console.log('Can scroll:', nav.scrollWidth > nav.clientWidth);
+            console.log('Current scrollLeft:', nav.scrollLeft);
+
+            autoScrollSpeed = speed;
+            if (autoScrollFrame) cancelAnimationFrame(autoScrollFrame);
+
+            nav.style.scrollBehavior = 'auto';
+
+            let iterations = 0;
+            const loop = () => {
+                const before = nav.scrollLeft;
+                nav.scrollLeft += autoScrollSpeed;
+                const after = nav.scrollLeft;
+
+                if (iterations < 5) {
+                    console.log(`Scroll attempt ${iterations}: ${before} -> ${after}`);
+                }
+                iterations++;
+
+                autoScrollFrame = requestAnimationFrame(loop);
+            };
+            loop();
+        };
+
+        window.stopAutoScroll = function () {
+            if (autoScrollFrame) cancelAnimationFrame(autoScrollFrame);
+            const nav = document.getElementById('category-nav');
+            if (nav) nav.style.scrollBehavior = 'smooth';
+        };
+
+        let currentCaseId = null;
+        let isVaultUnlocked = false;
+
+        // Initialize Firebase (Reuse global instance if available, or init)
+        // const auth = firebase.auth(); // Use global auth from previous script to avoid issues
+
+        // SECURITY: Key is constructed at runtime to prevent static analysis exposure
+        // "AGIA2025" -> Obfuscated construction
+        function getEncryptionKey() {
+            return [65, 71, 73, 65, 50, 48, 50, 53].map(c => String.fromCharCode(c)).join('');
+        }
+
+        // Helper: Simple SHA-256 for client-side check
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // ========================================
+        // GENERATE FULL PDF (100 Prompts) - Simple Redirect
+        // ========================================
+        function generateFullPDF() {
+            // Redirigir a campus donde se maneja todo el flujo de auth + descarga
+            window.location.href = 'campus.html?download=pdf';
+        }
+
+        function initApp() {
+            // Expose globals
+            window.loadCase = loadCase;
+            window.filterCases = filterCases;
+            window.filterByCategory = filterByCategory;
+            window.copyPrompt = copyPrompt;
+            window.openPaywall = openPaywall;
+            window.closePaywall = closePaywall;
+            window.showTutorial = showTutorial;
+            window.closeTutorial = closeTutorial;
+            window.downloadPDF = downloadPDF;
+            window.setMode = setMode;
+            window.generateFullPDF = generateFullPDF; // PDF generation function
+            // Removed: window.toggleGlobalLock, window.attemptUnlock
+
+            renderCategories();
+            renderList(casesData);
+
+            // Auto-select first if available
+            if (casesData.length > 0) {
+                loadCase(casesData[0].id);
+            }
+            startCountdown();
+            startSocialProof();
+            setupLegendInteractions();
+
+            // Listen for Auth State (Safely)
+            if (typeof auth !== 'undefined') {
+                auth.onAuthStateChanged(async user => {
+                    const unlockBtn = document.getElementById('unlock-btn');
+
+                    if (user) {
+                        // console.log("Usuario autenticado:", user.email);
+
+                        // Mostrar perfil de usuario
+                        const userProfile = document.getElementById('user-profile');
+                        const userName = document.getElementById('user-display-name');
+                        const userAvatar = document.getElementById('user-avatar');
+
+                        if (userProfile && userName && userAvatar) {
+                            // Obtener nombre para mostrar
+                            const displayName = user.displayName || user.email.split('@')[0] || 'Usuario';
+                            const firstName = displayName.split(' ')[0];
+                            userName.textContent = firstName;
+
+                            // Configurar avatar
+                            if (user.photoURL) {
+                                userAvatar.src = user.photoURL;
+                            } else {
+                                // Avatar por defecto con inicial
+                                const initial = firstName.charAt(0).toUpperCase();
+                                userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName)}&background=6366f1&color=fff&bold=true`;
+                            }
+
+                            // Mostrar perfil
+                            userProfile.classList.remove('hidden');
+                            userProfile.classList.add('flex');
+                        }
+
+                        // Verificar enrollment en Firestore
+                        const userRef = db.collection('users').doc(user.uid);
+                        let hasEnrollment = false;
+
+                        try {
+                            const userDoc = await userRef.get();
+                            console.log("🔍 Verificando enrollment para:", user.email);
+
+                            if (userDoc.exists) {
+                                const userData = userDoc.data();
+                                console.log("📦 User Data:", userData);
+                                console.log("📋 Enrollments:", userData.enrollments);
+
+                                const courseId = 'ia-aplicada-esencial';
+                                const oldCourseId = 'inteligencia-aplicada';
+
+                                if (userData.enrollments) {
+                                    console.log(`✅ Checking ${courseId}:`, userData.enrollments[courseId]);
+                                    console.log(`✅ Checking ${oldCourseId}:`, userData.enrollments[oldCourseId]);
+                                }
+
+                                if (userData.enrollments &&
+                                    (userData.enrollments[courseId] === true ||
+                                        userData.enrollments[oldCourseId] === true)) {
+                                    hasEnrollment = true;
+                                    console.log("✅ ENROLLMENT DETECTADO - Desbloqueando contenido");
+                                } else {
+                                    console.log("❌ NO HAY ENROLLMENT - Manteniendo bloqueado");
+                                }
+                            } else {
+                                console.log("❌ Usuario no existe en Firestore");
+                            }
+                        } catch (error) {
+                            console.error("❌ Error verificando enrollment:", error);
+                        }
+
+                        // Solo desbloquear si tiene enrollment
+                        if (hasEnrollment) {
+                            isVaultUnlocked = true;
+                            console.log("🔓 Desbloqueando vault...");
+                            if (unlockBtn) unlockBtn.classList.add('hidden');
+
+                            const teaser = document.getElementById('locked-teaser');
+                            if (teaser) {
+                                teaser.classList.add('hidden');
+                                teaser.classList.remove('flex');
+                            }
+
+                            if (currentCaseId) loadCase(currentCaseId);
+                        } else {
+                            // Usuario logueado SIN enrollment - mantener bloqueado
+                            isVaultUnlocked = false;
+
+                            // Actualizar botón del header a "Inscribirse"
+                            const headerBtn = document.getElementById('unlock-btn');
+                            if (headerBtn) {
+                                headerBtn.innerHTML = '<span class="material-symbols-rounded text-sm text-emerald-400">rocket_launch</span><span class="hidden sm:inline">Acceso Premium</span>';
+                            }
+                        }
+
+                        // --- AUTO TRIGGER PAYMENT LOGIC (Moved here for safety) ---
+                        // Check URL actions ONLY after we know enrollment status
+                        const urlParams = new URLSearchParams(window.location.search);
+                        if (urlParams.get('action') === 'buy') {
+                            if (isVaultUnlocked) {
+                                // CASE: User/Guest paid, logged in, came back.
+                                console.log("User already enrolled. Creating smooth clean URL.");
+                                // Clean URL without reload
+                                const newUrl = window.location.pathname;
+                                window.history.replaceState({}, document.title, newUrl);
+                                // Toast feedback?
+                                const toast = document.getElementById('toast');
+                                if (toast) {
+                                    toast.innerHTML = '<div class="bg-emerald-500 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3"><span class="material-symbols-rounded">check_circle</span><div><p class="font-bold text-sm">¡Ya tienes acceso!</p></div></div>';
+                                    toast.classList.remove('translate-x-full');
+                                    setTimeout(() => toast.classList.add('translate-x-full'), 3000);
+                                }
+                            } else {
+                                // CASE: User/Guest NOT paid. Trigger flow.
+                                console.log("User NOT enrolled. Auto-triggering payment...");
+
+                                // Show Modal Feedback
+                                const modal = document.getElementById('paywall-modal');
+                                if (modal) modal.classList.remove('hidden');
+
+                                const btn = document.getElementById('unlock-btn-modal');
+                                if (btn) {
+                                    btn.textContent = "Generando link de pago...";
+                                    btn.disabled = true;
+                                }
+
+                                triggerUnlockPayment();
+                            }
+                        }
+
+
+                        // Actualizar mensaje del teaser (SIEMPRE IGUAL)
+                        const teaserMessage = document.getElementById('teaser-message');
+                        const teaserActionText = document.getElementById('teaser-action-text');
+                        const teaserActionBtn = document.getElementById('teaser-action-btn');
+
+                        if (teaserMessage) {
+                            teaserMessage.innerHTML = 'Aprende a <strong>usar IA sin saber programar</strong>. Accede al Curso + Bóveda de Prompts con descuento especial.';
+                        }
+                        if (teaserActionText) {
+                            teaserActionText.textContent = 'Aprovechar Oferta';
+                        }
+                        if (teaserActionBtn) {
+                            teaserActionBtn.href = '#';
+                            teaserActionBtn.onclick = (e) => {
+                                e.preventDefault();
+                                window.triggerUnlockPayment();
+                            };
+                        }
+
+                        if (currentCaseId) loadCase(currentCaseId);
+                    } else {
+                        // Usuario NO autenticado - ocultar perfil y restaurar mensajes por defecto
+                        const userProfile = document.getElementById('user-profile');
+                        if (userProfile) {
+                            userProfile.classList.add('hidden');
+                            userProfile.classList.remove('flex');
+                        }
+
+                        // Mensajes unificados del teaser (SIEMPRE IGUAL)
+                        const teaserMessage = document.getElementById('teaser-message');
+                        const teaserActionText = document.getElementById('teaser-action-text');
+                        const teaserActionBtn = document.getElementById('teaser-action-btn');
+
+                        if (teaserMessage) {
+                            teaserMessage.innerHTML = 'Aprende a <strong>usar IA sin saber programar</strong>. Accede al Curso + Bóveda de Prompts con descuento especial.';
+                        }
+                        if (teaserActionText) {
+                            teaserActionText.textContent = 'Aprovechar Oferta';
+                        }
+                        if (teaserActionBtn) {
+                            teaserActionBtn.href = 'acceso.html?redirect=' + encodeURIComponent('maestro-prompts-app.html?action=buy');
+                            teaserActionBtn.onclick = null;
+                        }
+
+                        // Restaurar texto del botón del header
+                        const unlockBtn = document.getElementById('unlock-btn');
+                        if (unlockBtn) {
+                            const btnText = unlockBtn.querySelector('span:last-child');
+                            if (btnText) btnText.textContent = 'Acceso Premium';
+                        }
+
+                        // console.log("Usuario no autenticado.");
+                        isVaultUnlocked = false;
+
+                        // Mostrar botón de desbloquear - usuario necesita acceso
+                        if (unlockBtn) unlockBtn.classList.remove('hidden');
+
+                        // Force reload to show lock
+                        if (currentCaseId) loadCase(currentCaseId);
+                    }
+                });
+
+                // Logout functionality
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', async () => {
+                        try {
+                            await auth.signOut();
+                            // Recargar la misma página en lugar de redirigir a home
+                            window.location.reload();
+                        } catch (error) {
+                            console.error('Error al cerrar sesión:', error);
+                            alert('Error al cerrar sesión. Intenta nuevamente.');
+                        }
+                    });
+                }
+            }
+
+            /**
+             * Secure Markdown Renderer with XSS Protection
+             * Converts markdown text to properly formatted HTML
+             * Supports: tables, bold, italic, code, lists
+             */
+            function escapeHtml(unsafe) {
+                if (!unsafe) return '';
+                return String(unsafe)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            function formatPreviewTable(rawText) {
+                if (!rawText) return '';
+
+                let text = String(rawText).trim();
+                console.log('📥 INPUT:', text.substring(0, 200));
+
+                // ═══════════════════════════════════════════════════════
+                // STAGE 1: AGGRESSIVE CLEANUP (Before any processing)
+                // ═══════════════════════════════════════════════════════
+
+                // Remove ALL HTML/XML tags (including pseudo-HTML like <font-bold text-indigo-900>)
+                text = text.replace(/<\/?[^>]+(>|$)/g, '');
+
+                // Remove leading/trailing quotes (single or double)
+                text = text.replace(/^["']|["']$/g, '').trim();
+
+                // Clean up excessive whitespace BUT PRESERVE NEWLINES
+                text = text.replace(/[ \t]+/g, ' ').trim();
+
+                // ═══════════════════════════════════════════════════════
+                // STAGE 2: MARKDOWN TO HTML CONVERSION (Safe, controlled)
+                // ═══════════════════════════════════════════════════════
+
+                // Convert escaped newlines to actual newlines
+                text = text.replace(/\\n/g, '\n');
+
+                // Process markdown tables FIRST (before escaping)
+                text = renderMarkdownTables(text);
+
+                // CRITICAL: Process markdown BEFORE escaping to avoid escaping markdown syntax
+                // Use temporary markers to protect markdown during HTML escape
+
+                // Process code blocks
+                text = text.replace(/```([a-z]*)\n([\s\S]*?)```/gi, (match, lang, code) => {
+                    return `§§§PRE§§§${code.trim()}§§§/PRE§§§`;
+                });
+
+                // Process inline code
+                text = text.replace(/`([^`]+)`/g, '§§§CODE§§§$1§§§/CODE§§§');
+
+                // Process bold (**...**)
+                text = text.replace(/\*\*([^\*]+)\*\*/g, '§§§STRONG§§§$1§§§/STRONG§§§');
+
+                // Process italic (*...*)
+                text = text.replace(/\*([^\*\n]+)\*/g, '§§§EM§§§$1§§§/EM§§§');
+
+                // Process unordered lists (- item)
+                text = text.replace(/((?:^|\n)- .+(?:\n|$))+/g, (match) => {
+                    const items = match.trim().split('\n').map(line => {
+                        const content = line.replace(/^- /, '').trim();
+                        return `§§§LI§§§${content}§§§/LI§§§`;
+                    }).join('');
+                    return `§§§UL§§§${items}§§§/UL§§§`;
+                });
+
+                // Process ordered lists (1. item)
+                text = text.replace(/((?:^|\n)\d+\. .+(?:\n|$))+/g, (match) => {
+                    const items = match.trim().split('\n').map(line => {
+                        const content = line.replace(/^\d+\. /, '').trim();
+                        return `§§§LI§§§${content}§§§/LI§§§`;
+                    }).join('');
+                    return `§§§OL§§§${items}§§§/OL§§§`;
+                });
+
+                // Process horizontal rules (---)
+                text = text.replace(/^---$/gm, '§§§HR§§§');
+
+                // Now escape HTML for security (but preserve our markers and tables)
+                const parts = [];
+                const protectedPattern = /(§§§[^§]+§§§|<table>[\s\S]*?<\/table>)/g;
+                let lastIndex = 0;
+                let match;
+
+                while ((match = protectedPattern.exec(text)) !== null) {
+                    // Escape text before protected content
+                    if (match.index > lastIndex) {
+                        parts.push(escapeHtml(text.substring(lastIndex, match.index)));
+                    }
+                    // Keep protected content as-is
+                    parts.push(match[0]);
+                    lastIndex = match.index + match[0].length;
+                }
+                // Escape remaining text
+                if (lastIndex < text.length) {
+                    parts.push(escapeHtml(text.substring(lastIndex)));
+                }
+                text = parts.join('');
+
+                // ═══════════════════════════════════════════════════════
+                // STAGE 3: RESTORE MARKERS TO HTML
+                // ═══════════════════════════════════════════════════════
+
+                // Restore horizontal rules
+                text = text.replace(/§§§HR§§§/g, '<hr class="my-6 border-t-2 border-dashed border-slate-200 w-full">');
+
+                // Convert markers to HTML tags
+                text = text.replace(/§§§PRE§§§/g, '<pre><code>');
+                text = text.replace(/§§§\/PRE§§§/g, '</code></pre>');
+                text = text.replace(/§§§CODE§§§/g, '<code>');
+                text = text.replace(/§§§\/CODE§§§/g, '</code>');
+                text = text.replace(/§§§STRONG§§§/g, '<strong>');
+                text = text.replace(/§§§\/STRONG§§§/g, '</strong>');
+                text = text.replace(/§§§EM§§§/g, '<em>');
+                text = text.replace(/§§§\/EM§§§/g, '</em>');
+                text = text.replace(/§§§UL§§§/g, '<ul>');
+                text = text.replace(/§§§\/UL§§§/g, '</ul>');
+                text = text.replace(/§§§OL§§§/g, '<ol>');
+                text = text.replace(/§§§\/OL§§§/g, '</ol>');
+                text = text.replace(/§§§LI§§§/g, '<li>');
+                text = text.replace(/§§§\/LI§§§/g, '</li>');
+
+                // ═══════════════════════════════════════════════════════
+                // STAGE 3: FINAL FORMATTING
+                // ═══════════════════════════════════════════════════════
+
+                // Convert remaining newlines to paragraphs
+                text = text.split('\n\n').map(para => {
+                    para = para.trim();
+                    if (!para) return '';
+                    // Don't wrap structural elements (include <hr> in protection)
+                    if (para.startsWith('<table') || para.startsWith('<pre') ||
+                        para.startsWith('<ul') || para.startsWith('<ol') || para.startsWith('<hr')) {
+                        return para;
+                    }
+
+                    // Check if paragraph has list items
+                    const lines = para.split('\n');
+                    const hasDashItems = lines.some(line => line.trim().match(/^- /));
+                    const hasNumberedItems = lines.some(line => line.trim().match(/^\d+\.\s/));
+
+                    if (hasDashItems || hasNumberedItems) {
+                        // Process mixed content: convert list lines
+                        let html = '';
+                        let inUnorderedList = false;
+                        let inOrderedList = false;
+
+                        // List styles (Tailwind)
+                        const ulClass = 'list-disc ml-5 space-y-1 text-slate-600 my-2';
+                        const olClass = 'list-decimal ml-5 space-y-1 text-slate-600 my-2';
+                        const divClass = 'mb-1 leading-snug text-slate-600';
+
+                        lines.forEach(line => {
+                            let cleanLine = line.trim();
+
+                            // 1. Handle Markdown horizontal rules '---' gracefully
+                            if (cleanLine.match(/^-{3,}$/)) {
+                                if (inUnorderedList) { html += '</ul>'; inUnorderedList = false; }
+                                if (inOrderedList) { html += '</ol>'; inOrderedList = false; }
+                                html += '<hr class="my-6 border-t-2 border-dashed border-slate-200 w-full">';
+                                return;
+                            }
+
+                            // 2. Remove table separator lines like '|---|---|'
+                            if (cleanLine.includes('|') && cleanLine.includes('-') && cleanLine.replace(/[\s\:\-\|]/g, '').length === 0) return;
+
+                            // Unordered list item (-)
+                            if (cleanLine.match(/^- /)) {
+                                if (inOrderedList) {
+                                    html += '</ol>';
+                                    inOrderedList = false;
+                                }
+                                if (!inUnorderedList) {
+                                    html += `<ul class="${ulClass}">`;
+                                    inUnorderedList = true;
+                                }
+                                const content = cleanLine.substring(2).trim();
+                                html += `<li>${content}</li>`;
+                            }
+                            // Ordered list item (1. 2. etc)
+                            else if (cleanLine.match(/^\d+\.\s/)) {
+                                if (inUnorderedList) {
+                                    html += '</ul>';
+                                    inUnorderedList = false;
+                                }
+                                if (!inOrderedList) {
+                                    html += `<ol class="${olClass}">`;
+                                    inOrderedList = true;
+                                }
+                                const content = cleanLine.replace(/^\d+\.\s+/, '').trim();
+                                html += `<li>${content}</li>`;
+                            }
+                            // Regular text lines
+                            else {
+                                if (inUnorderedList) {
+                                    html += '</ul>';
+                                    inUnorderedList = false;
+                                }
+                                if (inOrderedList) {
+                                    html += '</ol>';
+                                    inOrderedList = false;
+                                }
+                                if (cleanLine) html += `<div class="${divClass}">${cleanLine}</div>`;
+                            }
+                        });
+
+                        if (inUnorderedList) html += '</ul>';
+                        if (inOrderedList) html += '</ol>';
+                        return html;
+                    }
+
+                    return `<div class="mb-2 leading-snug text-slate-600">${para.replace(/\n/g, '<br>')}</div>`;
+                }).join('');
+
+                // Wrap in markdown-content class for styling
+                const result = `<div class="markdown-content">${text}</div>`;
+                console.log('📤 OUTPUT:', result.substring(0, 300));
+                return result;
+            }
+
+            function renderMarkdownTables(text) {
+                // Match markdown tables: | header | header |\n| --- | --- |\n| cell | cell |
+                const tableRegex = /(\|[^\n]+\|\n(?:\|[\s:-]+\|[\s\S]*?\n)?(?:\|[^\n]+\|\n?)*)/g;
+
+                return text.replace(tableRegex, (tableMatch) => {
+                    const lines = tableMatch.trim().split('\n').filter(l => l.trim());
+                    if (lines.length < 2) return tableMatch;
+
+                    // Parse header
+                    const headerCells = lines[0].split('|').filter(c => c.trim()).map(c => c.trim());
+
+                    // Check for separator line (optional in some formats)
+                    let dataStartIndex = 1;
+                    if (lines[1] && lines[1].includes('---') || lines[1].includes(':--')) {
+                        dataStartIndex = 2;
+                    }
+
+                    // Parse data rows
+                    const dataRows = lines.slice(dataStartIndex).map(line => {
+                        return line.split('|').filter(c => c.trim()).map(c => c.trim());
+                    });
+
+                    // Build HTML table
+                    let html = '<table><thead><tr>';
+                    headerCells.forEach(cell => {
+                        html += `<th>${cell}</th>`;
+                    });
+                    html += '</tr></thead><tbody>';
+
+                    dataRows.forEach(row => {
+                        html += '<tr>';
+                        row.forEach(cell => {
+                            html += `<td>${cell}</td>`;
+                        });
+                        html += '</tr>';
+                    });
+
+                    html += '</tbody></table>';
+                    return html;
+                });
+            }
+
+            function decryptPrompt(ciphertext) {
+                try {
+                    if (!ciphertext) return "";
+                    if (!ciphertext.startsWith("U2F")) return ciphertext;
+
+                    const bytes = CryptoJS.AES.decrypt(ciphertext, getEncryptionKey());
+                    const originalText = bytes.toString(CryptoJS.enc.Utf8);
+                    return originalText || "Error: Corrupted Data";
+                } catch (e) {
+                    console.error("Decryption failed", e);
+                    return "Error: Decryption Failed";
+                }
+            }
+
+
+            function setMode(mode) {
+                currentViewMode = mode;
+                const btnBasic = document.getElementById('btn-basic');
+                const btnAgia = document.getElementById('btn-agia');
+                const maestroBadge = document.getElementById('maestro-cta-badge');
+                const contentBasic = document.getElementById('content-basic');
+                const contentAgia = document.getElementById('content-agia');
+                const copyBtn = document.getElementById('copy-btn');
+                const copyBtnContainer = document.getElementById('copy-btn-container');
+
+                if (mode === 'basic') {
+                    contentBasic.classList.remove('hidden');
+                    contentAgia.classList.add('hidden');
+
+                    // Basic button active
+                    btnBasic.classList.add('bg-slate-600', 'text-white');
+                    btnBasic.classList.remove('text-slate-600');
+
+                    // Maestro button with CTA styling
+                    btnAgia.classList.remove('bg-indigo-600', 'text-white');
+                    btnAgia.classList.add('text-slate-600', 'animate-pulse', 'ring-2', 'ring-emerald-400', 'ring-offset-2');
+
+                    // Show upgrade badge
+                    if (maestroBadge) maestroBadge.classList.remove('hidden');
+
+                    // Disable and hide copy button
+                    if (copyBtnContainer) copyBtnContainer.classList.add('hidden');
+                    copyBtn.disabled = true;
+                    copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
+                    copyBtn.classList.add('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
+
+                    // Hide Social Proof counter
+                    const socialProof = document.getElementById('maestro-social-proof');
+                    if (socialProof) {
+                        socialProof.classList.add('hidden');
+                        socialProof.classList.remove('flex');
+                    }
+                } else {
+                    contentBasic.classList.add('hidden');
+                    contentAgia.classList.remove('hidden');
+
+                    // Basic button inactive
+                    btnBasic.classList.remove('bg-slate-600', 'text-white');
+                    btnBasic.classList.add('text-slate-600');
+
+                    // Maestro button active (no CTA)
+                    btnAgia.classList.add('bg-indigo-600', 'text-white');
+                    btnAgia.classList.remove('text-slate-600', 'animate-pulse', 'ring-2', 'ring-emerald-400', 'ring-offset-2');
+
+                    // Hide upgrade badge
+                    if (maestroBadge) maestroBadge.classList.add('hidden');
+
+                    // Show and enable copy button
+                    if (copyBtnContainer) copyBtnContainer.classList.remove('hidden');
+                    copyBtn.disabled = false;
+                    copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'shadow-sm');
+                    copyBtn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed', 'opacity-60');
+
+                    // Show Social Proof with Smoke Effect (consistent per user via localStorage)
+                    const socialProof = document.getElementById('maestro-social-proof');
+                    const counter = document.getElementById('maestro-counter');
+                    const counterText = document.querySelector('#maestro-social-proof .text-\\[9px\\]');
+
+                    if (socialProof && counter && counterText && currentCaseId) {
+                        // Generate consistent random number per prompt (stored in localStorage)
+                        const storageKey = `social-proof-${currentCaseId}`;
+                        let savedCount = localStorage.getItem(storageKey);
+
+                        if (!savedCount) {
+                            // First time visiting this prompt - generate and save
+                            savedCount = Math.floor(Math.random() * (400 - 150 + 1)) + 150;
+                            localStorage.setItem(storageKey, savedCount);
+                        }
+
+                        counter.textContent = savedCount;
+
+                        // Vary action verbs based on prompt ID (consistent but natural)
+                        const phrases = ['copiaron', 'usando', 'aplicaron', 'compartieron'];
+                        const phraseIndex = currentCaseId % phrases.length;
+                        counterText.innerHTML = `<span id="maestro-counter">${savedCount}</span> ${phrases[phraseIndex]}`;
+
+                        // Reset animation by removing and re-adding class
+                        socialProof.classList.remove('smoke-effect');
+                        socialProof.classList.remove('hidden');
+                        socialProof.classList.add('flex');
+
+                        // Trigger reflow to restart animation
+                        void socialProof.offsetWidth;
+
+                        // Add smoke effect animation
+                        socialProof.classList.add('smoke-effect');
+                    }
+                }
+            }
+
+            function loadCase(id) {
+                currentCaseId = id;
+                const c = casesData.find(x => x.id === id);
+                if (!c) return;
+
+                // Scroll to Top logic fix
+                const scrollContainer = document.getElementById('detail-scroll-container');
+                if (scrollContainer) scrollContainer.scrollTop = 0;
+
+                // Determine effective lock state (Database OR User Session)
+                const isLocked = c.locked || !isVaultUnlocked;
+
+                currentDifficulty = c.difficulty || 'beginner';
+
+                // Reset Social Proof Counter specific to prompt ID
+                // Removed static formula ID * 0.2
+                // Now logic is handled in the text randomizer below
+
+                document.querySelectorAll('.case-item').forEach(el => {
+                    el.classList.remove('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
+                    el.classList.add('border-transparent', 'text-slate-600');
+                });
+                const activeItem = document.getElementById(`case-item-${id}`);
+                if (activeItem) {
+                    activeItem.classList.remove('border-transparent', 'text-slate-600');
+                    activeItem.classList.add('bg-indigo-50', 'border-indigo-100', 'text-indigo-700');
+                }
+
+                document.getElementById('workspace-empty').classList.add('hidden');
+                document.getElementById('case-detail').classList.remove('hidden');
+
+                document.getElementById('detail-title').innerText = c.title;
+                document.getElementById('detail-problem').innerText = c.problem;
+
+                document.getElementById('bad-result-preview').innerHTML = formatPreviewTable(c.badResponsePreview || '');
+                document.getElementById('bad-response-analysis').innerHTML = c.badResponseAnalysis || '';
+                document.getElementById('good-result-preview').innerHTML = formatPreviewTable(c.previewResponse);
+
+                const cat = config.categories[c.category] || { label: 'General', color: 'slate' };
+                const badge = document.getElementById('detail-category-badge');
+                badge.innerText = c.category; // Use full category name
+                badge.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${cat.color}-600 border-${cat.color}-100`;
+
+                const aiBadge = document.getElementById('ai-suggestion-badge');
+                const aiName = document.getElementById('ai-name');
+                if (c.suggestedAI) {
+                    let niceName = c.suggestedAI.toUpperCase();
+                    aiName.innerText = niceName;
+                    aiBadge.classList.remove('hidden');
+                    aiBadge.classList.add('flex');
+                } else {
+                    aiBadge.classList.add('hidden');
+                    aiBadge.classList.remove('flex');
+                }
+
+                // Benefit Badge Logic
+                const benefitBadge = document.getElementById('benefit-badge');
+                if (benefitBadge) {
+                    if (currentDifficulty === 'beginner') {
+                        benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">bolt</span> Ahorro: ~15 min';
+                        benefitBadge.className = "text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 flex items-center gap-1.5 shadow-sm";
+                    } else if (currentDifficulty === 'intermediate') {
+                        benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">rocket_launch</span> Ahorro: ~45 min';
+                        benefitBadge.className = "text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100 flex items-center gap-1.5 shadow-sm";
+                    } else {
+                        benefitBadge.innerHTML = '<span class="material-symbols-rounded text-sm">diamond</span> Ahorro: +2 Horas';
+                        benefitBadge.className = "text-[10px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-100 flex items-center gap-1.5 shadow-sm";
+                    }
+                }
+
+                const tipContainer = document.getElementById('tip-container');
+                const validationContainer = document.getElementById('validation-container');
+                const tipText = document.getElementById('detail-example-tip');
+                const valText = document.getElementById('detail-validation-tip');
+
+                if (c.exampleTip) {
+                    tipText.innerHTML = c.exampleTip;
+                    tipContainer.classList.remove('hidden');
+                    tipContainer.classList.add('flex');
+                } else {
+                    tipContainer.classList.add('hidden');
+                    tipContainer.classList.remove('flex');
+                }
+                if (c.validationTip) {
+                    valText.innerHTML = c.validationTip;
+                    validationContainer.classList.remove('hidden');
+                    validationContainer.classList.add('flex');
+                } else {
+                    validationContainer.classList.add('hidden');
+                    validationContainer.classList.remove('flex');
+                }
+
+                currentPromptTemplate = c.agiaPromptTagged;
+
+                // Handle both encrypted (U2F prefix) and plain text prompts
+                if (currentPromptTemplate.startsWith("U2F")) {
+                    // Encrypted prompt - only decrypt if vault is unlocked
+                    if (isVaultUnlocked) {
+                        currentPromptTemplate = decryptPrompt(currentPromptTemplate);
+                    }
+                    // If vault is locked, keep it encrypted (will show as locked)
+                } else {
+                    // Plain text prompt - always use as-is (no decryption needed)
+                    // This allows new conversational prompts to work immediately
+                }
+
+                currentBadPromptTemplate = c.badPromptDynamic || c.badPrompt;
+                currentVariables = {};
+
+                // Parse variables only if we have decrypted/plain text (not encrypted U2F)
+                if (!currentPromptTemplate.startsWith("U2F")) {
+                    const regex = /{([a-z0-9_]+)\|([^}]+)}/g;
+                    let match;
+                    while ((match = regex.exec(currentPromptTemplate)) !== null) {
+                        currentVariables[match[1]] = match[2];
+                    }
+                }
+
+                // Force Lock if content is encrypted and vault is locked
+                const effectivelyLocked = isLocked || (!isVaultUnlocked && currentPromptTemplate.startsWith("U2F"));
+
+                renderPrompts(effectivelyLocked);
+
+                // Lógica de Bloqueo Visual (Teaser)
+                const lockOverlay = document.getElementById('locked-teaser');
+                const blurWrapper = document.getElementById('prompt-blur-wrapper');
+                const copyBtn = document.getElementById('copy-btn');
+                const resultTeaser = document.getElementById('result-teaser-label');
+                const passwordInput = document.getElementById('vault-password');
+                if (passwordInput) passwordInput.value = ""; // Clear password on new case load
+
+                if (effectivelyLocked) {
+                    lockOverlay.classList.remove('hidden');
+                    blurWrapper.classList.add('blur-prompt');
+                    copyBtn.disabled = true;
+                    copyBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'cursor-pointer');
+                    copyBtn.innerHTML = '<span class="material-symbols-rounded text-sm copy-icon">lock</span><span class="copy-text">Bloqueado</span>';
+                    resultTeaser.classList.remove('hidden');
+                    resultTeaser.classList.add('flex');
+                } else {
+                    lockOverlay.classList.add('hidden');
+                    blurWrapper.classList.remove('blur-prompt');
+                    copyBtn.disabled = false;
+                    copyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white', 'cursor-pointer');
+                    copyBtn.innerHTML = '<span class="material-symbols-rounded text-sm copy-icon">content_copy</span><span class="copy-text">Copiar</span>';
+                    resultTeaser.classList.add('hidden');
+                    resultTeaser.classList.remove('flex');
+                }
+
+                setMode(currentViewMode);
+
+                // Social Proof Randomizer
+                const socialText = document.getElementById('social-proof-text');
+                if (socialText) {
+                    // Deterministic Randomness based on ID
+                    const base = Math.floor(c.id * 0.8);
+                    const variance = ((c.id * 7) % 30) * 5;
+                    const count = base + variance + 45; // Minimum ~125 range
+
+                    // Randomize phrasing slightly based on ID parity
+                    const templates = [
+                        `Usado <span class="text-orange-600 text-xs">${count}</span> veces en la última hora`,
+                        `<span class="text-orange-600 text-xs">${count}</span> personas lo están usando ahora`,
+                        `Tendencia: <span class="text-orange-600 text-xs">${count}</span> usos recientes`
+                    ];
+                    const phraseIndex = c.id % templates.length;
+
+                    socialText.innerHTML = templates[phraseIndex];
+                }
+
+                // Apply same randomizer to header counter with varied phrases
+                const headerCounter = document.getElementById('social-counter-header');
+                if (headerCounter) {
+                    const base = Math.floor(c.id * 0.8);
+                    const variance = ((c.id * 7) % 30) * 5;
+                    const count = base + variance + 45;
+
+                    // Varied action verbs for natural feel - UPDATED with new verbs
+                    const phrases = [
+                        `${count} copiaron`,
+                        `${count} usando`,
+                        `${count} aplicaron`,
+                        `${count} compartieron`
+                    ];
+                    const phraseIndex = c.id % phrases.length;
+                    headerCounter.innerText = phrases[phraseIndex];
+                }
+            }
+
+            function downloadPDF() {
+                // Calculate count of unlocked prompts to show value
+                const total = casesData.length;
+                const unlockedCount = casesData.filter(c => !(c.locked || globalLockMode)).length;
+
+                const printContent = `
+                <html>
+                <head>
+                    <title>Bóveda de Prompts AGIA</title>
+                    <style>
+                        body { font-family: sans-serif; padding: 40px; color: #333; line-height: 1.6; }
+                        h1 { text-align: center; color: #4f46e5; margin-bottom: 5px; }
+                        .subtitle { text-align: center; font-size: 0.9em; color: #666; margin-bottom: 40px; }
+                        .case { border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 20px; page-break-inside: avoid; border-radius: 8px; }
+                        .title { font-weight: 800; font-size: 1.2em; color: #1e293b; }
+                        .meta { font-size: 0.75em; color: #64748b; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+                        .problem { font-style: italic; color: #475569; margin-bottom: 15px; font-size: 0.9em; }
+                        .label { font-weight: bold; font-size: 0.8em; text-transform: uppercase; color: #4f46e5; margin-bottom: 5px; }
+                        .prompt-box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 6px; font-family: 'Courier New', monospace; white-space: pre-wrap; font-size: 0.85em; color: #334155; }
+                        .locked-box { background: #fef2f2; border: 1px dashed #fca5a5; color: #991b1b; text-align: center; font-style: italic; padding: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+                        .watermark { text-align: center; margin-top: 50px; font-size: 0.8em; color: #cbd5e1; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Bóveda Maestra AGIA</h1>
+                    <p class="subtitle">Reporte Generado el ${new Date().toLocaleDateString()} | ${unlockedCount}/${total} Desbloqueados</p>
+                    
+                    ${casesData.map(c => {
+                    // Check if individual case is locked or if global lock is enabled (now controlled by isVaultUnlocked)
+                    // If vault is NOT unlocked, treat as locked.
+                    const isLocked = c.locked || !isVaultUnlocked;
+
+                    const content = isLocked
+                        ? `<div class="locked-box">🔒 CONTENIDO EXCLUSIVO - Inicia sesión en AulaGenia para ver este contenido.</div>`
+                        : `<div class="prompt-box">${c.agiaPromptTagged ? decryptPrompt(c.agiaPromptTagged).replace(/{[a-z]+\}|{\/[a-z]+\}/g, '') : ''}</div>`;
+
+                    return `
+                            <div class="case">
+                                <div class="title">${c.title}</div>
+                                <div class="meta">${c.category} • ${c.difficulty}</div>
+                                <p class="problem">"${c.problem}"</p>
+                                <div class="label">Prompt Optimizado:</div>
+                                ${content}
+                            </div>
+                        `;
+                }).join('')}
+                    
+                    <div class="watermark">Generado por AGIA Generator 3.0</div>
+                    <script>window.onload = function() { window.print(); }</sc`+ `ript>
+                </body>
+                </html>
+            `;
+                const win = window.open('', '_blank');
+                win.document.write(printContent);
+                win.document.close();
+            }
+
+            // Función para escapar HTML y prevenir XSS
+            function escapeHtml(text) {
+                if (!text) return text;
+                return String(text)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            function renderPrompts(isLocked) {
+                // Keep original behavior for hidden element (used for copy)
+                let renderedAgia = escapeHtml(currentPromptTemplate);
+                Object.keys(currentVariables).forEach(key => {
+                    const val = currentVariables[key] || "___";
+                    const safeVal = escapeHtml(val);
+                    const regex = new RegExp(`{${key}\\|[^}]+}`, 'g');
+                    renderedAgia = renderedAgia.replace(regex, `<span class="var-highlight">${safeVal}</span>`);
+                });
+                const tags = { r: 'rol', c: 'contexto', m: 'meta', l: 'restricciones', f: 'formato' };
+                Object.keys(tags).forEach(t => {
+                    const className = `hl-${tags[t]}`;
+                    const regex = new RegExp(`{${t}}(.*?){/${t}}`, 'gs');
+                    renderedAgia = renderedAgia.replace(regex, `<span class="hl-tag ${className}" data-tag-type="${t}">$1</span>`);
+                });
+                renderedAgia = renderedAgia.replace(/\n/g, '<br>');
+                document.getElementById('detail-prompt-rendered').innerHTML = renderedAgia;
+
+                // NEW: Parse and render AGIA sections with colored badges
+                renderAgiaSections(currentPromptTemplate);
+
+                let renderedBad = escapeHtml(currentBadPromptTemplate);
+                Object.keys(currentVariables).forEach(key => {
+                    const val = currentVariables[key] || "...";
+                    const safeVal = escapeHtml(val);
+                    const regex = new RegExp(`{${key}}`, 'g');
+                    renderedBad = renderedBad.replace(regex, `<span class="var-highlight-bad">${safeVal}</span>`);
+                });
+                document.getElementById('bad-prompt-rendered').innerHTML = `"${renderedBad}"`;
+            }
+
+            // NEW: Function to parse AGIA template and render with INLINE colored highlights + EDITABLE VARIABLES
+            function renderAgiaSections(template) {
+                const container = document.getElementById('agia-sections-container');
+                if (!container) return;
+                container.innerHTML = '';
+
+                const sectionConfig = {
+                    'ROL': {
+                        bg: 'bg-blue-50',
+                        text: 'text-blue-800',
+                        label: 'Rol',
+                        border: 'border-blue-200'
+                    },
+                    'CONTEXTO': {
+                        bg: 'bg-emerald-50',
+                        text: 'text-emerald-800',
+                        label: 'Contexto',
+                        border: 'border-emerald-200'
+                    },
+                    'META': {
+                        bg: 'bg-amber-50',
+                        text: 'text-amber-800',
+                        label: 'Meta',
+                        border: 'border-amber-200'
+                    },
+                    'RESTRICCIONES': {
+                        bg: 'bg-rose-50',
+                        text: 'text-rose-800',
+                        label: 'Restricciones',
+                        border: 'border-rose-200'
+                    },
+                    'FORMATO': {
+                        bg: 'bg-violet-50',
+                        text: 'text-violet-800',
+                        label: 'Formato',
+                        border: 'border-violet-200'
+                    }
+                };
+
+                // ✅ NUEVO: Detectar y parsear formato numerado "1. ROL:", "2. CONTEXTO:", etc.
+                let sections = {};
+                const hasNumberedFormat = /\d+\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):/i.test(template);
+
+                if (hasNumberedFormat) {
+                    // Formato numerado encontrado - parsear directamente
+                    const numberedPattern = /(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):\s*([^]*?)(?=\d+\.\s*(?:ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):|$)/gi;
+                    let match;
+
+                    while ((match = numberedPattern.exec(template)) !== null) {
+                        const sectionName = match[2].toUpperCase();
+                        const content = match[3].trim();
+                        sections[sectionName] = content;
+                    }
+                } else {
+                    // Formato conversacional - usar patterns originales
+                    const patterns = {
+                        'ROL': /{r}|(?:^|\n)(?:Eres un|Actúa como)/i,
+                        'CONTEXTO': /{c}|\nCONTEXTO:/i,
+                        'META': /{m}|\nMETA:/i,
+                        'RESTRICCIONES': /{l}|\nRESTRICCIONES:/i,
+                        'FORMATO': /{f}|\nFORMATO:/i
+                    };
+
+                    let markers = [];
+                    Object.entries(patterns).forEach(([key, pattern]) => {
+                        let match;
+                        const globalPattern = new RegExp(pattern.source, 'gi');
+                        while ((match = globalPattern.exec(template)) !== null) {
+                            markers.push({ index: match.index, length: match[0].length, section: key });
+                        }
+                    });
+
+                    markers.sort((a, b) => a.index - b.index);
+
+                    if (markers.length === 0) {
+                        sections['ROL'] = template;
+                    } else {
+                        for (let i = 0; i < markers.length; i++) {
+                            const currentMarker = markers[i];
+                            const nextMarkerIndex = (i + 1 < markers.length) ? markers[i + 1].index : template.length;
+                            const startPos = currentMarker.index + currentMarker.length;
+                            let content = template.substring(startPos, nextMarkerIndex).trim();
+
+                            // Solo eliminar el marcador de sección si está al inicio, NO el contenido
+                            content = content.replace(/^(ROL:|CONTEXTO:|META:|RESTRICCIONES:|FORMATO:)\s*/i, '').trim();
+
+
+                            if (content) {
+                                if (!sections[currentMarker.section]) sections[currentMarker.section] = "";
+                                sections[currentMarker.section] += (sections[currentMarker.section] ? " " : "") + content;
+                            }
+                        }
+                    }
+                }
+
+
+                // ✅ Renderizado visual mejorado con borders y mejor spacing
+                const orderedSections = ['ROL', 'CONTEXTO', 'META', 'FORMATO', 'RESTRICCIONES'];
+
+                orderedSections.forEach(key => {
+                    const content = sections[key];
+                    if (!content) return;
+
+                    const conf = sectionConfig[key] || {
+                        bg: 'bg-slate-50',
+                        text: 'text-slate-800',
+                        label: key,
+                        border: 'border-slate-200'
+                    };
+
+                    const wrapper = document.createElement('div');
+                    wrapper.className = `my-2 rounded-lg border ${conf.border} hover:border-indigo-300 transition-all ${conf.bg} px-4 py-3 shadow-sm`;
+
+                    // ✅ MEJORA: Procesamos el HTML de forma más limpia
+                    let html = escapeHtml(content)
+                        .replace(/^-{3,}\s*$/gm, '')  // Remover separadores
+                        .replace(/{\/?[rcmlf]}/gi, '')  // Remover tags de estructura
+                        .replace(/\[([^\]\n]+)\](?!\()/g, '<span class="var-highlight">$1</span>')  // Variables
+                        .replace(/\n/g, '<br>');  // Saltos de línea
+
+                    // ✅ BADGE MEJORADO: Más compacto y legible
+                    wrapper.innerHTML = `
+                        <div class="flex items-start gap-2">
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider ${conf.text} bg-white/60 px-2 py-1 rounded border ${conf.border} flex-shrink-0 shadow-sm">
+                                ${conf.label}
+                            </span>
+                            <span class="${conf.text} text-sm leading-relaxed flex-1" style="word-wrap: break-word; overflow-wrap: break-word;">
+                                ${html}
+                            </span>
+                        </div>
+                    `;
+
+                    container.appendChild(wrapper);
+                });
+            }
+
+
+            // Render the new inline legend beside the header - Exact Design from Image
+            function renderInlineLegend(config) {
+                const legendContainer = document.getElementById('agia-legend-inline');
+                if (!legendContainer) return;
+
+                legendContainer.innerHTML = Object.entries(config).map(([key, conf]) => {
+                    // Map config colors to specific Tailwind shades for the "Dot + Text" style
+                    // Image style: Light bg (50), Border (100/200), Strong Text (600/700), Dot (500)
+                    let colorName = 'slate';
+                    if (conf.bg.includes('blue')) colorName = 'blue';
+                    if (conf.bg.includes('emerald')) colorName = 'emerald';
+                    if (conf.bg.includes('amber')) colorName = 'amber';
+                    if (conf.bg.includes('rose')) colorName = 'rose';
+                    if (conf.bg.includes('violet')) colorName = 'violet';
+
+                    return `<div id="legend-${key}" 
+                    title="${conf.desc.replace(/"/g, '&quot;')}"
+                    class="legend-item flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-all duration-200 cursor-help
+                    bg-${colorName}-50 border-${colorName}-100 text-${colorName}-700 hover:bg-${colorName}-100 hover:border-${colorName}-300 shadow-sm"
+                    onmouseenter="highlightSection('${key}')"
+                    onmouseleave="resetLegend()">
+                    <span class="w-2 h-2 rounded-full bg-${colorName}-500"></span>
+                    <span class="text-[11px] font-bold tracking-wide">${conf.label}</span>
+                </div>`;
+                }).join('');
+            }
+
+            // --- LÓGICA DE NAVEGACIÓN (FLECHAS) ---
+
+            window.scrollCategories = function (offset) {
+                const nav = document.getElementById('category-nav');
+                if (nav) {
+                    nav.scrollBy({ left: offset, behavior: 'smooth' });
+                    // Verificamos el estado de las flechas después de que termine el scroll
+                    setTimeout(window.updateScrollArrows, 350);
+                }
+            };
+
+            window.updateScrollArrows = function () {
+                const nav = document.getElementById('category-nav');
+                const leftBtn = document.getElementById('btn-scroll-left');
+                const rightBtn = document.getElementById('btn-scroll-right');
+                const gradientLeft = document.getElementById('gradient-left');
+                const gradientRight = document.getElementById('gradient-right');
+
+                if (!nav || !leftBtn || !rightBtn) return;
+
+                // Flecha izquierda y gradient: Visible si hay scroll
+                const hasScrollLeft = nav.scrollLeft > 10;
+                leftBtn.style.display = hasScrollLeft ? 'flex' : 'none';
+                if (gradientLeft) {
+                    gradientLeft.classList.toggle('hidden', !hasScrollLeft);
+                }
+
+                // Flecha derecha: SIEMPRE visible y forzada
+                if (rightBtn) {
+                    rightBtn.style.setProperty('display', 'flex', 'important');
+                    rightBtn.classList.remove('hidden');
+                }
+
+                // Gradient derecha: visible si hay más contenido
+                const hasMoreContent = nav.scrollWidth > (nav.scrollLeft + nav.clientWidth + 5);
+                if (gradientRight) {
+                    gradientRight.classList.toggle('hidden', !hasMoreContent);
+                }
+            };
+
+            // Inicialización de eventos
+            document.addEventListener('DOMContentLoaded', () => {
+                const nav = document.getElementById('category-nav');
+                if (nav) {
+                    // Scroll listener
+                    nav.addEventListener('scroll', window.updateScrollArrows);
+                    window.addEventListener('resize', window.updateScrollArrows);
+
+                    // Mouse wheel horizontal scroll support
+                    nav.addEventListener('wheel', (e) => {
+                        // Only handle horizontal scroll if there's content to scroll
+                        if (nav.scrollWidth > nav.clientWidth) {
+                            e.preventDefault();
+                            nav.scrollBy({
+                                left: e.deltaY < 0 ? -100 : 100,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, { passive: false });
+
+                    // Múltiples verificaciones escalonadas
+                    setTimeout(window.updateScrollArrows, 100);
+                    setTimeout(window.updateScrollArrows, 500);
+                    setTimeout(window.updateScrollArrows, 1000);
+
+                    // Múltiples verificaciones escalonadas
+                    setTimeout(window.updateScrollArrows, 100);
+                    setTimeout(window.updateScrollArrows, 500);
+                    setTimeout(window.updateScrollArrows, 1000);
+                }
+            });
+
+            /**
+             * VERSIÓN REPARADA: FOCO QUIRÚRGICO (Texto Plano) + NAVEGACIÓN
+             * Esta versión garantiza que el contenido no seleccionado sea legible como texto normal,
+             * eliminando únicamente los fondos de color para que parezca texto plano.
+             */
+            window.highlightSection = function (key) {
+                if (!key) return;
+                const targetKey = key.toUpperCase();
+                const container = document.getElementById('agia-sections-container');
+
+                // 1. Ajuste del texto base (conectores)
+                // Cambiamos a un gris neutro pero con opacidad completa para que sea legible
+                if (container) {
+                    container.style.transition = 'all 0.3s ease';
+                    container.style.color = '#64748b'; // Slate-500 (Gris legible)
+                }
+
+                // 2. Leyenda (Items superiores)
+                document.querySelectorAll('.legend-item').forEach(el => {
+                    const legendKey = el.id.replace('legend-', '').toUpperCase();
+
+                    if (legendKey === targetKey) {
+                        el.style.opacity = '1';
+                        el.style.filter = 'none';
+                        el.style.transform = 'scale(1.08)';
+                        el.style.boxShadow = '0 8px 15px -3px rgba(79, 70, 229, 0.2)';
+                        el.style.zIndex = '20';
+                    } else {
+                        // Se mantiene visible pero desaturado
+                        el.style.opacity = '0.4';
+                        el.style.filter = 'grayscale(1)';
+                        el.style.transform = 'scale(0.96)';
+                        el.style.boxShadow = 'none';
+                    }
+                });
+
+                // 3. Secciones del Prompt (Bloques de texto)
+                document.querySelectorAll('.prompt-section').forEach(el => {
+                    const sectionKey = (el.dataset.section || '').toUpperCase();
+
+                    if (sectionKey === targetKey) {
+                        // EL SELECCIONADO: Resalta con su color original y fondo
+                        el.style.opacity = '1';
+                        el.style.filter = 'none';
+                        el.style.transform = 'scale(1.02)';
+                        el.style.zIndex = '10';
+                        el.style.position = 'relative';
+                        el.style.color = 'rgb(30, 41, 59)'; // Slate-800
+                        el.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                        el.style.backgroundColor = ''; // Muestra el color de fondo original (Tailwind)
+                    } else {
+                        // LOS DEMÁS: Se ven como "Texto Plano"
+                        // Quitamos el fondo por completo y usamos un color de texto neutro
+                        el.style.backgroundColor = 'transparent';
+                        el.style.opacity = '0.8'; // Opacidad alta para que "se vea" claramente
+                        el.style.filter = 'grayscale(1)';
+                        el.style.color = '#475569'; // Slate-600 (Gris oscuro legible)
+                        el.style.transform = 'scale(1)';
+                        el.style.boxShadow = 'none';
+                    }
+                });
+            };
+
+            window.resetLegend = function () {
+                const container = document.getElementById('agia-sections-container');
+
+                // Restaurar contenedor (conectores) a su color original
+                if (container) {
+                    container.style.color = '';
+                }
+
+                // Restaurar Leyenda
+                document.querySelectorAll('.legend-item').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.filter = 'none';
+                    el.style.transform = 'scale(1)';
+                    el.style.boxShadow = 'none';
+                    el.style.zIndex = '';
+                });
+
+                // Restaurar Secciones del Prompt
+                document.querySelectorAll('.prompt-section').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.filter = 'none';
+                    el.style.transform = 'scale(1)';
+                    el.style.zIndex = '';
+                    el.style.position = '';
+                    el.style.boxShadow = 'none';
+                    el.style.color = '';
+                    el.style.backgroundColor = ''; // Vuelve al color pastel definido en sus clases CSS
+                });
+            };
+
+            // Function to get the prompt text with filled variables
+            function getPromptWithVariables() {
+                const promptRendered = document.getElementById('detail-prompt-rendered');
+                if (!promptRendered) return '';
+
+                let text = promptRendered.innerText;
+
+                // Get all variable inputs and replace placeholders with their values
+                const inputs = document.querySelectorAll('.var-input');
+                inputs.forEach(input => {
+                    const original = input.dataset.original;
+                    const value = input.value.trim() || input.placeholder;
+                    if (original && value) {
+                        text = text.replace(original, value);
+                    }
+                });
+
+                return text;
+            }
+
+
+
+            function setupLegendInteractions() {
+                // setupMagicHover(); // Removed legacy logic
+            }
+
+            // Copy with Visual Feedback (Sequential Messages)
+            window.copyPromptWithFeedback = function (button) {
+                if (!button || button.disabled) return;
+
+                // Copy to clipboard
+                const rawText = getPromptWithVariables();
+                const textArea = document.createElement("textarea");
+                textArea.value = rawText;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+
+                try {
+                    const success = document.execCommand('copy');
+
+                    if (success) {
+                        // Get button elements - with null checks
+                        const btnIcon = button.querySelector('.copy-icon');
+                        const btnText = button.querySelector('.copy-text');
+
+                        if (!btnIcon || !btnText) {
+                            console.warn('Copy button structure missing expected elements');
+                            return;
+                        }
+
+                        // Store originals
+                        const originalClass = button.className;
+                        const originalIcon = btnIcon.innerHTML;
+                        const originalText = btnText.textContent;
+
+                        // Step 1: Green Success (1.5s)
+                        button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-emerald-500 text-white flex items-center gap-1.5 transition-all';
+                        btnIcon.innerHTML = 'check_circle';
+                        btnText.textContent = '¡Prompt Copiado!';
+
+                        // Confetti celebration
+                        if (typeof confetti !== 'undefined') {
+                            confetti({
+                                particleCount: 100,
+                                spread: 70,
+                                origin: { y: 0.6 }
+                            });
+                        }
+
+                        setTimeout(() => {
+                            // Step 2: Blue Info (3.5s)
+                            button.className = 'text-[10px] font-bold px-3 py-1.5 rounded-lg bg-blue-500 text-white flex items-center gap-1.5 transition-all';
+                            btnIcon.innerHTML = 'arrow_forward';
+                            btnText.textContent = 'Pégalo en ChatGPT, Gemini o Claude';
+
+                            setTimeout(() => {
+                                // Restore original state
+                                button.className = originalClass;
+                                btnIcon.innerHTML = originalIcon;
+                                btnText.textContent = originalText;
+                            }, 3500);
+                        }, 1500);
+                    }
+                } catch (err) {
+                    console.error('Error al copiar:', err);
+                } finally {
+                    // Always cleanup textarea
+                    if (textArea && textArea.parentNode) {
+                        textArea.parentNode.removeChild(textArea);
+                    }
+                }
+            };
+
+            function copyPrompt() {
+                // Trigger Confetti Celebration!
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                // Increment Social Counter in Real-Time
+                const socialCounter = document.getElementById('social-counter');
+                if (socialCounter) {
+                    let currentCount = parseInt(socialCounter.innerText.replace(/,/g, ''));
+                    socialCounter.innerText = (currentCount + 1).toLocaleString();
+                }
+
+                const rawText = getPromptWithVariables();
+                const textArea = document.createElement("textarea");
+                textArea.value = rawText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('Error al copiar:', err);
+                }
+                document.body.removeChild(textArea);
+
+                // Toast feedback is now handled by copyPromptWithFeedback and showSuccessToast
+            }
+
+            // Enhanced copy with visual button feedback
+            function copyPromptWithFeedback(btn) {
+                // Call the original copy function
+                copyPrompt();
+
+                // Visual feedback on the button itself
+                const icon = btn.querySelector('.copy-icon');
+                const text = btn.querySelector('.copy-text');
+
+                // Change to success state
+                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                btn.classList.add('bg-emerald-500', 'scale-105');
+                if (icon) icon.textContent = 'check_circle';
+                if (text) text.textContent = '¡Copiado!';
+
+                // Show floating success toast
+                showSuccessToast();
+
+                // Update header social counter
+                const headerCounter = document.getElementById('social-counter-header');
+                if (headerCounter) {
+                    let count = parseInt(headerCounter.innerText) || 80;
+                    headerCounter.innerText = count + 1;
+                }
+
+                // Revert after 2 seconds
+                setTimeout(() => {
+                    btn.classList.remove('bg-emerald-500', 'scale-105');
+                    btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                    if (icon) icon.textContent = 'content_copy';
+                    if (text) text.textContent = 'Copiar';
+                }, 2000);
+            }
+
+            // Floating success toast notification with sequential messages
+            function showSuccessToast() {
+                // Create toast element
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-20 right-6 bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-[9999] animate-slide-in-right transition-all duration-500';
+                toast.innerHTML = `
+                <span class="material-symbols-rounded text-2xl">check_circle</span>
+                <div>
+                    <p class="font-bold text-sm">✅ ¡Prompt Copiado!</p>
+                    <p class="text-xs text-white/90">Guardado en el portapapeles</p>
+                </div>
+            `;
+                document.body.appendChild(toast);
+
+                // After 1.5s, transition to "Next Step" message
+                setTimeout(() => {
+                    toast.style.transform = 'scale(1.05)';
+                    toast.className = 'fixed top-20 right-6 bg-indigo-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-start gap-3 z-[9999] transition-all duration-500';
+                    toast.innerHTML = `
+                    <span class="material-symbols-rounded text-xl flex-none">lightbulb</span>
+                    <div>
+                        <p class="font-bold text-xs mb-1">📋 Siguiente paso:</p>
+                        <p class="text-xs text-white/90 leading-relaxed">Pega este prompt en <span class="font-bold text-yellow-300">ChatGPT, Claude o Gemini</span></p>
+                    </div>
+                `;
+                    setTimeout(() => {
+                        toast.style.transform = 'scale(1)';
+                    }, 100);
+                }, 1500);
+
+                // Auto-remove after 5 seconds total (1.5s first message + 3.5s second message)
+                setTimeout(() => {
+                    toast.style.animation = 'slide-out-right 0.3s ease-out';
+                    setTimeout(() => toast.remove(), 300);
+                }, 5000);
+            }
+
+            function updateTotalCounter() {
+                const totalEl = document.getElementById('total-display');
+                if (totalEl) totalEl.innerText = casesData.length;
+            }
+
+            function renderCategories() {
+                const nav = document.getElementById('category-nav');
+                if (!nav) return;
+
+                // Extract unique categories from the actual data
+                const uniqueCategories = [...new Set(casesData.map(c => c.category))];
+
+                nav.innerHTML = uniqueCategories.map(key => {
+                    const conf = config.categories[key] || { label: key, color: 'slate', icon: 'category' };
+                    // Count cases per category
+                    const count = casesData.filter(x => x.category === key).length;
+
+                    // Add data attribute for robust selection
+                    const isActive = key === window.currentCategory;
+                    const activeClass = isActive ? 'active' : '';
+
+                    return `<button data-category="${key}" onclick="filterByCategory('${key}')" class="category-item shrink-0 whitespace-nowrap px-3 py-1 rounded-lg text-[10px] font-bold bg-white border border-slate-100 text-slate-500 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-700 transition-all flex items-center gap-1.5 group ${activeClass}">
+                    <span class="material-symbols-rounded text-sm text-slate-300 group-hover:text-teal-600">${conf.icon}</span> 
+                    ${key}
+                    <span class="badge bg-white border border-slate-100 text-slate-400 text-[9px] px-1.5 py-0.5 rounded-full ml-1 group-hover:bg-teal-100 group-hover:text-teal-700 transition-colors">${count}</span>
+                </button>`;
+                }).join('');
+            }
+
+            function filterByCategory(cat) {
+                window.currentCategory = cat; // Store current category
+                document.getElementById('searchInput').value = '';
+                const filtered = casesData.filter(c => c.category === cat);
+                renderList(filtered);
+                if (filtered.length > 0) loadCase(filtered[0].id); // Auto-select            
+                // Visual Update Active State using data attributes
+                document.querySelectorAll('.category-item').forEach(btn => btn.classList.remove('active'));
+                // Selector seguro sin regex complejos
+                const activeBtn = document.querySelector(`.category-item[data-category="${cat}"]`);
+                if (activeBtn) activeBtn.classList.add('active');
+            }
+
+            // Diccionario de Sinónimos para Búsqueda Inteligente
+            const synonymMap = {
+                "venta": ["vender", "marketing", "comercial", "lead", "cliente", "negocio", "ingreso", "dinero"],
+                "marketing": ["publicidad", "anuncio", "redes", "social", "campaña", "promoción", "difusión"],
+                "texto": ["redacción", "copy", "escribir", "blog", "artículo", "guion", "email", "correo"],
+                "imagen": ["foto", "diseño", "logo", "visual", "arte", "midjourney", "dall-e", "creativo"],
+                "empresa": ["pyme", "emprendimiento", "negocio", "startup", "compañía", "marca"],
+                "legal": ["contrato", "abogado", "ley", "norma", "sii", "impuesto", "tributario"],
+                "curso": ["educación", "aprender", "taller", "clase", "enseñar", "formación"],
+                "ia": ["inteligencia", "gpt", "chatgpt", "midjourney", "claude", "bot", "automatización"],
+                "idea": ["creatividad", "brainstorming", "invención", "innovación", "concepto"],
+                "plan": ["estrategia", "calendario", "cronograma", "organización", "paso a paso"]
+            };
+
+            function filterCases() {
+                const rawInput = document.getElementById('searchInput').value.toLowerCase().trim();
+                if (!rawInput) {
+                    renderList(casesData);
+                    return;
+                }
+
+                // 1. Desglosar búsqueda en palabras clave
+                const searchTerms = rawInput.split(/\s+/);
+
+                // 2. Expandir con sinónimos
+                const expandedTerms = new Set(searchTerms);
+                searchTerms.forEach(term => {
+                    // Buscar coincidencia parcial en claves del diccionario
+                    Object.keys(synonymMap).forEach(key => {
+                        if (key.includes(term) || term.includes(key)) {
+                            synonymMap[key].forEach(syn => expandedTerms.add(syn));
+                        }
+                    });
+                });
+
+                // Convertir Set a Array para iterar
+                const finalKeywords = Array.from(expandedTerms);
+
+                const filtered = casesData.filter(c => {
+                    // Unir todo el texto buscable en un solo string para eficiencia
+                    const content = `${c.title} ${c.problem} ${c.category} ${c.badPrompt}`.toLowerCase();
+
+                    // Lógica OR: Si AL MENOS UNA de las palabras expandidas está presente
+                    // Lógica AND (opcional): Si TODAS las palabras originales (expandidas) están presentes
+                    // Aquí usaremos OR para maximizar resultados (mayor recall)
+                    return finalKeywords.some(keyword => content.includes(keyword));
+                });
+
+                renderList(filtered, finalKeywords);
+
+                // Update UI Stats
+                const statsEl = document.getElementById('search-stats');
+                const countEl = document.getElementById('results-count');
+
+                if (rawInput.length > 0) {
+                    statsEl.classList.remove('hidden');
+                    statsEl.classList.add('flex');
+                    if (filtered.length === 0) {
+                        countEl.innerText = "0 resultados";
+                        countEl.className = "text-[10px] font-bold text-red-400";
+                    } else {
+                        countEl.innerText = `${filtered.length} encontrados`;
+                        countEl.className = "text-[10px] font-bold text-emerald-500";
+                    }
+                } else {
+                    statsEl.classList.add('hidden');
+                    statsEl.classList.remove('flex');
+                }
+            }
+
+            function highlightText(text, keywords) {
+                if (!keywords || keywords.length === 0) return escapeHtml(text);
+                let escapedText = escapeHtml(text);
+
+                // Crear regex combinada para todas las keywords (case insensitive)
+                // Ordenar por longitud descendente para evitar que una corta rompa una larga
+                const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
+                const pattern = new RegExp(`(${sortedKeywords.join('|')})`, 'gi');
+
+                return escapedText.replace(pattern, match =>
+                    `<span class="bg-yellow-200 text-yellow-900 font-bold px-0.5 rounded">${match}</span>`
+                );
+            }
+
+            function getMatchContext(c, keywords) {
+                // Buscar en campos secundarios si no está en título/categoría
+                const fields = [c.problem, c.badPrompt];
+                for (let text of fields) {
+                    if (!text) continue;
+                    const lower = text.toLowerCase();
+                    const hit = keywords.find(k => lower.includes(k));
+                    if (hit) {
+                        // Extraer fragmento
+                        const idx = lower.indexOf(hit);
+                        const start = Math.max(0, idx - 15);
+                        const end = Math.min(text.length, idx + hit.length + 25);
+                        let snippet = text.substring(start, end);
+                        if (start > 0) snippet = "..." + snippet;
+                        if (end < text.length) snippet = snippet + "...";
+                        return highlightText(snippet, keywords);
+                    }
+                }
+                return null;
+            }
+
+            function renderList(cases, highlightKeywords = []) {
+                const list = document.getElementById('case-list');
+                document.getElementById('total-display').innerText = casesData.length;
+
+                if (cases.length === 0) {
+                    list.innerHTML = '<div class="p-8 text-center text-xs text-slate-400 flex flex-col items-center"><span class="material-symbols-rounded text-2xl mb-2 opacity-50">search_off</span>Sin resultados.</div>';
+                    return;
+                }
+
+                list.innerHTML = cases.map(c => {
+                    let dotColor = 'bg-slate-300';
+                    let tooltip = 'Desconocido';
+                    if (c.difficulty === 'beginner') { dotColor = 'bg-emerald-400'; tooltip = 'Básico: 15 min'; }
+                    else if (c.difficulty === 'intermediate') { dotColor = 'bg-amber-400'; tooltip = 'Intermedio: 45 min'; }
+                    else if (c.difficulty === 'advanced') { dotColor = 'bg-rose-400'; tooltip = 'Avanzado: 90-120 min'; }
+
+                    // Procesar Highlighting
+                    const titleHtml = highlightText(c.title, highlightKeywords);
+                    // Use full category name (e.g., "Productividad Ninja")
+                    const catHtml = highlightText(c.category, highlightKeywords);
+
+
+                    // Determinar si necesitamos mostrar contexto extra (si el match NO está en título ni categoría)
+                    let contextHtml = '';
+                    if (highlightKeywords.length > 0) {
+                        // Check simple si alguna keyword está en titulo o categoria (ignorando case)
+                        const titleHit = highlightKeywords.some(k => c.title.toLowerCase().includes(k));
+                        const catHit = highlightKeywords.some(k => c.category.toLowerCase().includes(k));
+
+                        if (!titleHit && !catHit) {
+                            const matchSnippet = getMatchContext(c, highlightKeywords);
+                            if (matchSnippet) {
+                                contextHtml = `<div class="mt-1.5 text-[10px] text-slate-500 bg-slate-50 p-1.5 rounded border border-slate-100 flex items-start gap-1">
+                                <span class="material-symbols-rounded text-[10px] text-indigo-400 mt-0.5">manage_search</span>
+                                <span class="leading-tight break-words has-highlights">${matchSnippet}</span>
+                             </div>`;
+                            }
+                        }
+                    }
+
+                    return `
+                <div id="case-item-${c.id}" onclick="loadCase(${c.id})" class="case-item group p-3 rounded-lg cursor-pointer hover:bg-slate-50 hover:shadow-sm transition-all border border-transparent hover:border-indigo-100 relative mb-1">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-colors shadow-sm shrink-0">
+                            <span class="material-symbols-rounded text-[16px]">${c.locked ? 'lock' : c.icon}</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold truncate transition-colors text-slate-700 group-hover:text-indigo-900">${titleHtml}</h4>
+                            <div class="flex items-center gap-1.5 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full ${dotColor}" title="${tooltip}"></span>
+                                <span class="text-[10px] text-slate-400 capitalize truncate font-medium">${catHtml}</span>
+                            </div>
+                            ${contextHtml}
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+            }
+
+            function openPaywall() {
+                // Also trigger confetti for unlocking!
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.6 },
+                    colors: ['#FFE400', '#FFBD00', '#E89400', '#FFCA6C', '#FDFFB8']
+                });
+                document.getElementById('paywall-modal').classList.remove('hidden');
+            }
+            function closePaywall() { document.getElementById('paywall-modal').classList.add('hidden'); }
+            function showTutorial() { document.getElementById('tutorial-modal').classList.remove('hidden'); }
+            function closeTutorial() { document.getElementById('tutorial-modal').classList.add('hidden'); }
+
+            function startCountdown() {
+                let minutes = 14; let seconds = 59;
+                const el = document.getElementById('countdown');
+                if (!el) return; // Exit if element doesn't exist
+                setInterval(() => {
+                    if (seconds === 0) { if (minutes === 0) return; minutes--; seconds = 59; } else { seconds--; }
+                    el.innerText = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                }, 1000);
+            }
+
+            function startSocialProof() {
+                // Expanded List of Names (More realistic and varied) - 200+ Mix
+                const globalBuyers = [
+                    "Carlos R.", "Maria Jose L.", "StartUp Vision", "David Gonzalez", "Sofia P.",
+                    "Agencia Nova", "Mario B.", "Fernanda S.", "Juan Pablo M.", "TechSolution Ltda",
+                    "Laura D.", "Pedro A.", "Consuelo V.", "Ignacio R.", "Camila T.",
+                    "Estudio Creativo", "Rodrigo F.", "Andrea M.", "Felipe S.", "Gabriela O.",
+                    "Nicolas C.", "Valentina H.", "Javier E.", "Digital Growth", "Carolina U.",
+                    "Ricardo P.", "Daniela B.", "Sebastian V.", "Francisca A.", "Matias L.",
+                    "Jorge M.", "Beatriz S.", "Luis G.", "Global Trends", "Elena K.",
+                    "Pablo R.", "Teresa V.", "Hugo C.", "Verónica N.", "Innova Corp",
+                    "Diego A.", "Natalia F.", "Roberto S.", "Clara D.", "Smart Biz",
+                    "Manuel J.", "Patricia L.", "Gabriel M.", "Isabel T.", "Fusion Media",
+                    "Alejandro V.", "Lucía B.", "Fernando R.", "Marta P.", "NextGen Agency",
+                    "Alberto D.", "Carmen S.", "Raúl G.", "Silvia M.", "Eco Systems",
+                    "Adrián L.", "Lorena C.", "Oscar P.", "Rosa T.", "Data Mind",
+                    "Sergio H.", "Paula R.", "Iván F.", "Mónica G.", "Web Solutions",
+                    "Antonio M.", "Eva S.", "Francisco J.", "Alicia V.", "Market Pro",
+                    "Julián R.", "Cristina B.", "Rubén D.", "Nuria L.", "Cloud Nine",
+                    "Héctor S.", "Marina P.", "Emilio C.", "Diana M.", "Alpha Group",
+                    "Gonzalo V.", "Pilar R.", "Esteban G.", "Julia T.", "Net Connect",
+                    "Álvaro F.", "Raquel S.", "Vicente M.", "Celia D.", "Future Tech",
+                    "Santiago L.", "Inés P.", "Tomás R.", "Gloria V.", "Prime Corp",
+                    "Rafael G.", "Angela M.", "Joaquín S.", "Olga B.", "Elite Services",
+                    "Mariano D.", "Irene C.", "Salvador P.", "Adela R.", "Visionary Labs",
+                    "Samuel V.", "Lidia M.", "Isaac G.", "Esther T.", "Quantum Leap",
+                    "Félix R.", "Aurora S.", "Gustavo P.", "Blanca D.", "Apex Solutions",
+                    "César M.", "Elisa V.", "Arturo L.", "Sara G.", "Nexus Point",
+                    "Ramón B.", "Vanesa C.", "Domingo R.", "Fátima P.", "Synergy Hub",
+                    "Gregorio S.", "Amalia M.", "Lorenzo D.", "Sonia V.", "Bright Ideas",
+                    "Marcos P.", "Noelia R.", "Eugenio G.", "Miriam T.", "Zenith Corp",
+                    "Benjamín L.", "Rocío S.", "Alfonso M.", "Virginia D.", "Core Systems",
+                    "Cristóbal V.", "Begoña P.", "Leandro R.", "Matilde G.", "Flux Media",
+                    "Simón D.", "Ariadna M.", "Damián S.", "Erika V.", "Spark Labs",
+                    "Teodoro P.", "Carlota R.", "Fabián G.", "Lara D.", "Velocity Inc",
+                    "Mauricio M.", "Daniela S.", "René V.", "Paulina C.", "Titan Group",
+                    "Bruno L.", "Valeria P.", "Axel R.", "Camila G.", "Nova Tech",
+                    "Ezequiel M.", "Ximena D.", "Dante S.", "Zoe V.", "Omega Corp",
+                    "Lucas P.", "Abril R.", "Mateo G.", "Luna D.", "Starlight Co",
+                    "Thiago M.", "Mia S.", "Ian V.", "Emma P.", "Blue Sky",
+                    "Oliver R.", "Olivia G.", "Noah D.", "Ava M.", "Green Leaf",
+                    "Liam S.", "Sophia V.", "Ethan P.", "Isabella R.", "Red Rock",
+                    "Mason G.", "Charlotte D.", "Logan M.", "Amelia S.", "Silver Lining",
+                    "Jacob P.", "Harper V.", "William R.", "Evelyn G.", "Golden Gate",
+                    "Michael D.", "Abigail M.", "Alexander S.", "Emily P.", "Diamond Edge",
+                    "James R.", "Elizabeth V.", "Benjamin G.", "Mila D.", "Iron Clad",
+                    "Daniel M.", "Ella S.", "Henry P.", "Avery R.", "Steel Works",
+                    "Jackson V.", "Sofia G.", "Sebastian D.", "Camila M.", "Bronze Age"
+                ];
+
+                // Expanded Locations
+                // Expanded Locations (Focused on LATAM & Spain)
+                const locations = [
+                    // Chile
+                    "Santiago", "Viña del Mar", "Concepción", "Valparaíso", "Antofagasta", "La Serena", "Temuco", "Rancagua",
+                    // México
+                    "CDMX", "Monterrey", "Guadalajara", "Puebla", "Cancún", "Tijuana", "Mérida", "Querétaro", "León", "Veracruz",
+                    // Colombia
+                    "Bogotá", "Medellín", "Cali", "Barranquilla", "Cartagena", "Bucaramanga", "Pereira",
+                    // Argentina
+                    "Buenos Aires", "Rosario", "Córdoba", "Mendoza", "Tucumán", "Mar del Plata", "Salta",
+                    // Perú
+                    "Lima", "Arequipa", "Trujillo", "Cusco", "Chiclayo",
+                    // España
+                    "Madrid", "Barcelona", "Valencia", "Bilbao", "Sevilla", "Zaragoza", "Málaga", "Alicante",
+                    // Otros
+                    "Miami", "Quito", "Guayaquil", "Montevideo", "San José", "Panamá", "Asunción", "La Paz",
+                    "Santo Domingo", "San Juan", "Guatemala City", "San Salvador", "Tegucigalpa"
+                ];
+
+                // Professional Action Messages
+                const actions = [
+                    "se inscribió en el Programa",
+                    "comenzó el Curso de IA",
+                    "accedió a la Bóveda",
+                    "desbloqueó su primer caso",
+                    "está optimizando sus procesos",
+                    "mejoró su prompt en 90%",
+                    "ahorró 4 horas esta semana",
+                    "descargó la guía maestra"
+                ];
+
+                // --- SESSION TRACKING LOGIC ---
+                // Prevent repeating names in a single session
+                let usedNames = new Set();
+                try {
+                    const stored = sessionStorage.getItem('agia_used_names');
+                    if (stored) {
+                        usedNames = new Set(JSON.parse(stored));
+                    }
+                } catch (e) {
+                    console.warn('Session storage inaccessible');
+                }
+
+                function getRandomDetails() {
+                    // Filter out used names
+                    let availableBuyers = globalBuyers.filter(n => !usedNames.has(n));
+
+                    // If we ran out (unlikely with 200+), reset
+                    if (availableBuyers.length === 0) {
+                        usedNames.clear();
+                        availableBuyers = globalBuyers;
+                    }
+
+                    const buyer = availableBuyers[Math.floor(Math.random() * availableBuyers.length)];
+
+                    // Mark as used
+                    usedNames.add(buyer);
+                    try {
+                        sessionStorage.setItem('agia_used_names', JSON.stringify([...usedNames]));
+                    } catch (e) { }
+
+                    const location = locations[Math.floor(Math.random() * locations.length)];
+                    const action = actions[Math.floor(Math.random() * actions.length)];
+                    // Random time: "Hace X min" or "Hace instantes"
+                    const time = Math.random() > 0.7 ? "Hace instantes" : `Hace ${Math.floor(Math.random() * 59) + 1} min`;
+
+                    return { buyer, location, action, time };
+                }
+
+                const toast = document.getElementById('sales-toast');
+
+                function showToast() {
+                    if (!toast || document.hidden) return; // Don't show if tab hidden
+
+                    const { buyer, location, action, time } = getRandomDetails();
+
+                    // Generate Avatar Initial
+                    const initial = buyer.charAt(0);
+                    const colors = ['bg-indigo-500', 'bg-blue-500', 'bg-emerald-500', 'bg-violet-500', 'bg-rose-500', 'bg-amber-500'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+
+                    toast.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl border border-slate-100 p-3 flex items-center gap-3 w-80 relative overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer" onclick="openPaywall()">
+                     <div class="absolute left-0 top-0 bottom-0 w-1 ${color}"></div>
+                     <div class="flex-none w-10 h-10 rounded-full ${color} text-white flex items-center justify-center font-bold text-lg shadow-md relative">
+                        ${initial}
+                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full"></div>
+                     </div>
+                     <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                             <p class="text-sm font-bold text-slate-800 truncate pr-1">${buyer} <span class="font-normal text-slate-500 text-xs">adquirió la Licencia Pro</span></p>
+                        </div>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                             <span class="material-symbols-rounded text-slate-300 text-[10px]">public</span>
+                             <p class="text-[10px] text-slate-400 font-medium truncate">${time} • ${location}</p>
+                        </div>
+                     </div>
+                </div>`;
+
+                    // Show
+                    toast.classList.remove('translate-y-24', 'opacity-0');
+
+                    // Hide after 6s
+                    // Hide after 10s (Increased for better visibility)
+                    setTimeout(() => {
+                        toast.classList.add('translate-y-24', 'opacity-0');
+                    }, 10000);
+
+                    // Schedule next (random 15-45s)
+                    const next = Math.floor(Math.random() * 30000) + 15000;
+                    setTimeout(showToast, next);
+                }
+
+                // First show delayed
+                setTimeout(showToast, 5000);
+            }
+        } // End initApp
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+
+            // Mobile Sidebar Logic
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('mobile-menu-toggle');
+            const closeBtn = document.getElementById('close-sidebar-btn');
+
+            function openSidebar() {
+                if (sidebar) sidebar.classList.remove('-translate-x-full');
+            }
+
+            function closeSidebar() {
+                if (sidebar) sidebar.classList.add('-translate-x-full');
+            }
+
+            if (menuBtn) menuBtn.addEventListener('click', openSidebar);
+            if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+
+            // Auto-close on case selection (mobile only)
+            const caseList = document.getElementById('case-list');
+            if (caseList) {
+                caseList.addEventListener('click', (e) => {
+                    // Check if click was on a button inside (case item)
+                    if (window.innerWidth < 768 && e.target.closest('button')) {
+                        closeSidebar();
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Crypto JS Library -->
