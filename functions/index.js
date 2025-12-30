@@ -487,16 +487,25 @@ exports.getPromptsData = onCall(
         cors: true,
     },
     async (request) => {
+        console.log('🚀 getPromptsData called');
+
         if (!request.auth) {
+            console.log('❌ No auth - throwing unauthenticated error');
             throw new HttpsError('unauthenticated', 'Debes estar autenticado');
         }
+
+        console.log('✅ User authenticated:', request.auth.uid);
+
         try {
+            console.log('📊 Fetching user document from Firestore...');
             const userDoc = await admin.firestore()
                 .collection('users')
                 .doc(request.auth.uid)
                 .get();
 
             const userData = userDoc.exists ? userDoc.data() : {};
+            console.log('✅ User data retrieved:', { exists: userDoc.exists, hasEnrollments: !!userData.enrollments });
+
             const courseId = 'ia-aplicada-esencial';
             const oldCourseId = 'inteligencia-aplicada';
 
@@ -504,12 +513,30 @@ exports.getPromptsData = onCall(
                 (userData.enrollments[courseId] === true ||
                     userData.enrollments[oldCourseId] === true);
 
+            console.log('📋 Enrollment status:', hasEnrollment);
+
             // ✅ FREEMIUM MODEL ACTIVADO: NO bloqueamos si no hay enrollment
+            // Pero SÍ requiere autenticación (verificado en línea 490-492)
 
-            // Usamos el bucket explícito para evitar errores de config
-            const bucket = admin.storage().bucket('aulagenia.firebasestorage.app');
-            const [contents] = await bucket.file('private/prompts_db.json').download();
+            // Usar bucket por defecto - más confiable que especificar nombre
+            console.log('🪣 Initializing default Storage bucket...');
+            const bucket = admin.storage().bucket();
 
+            console.log('📦 Attempting to download: private/prompts_db.json');
+            let contents;
+            try {
+                [contents] = await bucket.file('private/prompts_db.json').download();
+                console.log('✅ File downloaded successfully, size:', contents.length, 'bytes');
+            } catch (storageError) {
+                console.error('❌ Storage download failed:', {
+                    code: storageError.code,
+                    message: storageError.message,
+                    details: storageError.details
+                });
+                throw new HttpsError('internal', `Storage error: ${storageError.message}`);
+            }
+
+            console.log('💾 Logging download to Firestore...');
             await admin.firestore().collection('promptsDownloads').add({
                 userId: request.auth.uid,
                 email: request.auth.token.email || 'unknown',
@@ -517,16 +544,40 @@ exports.getPromptsData = onCall(
                 hasEnrollment: hasEnrollment
             });
 
+
+            console.log('📝 Parsing JSON data...');
+            const parsedData = JSON.parse(contents.toString('utf-8'));
+            console.log('✅ JSON parsed successfully, prompts count:', parsedData.length);
+
+            console.log('🎉 Returning data to client');
             return {
                 success: true,
-                data: JSON.parse(contents.toString('utf-8')),
+                data: parsedData,
                 hasEnrollment: hasEnrollment // Frontend usa esto para desbloquear lo premium
             };
 
         } catch (error) {
-            console.error('Error en getPromptsData:', error);
+            console.error('❌ Error en getPromptsData:', {
+                message: error.message,
+                code: error.code,
+                stack: error.stack,
+                userId: request.auth?.uid,
+                email: request.auth?.token?.email
+            });
+
+            // Errores específicos de Storage
+            if (error.code === 'storage/object-not-found') {
+                throw new HttpsError('not-found', 'Archivo de prompts no encontrado en Storage. Verifica que private/prompts_db.json existe.');
+            }
+            if (error.code === 'storage/unauthorized') {
+                throw new HttpsError('permission-denied', 'Sin permisos para acceder al Storage. Verifica las reglas de Storage.');
+            }
+            if (error.code === 'storage/bucket-not-found') {
+                throw new HttpsError('not-found', 'Bucket de Storage no encontrado. Verifica la configuración del proyecto.');
+            }
+
             if (error instanceof HttpsError) throw error;
-            throw new HttpsError('internal', 'Error al obtener datos');
+            throw new HttpsError('internal', `Error al obtener datos: ${error.message}`);
         }
     }
 );
