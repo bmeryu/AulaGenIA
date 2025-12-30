@@ -2074,19 +2074,17 @@
                 if (scrollContainer) scrollContainer.scrollTop = 0;
 
                 // --- LOGICA DE BLOQUEO ROBUSTA (FREEMIUM) ---
-                // 1. Lista blanca de Prompts Gratuitos (Ids 1-15)
-                const FREE_PROMPT_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+                // Prompts with "locked": false in Firebase are ALWAYS available
+                // Prompts with "locked": true require enrollment (isVaultUnlocked)
 
-                // 2. Determinar si el usuario tiene acceso
-                const isFreePrompt = FREE_PROMPT_IDS.includes(c.id);
-                const userHasAccess = isVaultUnlocked || isFreePrompt;
+                const isLockedInDatabase = c.locked === true; // Explicit check for locked property
+                const userHasAccess = isVaultUnlocked || !isLockedInDatabase;
 
-                // 3. Resultado final de bloqueo
-                // Si NO tiene acceso, está efectivamente bloqueado.
+                // Final locking state
                 const effectivelyLocked = !userHasAccess;
 
-                // Debugging claro
-                console.log(`🔒 Check Prompt #${id}: Free=${isFreePrompt}, PaidUser=${isVaultUnlocked} => Locked=${effectivelyLocked}`);
+                // Debugging
+                console.log(`🔒 Prompt #${id} "${c.title}": locked=${c.locked}, enrollment=${isVaultUnlocked} => effectivelyLocked=${effectivelyLocked}`);
 
                 currentDifficulty = c.difficulty || 'beginner';
 
