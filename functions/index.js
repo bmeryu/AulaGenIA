@@ -482,7 +482,6 @@ exports.createCoupon = onCall(
 // ============================================
 // APP PROMPTS
 // ============================================
-
 exports.getPromptsData = onCall(
     {
         cors: true,
@@ -491,7 +490,6 @@ exports.getPromptsData = onCall(
         if (!request.auth) {
             throw new HttpsError('unauthenticated', 'Debes estar autenticado');
         }
-
         try {
             const userDoc = await admin.firestore()
                 .collection('users')
@@ -508,7 +506,8 @@ exports.getPromptsData = onCall(
 
             // ✅ FREEMIUM MODEL ACTIVADO: NO bloqueamos si no hay enrollment
 
-            const bucket = admin.storage().bucket();
+            // Usamos el bucket explícito para evitar errores de config
+            const bucket = admin.storage().bucket('aulagenia.firebasestorage.app');
             const [contents] = await bucket.file('private/prompts_db.json').download();
 
             await admin.firestore().collection('promptsDownloads').add({
