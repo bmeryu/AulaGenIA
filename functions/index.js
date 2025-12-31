@@ -76,15 +76,27 @@ exports.createMercadoPagoPreference = onCall(
 
         const notificationUrl = "https://mercadopagowebhook-3kbbtamy5q-uc.a.run.app";
 
+        // Extraer nombre y apellido del usuario autenticado
+        const name = request.auth.token.name || "Alumno GenIA";
+        const nameParts = name.trim().split(" ");
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(" ") || "Estudiante";
+
         const preferenceBody = {
             items: [{
                 id: courseId,
                 title: courseDetails.title,
+                description: "Curso completo de Inteligencia Artificial Generativa - Aula GenIA",
+                category_id: "learnings",
                 quantity: 20,
                 unit_price: courseDetails.priceUSD,
                 currency_id: "USD",
             }],
-            payer: { email: userEmail },
+            payer: {
+                email: userEmail,
+                first_name: firstName,
+                last_name: lastName
+            },
 
             // ✅ MEJORAS PARA TARJETAS GUARDADAS
             payment_methods: {
