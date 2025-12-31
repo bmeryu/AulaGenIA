@@ -178,6 +178,32 @@ exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (r
             }, { merge: true });
 
             console.log(`Acceso al curso ${courseId} concedido al usuario ${userId}`);
+
+            // =================================================================
+            // NUEVO: Lógica de seguimiento de cupones
+            // =================================================================
+            try {
+                // Mercado Pago devuelve metadata en snake_case (coupon_id) o camelCase según la versión.
+                // Revisamos ambas por seguridad. Y 'metadata' viene dentro de 'payment'.
+                const metadata = payment.metadata || {};
+                const couponId = metadata.coupon_id || metadata.couponId; // MP suele normalizar a snake_case
+
+                if (couponId) {
+                    console.log(`Procesando uso de cupón: ${couponId}`);
+                    const couponRef = admin.firestore().collection('coupons').doc(couponId);
+
+                    await couponRef.update({
+                        currentUses: admin.firestore.FieldValue.increment(1)
+                    });
+                    console.log(`Cupón ${couponId} actualizado (+1 uso).`);
+                } else {
+                    console.log("No se detectó uso de cupón en la metadata del pago.");
+                }
+            } catch (couponError) {
+                console.error("Error al actualizar el uso del cupón:", couponError);
+                // No lanzamos error para no fallar el webhook completo, ya que el curso se entregó
+            }
+            // =================================================================
         }
 
         return res.status(200).send("OK");
