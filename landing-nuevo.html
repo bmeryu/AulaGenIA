@@ -827,6 +827,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
 
     <script>
         // Init Lucide
@@ -839,6 +840,14 @@
         }
         const auth = firebase.auth();
         const functions = firebase.functions();
+        const analytics = firebase.analytics();
+
+        // Track Page View
+        analytics.logEvent('view_item', {
+            item_id: 'landing_page',
+            item_name: 'Landing Curso IA',
+            content_type: 'page'
+        });
 
         // ============================================
         // LÓGICA UNIFICADA: MODAL, CUPONES Y PAGOS
@@ -873,6 +882,13 @@
             const user = firebase.auth().currentUser;
 
             if (!user) {
+                // Track intentions even if not logged in
+                analytics.logEvent('select_content', {
+                    content_type: 'button',
+                    item_id: 'cta_enroll_nologin',
+                    item_name: 'Inscribirme Ahora (No Login)'
+                });
+
                 // No está logueado → Redirigir a login
                 sessionStorage.setItem('pendingAction', 'showCouponModal');
                 window.location.href = 'acceso.html?redirect=landing-nuevo.html';
@@ -1032,6 +1048,18 @@
         // 4. Lógica Core de Pago
         async function handlePurchase() {
             const user = firebase.auth().currentUser;
+
+            // Track Checkout Start
+            analytics.logEvent('begin_checkout', {
+                items: [{
+                    item_id: 'ia-aplicada-esencial',
+                    item_name: 'IA Aplicada · Esencial',
+                    price: appliedCoupon ? appliedCoupon.finalPrice : 20.00,
+                    currency: 'USD',
+                    quantity: 1
+                }],
+                coupon: appliedCoupon ? appliedCoupon.couponId : undefined
+            });
 
             // Si no hay usuario, guardamos estado y mandamos al login
             if (!user) {

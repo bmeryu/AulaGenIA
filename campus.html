@@ -432,6 +432,12 @@
           const db = firebase.firestore();
           const analytics = firebase.analytics();
 
+          // Track Dashboard View
+          analytics.logEvent('view_item_list', {
+            item_list_id: 'campus_dashboard',
+            item_list_name: 'Campus Main'
+          });
+
           // ============================================
           // LÓGICA DEL MODAL DE CUPÓN
           // ============================================
@@ -891,6 +897,15 @@
             actionBtn.href = courseUrl;
             actionBtn.classList.remove('cursor-wait', 'bg-gray-400', 'bg-slate-400');
             actionBtn.classList.add('bg-teal-500', 'hover:bg-teal-600');
+
+            // Add Tracking for Course Access
+            actionBtn.addEventListener('click', () => {
+              analytics.logEvent('select_content', {
+                content_type: 'course',
+                item_id: courseId,
+                item_name: 'IA Aplicada · Esencial'
+              });
+            });
 
             if (progress >= 100) {
               tagEl.textContent = 'Completado';
