@@ -292,6 +292,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js" defer></script>
 
     <script defer>
         document.addEventListener('DOMContentLoaded', () => {
@@ -307,6 +308,7 @@
             };
             firebase.initializeApp(firebaseConfig);
             const auth = firebase.auth();
+            const analytics = firebase.analytics();
 
             // --- REFERENCIAS A ELEMENTOS DEL DOM ---
             const loginTab = document.getElementById('login-tab');
@@ -415,9 +417,11 @@
                         const { user } = await auth.signInWithPopup(originalProviderInstance);
                         await user.linkWithCredential(pendingCred);
                         console.log('¡Cuentas vinculadas con éxito!');
+                        analytics.logEvent('login', { method: originalProviderInfo.name });
                     } catch (linkError) {
                         console.error("Error al vincular las cuentas:", linkError);
                         alert(`No se pudieron vincular las cuentas: ${linkError.message}`);
+                        analytics.logEvent('exception', { description: `Link Error: ${linkError.message}`, fatal: false });
                     }
                 }
             }
@@ -448,6 +452,7 @@
                     })
                     .then(() => {
                         console.log("Usuario registrado y perfil actualizado:", auth.currentUser);
+                        analytics.logEvent('sign_up', { method: 'password' });
                     })
                     .catch((error) => {
                         console.error("Error en el registro:", error);
@@ -470,6 +475,7 @@
                 auth.signInWithEmailAndPassword(email, password)
                     .then((userCredential) => {
                         console.log("Usuario ha iniciado sesión:", userCredential.user);
+                        analytics.logEvent('login', { method: 'password' });
                     })
                     .catch((error) => {
                         console.error("Error en inicio de sesión:", error);
@@ -507,6 +513,10 @@
             auth.onAuthStateChanged(user => {
                 if (user) {
                     console.log('Usuario autenticado. Redirigiendo...');
+                    // Generic login tracking if not caught by specific handlers (e.g. persistent session)
+                    // Note: We avoid duplicating events here by relying on specific handlers for explicit actions.
+                    // However, for page loads with existing session, we might want a 'session_start' which GA does auto.
+
                     const params = new URLSearchParams(window.location.search);
                     const redirectUrl = params.get('redirect') || 'campus.html';
                     window.location.href = redirectUrl;
