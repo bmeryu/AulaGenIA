@@ -166,7 +166,7 @@
                             termine
                         </div>
                     </div>
-                    <div class="space-y-4"><button onclick="handlePurchase()"
+                    <div class="space-y-4"><button onclick="showCouponModal()"
                             class="gradient-btn inline-flex items-center justify-center gap-3 px-8 py-5 text-white text-lg font-bold rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300">🚀
                             ¡Quiero mi Curso + 100 Prompts!</button>
                         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
@@ -517,7 +517,7 @@
                         </div>
                         <p class="text-center text-gray-700 relative z-10">Tu confianza es nuestra prioridad. Si el
                             curso no cumple tus expectativas, <strong>te devolvemos el 100% de tu pago</strong>. Sin
-                            preguntas ni complicaciones.</p><button onclick="handlePurchase()"
+                            preguntas ni complicaciones.</p><button onclick="showCouponModal()"
                             class="gradient-btn block mx-auto text-center px-12 py-6 text-white text-2xl font-black rounded-2xl shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300">🚀
                             ¡Quiero mi Curso + 100 Prompts!</button>
                         <p class="text-center text-sm text-gray-500 mt-6">Pago único • Acceso 12 meses • Plan Esencial
@@ -571,7 +571,7 @@
         <div class="max-w-4xl mx-auto text-center text-white">
             <h2 class="text-5xl font-black mb-6">¿Listo para dar el salto?</h2>
             <p class="text-2xl mb-10 opacity-90">Únete a la comunidad de profesionales que ya dominan la IA</p><button
-                onclick="handlePurchase()"
+                onclick="showCouponModal()"
                 class="inline-flex items-center gap-3 px-12 py-6 bg-white text-primary text-xl font-black rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"><i
                     data-lucide="rocket" class="w-6 h-6"></i> ¡Quiero mi Curso + 100 Prompts!</button>
         </div>
@@ -630,7 +630,7 @@
     </div>
     <div
         class="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-primary to-purple-600 p-4 shadow-2xl z-50">
-        <button onclick="handlePurchase()"
+        <button onclick="showCouponModal()"
             class="block w-full text-center bg-white text-primary font-black py-4 rounded-xl text-lg cursor-pointer">🚀
             ¡Quiero mi Curso + 100 Prompts!</button>
     </div>
@@ -675,7 +675,7 @@
 
             const o = document.querySelectorAll(".gradient-btn"); o.forEach(e => { e.dataset.original || (e.dataset.original = e.innerHTML), e.innerHTML = "⏳ Procesando...", e.classList.add("opacity-75", "cursor-not-allowed") }); try { const e = firebase.functions().httpsCallable("createMercadoPagoPreference"), o = await e({ courseId: "ia-aplicada-esencial", couponId: appliedCoupon ? appliedCoupon.couponId : null }); if (!o.data || !o.data.init_point) throw new Error("Respuesta inválida del servidor de pagos"); window.location.href = o.data.init_point } catch (e) { console.error("Error de pago:", e), alert("Hubo un error al iniciar el pago. Por favor intenta nuevamente."), o.forEach(e => { e.dataset.original && (e.innerHTML = e.dataset.original), e.classList.remove("opacity-75", "cursor-not-allowed") }) }
         }
-        document.addEventListener("DOMContentLoaded", () => { auth.onAuthStateChanged(async e => { const o = new URLSearchParams(window.location.search); if ("showCouponModal" === sessionStorage.getItem("pendingAction") && e) return sessionStorage.removeItem("pendingAction"), void setTimeout(async () => { await showCouponModal() }, 500); if ("buy" === o.get("action") && e) { console.log("Retomando compra pendiente..."); const e = sessionStorage.getItem("pendingPurchase"); if (e) { try { const o = JSON.parse(e); o.couponId && (appliedCoupon = { couponId: o.couponId }) } catch (e) { console.error(e) } sessionStorage.removeItem("pendingPurchase") } handlePurchase() } }); document.querySelectorAll('a[href*="mpago"], a[href*="mercadopago"]').forEach(e => { e.href = "javascript:void(0)", e.addEventListener("click", e => { e.preventDefault(), handlePurchase() }) }) })</script>
+        document.addEventListener("DOMContentLoaded", () => { auth.onAuthStateChanged(async e => { const o = new URLSearchParams(window.location.search); if ("showCouponModal" === sessionStorage.getItem("pendingAction") && e) return sessionStorage.removeItem("pendingAction"), void setTimeout(async () => { await showCouponModal() }, 500); if ("buy" === o.get("action") && e) { console.log("Retomando compra pendiente..."); const e = sessionStorage.getItem("pendingPurchase"); if (e) { try { const o = JSON.parse(e); o.couponId && (appliedCoupon = { couponId: o.couponId }) } catch (e) { console.error(e) } sessionStorage.removeItem("pendingPurchase") } handlePurchase() } }); document.querySelectorAll('a[href*="mpago"], a[href*="mercadopago"]').forEach(e => { e.href = "javascript:void(0)", e.addEventListener("click", e => { e.preventDefault(), showCouponModal() }) }) })</script>
     <a href="https://wa.me/56976305985?text=Hola%2C%20vengo%20del%20sitio%20web%20de%20Aula%20GenIA%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n."
         target="_blank" rel="noopener noreferrer" id="whatsapp-button" aria-label="Contactar por WhatsApp"
         class="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 z-50"><svg
