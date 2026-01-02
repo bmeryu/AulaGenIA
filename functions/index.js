@@ -20,21 +20,10 @@ exports.createMercadoPagoPreference = onCall(
         cors: true,
     },
     async (request) => {
-        if (!request.auth) {
-            throw new HttpsError("unauthenticated", "Debes estar autenticado para comprar.");
-        }
-
-        const tokenValue = mercadoPagoToken.value().trim();
-        const client = new MercadoPagoConfig({ accessToken: tokenValue });
-        const preferenceClient = new Preference(client);
-
-        const { courseId, couponId } = request.data || {};
-        if (!courseId) {
-            throw new HttpsError("invalid-argument", "Falta el ID del curso ('courseId').");
-        }
-
-        const userId = request.auth.uid;
-        const userEmail = request.auth.token.email;
+        // Allow Guest Checkout (no auth required)
+        const userId = request.auth ? request.auth.uid : "GUEST";
+        const userEmail = request.auth ? request.auth.token.email : (request.data.email || ""); // Email might be empty for guest, that's fine for preference creation
+        const name = (request.auth && request.auth.token.name) ? request.auth.token.name : "Alumno GenIA";
 
         // Precio base del curso (TU PRECIO DE PRUEBA)
         let basePrice = 1;
@@ -77,7 +66,7 @@ exports.createMercadoPagoPreference = onCall(
         const notificationUrl = "https://mercadopagowebhook-3kbbtamy5q-uc.a.run.app";
 
         // Extraer nombre y apellido del usuario autenticado
-        const name = request.auth.token.name || "Alumno GenIA";
+        // Usar nombre extraído anteriormente
         const nameParts = name.trim().split(" ");
         const firstName = nameParts[0];
         const lastName = nameParts.slice(1).join(" ") || "Estudiante";
@@ -167,17 +156,68 @@ exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (r
 
         if (payment.status === "approved") {
             const externalReference = payment.external_reference || "";
-            const [userId, courseId] = externalReference.split("_");
+            let [userId, courseId, maybeEmail] = externalReference.split("_");
 
-            if (!userId || !courseId) {
-                throw new Error(`Referencia externa inválida: ${externalReference}`);
+            if (!courseId) {
+                // Fallback for old format or if parsing failed slightly
+                if (externalReference.includes("_")) {
+                    // Try to recover logical parts
+                    const parts = externalReference.split("_");
+                    userId = parts[0];
+                    courseId = parts.slice(1).join("_"); // in case courseId has underscores? unlikely
+                } else {
+                    throw new Error(`Referencia externa inválida: ${externalReference}`);
+                }
             }
 
-            await admin.firestore().collection("users").doc(userId).set({
-                enrollments: { [courseId]: true },
-            }, { merge: true });
+            // =================================================================
+            // LÓGICA GUEST CHECKOUT Y ALLOWLIST
+            // =================================================================
+            if (userId === "GUEST") {
+                const payerEmail = payment.payer.email || (payment.additional_info && payment.additional_info.payer && payment.additional_info.payer.first_name); // Fallbacks
+                console.log(`Pago recibido de GUEST. Email MercadoPago: ${payerEmail}`);
 
-            console.log(`Acceso al curso ${courseId} concedido al usuario ${userId}`);
+                if (payerEmail) {
+                    try {
+                        // 1. Intentar buscar usuario por email
+                        const userRecord = await admin.auth().getUserByEmail(payerEmail);
+                        console.log(`Usuario encontrado por email: ${userRecord.uid}. Asignando curso.`);
+                        userId = userRecord.uid; // Switch to real UID
+
+                        await admin.firestore().collection("users").doc(userId).set({
+                            enrollments: { [courseId]: true },
+                        }, { merge: true });
+
+                    } catch (authError) {
+                        if (authError.code === 'auth/user-not-found') {
+                            console.log(`Usuario no encontrado para ${payerEmail}. Agregando a ALLOWLIST.`);
+                            // 2. Si no existe, agregar a Allowlist
+                            await admin.firestore().collection('allowlist').doc(payerEmail).set({
+                                active: true,
+                                email: payerEmail,
+                                courses: admin.firestore.FieldValue.arrayUnion(courseId),
+                                source: 'mercadopago_guest',
+                                grantedAt: admin.firestore.FieldValue.serverTimestamp()
+                            }, { merge: true });
+                            console.log(`Allowlist actualizada para ${payerEmail}`);
+
+                            // Ya no intentamos asignar a users/GUEST
+                            userId = null; // Prevent writing to users/GUEST below
+                        } else {
+                            console.error("Error buscando usuario Auth:", authError);
+                        }
+                    }
+                } else {
+                    console.error("¡ALERTA! Pago Guest sin email en la respuesta de MP.");
+                }
+            } else {
+                // Usuario Normal (Logueado)
+                await admin.firestore().collection("users").doc(userId).set({
+                    enrollments: { [courseId]: true },
+                }, { merge: true });
+                console.log(`Acceso al curso ${courseId} concedido al usuario ${userId}`);
+            }
+
 
             // =================================================================
             // NUEVO: Lógica de seguimiento de cupones
