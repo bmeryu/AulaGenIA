@@ -166,7 +166,7 @@
                             termine
                         </div>
                     </div>
-                    <div class="space-y-4"><button onclick="showCouponModal()"
+                    <div class="space-y-4"><button onclick="initiateDirectPurchase()"
                             class="gradient-btn inline-flex items-center justify-center gap-3 px-8 py-5 text-white text-lg font-bold rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300">🚀
                             ¡Quiero mi Curso + 100 Prompts!</button>
                         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
@@ -517,7 +517,7 @@
                         </div>
                         <p class="text-center text-gray-700 relative z-10">Tu confianza es nuestra prioridad. Si el
                             curso no cumple tus expectativas, <strong>te devolvemos el 100% de tu pago</strong>. Sin
-                            preguntas ni complicaciones.</p><button onclick="showCouponModal()"
+                            preguntas ni complicaciones.</p><button onclick="initiateDirectPurchase()"
                             class="gradient-btn block mx-auto text-center px-12 py-6 text-white text-2xl font-black rounded-2xl shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300">🚀
                             ¡Quiero mi Curso + 100 Prompts!</button>
                         <p class="text-center text-sm text-gray-500 mt-6">Pago único • Acceso 12 meses • Plan Esencial
@@ -630,7 +630,7 @@
     </div>
     <div
         class="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-primary to-purple-600 p-4 shadow-2xl z-50">
-        <button onclick="showCouponModal()"
+        <button onclick="initiateDirectPurchase()"
             class="block w-full text-center bg-white text-primary font-black py-4 rounded-xl text-lg cursor-pointer">🚀
             ¡Quiero mi Curso + 100 Prompts!</button>
     </div>
@@ -639,7 +639,98 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
-    <script>lucide.createIcons(); const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" }; firebase.apps.length || firebase.initializeApp(firebaseConfig); const auth = firebase.auth(), functions = firebase.functions(), analytics = firebase.analytics(); analytics.logEvent("view_item", { item_id: "landing_page", item_name: "Landing Curso IA", content_type: "page" }); let appliedCoupon = null; async function checkUserPurchaseStatus(e) { if (!e) return { hasCourse: !1, error: null }; try { const o = firebase.firestore(), a = await o.collection("users").doc(e.uid).get(); if (a.exists) { const e = a.data(); return { hasCourse: !!(e.courses && e.courses["ia-aplicada-esencial"]), error: null } } return { hasCourse: !1, error: null } } catch (e) { return console.error("Error verificando estado del curso:", e), { hasCourse: !1, error: e } } } async function showCouponModal() { const e = firebase.auth().currentUser; if (!e) return analytics.logEvent("select_content", { content_type: "button", item_id: "cta_enroll_nologin", item_name: "Inscribirme Ahora (No Login)" }), sessionStorage.setItem("pendingAction", "showCouponModal"), void (window.location.href = "acceso.html?redirect=landing-nuevo.html"); const { hasCourse: o } = await checkUserPurchaseStatus(e); o ? confirm("¡Ya estás inscrito en este curso! ¿Deseas ir al campus para continuar tu aprendizaje?") && (window.location.href = "campus.html") : handlePurchase() } function closeCouponModal() { const e = document.getElementById("coupon-modal"); if (e) { e.classList.add("hidden"), e.classList.remove("flex"); const o = document.getElementById("modal-coupon-input"); o && (o.value = ""); const a = document.getElementById("modal-coupon-message"); a && a.classList.add("hidden"); const n = document.getElementById("modal-discount-summary"); n && n.classList.add("hidden"); const t = document.getElementById("modal-apply-btn"); t && (t.textContent = "Aplicar y continuar", t.onclick = applyModalCoupon, t.disabled = !1) } appliedCoupon = null } async function applyModalCoupon() { const e = document.getElementById("modal-coupon-input").value.trim().toUpperCase(); if (!e) return void proceedWithoutCoupon(); if (!firebase.auth().currentUser) { showModalMessage("Iniciando sesión...", "text-blue-600"), await new Promise(e => setTimeout(e, 1e3)); if (!firebase.auth().currentUser) return void showModalMessage("Debes iniciar sesión primero", "error") } const o = document.getElementById("modal-apply-btn"), a = o.textContent; o.disabled = !0, o.textContent = "Validando..."; try { const n = firebase.functions().httpsCallable("validateCoupon"), t = await n({ couponCode: e, courseId: "ia-aplicada-esencial" }); if (t.data.valid) { appliedCoupon = t.data, document.getElementById("modal-original-price").textContent = `$${t.data.originalPrice} USD`; const e = "percentage" === t.data.discountType ? `${t.data.discountValue}%` : `$${t.data.discountValue} USD`; document.getElementById("modal-discount-label").textContent = e, document.getElementById("modal-discount-amount").textContent = `-$${t.data.discountAmount.toFixed(2)} USD`, document.getElementById("modal-final-price").textContent = `$${t.data.finalPrice.toFixed(2)} USD`, document.getElementById("modal-discount-summary").classList.remove("hidden"), showModalMessage(`✅ Cupón aplicado: ${e} de descuento`, "success"), o.textContent = "Confirmar y Pagar", o.onclick = proceedWithCoupon, o.disabled = !1 } else showModalMessage("Cupón no válido", "error"), o.textContent = a, o.disabled = !1 } catch (e) { console.error("Error validating coupon:", e); let n = "Cupón inválido"; e.message && (e.message.includes("expirado") ? n = "Cupón expirado" : e.message.includes("agotado") ? n = "Cupón agotado" : e.message.includes("Ya usaste") && (n = "Ya usaste este cupón")), showModalMessage(n, "error"), o.textContent = a, o.disabled = !1 } } function showModalMessage(e, o) { const a = document.getElementById("modal-coupon-message"); a && (a.textContent = e, a.className = "mt-2 text-sm font-medium " + ("error" === o ? "text-red-600" : "text-green-600"), a.classList.remove("hidden")) } async function proceedWithoutCoupon() { appliedCoupon = null; const e = document.getElementById("coupon-modal"); e && e.classList.add("hidden"), await handlePurchase() } async function proceedWithCoupon() { const e = document.getElementById("coupon-modal"); e && e.classList.add("hidden"), await handlePurchase() } async function handlePurchase() { const e = firebase.auth().currentUser; if (analytics.logEvent("begin_checkout", { items: [{ item_id: "ia-aplicada-esencial", item_name: "IA Aplicada · Esencial", price: appliedCoupon ? appliedCoupon.finalPrice : 20, currency: "USD", quantity: 1 }], coupon: appliedCoupon ? appliedCoupon.couponId : void 0 }), !e) return sessionStorage.setItem("pendingPurchase", JSON.stringify({ courseId: "ia-aplicada-esencial", couponId: appliedCoupon ? appliedCoupon.couponId : null })), void (window.location.href = "/acceso.html?action=buy"); const o = document.querySelectorAll(".gradient-btn"); o.forEach(e => { e.dataset.original || (e.dataset.original = e.innerHTML), e.innerHTML = "⏳ Procesando...", e.classList.add("opacity-75", "cursor-not-allowed") }); try { const e = firebase.functions().httpsCallable("createMercadoPagoPreference"), o = await e({ courseId: "ia-aplicada-esencial", couponId: appliedCoupon ? appliedCoupon.couponId : null }); if (!o.data || !o.data.init_point) throw new Error("Respuesta inválida del servidor de pagos"); window.location.href = o.data.init_point } catch (e) { console.error("Error de pago:", e), alert("Hubo un error al iniciar el pago. Por favor intenta nuevamente."), o.forEach(e => { e.dataset.original && (e.innerHTML = e.dataset.original), e.classList.remove("opacity-75", "cursor-not-allowed") }) } } document.addEventListener("DOMContentLoaded", () => { auth.onAuthStateChanged(async e => { const o = new URLSearchParams(window.location.search); if ("showCouponModal" === sessionStorage.getItem("pendingAction") && e) return sessionStorage.removeItem("pendingAction"), void setTimeout(async () => { await showCouponModal() }, 500); if ("buy" === o.get("action") && e) { console.log("Retomando compra pendiente..."); const e = sessionStorage.getItem("pendingPurchase"); if (e) { try { const o = JSON.parse(e); o.couponId && (appliedCoupon = { couponId: o.couponId }) } catch (e) { console.error(e) } sessionStorage.removeItem("pendingPurchase") } handlePurchase() } }); document.querySelectorAll('a[href*="mpago"], a[href*="mercadopago"]').forEach(e => { e.href = "javascript:void(0)", e.addEventListener("click", e => { e.preventDefault(), showCouponModal() }) }) })</script>
+    <script>lucide.createIcons(); const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" }; firebase.apps.length || firebase.initializeApp(firebaseConfig); const auth = firebase.auth(), functions = firebase.functions(), analytics = firebase.analytics(); analytics.logEvent("view_item", { item_id: "landing_page", item_name: "Landing Curso IA", content_type: "page" });
+
+        let appliedCoupon = null;
+
+        async function checkUserPurchaseStatus(e) { if (!e) return { hasCourse: !1, error: null }; try { const o = firebase.firestore(), a = await o.collection("users").doc(e.uid).get(); if (a.exists) { const e = a.data(); return { hasCourse: !!(e.courses && e.courses["ia-aplicada-esencial"]), error: null } } return { hasCourse: !1, error: null } } catch (e) { return console.error("Error verificando estado del curso:", e), { hasCourse: !1, error: e } } }
+
+        // ✅ NUEVA LÓGICA: Flujo directo (Sin Modal)
+        // 1. Click -> Login (si no auth)
+        // 2. Click -> Mercado Pago (si auth)
+        async function initiateDirectPurchase() {
+            const user = firebase.auth().currentUser;
+
+            // 1. Si NO está logueado, guardar intención y mandar a login
+            if (!user) {
+                analytics.logEvent("select_content", { content_type: "button", item_id: "cta_enroll_nologin", item_name: "Inscribirme Ahora (No Login)" });
+                sessionStorage.setItem("pendingAction", "initiateDirectPurchase");
+                window.location.href = "acceso.html?redirect=landing-nuevo.html";
+                return;
+            }
+
+            // 2. Si está logueado, verificar si ya tiene el curso
+            const { hasCourse } = await checkUserPurchaseStatus(user);
+            if (hasCourse) {
+                if (confirm("¡Ya estás inscrito en este curso! ¿Deseas ir al campus para continuar tu aprendizaje?")) {
+                    window.location.href = "campus.html";
+                }
+                return;
+            }
+
+            // 3. Iniciar Pago Directo
+            await handlePurchase();
+        }
+
+        async function handlePurchase() {
+            const user = firebase.auth().currentUser;
+            if (!user) return; // Should be handled by initiateDirectPurchase
+
+            analytics.logEvent("begin_checkout", { items: [{ item_id: "ia-aplicada-esencial", item_name: "IA Aplicada · Esencial", price: 20, currency: "USD", quantity: 1 }] });
+
+            // UI Feedback
+            const buttons = document.querySelectorAll(".gradient-btn");
+            buttons.forEach(btn => {
+                if (!btn.dataset.original) btn.dataset.original = btn.innerHTML;
+                btn.innerHTML = "⏳ Redirigiendo a Mercado Pago...";
+                btn.classList.add("opacity-75", "cursor-not-allowed");
+                btn.disabled = true;
+            });
+
+            try {
+                // Llamada directa sin cupón (o cupón default si existiera lógica backend)
+                const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
+                const result = await createPreference({ courseId: "ia-aplicada-esencial", couponId: null });
+
+                if (!result.data || !result.data.init_point) throw new Error("Respuesta inválida del servidor de pagos");
+                window.location.href = result.data.init_point;
+            } catch (error) {
+                console.error("Error de pago:", error);
+                alert("Hubo un error al iniciar el pago. Por favor intenta nuevamente.");
+                buttons.forEach(btn => {
+                    if (btn.dataset.original) btn.innerHTML = btn.dataset.original;
+                    btn.classList.remove("opacity-75", "cursor-not-allowed");
+                    btn.disabled = false;
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            auth.onAuthStateChanged(async user => {
+                // Recuperar acción pendiente del sessionStorage
+                if ("initiateDirectPurchase" === sessionStorage.getItem("pendingAction") && user) {
+                    sessionStorage.removeItem("pendingAction");
+                    console.log("Retomando compra pendiente tras login...");
+                    // Pequeño delay para asegurar carga de auth
+                    setTimeout(() => { initiateDirectPurchase(); }, 500);
+                }
+
+                // Compatibilidad con flujo antiguo 'buy' param
+                const urlParams = new URLSearchParams(window.location.search);
+                if ("buy" === urlParams.get("action") && user) {
+                    handlePurchase();
+                }
+            });
+
+            // Bloquear links dummy y redirigir a función principal
+            document.querySelectorAll('a[href*="mpago"], a[href*="mercadopago"]').forEach(link => {
+                link.href = "javascript:void(0)";
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    initiateDirectPurchase();
+                });
+            });
+        });</script>
     <a href="https://wa.me/56976305985?text=Hola%2C%20vengo%20del%20sitio%20web%20de%20Aula%20GenIA%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n."
         target="_blank" rel="noopener noreferrer" id="whatsapp-button" aria-label="Contactar por WhatsApp"
         class="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 z-50"><svg
