@@ -166,7 +166,7 @@
                             termine
                         </div>
                     </div>
-                    <div class="space-y-4"><button onclick="initiateDirectPurchase()"
+                    <div class="space-y-4"><button onclick="initiateDirectPurchase('hero_primary')"
                             class="gradient-btn inline-flex items-center justify-center gap-3 px-8 py-5 text-white text-lg font-bold rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300">🚀
                             ¡Quiero mi Curso + 100 Prompts!</button>
                         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
@@ -517,7 +517,7 @@
                         </div>
                         <p class="text-center text-gray-700 relative z-10">Tu confianza es nuestra prioridad. Si el
                             curso no cumple tus expectativas, <strong>te devolvemos el 100% de tu pago</strong>. Sin
-                            preguntas ni complicaciones.</p><button onclick="initiateDirectPurchase()"
+                            preguntas ni complicaciones.</p><button onclick="initiateDirectPurchase('pricing_card')"
                             class="gradient-btn block mx-auto text-center px-12 py-6 text-white text-2xl font-black rounded-2xl shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300">🚀
                             ¡Quiero mi Curso + 100 Prompts!</button>
                         <p class="text-center text-sm text-gray-500 mt-6">Pago único • Acceso 12 meses • Plan Esencial
@@ -571,7 +571,7 @@
         <div class="max-w-4xl mx-auto text-center text-white">
             <h2 class="text-5xl font-black mb-6">¿Listo para dar el salto?</h2>
             <p class="text-2xl mb-10 opacity-90">Únete a la comunidad de profesionales que ya dominan la IA</p><button
-                onclick="showCouponModal()"
+                onclick="initiateDirectPurchase('bottom_cta')"
                 class="inline-flex items-center gap-3 px-12 py-6 bg-white text-primary text-xl font-black rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"><i
                     data-lucide="rocket" class="w-6 h-6"></i> ¡Quiero mi Curso + 100 Prompts!</button>
         </div>
@@ -630,7 +630,7 @@
     </div>
     <div
         class="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-primary to-purple-600 p-4 shadow-2xl z-50">
-        <button onclick="initiateDirectPurchase()"
+        <button onclick="initiateDirectPurchase('mobile_sticky')"
             class="block w-full text-center bg-white text-primary font-black py-4 rounded-xl text-lg cursor-pointer">🚀
             ¡Quiero mi Curso + 100 Prompts!</button>
     </div>
@@ -648,12 +648,23 @@
         // ✅ NUEVA LÓGICA: Flujo directo (Sin Modal)
         // 1. Click -> Login (si no auth)
         // 2. Click -> Mercado Pago (si auth)
-        async function initiateDirectPurchase() {
+        async function initiateDirectPurchase(source = 'unknown_source') {
             const user = firebase.auth().currentUser;
+
+            // 📊 Analytics Track: Clic en botón específico
+            analytics.logEvent("click_cta", {
+                button_location: source,
+                item_name: "Inscribirme Curso IA - $20"
+            });
 
             // 1. Si NO está logueado, guardar intención y mandar a login
             if (!user) {
-                analytics.logEvent("select_content", { content_type: "button", item_id: "cta_enroll_nologin", item_name: "Inscribirme Ahora (No Login)" });
+                analytics.logEvent("select_content", {
+                    content_type: "button",
+                    item_id: "cta_enroll_nologin",
+                    item_name: "Inscribirme Ahora (No Login)",
+                    source: source
+                });
                 sessionStorage.setItem("pendingAction", "initiateDirectPurchase");
                 window.location.href = "acceso.html?redirect=landing-nuevo.html";
                 return;
