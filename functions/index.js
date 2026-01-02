@@ -542,6 +542,29 @@ exports.getPromptsData = onCall(
                 (userData.enrollments[courseId] === true ||
                     userData.enrollments[oldCourseId] === true);
 
+            // ✅ VERIFICAR ALLOWLIST (Lista blanca para admins/testers)
+            let isAllowed = false;
+            if (!hasEnrollment && request.auth.token.email) {
+                try {
+                    const allowDoc = await admin.firestore().collection('allowlist').doc(request.auth.token.email).get();
+                    if (allowDoc.exists) {
+                        const allowData = allowDoc.data();
+                        const allowedCourses = allowData.courses || [];
+                        // Verificar si está activo y tiene acceso a este curso (o al ID antiguo)
+                        if (allowData.active === true &&
+                            (allowedCourses.includes(courseId) || allowedCourses.includes(oldCourseId))) {
+                            isAllowed = true;
+                            console.log(`🔓 Acceso concedido vía Allowlist para: ${request.auth.token.email}`);
+                        }
+                    }
+                } catch (allowError) {
+                    console.error('Error verificando allowlist:', allowError);
+                }
+            }
+
+            // El usuario tiene acceso si tiene enrollment O si está en la allowlist
+            const finalAccess = hasEnrollment || isAllowed;
+
             // ✅ FREEMIUM MODEL ACTIVADO: NO bloqueamos si no hay enrollment
             // (Se eliminó el bloque if (!hasEnrollment) throw...)
 
@@ -581,7 +604,7 @@ exports.getPromptsData = onCall(
             console.log('💾 Logging download to Firestore...');
             // CRITICAL FIX: Ensure hasEnrollment is not undefined, as Firestore might throw
             // If undefined (no enrollment), default to false
-            const safeHasEnrollment = !!hasEnrollment;
+            const safeHasEnrollment = !!finalAccess;
 
             await admin.firestore().collection('promptsDownloads').add({
                 userId: request.auth.uid,
