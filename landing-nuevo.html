@@ -160,6 +160,61 @@
                 transition-duration: 0s !important
             }
         }
+
+        /* ========== MOBILE-FIRST UX OPTIMIZATIONS ========== */
+        @media (max-width: 1023px) {
+
+            /* Reduce hero padding for faster content visibility */
+            .hero-mobile-optimized {
+                padding-top: 5rem !important;
+                padding-bottom: 3rem !important;
+            }
+
+            /* Mobile H1 - smaller, tighter */
+            .mobile-h1 {
+                font-size: 2rem !important;
+                line-height: 1.2 !important;
+            }
+
+            /* Hide hero image on small mobile to prioritize CTA */
+            .hide-on-small-mobile {
+                display: none !important;
+            }
+
+            /* Mobile price prominence */
+            .mobile-price-hero {
+                font-size: 1.5rem !important;
+            }
+
+            /* Sticky CTA enhancements */
+            .mobile-sticky-enhanced {
+                padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 375px) {
+            .mobile-h1 {
+                font-size: 1.75rem !important;
+            }
+        }
+
+        /* Pulse animation for CTA */
+        @keyframes cta-pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .cta-attention {
+            animation: cta-pulse 2s ease-in-out infinite;
+        }
     </style>
 </head>
 
@@ -170,15 +225,26 @@
                     class="h-12 w-auto"></div>
         </div>
     </nav>
-    <section class="pt-32 pb-20 px-6 bg-gradient-to-br from-white to-gray-50">
+    <section class="pt-32 pb-20 px-6 bg-gradient-to-br from-white to-gray-50 hero-mobile-optimized">
         <div class="max-w-7xl mx-auto">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8 fade-in-up">
+                <div class="space-y-6 lg:space-y-8 fade-in-up">
+                    <!-- Mobile-first: Price first, then headline -->
+                    <div class="lg:hidden">
+                        <div
+                            class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-4 py-3 rounded-xl text-center mb-4 shadow-lg">
+                            <p class="text-sm font-bold opacity-90">🔥 OFERTA FLASH - TERMINA LUNES</p>
+                            <p class="text-3xl font-black">$20 USD <span
+                                    class="text-lg font-medium clp-price-mobile"></span></p>
+                            <p class="text-xs opacity-80 mt-1">Precio normal: <s>$120 USD</s></p>
+                        </div>
+                    </div>
                     <div class="inline-block badge-pulse"><span
                             class="px-4 py-2 bg-gradient-to-r from-teal-50 to-cyan-50 text-teal-700 text-sm font-bold rounded-full border border-teal-200 shadow-sm">✨
                             Herramienta Gratuita Incluida</span></div>
-                    <h1 class="text-5xl lg:text-6xl font-black text-gray-900 leading-tight tracking-tight">Oferta de Año
-                        Nuevo Activada</h1>
+                    <h1
+                        class="text-3xl lg:text-5xl xl:text-6xl font-black text-gray-900 leading-tight tracking-tight mobile-h1">
+                        Domina la IA sin Código</h1>
                     <div class="space-y-6">
                         <p class="text-2xl font-bold text-teal-600 mb-2">¡Precio 20 Dólares hasta el Lunes! <span
                                 class="text-base font-medium text-gray-500">(Cupos Limitados)</span></p>
@@ -205,7 +271,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="relative">
+                <!-- Hero image - hidden on small mobile for faster conversion path -->
+                <div class="relative hidden sm:block">
                     <div
                         class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white transform hover:scale-105 transition-transform duration-500">
                         <img src="hero-profesional.png"
@@ -654,11 +721,24 @@
                     y continuar</button></div>
         </div>
     </div>
+    <!-- Enhanced Mobile Sticky CTA -->
     <div
-        class="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-primary to-purple-600 p-4 shadow-2xl z-50">
-        <button onclick="initiateDirectPurchase('mobile_sticky')"
-            class="block w-full text-center bg-white text-primary font-black py-4 rounded-xl text-lg cursor-pointer">🚀
-            ¡Quiero mi Curso + 100 Prompts!</button>
+        class="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 shadow-2xl z-50 mobile-sticky-enhanced">
+        <div class="px-3 py-2">
+            <!-- Price reminder bar -->
+            <div class="flex justify-between items-center text-white text-xs mb-2">
+                <span class="font-bold">💰 Solo <span class="text-yellow-300">$20 USD</span></span>
+                <span class="bg-red-500 px-2 py-0.5 rounded-full animate-pulse font-bold">⏰ Termina Lunes</span>
+            </div>
+            <!-- CTA Button -->
+            <button onclick="initiateDirectPurchase('mobile_sticky')"
+                class="block w-full text-center bg-white text-teal-700 font-black py-3.5 rounded-xl text-base cursor-pointer shadow-lg cta-attention">
+                🚀 ¡Inscribirme Ahora!
+            </button>
+            <!-- Trust signals -->
+            <p class="text-center text-white/80 text-xs mt-1.5">✓ Garantía 7 días · ✓ Acceso inmediato · ✓ 120+ alumnos
+            </p>
+        </div>
     </div>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
