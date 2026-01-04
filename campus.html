@@ -362,9 +362,32 @@
                         if (modal) {
                             modal.classList.remove("hidden");
                             modal.classList.add("flex");
+
+                            // Resetear listener del input
                             const input = document.getElementById("modal-coupon-input");
-                            if (input) input.value = "2026";
-                            await r(); // Auto-aplicar
+                            const applyBtn = document.getElementById("modal-apply-btn");
+
+                            if (input && applyBtn) {
+                                // Clonar para remover listeners previos
+                                const newHeader = input.cloneNode(true);
+                                input.parentNode.replaceChild(newHeader, input);
+                                const freshInput = document.getElementById("modal-coupon-input");
+
+                                freshInput.addEventListener("input", function () {
+                                    applyBtn.textContent = "Aplicar y continuar";
+                                    applyBtn.onclick = r; // r = applyModalCoupon
+                                    applyBtn.disabled = false;
+
+                                    const summary = document.getElementById("modal-discount-summary");
+                                    if (summary) summary.classList.add("hidden");
+                                    const msg = document.getElementById("modal-coupon-message");
+                                    if (msg) msg.classList.add("hidden");
+                                    a = null; // Limpiar variable 'a' (cupón actual)
+                                });
+
+                                freshInput.value = "2026";
+                                await r(); // Auto-aplicar
+                            }
                         }
                     }
 
