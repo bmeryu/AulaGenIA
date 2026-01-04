@@ -126,6 +126,7 @@ exports.createMercadoPagoPreference = onCall(
                 pending: "https://aulagenia.cl/pago-pendiente.html",
             },
             auto_return: "approved",
+            binary_mode: true, // Aprobación inmediata o rechazo (sin estado pendiente)
             notification_url: notificationUrl,
             external_reference: `${userId}_${courseId}`,
 
