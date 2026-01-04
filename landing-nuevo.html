@@ -934,13 +934,14 @@
                     item_name: "Inscribirme Ahora (No Login)",
                     source: source
                 });
+
                 // Mantener el parámetro cupon en el redirect
                 const urlParams = new URLSearchParams(window.location.search);
                 const hasCouponMode = urlParams.get("cupon") === "true";
 
-                // Feedback visual inmediato en el botón
+                // Feedback visual inmediato en el botón (Solo si NO es modo cupón, para no confundir)
                 const btnClicked = document.activeElement;
-                if (btnClicked && btnClicked.tagName === "BUTTON") {
+                if (btnClicked && btnClicked.tagName === "BUTTON" && !hasCouponMode) {
                     btnClicked.innerHTML = "⏳ Redirigiendo...";
                     btnClicked.style.opacity = "0.7";
                 }
@@ -976,6 +977,14 @@
         }
 
         async function handlePurchase() {
+            // Guard clause: PREVENIR ejecución si hay modo cupón activo (doble seguridad)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get("cupon") === "true") {
+                console.warn("Preventing handlePurchase in coupon mode");
+                showCouponModal();
+                return;
+            }
+
             const user = firebase.auth().currentUser;
             if (!user) return; // Should be handled by initiateDirectPurchase
 
