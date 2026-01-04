@@ -402,6 +402,41 @@
                 })</script>
         </section>
     </main>
+    <script>
+        // Global Link Interceptor for "Fluid" feel
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a, button:not([onclick])'); // Select links and buttons without inline handlers (to avoid conflicts)
+
+            links.forEach(element => {
+                element.addEventListener('click', (e) => {
+                    // Skip if it's a specific functional button we handled elsewhere or has target blank
+                    if (element.target === '_blank' || element.hasAttribute('data-no-loader')) return;
+
+                    const href = element.getAttribute('href');
+                    if (element.tagName === 'A' && (!href || href.startsWith('#') || href.startsWith('javascript:'))) return;
+
+                    // Visual Feedback
+                    // Don't replace icon-only buttons with text if too small, maybe opacity?
+                    if (element.innerText.trim().length > 0) {
+                        // Store original width to prevent layout jump? Optional but nice.
+                        // element.style.minWidth = element.offsetWidth + 'px';
+                        element.innerHTML = '<span class="animate-pulse">⏳ Procesando...</span>';
+                    } else {
+                        element.classList.add('opacity-50', 'cursor-wait');
+                    }
+                    element.style.pointerEvents = 'none';
+
+                    // If it's a link, delay slightly then go
+                    if (element.tagName === 'A' && href) {
+                        e.preventDefault();
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 50);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

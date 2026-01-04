@@ -846,44 +846,37 @@
         }
 
         async function proceedWithoutCoupon() {
+            appliedCoupon = null;
             closeCouponModal();
-            // Passing null explicitly
-            await handlePurchaseWithCoupon(null);
+            await handlePurchaseWithCoupon();
         }
 
         async function proceedWithCoupon() {
-            // UX Improvement: No cerrar el modal, mostrar carga ahí mismo
-            const applyBtn = document.getElementById("modal-apply-btn");
-            if (applyBtn) {
-                applyBtn.textContent = "⏳ Procesando pago...";
-                applyBtn.disabled = true;
-            }
-
-            // Pass the global appliedCoupon to the handler
-            await handlePurchaseWithCoupon(appliedCoupon);
+            closeCouponModal();
+            await handlePurchaseWithCoupon();
         }
 
-        async function handlePurchaseWithCoupon(couponData) {
+        async function handlePurchaseWithCoupon() {
             const user = firebase.auth().currentUser;
             if (!user) {
                 sessionStorage.setItem("pendingPurchase", JSON.stringify({
                     courseId: "ia-aplicada-esencial",
-                    couponId: couponData ? couponData.couponId : null
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null
                 }));
-                // Si no hay login, ahí sí redirigimos (y cerramos implícitamente al salir)
-                window.location.href = "acceso.html?redirect=landing-nuevo.html?cupon=true";
+                // Redirigir a login -> procesar-inscripcion.html
+                window.location.href = "acceso.html?redirect=" + encodeURIComponent("procesar-inscripcion.html");
                 return;
             }
 
             analytics.logEvent("begin_checkout", {
-                items: [{ item_id: "ia-aplicada-esencial", item_name: "IA Aplicada · Esencial", price: couponData ? couponData.finalPrice : 20, currency: "USD", quantity: 1 }],
-                coupon: couponData ? couponData.couponId : null
+                items: [{ item_id: "ia-aplicada-esencial", item_name: "IA Aplicada · Esencial", price: appliedCoupon ? appliedCoupon.finalPrice : 20, currency: "USD", quantity: 1 }],
+                coupon: appliedCoupon ? appliedCoupon.couponId : null
             });
 
             // Meta Pixel: Track InitiateCheckout
             if (typeof fbq !== 'undefined') {
                 fbq('track', 'InitiateCheckout', {
-                    value: couponData ? couponData.finalPrice : 20.00,
+                    value: appliedCoupon ? appliedCoupon.finalPrice : 20.00,
                     currency: 'USD',
                     content_name: 'Curso IA Aplicada Esencial',
                     content_type: 'product',
@@ -891,23 +884,20 @@
                 });
             }
 
-            // UI Feedback: Solo alterar botones de fondo si NO estamos en el modal (couponData null)
-            // O si queremos bloquear todo. Pero si estamos en modal, ya se actualizó el botón del modal.
-            if (!couponData) {
-                const buttons = document.querySelectorAll(".gradient-btn");
-                buttons.forEach(btn => {
-                    if (!btn.dataset.original) btn.dataset.original = btn.innerHTML;
-                    btn.innerHTML = "⏳ Redirigiendo a Mercado Pago...";
-                    btn.classList.add("opacity-75", "cursor-not-allowed");
-                    btn.disabled = true;
-                });
-            }
+            // Show loading state on buttons
+            const buttons = document.querySelectorAll(".gradient-btn");
+            buttons.forEach(btn => {
+                if (!btn.dataset.original) btn.dataset.original = btn.innerHTML;
+                btn.innerHTML = "⏳ Redirigiendo a Mercado Pago...";
+                btn.classList.add("opacity-75", "cursor-not-allowed");
+                btn.disabled = true;
+            });
 
             try {
                 const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
                 const result = await createPreference({
                     courseId: "ia-aplicada-esencial",
-                    couponId: couponData ? couponData.couponId : null
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null
                 });
 
                 if (!result.data || !result.data.init_point) throw new Error("Respuesta inválida del servidor de pagos");
@@ -915,22 +905,11 @@
             } catch (error) {
                 console.error("Error de pago:", error);
                 alert("Hubo un error al iniciar el pago. Por favor intenta nuevamente.");
-
-                // Revertir estado UI
-                if (couponData) {
-                    const applyBtn = document.getElementById("modal-apply-btn");
-                    if (applyBtn) {
-                        applyBtn.textContent = "Confirmar y Pagar";
-                        applyBtn.disabled = false;
-                    }
-                } else {
-                    const buttons = document.querySelectorAll(".gradient-btn");
-                    buttons.forEach(btn => {
-                        if (btn.dataset.original) btn.innerHTML = btn.dataset.original;
-                        btn.classList.remove("opacity-75", "cursor-not-allowed");
-                        btn.disabled = false;
-                    });
-                }
+                buttons.forEach(btn => {
+                    if (btn.dataset.original) btn.innerHTML = btn.dataset.original;
+                    btn.classList.remove("opacity-75", "cursor-not-allowed");
+                    btn.disabled = false;
+                });
             }
         }
         // ========== FIN FUNCIONES MODAL CUPÓN ==========
@@ -957,24 +936,23 @@
                     source: source
                 });
 
-                // Mantener el parámetro cupon en el redirect
+                // Detectar si estamos en modo cupón
                 const urlParams = new URLSearchParams(window.location.search);
                 const hasCouponMode = urlParams.get("cupon") === "true";
 
-                // Feedback visual inmediato en el botón (Solo si NO es modo cupón, para no confundir)
-                const btnClicked = document.activeElement;
-                if (btnClicked && btnClicked.tagName === "BUTTON" && !hasCouponMode) {
-                    btnClicked.innerHTML = "⏳ Redirigiendo...";
-                    btnClicked.style.opacity = "0.7";
-                }
+                // Si hay cupón seleccionado (desde el modal), guardarlo en sessionStorage es clave
+                // para que procesar-inscripcion.html lo recupere.
+                // Nota: appliedCoupon se borra al recargar, así que confiamos en que
+                // si el usuario ya aplicó un cupón, 'pendingPurchase' ya debería estar en sessionStorage
+                // por la lógica del modal. Si es flujo directo sin cupón, no hay problema.
 
-                if (hasCouponMode) {
-                    // Si hay cupón, volvemos a la landing para que se active el modal
-                    window.location.href = `acceso.html?redirect=landing-nuevo.html%3Fcupon%3Dtrue`;
-                } else {
-                    // Flujo Rápido (Forward Flow): Login -> Procesar -> Pago
-                    window.location.href = `acceso.html?redirect=procesar-inscripcion.html`;
-                }
+                // Construir URL de destino codificada
+                const targetPage = "procesar-inscripcion.html";
+                // Nota: el parámetro 'redirect' de acceso.html toma la URL tal cual. 
+                // Para asegurar que los parámetros pasen, usamos encodeURIComponent.
+                const redirectTarget = encodeURIComponent(targetPage);
+
+                window.location.href = `acceso.html?redirect=${redirectTarget}`;
                 return;
             }
 
@@ -999,14 +977,6 @@
         }
 
         async function handlePurchase() {
-            // Guard clause: PREVENIR ejecución si hay modo cupón activo (doble seguridad)
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get("cupon") === "true") {
-                console.warn("Preventing handlePurchase in coupon mode");
-                showCouponModal();
-                return;
-            }
-
             const user = firebase.auth().currentUser;
             if (!user) return; // Should be handled by initiateDirectPurchase
 
@@ -1084,6 +1054,41 @@
                 d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.304-1.654a11.882 11.882 0 005.713 1.456h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
         </svg></a>
     <script src="currency-converter.js"></script>
+    <script>
+        // Global Link Interceptor for "Fluid" feel
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a, button:not([onclick])'); // Select links and buttons without inline handlers (to avoid conflicts)
+
+            links.forEach(element => {
+                element.addEventListener('click', (e) => {
+                    // Skip if it's a specific functional button we handled elsewhere or has target blank
+                    if (element.target === '_blank' || element.hasAttribute('data-no-loader')) return;
+
+                    const href = element.getAttribute('href');
+                    if (element.tagName === 'A' && (!href || href.startsWith('#') || href.startsWith('javascript:'))) return;
+
+                    // Visual Feedback
+                    const originalText = element.innerHTML;
+                    // Don't replace icon-only buttons with text if too small, maybe opacity?
+                    // For now, simpler text replacement or opacity
+                    if (element.innerText.trim().length > 0) {
+                        element.innerHTML = '<span class="animate-pulse">⏳ Procesando...</span>';
+                    } else {
+                        element.classList.add('opacity-50', 'cursor-wait');
+                    }
+                    element.style.pointerEvents = 'none';
+
+                    // If it's a link, delay slightly then go
+                    if (element.tagName === 'A' && href) {
+                        e.preventDefault();
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 50); // 50ms mainly to let the UI paint
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
