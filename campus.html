@@ -403,38 +403,38 @@
         </section>
     </main>
     <script>
-        // Global Link Interceptor for "Fluid" feel
-        document.addEventListener('DOMContentLoaded', () => {
-            const links = document.querySelectorAll('a, button:not([onclick])'); // Select links and buttons without inline handlers (to avoid conflicts)
+        // Global Link Interceptor for "Fluid" feel - Event Delegation
+        document.body.addEventListener('click', (e) => {
+            // Find closest anchor or button
+            const element = e.target.closest('a, button');
+            if (!element) return;
 
-            links.forEach(element => {
-                element.addEventListener('click', (e) => {
-                    // Skip if it's a specific functional button we handled elsewhere or has target blank
-                    if (element.target === '_blank' || element.hasAttribute('data-no-loader')) return;
+            // Skip if it has specific inline constraints we respect or custom data
+            if (element.target === '_blank' || element.hasAttribute('data-no-loader')) return;
 
-                    const href = element.getAttribute('href');
-                    if (element.tagName === 'A' && (!href || href.startsWith('#') || href.startsWith('javascript:'))) return;
+            // If it has onclick, we generally skip to avoid breaking logic, UNLESS it's the specific "Enter Course" link which is technically an A tag with href.
+            if (element.hasAttribute('onclick')) return;
 
-                    // Visual Feedback
-                    // Don't replace icon-only buttons with text if too small, maybe opacity?
-                    if (element.innerText.trim().length > 0) {
-                        // Store original width to prevent layout jump? Optional but nice.
-                        // element.style.minWidth = element.offsetWidth + 'px';
-                        element.innerHTML = '<span class="animate-pulse">⏳ Procesando...</span>';
-                    } else {
-                        element.classList.add('opacity-50', 'cursor-wait');
-                    }
-                    element.style.pointerEvents = 'none';
+            const href = element.getAttribute('href');
+            if (element.tagName === 'A') {
+                if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+            }
 
-                    // If it's a link, delay slightly then go
-                    if (element.tagName === 'A' && href) {
-                        e.preventDefault();
-                        setTimeout(() => {
-                            window.location.href = href;
-                        }, 50);
-                    }
-                });
-            });
+            // Visual Feedback
+            if (element.innerText.trim().length > 0) {
+                element.innerHTML = '<span class="animate-pulse">⏳ Procesando...</span>';
+            } else {
+                element.classList.add('opacity-50', 'cursor-wait');
+            }
+            element.style.pointerEvents = 'none';
+
+            // If it's a link, delay slightly then go
+            if (element.tagName === 'A' && href) {
+                e.preventDefault();
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 50);
+            }
         });
     </script>
 </body>
