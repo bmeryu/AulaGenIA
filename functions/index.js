@@ -415,12 +415,11 @@ exports.validateCoupon = onCall(
         cors: true,
     },
     async (request) => {
-        if (!request.auth) {
-            throw new HttpsError('unauthenticated', 'Debes iniciar sesión');
-        }
+        // Permitimos validar sin auth para mostrar precios en landing
+        // if (!request.auth) throw new HttpsError('unauthenticated', 'Debes iniciar sesión');
 
         const { couponCode, courseId } = request.data;
-        const userId = request.auth.uid;
+        const userId = request.auth ? request.auth.uid : null;
 
         try {
             const snapshot = await admin.firestore()
@@ -446,15 +445,17 @@ exports.validateCoupon = onCall(
                 throw new HttpsError('resource-exhausted', 'Cupón agotado');
             }
 
-            // Verificar uso por usuario
-            const usageSnapshot = await admin.firestore()
-                .collection('coupon_usage')
-                .where('couponId', '==', couponDoc.id)
-                .where('userId', '==', userId)
-                .get();
+            // Verificar uso por usuario (solo si hay usuario autenticado)
+            if (userId) {
+                const usageSnapshot = await admin.firestore()
+                    .collection('coupon_usage')
+                    .where('couponId', '==', couponDoc.id)
+                    .where('userId', '==', userId)
+                    .get();
 
-            if (usageSnapshot.size >= coupon.maxUsesPerUser) {
-                throw new HttpsError('failed-precondition', 'Ya usaste este cupón');
+                if (usageSnapshot.size >= coupon.maxUsesPerUser) {
+                    throw new HttpsError('failed-precondition', 'Ya usaste este cupón');
+                }
             }
 
             const originalPrice = 120;
