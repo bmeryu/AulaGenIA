@@ -495,6 +495,7 @@ exports.validateCoupon = onCall(
             return {
                 valid: true,
                 couponId: couponDoc.id,
+                code: coupon.code, // Added missing code
                 discountType: coupon.discountType,
                 discountValue: coupon.discountValue,
                 discountAmount: discountAmount,
