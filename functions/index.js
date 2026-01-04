@@ -124,8 +124,7 @@ exports.createMercadoPagoPreference = onCall(
             },
 
             // ✅ CONFIGURACIÓN ADICIONAL
-            expires: false,
-            processing_modes: ["aggregator"]
+            expires: false
         };
 
         try {
