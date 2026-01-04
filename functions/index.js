@@ -122,11 +122,10 @@ exports.createMercadoPagoPreference = onCall(
             },
 
             // ✅ MEJORAS PARA TARJETAS GUARDADAS
+            // ✅ MEJORAS PARA TARJETAS GUARDADAS
             payment_methods: {
                 excluded_payment_methods: [],
-                excluded_payment_types: [],
-                installments: 1,
-                default_installments: 1
+                excluded_payment_types: []
             },
 
             back_urls: {
@@ -147,8 +146,7 @@ exports.createMercadoPagoPreference = onCall(
             },
 
             // ✅ CONFIGURACIÓN ADICIONAL
-            expires: false,
-            processing_modes: ["aggregator"]
+            expires: false
         };
 
         try {
