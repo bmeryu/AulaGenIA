@@ -439,15 +439,25 @@
 
                     // d = handlePurchase
                     async function d() {
+                        // Feedback inmediato en botones (antes de redirigir)
+                        const applyBtn = document.getElementById("modal-apply-btn");
+                        const noCouponBtn = document.querySelector("button[onclick='proceedWithoutCoupon()']");
+
+                        if (applyBtn) {
+                            applyBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Procesando...</span>';
+                            applyBtn.disabled = true;
+                        }
+                        if (noCouponBtn) {
+                            noCouponBtn.innerHTML = "Procesando...";
+                            noCouponBtn.disabled = true;
+                        }
+
                         if (!t.currentUser) {
                             // Login requerido -> Redirigir a acceso
                             sessionStorage.setItem("pendingPurchase", JSON.stringify({ courseId: "ia-aplicada-esencial", couponId: a ? a.couponId : null }));
                             window.location.href = "acceso.html";
                             return;
                         }
-                        // Pago directo
-                        const applyBtn = document.getElementById("modal-apply-btn");
-                        if (applyBtn) { applyBtn.innerHTML = "Procesando..."; applyBtn.disabled = true; }
 
                         try {
                             const createPref = firebase.functions().httpsCallable("createMercadoPagoPreference");
