@@ -523,8 +523,150 @@
                     };
                     window.applyModalCoupon = r;
                     window.proceedWithoutCoupon = l;
-                    window.proceedWithCoupon = c; const u = { "ia-aplicada-esencial": { title: "IA Aplicada · Esencial", totalLessons: 19, modules: [{ title: "Bienvenida al Curso", lessons: [{ id: "0-1" }, { id: "0-2" }] }, { title: "Módulo 1: ¿Qué es la Inteligencia Artificial?", lessons: [{ id: "1-1" }, { id: "1-2" }, { id: "1-3" }, { id: "q-1" }] }, { title: "Módulo 2: La IA para ti, en tu día a día", lessons: [{ id: "2-1" }, { id: "2-2" }, { id: "2-3" }, { id: "2-taller" }, { id: "q-2" }] }, { title: "Módulo 3: Preparando tus herramientas", lessons: [{ id: "3-1" }, { id: "3-2" }, { id: "3-3" }, { id: "q-3" }] }, { title: "Módulo 4: Arquitectura de Ideas", lessons: [{ id: "4-1" }, { id: "4-2" }, { id: "q-4" }] }, { title: "Final del Camino: Certificación", lessons: [{ id: "final-exam" }] }] } }, m = document.getElementById("profile-modal-overlay"), p = document.getElementById("profile-modal"), g = document.getElementById("avatar-button"), h = document.getElementById("cancel-profile-btn"), f = document.getElementById("close-profile-modal-btn"), v = document.getElementById("profile-form"), x = document.getElementById("profile-name-input"), y = document.getElementById("profile-rut-input"), C = document.getElementById("profile-email-input"), b = document.getElementById("profile-job-input"), w = document.getElementById("profile-country-select"), E = document.getElementById("profile-gender-select"), F = document.getElementById("profile-birthdate-input"), I = document.getElementById("profile-modal-title"), L = document.getElementById("profile-modal-subtitle"), T = document.getElementById("form-status"), S = document.getElementById("save-profile-btn"), P = document.getElementById("save-btn-text"), A = document.getElementById("save-spinner"); async function z(e = !1) { v.reset(); const n = t.currentUser; if (!n) return; C.value = n.email || ""; const a = o.collection("users").doc(n.uid); try { const e = await a.get(), t = e.exists ? e.data() : {}, o = !0 === t.profileCompleted; x && (x.value = o ? t.displayName || "" : n.displayName || ""), y && (y.value = t.rut || ""), b && (b.value = t.jobTitle || ""), w && (w.value = t.country || ""), E && (E.value = t.gender || ""), F && (F.value = t.birthdate || "") } catch (e) { console.error("Error al cargar datos del perfil:", e) } M(), e ? (I.textContent = "¡Completa tu perfil para continuar!", L.textContent = "Necesitamos estos datos para generar tus certificados correctamente.", h.classList.add("hidden"), f.classList.add("hidden"), m.removeEventListener("click", D)) : (I.textContent = "Editar Perfil", L.textContent = "Mantén tus datos actualizados.", h.classList.remove("hidden"), f.classList.remove("hidden"), m.addEventListener("click", D)), T.classList.add("hidden"), m.classList.remove("hidden"), p.classList.remove("hidden"), setTimeout(() => { const e = p.querySelector("div.bg-white"); e && e.classList.remove("scale-95", "opacity-0") }, 10) } function D() { const e = p.querySelector("div.bg-white"); e && e.classList.add("scale-95", "opacity-0"), setTimeout(() => { m.classList.add("hidden"), p.classList.add("hidden"), e && e.classList.remove("scale-95", "opacity-0") }, 300) } function B(e, t, o = "") { const n = document.getElementById(`profile-${e}-input`) || document.getElementById(`profile-${e}-select`), a = document.getElementById(`${e}-error`), s = document.getElementById(`${e}-status-icon`); n && (n.classList.remove("form-input-error", "form-input-success"), a && (a.textContent = ""), s && (s.innerHTML = ""), "error" === t ? (n.classList.add("form-input-error"), a && (a.textContent = o), s && (s.innerHTML = '<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>')) : "success" === t && (n.classList.add("form-input-success"), s && (s.innerHTML = '<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>')), s && s.innerHTML && lucide.createIcons({ nodes: [s.querySelector("i")] })) } function M() { const e = x.value.trim().length < 3 || !x.value.includes(" ") ? (B("name", "error", "Ingresa tu nombre y apellido completo."), !1) : (B("name", "success"), !0), t = "" === w.value ? (B("country", "error", "Selecciona tu país de residencia."), !1) : (B("country", "success"), !0), o = function () { if ("CL" === w.value) { if (!function (e) { const t = (e = e.replace(/\./g, "").replace(/-/g, "").trim().toLowerCase()).slice(0, -1); let o = e.slice(-1); if (!/^[0-9]+[0-9kK]{1}$/.test(e)) return !1; let n = 0, a = 2; for (let e = t.length - 1; e >= 0; e--)n += t.charAt(e) * a, a < 7 ? a++ : a = 2; const s = 11 - n % 11; return o === (11 === s ? "0" : 10 === s ? "k" : s.toString()) }(y.value)) return B("rut", "error", "El RUT ingresado no es válido."), !1; B("rut", "success") } else B("rut", "neutral"); return !0 }(), n = e && t && ("CL" !== w.value || o); S.disabled = !n } function $(e) { const t = e.querySelector(".tag"), o = e.querySelector(".course-action-btn"); e.dataset.courseId; t.textContent = "Requiere Inscripción", t.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full", o.textContent = "Inscríbete para Activar", o.href = "#", o.classList.remove("cursor-wait", "bg-gray-400"), o.classList.add("bg-slate-400", "hover:bg-slate-500"); const n = o.cloneNode(!0); o.parentNode.replaceChild(n, o), n.addEventListener("click", async e => { e.preventDefault(), s() }) } function _(e) { const a = "ia-aplicada-esencial"; let s = document.querySelector(`[data-course-id="${a}"]`); if (!s) return; const r = t.currentUser; if (!r || !r.email) return void $(s); const i = o.collection("allowlist").doc(r.email), l = o.collection("users").doc(e), c = o.collection("userProgress").doc(e); Promise.all([i.get(), l.get()]).then(([e, t]) => { let o = !1; if (e.exists) { const t = e.data(), n = t.courses || []; let s = n.includes(a); s || (s = n.includes("programa-esencial")), !0 === t.active && s && (o = !0) } let r = !1; if (t.exists) { const e = t.data(), o = "inteligencia-aplicada"; !e.enrollments || !0 !== e.enrollments[a] && !0 !== e.enrollments[o] || (r = !0) } o || r ? (n.logEvent("unlock_content", { content_type: "course", item_id: a, method: o ? "whitelist" : "enrollment" }), c.onSnapshot(e => { let t = 0; const o = u[a], r = o ? o.totalLessons : 0; if (e.exists && o) { const n = e.data()[a]; if (n && Array.isArray(n.completedLessons)) { const e = new Set; o.modules.forEach(t => t.lessons.forEach(t => e.add(t.id))); const a = new Set(n.completedLessons); let s = 0; a.forEach(t => { e.has(t) && s++ }), t = s } } const i = r > 0 ? Math.min(Math.round(t / r * 100), 100) : 0; !function (e, t, o) { const a = e.querySelector(".tag"), s = e.querySelector(".percent"), r = e.querySelector(".fill"), i = e.querySelector(".card-footer"), l = e.querySelector(".progress-container"), c = e.querySelector(".course-action-btn"); l.classList.remove("hidden"), s.textContent = `${t}%`, r.style.width = `${t}%`; const d = `campus-curso-ia.html?course=${o}`; c.href = d, c.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400"), c.classList.add("bg-teal-500", "hover:bg-teal-600"), c.addEventListener("click", () => { n.logEvent("select_content", { content_type: "course", item_id: o, item_name: "IA Aplicada · Esencial" }) }), t >= 100 ? (a.textContent = "Completado", a.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full", r.style.backgroundColor = "var(--brand-green)", i.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${d}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`) : (a.textContent = "En progreso", a.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full", r.style.backgroundColor = "var(--brand-teal)", c.textContent = "Continuar aprendiendo"), lucide.createIcons() }(s, i, a) })) : $(s) }).catch(e => { console.error("Error verificando acceso:", e), $(s) }) } async function k(e, t, n, a) { const s = document.getElementById(t); if (!s) return; const r = document.getElementById(`${t}-text`), i = document.getElementById(`${t}-spinner`), l = o.collection(n).doc(e.uid); try { if ((await l.get()).exists) return r.textContent = a.alreadyIn, s.disabled = !0, s.classList.add("bg-gray-400", "cursor-not-allowed"), void s.classList.remove(a.defaultColor, a.hoverColor) } catch (e) { console.error(e) } s.addEventListener("click", async () => { s.disabled = !0, r.textContent = a.adding, i.classList.remove("hidden"); try { const t = e.displayName || "Alumno sin nombre"; await l.set({ email: e.email, displayName: t, uid: e.uid, timestamp: firebase.firestore.FieldValue.serverTimestamp() }), r.textContent = a.success, s.classList.remove(a.defaultColor, a.hoverColor), s.classList.add(a.successColor) } catch (e) { r.textContent = a.error, s.classList.remove(a.defaultColor, a.hoverColor), s.classList.add(a.errorColor), setTimeout(() => { s.disabled = !1, r.textContent = a.default, s.classList.remove(a.errorColor), s.classList.add(a.defaultColor, a.hoverColor) }, 3e3) } finally { i.classList.add("hidden") } }) } g.addEventListener("click", () => z(!1)), h.addEventListener("click", D), f.addEventListener("click", D), x.addEventListener("input", M), y.addEventListener("input", M), w.addEventListener("change", M), v.addEventListener("submit", async e => {
-                        if (e.preventDefault(), M(), S.disabled) return T.className = "text-center p-3 rounded-lg bg-yellow-100 text-yellow-700", T.textContent = "Por favor, corrige los campos marcados en rojo.", void T.classList.remove("hidden"); S.disabled = !0, P.textContent = "Guardando...", A.classList.remove("hidden"), T.classList.add("hidden"); const n = t.currentUser, a = x.value.trim(), s = o.collection("users").doc(n.uid); try { a !== n.displayName && await n.updateProfile({ displayName: a }), await s.set({ displayName: a, email: n.email, rut: y.value.trim(), jobTitle: b.value.trim(), country: w.value, gender: E.value, birthdate: F.value, profileCompleted: !0 }, { merge: !0 }), document.querySelectorAll("#user-name, #welcome-name").forEach(e => e && (e.textContent = a)), T.className = "text-center p-3 rounded-lg bg-green-100 text-green-700", T.textContent = "¡Perfil actualizado con éxito!", T.classList.remove("hidden"), setTimeout(() => { D(), _(n.uid) }, 1500) } catch (e) {
+                    window.proceedWithCoupon = c; const u = { "ia-aplicada-esencial": { title: "IA Aplicada · Esencial", totalLessons: 19, modules: [{ title: "Bienvenida al Curso", lessons: [{ id: "0-1" }, { id: "0-2" }] }, { title: "Módulo 1: ¿Qué es la Inteligencia Artificial?", lessons: [{ id: "1-1" }, { id: "1-2" }, { id: "1-3" }, { id: "q-1" }] }, { title: "Módulo 2: La IA para ti, en tu día a día", lessons: [{ id: "2-1" }, { id: "2-2" }, { id: "2-3" }, { id: "2-taller" }, { id: "q-2" }] }, { title: "Módulo 3: Preparando tus herramientas", lessons: [{ id: "3-1" }, { id: "3-2" }, { id: "3-3" }, { id: "q-3" }] }, { title: "Módulo 4: Arquitectura de Ideas", lessons: [{ id: "4-1" }, { id: "4-2" }, { id: "q-4" }] }, { title: "Final del Camino: Certificación", lessons: [{ id: "final-exam" }] }] } }, m = document.getElementById("profile-modal-overlay"), p = document.getElementById("profile-modal"), g = document.getElementById("avatar-button"), h = document.getElementById("cancel-profile-btn"), f = document.getElementById("close-profile-modal-btn"), v = document.getElementById("profile-form"), x = document.getElementById("profile-name-input"), y = document.getElementById("profile-rut-input"), C = document.getElementById("profile-email-input"), b = document.getElementById("profile-job-input"), w = document.getElementById("profile-country-select"), E = document.getElementById("profile-gender-select"), F = document.getElementById("profile-birthdate-input"), I = document.getElementById("profile-modal-title"), L = document.getElementById("profile-modal-subtitle"), T = document.getElementById("form-status"), S = document.getElementById("save-profile-btn"), P = document.getElementById("save-btn-text"), A = document.getElementById("save-spinner");
+
+                    async function z(e = !1) {
+                        v.reset();
+                        const n = t.currentUser;
+                        if (!n) return;
+                        C.value = n.email || "";
+
+                        // Limpiar errores visuales al abrir
+                        document.querySelectorAll(".form-input-error, .form-input-success").forEach(el => el.classList.remove("form-input-error", "form-input-success"));
+                        document.querySelectorAll(".error-message").forEach(el => el.textContent = "");
+                        document.querySelectorAll("span[id$='-status-icon']").forEach(el => el.innerHTML = "");
+
+                        const a = o.collection("users").doc(n.uid);
+                        try {
+                            const e = await a.get(),
+                                t = e.exists ? e.data() : {},
+                                o = !0 === t.profileCompleted;
+                            x && (x.value = o ? t.displayName || "" : n.displayName || ""), y && (y.value = t.rut || ""), b && (b.value = t.jobTitle || ""), w && (w.value = t.country || ""), E && (E.value = t.gender || ""), F && (F.value = t.birthdate || "")
+                        } catch (e) {
+                            console.error("Error al cargar datos del perfil:", e)
+                        }
+
+                        e ? (I.textContent = "¡Completa tu perfil para continuar!", L.textContent = "Necesitamos estos datos para generar tus certificados correctamente.", h.classList.add("hidden"), f.classList.add("hidden"), m.removeEventListener("click", D)) : (I.textContent = "Editar Perfil", L.textContent = "Mantén tus datos actualizados.", h.classList.remove("hidden"), f.classList.remove("hidden"), m.addEventListener("click", D)), T.classList.add("hidden"), m.classList.remove("hidden"), p.classList.remove("hidden"), setTimeout(() => {
+                            const e = p.querySelector("div.bg-white");
+                            e && e.classList.remove("scale-95", "opacity-0");
+                            // Auto-focus logic: Priorizar RUT si está vacío, sino Nombre
+                            if (y && !y.value) y.focus();
+                            else if (x) x.focus();
+                        }, 100)
+                    }
+
+                    function D() {
+                        const e = p.querySelector("div.bg-white");
+                        e && e.classList.add("scale-95", "opacity-0"), setTimeout(() => {
+                            m.classList.add("hidden"), p.classList.add("hidden"), e && e.classList.remove("scale-95", "opacity-0")
+                        }, 300)
+                    }
+
+                    function B(e, t, o = "") {
+                        const n = document.getElementById(`profile-${e}-input`) || document.getElementById(`profile-${e}-select`),
+                            a = document.getElementById(`${e}-error`),
+                            s = document.getElementById(`${e}-status-icon`);
+                        n && (n.classList.remove("form-input-error", "form-input-success"), a && (a.textContent = ""), s && (s.innerHTML = ""), "error" === t ? (n.classList.add("form-input-error"), a && (a.textContent = o), s && (s.innerHTML = '<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>')) : "success" === t && (n.classList.add("form-input-success"), s && (s.innerHTML = '<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>')), s && s.innerHTML && lucide.createIcons({
+                            nodes: [s.querySelector("i")]
+                        }))
+                    }
+
+                    // Validation Functions Breakdown
+                    function validateName(showError = true) {
+                        const valid = x.value.trim().length >= 3 && x.value.includes(" ");
+                        if (!valid && showError) B("name", "error", "Ingresa tu nombre y apellido completo.");
+                        else if (valid) B("name", "success");
+                        else B("name", "neutral"); // Clear if not showing error
+                        return valid;
+                    }
+
+                    function validateCountry(showError = true) {
+                        const valid = w.value !== "";
+                        if (!valid && showError) B("country", "error", "Selecciona tu país de residencia.");
+                        else if (valid) B("country", "success");
+                        else B("country", "neutral");
+                        return valid;
+                    }
+
+                    function validateRUT(showError = true) {
+                        if (w.value !== "CL") {
+                            B("rut", "neutral");
+                            return true; // No validation for non-CL
+                        }
+                        const r = y.value;
+                        const e = r.replace(/\./g, "").replace(/-/g, "").trim().toLowerCase();
+                        const t = e.slice(0, -1);
+                        let o = e.slice(-1);
+                        let isValid = false;
+                        if (/^[0-9]+[0-9kK]{1}$/.test(e)) {
+                            let n = 0,
+                                a = 2;
+                            for (let e = t.length - 1; e >= 0; e--) n += t.charAt(e) * a, a < 7 ? a++ : a = 2;
+                            const s = 11 - n % 11;
+                            isValid = o === (11 === s ? "0" : 10 === s ? "k" : s.toString());
+                        }
+
+                        if (!isValid && showError) B("rut", "error", "El RUT ingresado no es válido.");
+                        else if (isValid) B("rut", "success");
+                        else B("rut", "neutral");
+                        return isValid;
+                    }
+
+                    function validateAll() {
+                        const vName = validateName(true);
+                        const vCountry = validateCountry(true);
+                        const vRut = validateRUT(true);
+                        return vName && vCountry && vRut;
+                    }
+
+                    // Setup Listeners for "Lazy" Validation
+                    g.addEventListener("click", () => z(!1)), h.addEventListener("click", D), f.addEventListener("click", D);
+
+                    // Input: Clear error (neutral) or show success if valid immediately. Do NOT show error while typing.
+                    x.addEventListener("input", () => validateName(false));
+                    y.addEventListener("input", () => validateRUT(false));
+                    w.addEventListener("change", () => validateCountry(true)); // Select usually safe to validate on change
+
+                    // Blur: Show error if invalid
+                    x.addEventListener("blur", () => validateName(true));
+                    y.addEventListener("blur", () => validateRUT(true));
+                    w.addEventListener("blur", () => validateCountry(true));
+
+                    v.addEventListener("submit", async e => {
+                        e.preventDefault();
+
+                        // Validate All on Submit
+                        if (!validateAll()) {
+                            T.className = "text-center p-3 rounded-lg bg-yellow-100 text-yellow-700";
+                            T.textContent = "Por favor, completa los campos marcados en rojo.";
+                            T.classList.remove("hidden");
+                            return;
+                        }
+
+                        if (S.disabled) return; // Double check
+
+                        S.disabled = !0, P.textContent = "Guardando...", A.classList.remove("hidden"), T.classList.add("hidden");
+                        const n = t.currentUser,
+                            a = x.value.trim(),
+                            s = o.collection("users").doc(n.uid);
+                        try {
+                            a !== n.displayName && await n.updateProfile({
+                                displayName: a
+                            }), await s.set({
+                                displayName: a,
+                                email: n.email,
+                                rut: y.value.trim(),
+                                jobTitle: b.value.trim(),
+                                country: w.value,
+                                gender: E.value,
+                                birthdate: F.value,
+                                profileCompleted: !0
+                            }, {
+                                merge: !0
+                            }), document.querySelectorAll("#user-name, #welcome-name").forEach(e => e && (e.textContent = a)), T.className = "text-center p-3 rounded-lg bg-green-100 text-green-700", T.textContent = "¡Perfil actualizado con éxito!", T.classList.remove("hidden"), setTimeout(() => {
+                                D(), _(n.uid)
+                            }, 1500)
+                        } catch (e) {
                             console.error("Error al guardar perfil:", e);
                             T.className = "text-center p-3 rounded-lg bg-red-100 text-red-700";
                             if (e.code === 'permission-denied') {
@@ -533,11 +675,44 @@
                                 T.textContent = `Hubo un error al guardar: ${e.message || "Inténtalo de nuevo."}`;
                             }
                             T.classList.remove("hidden");
-                        } finally { P.textContent = "Guardar Cambios", A.classList.add("hidden") }
+                        } finally {
+                            S.disabled = false; // Re-enable
+                            P.textContent = "Guardar Cambios", A.classList.add("hidden")
+                        }
                     }), t.onAuthStateChanged(e => {
                         if (e) {
-                            o.collection("users").doc(e.uid).get().then(t => { const o = (t.exists ? t.data() : {}).displayName || e.displayName || "Alumno"; document.querySelectorAll("#user-name, #welcome-name").forEach(e => e && (e.textContent = o)) }), document.getElementById("user-avatar").src = e.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(e.displayName || "A")}&background=14b8a6&color=fff`, document.getElementById("user-profile").classList.remove("hidden"), document.getElementById("logout-btn").addEventListener("click", e => { e.preventDefault(), t.signOut().then(() => window.location.href = "index.html") }), async function (e) { try { const t = await o.collection("users").doc(e.uid).get(); t.exists && !0 === t.data().profileCompleted ? _(e.uid) : z(!0) } catch (e) { console.error("Error verificando el estado del perfil:", e), z(!0) } }(e), k(e, "waitlist-btn", "waitingList_avanzado", { default: "Unirme a la lista de espera", alreadyIn: "¡Ya estás en la lista!", adding: "Agregando...", success: "¡Inscrito con éxito!", error: "Error, intenta de nuevo", defaultColor: "bg-blue-600", hoverColor: "hover:bg-blue-700", successColor: "bg-green-500", errorColor: "bg-red-500" }), k(e, "reserve-btn", "preferentialReservations", {
-                                default: "Reservar cupo preferente", alreadyIn: "¡Ya tienes tu cupo!", adding: "Reservando...", success: "¡Cupo reservado!", error: "Error, intenta de nuevo", defaultColor: "bg-indigo-600", hoverColor: "hover:bg-indigo-700", successColor: "bg-green-500", errorColor: "bg-red-500"
+                            o.collection("users").doc(e.uid).get().then(t => {
+                                const o = (t.exists ? t.data() : {}).displayName || e.displayName || "Alumno";
+                                document.querySelectorAll("#user-name, #welcome-name").forEach(e => e && (e.textContent = o))
+                            }), document.getElementById("user-avatar").src = e.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(e.displayName || "A")}&background=14b8a6&color=fff`, document.getElementById("user-profile").classList.remove("hidden"), document.getElementById("logout-btn").addEventListener("click", e => {
+                                e.preventDefault(), t.signOut().then(() => window.location.href = "index.html")
+                            }), async function (e) {
+                                try {
+                                    const t = await o.collection("users").doc(e.uid).get();
+                                    t.exists && !0 === t.data().profileCompleted ? _(e.uid) : z(!0)
+                                } catch (e) {
+                                    console.error("Error verificando el estado del perfil:", e), z(!0)
+                                }
+                            }(e), k(e, "waitlist-btn", "waitingList_avanzado", {
+                                default: "Unirme a la lista de espera",
+                                alreadyIn: "¡Ya estás en la lista!",
+                                adding: "Agregando...",
+                                success: "¡Inscrito con éxito!",
+                                error: "Error, intenta de nuevo",
+                                defaultColor: "bg-blue-600",
+                                hoverColor: "hover:bg-blue-700",
+                                successColor: "bg-green-500",
+                                errorColor: "bg-red-500"
+                            }), k(e, "reserve-btn", "preferentialReservations", {
+                                default: "Reservar cupo preferente",
+                                alreadyIn: "¡Ya tienes tu cupo!",
+                                adding: "Reservando...",
+                                success: "¡Cupo reservado!",
+                                error: "Error, intenta de nuevo",
+                                defaultColor: "bg-indigo-600",
+                                hoverColor: "hover:bg-indigo-700",
+                                successColor: "bg-green-500",
+                                errorColor: "bg-red-500"
                             }), async function (e) {
                                 try {
                                     const userRef = o.collection("users").doc(e.uid);
