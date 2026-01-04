@@ -938,17 +938,26 @@
 
             try {
                 const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
+                console.log("Iniciando creación de preferencia MP...");
                 const result = await createPreference({
                     courseId: "ia-aplicada-esencial",
                     couponId: appliedCoupon ? appliedCoupon.couponId : null,
                     couponCode: appliedCoupon ? appliedCoupon.code : null
                 });
 
-                if (!result.data || !result.data.init_point) throw new Error("Respuesta inválida del servidor de pagos");
+                console.log("Resultado preferencia:", result);
+
+                if (!result.data || !result.data.init_point) throw new Error("Respuesta inválida del servidor de pagos (sin init_point)");
                 window.location.href = result.data.init_point;
             } catch (error) {
-                console.error("Error de pago:", error);
-                alert("Hubo un error al iniciar el pago. Por favor intenta nuevamente.");
+                console.error("Error DETALLADO de pago:", error);
+
+                let errorMsg = "Hubo un error al iniciar el pago.";
+                if (error.message) errorMsg += "\nDetalle: " + error.message;
+                if (error.code) errorMsg += "\nCódigo: " + error.code;
+
+                alert(errorMsg + "\n\nPor favor, verifica tu conexión o intenta nuevamente.");
+
                 buttons.forEach(btn => {
                     if (btn.dataset.original) btn.innerHTML = btn.dataset.original;
                     btn.classList.remove("opacity-75", "cursor-not-allowed");
@@ -1003,14 +1012,23 @@
 
             try {
                 // Llamada directa sin cupón (o cupón default si existiera lógica backend)
+                console.log("Iniciando creación de preferencia MP (Directa)...");
                 const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
                 const result = await createPreference({ courseId: "ia-aplicada-esencial", couponId: null });
 
-                if (!result.data || !result.data.init_point) throw new Error("Respuesta inválida del servidor de pagos");
+                console.log("Resultado preferencia (Directa):", result);
+
+                if (!result.data || !result.data.init_point) throw new Error("Respuesta inválida del servidor de pagos (sin init_point)");
                 window.location.href = result.data.init_point;
             } catch (error) {
-                console.error("Error de pago:", error);
-                alert("Hubo un error al iniciar el pago. Por favor intenta nuevamente.");
+                console.error("Error DETALLADO de pago (Directo):", error);
+
+                let errorMsg = "Hubo un error al iniciar el pago.";
+                if (error.message) errorMsg += "\nDetalle: " + error.message;
+                if (error.code) errorMsg += "\nCódigo: " + error.code;
+
+                alert(errorMsg + "\n\nPor favor, verifica tu conexión o intenta nuevamente.");
+
                 buttons.forEach(btn => {
                     if (btn.dataset.original) btn.innerHTML = btn.dataset.original;
                     btn.classList.remove("opacity-75", "cursor-not-allowed");
