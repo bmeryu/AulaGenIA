@@ -855,8 +855,24 @@
         }
 
         async function proceedWithCoupon() {
-            closeCouponModal();
+            // No cerrar el modal inmediatamente para no perder 'appliedCoupon'
+            // closeCouponModal(); 
+
+            const applyBtn = document.getElementById("modal-apply-btn");
+            if (applyBtn) {
+                applyBtn.textContent = "Procesando...";
+                applyBtn.disabled = true;
+            }
+
             await handlePurchaseWithCoupon();
+
+            // Si llegamos estó es que hubo un error o no redirigió
+            // En caso de error, handlePurchaseWithCoupon restaura botones de la pagina, 
+            // pero aqui restauramos el del modal si sigue abierto
+            if (applyBtn) {
+                applyBtn.textContent = "Aplicar y continuar";
+                applyBtn.disabled = false;
+            }
         }
 
         async function handlePurchaseWithCoupon() {
