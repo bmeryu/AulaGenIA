@@ -454,14 +454,14 @@
 
                         if (!t.currentUser) {
                             // Login requerido -> Redirigir a acceso
-                            sessionStorage.setItem("pendingPurchase", JSON.stringify({ courseId: "ia-aplicada-esencial", couponId: a ? a.couponId : null }));
+                            sessionStorage.setItem("pendingPurchase", JSON.stringify({ courseId: "ia-aplicada-esencial", couponId: a ? a.couponId : null, couponCode: a ? a.code : null }));
                             window.location.href = "acceso.html";
                             return;
                         }
 
                         try {
                             const createPref = firebase.functions().httpsCallable("createMercadoPagoPreference");
-                            const result = await createPref({ courseId: "ia-aplicada-esencial", couponId: a ? a.couponId : null });
+                            const result = await createPref({ courseId: "ia-aplicada-esencial", couponId: a ? a.couponId : null, couponCode: a ? a.code : null });
                             if (result.data && result.data.init_point) {
                                 window.location.href = result.data.init_point;
                             }

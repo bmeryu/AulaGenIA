@@ -880,7 +880,8 @@
             if (!user) {
                 sessionStorage.setItem("pendingPurchase", JSON.stringify({
                     courseId: "ia-aplicada-esencial",
-                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null,
+                    couponCode: appliedCoupon ? appliedCoupon.code : null
                 }));
                 // Redirigir a acceso.html sin parámetro de redirección explícito para que acceso maneje el flujo
                 window.location.href = "acceso.html";
@@ -916,7 +917,8 @@
                 const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
                 const result = await createPreference({
                     courseId: "ia-aplicada-esencial",
-                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                    couponId: appliedCoupon ? appliedCoupon.couponId : null,
+                    couponCode: appliedCoupon ? appliedCoupon.code : null
                 });
 
                 if (!result.data || !result.data.init_point) throw new Error("Respuesta inválida del servidor de pagos");

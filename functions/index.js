@@ -28,7 +28,7 @@ exports.createMercadoPagoPreference = onCall(
         const client = new MercadoPagoConfig({ accessToken: tokenValue });
         const preferenceClient = new Preference(client);
 
-        const { courseId, couponId } = request.data || {};
+        const { courseId, couponId, couponCode } = request.data || {};
         if (!courseId) {
             throw new HttpsError("invalid-argument", "Falta el ID del curso ('courseId').");
         }
@@ -41,32 +41,55 @@ exports.createMercadoPagoPreference = onCall(
         let finalPrice = basePrice;
         let discountAmount = 0;
 
-        // Si hay cupón, aplicar descuento
-        if (couponId) {
-            try {
-                const couponDoc = await admin.firestore()
+        // Intentar buscar cupón por ID o por Código
+        let couponDoc = null;
+        let couponData = null;
+
+        try {
+            if (couponId) {
+                const doc = await admin.firestore().collection('coupons').doc(couponId).get();
+                if (doc.exists) {
+                    couponDoc = doc;
+                    couponData = doc.data();
+                }
+            }
+
+            // Si no se encontró por ID y tenemos código, buscar por código
+            if (!couponData && couponCode) {
+                const snapshot = await admin.firestore()
                     .collection('coupons')
-                    .doc(couponId)
+                    .where('code', '==', couponCode.toUpperCase())
+                    .limit(1)
                     .get();
 
-                if (couponDoc.exists) {
-                    const coupon = couponDoc.data();
-
-                    // Calcular descuento
-                    if (coupon.discountType === 'percentage') {
-                        discountAmount = (basePrice * coupon.discountValue) / 100;
-                    } else {
-                        discountAmount = Math.min(coupon.discountValue, basePrice);
-                    }
-
-                    finalPrice = Math.max(0, basePrice - discountAmount);
-
-                    console.log(`Cupón aplicado: ${coupon.code}, Descuento: $${discountAmount}, Precio final: $${finalPrice}`);
+                if (!snapshot.empty) {
+                    couponDoc = snapshot.docs[0];
+                    couponData = couponDoc.data();
                 }
-            } catch (error) {
-                console.error('Error aplicando cupón:', error);
-                // Continuar sin descuento si hay error
             }
+
+            // Aplicar descuento si se encontró cupón
+            if (couponData) {
+                // Calcular descuento
+                if (couponData.discountType === 'percentage') {
+                    discountAmount = (basePrice * couponData.discountValue) / 100;
+                } else {
+                    discountAmount = Math.min(couponData.discountValue, basePrice);
+                }
+
+                finalPrice = Math.max(0, basePrice - discountAmount);
+                console.log(`Cupón aplicado: ${couponData.code}, Descuento: $${discountAmount}, Precio final: $${finalPrice}`);
+            } else if (couponId || couponCode) {
+                // Si se intentó usar cupón pero no se encontró
+                console.warn(`Cupón no encontrado: ID=${couponId}, Code=${couponCode}`);
+                throw new HttpsError('not-found', 'El cupón indicado no es válido o ha expirado.');
+            }
+
+        } catch (error) {
+            console.error('Error aplicando cupón:', error);
+            // Re-lanzar error para que el usuario sepa que falló el cupón
+            if (error instanceof HttpsError) throw error;
+            throw new HttpsError('internal', 'Error al procesar el cupón de descuento.');
         }
 
         const courseDetails = {
