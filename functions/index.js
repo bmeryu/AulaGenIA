@@ -120,22 +120,12 @@ exports.createMercadoPagoPreference = onCall(
                 first_name: firstName,
                 last_name: lastName
             },
-
-            // ✅ MEJORAS PARA TARJETAS GUARDADAS
-            // ✅ MEJORAS PARA TARJETAS GUARDADAS
-            payment_methods: {
-                excluded_payment_methods: [],
-                excluded_payment_types: []
-            },
-
             back_urls: {
                 success: "https://aulagenia.cl/pago-exitoso.html",
                 failure: "https://aulagenia.cl/pago-fallido.html",
                 pending: "https://aulagenia.cl/pago-pendiente.html",
             },
             auto_return: "approved",
-            binary_mode: true,
-            statement_descriptor: "Aula GenIA",
             notification_url: notificationUrl,
             external_reference: `${userId}_${courseId}`,
 
