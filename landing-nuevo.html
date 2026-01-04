@@ -846,36 +846,44 @@
         }
 
         async function proceedWithoutCoupon() {
-            appliedCoupon = null;
             closeCouponModal();
-            await handlePurchaseWithCoupon();
+            // Passing null explicitly
+            await handlePurchaseWithCoupon(null);
         }
 
         async function proceedWithCoupon() {
-            closeCouponModal();
-            await handlePurchaseWithCoupon();
+            // UX Improvement: No cerrar el modal, mostrar carga ahí mismo
+            const applyBtn = document.getElementById("modal-apply-btn");
+            if (applyBtn) {
+                applyBtn.textContent = "⏳ Procesando pago...";
+                applyBtn.disabled = true;
+            }
+
+            // Pass the global appliedCoupon to the handler
+            await handlePurchaseWithCoupon(appliedCoupon);
         }
 
-        async function handlePurchaseWithCoupon() {
+        async function handlePurchaseWithCoupon(couponData) {
             const user = firebase.auth().currentUser;
             if (!user) {
                 sessionStorage.setItem("pendingPurchase", JSON.stringify({
                     courseId: "ia-aplicada-esencial",
-                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                    couponId: couponData ? couponData.couponId : null
                 }));
-                window.location.href = "acceso.html?redirect=landing-nuevo.html&cupon=true";
+                // Si no hay login, ahí sí redirigimos (y cerramos implícitamente al salir)
+                window.location.href = "acceso.html?redirect=landing-nuevo.html?cupon=true";
                 return;
             }
 
             analytics.logEvent("begin_checkout", {
-                items: [{ item_id: "ia-aplicada-esencial", item_name: "IA Aplicada · Esencial", price: appliedCoupon ? appliedCoupon.finalPrice : 20, currency: "USD", quantity: 1 }],
-                coupon: appliedCoupon ? appliedCoupon.couponId : null
+                items: [{ item_id: "ia-aplicada-esencial", item_name: "IA Aplicada · Esencial", price: couponData ? couponData.finalPrice : 20, currency: "USD", quantity: 1 }],
+                coupon: couponData ? couponData.couponId : null
             });
 
             // Meta Pixel: Track InitiateCheckout
             if (typeof fbq !== 'undefined') {
                 fbq('track', 'InitiateCheckout', {
-                    value: appliedCoupon ? appliedCoupon.finalPrice : 20.00,
+                    value: couponData ? couponData.finalPrice : 20.00,
                     currency: 'USD',
                     content_name: 'Curso IA Aplicada Esencial',
                     content_type: 'product',
@@ -883,20 +891,23 @@
                 });
             }
 
-            // Show loading state on buttons
-            const buttons = document.querySelectorAll(".gradient-btn");
-            buttons.forEach(btn => {
-                if (!btn.dataset.original) btn.dataset.original = btn.innerHTML;
-                btn.innerHTML = "⏳ Redirigiendo a Mercado Pago...";
-                btn.classList.add("opacity-75", "cursor-not-allowed");
-                btn.disabled = true;
-            });
+            // UI Feedback: Solo alterar botones de fondo si NO estamos en el modal (couponData null)
+            // O si queremos bloquear todo. Pero si estamos en modal, ya se actualizó el botón del modal.
+            if (!couponData) {
+                const buttons = document.querySelectorAll(".gradient-btn");
+                buttons.forEach(btn => {
+                    if (!btn.dataset.original) btn.dataset.original = btn.innerHTML;
+                    btn.innerHTML = "⏳ Redirigiendo a Mercado Pago...";
+                    btn.classList.add("opacity-75", "cursor-not-allowed");
+                    btn.disabled = true;
+                });
+            }
 
             try {
                 const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
                 const result = await createPreference({
                     courseId: "ia-aplicada-esencial",
-                    couponId: appliedCoupon ? appliedCoupon.couponId : null
+                    couponId: couponData ? couponData.couponId : null
                 });
 
                 if (!result.data || !result.data.init_point) throw new Error("Respuesta inválida del servidor de pagos");
@@ -904,11 +915,22 @@
             } catch (error) {
                 console.error("Error de pago:", error);
                 alert("Hubo un error al iniciar el pago. Por favor intenta nuevamente.");
-                buttons.forEach(btn => {
-                    if (btn.dataset.original) btn.innerHTML = btn.dataset.original;
-                    btn.classList.remove("opacity-75", "cursor-not-allowed");
-                    btn.disabled = false;
-                });
+
+                // Revertir estado UI
+                if (couponData) {
+                    const applyBtn = document.getElementById("modal-apply-btn");
+                    if (applyBtn) {
+                        applyBtn.textContent = "Confirmar y Pagar";
+                        applyBtn.disabled = false;
+                    }
+                } else {
+                    const buttons = document.querySelectorAll(".gradient-btn");
+                    buttons.forEach(btn => {
+                        if (btn.dataset.original) btn.innerHTML = btn.dataset.original;
+                        btn.classList.remove("opacity-75", "cursor-not-allowed");
+                        btn.disabled = false;
+                    });
+                }
             }
         }
         // ========== FIN FUNCIONES MODAL CUPÓN ==========
