@@ -37,7 +37,7 @@ exports.createMercadoPagoPreference = onCall(
         const userEmail = request.auth.token.email;
 
         // Precio base del curso (TU PRECIO DE PRUEBA)
-        let basePrice = 1;
+        let basePrice = 120;
         let finalPrice = basePrice;
         let discountAmount = 0;
 
@@ -88,7 +88,7 @@ exports.createMercadoPagoPreference = onCall(
                 title: courseDetails.title,
                 description: "Curso completo de Inteligencia Artificial Generativa - Aula GenIA",
                 category_id: "learnings",
-                quantity: 20,
+                quantity: 1,
                 unit_price: courseDetails.priceUSD,
                 currency_id: "USD",
             }],
@@ -124,7 +124,8 @@ exports.createMercadoPagoPreference = onCall(
             },
 
             // ✅ CONFIGURACIÓN ADICIONAL
-            expires: false
+            expires: false,
+            processing_modes: ["aggregator"]
         };
 
         try {
@@ -456,7 +457,7 @@ exports.validateCoupon = onCall(
                 throw new HttpsError('failed-precondition', 'Ya usaste este cupón');
             }
 
-            const originalPrice = 20;
+            const originalPrice = 120;
             let discountAmount = 0;
 
             if (coupon.discountType === 'percentage') {
