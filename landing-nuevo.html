@@ -234,9 +234,9 @@
                         <div
                             class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-4 py-3 rounded-xl text-center mb-4 shadow-lg">
                             <p class="text-sm font-bold opacity-90">🔥 OFERTA FLASH - TERMINA LUNES</p>
-                            <p class="text-3xl font-black" id="hero-price">$120 USD <span
+                            <p class="text-3xl font-black">$20 USD <span
                                     class="text-lg font-medium clp-price-mobile"></span></p>
-                            <p class="text-xs opacity-80 mt-1">Precio normal: <s id="hero-old-price">$500 USD</s></p>
+                            <p class="text-xs opacity-80 mt-1">Precio normal: <s>$120 USD</s></p>
                         </div>
                     </div>
                     <div class="inline-block badge-pulse"><span
@@ -544,9 +544,9 @@
                     </div>
                     <div class="relative z-10">
                         <p class="text-sm uppercase tracking-wider mb-2 opacity-90">Precio Normal</p>
-                        <p class="text-3xl line-through opacity-75 mb-4" id="pricing-old-price">$500 USD</p>
+                        <p class="text-3xl line-through opacity-75 mb-4">$120 USD</p>
                         <div class="flex items-center justify-center gap-4">
-                            <p class="text-7xl font-black drop-shadow-lg" id="pricing-price">$120 USD</p>
+                            <p class="text-7xl font-black drop-shadow-lg">$20 USD</p>
                             <p class="clp-price text-base text-white/90">Cargando...</p>
                             <div class="text-left">
                                 <p class="text-sm opacity-90 font-bold">USD</p>
@@ -752,36 +752,15 @@
         async function checkUserPurchaseStatus(e) { if (!e) return { hasCourse: !1, error: null }; try { const o = firebase.firestore(), a = await o.collection("users").doc(e.uid).get(); if (a.exists) { const e = a.data(); return { hasCourse: !!(e.courses && e.courses["ia-aplicada-esencial"]), error: null } } return { hasCourse: !1, error: null } } catch (e) { return console.error("Error verificando estado del curso:", e), { hasCourse: !1, error: e } } }
 
         // ========== FUNCIONES DEL MODAL DE CUPÓN ==========
-        function showCouponModal() {
+        async function showCouponModal(prefillCode = null) {
             const modal = document.getElementById("coupon-modal");
             if (modal) {
                 modal.classList.remove("hidden");
                 modal.classList.add("flex");
-
-                // New Logic: If coupon is already applied (e.g. auto-applied 2026), show it ready state
-                if (appliedCoupon) {
-                    const data = appliedCoupon;
-                    document.getElementById("modal-coupon-input").value = data.couponId || "2026";
-
-                    document.getElementById("modal-original-price").textContent = `$${data.originalPrice} USD`;
-
-                    const discountLabel = data.discountType === "percentage"
-                        ? `${data.discountValue}%`
-                        : `$${data.discountValue} USD`;
-
-                    document.getElementById("modal-discount-label").textContent = discountLabel;
-                    document.getElementById("modal-discount-amount").textContent = `-$${data.discountAmount.toFixed(2)} USD`;
-                    document.getElementById("modal-final-price").textContent = `$${data.finalPrice.toFixed(2)} USD`;
-
-                    document.getElementById("modal-discount-summary").classList.remove("hidden");
-                    showCouponMessage(`✅ Cupón ${data.couponId} aplicado: ${discountLabel} de descuento`, "success");
-
-                    const applyBtn = document.getElementById("modal-apply-btn");
-                    if (applyBtn) {
-                        applyBtn.textContent = "Confirmar y Pagar";
-                        applyBtn.onclick = proceedWithCoupon;
-                        applyBtn.disabled = false;
-                    }
+                if (prefillCode) {
+                    const input = document.getElementById("modal-coupon-input");
+                    if (input) input.value = prefillCode;
+                    await applyModalCoupon();
                 }
             }
         }
@@ -791,9 +770,7 @@
             if (modal) {
                 modal.classList.add("hidden");
                 modal.classList.remove("flex");
-                // Only reset if NO coupon applied? No, reset form visual reset is fine
-                // But if we want to keep the "Auto" state persistent, maybe don't clear?
-                // For now standard reset.
+                // Reset form
                 const input = document.getElementById("modal-coupon-input");
                 if (input) input.value = "";
                 const msg = document.getElementById("modal-coupon-message");
@@ -807,7 +784,7 @@
                     applyBtn.disabled = false;
                 }
             }
-            // "appliedCoupon = null;" <-- REMOVED to keep state
+            appliedCoupon = null;
         }
 
         function showCouponMessage(message, type) {
@@ -827,12 +804,7 @@
 
             const user = firebase.auth().currentUser;
             if (!user) {
-                // Permite flujo para usuarios no logueados: guardar intención y redirigir
-                sessionStorage.setItem("pendingPurchase", JSON.stringify({
-                    courseId: "ia-aplicada-esencial",
-                    couponId: couponCode
-                }));
-                window.location.href = "acceso.html?redirect=" + encodeURIComponent("procesar-inscripcion.html");
+                showCouponMessage("Debes iniciar sesión primero", "error");
                 return;
             }
 
@@ -856,7 +828,7 @@
                     document.getElementById("modal-final-price").textContent = `$${result.data.finalPrice.toFixed(2)} USD`;
                     document.getElementById("modal-discount-summary").classList.remove("hidden");
                     showCouponMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, "success");
-                    applyBtn.textContent = "Confirmar y Pagar";
+                    applyBtn.textContent = "Aplicar y continuar";
                     applyBtn.onclick = proceedWithCoupon;
                     applyBtn.disabled = false;
                 } else {
@@ -896,8 +868,8 @@
                     courseId: "ia-aplicada-esencial",
                     couponId: appliedCoupon ? appliedCoupon.couponId : null
                 }));
-                // Redirigir a login -> procesar-inscripcion.html
-                window.location.href = "acceso.html?redirect=" + encodeURIComponent("procesar-inscripcion.html");
+                // Redirigir a acceso.html sin parámetro de redirección explícito para que acceso maneje el flujo
+                window.location.href = "acceso.html";
                 return;
             }
 
@@ -947,61 +919,33 @@
         }
         // ========== FIN FUNCIONES MODAL CUPÓN ==========
 
-        // ✅ NUEVA LÓGICA: Flujo directo (Sin Modal)
+        // ✅ NUEVA LÓGICA: Flujo Modal Primero
+        // 1. Click -> Modal Cupón (con '2026')
+        // 2. Usuario aplica -> Validación
+        // 3. Usuario continúa -> Login -> Mercado Pago
         async function initiateDirectPurchase(source = 'unknown_source') {
-            // 📊 Analytics
             const user = firebase.auth().currentUser;
-            analytics.logEvent("click_cta", { button_location: source, item_name: "Inscribirme Curso IA - $120" });
 
-            // 1. Si NO esta logeado, pero tenemos cupón aplicado, igual mostramos el modal?
-            // User says: "muestre el modal... el usuario solo tenga que apretar el boton".
-            // So YES, always show modal first if coupon is applied.
+            // 📊 Analytics Track: Clic en botón específico
+            analytics.logEvent("click_cta", {
+                button_location: source,
+                item_name: "Inscribirme Curso IA - Iniciar Flujo"
+            });
 
-            if (appliedCoupon) {
-                showCouponModal();
-                return;
-            }
-
-            // Fallback standard logic checks
-            if (!user) {
-                // ... (redirect logic same as before but unlikely to reach if we strictly auto-apply)
-                // But if auto-apply failed, we go here
-                const targetPage = "procesar-inscripcion.html";
-                const couponToSave = "2026";
-                sessionStorage.setItem("pendingPurchase", JSON.stringify({ courseId: "ia-aplicada-esencial", couponId: couponToSave }));
-                window.location.href = `acceso.html?redirect=${encodeURIComponent(targetPage)}`;
-                return;
-            }
-
-            // ... (Auth checks)
-            const { hasCourse } = await checkUserPurchaseStatus(user);
-            if (hasCourse) {
-                if (confirm("¡Ya estás inscrito! ¿Ir al campus?")) window.location.href = "campus.html";
-                return;
-            }
-
-            // Default to showing modal anyway if we want to encourage coupon? 
-            // Or fallback to direct purchase
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get("cupon") === "true") {
-                showCouponModal();
-                return;
-            }
-
-            // Last resort
-            await handlePurchase();
+            // Siempre abrir modal con cupón 2026
+            showCouponModal("2026");
         }
 
         async function handlePurchase() {
-            // Precio Base 120 USD
             const user = firebase.auth().currentUser;
-            if (!user) return;
+            if (!user) return; // Should be handled by initiateDirectPurchase
 
-            analytics.logEvent("begin_checkout", { items: [{ item_id: "ia-aplicada-esencial", item_name: "IA Aplicada · Esencial", price: 120, currency: "USD", quantity: 1 }] });
+            analytics.logEvent("begin_checkout", { items: [{ item_id: "ia-aplicada-esencial", item_name: "IA Aplicada · Esencial", price: 20, currency: "USD", quantity: 1 }] });
 
+            // Meta Pixel: Track InitiateCheckout
             if (typeof fbq !== 'undefined') {
                 fbq('track', 'InitiateCheckout', {
-                    value: 120.00,
+                    value: 20.00,
                     currency: 'USD',
                     content_name: 'Curso IA Aplicada Esencial',
                     content_type: 'product',
@@ -1009,6 +953,7 @@
                 });
             }
 
+            // UI Feedback
             const buttons = document.querySelectorAll(".gradient-btn");
             buttons.forEach(btn => {
                 if (!btn.dataset.original) btn.dataset.original = btn.innerHTML;
@@ -1018,6 +963,7 @@
             });
 
             try {
+                // Llamada directa sin cupón (o cupón default si existiera lógica backend)
                 const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
                 const result = await createPreference({ courseId: "ia-aplicada-esencial", couponId: null });
 
@@ -1034,41 +980,7 @@
             }
         }
 
-        async function autoApplyDefaultCoupon() {
-            try {
-                const validateCoupon = firebase.functions().httpsCallable("validateCoupon");
-                const result = await validateCoupon({ couponCode: "2026", courseId: "ia-aplicada-esencial" });
-
-                if (result.data.valid) {
-                    appliedCoupon = result.data;
-                    console.log("Cupón 2026 aplicado automáticamente", appliedCoupon);
-
-                    // Update UI
-                    const heroPrice = document.getElementById("hero-price");
-                    const pricingPrice = document.getElementById("pricing-price");
-                    const heroOldPrice = document.getElementById("hero-old-price");
-                    const pricingOldPrice = document.getElementById("pricing-old-price");
-                    const mobileStickyPrice = document.getElementById("mobile-sticky-price");
-
-                    if (heroPrice) heroPrice.innerHTML = `$${result.data.finalPrice} USD <span class="text-lg font-medium clp-price-mobile"></span>`;
-                    if (pricingPrice) pricingPrice.innerText = `$${result.data.finalPrice} USD`;
-                    if (mobileStickyPrice) mobileStickyPrice.innerText = `$${result.data.finalPrice} USD`;
-
-                    // Ensure strike-through uses value from backend
-                    const oldPrice = result.data.originalPrice || 120;
-                    if (heroOldPrice) heroOldPrice.innerText = `$${oldPrice} USD`;
-                    if (pricingOldPrice) pricingOldPrice.innerText = `$${oldPrice} USD`;
-
-                }
-            } catch (e) {
-                console.error("Error aplicando cupon default", e);
-            }
-        }
-
         document.addEventListener("DOMContentLoaded", () => {
-            // Auto-apply coupon
-            autoApplyDefaultCoupon();
-
             auth.onAuthStateChanged(async user => {
                 // Recuperar acción pendiente del sessionStorage
                 if ("initiateDirectPurchase" === sessionStorage.getItem("pendingAction") && user) {
@@ -1093,42 +1005,15 @@
                     initiateDirectPurchase();
                 });
             });
-        });
-
-        // Global Link Interceptor for "Fluid" feel - Event Delegation
-        document.body.addEventListener('click', (e) => {
-            // Find closest anchor or button
-            const element = e.target.closest('a, button');
-            if (!element) return;
-
-            // Skip if it has specific inline constraints we respect or custom data
-            if (element.target === '_blank' || element.hasAttribute('data-no-loader')) return;
-
-            // If it has onclick, we generally skip to avoid breaking logic, UNLESS it's the specific "Enter Course" link which is technically an A tag with href.
-            if (element.hasAttribute('onclick')) return;
-
-            const href = element.getAttribute('href');
-            if (element.tagName === 'A') {
-                if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
-            }
-
-            // Visual Feedback
-            if (element.innerText.trim().length > 0) {
-                element.innerHTML = '<span class="animate-pulse">⏳ Procesando...</span>';
-            } else {
-                element.classList.add('opacity-50', 'cursor-wait');
-            }
-            element.style.pointerEvents = 'none';
-
-            // If it's a link, delay slightly then go
-            if (element.tagName === 'A' && href) {
-                e.preventDefault();
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 50);
-            }
-        });
-    </script>
+        });</script>
+    <a href="https://wa.me/56976305985?text=Hola%2C%20vengo%20del%20sitio%20web%20de%20Aula%20GenIA%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n."
+        target="_blank" rel="noopener noreferrer" id="whatsapp-button" aria-label="Contactar por WhatsApp"
+        class="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 z-50"><svg
+            xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.304-1.654a11.882 11.882 0 005.713 1.456h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+        </svg></a>
+    <script src="currency-converter.js"></script>
 </body>
 
 </html>
