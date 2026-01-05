@@ -36,8 +36,14 @@ exports.createMercadoPagoPreference = onCall(
         const userId = request.auth.uid;
         const userEmail = request.auth.token.email;
 
-        // Precio base del curso (TU PRECIO DE PRUEBA)
-        let basePrice = 120;
+        // Precio base dinámico según el curso
+        let basePrice = 120; // Default legacy
+
+        if (courseId === 'ia-aplicada-starter') {
+            basePrice = 15;
+        } else if (courseId === 'ia-aplicada-esencial') {
+            basePrice = 45; // Nuevo Ref Price indicado por usuario
+        }
         let finalPrice = basePrice;
         let discountAmount = 0;
 
@@ -321,6 +327,9 @@ exports.completeCourseForUser = onCall(async (request) => {
             }
         };
 
+        // REPLICAR DATA PARA STARTER (Mismo contenido)
+        ALL_COURSES_DATA['ia-aplicada-starter'] = ALL_COURSES_DATA['ia-aplicada-esencial'];
+
         const courseData = ALL_COURSES_DATA[courseId];
         if (!courseData) {
             throw new HttpsError('not-found', `El curso con ID "${courseId}" no se encontró en la configuración.`);
@@ -363,6 +372,11 @@ exports.generateCertificate = onCall(async (request) => {
             title: 'IA Aplicada · Esencial',
             totalLessons: 20
         }
+    };
+    // REPLICAR CONFIG PARA STARTER
+    COURSE_CONFIG['ia-aplicada-starter'] = {
+        title: 'IA Aplicada · Starter',
+        totalLessons: 20
     };
     const courseInfo = COURSE_CONFIG[courseId];
     if (!courseInfo) {
@@ -470,7 +484,9 @@ exports.validateCoupon = onCall(
                 }
             }
 
-            const originalPrice = 120;
+            let originalPrice = 120;
+            if (courseId === 'ia-aplicada-starter') originalPrice = 15;
+            if (courseId === 'ia-aplicada-esencial') originalPrice = 45;
             let discountAmount = 0;
 
             if (coupon.discountType === 'percentage') {
@@ -519,7 +535,8 @@ exports.createCoupon = onCall(
             maxUsesPerUser: 1,
             validFrom: admin.firestore.Timestamp.now(),
             validUntil: admin.firestore.Timestamp.fromDate(new Date(validUntil)),
-            applicableTo: ['ia-aplicada-esencial'],
+            validUntil: admin.firestore.Timestamp.fromDate(new Date(validUntil)),
+            applicableTo: ['ia-aplicada-esencial', 'ia-aplicada-starter'],
             active: true,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
             createdBy: request.auth.uid

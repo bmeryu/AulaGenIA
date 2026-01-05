@@ -359,7 +359,8 @@
                         if (user) {
                             try {
                                 const userDoc = await o.collection("users").doc(user.uid).get();
-                                if (userDoc.exists && userDoc.data().enrollments && userDoc.data().enrollments["ia-aplicada-esencial"]) {
+                                const enrollments = userDoc.data().enrollments || {};
+                                if (enrollments["ia-aplicada-esencial"] || enrollments["ia-aplicada-starter"]) {
                                     alert("¡Ya estás inscrito en este curso! Puedes acceder al contenido.");
                                     window.location.reload();
                                     return;
@@ -523,7 +524,12 @@
                     };
                     window.applyModalCoupon = r;
                     window.proceedWithoutCoupon = l;
-                    window.proceedWithCoupon = c; const u = { "ia-aplicada-esencial": { title: "IA Aplicada · Esencial", totalLessons: 19, modules: [{ title: "Bienvenida al Curso", lessons: [{ id: "0-1" }, { id: "0-2" }] }, { title: "Módulo 1: ¿Qué es la Inteligencia Artificial?", lessons: [{ id: "1-1" }, { id: "1-2" }, { id: "1-3" }, { id: "q-1" }] }, { title: "Módulo 2: La IA para ti, en tu día a día", lessons: [{ id: "2-1" }, { id: "2-2" }, { id: "2-3" }, { id: "2-taller" }, { id: "q-2" }] }, { title: "Módulo 3: Preparando tus herramientas", lessons: [{ id: "3-1" }, { id: "3-2" }, { id: "3-3" }, { id: "q-3" }] }, { title: "Módulo 4: Arquitectura de Ideas", lessons: [{ id: "4-1" }, { id: "4-2" }, { id: "q-4" }] }, { title: "Final del Camino: Certificación", lessons: [{ id: "final-exam" }] }] } }, m = document.getElementById("profile-modal-overlay"), p = document.getElementById("profile-modal"), g = document.getElementById("avatar-button"), h = document.getElementById("cancel-profile-btn"), f = document.getElementById("close-profile-modal-btn"), v = document.getElementById("profile-form"), x = document.getElementById("profile-name-input"), y = document.getElementById("profile-rut-input"), C = document.getElementById("profile-email-input"), b = document.getElementById("profile-job-input"), w = document.getElementById("profile-country-select"), E = document.getElementById("profile-gender-select"), F = document.getElementById("profile-birthdate-input"), I = document.getElementById("profile-modal-title"), L = document.getElementById("profile-modal-subtitle"), T = document.getElementById("form-status"), S = document.getElementById("save-profile-btn"), P = document.getElementById("save-btn-text"), A = document.getElementById("save-spinner");
+                    window.proceedWithCoupon = c;
+
+                    const u = {
+                        "ia-aplicada-esencial": { title: "IA Aplicada · Esencial", totalLessons: 19, modules: [{ title: "Bienvenida al Curso", lessons: [{ id: "0-1" }, { id: "0-2" }] }, { title: "Módulo 1: ¿Qué es la Inteligencia Artificial?", lessons: [{ id: "1-1" }, { id: "1-2" }, { id: "1-3" }, { id: "q-1" }] }, { title: "Módulo 2: La IA para ti, en tu día a día", lessons: [{ id: "2-1" }, { id: "2-2" }, { id: "2-3" }, { id: "2-taller" }, { id: "q-2" }] }, { title: "Módulo 3: Preparando tus herramientas", lessons: [{ id: "3-1" }, { id: "3-2" }, { id: "3-3" }, { id: "q-3" }] }, { title: "Módulo 4: Arquitectura de Ideas", lessons: [{ id: "4-1" }, { id: "4-2" }, { id: "q-4" }] }, { title: "Final del Camino: Certificación", lessons: [{ id: "final-exam" }] }] },
+                        "ia-aplicada-starter": { title: "IA Aplicada · Starter", totalLessons: 19, modules: [{ title: "Bienvenida al Curso", lessons: [{ id: "0-1" }, { id: "0-2" }] }, { title: "Módulo 1: ¿Qué es la Inteligencia Artificial?", lessons: [{ id: "1-1" }, { id: "1-2" }, { id: "1-3" }, { id: "q-1" }] }, { title: "Módulo 2: La IA para ti, en tu día a día", lessons: [{ id: "2-1" }, { id: "2-2" }, { id: "2-3" }, { id: "2-taller" }, { id: "q-2" }] }, { title: "Módulo 3: Preparando tus herramientas", lessons: [{ id: "3-1" }, { id: "3-2" }, { id: "3-3" }, { id: "q-3" }] }, { title: "Módulo 4: Arquitectura de Ideas", lessons: [{ id: "4-1" }, { id: "4-2" }, { id: "q-4" }] }, { title: "Final del Camino: Certificación", lessons: [{ id: "final-exam" }] }] }
+                    }, m = document.getElementById("profile-modal-overlay"), p = document.getElementById("profile-modal"), g = document.getElementById("avatar-button"), h = document.getElementById("cancel-profile-btn"), f = document.getElementById("close-profile-modal-btn"), v = document.getElementById("profile-form"), x = document.getElementById("profile-name-input"), y = document.getElementById("profile-rut-input"), C = document.getElementById("profile-email-input"), b = document.getElementById("profile-job-input"), w = document.getElementById("profile-country-select"), E = document.getElementById("profile-gender-select"), F = document.getElementById("profile-birthdate-input"), I = document.getElementById("profile-modal-title"), L = document.getElementById("profile-modal-subtitle"), T = document.getElementById("form-status"), S = document.getElementById("save-profile-btn"), P = document.getElementById("save-btn-text"), A = document.getElementById("save-spinner");
 
 
                     function $(e) {
@@ -539,70 +545,109 @@
                     }
 
                     function _(e) {
-                        const a = "ia-aplicada-esencial";
-                        let s = document.querySelector(`[data-course-id="${a}"]`);
-                        if (!s) return;
-                        const r = t.currentUser;
-                        if (!r || !r.email) return void $(s);
-                        const i = o.collection("allowlist").doc(r.email),
-                            l = o.collection("users").doc(e),
-                            c = o.collection("userProgress").doc(e);
-                        Promise.all([i.get(), l.get()]).then(([e, t]) => {
-                            let o = !1;
-                            if (e.exists) {
-                                const t = e.data(),
-                                    n = t.courses || [];
-                                let s = n.includes(a);
-                                s || (s = n.includes("programa-esencial")), !0 === t.active && s && (o = !0)
+                        // DEFAULT: esencial card placeholder
+                        // Logic: Determine WHICH course the user has.
+                        // access essential doc to get enrollments map
+                        const l = o.collection("users").doc(e); // User Doc Ref
+                        const allowlist = o.collection("allowlist").doc(t.currentUser.email);
+
+                        Promise.all([allowlist.get(), l.get()]).then(([allowSnap, userSnap]) => {
+                            let hasAccess = false;
+                            let courseId = "ia-aplicada-esencial"; // Default to check/show
+
+                            const enrollments = userSnap.exists && userSnap.data().enrollments ? userSnap.data().enrollments : {};
+
+                            // Check Allowlist first
+                            if (allowSnap.exists && allowSnap.data().active) {
+                                const courses = allowSnap.data().courses || [];
+                                if (courses.includes("ia-aplicada-esencial")) { hasAccess = true; courseId = "ia-aplicada-esencial"; }
+                                else if (courses.includes("ia-aplicada-starter")) { hasAccess = true; courseId = "ia-aplicada-starter"; }
                             }
-                            let r = !1;
-                            if (t.exists) {
-                                const e = t.data(),
-                                    o = "inteligencia-aplicada";
-                                !e.enrollments || !0 !== e.enrollments[a] && !0 !== e.enrollments[o] || (r = !0)
-                            }
-                            o || r ? (n.logEvent("unlock_content", {
-                                content_type: "course",
-                                item_id: a,
-                                method: o ? "whitelist" : "enrollment"
-                            }), c.onSnapshot(e => {
-                                let t = 0;
-                                const o = u[a],
-                                    r = o ? o.totalLessons : 0;
-                                if (e.exists && o) {
-                                    const n = e.data()[a];
-                                    if (n && Array.isArray(n.completedLessons)) {
-                                        const e = new Set;
-                                        o.modules.forEach(t => t.lessons.forEach(t => e.add(t.id)));
-                                        const a = new Set(n.completedLessons);
-                                        let s = 0;
-                                        a.forEach(t => {
-                                            e.has(t) && s++
-                                        }), t = s
-                                    }
+
+                            // Check Enrollments (Priority: Esencial > Starter)
+                            if (enrollments["ia-aplicada-esencial"]) { hasAccess = true; courseId = "ia-aplicada-esencial"; }
+                            else if (enrollments["ia-aplicada-starter"] && !hasAccess) { hasAccess = true; courseId = "ia-aplicada-starter"; }
+                            else if (enrollments["inteligencia-aplicada"] && !hasAccess) { hasAccess = true; courseId = "ia-aplicada-esencial"; } // Legacy support
+
+                            // Get DOM Element (always the generic card initially)
+                            let s = document.querySelector(`[data-course-id="ia-aplicada-esencial"]`);
+                            if (!s) return;
+
+                            // If has access, UNLOCK IT
+                            if (hasAccess) {
+                                // Update Title if Starter
+                                if (courseId === "ia-aplicada-starter") {
+                                    s.querySelector("h3").textContent = "IA Aplicada · Pack Starter";
                                 }
-                                const i = r > 0 ? Math.min(Math.round(t / r * 100), 100) : 0;
-                                ! function (e, t, o) {
-                                    const a = e.querySelector(".tag"),
-                                        s = e.querySelector(".percent"),
-                                        r = e.querySelector(".fill"),
-                                        i = e.querySelector(".card-footer"),
-                                        l = e.querySelector(".progress-container"),
-                                        c = e.querySelector(".course-action-btn");
-                                    l.classList.remove("hidden"), s.textContent = `${t}%`, r.style.width = `${t}%`;
-                                    const d = `campus-curso-ia.html?course=${o}`;
-                                    c.href = d, c.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400"), c.classList.add("bg-teal-500", "hover:bg-teal-600"), c.addEventListener("click", () => {
-                                        n.logEvent("select_content", {
-                                            content_type: "course",
-                                            item_id: o,
-                                            item_name: "IA Aplicada · Esencial"
-                                        })
-                                    }), t >= 100 ? (a.textContent = "Completado", a.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full", r.style.backgroundColor = "var(--brand-green)", i.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${d}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`) : (a.textContent = "En progreso", a.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full", r.style.backgroundColor = "var(--brand-teal)", c.textContent = "Continuar aprendiendo"), lucide.createIcons()
-                                }(s, i, a)
-                            })) : $(s)
-                        }).catch(e => {
-                            console.error("Error verificando acceso:", e), $(s)
-                        })
+
+                                n.logEvent("unlock_content", { content_type: "course", item_id: courseId, method: "enrollment" });
+
+                                // Progress Listener
+                                const c = o.collection("userProgress").doc(e);
+                                c.onSnapshot(snap => {
+                                    let completed = 0;
+                                    const courseConfig = u[courseId]; // Use updated 'u' map
+                                    const total = courseConfig ? courseConfig.totalLessons : 0;
+
+                                    if (snap.exists && courseConfig) {
+                                        const progressData = snap.data()[courseId];
+                                        if (progressData && Array.isArray(progressData.completedLessons)) {
+                                            // Calculate progress... simplified for brevity as logic is same
+                                            const validSet = new Set();
+                                            courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
+                                            const userSet = new Set(progressData.completedLessons);
+                                            let count = 0;
+                                            userSet.forEach(lId => { if (validSet.has(lId)) count++; });
+                                            completed = count;
+                                        }
+                                    }
+
+                                    const percent = total > 0 ? Math.min(Math.round(completed / total * 100), 100) : 0;
+
+                                    // Update UI
+                                    const tag = s.querySelector(".tag");
+                                    const percentEl = s.querySelector(".percent");
+                                    const fill = s.querySelector(".fill");
+                                    const footer = s.querySelector(".card-footer");
+                                    const progCont = s.querySelector(".progress-container");
+                                    const btn = s.querySelector(".course-action-btn");
+
+                                    progCont.classList.remove("hidden");
+                                    percentEl.textContent = `${percent}%`;
+                                    fill.style.width = `${percent}%`;
+
+                                    const linkProps = `campus-curso-ia.html?course=${courseId}`; // Pass correct ID
+
+                                    btn.href = linkProps;
+                                    btn.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400");
+                                    btn.classList.add("bg-teal-500", "hover:bg-teal-600");
+                                    // Remove old listeners? Hard to do strictly, but cloning works
+                                    // We'll just set onclick to logging
+                                    btn.addEventListener("click", () => {
+                                        n.logEvent("select_content", { content_type: "course", item_id: courseId });
+                                    });
+
+                                    if (percent >= 100) {
+                                        tag.textContent = "Completado";
+                                        tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full";
+                                        fill.style.backgroundColor = "var(--brand-green)";
+                                        footer.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${linkProps}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
+                                        lucide.createIcons();
+                                    } else {
+                                        tag.textContent = "En progreso";
+                                        tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full";
+                                        fill.style.backgroundColor = "var(--brand-teal)";
+                                        btn.textContent = "Continuar aprendiendo";
+                                    }
+                                });
+                            } else {
+                                // Locked
+                                $(s);
+                            }
+                        }).catch(err => {
+                            console.error("Error verificando acceso:", err);
+                            $(document.querySelector(`[data-course-id="ia-aplicada-esencial"]`));
+                        });
                     }
 
                     async function k(e, t, n, a) {
@@ -858,11 +903,12 @@
                                         let hasAccess = false;
                                         const courseId = "ia-aplicada-esencial";
                                         const oldCourseId = "inteligencia-aplicada";
+                                        const starterId = "ia-aplicada-starter";
 
                                         // Check Enrollment
                                         if (userDoc.exists) {
                                             const data = userDoc.data();
-                                            if (data.enrollments && (data.enrollments[courseId] === true || data.enrollments[oldCourseId] === true)) {
+                                            if (data.enrollments && (data.enrollments[courseId] === true || data.enrollments[oldCourseId] === true || data.enrollments[starterId] === true)) {
                                                 hasAccess = true;
                                             }
                                         }
