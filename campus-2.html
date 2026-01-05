@@ -584,146 +584,7 @@
                     }, m = document.getElementById("profile-modal-overlay"), p = document.getElementById("profile-modal"), g = document.getElementById("avatar-button"), h = document.getElementById("cancel-profile-btn"), f = document.getElementById("close-profile-modal-btn"), v = document.getElementById("profile-form"), x = document.getElementById("profile-name-input"), y = document.getElementById("profile-rut-input"), C = document.getElementById("profile-email-input"), b = document.getElementById("profile-job-input"), w = document.getElementById("profile-country-select"), E = document.getElementById("profile-gender-select"), F = document.getElementById("profile-birthdate-input"), I = document.getElementById("profile-modal-title"), L = document.getElementById("profile-modal-subtitle"), T = document.getElementById("form-status"), S = document.getElementById("save-profile-btn"), P = document.getElementById("save-btn-text"), A = document.getElementById("save-spinner");
 
 
-                    function $(e) {
-                        const t = e.querySelector(".tag"),
-                            o = e.querySelector(".course-action-btn");
-                        e.dataset.courseId;
-                        t.textContent = "Requiere Inscripción", t.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full",
-                            o.textContent = "Inscríbete para Activar", o.href = "#", o.classList.remove("cursor-wait", "bg-gray-400"), o.classList.add("bg-slate-400", "hover:bg-slate-500");
-                        const n = o.cloneNode(!0);
-                        o.parentNode.replaceChild(n, o), n.addEventListener("click", async e => {
-                            e.preventDefault(), s()
-                        })
-                    }
 
-
-                    // DEFAULT: esencial card placeholder
-                    // Logic: Determine WHICH course the user has.
-                    // access essential doc to get enrollments map
-                    const l = o.collection("users").doc(e); // User Doc Ref
-                    const allowlist = o.collection("allowlist").doc(t.currentUser.email);
-
-                    Promise.all([allowlist.get(), l.get()]).then(([allowSnap, userSnap]) => {
-                        let hasAccess = false;
-                        let courseId = "ia-aplicada-esencial"; // Default to check/show
-
-                        const enrollments = userSnap.exists && userSnap.data().enrollments ? userSnap.data().enrollments : {};
-
-                        // Check Allowlist first
-                        if (allowSnap.exists && allowSnap.data().active) {
-                            const courses = allowSnap.data().courses || [];
-                            if (courses.includes("ia-aplicada-esencial")) { hasAccess = true; courseId = "ia-aplicada-esencial"; }
-                            else if (courses.includes("ia-aplicada-starter")) { hasAccess = true; courseId = "ia-aplicada-starter"; }
-                        }
-
-                        // Check Enrollments (Priority: Esencial > Starter)
-                        if (enrollments["ia-aplicada-esencial"]) { hasAccess = true; courseId = "ia-aplicada-esencial"; }
-                        else if (enrollments["ia-aplicada-starter"] && !hasAccess) { hasAccess = true; courseId = "ia-aplicada-starter"; }
-                        else if (enrollments["inteligencia-aplicada"] && !hasAccess) { hasAccess = true; courseId = "ia-aplicada-esencial"; } // Legacy support
-
-                        // Get DOM Element (always the generic card initially)
-                        let s = document.querySelector(`[data-course-id="ia-aplicada-esencial"]`);
-                        if (!s) return;
-
-                        // If has access, UNLOCK IT
-                        if (hasAccess) {
-                            // Update Title if Starter
-                            if (courseId === "ia-aplicada-starter") {
-                                s.querySelector("h3").textContent = "IA Aplicada · Pack Starter";
-                            }
-
-                            n.logEvent("unlock_content", { content_type: "course", item_id: courseId, method: "enrollment" });
-
-                            // Progress Listener
-                            const c = o.collection("userProgress").doc(e);
-                            c.onSnapshot(snap => {
-                                let completed = 0;
-                                const courseConfig = u[courseId]; // Use updated 'u' map
-                                const total = courseConfig ? courseConfig.totalLessons : 0;
-
-                                if (snap.exists && courseConfig) {
-                                    const progressData = snap.data()[courseId];
-                                    if (progressData && Array.isArray(progressData.completedLessons)) {
-                                        // Calculate progress... simplified for brevity as logic is same
-                                        const validSet = new Set();
-                                        courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
-                                        const userSet = new Set(progressData.completedLessons);
-                                        let count = 0;
-                                        userSet.forEach(lId => { if (validSet.has(lId)) count++; });
-                                        completed = count;
-                                    }
-                                }
-
-                                const percent = total > 0 ? Math.min(Math.round(completed / total * 100), 100) : 0;
-
-                                // Update UI
-                                const tag = s.querySelector(".tag");
-                                const percentEl = s.querySelector(".percent");
-                                const fill = s.querySelector(".fill");
-                                const footer = s.querySelector(".card-footer");
-                                const progCont = s.querySelector(".progress-container");
-                                const btn = s.querySelector(".course-action-btn");
-
-                                progCont.classList.remove("hidden");
-                                percentEl.textContent = `${percent}%`;
-                                fill.style.width = `${percent}%`;
-
-                                const linkProps = `campus-curso-ia.html?course=${courseId}`; // Pass correct ID
-
-                                btn.href = linkProps;
-                                btn.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400");
-                                btn.classList.add("bg-teal-500", "hover:bg-teal-600");
-                                // Remove old listeners? Hard to do strictly, but cloning works
-                                // We'll just set onclick to logging
-                                btn.addEventListener("click", () => {
-                                    n.logEvent("select_content", { content_type: "course", item_id: courseId });
-                                });
-
-                                if (percent >= 100) {
-                                    tag.textContent = "Completado";
-                                    tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full";
-                                    fill.style.backgroundColor = "var(--brand-green)";
-                                    footer.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${linkProps}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
-                                    lucide.createIcons();
-                                } else {
-                                    tag.textContent = "En progreso";
-                                    tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full";
-                                    fill.style.backgroundColor = "var(--brand-teal)";
-                                    btn.textContent = "Continuar aprendiendo";
-                                }
-                            });
-                            // UNLOCK PROMPTS APP CARD
-                            // Logic: If hasAccess (Starter or Esencial), unlock the Prompts card
-                            const promptsActions = document.getElementById("prompts-actions");
-                            if (promptsActions) {
-                                promptsActions.innerHTML = `
-                                        <a href="maestro-prompts-app.html" 
-                                           class="block text-center bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 mb-3 border border-teal-400">
-                                            🚀 Ingresar a la Herramienta
-                                        </a>
-                                        <a href="https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/resources%2F100-prompts-maestros.pdf?alt=media" target="_blank"
-                                           class="block w-full text-center bg-white border-2 border-slate-200 hover:border-teal-500 text-slate-600 hover:text-teal-600 font-bold py-3 px-5 rounded-xl transition-all">
-                                            📥 Descargar PDF
-                                        </a>
-                                    `;
-
-                                // Make card colorful to indicate active state
-                                const promptsCard = document.getElementById("prompts-card");
-                                if (promptsCard) {
-                                    promptsCard.classList.remove("border-gray-200");
-                                    promptsCard.classList.add("border-teal-400", "ring-4", "ring-teal-50");
-                                }
-                            }
-
-                        } else {
-                            // Locked
-                            $(s);
-                        }
-                    }).catch(err => {
-                        console.error("Error verificando acceso:", err);
-                        $(document.querySelector(`[data-course-id="ia-aplicada-esencial"]`));
-                    });
-                }
 
                     async function k(e, t, n, a) {
                         const s = document.getElementById(t);
@@ -853,270 +714,270 @@
                     // Setup Listeners for "Lazy" Validation
                     g.addEventListener("click", () => z(!1)), h.addEventListener("click", D), f.addEventListener("click", D);
 
-                // Input: Clear error (neutral) or show success if valid immediately. Do NOT show error while typing.
-                x.addEventListener("input", () => validateName(false));
-                y.addEventListener("input", () => validateRUT(false));
-                w.addEventListener("change", () => validateCountry(true)); // Select usually safe to validate on change
+                    // Input: Clear error (neutral) or show success if valid immediately. Do NOT show error while typing.
+                    x.addEventListener("input", () => validateName(false));
+                    y.addEventListener("input", () => validateRUT(false));
+                    w.addEventListener("change", () => validateCountry(true)); // Select usually safe to validate on change
 
-                // Blur: Show error if invalid
-                x.addEventListener("blur", () => validateName(true));
-                y.addEventListener("blur", () => validateRUT(true));
-                w.addEventListener("blur", () => validateCountry(true));
+                    // Blur: Show error if invalid
+                    x.addEventListener("blur", () => validateName(true));
+                    y.addEventListener("blur", () => validateRUT(true));
+                    w.addEventListener("blur", () => validateCountry(true));
 
-                v.addEventListener("submit", async e => {
-                    e.preventDefault();
+                    v.addEventListener("submit", async e => {
+                        e.preventDefault();
 
-                    // Validate All on Submit
-                    if (!validateAll()) {
-                        T.className = "text-center p-3 rounded-lg bg-yellow-100 text-yellow-700";
-                        T.textContent = "Por favor, completa los campos marcados en rojo.";
-                        T.classList.remove("hidden");
-                        return;
-                    }
-
-                    if (S.disabled) return; // Double check
-
-                    S.disabled = !0, P.textContent = "Guardando...", A.classList.remove("hidden"), T.classList.add("hidden");
-                    const n = t.currentUser,
-                        a = x.value.trim(),
-                        s = o.collection("users").doc(n.uid);
-                    try {
-                        a !== n.displayName && await n.updateProfile({
-                            displayName: a
-                        }), await s.set({
-                            displayName: a,
-                            email: n.email,
-                            rut: y.value.trim(),
-                            jobTitle: b.value.trim(),
-                            country: w.value,
-                            gender: E.value,
-                            birthdate: F.value,
-                            profileCompleted: !0
-                        }, {
-                            merge: !0
-                        }), document.querySelectorAll("#user-name, #welcome-name").forEach(e => e && (e.textContent = a)), T.className = "text-center p-3 rounded-lg bg-green-100 text-green-700", T.textContent = "¡Perfil actualizado con éxito!", T.classList.remove("hidden"), setTimeout(() => {
-                            D(), checkUserAccess(n.uid)
-                        }, 1500)
-                    } catch (e) {
-                        console.error("Error al guardar perfil:", e);
-                        T.className = "text-center p-3 rounded-lg bg-red-100 text-red-700";
-                        if (e.code === 'permission-denied') {
-                            T.textContent = "Error de permisos: No tienes autorización para modificar este perfil. Contacta soporte.";
-                        } else {
-                            T.textContent = `Hubo un error al guardar: ${e.message || "Inténtalo de nuevo."}`;
+                        // Validate All on Submit
+                        if (!validateAll()) {
+                            T.className = "text-center p-3 rounded-lg bg-yellow-100 text-yellow-700";
+                            T.textContent = "Por favor, completa los campos marcados en rojo.";
+                            T.classList.remove("hidden");
+                            return;
                         }
-                        T.classList.remove("hidden");
-                    } finally {
-                        S.disabled = false; // Re-enable
-                        P.textContent = "Guardar Cambios", A.classList.add("hidden")
-                    }
-                }), t.onAuthStateChanged(e => {
-                    if (e) {
-                        o.collection("users").doc(e.uid).get().then(t => {
-                            const o = (t.exists ? t.data() : {}).displayName || e.displayName || "Alumno";
-                            document.querySelectorAll("#user-name, #welcome-name").forEach(e => e && (e.textContent = o))
-                        }), document.getElementById("user-avatar").src = e.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(e.displayName || "A")}&background=14b8a6&color=fff`, document.getElementById("user-profile").classList.remove("hidden"), document.getElementById("logout-btn").addEventListener("click", e => {
-                            e.preventDefault(), t.signOut().then(() => window.location.href = "index.html")
-                        }),
-                            async function (e) {
-                                try {
-                                    console.log("[ProfileCheck] Checking profile for:", e.uid);
-                                    const t = await o.collection("users").doc(e.uid).get();
 
-                                    if (t.exists) {
-                                        const data = t.data();
-                                        console.log("[ProfileCheck] Exists:", true, "Completed:", data.profileCompleted);
-                                        if (data.profileCompleted === true) {
-                                            checkUserAccess(e.uid); // Load course content
+                        if (S.disabled) return; // Double check
+
+                        S.disabled = !0, P.textContent = "Guardando...", A.classList.remove("hidden"), T.classList.add("hidden");
+                        const n = t.currentUser,
+                            a = x.value.trim(),
+                            s = o.collection("users").doc(n.uid);
+                        try {
+                            a !== n.displayName && await n.updateProfile({
+                                displayName: a
+                            }), await s.set({
+                                displayName: a,
+                                email: n.email,
+                                rut: y.value.trim(),
+                                jobTitle: b.value.trim(),
+                                country: w.value,
+                                gender: E.value,
+                                birthdate: F.value,
+                                profileCompleted: !0
+                            }, {
+                                merge: !0
+                            }), document.querySelectorAll("#user-name, #welcome-name").forEach(e => e && (e.textContent = a)), T.className = "text-center p-3 rounded-lg bg-green-100 text-green-700", T.textContent = "¡Perfil actualizado con éxito!", T.classList.remove("hidden"), setTimeout(() => {
+                                D(), checkUserAccess(n.uid)
+                            }, 1500)
+                        } catch (e) {
+                            console.error("Error al guardar perfil:", e);
+                            T.className = "text-center p-3 rounded-lg bg-red-100 text-red-700";
+                            if (e.code === 'permission-denied') {
+                                T.textContent = "Error de permisos: No tienes autorización para modificar este perfil. Contacta soporte.";
+                            } else {
+                                T.textContent = `Hubo un error al guardar: ${e.message || "Inténtalo de nuevo."}`;
+                            }
+                            T.classList.remove("hidden");
+                        } finally {
+                            S.disabled = false; // Re-enable
+                            P.textContent = "Guardar Cambios", A.classList.add("hidden")
+                        }
+                    }), t.onAuthStateChanged(e => {
+                        if (e) {
+                            o.collection("users").doc(e.uid).get().then(t => {
+                                const o = (t.exists ? t.data() : {}).displayName || e.displayName || "Alumno";
+                                document.querySelectorAll("#user-name, #welcome-name").forEach(e => e && (e.textContent = o))
+                            }), document.getElementById("user-avatar").src = e.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(e.displayName || "A")}&background=14b8a6&color=fff`, document.getElementById("user-profile").classList.remove("hidden"), document.getElementById("logout-btn").addEventListener("click", e => {
+                                e.preventDefault(), t.signOut().then(() => window.location.href = "index.html")
+                            }),
+                                async function (e) {
+                                    try {
+                                        console.log("[ProfileCheck] Checking profile for:", e.uid);
+                                        const t = await o.collection("users").doc(e.uid).get();
+
+                                        if (t.exists) {
+                                            const data = t.data();
+                                            console.log("[ProfileCheck] Exists:", true, "Completed:", data.profileCompleted);
+                                            if (data.profileCompleted === true) {
+                                                checkUserAccess(e.uid); // Load course content
+                                            } else {
+                                                console.warn("[ProfileCheck] Profile incomplete. Opening modal.");
+                                                z(!0); // Open modal to complete profile
+                                            }
                                         } else {
-                                            console.warn("[ProfileCheck] Profile incomplete. Opening modal.");
-                                            z(!0); // Open modal to complete profile
+                                            console.warn("[ProfileCheck] Doc does not exist. Opening modal.");
+                                            z(!0); // Doc doesn't exist, treat as new user
                                         }
-                                    } else {
-                                        console.warn("[ProfileCheck] Doc does not exist. Opening modal.");
-                                        z(!0); // Doc doesn't exist, treat as new user
+                                    } catch (error) {
+                                        console.error("[ProfileCheck] Error verificando perfil:", error);
+                                        // NO abrir el modal automáticamente si hay error de conexión/permisos
+                                        // Esto evita el loop infinito si el usuario no tiene permisos de lectura
+                                        document.getElementById("form-status").textContent = "Error cargando tu perfil. Por favor recarga la página. (Conexión/Permisos)";
+                                        document.getElementById("form-status").classList.remove("hidden");
+                                        // Opcional: Mostrar un estado de error más global
                                     }
-                                } catch (error) {
-                                    console.error("[ProfileCheck] Error verificando perfil:", error);
-                                    // NO abrir el modal automáticamente si hay error de conexión/permisos
-                                    // Esto evita el loop infinito si el usuario no tiene permisos de lectura
-                                    document.getElementById("form-status").textContent = "Error cargando tu perfil. Por favor recarga la página. (Conexión/Permisos)";
-                                    document.getElementById("form-status").classList.remove("hidden");
-                                    // Opcional: Mostrar un estado de error más global
+                                }(e), k(e, "waitlist-btn", "waitingList_avanzado", {
+                                    default: "Unirme a la lista de espera",
+                                    alreadyIn: "¡Ya estás en la lista!",
+                                    adding: "Agregando...",
+                                    success: "¡Inscrito con éxito!",
+                                    error: "Error, intenta de nuevo",
+                                    defaultColor: "bg-blue-600",
+                                    hoverColor: "hover:bg-blue-700",
+                                    successColor: "bg-green-500",
+                                    errorColor: "bg-red-500"
+                                }), k(e, "reserve-btn", "preferentialReservations", {
+                                    default: "Reservar cupo preferente",
+                                    alreadyIn: "¡Ya tienes tu cupo!",
+                                    adding: "Reservando...",
+                                    success: "¡Cupo reservado!",
+                                    error: "Error, intenta de nuevo",
+                                    defaultColor: "bg-indigo-600",
+                                    hoverColor: "hover:bg-indigo-700",
+                                    successColor: "bg-green-500",
+                                    errorColor: "bg-red-500"
+                                }), async function (e) {
+                                    try {
+                                        const userRef = o.collection("users").doc(e.uid);
+                                        const allowRef = e.email ? o.collection("allowlist").doc(e.email) : null;
+
+                                        // Fetch both docs in parallel
+                                        const [userDoc, allowDoc] = await Promise.all([
+                                            userRef.get(),
+                                            allowRef ? allowRef.get() : Promise.resolve({ exists: false })
+                                        ]);
+
+                                        let hasAccess = false;
+                                        const courseId = "ia-aplicada-esencial";
+                                        const oldCourseId = "inteligencia-aplicada";
+                                        const starterId = "ia-aplicada-starter";
+
+                                        // Check Enrollment
+                                        if (userDoc.exists) {
+                                            const data = userDoc.data();
+                                            if (data.enrollments && (data.enrollments[courseId] === true || data.enrollments[oldCourseId] === true || data.enrollments[starterId] === true)) {
+                                                hasAccess = true;
+                                            }
+                                        }
+
+                                        // Check Allowlist if not enrolled
+                                        if (!hasAccess && allowDoc.exists) {
+                                            const data = allowDoc.data();
+                                            const courses = data.courses || [];
+                                            // Verify active and specific course access
+                                            let isAllowedCourse = courses.includes(courseId);
+                                            // Fallback for logic consistency
+                                            if (!isAllowedCourse) isAllowedCourse = courses.includes("programa-esencial");
+
+                                            if (data.active === true && isAllowedCourse) {
+                                                hasAccess = true;
+                                            }
+                                        }
+
+                                        if (hasAccess) {
+                                            const e = document.querySelector('a[href="#"][onclick*="showCouponModal"]');
+                                            e && (e.href = "maestro-prompts-app.html", e.onclick = function (e) {
+                                                const t = e.currentTarget;
+                                                t.innerHTML = "⚡ Entrando al Generador...", t.classList.add("opacity-75", "cursor-wait"), t.style.pointerEvents = "none", n.logEvent("select_content", {
+                                                    content_type: "tool",
+                                                    item_id: "maestro_prompts_app"
+                                                })
+                                            }, e.className = "mt-auto block text-center bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5", e.innerHTML = "⚡ Acceder al Generador");
+                                            const t = document.querySelector('button[onclick*="showCouponModal"]');
+                                            t && (t.onclick = downloadPromptsPDF, t.className = "mt-3 block w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1", t.innerHTML = "📥 Descargar 100 Prompts PDF")
+                                        }
+                                    } catch (e) {
+                                        console.error("Error al verificar enrollment:", e)
+                                    }
+                                }(e)
+                        } else window.location.href = "acceso.html"
+                    }), window.downloadPromptsPDF = async function (e) { const o = e ? e.currentTarget : null; let a = ""; o && (a = o.innerHTML, o.disabled = !0, o.innerHTML = "⏳ Generando y Descargando PDF...", o.classList.add("cursor-wait", "opacity-75")), n.logEvent("file_download", { file_extension: "pdf", file_name: "Maestro_Prompts_100_AGIA", link_url: window.location.href }); try { const e = t.currentUser; if (!e) return void (window.location.href = "acceso.html"); console.log("🔍 DEBUG - casesData existe?:", void 0 !== window.casesData), console.log("🔍 DEBUG - Cantidad inicial:", window.casesData?.length || 0), console.log("📥 Cargando prompts de forma segura..."), o && (o.innerHTML = "⏳ Descargando datos seguros..."); const n = await async function () { try { const e = firebase.functions().httpsCallable("getPromptsData"), t = await e(); return !!t.data.success && (window.casesData = t.data.data, console.log("✅ Prompts cargados de forma segura:", window.casesData.length), !0) } catch (e) { return console.error("Error al cargar prompts:", e), "functions/permission-denied" === e.code ? (alert("⚠️ Acceso Premium Requerido\n\nPara acceder a los prompts necesitas estar inscrito en el curso.\n\n¿Deseas inscribirte ahora?"), window.location.href = "landing-nuevo.html#pricing") : "functions/unauthenticated" === e.code ? window.location.href = "acceso.html" : alert("Error al cargar los datos. Por favor intenta nuevamente."), !1 } }(); if (!n) throw new Error("No se pudieron cargar los datos"); if (o && (o.innerHTML = "⏳ Creando PDF..."), !n) return void console.error("❌ No se pudieron cargar los prompts"); console.log("✅ Datos cargados, cantidad final:", window.casesData.length); const { jsPDF: a } = window.jspdf, l = new a, c = l.internal.pageSize.getWidth(), d = l.internal.pageSize.getHeight(), u = 20, m = c - 40, p = [20, 184, 166], g = [251, 191, 36], h = [30, 41, 59], f = [148, 163, 184]; l.setFillColor(255, 255, 255), l.rect(0, 0, c, d, "F"); try { const e = new Image; e.crossOrigin = "Anonymous", e.src = "Logo_AGIA.png", await new Promise((t, o) => { e.onload = t, e.onerror = () => { e.src = "Logo_AGIA.jpg", e.onload = t, e.onerror = o }, setTimeout(o, 5e3) }); const t = 100, o = t * (e.height / e.width), n = (c - t) / 2, a = 30; l.addImage(e, e.src.endsWith(".png") ? "PNG" : "JPEG", n, a, t, o); var s = Math.max(a + o + 20, 140), r = [30, 41, 59], i = [71, 85, 105] } catch (e) { console.warn("No se pudo cargar el logo:", e); s = 60, r = [30, 41, 59], i = [71, 85, 105] } l.setTextColor(...r), l.setFontSize(36), l.setFont("helvetica", "bold"), l.text("Maestro Prompts", c / 2, s, { align: "center" }), l.setFontSize(14), l.setFont("helvetica", "normal"), l.setTextColor(...i), l.text("100 Prompts Optimizados - Colección AGIA", c / 2, s + 12, { align: "center" }), l.setFillColor(...g), l.roundedRect(c / 2 - 35, s + 22, 70, 10, 3, 3, "F"), l.setTextColor(...r), l.setFontSize(9), l.setFont("helvetica", "bold"), l.text("EXCLUSIVE PREMIUM ACCESS", c / 2, s + 28.5, { align: "center" }); const v = s + 50; l.setLineWidth(.5), l.line(c / 2 - 20, v - 10, c / 2 + 20, v - 10), l.setTextColor(...r), l.setFontSize(11), l.setFont("helvetica", "bold"); const x = e.displayName || e.email.split("@")[0]; l.text(x, c / 2, v, { align: "center" }), l.setFontSize(10), l.setFont("helvetica", "normal"), l.setTextColor(...i), l.text(e.email, c / 2, v + 6, { align: "center" }), l.text(`Generado el ${(new Date).toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" })}`, c / 2, v + 12, { align: "center" }), l.setFontSize(10), l.setTextColor(100, 100, 100), l.setFont("helvetica", "normal"); const y = v + 35; l.text(l.splitTextToSize("Esta colección contiene 100 prompts optimizados con la metodología AGIA. Cada prompt diseñado para maximizar respuestas de ChatGPT, Claude, Gemini.", m - 20), u + 10, y), l.setFontSize(8), l.setTextColor(120, 120, 120), l.setFont("helvetica", "italic"); const C = l.splitTextToSize("Importante: Los resultados generados por IA pueden contener errores o imprecisiones. Siempre revise y valide la información antes de utilizarla en contextos críticos.", m - 20); l.text(C, c / 2, d - 25, { align: "center", maxWidth: m - 20 }), l.setFontSize(9), l.setTextColor(...f), l.setFont("helvetica", "normal"), l.text("aulagenia.cl | Todos los derechos reservados", c / 2, d - 15, { align: "center" }), l.addPage(); let b = u; l.setFillColor(245, 247, 250), l.rect(0, 0, c, 25, "F"), l.setTextColor(...h), l.setFontSize(18), l.setFont("helvetica", "bold"), l.text("Índice de Contenidos", u, 18), b = 35; const w = {}; casesData.forEach(e => { w[e.category] || (w[e.category] = []), w[e.category].push(e) }), l.setFontSize(10), l.setFont("helvetica", "normal"), Object.keys(w).forEach((e, t) => { b > d - 30 && (l.addPage(), b = u), l.setTextColor(...p), l.setFont("helvetica", "bold"), l.text(`${t + 1}. ${e}`, u, b), b += 6, l.setTextColor(80, 80, 80), l.setFont("helvetica", "normal"), w[e].forEach((e, t) => { b > d - 20 && (l.addPage(), b = u); const o = casesData.findIndex(t => t.id === e.id) + 1; l.text(`   - Prompt #${o}: ${e.title}`, u + 5, b), b += 5 }), b += 3 }); for (let e = 0; e < casesData.length; e++) { const t = casesData[e]; l.addPage(), b = u, l.setFillColor(...p), l.rect(0, 0, c, 15, "F"), l.setFontSize(10), l.setTextColor(255, 255, 255), l.setFont("helvetica", "bold"), l.text(`PROMPT #${e + 1}`, u, 10), l.text(`${e + 1}/${casesData.length}`, c - u, 10, { align: "right" }), b = 25, l.setFontSize(16), l.setFont("helvetica", "bold"), l.setTextColor(...h); const o = l.splitTextToSize(t.title, m); l.text(o, u, b), b += 7 * o.length + 3, l.setFillColor(250, 250, 250), l.roundedRect(u, b, 60, 8, 2, 2, "F"), l.setFontSize(8), l.setTextColor(...p), l.setFont("helvetica", "bold"), l.text(t.category, u + 2, b + 5.5); const n = t.metadata?.score ? `${Math.round(t.metadata.score / 5)} min` : "15 min"; if (l.setFillColor(255, 250, 230), l.roundedRect(u + 65, b, 30, 8, 2, 2, "F"), l.setTextColor(180, 140, 0), l.text(`${n}`, u + 67, b + 5.5), b += 13, t.problem) { l.setFontSize(9), l.setFont("helvetica", "italic"), l.setTextColor(100, 100, 100); const e = l.splitTextToSize(t.problem, m); l.text(e, u, b), b += 4 * e.length + 6 } l.setDrawColor(220, 220, 220), l.setLineWidth(.5), l.line(u, b, c - u, b), b += 8, l.setFillColor(245, 245, 250), l.roundedRect(u, b, m, 8, 2, 2, "F"), l.setFontSize(9), l.setTextColor(100, 100, 150), l.setFont("helvetica", "bold"), l.text("ROL", u + 3, b + 5.5), b += 12; const a = t.agiaPromptTagged.split("\n")[0].replace(/^(Eres|Actuas como|Tu rol es)/i, "").trim(); l.setFontSize(8.5), l.setFont("helvetica", "normal"), l.setTextColor(60, 60, 60); const s = l.splitTextToSize(a, m); for (let e = 0; e < Math.min(s.length, 3); e++)l.text(s[e], u, b), b += 3.5; b += 5, l.setFillColor(232, 245, 233), l.roundedRect(u, b, m, 8, 2, 2, "F"), l.setFontSize(9), l.setTextColor(0, 128, 0), l.setFont("helvetica", "bold"), l.text("PROMPT OPTIMIZADO (METODOLOGIA AGIA)", u + 3, b + 5.5), b += 12; const r = t.agiaPromptTagged.replace(/\*\*/g, "").replace(/[\u{1F300}-\u{1F9FF}]/gu, "").replace(/[📎📌✅⚡🔴🟡🟢❌⏱🚀]/g, "").replace(/\\n/g, "\n").trim(); l.setFontSize(8.5), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40); const i = l.splitTextToSize(r, m); for (let t = 0; t < i.length; t++)b > d - 25 && (l.setFontSize(8), l.setTextColor(...f), l.text("aulagenia.cl", c / 2, d - 10, { align: "center" }), l.addPage(), b = u + 10, l.setFillColor(250, 250, 250), l.rect(0, 0, c, 8, "F"), l.setFontSize(8), l.setTextColor(100, 100, 100), l.setFont("helvetica", "italic"), l.text(`Prompt #${e + 1} (continuacion)`, u, 6)), l.text(i[t], u, b), b += 3.5; if (b += 8, b > d - 60 && (l.addPage(), b = u), l.setDrawColor(220, 220, 220), l.setLineWidth(.5), l.line(u, b, c - u, b), b += 8, t.suggestedAI && (l.setFillColor(239, 246, 255), l.roundedRect(u, b, m, 10, 2, 2, "F"), l.setFontSize(8), l.setTextColor(37, 99, 235), l.setFont("helvetica", "bold"), l.text("• MODELO IDEAL", u + 3, b + 4), l.setFontSize(8), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40), l.text(t.suggestedAI, u + 3, b + 8), b += 12), t.metadata?.technique || t.exampleTip) { l.setFillColor(255, 251, 235), l.roundedRect(u, b, m, 10, 2, 2, "F"), l.setFontSize(8), l.setTextColor(217, 119, 6), l.setFont("helvetica", "bold"), l.text("• ESTRATEGIA", u + 3, b + 4), l.setFontSize(8), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40); const e = t.metadata?.technique || t.exampleTip || "", o = l.splitTextToSize(e, m - 6); l.text(o, u + 3, b + 8), b += Math.max(12, 6 + 3 * o.length) } if (t.validationTip) { l.setFillColor(240, 253, 244), l.roundedRect(u, b, m, 10, 2, 2, "F"), l.setFontSize(8), l.setTextColor(22, 163, 74), l.setFont("helvetica", "bold"), l.text("• VALIDACIÓN", u + 3, b + 4), l.setFontSize(8), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40); const e = l.splitTextToSize(t.validationTip, m - 6); l.text(e, u + 3, b + 8), b += Math.max(12, 6 + 3 * e.length) } l.setFontSize(8), l.setTextColor(...f), l.text("aulagenia.cl", c / 2, d - 10, { align: "center" }) } l.addPage(), l.setFillColor(...p), l.rect(0, 0, c, d, "F"), l.setTextColor(255, 255, 255), l.setFontSize(28), l.setFont("helvetica", "bold"), l.text("¡Gracias!", c / 2, 80, { align: "center" }), l.setFontSize(12), l.setFont("helvetica", "normal"), l.text(l.splitTextToSize("Esperamos que estos 100 prompts optimizados te ayuden a aprovechar al máximo la inteligencia artificial.", m - 40), c / 2, 100, { align: "center" }), l.setFontSize(14), l.setFont("helvetica", "bold"), l.text("¿Necesitas ayuda?", c / 2, 130, { align: "center" }), l.setFontSize(11), l.setFont("helvetica", "normal"), l.text("Contáctanos en: contacto@aulagenia.cl", c / 2, 145, { align: "center" }), l.text("Visítanos en: aulagenia.cl", c / 2, 155, { align: "center" }), l.save(`Maestro_Prompts_100_AGIA_${(new Date).toISOString().split("T")[0]}.pdf`), console.log("PDF descargado exitosamente") } catch (e) { console.error("Error PDF:", e), alert("Si el PDF no descarga, asegúrate de permitir ventanas emergentes.") } finally { o && (o.disabled = !1, o.innerHTML = a, o.classList.remove("cursor-wait", "opacity-75")) } }, t.onAuthStateChanged(async e => { if (e) { const t = o.collection("users").doc(e.uid), n = await t.get(); if (n.exists) { const e = n.data(), t = e.enrollments && (!0 === e.enrollments["ia-aplicada-esencial"] || !0 === e.enrollments["inteligencia-aplicada"]), o = localStorage.getItem("pdfDownloaded"); t && !o && "undefined" != typeof casesData && setTimeout(() => { downloadPromptsPDF(), localStorage.setItem("pdfDownloaded", "true") }, 2e3) } } }), lucide.createIcons()
+
+                    function checkUserAccess(uid) {
+                        const userRef = o.collection("users").doc(uid);
+                        const allowRef = o.collection("allowlist").doc(t.currentUser.email);
+
+                        Promise.all([allowRef.get(), userRef.get()]).then(([allowSnap, userSnap]) => {
+                            const enrollments = userSnap.exists && userSnap.data().enrollments ? userSnap.data().enrollments : {};
+                            const allowCourses = (allowSnap.exists && allowSnap.data().active) ? (allowSnap.data().courses || []) : [];
+
+                            let anyAccess = false;
+
+                            const courses = ["ia-aplicada-starter", "ia-aplicada-esencial"];
+
+                            courses.forEach(courseId => {
+                                let hasAccess = false;
+                                // 1. Check Allowlist
+                                if (allowCourses.includes(courseId)) hasAccess = true;
+                                // 2. Check Enrollment
+                                if (enrollments[courseId]) hasAccess = true;
+                                // 3. Legacy / Subsets
+                                if (courseId === "ia-aplicada-esencial" && enrollments["inteligencia-aplicada"]) hasAccess = true;
+                                // Starter is included in Esencial (explicit unlock for Starter card if user has Esencial)
+                                if (courseId === "ia-aplicada-starter" && (enrollments["ia-aplicada-esencial"] || allowCourses.includes("ia-aplicada-esencial") || enrollments["inteligencia-aplicada"])) hasAccess = true;
+
+                                const card = document.querySelector(`article[data-course-id="${courseId}"]`);
+                                if (hasAccess && card) {
+                                    anyAccess = true;
+                                    unlockCourseCard(card, courseId, uid);
                                 }
-                            }(e), k(e, "waitlist-btn", "waitingList_avanzado", {
-                                default: "Unirme a la lista de espera",
-                                alreadyIn: "¡Ya estás en la lista!",
-                                adding: "Agregando...",
-                                success: "¡Inscrito con éxito!",
-                                error: "Error, intenta de nuevo",
-                                defaultColor: "bg-blue-600",
-                                hoverColor: "hover:bg-blue-700",
-                                successColor: "bg-green-500",
-                                errorColor: "bg-red-500"
-                            }), k(e, "reserve-btn", "preferentialReservations", {
-                                default: "Reservar cupo preferente",
-                                alreadyIn: "¡Ya tienes tu cupo!",
-                                adding: "Reservando...",
-                                success: "¡Cupo reservado!",
-                                error: "Error, intenta de nuevo",
-                                defaultColor: "bg-indigo-600",
-                                hoverColor: "hover:bg-indigo-700",
-                                successColor: "bg-green-500",
-                                errorColor: "bg-red-500"
-                            }), async function (e) {
-                                try {
-                                    const userRef = o.collection("users").doc(e.uid);
-                                    const allowRef = e.email ? o.collection("allowlist").doc(e.email) : null;
+                            });
 
-                                    // Fetch both docs in parallel
-                                    const [userDoc, allowDoc] = await Promise.all([
-                                        userRef.get(),
-                                        allowRef ? allowRef.get() : Promise.resolve({ exists: false })
-                                    ]);
+                            // Handle Prompts Card
+                            if (anyAccess) {
+                                unlockPromptsCard();
+                            }
 
-                                    let hasAccess = false;
-                                    const courseId = "ia-aplicada-esencial";
-                                    const oldCourseId = "inteligencia-aplicada";
-                                    const starterId = "ia-aplicada-starter";
+                        }).catch(err => {
+                            console.error("Error verifying access:", err);
+                        });
+                    }
 
-                                    // Check Enrollment
-                                    if (userDoc.exists) {
-                                        const data = userDoc.data();
-                                        if (data.enrollments && (data.enrollments[courseId] === true || data.enrollments[oldCourseId] === true || data.enrollments[starterId] === true)) {
-                                            hasAccess = true;
-                                        }
-                                    }
+                    function unlockCourseCard(card, courseId, uid) {
+                        n.logEvent("unlock_content", { content_type: "course", item_id: courseId, method: "enrollment" });
 
-                                    // Check Allowlist if not enrolled
-                                    if (!hasAccess && allowDoc.exists) {
-                                        const data = allowDoc.data();
-                                        const courses = data.courses || [];
-                                        // Verify active and specific course access
-                                        let isAllowedCourse = courses.includes(courseId);
-                                        // Fallback for logic consistency
-                                        if (!isAllowedCourse) isAllowedCourse = courses.includes("programa-esencial");
+                        // Progress Listener
+                        const progRef = o.collection("userProgress").doc(uid);
+                        progRef.onSnapshot(snap => {
+                            let completed = 0;
+                            const courseConfig = u[courseId];
+                            const total = courseConfig ? courseConfig.totalLessons : 0;
 
-                                        if (data.active === true && isAllowedCourse) {
-                                            hasAccess = true;
-                                        }
-                                    }
-
-                                    if (hasAccess) {
-                                        const e = document.querySelector('a[href="#"][onclick*="showCouponModal"]');
-                                        e && (e.href = "maestro-prompts-app.html", e.onclick = function (e) {
-                                            const t = e.currentTarget;
-                                            t.innerHTML = "⚡ Entrando al Generador...", t.classList.add("opacity-75", "cursor-wait"), t.style.pointerEvents = "none", n.logEvent("select_content", {
-                                                content_type: "tool",
-                                                item_id: "maestro_prompts_app"
-                                            })
-                                        }, e.className = "mt-auto block text-center bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5", e.innerHTML = "⚡ Acceder al Generador");
-                                        const t = document.querySelector('button[onclick*="showCouponModal"]');
-                                        t && (t.onclick = downloadPromptsPDF, t.className = "mt-3 block w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1", t.innerHTML = "📥 Descargar 100 Prompts PDF")
-                                    }
-                                } catch (e) {
-                                    console.error("Error al verificar enrollment:", e)
+                            if (snap.exists && courseConfig) {
+                                const progressData = snap.data()[courseId];
+                                if (progressData && Array.isArray(progressData.completedLessons)) {
+                                    const validSet = new Set();
+                                    courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
+                                    const userSet = new Set(progressData.completedLessons);
+                                    let count = 0;
+                                    userSet.forEach(lId => { if (validSet.has(lId)) count++; });
+                                    completed = count;
                                 }
-                            }(e)
-                    } else window.location.href = "acceso.html"
-                }), window.downloadPromptsPDF = async function (e) { const o = e ? e.currentTarget : null; let a = ""; o && (a = o.innerHTML, o.disabled = !0, o.innerHTML = "⏳ Generando y Descargando PDF...", o.classList.add("cursor-wait", "opacity-75")), n.logEvent("file_download", { file_extension: "pdf", file_name: "Maestro_Prompts_100_AGIA", link_url: window.location.href }); try { const e = t.currentUser; if (!e) return void (window.location.href = "acceso.html"); console.log("🔍 DEBUG - casesData existe?:", void 0 !== window.casesData), console.log("🔍 DEBUG - Cantidad inicial:", window.casesData?.length || 0), console.log("📥 Cargando prompts de forma segura..."), o && (o.innerHTML = "⏳ Descargando datos seguros..."); const n = await async function () { try { const e = firebase.functions().httpsCallable("getPromptsData"), t = await e(); return !!t.data.success && (window.casesData = t.data.data, console.log("✅ Prompts cargados de forma segura:", window.casesData.length), !0) } catch (e) { return console.error("Error al cargar prompts:", e), "functions/permission-denied" === e.code ? (alert("⚠️ Acceso Premium Requerido\n\nPara acceder a los prompts necesitas estar inscrito en el curso.\n\n¿Deseas inscribirte ahora?"), window.location.href = "landing-nuevo.html#pricing") : "functions/unauthenticated" === e.code ? window.location.href = "acceso.html" : alert("Error al cargar los datos. Por favor intenta nuevamente."), !1 } }(); if (!n) throw new Error("No se pudieron cargar los datos"); if (o && (o.innerHTML = "⏳ Creando PDF..."), !n) return void console.error("❌ No se pudieron cargar los prompts"); console.log("✅ Datos cargados, cantidad final:", window.casesData.length); const { jsPDF: a } = window.jspdf, l = new a, c = l.internal.pageSize.getWidth(), d = l.internal.pageSize.getHeight(), u = 20, m = c - 40, p = [20, 184, 166], g = [251, 191, 36], h = [30, 41, 59], f = [148, 163, 184]; l.setFillColor(255, 255, 255), l.rect(0, 0, c, d, "F"); try { const e = new Image; e.crossOrigin = "Anonymous", e.src = "Logo_AGIA.png", await new Promise((t, o) => { e.onload = t, e.onerror = () => { e.src = "Logo_AGIA.jpg", e.onload = t, e.onerror = o }, setTimeout(o, 5e3) }); const t = 100, o = t * (e.height / e.width), n = (c - t) / 2, a = 30; l.addImage(e, e.src.endsWith(".png") ? "PNG" : "JPEG", n, a, t, o); var s = Math.max(a + o + 20, 140), r = [30, 41, 59], i = [71, 85, 105] } catch (e) { console.warn("No se pudo cargar el logo:", e); s = 60, r = [30, 41, 59], i = [71, 85, 105] } l.setTextColor(...r), l.setFontSize(36), l.setFont("helvetica", "bold"), l.text("Maestro Prompts", c / 2, s, { align: "center" }), l.setFontSize(14), l.setFont("helvetica", "normal"), l.setTextColor(...i), l.text("100 Prompts Optimizados - Colección AGIA", c / 2, s + 12, { align: "center" }), l.setFillColor(...g), l.roundedRect(c / 2 - 35, s + 22, 70, 10, 3, 3, "F"), l.setTextColor(...r), l.setFontSize(9), l.setFont("helvetica", "bold"), l.text("EXCLUSIVE PREMIUM ACCESS", c / 2, s + 28.5, { align: "center" }); const v = s + 50; l.setLineWidth(.5), l.line(c / 2 - 20, v - 10, c / 2 + 20, v - 10), l.setTextColor(...r), l.setFontSize(11), l.setFont("helvetica", "bold"); const x = e.displayName || e.email.split("@")[0]; l.text(x, c / 2, v, { align: "center" }), l.setFontSize(10), l.setFont("helvetica", "normal"), l.setTextColor(...i), l.text(e.email, c / 2, v + 6, { align: "center" }), l.text(`Generado el ${(new Date).toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" })}`, c / 2, v + 12, { align: "center" }), l.setFontSize(10), l.setTextColor(100, 100, 100), l.setFont("helvetica", "normal"); const y = v + 35; l.text(l.splitTextToSize("Esta colección contiene 100 prompts optimizados con la metodología AGIA. Cada prompt diseñado para maximizar respuestas de ChatGPT, Claude, Gemini.", m - 20), u + 10, y), l.setFontSize(8), l.setTextColor(120, 120, 120), l.setFont("helvetica", "italic"); const C = l.splitTextToSize("Importante: Los resultados generados por IA pueden contener errores o imprecisiones. Siempre revise y valide la información antes de utilizarla en contextos críticos.", m - 20); l.text(C, c / 2, d - 25, { align: "center", maxWidth: m - 20 }), l.setFontSize(9), l.setTextColor(...f), l.setFont("helvetica", "normal"), l.text("aulagenia.cl | Todos los derechos reservados", c / 2, d - 15, { align: "center" }), l.addPage(); let b = u; l.setFillColor(245, 247, 250), l.rect(0, 0, c, 25, "F"), l.setTextColor(...h), l.setFontSize(18), l.setFont("helvetica", "bold"), l.text("Índice de Contenidos", u, 18), b = 35; const w = {}; casesData.forEach(e => { w[e.category] || (w[e.category] = []), w[e.category].push(e) }), l.setFontSize(10), l.setFont("helvetica", "normal"), Object.keys(w).forEach((e, t) => { b > d - 30 && (l.addPage(), b = u), l.setTextColor(...p), l.setFont("helvetica", "bold"), l.text(`${t + 1}. ${e}`, u, b), b += 6, l.setTextColor(80, 80, 80), l.setFont("helvetica", "normal"), w[e].forEach((e, t) => { b > d - 20 && (l.addPage(), b = u); const o = casesData.findIndex(t => t.id === e.id) + 1; l.text(`   - Prompt #${o}: ${e.title}`, u + 5, b), b += 5 }), b += 3 }); for (let e = 0; e < casesData.length; e++) { const t = casesData[e]; l.addPage(), b = u, l.setFillColor(...p), l.rect(0, 0, c, 15, "F"), l.setFontSize(10), l.setTextColor(255, 255, 255), l.setFont("helvetica", "bold"), l.text(`PROMPT #${e + 1}`, u, 10), l.text(`${e + 1}/${casesData.length}`, c - u, 10, { align: "right" }), b = 25, l.setFontSize(16), l.setFont("helvetica", "bold"), l.setTextColor(...h); const o = l.splitTextToSize(t.title, m); l.text(o, u, b), b += 7 * o.length + 3, l.setFillColor(250, 250, 250), l.roundedRect(u, b, 60, 8, 2, 2, "F"), l.setFontSize(8), l.setTextColor(...p), l.setFont("helvetica", "bold"), l.text(t.category, u + 2, b + 5.5); const n = t.metadata?.score ? `${Math.round(t.metadata.score / 5)} min` : "15 min"; if (l.setFillColor(255, 250, 230), l.roundedRect(u + 65, b, 30, 8, 2, 2, "F"), l.setTextColor(180, 140, 0), l.text(`${n}`, u + 67, b + 5.5), b += 13, t.problem) { l.setFontSize(9), l.setFont("helvetica", "italic"), l.setTextColor(100, 100, 100); const e = l.splitTextToSize(t.problem, m); l.text(e, u, b), b += 4 * e.length + 6 } l.setDrawColor(220, 220, 220), l.setLineWidth(.5), l.line(u, b, c - u, b), b += 8, l.setFillColor(245, 245, 250), l.roundedRect(u, b, m, 8, 2, 2, "F"), l.setFontSize(9), l.setTextColor(100, 100, 150), l.setFont("helvetica", "bold"), l.text("ROL", u + 3, b + 5.5), b += 12; const a = t.agiaPromptTagged.split("\n")[0].replace(/^(Eres|Actuas como|Tu rol es)/i, "").trim(); l.setFontSize(8.5), l.setFont("helvetica", "normal"), l.setTextColor(60, 60, 60); const s = l.splitTextToSize(a, m); for (let e = 0; e < Math.min(s.length, 3); e++)l.text(s[e], u, b), b += 3.5; b += 5, l.setFillColor(232, 245, 233), l.roundedRect(u, b, m, 8, 2, 2, "F"), l.setFontSize(9), l.setTextColor(0, 128, 0), l.setFont("helvetica", "bold"), l.text("PROMPT OPTIMIZADO (METODOLOGIA AGIA)", u + 3, b + 5.5), b += 12; const r = t.agiaPromptTagged.replace(/\*\*/g, "").replace(/[\u{1F300}-\u{1F9FF}]/gu, "").replace(/[📎📌✅⚡🔴🟡🟢❌⏱🚀]/g, "").replace(/\\n/g, "\n").trim(); l.setFontSize(8.5), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40); const i = l.splitTextToSize(r, m); for (let t = 0; t < i.length; t++)b > d - 25 && (l.setFontSize(8), l.setTextColor(...f), l.text("aulagenia.cl", c / 2, d - 10, { align: "center" }), l.addPage(), b = u + 10, l.setFillColor(250, 250, 250), l.rect(0, 0, c, 8, "F"), l.setFontSize(8), l.setTextColor(100, 100, 100), l.setFont("helvetica", "italic"), l.text(`Prompt #${e + 1} (continuacion)`, u, 6)), l.text(i[t], u, b), b += 3.5; if (b += 8, b > d - 60 && (l.addPage(), b = u), l.setDrawColor(220, 220, 220), l.setLineWidth(.5), l.line(u, b, c - u, b), b += 8, t.suggestedAI && (l.setFillColor(239, 246, 255), l.roundedRect(u, b, m, 10, 2, 2, "F"), l.setFontSize(8), l.setTextColor(37, 99, 235), l.setFont("helvetica", "bold"), l.text("• MODELO IDEAL", u + 3, b + 4), l.setFontSize(8), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40), l.text(t.suggestedAI, u + 3, b + 8), b += 12), t.metadata?.technique || t.exampleTip) { l.setFillColor(255, 251, 235), l.roundedRect(u, b, m, 10, 2, 2, "F"), l.setFontSize(8), l.setTextColor(217, 119, 6), l.setFont("helvetica", "bold"), l.text("• ESTRATEGIA", u + 3, b + 4), l.setFontSize(8), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40); const e = t.metadata?.technique || t.exampleTip || "", o = l.splitTextToSize(e, m - 6); l.text(o, u + 3, b + 8), b += Math.max(12, 6 + 3 * o.length) } if (t.validationTip) { l.setFillColor(240, 253, 244), l.roundedRect(u, b, m, 10, 2, 2, "F"), l.setFontSize(8), l.setTextColor(22, 163, 74), l.setFont("helvetica", "bold"), l.text("• VALIDACIÓN", u + 3, b + 4), l.setFontSize(8), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40); const e = l.splitTextToSize(t.validationTip, m - 6); l.text(e, u + 3, b + 8), b += Math.max(12, 6 + 3 * e.length) } l.setFontSize(8), l.setTextColor(...f), l.text("aulagenia.cl", c / 2, d - 10, { align: "center" }) } l.addPage(), l.setFillColor(...p), l.rect(0, 0, c, d, "F"), l.setTextColor(255, 255, 255), l.setFontSize(28), l.setFont("helvetica", "bold"), l.text("¡Gracias!", c / 2, 80, { align: "center" }), l.setFontSize(12), l.setFont("helvetica", "normal"), l.text(l.splitTextToSize("Esperamos que estos 100 prompts optimizados te ayuden a aprovechar al máximo la inteligencia artificial.", m - 40), c / 2, 100, { align: "center" }), l.setFontSize(14), l.setFont("helvetica", "bold"), l.text("¿Necesitas ayuda?", c / 2, 130, { align: "center" }), l.setFontSize(11), l.setFont("helvetica", "normal"), l.text("Contáctanos en: contacto@aulagenia.cl", c / 2, 145, { align: "center" }), l.text("Visítanos en: aulagenia.cl", c / 2, 155, { align: "center" }), l.save(`Maestro_Prompts_100_AGIA_${(new Date).toISOString().split("T")[0]}.pdf`), console.log("PDF descargado exitosamente") } catch (e) { console.error("Error PDF:", e), alert("Si el PDF no descarga, asegúrate de permitir ventanas emergentes.") } finally { o && (o.disabled = !1, o.innerHTML = a, o.classList.remove("cursor-wait", "opacity-75")) } }, t.onAuthStateChanged(async e => { if (e) { const t = o.collection("users").doc(e.uid), n = await t.get(); if (n.exists) { const e = n.data(), t = e.enrollments && (!0 === e.enrollments["ia-aplicada-esencial"] || !0 === e.enrollments["inteligencia-aplicada"]), o = localStorage.getItem("pdfDownloaded"); t && !o && "undefined" != typeof casesData && setTimeout(() => { downloadPromptsPDF(), localStorage.setItem("pdfDownloaded", "true") }, 2e3) } } }), lucide.createIcons()
+                            }
 
-                function checkUserAccess(uid) {
-                    const userRef = o.collection("users").doc(uid);
-                    const allowRef = o.collection("allowlist").doc(t.currentUser.email);
+                            const percent = total > 0 ? Math.min(Math.round(completed / total * 100), 100) : 0;
 
-                    Promise.all([allowRef.get(), userRef.get()]).then(([allowSnap, userSnap]) => {
-                        const enrollments = userSnap.exists && userSnap.data().enrollments ? userSnap.data().enrollments : {};
-                        const allowCourses = (allowSnap.exists && allowSnap.data().active) ? (allowSnap.data().courses || []) : [];
+                            // Update UI
+                            const tag = card.querySelector(".tag");
+                            const percentEl = card.querySelector(".percent");
+                            const fill = card.querySelector(".fill");
+                            const footer = card.querySelector(".card-footer");
+                            const progCont = card.querySelector(".progress-container");
 
-                        let anyAccess = false;
+                            progCont.classList.remove("hidden");
+                            percentEl.textContent = `${percent}%`;
+                            fill.style.width = `${percent}%`;
 
-                        const courses = ["ia-aplicada-starter", "ia-aplicada-esencial"];
+                            const linkProps = `campus-curso-ia.html?course=${courseId}`;
 
-                        courses.forEach(courseId => {
-                            let hasAccess = false;
-                            // 1. Check Allowlist
-                            if (allowCourses.includes(courseId)) hasAccess = true;
-                            // 2. Check Enrollment
-                            if (enrollments[courseId]) hasAccess = true;
-                            // 3. Legacy / Subsets
-                            if (courseId === "ia-aplicada-esencial" && enrollments["inteligencia-aplicada"]) hasAccess = true;
-                            // Starter is included in Esencial (explicit unlock for Starter card if user has Esencial)
-                            if (courseId === "ia-aplicada-starter" && (enrollments["ia-aplicada-esencial"] || allowCourses.includes("ia-aplicada-esencial") || enrollments["inteligencia-aplicada"])) hasAccess = true;
-
-                            const card = document.querySelector(`article[data-course-id="${courseId}"]`);
-                            if (hasAccess && card) {
-                                anyAccess = true;
-                                unlockCourseCard(card, courseId, uid);
+                            if (percent >= 100) {
+                                tag.textContent = "Completado";
+                                tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full";
+                                fill.style.backgroundColor = "var(--brand-green)";
+                                footer.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${linkProps}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
+                                lucide.createIcons();
+                            } else {
+                                tag.textContent = "En progreso";
+                                tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full";
+                                fill.style.backgroundColor = "var(--brand-teal)";
+                                footer.innerHTML = `<a href="${linkProps}" class="course-action-btn block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Continuar aprendiendo</a>`;
                             }
                         });
+                    }
 
-                        // Handle Prompts Card
-                        if (anyAccess) {
-                            unlockPromptsCard();
-                        }
-
-                    }).catch(err => {
-                        console.error("Error verifying access:", err);
-                    });
-                }
-
-                function unlockCourseCard(card, courseId, uid) {
-                    n.logEvent("unlock_content", { content_type: "course", item_id: courseId, method: "enrollment" });
-
-                    // Progress Listener
-                    const progRef = o.collection("userProgress").doc(uid);
-                    progRef.onSnapshot(snap => {
-                        let completed = 0;
-                        const courseConfig = u[courseId];
-                        const total = courseConfig ? courseConfig.totalLessons : 0;
-
-                        if (snap.exists && courseConfig) {
-                            const progressData = snap.data()[courseId];
-                            if (progressData && Array.isArray(progressData.completedLessons)) {
-                                const validSet = new Set();
-                                courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
-                                const userSet = new Set(progressData.completedLessons);
-                                let count = 0;
-                                userSet.forEach(lId => { if (validSet.has(lId)) count++; });
-                                completed = count;
-                            }
-                        }
-
-                        const percent = total > 0 ? Math.min(Math.round(completed / total * 100), 100) : 0;
-
-                        // Update UI
-                        const tag = card.querySelector(".tag");
-                        const percentEl = card.querySelector(".percent");
-                        const fill = card.querySelector(".fill");
-                        const footer = card.querySelector(".card-footer");
-                        const progCont = card.querySelector(".progress-container");
-
-                        progCont.classList.remove("hidden");
-                        percentEl.textContent = `${percent}%`;
-                        fill.style.width = `${percent}%`;
-
-                        const linkProps = `campus-curso-ia.html?course=${courseId}`;
-
-                        if (percent >= 100) {
-                            tag.textContent = "Completado";
-                            tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full";
-                            fill.style.backgroundColor = "var(--brand-green)";
-                            footer.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${linkProps}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
-                            lucide.createIcons();
-                        } else {
-                            tag.textContent = "En progreso";
-                            tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full";
-                            fill.style.backgroundColor = "var(--brand-teal)";
-                            footer.innerHTML = `<a href="${linkProps}" class="course-action-btn block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Continuar aprendiendo</a>`;
-                        }
-                    });
-                }
-
-                function unlockPromptsCard() {
-                    const promptsActions = document.getElementById("prompts-actions");
-                    if (promptsActions) {
-                        promptsActions.innerHTML = `
+                    function unlockPromptsCard() {
+                        const promptsActions = document.getElementById("prompts-actions");
+                        if (promptsActions) {
+                            promptsActions.innerHTML = `
                                 <a href="maestro-prompts-app.html" 
                                    class="block text-center bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 mb-3 border border-teal-400">
                                     🚀 Ingresar a la Herramienta
@@ -1126,98 +987,98 @@
                                     📥 Descargar PDF
                                 </a>
                             `;
-                        const promptsCard = document.getElementById("prompts-card");
-                        if (promptsCard) {
-                            promptsCard.classList.remove("border-gray-200");
-                            promptsCard.classList.add("border-teal-400", "ring-4", "ring-teal-50");
-                        }
-                    }
-                }
-
-                function setupLockedCard(card, title, buttonText, onClickAction) {
-                    const tag = card.querySelector(".tag");
-                    const h3 = card.querySelector("h3");
-                    const btn = card.querySelector(".course-action-btn");
-                    const progressContainer = card.querySelector(".progress-container");
-
-                    if (progressContainer) progressContainer.classList.add("hidden");
-
-                    if (h3 && title) h3.textContent = title;
-
-                    if (tag) {
-                        tag.textContent = "Requiere Inscripción";
-                        tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full";
-                    }
-
-                    if (btn) {
-                        btn.textContent = buttonText;
-                        btn.innerHTML = buttonText; // Force update
-                        btn.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400");
-                        btn.classList.add("bg-teal-600", "hover:bg-teal-700", "text-white");
-                        btn.setAttribute("onclick", ""); // Remove implementation attribute handlers
-
-                        // Clone to remove old listeners
-                        const newBtn = btn.cloneNode(true);
-                        btn.parentNode.replaceChild(newBtn, btn);
-
-                        newBtn.addEventListener("click", async (e) => {
-                            e.preventDefault();
-                            if (onClickAction) onClickAction();
-                        });
-                    }
-                }
-
-                // UPGRADE-AWARE ACCESS CHECK (Overrides previous definition)
-                function checkUserAccess(uid) {
-                    const userRef = o.collection("users").doc(uid);
-                    const allowRef = o.collection("allowlist").doc(t.currentUser.email);
-
-                    Promise.all([allowRef.get(), userRef.get()]).then(([allowSnap, userSnap]) => {
-                        const enrollments = userSnap.exists && userSnap.data().enrollments ? userSnap.data().enrollments : {};
-                        const allowCourses = (allowSnap.exists && allowSnap.data().active) ? (allowSnap.data().courses || []) : [];
-
-                        // Determine Access Status
-                        const hasStarter = enrollments["ia-aplicada-starter"] || allowCourses.includes("ia-aplicada-starter") || enrollments["ia-aplicada-esencial"];
-                        const hasEsencial = enrollments["ia-aplicada-esencial"] || allowCourses.includes("ia-aplicada-esencial") || enrollments["inteligencia-aplicada"];
-
-                        let anyAccess = hasStarter || hasEsencial;
-
-                        // 1. Handle STARTER Card
-                        const starterCard = document.querySelector(`article[data-course-id="ia-aplicada-starter"]`);
-                        if (starterCard) {
-                            if (hasStarter) {
-                                unlockCourseCard(starterCard, "ia-aplicada-starter", uid);
-                            } else {
-                                setupLockedCard(starterCard, "IA Aplicada · Starter", "Inscribirme por US$5", () => buyCourse("ia-aplicada-starter", "LANZAMIENTO"));
+                            const promptsCard = document.getElementById("prompts-card");
+                            if (promptsCard) {
+                                promptsCard.classList.remove("border-gray-200");
+                                promptsCard.classList.add("border-teal-400", "ring-4", "ring-teal-50");
                             }
                         }
+                    }
 
-                        // 2. Handle ESENCIAL Card
-                        const esencialCard = document.querySelector(`article[data-course-id="ia-aplicada-esencial"]`);
-                        if (esencialCard) {
-                            if (hasEsencial) {
-                                unlockCourseCard(esencialCard, "ia-aplicada-esencial", uid);
-                            } else {
-                                // Logic for Upgrade vs Full Purchase
+                    function setupLockedCard(card, title, buttonText, onClickAction) {
+                        const tag = card.querySelector(".tag");
+                        const h3 = card.querySelector("h3");
+                        const btn = card.querySelector(".course-action-btn");
+                        const progressContainer = card.querySelector(".progress-container");
+
+                        if (progressContainer) progressContainer.classList.add("hidden");
+
+                        if (h3 && title) h3.textContent = title;
+
+                        if (tag) {
+                            tag.textContent = "Requiere Inscripción";
+                            tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full";
+                        }
+
+                        if (btn) {
+                            btn.textContent = buttonText;
+                            btn.innerHTML = buttonText; // Force update
+                            btn.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400");
+                            btn.classList.add("bg-teal-600", "hover:bg-teal-700", "text-white");
+                            btn.setAttribute("onclick", ""); // Remove implementation attribute handlers
+
+                            // Clone to remove old listeners
+                            const newBtn = btn.cloneNode(true);
+                            btn.parentNode.replaceChild(newBtn, btn);
+
+                            newBtn.addEventListener("click", async (e) => {
+                                e.preventDefault();
+                                if (onClickAction) onClickAction();
+                            });
+                        }
+                    }
+
+                    // UPGRADE-AWARE ACCESS CHECK (Overrides previous definition)
+                    function checkUserAccess(uid) {
+                        const userRef = o.collection("users").doc(uid);
+                        const allowRef = o.collection("allowlist").doc(t.currentUser.email);
+
+                        Promise.all([allowRef.get(), userRef.get()]).then(([allowSnap, userSnap]) => {
+                            const enrollments = userSnap.exists && userSnap.data().enrollments ? userSnap.data().enrollments : {};
+                            const allowCourses = (allowSnap.exists && allowSnap.data().active) ? (allowSnap.data().courses || []) : [];
+
+                            // Determine Access Status
+                            const hasStarter = enrollments["ia-aplicada-starter"] || allowCourses.includes("ia-aplicada-starter") || enrollments["ia-aplicada-esencial"];
+                            const hasEsencial = enrollments["ia-aplicada-esencial"] || allowCourses.includes("ia-aplicada-esencial") || enrollments["inteligencia-aplicada"];
+
+                            let anyAccess = hasStarter || hasEsencial;
+
+                            // 1. Handle STARTER Card
+                            const starterCard = document.querySelector(`article[data-course-id="ia-aplicada-starter"]`);
+                            if (starterCard) {
                                 if (hasStarter) {
-                                    // Upgrade Path
-                                    setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Mejorar a Esencial (US$15)", () => buyCourse("ia-aplicada-esencial", "UPGRADESTARTER"));
+                                    unlockCourseCard(starterCard, "ia-aplicada-starter", uid);
                                 } else {
-                                    // Full Purchase Path
-                                    setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Inscribirme por US$20", () => buyCourse("ia-aplicada-esencial", "FUNDADOR"));
+                                    setupLockedCard(starterCard, "IA Aplicada · Starter", "Inscribirme por US$5", () => buyCourse("ia-aplicada-starter", "LANZAMIENTO"));
                                 }
                             }
-                        }
 
-                        // Handle Prompts Card
-                        if (anyAccess) {
-                            unlockPromptsCard();
-                        }
+                            // 2. Handle ESENCIAL Card
+                            const esencialCard = document.querySelector(`article[data-course-id="ia-aplicada-esencial"]`);
+                            if (esencialCard) {
+                                if (hasEsencial) {
+                                    unlockCourseCard(esencialCard, "ia-aplicada-esencial", uid);
+                                } else {
+                                    // Logic for Upgrade vs Full Purchase
+                                    if (hasStarter) {
+                                        // Upgrade Path
+                                        setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Mejorar a Esencial (US$15)", () => buyCourse("ia-aplicada-esencial", "UPGRADESTARTER"));
+                                    } else {
+                                        // Full Purchase Path
+                                        setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Inscribirme por US$20", () => buyCourse("ia-aplicada-esencial", "FUNDADOR"));
+                                    }
+                                }
+                            }
 
-                    }).catch(err => {
-                        console.error("Error verifying access:", err);
-                    });
-                }
+                            // Handle Prompts Card
+                            if (anyAccess) {
+                                unlockPromptsCard();
+                            }
+
+                        }).catch(err => {
+                            console.error("Error verifying access:", err);
+                        });
+                    }
 
                 })</script>
         </section>
