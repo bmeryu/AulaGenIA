@@ -89,6 +89,12 @@ exports.createMercadoPagoPreference = onCall(
                             discountType: 'fixed',
                             discountValue: 25, // 45 - 25 = 20
                         };
+                    } else if (code === 'UPGRADESTARTER') {
+                        couponData = {
+                            code: 'UPGRADESTARTER',
+                            discountType: 'fixed',
+                            discountValue: 30, // 45 - 30 = 15
+                        };
                     }
                 }
             }
@@ -503,6 +509,19 @@ exports.validateCoupon = onCall(
                         discountAmount: 25,
                         originalPrice: 45, // Context: Esencial
                         finalPrice: 20
+                    };
+                }
+                if (code === 'UPGRADESTARTER') {
+                    // Specific for Upgrade: $15 Final Price (Discount $30 from $45 base)
+                    return {
+                        valid: true,
+                        couponId: 'HARDCODED_UPGRADE',
+                        code: 'UPGRADESTARTER',
+                        discountType: 'fixed',
+                        discountValue: 30,
+                        discountAmount: 30,
+                        originalPrice: 45, // Context: Esencial
+                        finalPrice: 15
                     };
                 }
 
