@@ -162,7 +162,7 @@
                         <span
                             class="tag inline-block text-xs font-semibold uppercase tracking-wider text-purple-600 bg-purple-100 px-2 py-1 rounded-full">Completo</span>
                         <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Pack Esencial</h3>
-                        <p class="text-gray-600 text-sm mb-6">Curso completo (Módulos 1-6) + Bonos y Certificación.</p>
+                        <p class="text-gray-600 text-sm mb-6">Módulos 1-4 + Sesión Estratégica y Consultoría.</p>
                         <div class="mb-2 progress-container hidden">
                             <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
                                 <span>Progreso</span> <span class="percent">0%</span>
@@ -192,10 +192,10 @@
                         <div id="prompts-actions" class="mt-auto">
                             <!-- Locked State (Default) -->
                             <a href="#" onclick="event.preventDefault(),showCouponModal()"
-                                class="btn-locked block text-center bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 mb-3">🔒
+                                class="btn-locked block text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 mb-3">🔒
                                 Inscríbete para Acceder </a>
                             <button onclick="showCouponModal()"
-                                class="btn-locked block w-full text-center bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">🔒
+                                class="btn-locked block w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">🔒
                                 Descargar 100 Prompts PDF</button>
                         </div>
                     </div>
@@ -1025,6 +1025,97 @@
                                 e.preventDefault();
                                 if (onClickAction) onClickAction();
                             });
+                        }
+                    }
+
+                    // HELPER: Unlock Course Card
+                    function unlockCourseCard(card, courseId, uid) {
+                        const tag = card.querySelector(".tag");
+                        const btn = card.querySelector(".course-action-btn");
+                        const progressContainer = card.querySelector(".progress-container");
+                        const percentEl = card.querySelector(".percent");
+                        const fill = card.querySelector(".fill");
+                        const footer = card.querySelector(".card-footer");
+
+                        // Initial Unlock State
+                        progressContainer.classList.remove("hidden");
+
+                        // Set Link
+                        const linkProps = `campus-curso-ia.html?course=${courseId}`;
+                        btn.href = linkProps;
+                        btn.onclick = null; // Remove previous handlers
+                        btn.textContent = "Continuar aprendiendo";
+                        btn.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400");
+                        btn.classList.add("bg-teal-500", "hover:bg-teal-600", "text-white");
+
+                        // Remove old listeners by cloning
+                        const newBtn = btn.cloneNode(true);
+                        btn.parentNode.replaceChild(newBtn, btn);
+
+                        newBtn.href = linkProps; // Re-apply href
+                        newBtn.addEventListener("click", () => {
+                            // n.logEvent("select_content", { content_type: "course", item_id: courseId });
+                        });
+
+                        // Listen to Progress
+                        const progressRef = o.collection("userProgress").doc(uid);
+                        progressRef.onSnapshot(snap => {
+                            let completed = 0;
+                            const courseConfig = u[courseId];
+                            const total = courseConfig ? courseConfig.totalLessons : 0;
+
+                            if (snap.exists && courseConfig) {
+                                const progressData = snap.data()[courseId];
+                                if (progressData && Array.isArray(progressData.completedLessons)) {
+                                    const validSet = new Set();
+                                    courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
+                                    const userSet = new Set(progressData.completedLessons);
+                                    let count = 0;
+                                    userSet.forEach(lId => { if (validSet.has(lId)) count++; });
+                                    completed = count;
+                                }
+                            }
+
+                            const percent = total > 0 ? Math.min(Math.round(completed / total * 100), 100) : 0;
+
+                            percentEl.textContent = `${percent}%`;
+                            fill.style.width = `${percent}%`;
+
+                            if (percent >= 100) {
+                                tag.textContent = "Completado";
+                                tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full";
+                                fill.style.backgroundColor = "var(--brand-green)";
+                                footer.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${linkProps}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
+                                lucide.createIcons();
+                            } else {
+                                tag.textContent = "En progreso";
+                                tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full";
+                                fill.style.backgroundColor = "var(--brand-teal)";
+                            }
+                        });
+                    }
+
+                    // HELPER: Unlock Prompts Card
+                    function unlockPromptsCard() {
+                        const promptsActions = document.getElementById("prompts-actions");
+                        if (promptsActions) {
+                            promptsActions.innerHTML = `
+                                <a href="maestro-prompts-app.html" 
+                                   class="block text-center bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 mb-3 border border-teal-400">
+                                    🚀 Ingresar a la Herramienta
+                                </a>
+                                <a href="https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/resources%2F100-prompts-maestros.pdf?alt=media" target="_blank"
+                                   class="block w-full text-center bg-white border-2 border-slate-200 hover:border-teal-500 text-slate-600 hover:text-teal-600 font-bold py-3 px-5 rounded-xl transition-all">
+                                    📥 Descargar PDF
+                                </a>
+                            `;
+
+                            // Make card colorful to indicate active state
+                            const promptsCard = document.getElementById("prompts-card");
+                            if (promptsCard) {
+                                promptsCard.classList.remove("border-gray-200");
+                                promptsCard.classList.add("border-teal-400", "ring-4", "ring-teal-50");
+                            }
                         }
                     }
 
