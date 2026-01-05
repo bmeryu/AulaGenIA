@@ -877,8 +877,12 @@
                         ? `${result.data.discountValue}%`
                         : `$${result.data.discountValue} USD`;
                     document.getElementById("modal-discount-label").textContent = discountLabel;
-                    document.getElementById("modal-discount-amount").textContent = `-$${result.data.discountAmount.toFixed(2)} USD`;
-                    document.getElementById("modal-final-price").textContent = `$${result.data.finalPrice.toFixed(2)} USD`;
+
+                    const safeDiscountAmount = Number(result.data.discountAmount) || 0;
+                    const safeFinalPrice = Number(result.data.finalPrice) || 0;
+
+                    document.getElementById("modal-discount-amount").textContent = `-$${safeDiscountAmount.toFixed(2)} USD`;
+                    document.getElementById("modal-final-price").textContent = `$${safeFinalPrice.toFixed(2)} USD`;
                     document.getElementById("modal-discount-summary").classList.remove("hidden");
                     showCouponMessage(`✅ Cupón aplicado: ${discountLabel} de descuento`, "success");
                     applyBtn.textContent = "Aplicar y continuar";

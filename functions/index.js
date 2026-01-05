@@ -534,15 +534,28 @@ exports.validateCoupon = onCall(
                 }
             }
 
+            // Valida coincidencia de curso (si el cupón tiene restricción)
+            if (coupon.applicableTo && Array.isArray(coupon.applicableTo) && coupon.applicableTo.length > 0) {
+                // Si la lista tiene "true" o está vacía, es global (comportamiento legacy/error usuario)
+                // Pero si tiene IDs de cursos, verificamos.
+                const hasValidIds = coupon.applicableTo.some(id => id !== "true" && typeof id === 'string');
+                if (hasValidIds && !coupon.applicableTo.includes(courseId)) {
+                    throw new HttpsError('failed-precondition', 'Este cupón no es válido para este curso.');
+                }
+            }
+
             let originalPrice = 120;
             if (courseId === 'ia-aplicada-starter') originalPrice = 15;
             if (courseId === 'ia-aplicada-esencial') originalPrice = 45;
+
+            // Asegurar tipos numéricos (Firestore puede devolver strings si se ingresó mal)
+            const discountVal = Number(coupon.discountValue);
             let discountAmount = 0;
 
             if (coupon.discountType === 'percentage') {
-                discountAmount = (originalPrice * coupon.discountValue) / 100;
+                discountAmount = (originalPrice * discountVal) / 100;
             } else {
-                discountAmount = coupon.discountValue;
+                discountAmount = discountVal;
             }
 
             const finalPrice = Math.max(0, originalPrice - discountAmount);
@@ -550,12 +563,12 @@ exports.validateCoupon = onCall(
             return {
                 valid: true,
                 couponId: couponDoc.id,
-                code: coupon.code, // Added missing code
+                code: coupon.code,
                 discountType: coupon.discountType,
-                discountValue: coupon.discountValue,
-                discountAmount: discountAmount,
-                originalPrice: originalPrice,
-                finalPrice: finalPrice
+                discountValue: discountVal,
+                discountAmount: Number(discountAmount), // Force Number
+                originalPrice: Number(originalPrice),
+                finalPrice: Number(finalPrice)
             };
 
         } catch (error) {
