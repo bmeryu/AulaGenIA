@@ -129,13 +129,14 @@
                 class="text-2xl font-bold border-b border-gray-300 pb-3 mb-6 flex items-center gap-2"><i
                     data-lucide="graduation-cap" class="w-6 h-6 text-gray-400"></i> Mis Cursos</h2>
             <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Starter Card -->
                 <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col"
-                    data-course-id="ia-aplicada-esencial">
-                    <div class="p-6 flex-grow"><span
-                            class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Cargando...</span>
-                        <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Esencial</h3>
-                        <p class="text-gray-600 text-sm mb-6">Acceso por 12 meses a los 4 módulos, con actualizaciones y
-                            certificado.</p>
+                    data-course-id="ia-aplicada-starter">
+                    <div class="p-6 flex-grow">
+                        <span
+                            class="tag inline-block text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded-full">Básico</span>
+                        <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Pack Starter</h3>
+                        <p class="text-gray-600 text-sm mb-6">Módulos 1-4. Domina los fundamentos y ahorra tiempo.</p>
                         <div class="mb-2 progress-container hidden">
                             <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
                                 <span>Progreso</span> <span class="percent">0%</span>
@@ -146,9 +147,38 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-gray-50 px-6 py-4"><a href="#"
-                            class="course-action-btn block text-center bg-gray-400 text-white font-bold py-3 px-5 rounded-lg transition-colors cursor-wait">Verificando
-                            acceso...</a></div>
+                    <div class="card-footer bg-gray-50 px-6 py-4">
+                        <button onclick="initiateStarterPurchase('campus_card')"
+                            class="course-action-btn w-full block text-center bg-slate-400 hover:bg-slate-500 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                            🔒 Obtener por $5 USD
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Esencial Card -->
+                <article class="bg-white rounded-2xl shadow card-hover overflow-hidden flex flex-col"
+                    data-course-id="ia-aplicada-esencial">
+                    <div class="p-6 flex-grow">
+                        <span
+                            class="tag inline-block text-xs font-semibold uppercase tracking-wider text-purple-600 bg-purple-100 px-2 py-1 rounded-full">Completo</span>
+                        <h3 class="text-xl font-bold mt-4 mb-1">IA Aplicada · Pack Esencial</h3>
+                        <p class="text-gray-600 text-sm mb-6">Curso completo (Módulos 1-6) + Bonos y Certificación.</p>
+                        <div class="mb-2 progress-container hidden">
+                            <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
+                                <span>Progreso</span> <span class="percent">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="fill h-2.5 rounded-full transition-all duration-500"
+                                    style="background-color:var(--brand-purple);width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-gray-50 px-6 py-4">
+                        <button onclick="initiateEssentialPurchase('campus_card')"
+                            class="course-action-btn w-full block text-center bg-slate-400 hover:bg-slate-500 text-white font-bold py-3 px-5 rounded-lg transition-colors">
+                            🔒 Mejorar Plan ($20 USD)
+                        </button>
+                    </div>
                 </article>
                 <article id="prompts-card"
                     class="relative group rounded-2xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-2xl bg-white border-2 border-gray-200 flex flex-col">
@@ -494,7 +524,6 @@
                         }
 
                         if (!t.currentUser) {
-                            // Login requerido -> Redirigir a acceso
                             sessionStorage.setItem("pendingPurchase", JSON.stringify({ courseId: "ia-aplicada-esencial", couponId: a ? a.couponId : null, couponCode: a ? a.code : null }));
                             window.location.href = "acceso.html";
                             return;
@@ -512,6 +541,16 @@
                             if (applyBtn) { applyBtn.disabled = false; applyBtn.innerHTML = "Aplicar y continuar"; }
                         }
                     }
+
+                    // Purchase Redirects
+                    window.initiateStarterPurchase = function (origin) {
+                        n.logEvent("begin_checkout", { items: [{ item_id: "ia-aplicada-starter", item_name: "Pack Starter" }], origin: origin });
+                        window.location.href = "landing-nuevo2.html";
+                    };
+                    window.initiateEssentialPurchase = function (origin) {
+                        n.logEvent("begin_checkout", { items: [{ item_id: "ia-aplicada-esencial", item_name: "Pack Esencial" }], origin: origin });
+                        window.location.href = "landing-nuevo2.html";
+                    };
 
                     window.showCouponModal = s;
                     window.closeCouponModal = function () {
@@ -850,7 +889,7 @@
                             }, {
                                 merge: !0
                             }), document.querySelectorAll("#user-name, #welcome-name").forEach(e => e && (e.textContent = a)), T.className = "text-center p-3 rounded-lg bg-green-100 text-green-700", T.textContent = "¡Perfil actualizado con éxito!", T.classList.remove("hidden"), setTimeout(() => {
-                                D(), _(n.uid)
+                                D(), checkUserAccess(n.uid)
                             }, 1500)
                         } catch (e) {
                             console.error("Error al guardar perfil:", e);
@@ -882,7 +921,7 @@
                                             const data = t.data();
                                             console.log("[ProfileCheck] Exists:", true, "Completed:", data.profileCompleted);
                                             if (data.profileCompleted === true) {
-                                                _(e.uid); // Load course content
+                                                checkUserAccess(e.uid); // Load course content
                                             } else {
                                                 console.warn("[ProfileCheck] Profile incomplete. Opening modal.");
                                                 z(!0); // Open modal to complete profile
@@ -975,6 +1014,119 @@
                                 }(e)
                         } else window.location.href = "acceso.html"
                     }), window.downloadPromptsPDF = async function (e) { const o = e ? e.currentTarget : null; let a = ""; o && (a = o.innerHTML, o.disabled = !0, o.innerHTML = "⏳ Generando y Descargando PDF...", o.classList.add("cursor-wait", "opacity-75")), n.logEvent("file_download", { file_extension: "pdf", file_name: "Maestro_Prompts_100_AGIA", link_url: window.location.href }); try { const e = t.currentUser; if (!e) return void (window.location.href = "acceso.html"); console.log("🔍 DEBUG - casesData existe?:", void 0 !== window.casesData), console.log("🔍 DEBUG - Cantidad inicial:", window.casesData?.length || 0), console.log("📥 Cargando prompts de forma segura..."), o && (o.innerHTML = "⏳ Descargando datos seguros..."); const n = await async function () { try { const e = firebase.functions().httpsCallable("getPromptsData"), t = await e(); return !!t.data.success && (window.casesData = t.data.data, console.log("✅ Prompts cargados de forma segura:", window.casesData.length), !0) } catch (e) { return console.error("Error al cargar prompts:", e), "functions/permission-denied" === e.code ? (alert("⚠️ Acceso Premium Requerido\n\nPara acceder a los prompts necesitas estar inscrito en el curso.\n\n¿Deseas inscribirte ahora?"), window.location.href = "landing-nuevo.html#pricing") : "functions/unauthenticated" === e.code ? window.location.href = "acceso.html" : alert("Error al cargar los datos. Por favor intenta nuevamente."), !1 } }(); if (!n) throw new Error("No se pudieron cargar los datos"); if (o && (o.innerHTML = "⏳ Creando PDF..."), !n) return void console.error("❌ No se pudieron cargar los prompts"); console.log("✅ Datos cargados, cantidad final:", window.casesData.length); const { jsPDF: a } = window.jspdf, l = new a, c = l.internal.pageSize.getWidth(), d = l.internal.pageSize.getHeight(), u = 20, m = c - 40, p = [20, 184, 166], g = [251, 191, 36], h = [30, 41, 59], f = [148, 163, 184]; l.setFillColor(255, 255, 255), l.rect(0, 0, c, d, "F"); try { const e = new Image; e.crossOrigin = "Anonymous", e.src = "Logo_AGIA.png", await new Promise((t, o) => { e.onload = t, e.onerror = () => { e.src = "Logo_AGIA.jpg", e.onload = t, e.onerror = o }, setTimeout(o, 5e3) }); const t = 100, o = t * (e.height / e.width), n = (c - t) / 2, a = 30; l.addImage(e, e.src.endsWith(".png") ? "PNG" : "JPEG", n, a, t, o); var s = Math.max(a + o + 20, 140), r = [30, 41, 59], i = [71, 85, 105] } catch (e) { console.warn("No se pudo cargar el logo:", e); s = 60, r = [30, 41, 59], i = [71, 85, 105] } l.setTextColor(...r), l.setFontSize(36), l.setFont("helvetica", "bold"), l.text("Maestro Prompts", c / 2, s, { align: "center" }), l.setFontSize(14), l.setFont("helvetica", "normal"), l.setTextColor(...i), l.text("100 Prompts Optimizados - Colección AGIA", c / 2, s + 12, { align: "center" }), l.setFillColor(...g), l.roundedRect(c / 2 - 35, s + 22, 70, 10, 3, 3, "F"), l.setTextColor(...r), l.setFontSize(9), l.setFont("helvetica", "bold"), l.text("EXCLUSIVE PREMIUM ACCESS", c / 2, s + 28.5, { align: "center" }); const v = s + 50; l.setLineWidth(.5), l.line(c / 2 - 20, v - 10, c / 2 + 20, v - 10), l.setTextColor(...r), l.setFontSize(11), l.setFont("helvetica", "bold"); const x = e.displayName || e.email.split("@")[0]; l.text(x, c / 2, v, { align: "center" }), l.setFontSize(10), l.setFont("helvetica", "normal"), l.setTextColor(...i), l.text(e.email, c / 2, v + 6, { align: "center" }), l.text(`Generado el ${(new Date).toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" })}`, c / 2, v + 12, { align: "center" }), l.setFontSize(10), l.setTextColor(100, 100, 100), l.setFont("helvetica", "normal"); const y = v + 35; l.text(l.splitTextToSize("Esta colección contiene 100 prompts optimizados con la metodología AGIA. Cada prompt diseñado para maximizar respuestas de ChatGPT, Claude, Gemini.", m - 20), u + 10, y), l.setFontSize(8), l.setTextColor(120, 120, 120), l.setFont("helvetica", "italic"); const C = l.splitTextToSize("Importante: Los resultados generados por IA pueden contener errores o imprecisiones. Siempre revise y valide la información antes de utilizarla en contextos críticos.", m - 20); l.text(C, c / 2, d - 25, { align: "center", maxWidth: m - 20 }), l.setFontSize(9), l.setTextColor(...f), l.setFont("helvetica", "normal"), l.text("aulagenia.cl | Todos los derechos reservados", c / 2, d - 15, { align: "center" }), l.addPage(); let b = u; l.setFillColor(245, 247, 250), l.rect(0, 0, c, 25, "F"), l.setTextColor(...h), l.setFontSize(18), l.setFont("helvetica", "bold"), l.text("Índice de Contenidos", u, 18), b = 35; const w = {}; casesData.forEach(e => { w[e.category] || (w[e.category] = []), w[e.category].push(e) }), l.setFontSize(10), l.setFont("helvetica", "normal"), Object.keys(w).forEach((e, t) => { b > d - 30 && (l.addPage(), b = u), l.setTextColor(...p), l.setFont("helvetica", "bold"), l.text(`${t + 1}. ${e}`, u, b), b += 6, l.setTextColor(80, 80, 80), l.setFont("helvetica", "normal"), w[e].forEach((e, t) => { b > d - 20 && (l.addPage(), b = u); const o = casesData.findIndex(t => t.id === e.id) + 1; l.text(`   - Prompt #${o}: ${e.title}`, u + 5, b), b += 5 }), b += 3 }); for (let e = 0; e < casesData.length; e++) { const t = casesData[e]; l.addPage(), b = u, l.setFillColor(...p), l.rect(0, 0, c, 15, "F"), l.setFontSize(10), l.setTextColor(255, 255, 255), l.setFont("helvetica", "bold"), l.text(`PROMPT #${e + 1}`, u, 10), l.text(`${e + 1}/${casesData.length}`, c - u, 10, { align: "right" }), b = 25, l.setFontSize(16), l.setFont("helvetica", "bold"), l.setTextColor(...h); const o = l.splitTextToSize(t.title, m); l.text(o, u, b), b += 7 * o.length + 3, l.setFillColor(250, 250, 250), l.roundedRect(u, b, 60, 8, 2, 2, "F"), l.setFontSize(8), l.setTextColor(...p), l.setFont("helvetica", "bold"), l.text(t.category, u + 2, b + 5.5); const n = t.metadata?.score ? `${Math.round(t.metadata.score / 5)} min` : "15 min"; if (l.setFillColor(255, 250, 230), l.roundedRect(u + 65, b, 30, 8, 2, 2, "F"), l.setTextColor(180, 140, 0), l.text(`${n}`, u + 67, b + 5.5), b += 13, t.problem) { l.setFontSize(9), l.setFont("helvetica", "italic"), l.setTextColor(100, 100, 100); const e = l.splitTextToSize(t.problem, m); l.text(e, u, b), b += 4 * e.length + 6 } l.setDrawColor(220, 220, 220), l.setLineWidth(.5), l.line(u, b, c - u, b), b += 8, l.setFillColor(245, 245, 250), l.roundedRect(u, b, m, 8, 2, 2, "F"), l.setFontSize(9), l.setTextColor(100, 100, 150), l.setFont("helvetica", "bold"), l.text("ROL", u + 3, b + 5.5), b += 12; const a = t.agiaPromptTagged.split("\n")[0].replace(/^(Eres|Actuas como|Tu rol es)/i, "").trim(); l.setFontSize(8.5), l.setFont("helvetica", "normal"), l.setTextColor(60, 60, 60); const s = l.splitTextToSize(a, m); for (let e = 0; e < Math.min(s.length, 3); e++)l.text(s[e], u, b), b += 3.5; b += 5, l.setFillColor(232, 245, 233), l.roundedRect(u, b, m, 8, 2, 2, "F"), l.setFontSize(9), l.setTextColor(0, 128, 0), l.setFont("helvetica", "bold"), l.text("PROMPT OPTIMIZADO (METODOLOGIA AGIA)", u + 3, b + 5.5), b += 12; const r = t.agiaPromptTagged.replace(/\*\*/g, "").replace(/[\u{1F300}-\u{1F9FF}]/gu, "").replace(/[📎📌✅⚡🔴🟡🟢❌⏱🚀]/g, "").replace(/\\n/g, "\n").trim(); l.setFontSize(8.5), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40); const i = l.splitTextToSize(r, m); for (let t = 0; t < i.length; t++)b > d - 25 && (l.setFontSize(8), l.setTextColor(...f), l.text("aulagenia.cl", c / 2, d - 10, { align: "center" }), l.addPage(), b = u + 10, l.setFillColor(250, 250, 250), l.rect(0, 0, c, 8, "F"), l.setFontSize(8), l.setTextColor(100, 100, 100), l.setFont("helvetica", "italic"), l.text(`Prompt #${e + 1} (continuacion)`, u, 6)), l.text(i[t], u, b), b += 3.5; if (b += 8, b > d - 60 && (l.addPage(), b = u), l.setDrawColor(220, 220, 220), l.setLineWidth(.5), l.line(u, b, c - u, b), b += 8, t.suggestedAI && (l.setFillColor(239, 246, 255), l.roundedRect(u, b, m, 10, 2, 2, "F"), l.setFontSize(8), l.setTextColor(37, 99, 235), l.setFont("helvetica", "bold"), l.text("• MODELO IDEAL", u + 3, b + 4), l.setFontSize(8), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40), l.text(t.suggestedAI, u + 3, b + 8), b += 12), t.metadata?.technique || t.exampleTip) { l.setFillColor(255, 251, 235), l.roundedRect(u, b, m, 10, 2, 2, "F"), l.setFontSize(8), l.setTextColor(217, 119, 6), l.setFont("helvetica", "bold"), l.text("• ESTRATEGIA", u + 3, b + 4), l.setFontSize(8), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40); const e = t.metadata?.technique || t.exampleTip || "", o = l.splitTextToSize(e, m - 6); l.text(o, u + 3, b + 8), b += Math.max(12, 6 + 3 * o.length) } if (t.validationTip) { l.setFillColor(240, 253, 244), l.roundedRect(u, b, m, 10, 2, 2, "F"), l.setFontSize(8), l.setTextColor(22, 163, 74), l.setFont("helvetica", "bold"), l.text("• VALIDACIÓN", u + 3, b + 4), l.setFontSize(8), l.setFont("helvetica", "normal"), l.setTextColor(40, 40, 40); const e = l.splitTextToSize(t.validationTip, m - 6); l.text(e, u + 3, b + 8), b += Math.max(12, 6 + 3 * e.length) } l.setFontSize(8), l.setTextColor(...f), l.text("aulagenia.cl", c / 2, d - 10, { align: "center" }) } l.addPage(), l.setFillColor(...p), l.rect(0, 0, c, d, "F"), l.setTextColor(255, 255, 255), l.setFontSize(28), l.setFont("helvetica", "bold"), l.text("¡Gracias!", c / 2, 80, { align: "center" }), l.setFontSize(12), l.setFont("helvetica", "normal"), l.text(l.splitTextToSize("Esperamos que estos 100 prompts optimizados te ayuden a aprovechar al máximo la inteligencia artificial.", m - 40), c / 2, 100, { align: "center" }), l.setFontSize(14), l.setFont("helvetica", "bold"), l.text("¿Necesitas ayuda?", c / 2, 130, { align: "center" }), l.setFontSize(11), l.setFont("helvetica", "normal"), l.text("Contáctanos en: contacto@aulagenia.cl", c / 2, 145, { align: "center" }), l.text("Visítanos en: aulagenia.cl", c / 2, 155, { align: "center" }), l.save(`Maestro_Prompts_100_AGIA_${(new Date).toISOString().split("T")[0]}.pdf`), console.log("PDF descargado exitosamente") } catch (e) { console.error("Error PDF:", e), alert("Si el PDF no descarga, asegúrate de permitir ventanas emergentes.") } finally { o && (o.disabled = !1, o.innerHTML = a, o.classList.remove("cursor-wait", "opacity-75")) } }, t.onAuthStateChanged(async e => { if (e) { const t = o.collection("users").doc(e.uid), n = await t.get(); if (n.exists) { const e = n.data(), t = e.enrollments && (!0 === e.enrollments["ia-aplicada-esencial"] || !0 === e.enrollments["inteligencia-aplicada"]), o = localStorage.getItem("pdfDownloaded"); t && !o && "undefined" != typeof casesData && setTimeout(() => { downloadPromptsPDF(), localStorage.setItem("pdfDownloaded", "true") }, 2e3) } } }), lucide.createIcons()
+
+                    function checkUserAccess(uid) {
+                        const userRef = o.collection("users").doc(uid);
+                        const allowRef = o.collection("allowlist").doc(t.currentUser.email);
+
+                        Promise.all([allowRef.get(), userRef.get()]).then(([allowSnap, userSnap]) => {
+                            const enrollments = userSnap.exists && userSnap.data().enrollments ? userSnap.data().enrollments : {};
+                            const allowCourses = (allowSnap.exists && allowSnap.data().active) ? (allowSnap.data().courses || []) : [];
+
+                            let anyAccess = false;
+
+                            const courses = ["ia-aplicada-starter", "ia-aplicada-esencial"];
+
+                            courses.forEach(courseId => {
+                                let hasAccess = false;
+                                // 1. Check Allowlist
+                                if (allowCourses.includes(courseId)) hasAccess = true;
+                                // 2. Check Enrollment
+                                if (enrollments[courseId]) hasAccess = true;
+                                // 3. Legacy / Subsets
+                                if (courseId === "ia-aplicada-esencial" && enrollments["inteligencia-aplicada"]) hasAccess = true;
+                                // Starter is included in Esencial (explicit unlock for Starter card if user has Esencial)
+                                if (courseId === "ia-aplicada-starter" && (enrollments["ia-aplicada-esencial"] || allowCourses.includes("ia-aplicada-esencial") || enrollments["inteligencia-aplicada"])) hasAccess = true;
+
+                                const card = document.querySelector(`article[data-course-id="${courseId}"]`);
+                                if (hasAccess && card) {
+                                    anyAccess = true;
+                                    unlockCourseCard(card, courseId, uid);
+                                }
+                            });
+
+                            // Handle Prompts Card
+                            if (anyAccess) {
+                                unlockPromptsCard();
+                            }
+
+                        }).catch(err => {
+                            console.error("Error verifying access:", err);
+                        });
+                    }
+
+                    function unlockCourseCard(card, courseId, uid) {
+                        n.logEvent("unlock_content", { content_type: "course", item_id: courseId, method: "enrollment" });
+
+                        // Progress Listener
+                        const progRef = o.collection("userProgress").doc(uid);
+                        progRef.onSnapshot(snap => {
+                            let completed = 0;
+                            const courseConfig = u[courseId];
+                            const total = courseConfig ? courseConfig.totalLessons : 0;
+
+                            if (snap.exists && courseConfig) {
+                                const progressData = snap.data()[courseId];
+                                if (progressData && Array.isArray(progressData.completedLessons)) {
+                                    const validSet = new Set();
+                                    courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
+                                    const userSet = new Set(progressData.completedLessons);
+                                    let count = 0;
+                                    userSet.forEach(lId => { if (validSet.has(lId)) count++; });
+                                    completed = count;
+                                }
+                            }
+
+                            const percent = total > 0 ? Math.min(Math.round(completed / total * 100), 100) : 0;
+
+                            // Update UI
+                            const tag = card.querySelector(".tag");
+                            const percentEl = card.querySelector(".percent");
+                            const fill = card.querySelector(".fill");
+                            const footer = card.querySelector(".card-footer");
+                            const progCont = card.querySelector(".progress-container");
+
+                            progCont.classList.remove("hidden");
+                            percentEl.textContent = `${percent}%`;
+                            fill.style.width = `${percent}%`;
+
+                            const linkProps = `campus-curso-ia.html?course=${courseId}`;
+
+                            if (percent >= 100) {
+                                tag.textContent = "Completado";
+                                tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full";
+                                fill.style.backgroundColor = "var(--brand-green)";
+                                footer.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${linkProps}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
+                                lucide.createIcons();
+                            } else {
+                                tag.textContent = "En progreso";
+                                tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full";
+                                fill.style.backgroundColor = "var(--brand-teal)";
+                                footer.innerHTML = `<a href="${linkProps}" class="course-action-btn block text-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-5 rounded-lg transition-colors">Continuar aprendiendo</a>`;
+                            }
+                        });
+                    }
+
+                    function unlockPromptsCard() {
+                        const promptsActions = document.getElementById("prompts-actions");
+                        if (promptsActions) {
+                            promptsActions.innerHTML = `
+                                <a href="maestro-prompts-app.html" 
+                                   class="block text-center bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 mb-3 border border-teal-400">
+                                    🚀 Ingresar a la Herramienta
+                                </a>
+                                <a href="https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/resources%2F100-prompts-maestros.pdf?alt=media" target="_blank"
+                                   class="block w-full text-center bg-white border-2 border-slate-200 hover:border-teal-500 text-slate-600 hover:text-teal-600 font-bold py-3 px-5 rounded-xl transition-all">
+                                    📥 Descargar PDF
+                                </a>
+                            `;
+                            const promptsCard = document.getElementById("prompts-card");
+                            if (promptsCard) {
+                                promptsCard.classList.remove("border-gray-200");
+                                promptsCard.classList.add("border-teal-400", "ring-4", "ring-teal-50");
+                            }
+                        }
+                    }
                 })</script>
         </section>
     </main>
