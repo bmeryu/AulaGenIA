@@ -779,8 +779,9 @@
     <script>lucide.createIcons(); const firebaseConfig = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" }; firebase.apps.length || firebase.initializeApp(firebaseConfig); const auth = firebase.auth(), functions = firebase.functions(), analytics = firebase.analytics(); analytics.logEvent("view_item", { item_id: "landing_page", item_name: "Landing Curso IA", content_type: "page" });
 
         let appliedCoupon = null;
+        let selectedCourseId = "ia-aplicada-esencial"; // Default
 
-        async function checkUserPurchaseStatus(e) { if (!e) return { hasCourse: !1, error: null }; try { const o = firebase.firestore(), a = await o.collection("users").doc(e.uid).get(); if (a.exists) { const e = a.data(); return { hasCourse: !!(e.courses && e.courses["ia-aplicada-esencial"]), error: null } } return { hasCourse: !1, error: null } } catch (e) { return console.error("Error verificando estado del curso:", e), { hasCourse: !1, error: e } } }
+        async function checkUserPurchaseStatus(e) { if (!e) return { hasCourse: !1, error: null }; try { const o = firebase.firestore(), a = await o.collection("users").doc(e.uid).get(); if (a.exists) { const e = a.data(); return { hasCourse: !!(e.courses && (e.courses["ia-aplicada-esencial"] || e.courses["ia-aplicada-starter"])), error: null } } return { hasCourse: !1, error: null } } catch (e) { return console.error("Error verificando estado del curso:", e), { hasCourse: !1, error: e } } }
 
         // ========== FUNCIONES DEL MODAL DE CUPÓN ==========
         async function showCouponModal(prefillCode = null) {
@@ -867,7 +868,7 @@
 
             try {
                 const validateCoupon = firebase.functions().httpsCallable("validateCoupon");
-                const result = await validateCoupon({ couponCode: couponCode, courseId: "ia-aplicada-esencial" });
+                const result = await validateCoupon({ couponCode: couponCode, courseId: selectedCourseId });
 
                 if (result.data.valid) {
                     appliedCoupon = result.data;
@@ -933,12 +934,12 @@
             const user = firebase.auth().currentUser;
             if (!user) {
                 sessionStorage.setItem("pendingPurchase", JSON.stringify({
-                    courseId: "ia-aplicada-esencial",
+                    courseId: selectedCourseId,
                     couponId: appliedCoupon ? appliedCoupon.couponId : null,
                     couponCode: appliedCoupon ? appliedCoupon.code : null
                 }));
-                // Redirigir a acceso.html sin parámetro de redirección explícito para que acceso maneje el flujo
-                window.location.href = "acceso.html";
+                // Redirigir a acceso.html con redirect explicito a landing-nuevo2.html
+                window.location.href = "acceso.html?redirect=landing-nuevo2.html";
                 return;
             }
 
@@ -969,9 +970,9 @@
 
             try {
                 const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
-                console.log("Iniciando creación de preferencia MP...");
+                console.log("Iniciando creación de preferencia MP para:", selectedCourseId);
                 const result = await createPreference({
-                    courseId: "ia-aplicada-esencial",
+                    courseId: selectedCourseId,
                     couponId: appliedCoupon ? appliedCoupon.couponId : null,
                     couponCode: appliedCoupon ? appliedCoupon.code : null
                 });
@@ -1023,13 +1024,7 @@
                 item_name: "Pack Starter",
                 source: source
             });
-            // Starter usa cupón LANZAMIENTO y apunta a curso Starter (o Esencial simplificado)
-            // Usamos el ID nuevo 'ia-aplicada-starter' que configuraremos en backend
-            // Y pre-cargamos el cupón en el modal
-
-            // ACTUALIZACIÓN: El usuario pide abrir modal con opción.
-            // Pero la instrucción visual dice "Pack Starter" con precio tachado.
-            // Vamos a re-usar el modal del cupón pero pre-llenado.
+            selectedCourseId = "ia-aplicada-starter";
             showCouponModal("LANZAMIENTO");
         }
 
@@ -1039,21 +1034,42 @@
                 item_name: "Pack Esencial",
                 source: source
             });
+            selectedCourseId = "ia-aplicada-esencial";
             showCouponModal("FUNDADOR");
         }
 
-        // Función Legacy mantenida por compatibilidad si algo falla
-        async function initiateDirectPurchase(source = 'unknown_source') {
-            initiateStarterPurchase(source);
-        }
+
 
         document.addEventListener("DOMContentLoaded", () => {
             auth.onAuthStateChanged(async user => {
-                // Recuperar acción pendiente del sessionStorage
+                // Recuperar acción pendiente del sessionStorage (NUEVO OBJETO)
+                const pending = sessionStorage.getItem("pendingPurchase");
+                if (pending && user) {
+                    try {
+                        const purchaseData = JSON.parse(pending);
+                        sessionStorage.removeItem("pendingPurchase");
+                        console.log("Retomando compra pendiente:", purchaseData);
+
+                        // Restaurar estado
+                        selectedCourseId = purchaseData.courseId || "ia-aplicada-esencial";
+
+                        // Si tenía cupón, pre-aplicarlo
+                        if (purchaseData.couponCode) {
+                            showCouponModal(purchaseData.couponCode);
+                        } else {
+                            // Si no, solo abrir modal o procesar (abrimos modal para confirmar)
+                            // O si era directo, llamamos handlePurchaseWithCoupon?
+                            // Mejor abrir modal para que vea el precio
+                            showCouponModal();
+                        }
+                    } catch (e) {
+                        console.error("Error restaurando compra:", e);
+                    }
+                }
+
+                // Compatibilidad con flujo antiguo
                 if ("initiateDirectPurchase" === sessionStorage.getItem("pendingAction") && user) {
                     sessionStorage.removeItem("pendingAction");
-                    console.log("Retomando compra pendiente tras login...");
-                    // Pequeño delay para asegurar carga de auth
                     setTimeout(() => { initiateDirectPurchase(); }, 500);
                 }
 
