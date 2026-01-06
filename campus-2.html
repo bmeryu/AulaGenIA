@@ -180,7 +180,7 @@
                         </div>
                     </div>
                     <div class="card-footer bg-gray-50 px-6 py-4">
-                        <button onclick="showCouponModal('UPGRADESTARTER', 'ia-aplicada-esencial')"
+                        <button onclick="showCouponModal('2026', 'ia-aplicada-esencial')"
                             class="course-action-btn w-full block text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors">
                             🔒 Mejorar Plan ($20 USD)
                         </button>
@@ -396,21 +396,19 @@
             <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions-compat.js" defer="defer"></script>
             <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js" defer="defer"></script>
             <script defer="defer">document.addEventListener("DOMContentLoaded", () => {
-                    const n = firebase.analytics(); n.logEvent("view_item_list", { item_list_id: "campus_dashboard", item_list_name: "Campus Main" });
-                    let a = null;
-                    let targetCourseId = "ia-aplicada-esencial"; // Default context
+                    const e = { apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f" }; try { firebase.initializeApp(e) } catch (e) { console.warn("Firebase ya fue inicializado.") } const t = firebase.auth(), o = firebase.firestore(), n = firebase.analytics(); n.logEvent("view_item_list", { item_list_id: "campus_dashboard", item_list_name: "Campus Main" }); let a = null;
 
+                    let currentCourseId = "ia-aplicada-esencial"; // Default global
                     // s = showCouponModal
-                    async function s(requestedCode = "2026", requestedCourseId = "ia-aplicada-esencial") {
+                    async function s(requestedCoupon = "2026", requestedCourseId = "ia-aplicada-esencial") {
+                        currentCourseId = requestedCourseId; // Update global context for modal
                         const user = t.currentUser;
-                        targetCourseId = requestedCourseId; // Set global context
-
                         // Verificar curso si está logueado
                         if (user) {
                             try {
                                 const userDoc = await o.collection("users").doc(user.uid).get();
                                 const enrollments = userDoc.data().enrollments || {};
-                                if (enrollments[targetCourseId] || (targetCourseId === "ia-aplicada-starter" && enrollments["ia-aplicada-esencial"])) {
+                                if (enrollments[requestedCourseId]) {
                                     alert("¡Ya estás inscrito en este curso! Puedes acceder al contenido.");
                                     window.location.reload();
                                     return;
@@ -418,7 +416,7 @@
                             } catch (e) { console.error(e); }
                         }
 
-                        // Abrir modal
+                        // Abrir modal siempre y precargar
                         const modal = document.getElementById("coupon-modal");
                         if (modal) {
                             modal.classList.remove("hidden");
@@ -436,7 +434,7 @@
 
                                 freshInput.addEventListener("input", function () {
                                     applyBtn.textContent = "Aplicar y continuar";
-                                    applyBtn.onclick = r; // r = applyModalCoupon
+                                    applyBtn.onclick = () => r(currentCourseId);
                                     applyBtn.disabled = false;
 
                                     const summary = document.getElementById("modal-discount-summary");
@@ -446,16 +444,18 @@
                                     a = null; // Limpiar variable 'a' (cupón actual)
                                 });
 
-                                freshInput.value = requestedCode || "";
-                                if (requestedCode) await r(); // Auto-aplicar si hay código
+                                freshInput.value = requestedCoupon;
+                                await r(currentCourseId); // Auto-aplicar con parametro
                             }
                         }
                     }
 
                     // r = applyModalCoupon
-                    async function r() {
+                    async function r(forceCourseId) {
                         const code = document.getElementById("modal-coupon-input").value.trim().toUpperCase();
-                        if (!code) return void l();
+                        const courseIdContext = forceCourseId || currentCourseId || "ia-aplicada-esencial";
+
+                        if (!code) return void l(courseIdContext);
 
                         const btn = document.getElementById("modal-apply-btn");
                         const originalText = btn.textContent;
@@ -464,8 +464,7 @@
 
                         try {
                             const valFunc = firebase.functions().httpsCallable("validateCoupon");
-                            // Use targetCourseId instead of hardcoded
-                            const res = await valFunc({ couponCode: code, courseId: targetCourseId });
+                            const res = await valFunc({ couponCode: code, courseId: courseIdContext });
 
                             if (res.data.valid) {
                                 a = res.data;
@@ -507,18 +506,20 @@
                     }
 
                     // l = proceedWithoutCoupon
-                    async function l() {
+                    async function l(forceCourseId) {
                         a = null;
                         const m = document.getElementById("coupon-modal");
                         if (m) m.classList.add("hidden");
-                        // Proceed with targetCourseId and NO coupon
-                        await buyCourse(targetCourseId, null);
+                        const id = forceCourseId || currentCourseId || 'ia-aplicada-starter';
+                        // Determine fallback default coupon if none
+                        await buyCourse(id, id === 'ia-aplicada-starter' ? 'LANZAMIENTO' : null);
                     }
 
                     // c = proceedWithCoupon
                     async function c() {
-                        // Use targetCourseId which is set globally
-                        await buyCourse(targetCourseId);
+                        const courseContext = currentCourseId || "ia-aplicada-esencial";
+                        // No cerrar modal para mantener feedback
+                        await buyCourse(courseContext);
                     }
 
                     // buyCourse = handlePurchase (Refactored)
@@ -1022,11 +1023,11 @@
                         const promptsActions = document.getElementById("prompts-actions");
                         if (promptsActions) {
                             promptsActions.innerHTML = `
-                                <a href="#" onclick="event.preventDefault(),showCouponModal('LANZAMIENTO', 'ia-aplicada-starter')" style="background-color: #0d9488 !important;"
+                                <a href="maestro-prompts-app.html" style="background-color: #0d9488 !important;"
                                    class="block text-center bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 mb-3 border border-teal-400">
                                     🚀 Ingresar a la Herramienta ✨
                                 </a>
-                                <a href="#" onclick="event.preventDefault(),showCouponModal('LANZAMIENTO', 'ia-aplicada-starter')" target="_blank"
+                                <a href="https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/resources%2F100-prompts-maestros.pdf?alt=media" target="_blank"
                                    class="block w-full text-center bg-white border-2 border-slate-200 hover:border-teal-500 text-slate-600 hover:text-teal-600 font-bold py-3 px-5 rounded-xl transition-all">
                                     📥 Descargar PDF ✨
                                 </a>
@@ -1074,11 +1075,11 @@
                                 } else {
                                     // Logic for Upgrade vs Full Purchase
                                     if (hasStarter) {
-                                        // Upgrade Path: Use coupon 'UPGRADESTARTER' (or similar logic)
+                                        // Upgrade Path
                                         setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Mejorar a Esencial (US$15)", () => showCouponModal("UPGRADESTARTER", "ia-aplicada-esencial"));
                                     } else {
-                                        // Full Purchase Path: Use coupon 'FUNDADOR' (or similar logic for $20)
-                                        setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Inscribirme por US$20", () => showCouponModal("FUNDADOR", "ia-aplicada-esencial"));
+                                        // Full Purchase Path
+                                        setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Inscribirme por US$20", () => showCouponModal("2026", "ia-aplicada-esencial"));
                                     }
                                 }
                             }
