@@ -964,19 +964,41 @@
                         progressContainer.classList.remove("hidden");
 
                         // Set Link
+                        // Set Link Link
                         const linkProps = `campus-curso-ia.html?course=${courseId}`;
-                        btn.href = linkProps;
-                        btn.onclick = null; // Remove previous handlers
-                        btn.textContent = customLabel || "Continuar aprendiendo";
-                        btn.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400");
-                        btn.classList.add("bg-teal-500", "hover:bg-teal-600", "text-white");
 
-                        // Remove old listeners by cloning
-                        const newBtn = btn.cloneNode(true);
-                        btn.parentNode.replaceChild(newBtn, btn);
+                        // IF customLabel implies "Included", make it non-interactive
+                        if (customLabel === "Incluido en tu Plan") {
+                            const span = document.createElement("div");
+                            span.className = "course-action-btn w-full block text-center bg-teal-800 text-teal-100 font-bold py-3 px-5 rounded-lg cursor-default opacity-90";
+                            span.textContent = customLabel;
+                            span.innerHTML = `<i data-lucide="check" class="inline-block w-4 h-4 mr-1"></i> ${customLabel}`;
+                            btn.parentNode.replaceChild(span, btn);
+                            lucide.createIcons();
+                            return;
+                        }
 
-                        newBtn.href = linkProps; // Re-apply href
-                        newBtn.addEventListener("click", () => {
+                        // Convert to Anchor if it's a button
+                        let newBtn = btn;
+                        if (btn.tagName === "BUTTON") {
+                            newBtn = document.createElement("a");
+                            newBtn.className = btn.className;
+                            btn.parentNode.replaceChild(newBtn, btn);
+                        }
+
+                        newBtn.onclick = null; // Remove previous handlers
+                        newBtn.href = linkProps;
+                        newBtn.textContent = customLabel || "Continuar aprendiendo";
+                        newBtn.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400", "bg-teal-600", "hover:bg-teal-700");
+                        newBtn.classList.add("bg-teal-500", "hover:bg-teal-600", "text-white");
+
+                        // Re-clone to ensure clean state
+                        const finalBtn = newBtn.cloneNode(true);
+                        newBtn.parentNode.replaceChild(finalBtn, newBtn);
+
+                        finalBtn.href = linkProps;
+                        finalBtn.textContent = customLabel || "Continuar aprendiendo";
+                        finalBtn.addEventListener("click", () => {
                             // n.logEvent("select_content", { content_type: "course", item_id: courseId });
                         });
 
