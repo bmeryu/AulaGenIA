@@ -952,7 +952,7 @@
                     }
 
                     // HELPER: Unlock Course Card
-                    function unlockCourseCard(card, courseId, uid) {
+                    function unlockCourseCard(card, courseId, uid, customLabel) {
                         const tag = card.querySelector(".tag");
                         const btn = card.querySelector(".course-action-btn");
                         const progressContainer = card.querySelector(".progress-container");
@@ -967,7 +967,7 @@
                         const linkProps = `campus-curso-ia.html?course=${courseId}`;
                         btn.href = linkProps;
                         btn.onclick = null; // Remove previous handlers
-                        btn.textContent = "Continuar aprendiendo";
+                        btn.textContent = customLabel || "Continuar aprendiendo";
                         btn.classList.remove("cursor-wait", "bg-gray-400", "bg-slate-400");
                         btn.classList.add("bg-teal-500", "hover:bg-teal-600", "text-white");
 
@@ -1060,38 +1060,41 @@
                             // 1. Handle STARTER Card
                             const starterCard = document.querySelector(`article[data-course-id="ia-aplicada-starter"]`);
                             if (starterCard) {
-                                if (hasStarter) {
-                                    unlockCourseCard(starterCard, "ia-aplicada-starter", uid);
+                                if (hasEsencial && !enrollments["ia-aplicada-starter"]) {
+                                    unlockCourseCard(starterCard, "ia-aplicada-starter", uid, "Incluido en tu Plan");
                                 } else {
-                                    setupLockedCard(starterCard, "IA Aplicada · Starter", "Inscribirme por US$5", () => showCouponModal("LANZAMIENTO", "ia-aplicada-starter"));
+                                    unlockCourseCard(starterCard, "ia-aplicada-starter", uid);
                                 }
+                            } else {
+                                setupLockedCard(starterCard, "IA Aplicada · Starter", "Inscribirme por US$5", () => showCouponModal("LANZAMIENTO", "ia-aplicada-starter"));
                             }
+                        }
 
                             // 2. Handle ESENCIAL Card
                             const esencialCard = document.querySelector(`article[data-course-id="ia-aplicada-esencial"]`);
-                            if (esencialCard) {
-                                if (hasEsencial) {
-                                    unlockCourseCard(esencialCard, "ia-aplicada-esencial", uid);
+                        if (esencialCard) {
+                            if (hasEsencial) {
+                                unlockCourseCard(esencialCard, "ia-aplicada-esencial", uid);
+                            } else {
+                                // Logic for Upgrade vs Full Purchase
+                                if (hasStarter) {
+                                    // Upgrade Path
+                                    setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Mejorar a Esencial (US$15)", () => showCouponModal("UPGRADESTARTER", "ia-aplicada-esencial"));
                                 } else {
-                                    // Logic for Upgrade vs Full Purchase
-                                    if (hasStarter) {
-                                        // Upgrade Path
-                                        setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Mejorar a Esencial (US$15)", () => showCouponModal("UPGRADESTARTER", "ia-aplicada-esencial"));
-                                    } else {
-                                        // Full Purchase Path
-                                        setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Inscribirme por US$20", () => showCouponModal("2026", "ia-aplicada-esencial"));
-                                    }
+                                    // Full Purchase Path
+                                    setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Inscribirme por US$20", () => showCouponModal("FUNDADOR", "ia-aplicada-esencial"));
                                 }
                             }
+                        }
 
-                            // Handle Prompts Card
-                            if (anyAccess) {
-                                unlockPromptsCard();
-                            }
+                        // Handle Prompts Card
+                        if (anyAccess) {
+                            unlockPromptsCard();
+                        }
 
-                        }).catch(err => {
-                            console.error("Error verifying access:", err);
-                        });
+                    }).catch(err => {
+                        console.error("Error verifying access:", err);
+                    });
                     }
 
                 })</script>
