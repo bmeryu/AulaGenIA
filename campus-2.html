@@ -1060,41 +1060,42 @@
                             // 1. Handle STARTER Card
                             const starterCard = document.querySelector(`article[data-course-id="ia-aplicada-starter"]`);
                             if (starterCard) {
-                                if (hasEsencial && !enrollments["ia-aplicada-starter"]) {
-                                    unlockCourseCard(starterCard, "ia-aplicada-starter", uid, "Incluido en tu Plan");
+                                if (hasStarter) {
+                                    if (hasEsencial && !enrollments["ia-aplicada-starter"]) {
+                                        unlockCourseCard(starterCard, "ia-aplicada-starter", uid, "Incluido en tu Plan");
+                                    } else {
+                                        unlockCourseCard(starterCard, "ia-aplicada-starter", uid);
+                                    }
                                 } else {
-                                    unlockCourseCard(starterCard, "ia-aplicada-starter", uid);
+                                    setupLockedCard(starterCard, "IA Aplicada · Starter", "Inscribirme por US$5", () => showCouponModal("LANZAMIENTO", "ia-aplicada-starter"));
                                 }
-                            } else {
-                                setupLockedCard(starterCard, "IA Aplicada · Starter", "Inscribirme por US$5", () => showCouponModal("LANZAMIENTO", "ia-aplicada-starter"));
                             }
-                        }
 
                             // 2. Handle ESENCIAL Card
                             const esencialCard = document.querySelector(`article[data-course-id="ia-aplicada-esencial"]`);
-                        if (esencialCard) {
-                            if (hasEsencial) {
-                                unlockCourseCard(esencialCard, "ia-aplicada-esencial", uid);
-                            } else {
-                                // Logic for Upgrade vs Full Purchase
-                                if (hasStarter) {
-                                    // Upgrade Path
-                                    setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Mejorar a Esencial (US$15)", () => showCouponModal("UPGRADESTARTER", "ia-aplicada-esencial"));
+                            if (esencialCard) {
+                                if (hasEsencial) {
+                                    unlockCourseCard(esencialCard, "ia-aplicada-esencial", uid);
                                 } else {
-                                    // Full Purchase Path
-                                    setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Inscribirme por US$20", () => showCouponModal("FUNDADOR", "ia-aplicada-esencial"));
+                                    // Logic for Upgrade vs Full Purchase
+                                    if (hasStarter) {
+                                        // Upgrade Path
+                                        setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Mejorar a Esencial (US$15)", () => showCouponModal("UPGRADESTARTER", "ia-aplicada-esencial"));
+                                    } else {
+                                        // Full Purchase Path
+                                        setupLockedCard(esencialCard, "IA Aplicada · Esencial", "Inscribirme por US$20", () => showCouponModal("FUNDADOR", "ia-aplicada-esencial"));
+                                    }
                                 }
                             }
-                        }
 
-                        // Handle Prompts Card
-                        if (anyAccess) {
-                            unlockPromptsCard();
-                        }
+                            // Handle Prompts Card
+                            if (anyAccess) {
+                                unlockPromptsCard();
+                            }
 
-                    }).catch(err => {
-                        console.error("Error verifying access:", err);
-                    });
+                        }).catch(err => {
+                            console.error("Error verifying access:", err);
+                        });
                     }
 
                 })</script>
