@@ -11,6 +11,8 @@ admin.initializeApp();
 
 const mercadoPagoToken = defineSecret("MERCADOPAGO_TOKEN");
 const hotmartToken = defineSecret("HOTMART_TOKEN");
+const mailjetApiKey = defineSecret("MAILJET_API_KEY");
+const mailjetSecretKey = defineSecret("MAILJET_SECRET_KEY");
 
 // =======================================================================================
 // FUNCIÓN 1: Crear Preferencia de Pago (Soluciona el error de CORS)(DESCUENTO)
@@ -778,7 +780,7 @@ const HOTMART_PRODUCT_MAP = {
  * Webhook para recibir notificaciones de compra de Hotmart
  * URL: https://[region]-aulagenia.cloudfunctions.net/hotmartWebhook
  */
-exports.hotmartWebhook = onRequest({ secrets: [hotmartToken] }, async (req, res) => {
+exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mailjetSecretKey] }, async (req, res) => {
     try {
         // Hotmart envía el token en el header para verificación
         const receivedToken = req.headers['x-hotmart-hottok'];
@@ -864,21 +866,86 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken] }, async (req, res)
 
                         console.log(`🔗 Link de reset generado para: ${buyerEmail}`);
 
-                        // Guardar registro para envío de email (puede usarse con extensión de email o manualmente)
-                        await admin.firestore().collection("emailQueue").add({
-                            to: buyerEmail,
-                            template: 'welcome-hotmart',
-                            data: {
-                                name: buyerName,
+                        // ENVIAR EMAIL VIA MAILJET
+                        try {
+                            const Mailjet = require('node-mailjet');
+                            const mailjet = Mailjet.apiConnect(
+                                mailjetApiKey.value(),
+                                mailjetSecretKey.value()
+                            );
+
+                            const courseName = courseId === 'ia-aplicada-starter'
+                                ? 'Kit Starter: +100 Master Prompts'
+                                : 'Curso IA Aplicada Esencial';
+
+                            await mailjet.post('send', { version: 'v3.1' }).request({
+                                Messages: [{
+                                    From: {
+                                        Email: 'hola@aulagenia.cl',
+                                        Name: 'Aula GenIA'
+                                    },
+                                    To: [{
+                                        Email: buyerEmail,
+                                        Name: buyerName
+                                    }],
+                                    Subject: `¡Bienvenido/a a ${courseName}! - Activa tu acceso`,
+                                    HTMLPart: `
+                                        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                                            <div style="text-align: center; margin-bottom: 30px;">
+                                                <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 150px;">
+                                            </div>
+                                            <h1 style="color: #14b8a6; text-align: center;">¡Felicitaciones, ${buyerName}!</h1>
+                                            <p style="font-size: 16px; color: #333; line-height: 1.6;">
+                                                Tu compra de <strong>${courseName}</strong> ha sido exitosa. 
+                                                Tu acceso ya está activo y listo para que comiences a aprender.
+                                            </p>
+                                            <div style="background: #f0fdfa; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                                                <h3 style="margin-top: 0; color: #0d9488;">🔐 Activa tu contraseña</h3>
+                                                <p style="margin-bottom: 15px;">Haz clic en el siguiente botón para crear tu contraseña y acceder a tu curso:</p>
+                                                <a href="${resetLink}" style="display: inline-block; background: #14b8a6; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                                                    Crear mi contraseña y acceder
+                                                </a>
+                                            </div>
+                                            <p style="font-size: 14px; color: #666;">
+                                                Después de crear tu contraseña, podrás acceder a tu campus en 
+                                                <a href="https://aulagenia.cl/campus.html" style="color: #14b8a6;">aulagenia.cl/campus.html</a>
+                                            </p>
+                                            <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                                            <p style="font-size: 12px; color: #999; text-align: center;">
+                                                ¿Tienes dudas? Escríbenos a hola@aulagenia.cl<br>
+                                                Aula GenIA - Aprende IA de forma práctica
+                                            </p>
+                                        </div>
+                                    `,
+                                    TextPart: `¡Bienvenido/a ${buyerName}! Tu compra de ${courseName} fue exitosa. Crea tu contraseña aquí: ${resetLink}`
+                                }]
+                            });
+
+                            console.log(`✉️ Email enviado exitosamente a: ${buyerEmail}`);
+
+                            // Guardar registro del email enviado
+                            await admin.firestore().collection("emailsSent").add({
+                                to: buyerEmail,
+                                type: 'welcome-hotmart',
                                 courseId: courseId,
-                                resetLink: resetLink
-                            },
-                            status: 'pending',
-                            createdAt: admin.firestore.FieldValue.serverTimestamp()
-                        });
+                                sentAt: admin.firestore.FieldValue.serverTimestamp(),
+                                status: 'sent'
+                            });
+
+                        } catch (emailError) {
+                            console.error('❌ Error enviando email:', emailError);
+                            // Guardar en cola para reintento manual
+                            await admin.firestore().collection("emailQueue").add({
+                                to: buyerEmail,
+                                template: 'welcome-hotmart',
+                                data: { name: buyerName, courseId, resetLink },
+                                status: 'failed',
+                                error: emailError.message,
+                                createdAt: admin.firestore.FieldValue.serverTimestamp()
+                            });
+                        }
 
                         console.log(`✅ Compra Hotmart procesada (usuario nuevo): ${buyerEmail} -> ${courseId}`);
-                        console.log(`📧 Email de bienvenida en cola para: ${buyerEmail}`);
 
                     } catch (createError) {
                         console.error("❌ Error creando usuario:", createError);
