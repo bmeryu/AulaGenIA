@@ -906,7 +906,8 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
         <!-- Header con gradiente -->
         <div style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%); padding: 40px 30px; text-align: center;">
             <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 120px; margin-bottom: 20px;">
-            <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">¡Bienvenido/a a la élite de la IA!</h1>
+            <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">Bienvenidos a Aula GenIA</h1>
+            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">Tu Futuro en Inteligencia Artificial comienza Aquí</p>
         </div>
         
         <!-- Contenido principal -->
@@ -983,7 +984,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
         <!-- Footer -->
         <div style="background: #f8fafc; padding: 25px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
             <p style="color: #64748b; margin: 0 0 10px 0; font-size: 14px;">¿Tienes dudas? Escríbenos a <a href="mailto:hola@aulagenia.cl" style="color: #14b8a6;">hola@aulagenia.cl</a></p>
-            <p style="color: #94a3b8; margin: 0; font-size: 12px;">Aula GenIA · Aprende IA de forma práctica</p>
+            <p style="color: #0d9488; margin: 0; font-size: 13px; font-weight: 600;">¡Y recuerda: en Aula GenIA, la IA no es el futuro… TÚ lo eres!</p>
         </div>
         
     </div>
