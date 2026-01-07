@@ -892,36 +892,119 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                                         Email: 'hola@aulagenia.cl',
                                         Name: 'Aula GenIA Admin'
                                     }],
-                                    Subject: `¡Bienvenido/a a ${courseName}! - Activa tu acceso`,
+                                    Subject: `🚀 ${buyerName}, ¡Bienvenido/a a la élite de la IA!`,
                                     HTMLPart: `
-                                        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                                            <div style="text-align: center; margin-bottom: 30px;">
-                                                <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 150px;">
-                                            </div>
-                                            <h1 style="color: #14b8a6; text-align: center;">¡Felicitaciones, ${buyerName}!</h1>
-                                            <p style="font-size: 16px; color: #333; line-height: 1.6;">
-                                                Tu compra de <strong>${courseName}</strong> ha sido exitosa. 
-                                                Tu acceso ya está activo y listo para que comiences a aprender.
-                                            </p>
-                                            <div style="background: #f0fdfa; border-radius: 10px; padding: 20px; margin: 20px 0;">
-                                                <h3 style="margin-top: 0; color: #0d9488;">🔐 Activa tu contraseña</h3>
-                                                <p style="margin-bottom: 15px;">Haz clic en el siguiente botón para crear tu contraseña y acceder a tu curso:</p>
-                                                <a href="${resetLink}" style="display: inline-block; background: #14b8a6; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold;">
-                                                    Crear mi contraseña y acceder
-                                                </a>
-                                            </div>
-                                            <p style="font-size: 14px; color: #666;">
-                                                Después de crear tu contraseña, podrás acceder a tu campus en 
-                                                <a href="https://aulagenia.cl/campus.html" style="color: #14b8a6;">aulagenia.cl/campus.html</a>
-                                            </p>
-                                            <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
-                                            <p style="font-size: 12px; color: #999; text-align: center;">
-                                                ¿Tienes dudas? Escríbenos a hola@aulagenia.cl<br>
-                                                Aula GenIA - Aprende IA de forma práctica
-                                            </p>
-                                        </div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5;">
+    <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        
+        <!-- Header con gradiente -->
+        <div style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%); padding: 40px 30px; text-align: center;">
+            <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 120px; margin-bottom: 20px;">
+            <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">¡Bienvenido/a a la élite de la IA!</h1>
+        </div>
+        
+        <!-- Contenido principal -->
+        <div style="padding: 40px 30px;">
+            <p style="font-size: 18px; color: #333; margin-bottom: 20px;">
+                Hola <strong style="color: #0d9488;">${buyerName}</strong>,
+            </p>
+            
+            <p style="font-size: 16px; color: #555; line-height: 1.7; margin-bottom: 25px;">
+                Es un gusto saludarte. Ya confirmamos tu inscripción al <strong>Kit Starter + Fórmulas Maestras</strong>. 
+                A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarán tu productividad.
+            </p>
+            
+            <div style="background: #f0fdfa; border-left: 4px solid #14b8a6; padding: 15px 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0;">
+                <p style="margin: 0; color: #0d9488; font-weight: 600;">✨ Tu acceso a la Bóveda de Recursos ya ha sido sincronizado.</p>
+            </div>
+            
+            <!-- Credenciales -->
+            <div style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); border-radius: 12px; padding: 25px; margin-bottom: 30px;">
+                <h2 style="color: #2dd4bf; margin: 0 0 20px 0; font-size: 18px;">🔑 Tus Credenciales de Acceso</h2>
+                
+                <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                    <p style="color: #94a3b8; margin: 0 0 5px 0; font-size: 12px; text-transform: uppercase;">Portal de Acceso</p>
+                    <a href="https://aulagenia.cl/acceso.html" style="color: #2dd4bf; font-size: 16px; text-decoration: none;">aulagenia.cl/acceso</a>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                    <p style="color: #94a3b8; margin: 0 0 5px 0; font-size: 12px; text-transform: uppercase;">Usuario</p>
+                    <p style="color: white; margin: 0; font-size: 16px;">${buyerEmail}</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px;">
+                    <p style="color: #94a3b8; margin: 0 0 5px 0; font-size: 12px; text-transform: uppercase;">Contraseña</p>
+                    <p style="color: #fbbf24; margin: 0; font-size: 14px;">👆 Haz clic en el botón de abajo para crear tu contraseña personal</p>
+                </div>
+            </div>
+            
+            <!-- Botón CTA -->
+            <div style="text-align: center; margin-bottom: 35px;">
+                <a href="${resetLink}" style="display: inline-block; background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; padding: 18px 40px; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4);">
+                    🔐 Crear mi Contraseña y Acceder
+                </a>
+            </div>
+            
+            <!-- Lo que recibes -->
+            <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">📦 Lo que recibes hoy:</h3>
+            
+            <div style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; display: flex; align-items: flex-start;">
+                <span style="font-size: 24px; margin-right: 15px;">🎯</span>
+                <div>
+                    <strong style="color: #1e293b;">+100 Instrucciones Maestras</strong>
+                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Fórmulas probadas para ChatGPT, Claude y Gemini. <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #14b8a6;">Accede aquí</a></p>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; display: flex; align-items: flex-start;">
+                <span style="font-size: 24px; margin-right: 15px;">⚡</span>
+                <div>
+                    <strong style="color: #1e293b;">Ecosistema de Automatización</strong>
+                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Recupera hasta 10 horas de tu semana automatizando tareas repetitivas.</p>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 25px; padding: 15px; background: #f8fafc; border-radius: 10px; display: flex; align-items: flex-start;">
+                <span style="font-size: 24px; margin-right: 15px;">♾️</span>
+                <div>
+                    <strong style="color: #1e293b;">Acceso Vitalicio</strong>
+                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Sin suscripciones ni cobros sorpresa futuros.</p>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Footer -->
+        <div style="background: #f8fafc; padding: 25px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+            <p style="color: #64748b; margin: 0 0 10px 0; font-size: 14px;">¿Tienes dudas? Escríbenos a <a href="mailto:hola@aulagenia.cl" style="color: #14b8a6;">hola@aulagenia.cl</a></p>
+            <p style="color: #94a3b8; margin: 0; font-size: 12px;">Aula GenIA · Aprende IA de forma práctica</p>
+        </div>
+        
+    </div>
+</body>
+</html>
                                     `,
-                                    TextPart: `¡Bienvenido/a ${buyerName}! Tu compra de ${courseName} fue exitosa. Crea tu contraseña aquí: ${resetLink}`
+                                    TextPart: `¡Hola ${buyerName}! Bienvenido/a a la élite de la IA.
+
+Tu inscripción al Kit Starter + Fórmulas Maestras está confirmada.
+
+🔑 TUS CREDENCIALES:
+Portal: https://aulagenia.cl/acceso.html
+Usuario: ${buyerEmail}
+Contraseña: Crea tu contraseña aquí: ${resetLink}
+
+📦 LO QUE RECIBES:
+- +100 Instrucciones Maestras para ChatGPT, Claude y Gemini
+- Ecosistema de Automatización
+- Acceso Vitalicio
+
+¿Dudas? Escríbenos a hola@aulagenia.cl`
                                 }]
                             });
 
@@ -949,7 +1032,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                             });
                         }
 
-                        console.log(`✅ Compra Hotmart procesada (usuario nuevo): ${buyerEmail} -> ${courseId}`);
+                        console.log(`✅ Compra Hotmart procesada(usuario nuevo): ${buyerEmail} -> ${courseId}`);
 
                     } catch (createError) {
                         console.error("❌ Error creando usuario:", createError);
@@ -973,10 +1056,10 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
         } else if (event === "REFUND" || event === "PURCHASE_REFUNDED" || event === "CHARGEBACK") {
             // Manejar reembolsos - opcional pero recomendado
             const buyerEmail = data.buyer?.email || data.data?.buyer?.email;
-            console.log(`⚠️ Reembolso/Chargeback detectado para: ${buyerEmail}`);
+            console.log(`⚠️ Reembolso / Chargeback detectado para: ${buyerEmail}`);
             // Aquí podrías desactivar el acceso si lo deseas
         } else {
-            console.log(`ℹ️ Evento Hotmart ignorado (no relevante): ${event}`);
+            console.log(`ℹ️ Evento Hotmart ignorado(no relevante): ${event}`);
         }
 
         return res.status(200).send("OK");
@@ -1044,7 +1127,7 @@ exports.checkPendingHotmartPurchase = onCall(
 
             await batch.commit();
 
-            console.log(`✅ Compras pendientes activadas para ${userEmail}:`, coursesActivated);
+            console.log(`✅ Compras pendientes activadas para ${userEmail}: `, coursesActivated);
 
             return {
                 found: true,
