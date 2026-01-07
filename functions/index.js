@@ -926,7 +926,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
             
             <!-- Credenciales -->
             <div style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); border-radius: 12px; padding: 25px; margin-bottom: 30px;">
-                <h2 style="color: #2dd4bf; margin: 0 0 20px 0; font-size: 18px;">🔑 Tus Credenciales de Acceso</h2>
+                <h2 style="color: white; margin: 0 0 20px 0; font-size: 18px;">🔑 Tus Credenciales de Acceso</h2>
                 
                 <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
                     <p style="color: #94a3b8; margin: 0 0 5px 0; font-size: 12px; text-transform: uppercase;">Portal de Acceso</p>
