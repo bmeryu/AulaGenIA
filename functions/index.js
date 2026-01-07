@@ -824,21 +824,76 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken] }, async (req, res)
                     hotmartPurchaseDate: admin.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
 
-                console.log(`✅ Acceso Hotmart concedido: ${buyerEmail} -> ${courseId}`);
+                console.log(`✅ Acceso Hotmart concedido (usuario existente): ${buyerEmail} -> ${courseId}`);
 
             } catch (authError) {
-                // Usuario no existe aún - guardamos en cola pendiente
+                // Usuario no existe - CREAR AUTOMÁTICAMENTE
                 if (authError.code === 'auth/user-not-found') {
-                    await admin.firestore().collection("pendingHotmartPurchases").add({
-                        email: buyerEmail.toLowerCase(),
-                        courseId: courseId,
-                        productId: productId,
-                        transactionId: transactionId,
-                        event: event,
-                        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-                        processed: false
-                    });
-                    console.log(`⏳ Compra Hotmart guardada en cola (usuario no registrado): ${buyerEmail}`);
+                    console.log(`📝 Creando nuevo usuario para: ${buyerEmail}`);
+
+                    try {
+                        // Obtener nombre del comprador si está disponible
+                        const buyerName = data.buyer?.name || data.data?.buyer?.name || 'Estudiante';
+
+                        // Crear usuario en Firebase Auth con contraseña temporal
+                        const tempPassword = Math.random().toString(36).slice(-12) + 'Aa1!';
+                        const newUser = await admin.auth().createUser({
+                            email: buyerEmail,
+                            password: tempPassword,
+                            displayName: buyerName,
+                            emailVerified: false
+                        });
+
+                        console.log(`✅ Usuario creado: ${newUser.uid}`);
+
+                        // Activar el curso para el nuevo usuario
+                        await admin.firestore().collection("users").doc(newUser.uid).set({
+                            enrollments: { [courseId]: true },
+                            paymentProvider: 'hotmart',
+                            hotmartTransactionId: transactionId,
+                            hotmartPurchaseDate: admin.firestore.FieldValue.serverTimestamp(),
+                            displayName: buyerName,
+                            email: buyerEmail,
+                            createdVia: 'hotmart-webhook'
+                        }, { merge: true });
+
+                        // Generar link de reset de contraseña
+                        const resetLink = await admin.auth().generatePasswordResetLink(buyerEmail, {
+                            url: 'https://aulagenia.cl/acceso.html?from=hotmart'
+                        });
+
+                        console.log(`🔗 Link de reset generado para: ${buyerEmail}`);
+
+                        // Guardar registro para envío de email (puede usarse con extensión de email o manualmente)
+                        await admin.firestore().collection("emailQueue").add({
+                            to: buyerEmail,
+                            template: 'welcome-hotmart',
+                            data: {
+                                name: buyerName,
+                                courseId: courseId,
+                                resetLink: resetLink
+                            },
+                            status: 'pending',
+                            createdAt: admin.firestore.FieldValue.serverTimestamp()
+                        });
+
+                        console.log(`✅ Compra Hotmart procesada (usuario nuevo): ${buyerEmail} -> ${courseId}`);
+                        console.log(`📧 Email de bienvenida en cola para: ${buyerEmail}`);
+
+                    } catch (createError) {
+                        console.error("❌ Error creando usuario:", createError);
+                        // Fallback: guardar en cola pendiente
+                        await admin.firestore().collection("pendingHotmartPurchases").add({
+                            email: buyerEmail.toLowerCase(),
+                            courseId: courseId,
+                            productId: productId,
+                            transactionId: transactionId,
+                            event: event,
+                            error: createError.message,
+                            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                            processed: false
+                        });
+                    }
                 } else {
                     console.error("❌ Error buscando usuario:", authError);
                     throw authError;
