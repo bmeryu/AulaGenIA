@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+
+<head>
+    <meta charset="UTF-8">
+    <title>¡Pago Exitoso! - Aula GenIA</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.368.0/dist/umd/lucide.min.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+
+    <style>
+        body {
+            font-family: Poppins, sans-serif
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #14b8a6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 flex items-center justify-center min-h-screen">
+    <div class="text-center bg-white p-8 md:p-12 rounded-2xl shadow-xl max-w-lg mx-4">
+        <!-- Estado: Verificando -->
+        <div id="state-loading">
+            <div class="loading-spinner"></div>
+            <h1 class="text-2xl font-bold text-gray-900 mt-6">Verificando tu compra...</h1>
+            <p class="text-gray-600 mt-2">Por favor espera un momento mientras activamos tu acceso.</p>
+        </div>
+
+        <!-- Estado: Éxito -->
+        <div id="state-success" class="hidden">
+            <div class="mx-auto bg-green-100 rounded-full h-20 w-20 flex items-center justify-center">
+                <i data-lucide="check-circle-2" class="h-12 w-12 text-green-600"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 mt-6">¡Inscripción Exitosa!</h1>
+            <p class="text-gray-600 mt-2" id="success-message">Tu acceso al curso ha sido activado. Ya puedes comenzar a
+                aprender.</p>
+            <div class="mt-8">
+                <a href="campus.html"
+                    class="w-full block bg-teal-500 hover:bg-teal-600 text-white font-bold py-4 px-6 rounded-lg transition-colors text-lg">
+                    Ir a Mis Cursos
+                </a>
+            </div>
+        </div>
+
+        <!-- Estado: Necesita Login -->
+        <div id="state-login" class="hidden">
+            <div class="mx-auto bg-blue-100 rounded-full h-20 w-20 flex items-center justify-center">
+                <i data-lucide="user-plus" class="h-12 w-12 text-blue-600"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 mt-6">¡Un paso más!</h1>
+            <p class="text-gray-600 mt-2">Para activar tu acceso, inicia sesión o crea una cuenta con el mismo email que
+                usaste en la compra.</p>
+            <div class="mt-8">
+                <a href="acceso.html?from=hotmart"
+                    class="w-full block bg-teal-500 hover:bg-teal-600 text-white font-bold py-4 px-6 rounded-lg transition-colors text-lg">
+                    Iniciar Sesión / Registrarme
+                </a>
+            </div>
+            <p class="text-sm text-gray-500 mt-4">Tu compra está guardada y se activará automáticamente al iniciar
+                sesión.</p>
+        </div>
+
+        <!-- Estado: Pendiente (compra en proceso) -->
+        <div id="state-pending" class="hidden">
+            <div class="mx-auto bg-yellow-100 rounded-full h-20 w-20 flex items-center justify-center">
+                <i data-lucide="clock" class="h-12 w-12 text-yellow-600"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 mt-6">Compra en Proceso</h1>
+            <p class="text-gray-600 mt-2">Tu pago está siendo procesado. Esto puede tomar unos minutos. Te enviaremos un
+                email cuando esté listo.</p>
+            <div class="mt-8">
+                <a href="/"
+                    class="w-full block bg-gray-500 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-lg transition-colors text-lg">
+                    Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
+            authDomain: "aulagenia.firebaseapp.com",
+            projectId: "aulagenia",
+            storageBucket: "aulagenia.appspot.com",
+            messagingSenderId: "173328075630",
+            appId: "1:173328075630:web:825606db4271ea1e66cf7f"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const auth = firebase.auth();
+        const functions = firebase.functions();
+
+        // Elementos del DOM
+        const stateLoading = document.getElementById('state-loading');
+        const stateSuccess = document.getElementById('state-success');
+        const stateLogin = document.getElementById('state-login');
+        const statePending = document.getElementById('state-pending');
+        const successMessage = document.getElementById('success-message');
+
+        function showState(state) {
+            stateLoading.classList.add('hidden');
+            stateSuccess.classList.add('hidden');
+            stateLogin.classList.add('hidden');
+            statePending.classList.add('hidden');
+
+            if (state === 'loading') stateLoading.classList.remove('hidden');
+            if (state === 'success') stateSuccess.classList.remove('hidden');
+            if (state === 'login') stateLogin.classList.remove('hidden');
+            if (state === 'pending') statePending.classList.remove('hidden');
+
+            // Renderizar iconos de Lucide
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        // Verificar estado del usuario
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // Usuario autenticado - verificar compras pendientes
+                try {
+                    const checkPending = functions.httpsCallable('checkPendingHotmartPurchase');
+                    const result = await checkPending();
+
+                    if (result.data.found) {
+                        successMessage.textContent = `¡${result.data.message}! Ya puedes comenzar a aprender.`;
+                    }
+
+                    showState('success');
+
+                    // Disparar evento de Meta Pixel si existe
+                    if (typeof fbq !== 'undefined') {
+                        fbq('track', 'Purchase', {
+                            value: 15.00,
+                            currency: 'USD',
+                            content_name: 'Curso via Hotmart',
+                            content_type: 'product'
+                        });
+                    }
+
+                } catch (error) {
+                    console.error('Error verificando compras:', error);
+                    // Aún así mostrar éxito - el webhook probablemente ya activó el acceso
+                    showState('success');
+                }
+            } else {
+                // Usuario no autenticado - mostrar opción de login
+                // Esperar un momento por si Hotmart aún está procesando
+                setTimeout(() => {
+                    showState('login');
+                }, 1500);
+            }
+        });
+
+        // Mostrar estado de carga inicial
+        showState('loading');
+    </script>
+
+    <script>lucide.createIcons()</script>
+</body>
+
+</html>

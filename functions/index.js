@@ -10,6 +10,7 @@ const { MercadoPagoConfig, Preference, Payment } = require("mercadopago");
 admin.initializeApp();
 
 const mercadoPagoToken = defineSecret("MERCADOPAGO_TOKEN");
+const hotmartToken = defineSecret("HOTMART_TOKEN");
 
 // =======================================================================================
 // FUNCIÓN 1: Crear Preferencia de Pago (Soluciona el error de CORS)(DESCUENTO)
@@ -755,6 +756,179 @@ exports.getPromptsData = onCall(
             console.error('Error en getPromptsData:', error);
             if (error instanceof HttpsError) throw error;
             throw new HttpsError('internal', 'Error al obtener datos');
+        }
+    }
+);
+
+// =======================================================================================
+// SISTEMA DE PAGOS HOTMART
+// =======================================================================================
+
+/**
+ * Mapeo de Product IDs de Hotmart a Course IDs internos
+ * IMPORTANTE: Actualizar con los IDs reales de tus productos en Hotmart
+ */
+const HOTMART_PRODUCT_MAP = {
+    // Reemplaza estos IDs con los reales de tu panel Hotmart
+    'HOTMART_STARTER_ID': 'ia-aplicada-starter',
+    'HOTMART_ESENCIAL_ID': 'ia-aplicada-esencial'
+};
+
+/**
+ * Webhook para recibir notificaciones de compra de Hotmart
+ * URL: https://[region]-aulagenia.cloudfunctions.net/hotmartWebhook
+ */
+exports.hotmartWebhook = onRequest({ secrets: [hotmartToken] }, async (req, res) => {
+    try {
+        // Hotmart envía el token en el header para verificación
+        const receivedToken = req.headers['x-hotmart-hottok'];
+        const expectedToken = hotmartToken.value().trim();
+
+        // Verificar autenticidad del webhook
+        if (receivedToken !== expectedToken) {
+            console.error("❌ Token de Hotmart inválido", { received: receivedToken ? 'present' : 'missing' });
+            return res.status(401).send("Unauthorized");
+        }
+
+        const data = req.body;
+        const event = data.event || data.status;
+
+        console.log("📦 Evento Hotmart recibido:", { event, data: JSON.stringify(data).substring(0, 500) });
+
+        // Solo procesamos compras aprobadas
+        if (event === "PURCHASE_APPROVED" || event === "PURCHASE_COMPLETE" || event === "PURCHASE_BILLET_PRINTED") {
+            // Hotmart puede enviar datos en diferentes estructuras según la versión del webhook
+            const buyerEmail = data.buyer?.email || data.data?.buyer?.email || data.email;
+            const productId = String(data.product?.id || data.data?.product?.id || data.prod);
+            const transactionId = data.transaction || data.data?.purchase?.transaction || data.purchase?.transaction;
+
+            if (!buyerEmail) {
+                console.error("❌ Email del comprador no encontrado en webhook Hotmart");
+                return res.status(400).send("Missing buyer email");
+            }
+
+            // Mapear producto Hotmart -> courseId de tu sistema
+            const courseId = HOTMART_PRODUCT_MAP[productId] || 'ia-aplicada-starter';
+
+            console.log(`🔄 Procesando compra Hotmart: ${buyerEmail} -> ${courseId} (Product: ${productId})`);
+
+            // Buscar usuario por email en Firebase Auth
+            try {
+                const userRecord = await admin.auth().getUserByEmail(buyerEmail);
+
+                // Usuario existe - activar curso inmediatamente
+                await admin.firestore().collection("users").doc(userRecord.uid).set({
+                    enrollments: { [courseId]: true },
+                    paymentProvider: 'hotmart',
+                    hotmartTransactionId: transactionId,
+                    hotmartPurchaseDate: admin.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                console.log(`✅ Acceso Hotmart concedido: ${buyerEmail} -> ${courseId}`);
+
+            } catch (authError) {
+                // Usuario no existe aún - guardamos en cola pendiente
+                if (authError.code === 'auth/user-not-found') {
+                    await admin.firestore().collection("pendingHotmartPurchases").add({
+                        email: buyerEmail.toLowerCase(),
+                        courseId: courseId,
+                        productId: productId,
+                        transactionId: transactionId,
+                        event: event,
+                        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                        processed: false
+                    });
+                    console.log(`⏳ Compra Hotmart guardada en cola (usuario no registrado): ${buyerEmail}`);
+                } else {
+                    console.error("❌ Error buscando usuario:", authError);
+                    throw authError;
+                }
+            }
+        } else if (event === "REFUND" || event === "PURCHASE_REFUNDED" || event === "CHARGEBACK") {
+            // Manejar reembolsos - opcional pero recomendado
+            const buyerEmail = data.buyer?.email || data.data?.buyer?.email;
+            console.log(`⚠️ Reembolso/Chargeback detectado para: ${buyerEmail}`);
+            // Aquí podrías desactivar el acceso si lo deseas
+        } else {
+            console.log(`ℹ️ Evento Hotmart ignorado (no relevante): ${event}`);
+        }
+
+        return res.status(200).send("OK");
+    } catch (err) {
+        console.error("❌ Error crítico en webhook Hotmart:", err);
+        return res.status(500).send("Error");
+    }
+});
+
+/**
+ * Función para verificar y activar compras pendientes de Hotmart
+ * Se llama cuando un usuario se registra o inicia sesión
+ */
+exports.checkPendingHotmartPurchase = onCall(
+    {
+        cors: true,
+    },
+    async (request) => {
+        if (!request.auth) {
+            throw new HttpsError("unauthenticated", "Debes estar autenticado.");
+        }
+
+        const userEmail = request.auth.token.email;
+        if (!userEmail) {
+            return { found: false, message: "No email associated with account" };
+        }
+
+        try {
+            // Buscar compras pendientes para este email
+            const pendingSnap = await admin.firestore()
+                .collection("pendingHotmartPurchases")
+                .where("email", "==", userEmail.toLowerCase())
+                .where("processed", "==", false)
+                .get();
+
+            if (pendingSnap.empty) {
+                return { found: false };
+            }
+
+            // Activar todos los cursos pendientes
+            const batch = admin.firestore().batch();
+            const userRef = admin.firestore().collection("users").doc(request.auth.uid);
+
+            let enrollments = {};
+            let coursesActivated = [];
+
+            pendingSnap.docs.forEach(doc => {
+                const data = doc.data();
+                enrollments[data.courseId] = true;
+                coursesActivated.push(data.courseId);
+
+                // Marcar como procesado (no eliminar para auditoría)
+                batch.update(doc.ref, {
+                    processed: true,
+                    processedAt: admin.firestore.FieldValue.serverTimestamp(),
+                    processedUserId: request.auth.uid
+                });
+            });
+
+            // Actualizar usuario con enrollments
+            batch.set(userRef, {
+                enrollments,
+                paymentProvider: 'hotmart'
+            }, { merge: true });
+
+            await batch.commit();
+
+            console.log(`✅ Compras pendientes activadas para ${userEmail}:`, coursesActivated);
+
+            return {
+                found: true,
+                coursesActivated: coursesActivated,
+                message: `Se activaron ${coursesActivated.length} curso(s)`
+            };
+
+        } catch (error) {
+            console.error('Error verificando compras pendientes de Hotmart:', error);
+            throw new HttpsError('internal', 'Error al verificar compras pendientes');
         }
     }
 );
