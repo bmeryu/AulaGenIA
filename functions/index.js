@@ -75,21 +75,30 @@ exports.createMercadoPagoPreference = onCall(
                     // FALLBACK: Hardcoded Launch Coupons for Payment
                     const code = couponCode.toUpperCase();
                     if (code === 'LANZAMIENTO') {
+                        // LANZAMIENTO solo para Starter
+                        if (courseId !== 'ia-aplicada-starter') {
+                            throw new HttpsError('failed-precondition', 'El cupón LANZAMIENTO solo aplica al programa Starter.');
+                        }
                         couponData = {
                             code: 'LANZAMIENTO',
-                            discountType: 'fixed', // Logic handling below needs to support this
+                            discountType: 'fixed',
                             discountValue: 10, // 15 - 10 = 5
                         };
-                        // Override basePrice just in case courseId mismatch? No, trust courseId from request?
-                        // If user sends ia-aplicada-esencial + LANZAMIENTO, we might get weird results.
-                        // But let's assume frontend fix will match courseId.
                     } else if (code === 'FUNDADOR') {
+                        // FUNDADOR solo para Esencial
+                        if (courseId !== 'ia-aplicada-esencial') {
+                            throw new HttpsError('failed-precondition', 'El cupón FUNDADOR solo aplica al programa Esencial.');
+                        }
                         couponData = {
                             code: 'FUNDADOR',
                             discountType: 'fixed',
                             discountValue: 25, // 45 - 25 = 20
                         };
                     } else if (code === 'UPGRADESTARTER') {
+                        // UPGRADESTARTER solo para Esencial
+                        if (courseId !== 'ia-aplicada-esencial') {
+                            throw new HttpsError('failed-precondition', 'El cupón UPGRADESTARTER solo aplica al programa Esencial.');
+                        }
                         couponData = {
                             code: 'UPGRADESTARTER',
                             discountType: 'fixed',
@@ -484,9 +493,10 @@ exports.validateCoupon = onCall(
                 // FALLBACK: Hardcoded Launch Coupons if not in DB
                 const code = couponCode.toUpperCase();
                 if (code === 'LANZAMIENTO') {
-                    // Specific for Starter: $5 Final Price (Discount $10 from $15 base)
-                    // Or percentage. Let's force a fixed discount to reach $5.
-                    // If base is 15, discount 10.
+                    // LANZAMIENTO solo para Starter
+                    if (courseId !== 'ia-aplicada-starter') {
+                        throw new HttpsError('failed-precondition', 'El cupón LANZAMIENTO solo aplica al programa Starter.');
+                    }
                     return {
                         valid: true,
                         couponId: 'HARDCODED_LANZAMIENTO',
@@ -494,12 +504,15 @@ exports.validateCoupon = onCall(
                         discountType: 'fixed',
                         discountValue: 10,
                         discountAmount: 10,
-                        originalPrice: 15, // Context: Starter
+                        originalPrice: 15,
                         finalPrice: 5
                     };
                 }
                 if (code === 'FUNDADOR') {
-                    // Specific for Esencial: $20 Final Price (Discount $25 from $45 base)
+                    // FUNDADOR solo para Esencial
+                    if (courseId !== 'ia-aplicada-esencial') {
+                        throw new HttpsError('failed-precondition', 'El cupón FUNDADOR solo aplica al programa Esencial.');
+                    }
                     return {
                         valid: true,
                         couponId: 'HARDCODED_FUNDADOR',
@@ -507,12 +520,15 @@ exports.validateCoupon = onCall(
                         discountType: 'fixed',
                         discountValue: 25,
                         discountAmount: 25,
-                        originalPrice: 45, // Context: Esencial
+                        originalPrice: 45,
                         finalPrice: 20
                     };
                 }
                 if (code === 'UPGRADESTARTER') {
-                    // Specific for Upgrade: $15 Final Price (Discount $30 from $45 base)
+                    // UPGRADESTARTER solo para Esencial
+                    if (courseId !== 'ia-aplicada-esencial') {
+                        throw new HttpsError('failed-precondition', 'El cupón UPGRADESTARTER solo aplica al programa Esencial.');
+                    }
                     return {
                         valid: true,
                         couponId: 'HARDCODED_UPGRADE',
@@ -520,7 +536,7 @@ exports.validateCoupon = onCall(
                         discountType: 'fixed',
                         discountValue: 30,
                         discountAmount: 30,
-                        originalPrice: 45, // Context: Esencial
+                        originalPrice: 45,
                         finalPrice: 15
                     };
                 }
