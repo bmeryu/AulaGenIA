@@ -766,12 +766,12 @@ exports.getPromptsData = onCall(
 
 /**
  * Mapeo de Product IDs de Hotmart a Course IDs internos
- * IMPORTANTE: Actualizar con los IDs reales de tus productos en Hotmart
+ * Product ID 6932550 = Curso IA Aplicada Starter
  */
 const HOTMART_PRODUCT_MAP = {
-    // Reemplaza estos IDs con los reales de tu panel Hotmart
-    'HOTMART_STARTER_ID': 'ia-aplicada-starter',
-    'HOTMART_ESENCIAL_ID': 'ia-aplicada-esencial'
+    '6932550': 'ia-aplicada-starter',
+    // Agregar más productos aquí cuando se creen:
+    // 'ID_ESENCIAL': 'ia-aplicada-esencial'
 };
 
 /**
