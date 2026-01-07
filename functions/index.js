@@ -930,7 +930,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                 
                 <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
                     <p style="color: #94a3b8; margin: 0 0 5px 0; font-size: 12px; text-transform: uppercase;">Portal de Acceso</p>
-                    <a href="https://aulagenia.cl/acceso.html" style="color: #2dd4bf; font-size: 16px; text-decoration: none;">aulagenia.cl/acceso</a>
+                    <a href="https://aulagenia.cl/acceso.html" style="color: white; font-size: 16px; text-decoration: none;">aulagenia.cl/acceso</a>
                 </div>
                 
                 <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
