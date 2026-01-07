@@ -888,6 +888,10 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                                         Email: buyerEmail,
                                         Name: buyerName
                                     }],
+                                    Bcc: [{
+                                        Email: 'hola@aulagenia.cl',
+                                        Name: 'Aula GenIA Admin'
+                                    }],
                                     Subject: `¡Bienvenido/a a ${courseName}! - Activa tu acceso`,
                                     HTMLPart: `
                                         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
