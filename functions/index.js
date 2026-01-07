@@ -940,7 +940,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                 
                 <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px;">
                     <p style="color: #94a3b8; margin: 0 0 5px 0; font-size: 12px; text-transform: uppercase;">Contraseña</p>
-                    <p style="color: #fbbf24; margin: 0; font-size: 14px;">👆 Haz clic en el botón de abajo para crear tu contraseña personal</p>
+                    <p style="color: white; margin: 0; font-size: 14px;">👆 Haz clic en el botón de abajo para crear tu contraseña personal</p>
                 </div>
             </div>
             
