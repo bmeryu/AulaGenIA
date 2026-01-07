@@ -92,7 +92,7 @@ exports.createMercadoPagoPreference = onCall(
                         couponData = {
                             code: 'FUNDADOR',
                             discountType: 'fixed',
-                            discountValue: 25, // 45 - 25 = 20
+                            discountValue: 20, // 45 - 20 = 25
                         };
                     } else if (code === 'UPGRADESTARTER') {
                         // UPGRADESTARTER solo para Esencial
@@ -518,10 +518,10 @@ exports.validateCoupon = onCall(
                         couponId: 'HARDCODED_FUNDADOR',
                         code: 'FUNDADOR',
                         discountType: 'fixed',
-                        discountValue: 25,
-                        discountAmount: 25,
+                        discountValue: 20,
+                        discountAmount: 20,
                         originalPrice: 45,
-                        finalPrice: 20
+                        finalPrice: 25
                     };
                 }
                 if (code === 'UPGRADESTARTER') {
