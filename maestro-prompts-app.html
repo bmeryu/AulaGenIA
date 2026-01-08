@@ -469,96 +469,69 @@
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
     <div id="system-status-overlay"
         class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500"
-        style="background: linear-gradient(135deg, #0a0f1a 0%, #1a1f2e 50%, #0d1117 100%);">
-        <!-- Blueprint Grid Background -->
-        <div class="absolute inset-0 opacity-10"
-            style="background-image: linear-gradient(rgba(20, 184, 166, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 184, 166, 0.3) 1px, transparent 1px); background-size: 40px 40px;">
+        style="background: #0B101B;">
+
+        <!-- Interactive Blueprint Grid Background -->
+        <div id="blueprint-grid" class="absolute inset-0 opacity-[0.05] transition-transform duration-100"
+            style="background-image: linear-gradient(rgba(20, 184, 166, 1) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 184, 166, 1) 1px, transparent 1px); background-size: 40px 40px;">
         </div>
+
         <!-- Glow effect -->
         <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl">
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-500/15 rounded-full blur-3xl animate-pulse">
         </div>
 
         <div
-            class="relative bg-slate-900/80 backdrop-blur-xl p-8 rounded-[2rem] shadow-2xl border border-teal-500/30 max-w-md w-full animate-in zoom-in duration-300">
-            <!-- 3D Cube Animation -->
-            <div id="status-icon" class="w-20 h-20 mx-auto mb-6 relative" style="perspective: 1000px;">
-                <div class="cube-container"
-                    style="transform-style: preserve-3d; animation: buildAndRotate 4s ease-in-out infinite; width: 60px; height: 60px; position: relative; margin: 0 auto;">
-                    <!-- Base/Bottom layer - appears first -->
-                    <div class="cube-layer"
-                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #14b8a6, #2dd4bf); border: 2px solid rgba(255,255,255,0.2); transform: rotateX(-90deg) translateZ(30px); opacity: 0; animation: layerBuild 4s ease-in-out infinite; animation-delay: 0s;">
+            class="relative bg-slate-900/90 backdrop-blur-xl p-8 rounded-[2rem] shadow-2xl border border-teal-500/30 max-w-md w-full animate-in zoom-in duration-300">
+
+            <!-- Wireframe 3D Cube with Glowing Edges -->
+            <div id="status-icon" class="w-24 h-24 mx-auto mb-6 relative" style="perspective: 800px;">
+                <div class="cube-wireframe"
+                    style="transform-style: preserve-3d; animation: cubeRotate 6s linear infinite; width: 70px; height: 70px; position: relative; margin: 0 auto;">
+                    <!-- Cube faces with wireframe effect -->
+                    <div class="cube-face front"
+                        style="position: absolute; width: 70px; height: 70px; border: 2px solid; border-image: linear-gradient(135deg, #00FF9D, #14b8a6) 1; transform: translateZ(35px); background: rgba(20,184,166,0.05); box-shadow: inset 0 0 20px rgba(0,255,157,0.1); animation: edgeGlow 2s ease-in-out infinite;">
+                        <span
+                            class="material-symbols-rounded text-teal-400 text-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">hub</span>
                     </div>
-                    <!-- Back layer -->
-                    <div class="cube-layer"
-                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #115e59, #134e4a); border: 2px solid rgba(255,255,255,0.2); transform: translateZ(-30px); opacity: 0; animation: layerBuild 4s ease-in-out infinite; animation-delay: 0.15s;">
+                    <div class="cube-face back"
+                        style="position: absolute; width: 70px; height: 70px; border: 2px solid; border-image: linear-gradient(135deg, #14b8a6, #00D1FF) 1; transform: translateZ(-35px) rotateY(180deg); background: rgba(20,184,166,0.03); animation: edgeGlow 2s ease-in-out infinite 0.3s;">
                     </div>
-                    <!-- Left layer -->
-                    <div class="cube-layer"
-                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #0f766e, #115e59); border: 2px solid rgba(255,255,255,0.2); transform: rotateY(-90deg) translateZ(30px); opacity: 0; animation: layerBuild 4s ease-in-out infinite; animation-delay: 0.3s;">
+                    <div class="cube-face left"
+                        style="position: absolute; width: 70px; height: 70px; border: 2px solid; border-image: linear-gradient(135deg, #00D1FF, #14b8a6) 1; transform: rotateY(-90deg) translateZ(35px); background: rgba(20,184,166,0.03); animation: edgeGlow 2s ease-in-out infinite 0.6s;">
                     </div>
-                    <!-- Right layer -->
-                    <div class="cube-layer"
-                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #0d9488, #0f766e); border: 2px solid rgba(255,255,255,0.2); transform: rotateY(90deg) translateZ(30px); opacity: 0; animation: layerBuild 4s ease-in-out infinite; animation-delay: 0.45s;">
+                    <div class="cube-face right"
+                        style="position: absolute; width: 70px; height: 70px; border: 2px solid; border-image: linear-gradient(135deg, #14b8a6, #00FF9D) 1; transform: rotateY(90deg) translateZ(35px); background: rgba(20,184,166,0.03); animation: edgeGlow 2s ease-in-out infinite 0.9s;">
                     </div>
-                    <!-- Top layer -->
-                    <div class="cube-layer"
-                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #134e4a, #14b8a6); border: 2px solid rgba(255,255,255,0.2); transform: rotateX(90deg) translateZ(30px); opacity: 0; animation: layerBuild 4s ease-in-out infinite; animation-delay: 0.6s;">
+                    <div class="cube-face top"
+                        style="position: absolute; width: 70px; height: 70px; border: 2px solid; border-image: linear-gradient(135deg, #00FF9D, #00D1FF) 1; transform: rotateX(90deg) translateZ(35px); background: rgba(20,184,166,0.03); animation: edgeGlow 2s ease-in-out infinite 1.2s;">
                     </div>
-                    <!-- Front layer - appears last with icon -->
-                    <div class="cube-layer"
-                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #14b8a6, #0d9488); border: 2px solid rgba(255,255,255,0.3); transform: translateZ(30px); display: flex; align-items: center; justify-content: center; opacity: 0; animation: layerBuild 4s ease-in-out infinite; animation-delay: 0.75s;">
-                        <span class="material-symbols-rounded text-white text-2xl">hub</span>
+                    <div class="cube-face bottom"
+                        style="position: absolute; width: 70px; height: 70px; border: 2px solid; border-image: linear-gradient(135deg, #00D1FF, #00FF9D) 1; transform: rotateX(-90deg) translateZ(35px); background: rgba(20,184,166,0.03); animation: edgeGlow 2s ease-in-out infinite 1.5s;">
                     </div>
                 </div>
             </div>
+
             <style>
-                @keyframes buildAndRotate {
+                @keyframes cubeRotate {
                     0% {
-                        transform: rotateX(-20deg) rotateY(0deg);
-                    }
-
-                    25% {
-                        transform: rotateX(-20deg) rotateY(0deg);
-                    }
-
-                    50% {
-                        transform: rotateX(-20deg) rotateY(180deg);
-                    }
-
-                    75% {
-                        transform: rotateX(-20deg) rotateY(360deg);
+                        transform: rotateX(-15deg) rotateY(0deg);
                     }
 
                     100% {
-                        transform: rotateX(-20deg) rotateY(360deg);
+                        transform: rotateX(-15deg) rotateY(360deg);
                     }
                 }
 
-                @keyframes layerBuild {
-                    0% {
-                        opacity: 0;
-                        transform-origin: center;
-                    }
+                @keyframes edgeGlow {
 
-                    5% {
-                        opacity: 0;
-                    }
-
-                    15% {
-                        opacity: 1;
-                    }
-
-                    85% {
-                        opacity: 1;
-                    }
-
-                    95% {
-                        opacity: 0;
-                    }
-
+                    0%,
                     100% {
-                        opacity: 0;
+                        box-shadow: 0 0 5px rgba(0, 255, 157, 0.3), inset 0 0 10px rgba(0, 255, 157, 0.1);
+                    }
+
+                    50% {
+                        box-shadow: 0 0 20px rgba(0, 255, 157, 0.8), inset 0 0 25px rgba(0, 255, 157, 0.3);
                     }
                 }
             </style>
@@ -568,26 +541,37 @@
             <p id="status-desc" class="text-sm text-teal-300 mb-6">Calibrando sintaxis de alta gama y modelos de
                 precisión.</p>
 
-            <div class="bg-slate-800/50 p-4 rounded-xl text-left font-mono text-xs overflow-hidden border border-slate-700/50 space-y-2"
+            <!-- Terminal Console with Sequential Text -->
+            <div class="bg-slate-950/80 p-4 rounded-xl text-left font-mono text-xs overflow-hidden border border-slate-700/50 space-y-2"
                 id="status-console">
-                <p class="status-line opacity-0" style="animation: fadeInLine 0.5s ease forwards 0.2s;"><span
-                        class="text-slate-300">&gt;</span> System: <span class="text-emerald-400 font-semibold">Secure
-                        Vault Connected</span></p>
-                <p class="status-line opacity-0" style="animation: fadeInLine 0.5s ease forwards 0.6s;"><span
-                        class="text-slate-300">&gt;</span> Protocol: <span class="text-teal-400 font-semibold">AGIA
-                        Framework 5.2 Loaded</span></p>
-                <p class="status-line opacity-0" style="animation: fadeInLine 0.5s ease forwards 1.0s;"><span
-                        class="text-slate-300">&gt;</span> Action: <span class="text-cyan-400 font-semibold">Fetching
-                        100 Mastery Prompts...</span></p>
-                <p class="status-line opacity-0" style="animation: fadeInLine 0.5s ease forwards 1.4s;"><span
-                        class="text-slate-300">&gt;</span> Status: <span id="status-code"
-                        class="text-amber-400 font-bold">Ready to recover your 10 hours.</span></p>
+                <!-- Line 1: 0.0s -->
+                <p class="terminal-line opacity-0" style="animation: terminalType 0.5s ease forwards 0s;">
+                    <span class="text-slate-400">&gt;</span> System: <span
+                        style="color: #00FF9D; font-weight: 600;">Secure Vault Connected</span>
+                </p>
+                <!-- Line 2: 0.8s -->
+                <p class="terminal-line opacity-0" style="animation: terminalType 0.5s ease forwards 0.8s;">
+                    <span class="text-slate-400">&gt;</span> Protocol: <span
+                        style="color: #00D1FF; font-weight: 600;">AGIA Framework 5.2 Loaded</span>
+                </p>
+                <!-- Line 3: 1.5s with typing cursor -->
+                <p class="terminal-line opacity-0" style="animation: terminalType 0.5s ease forwards 1.5s;">
+                    <span class="text-slate-400">&gt;</span> Action: <span class="text-slate-400 typing-text">Fetching
+                        100 Mastery Prompts<span class="cursor">|</span></span>
+                </p>
+                <!-- Line 4: 2.5s bright yellow -->
+                <p class="terminal-line opacity-0" style="animation: terminalType 0.5s ease forwards 2.5s;">
+                    <span class="text-slate-400">&gt;</span> Status: <span id="status-code"
+                        style="color: #FFD700; font-weight: 700; text-shadow: 0 0 10px rgba(255,215,0,0.5);">Ready to
+                        recover your 10 hours.</span>
+                </p>
             </div>
+
             <style>
-                @keyframes fadeInLine {
+                @keyframes terminalType {
                     0% {
                         opacity: 0;
-                        transform: translateX(-10px);
+                        transform: translateX(-5px);
                     }
 
                     100% {
@@ -595,15 +579,70 @@
                         transform: translateX(0);
                     }
                 }
+
+                @keyframes cursorBlink {
+
+                    0%,
+                    50% {
+                        opacity: 1;
+                    }
+
+                    51%,
+                    100% {
+                        opacity: 0;
+                    }
+                }
+
+                .cursor {
+                    animation: cursorBlink 0.8s infinite;
+                    color: #00D1FF;
+                }
+
+                @keyframes flicker {
+
+                    0%,
+                    92%,
+                    94%,
+                    96%,
+                    100% {
+                        opacity: 0.6;
+                    }
+
+                    93%,
+                    95% {
+                        opacity: 1;
+                        text-shadow: 0 0 10px rgba(148, 163, 184, 0.8);
+                    }
+                }
+
+                .flicker-text {
+                    animation: flicker 3s ease-in-out infinite 2.8s;
+                }
             </style>
 
             <button id="retry-btn" onclick="window.location.reload()"
                 class="hidden w-full mt-4 py-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-white rounded-xl font-bold text-sm shadow-lg shadow-teal-500/30 hover:shadow-teal-500/50 transition-all">Reintentar</button>
 
-            <!-- Pertenencia Badge -->
-            <p class="mt-6 text-[10px] text-slate-400 italic">Bienvenido al 1.5% de los profesionales que dominan la
-                nueva frontera.</p>
+            <!-- Pertenencia Badge with Flicker -->
+            <p class="mt-6 text-[10px] text-slate-400 italic font-light flicker-text">Bienvenido al 1.5% de los
+                profesionales que dominan la nueva frontera.</p>
         </div>
+
+        <!-- Blueprint Grid Mouse Interaction Script -->
+        <script>
+            (function () {
+                const grid = document.getElementById('blueprint-grid');
+                const overlay = document.getElementById('system-status-overlay');
+                if (grid && overlay) {
+                    overlay.addEventListener('mousemove', function (e) {
+                        const rect = overlay.getBoundingClientRect();
+                        const x = (e.clientX - rect.left - rect.width / 2) / 50;
+                        const y = (e.clientY - rect.top - rect.height / 2) / 50;
+                        grid.style.transform = `translate(${x}px, ${y}px)`;
+                    });
+                }
+            })();
+        </script>
     </div>
     <header
         class="bg-white/80 backdrop-blur-md border-b border-gray-100 z-30 flex-none h-12 md:h-14 shadow-sm relative z-[60]">
