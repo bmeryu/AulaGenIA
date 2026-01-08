@@ -962,26 +962,26 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
             <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">📦 Lo que recibes hoy:</h3>
             
             <div style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; display: flex; align-items: flex-start;">
-                <span style="font-size: 24px; margin-right: 15px;">🎯</span>
+                <span style="font-size: 24px; margin-right: 15px;">✅</span>
                 <div>
                     <strong style="color: #1e293b;">+100 Instrucciones Maestras</strong>
-                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Fórmulas probadas para ChatGPT, Claude y Gemini. <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #14b8a6;">Accede aquí</a></p>
+                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini. <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #14b8a6;">Accede aquí</a></p>
                 </div>
             </div>
             
             <div style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; display: flex; align-items: flex-start;">
-                <span style="font-size: 24px; margin-right: 15px;">⚡</span>
+                <span style="font-size: 24px; margin-right: 15px;">🚀</span>
                 <div>
-                    <strong style="color: #1e293b;">Ecosistema de Automatización</strong>
-                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Recupera hasta 10 horas de tu semana automatizando tareas repetitivas.</p>
+                    <strong style="color: #1e293b;">Ahorro de Tiempo</strong>
+                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Recupera hasta 10 horas de tu semana automatizando tareas repetitivas. <a href="https://aulagenia.cl/campus.html" style="color: #14b8a6;">Accede aquí</a></p>
                 </div>
             </div>
             
             <div style="margin-bottom: 25px; padding: 15px; background: #f8fafc; border-radius: 10px; display: flex; align-items: flex-start;">
-                <span style="font-size: 24px; margin-right: 15px;">♾️</span>
+                <span style="font-size: 24px; margin-right: 15px;">💎</span>
                 <div>
-                    <strong style="color: #1e293b;">Acceso Vitalicio</strong>
-                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Sin suscripciones ni cobros sorpresa futuros.</p>
+                    <strong style="color: #1e293b;">Licencia Permanente de Arquitecto</strong>
+                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Tu entrada a la plataforma y todas sus actualizaciones futuras, sin suscripciones.</p>
                 </div>
             </div>
             
