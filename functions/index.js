@@ -892,7 +892,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                                         Email: 'hola@aulagenia.cl',
                                         Name: 'Aula GenIA Admin'
                                     }],
-                                    Subject: `🚀 ${buyerName}, ¡Bienvenido/a a la élite de la IA!`,
+                                    Subject: `¡Bienvenido/a Aula GenIA!`,
                                     HTMLPart: `
 <!DOCTYPE html>
 <html>
