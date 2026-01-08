@@ -892,7 +892,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                                         Email: 'hola@aulagenia.cl',
                                         Name: 'Aula GenIA Admin'
                                     }],
-                                    Subject: `¡Bienvenido/a Aula GenIA!`,
+                                    Subject: `Bienvenido/a a Aula GenIA - Acceso Confirmado`,
                                     HTMLPart: `
 <!DOCTYPE html>
 <html>
@@ -901,13 +901,13 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5;">
-    <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+    <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
         
-        <!-- Header con gradiente -->
-        <div style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%); padding: 40px 30px; text-align: center;">
-            <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 120px; margin-bottom: 20px;">
-            <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">Bienvenidos a Aula GenIA</h1>
-            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">Tu Futuro en Inteligencia Artificial comienza Aquí</p>
+        <!-- Header Limpio (Fondo Blanco para Logo Oscuro) -->
+        <div style="background: #ffffff; padding: 40px 30px 30px; text-align: center; border-bottom: 3px solid #14b8a6;">
+            <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 150px; margin-bottom: 15px; display: inline-block;">
+            <h1 style="color: #1e293b; margin: 15px 0 8px 0; font-size: 26px; font-weight: 700;">¡Tu Acceso está listo!</h1>
+            <p style="color: #64748b; margin: 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquí.</p>
         </div>
         
         <!-- Contenido principal -->
