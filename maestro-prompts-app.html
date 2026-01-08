@@ -468,21 +468,96 @@
 
 <body class="h-screen flex flex-col overflow-hidden text-slate-800 bg-slate-50">
     <div id="system-status-overlay"
-        class="fixed inset-0 z-[100] bg-white/90 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500">
+        class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500"
+        style="background: linear-gradient(135deg, #0a0f1a 0%, #1a1f2e 50%, #0d1117 100%);">
+        <!-- Blueprint Grid Background -->
+        <div class="absolute inset-0 opacity-10"
+            style="background-image: linear-gradient(rgba(20, 184, 166, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 184, 166, 0.3) 1px, transparent 1px); background-size: 40px 40px;">
+        </div>
+        <!-- Glow effect -->
         <div
-            class="bg-white p-8 rounded-[2rem] shadow-2xl shadow-slate-200 border border-slate-100 max-w-md w-full animate-in zoom-in duration-300">
-            <div id="status-icon"
-                class="w-12 h-12 bg-white border border-slate-100 text-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <span class="material-symbols-rounded text-2xl animate-spin">sync</span>
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl">
+        </div>
+
+        <div
+            class="relative bg-slate-900/80 backdrop-blur-xl p-8 rounded-[2rem] shadow-2xl border border-teal-500/30 max-w-md w-full animate-in zoom-in duration-300">
+            <!-- 3D Cube Animation -->
+            <div id="status-icon" class="w-20 h-20 mx-auto mb-6 relative" style="perspective: 1000px;">
+                <div class="cube-container"
+                    style="transform-style: preserve-3d; animation: rotateCube 3s linear infinite; width: 60px; height: 60px; position: relative; margin: 0 auto;">
+                    <div
+                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #14b8a6, #0d9488); border: 2px solid rgba(255,255,255,0.3); transform: translateZ(30px); display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-rounded text-white text-2xl">hub</span>
+                    </div>
+                    <div
+                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #0d9488, #0f766e); border: 2px solid rgba(255,255,255,0.2); transform: rotateY(90deg) translateZ(30px);">
+                    </div>
+                    <div
+                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #0f766e, #115e59); border: 2px solid rgba(255,255,255,0.2); transform: rotateY(-90deg) translateZ(30px);">
+                    </div>
+                    <div
+                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #115e59, #134e4a); border: 2px solid rgba(255,255,255,0.2); transform: translateZ(-30px);">
+                    </div>
+                    <div
+                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #134e4a, #14b8a6); border: 2px solid rgba(255,255,255,0.2); transform: rotateX(90deg) translateZ(30px);">
+                    </div>
+                    <div
+                        style="position: absolute; width: 60px; height: 60px; background: linear-gradient(135deg, #14b8a6, #2dd4bf); border: 2px solid rgba(255,255,255,0.2); transform: rotateX(-90deg) translateZ(30px);">
+                    </div>
+                </div>
             </div>
-            <h2 id="status-title" class="text-lg font-extrabold text-slate-900 mb-1">Conectando Bóveda...</h2>
-            <p id="status-desc" class="text-xs text-slate-500 mb-6">Sincronizando recursos de inteligencia.</p>
-            <div
-                class="bg-slate-50 p-3 rounded-lg text-left text-[10px] font-mono text-slate-500 overflow-hidden border border-slate-100">
-                <p>> System: <span class="text-indigo-600 font-semibold">Secure Vault Connected</span></p>
-                <p>> Status: <span id="status-code" class="text-slate-600 font-bold">FETCHING...</span></p>
-            </div><button id="retry-btn" onclick="window.location.reload()"
-                class="hidden w-full mt-4 py-2 bg-slate-900 text-white rounded-lg font-bold text-xs">Reintentar</button>
+            <style>
+                @keyframes rotateCube {
+                    0% {
+                        transform: rotateX(-20deg) rotateY(0deg);
+                    }
+
+                    100% {
+                        transform: rotateX(-20deg) rotateY(360deg);
+                    }
+                }
+            </style>
+
+            <h2 id="status-title" class="text-xl font-extrabold text-white mb-2">Sincronizando Bóveda del Arquitecto...
+            </h2>
+            <p id="status-desc" class="text-sm text-teal-400/80 mb-6">Calibrando sintaxis de alta gama y modelos de
+                precisión.</p>
+
+            <div class="bg-slate-800/50 p-4 rounded-xl text-left font-mono text-xs overflow-hidden border border-slate-700/50 space-y-2"
+                id="status-console">
+                <p class="status-line opacity-0" style="animation: fadeInLine 0.5s ease forwards 0.2s;"><span
+                        class="text-slate-500">&gt;</span> System: <span class="text-emerald-400 font-semibold">Secure
+                        Vault Connected</span></p>
+                <p class="status-line opacity-0" style="animation: fadeInLine 0.5s ease forwards 0.6s;"><span
+                        class="text-slate-500">&gt;</span> Protocol: <span class="text-teal-400 font-semibold">AGIA
+                        Framework 5.2 Loaded</span></p>
+                <p class="status-line opacity-0" style="animation: fadeInLine 0.5s ease forwards 1.0s;"><span
+                        class="text-slate-500">&gt;</span> Action: <span class="text-cyan-400 font-semibold">Fetching
+                        100 Mastery Prompts...</span></p>
+                <p class="status-line opacity-0" style="animation: fadeInLine 0.5s ease forwards 1.4s;"><span
+                        class="text-slate-500">&gt;</span> Status: <span id="status-code"
+                        class="text-amber-400 font-bold">Ready to recover your 10 hours.</span></p>
+            </div>
+            <style>
+                @keyframes fadeInLine {
+                    0% {
+                        opacity: 0;
+                        transform: translateX(-10px);
+                    }
+
+                    100% {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+            </style>
+
+            <button id="retry-btn" onclick="window.location.reload()"
+                class="hidden w-full mt-4 py-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-white rounded-xl font-bold text-sm shadow-lg shadow-teal-500/30 hover:shadow-teal-500/50 transition-all">Reintentar</button>
+
+            <!-- Pertenencia Badge -->
+            <p class="mt-6 text-[10px] text-slate-500 italic">Bienvenido al 1.5% de los profesionales que dominan la
+                nueva frontera.</p>
         </div>
     </div>
     <header
