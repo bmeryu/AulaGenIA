@@ -926,23 +926,29 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
             </div>
             
             <!-- Credenciales -->
-            <div style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); border-radius: 12px; padding: 25px; margin-bottom: 30px;">
-                <h2 style="color: white; margin: 0 0 20px 0; font-size: 18px;">🔑 Tus Credenciales de Acceso</h2>
+            <div style="background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); border-radius: 16px; padding: 30px; margin-bottom: 30px; border: 2px solid #99f6e4;">
+                <h2 style="color: #0d9488; margin: 0 0 25px 0; font-size: 20px; text-align: center;">🔑 Tus Credenciales de Acceso</h2>
                 
-                <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
-                    <p style="color: #94a3b8; margin: 0 0 5px 0; font-size: 12px; text-transform: uppercase;">Portal de Acceso</p>
-                    <a href="https://aulagenia.cl/acceso.html" style="color: white; font-size: 16px; text-decoration: none;">aulagenia.cl/acceso</a>
-                </div>
-                
-                <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
-                    <p style="color: #94a3b8; margin: 0 0 5px 0; font-size: 12px; text-transform: uppercase;">Usuario</p>
-                    <p style="color: white; margin: 0; font-size: 16px;">${buyerEmail}</p>
-                </div>
-                
-                <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 15px;">
-                    <p style="color: #94a3b8; margin: 0 0 5px 0; font-size: 12px; text-transform: uppercase;">Contraseña</p>
-                    <p style="color: white; margin: 0; font-size: 14px;">👆 Haz clic en el botón de abajo para crear tu contraseña personal</p>
-                </div>
+                <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
+                    <tr>
+                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">📍 Portal de Acceso</p>
+                            <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.cl/acceso</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">👤 Tu Usuario</p>
+                            <p style="color: #1e293b; margin: 0; font-size: 16px; font-weight: 600;">${buyerEmail}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔐 Tu Contraseña</p>
+                            <p style="color: #1e293b; margin: 0; font-size: 14px;">Haz clic en el botón verde de abajo para crearla</p>
+                        </td>
+                    </tr>
+                </table>
             </div>
             
             <!-- Botón CTA -->
