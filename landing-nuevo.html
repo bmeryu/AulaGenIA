@@ -280,7 +280,8 @@
                 <!-- Video Container (16:9) -->
                 <div
                     class="relative bg-black rounded-2xl overflow-hidden aspect-video shadow-2xl ring-1 ring-gray-900/5 group-hover:scale-[1.01] transition-transform duration-300">
-                    <video class="w-full h-full object-cover" autoplay loop muted playsinline controls>
+                    <video class="w-full h-full object-cover" autoplay loop muted playsinline controls
+                        crossorigin="anonymous">
                         <source
                             src="https://firebasestorage.googleapis.com/v0/b/aulagenia.firebasestorage.app/o/Video-Hero.mp4?alt=media"
                             type="video/mp4">
@@ -1609,6 +1610,7 @@
     <!-- Script specific for Hero Video Subtitles (SRT to VTT conversion) -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            console.log("AGIA: Hero Video Script Loaded (v3.0 - CORS Fix)");
             const video = document.getElementById('hero-video');
             if (!video) return;
 
@@ -1616,7 +1618,9 @@
             if (track && track.src && track.src.includes('.srt')) {
                 console.log('Found SRT track, attempting conversion...');
                 try {
-                    const response = await fetch(track.src);
+                    // Cache buster for SRT
+                    const srtUrl = track.src + (track.src.includes('?') ? '&v=' : '?v=') + new Date().getTime();
+                    const response = await fetch(srtUrl);
                     if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
                     const srtText = await response.text();
 
