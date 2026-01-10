@@ -3,7 +3,7 @@ async function updateCLPPrice() {
     try {
         const o = localStorage.getItem(e), a = localStorage.getItem(t);
         let c;
-        if (o && a && Date.now() - parseInt(a) < 864e5)
+        if (o && a && Date.now() - parseInt(a) < 3600000)
             c = parseFloat(o);
         else {
             console.log("Fetching new CLP exchange rate...");
