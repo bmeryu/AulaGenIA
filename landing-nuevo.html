@@ -313,7 +313,7 @@
                 <div
                     class="relative bg-black rounded-2xl overflow-hidden aspect-video shadow-2xl ring-1 ring-gray-900/5 group-hover:scale-[1.01] transition-transform duration-300">
                     <iframe class="w-full h-full absolute inset-0"
-                        src="https://www.youtube.com/embed/XXMOpdNS0kI?autoplay=1&mute=1&loop=1&playlist=XXMOpdNS0kI&rel=0&controls=0"
+                        src="https://www.youtube.com/embed/XXMOpdNS0kI?autoplay=1&mute=1&loop=1&playlist=XXMOpdNS0kI&rel=0&controls=0&playsinline=1"
                         title="Aula GenIA Video" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
@@ -346,9 +346,14 @@
                         </div>
                     </div>
 
-                    <div
-                        class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-xs font-bold mb-4 w-full text-center">
-                        🔥 Oferta válida por tiempo limitado
+                    <!-- Countdown Timer -->
+                    <div class="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg p-3 mb-4 text-center">
+                        <p class="text-xs font-bold uppercase tracking-wide mb-1">🔥 Oferta termina en:</p>
+                        <div id="countdown-hero" class="flex justify-center gap-2 text-lg font-black">
+                            <span id="hours-hero" class="bg-white/20 px-2 py-1 rounded">00</span>:<span
+                                id="minutes-hero" class="bg-white/20 px-2 py-1 rounded">00</span>:<span
+                                id="seconds-hero" class="bg-white/20 px-2 py-1 rounded">00</span>
+                        </div>
                     </div>
 
                     <p class="text-gray-700 font-bold mb-3 text-sm">Lo que te llevas:</p>
@@ -1867,7 +1872,48 @@
                     initiateStarterPurchase();
                 });
             });
-        });</script>
+    </script>
+
+    <!-- Escape Hatch para Empresas -->
+    <div class="fixed bottom-24 right-5 z-40">
+        <a href="https://wa.me/56976305985?text=Hola%2C%20vengo%20de%20la%20landing%20y%20me%20interesa%20el%20Programa%20para%20Empresas%20(SENCE%2FFranquicia%20Tributaria)."
+            target="_blank" rel="noopener noreferrer"
+            class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-all duration-300">
+            <i data-lucide="building-2" class="w-4 h-4"></i>
+            ¿Capacitación Corporativa?
+        </a>
+    </div>
+
+    <!-- Countdown Timer Script -->
+    <script>
+            (function () {
+                // Set countdown to end of today (midnight)
+                function getTimeRemaining() {
+                    const now = new Date();
+                    const endOfDay = new Date(now);
+                    endOfDay.setHours(23, 59, 59, 999);
+                    const total = endOfDay - now;
+                    const seconds = Math.floor((total / 1000) % 60);
+                    const minutes = Math.floor((total / 1000 / 60) % 60);
+                    const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+                    return { total, hours, minutes, seconds };
+                }
+
+                function updateCountdown() {
+                    const t = getTimeRemaining();
+                    const hoursEl = document.getElementById('hours-hero');
+                    const minutesEl = document.getElementById('minutes-hero');
+                    const secondsEl = document.getElementById('seconds-hero');
+                    if (hoursEl) hoursEl.textContent = String(t.hours).padStart(2, '0');
+                    if (minutesEl) minutesEl.textContent = String(t.minutes).padStart(2, '0');
+                    if (secondsEl) secondsEl.textContent = String(t.seconds).padStart(2, '0');
+                }
+
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            })();
+    </script>
+
     <a href="https://wa.me/56976305985?text=Hola%2C%20vengo%20del%20sitio%20web%20de%20Aula%20GenIA%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n."
         target="_blank" rel="noopener noreferrer" id="whatsapp-button" aria-label="Contactar por WhatsApp"
         class="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 z-50"><svg
