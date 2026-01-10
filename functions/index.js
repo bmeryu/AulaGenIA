@@ -1197,13 +1197,13 @@ exports.createFlowPayment = onCall(
         const params = {
             apiKey: FLOW_API_KEY,
             commerceOrder: commerceOrder,
-            subject: 'Curso Aula GenIA: ' + courseId,
+            subject: 'Pack Starter: IA Aplicada',
             currency: 'CLP',
             amount: amount,
             email: userEmail,
             paymentMethod: 9, // 9 = Webpay / Todos
             urlConfirmation: 'https://aulagenia.cloudfunctions.net/flowWebhook',
-            urlReturn: 'https://aulagenia.cl/pago-exitoso.html',
+            urlReturn: 'https://aulagenia.web.app/pago-exitoso.html',
         };
 
         // 4. Firmar
