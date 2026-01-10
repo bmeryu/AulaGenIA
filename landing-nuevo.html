@@ -1825,35 +1825,10 @@
         // 1. Log Analytics
         // 2. Redirect a Hotmart Checkout
         function initiateStarterPurchase(source = 'unknown', btnElement = null) {
-            const hotmartUrl = "https://pay.hotmart.com/X103717151I?off=ejs8co6a&checkoutMode=10";
-
-            // Visual Feedback
-            // Try to find button if not passed, based on event if called inline
-            if (!btnElement && window.event && window.event.currentTarget) {
-                btnElement = window.event.currentTarget;
-            }
-
-            if (btnElement) {
-                const originalText = btnElement.innerHTML;
-                // Preserve width if possible or just update text
-                btnElement.innerHTML = `
-                    <span class="flex items-center justify-center gap-2">
-                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                        </svg>
-                        Procesando...
-                    </span>
-                `;
-                btnElement.classList.add('opacity-75', 'cursor-wait');
-                // Optional: disable to prevent double click
-                btnElement.disabled = true;
-            }
-
             // Analytics
             if (typeof analytics !== 'undefined') {
                 analytics.logEvent("begin_checkout", {
-                    item_name: "Pack Starter Hotmart Direct",
+                    item_name: "Pack Starter + Esencial (Mercado Pago)",
                     source: source
                 });
             }
@@ -1861,18 +1836,17 @@
             // Meta Pixel: Track InitiateCheckout
             if (typeof fbq !== 'undefined') {
                 fbq('track', 'InitiateCheckout', {
-                    value: 9.00, // Price in USD
+                    value: 20.00, // Precio base antes de cupones
                     currency: 'USD',
                     content_name: 'Pack Starter + Esencial',
                     content_category: 'Course',
-                    content_ids: ['ia-starter-pack']
+                    content_ids: ['ia-aplicada-esencial']
                 });
             }
 
-            // Redirect with slight delay to show the spinner
-            setTimeout(() => {
-                window.location.href = hotmartUrl;
-            }, 800);
+            // REVERT: Open the Coupon Modal which handles Mercado Pago flow
+            // This replaces the direct Hotmart redirect
+            showCouponModal();
         }
 
         /*
