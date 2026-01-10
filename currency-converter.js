@@ -4,7 +4,7 @@ async function updateCLPPrice() {
         const o = localStorage.getItem(e), a = localStorage.getItem(t);
         let c;
         if (o && a && Date.now() - parseInt(a) < 864e5)
-            c = parseFloat(o), console.log("Using cached CLP exchange rate:", c);
+            c = parseFloat(o);
         else {
             console.log("Fetching new CLP exchange rate...");
             const o = await fetch("https://api.exchangerate-api.com/v4/latest/USD");
