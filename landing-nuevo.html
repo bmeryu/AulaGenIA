@@ -349,19 +349,17 @@
 
                     <!-- Countdown Timer -->
                     <!-- Countdown Timer (High Contrast) -->
+                    <!-- Countdown Timer (Minimalist & Slim) -->
                     <div
-                        class="bg-white border-2 border-red-500 rounded-xl p-3 mb-4 text-center shadow-md relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-red-50 opacity-0 group-hover:opacity-10 transition-opacity">
+                        class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-gray-600 bg-gray-50/80 backdrop-blur-sm py-2 px-4 rounded-full w-full sm:w-max mx-auto mb-6 border border-gray-200 shadow-sm">
+                        <div class="flex items-center gap-1.5">
+                            <i data-lucide="clock" class="w-3.5 h-3.5 text-teal-600"></i>
+                            <span class="font-medium">La oferta termina en:</span>
                         </div>
-                        <p class="text-[10px] md:text-xs font-black uppercase tracking-widest mb-1 text-red-500">🔥 La
-                            oferta termina en:</p>
-                        <div id="countdown-hero" class="flex justify-center gap-2 text-xl font-black text-red-600">
-                            <span id="hours-hero"
-                                class="bg-red-50 px-2 py-1 rounded border border-red-100">00</span><span
-                                class="py-1">:</span><span id="minutes-hero"
-                                class="bg-red-50 px-2 py-1 rounded border border-red-100">00</span><span
-                                class="py-1">:</span><span id="seconds-hero"
-                                class="bg-red-50 px-2 py-1 rounded border border-red-100">00</span>
+                        <div id="countdown-hero" class="flex gap-1 font-bold text-teal-900 tabular-nums text-base">
+                            <span id="hours-hero">22</span>h :
+                            <span id="minutes-hero">18</span>m :
+                            <span id="seconds-hero">40</span>s
                         </div>
                     </div>
 
@@ -1506,13 +1504,16 @@
             const heroBtn = document.getElementById('hero-cta-button');
 
             if (stickyCTA && heroBtn) {
+                // Estado inicial: Asegurar oculto
+                stickyCTA.classList.add('translate-y-full');
+
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        // Si el botón YA NO intersecta (es decir, ya pasó hacia arriba), mostramos el sticky
+                        // Solo mostrar si NO es visible Y está por encima del viewport (ya scroleamos pasado él)
                         if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
                             stickyCTA.classList.remove('translate-y-full');
                         } else {
-                            // Ocultar si volvemos arriba
+                            // En cualquier otro caso (visible o debajo), ocultar
                             stickyCTA.classList.add('translate-y-full');
                         }
                     });
