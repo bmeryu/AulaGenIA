@@ -1203,7 +1203,8 @@ exports.createFlowPayment = onCall(
             email: userEmail,
             paymentMethod: 9, // 9 = Webpay / Todos
             urlConfirmation: 'https://flowwebhook-3kbbtamy5q-uc.a.run.app',
-            urlReturn: 'https://aulagenia.web.app/pago-exitoso.html',
+            urlReturn: 'https://aulagenia.cl/pago-exitoso.html', // Volver al dominio principal para mantener sesión
+            optional: JSON.stringify({ userId: request.auth.uid, courseId: courseId }) // Backup
         };
 
         // 4. Firmar
@@ -1216,7 +1217,19 @@ exports.createFlowPayment = onCall(
 
         try {
             // 5. Enviar Request
-            const formData = new URLSearchParams(params);
+            const formData = new URLSearchParams();
+            for (const key in params) {
+                formData.append(key, params[key]);
+            }
+
+            // GUARDAR ESTADO PENDIENTE (CRUCIAL PARA WEBHOOK)
+            await admin.firestore().collection('pending_flows').doc(commerceOrder).set({
+                email: userEmail,
+                courseId: courseId,
+                userId: request.auth.uid,
+                amount: amount,
+                timestamp: admin.firestore.FieldValue.serverTimestamp()
+            });
 
             // Log params for debugging (excluding secret logic which is handled)
             console.log('🚀 Sending request to Flow:', FLOW_API_URL + '/payment/create');
@@ -1283,20 +1296,60 @@ exports.flowWebhook = onRequest(async (req, res) => {
         // 2. Validar (2 = Pagada)
         if (statusData.status === 2) {
             const commerceOrder = statusData.commerceOrder;
-            const parts = commerceOrder.split('_');
-            const userEmail = parts[0];
-            const courseId = parts[1];
+
+            // RECUPERAR DATOS DE PENDING_FLOWS
+            let userEmail, courseId, userId;
+
+            try {
+                // Intento 1: Leer de Firestore (Lo ideal)
+                const docRef = await admin.firestore().collection('pending_flows').doc(commerceOrder).get();
+                if (docRef.exists) {
+                    const data = docRef.data();
+                    userEmail = data.email;
+                    courseId = data.courseId;
+                    userId = data.userId;
+                    console.log('📂 Datos recuperados de Firestore PENDING:', { userEmail, courseId });
+                } else {
+                    console.error('⚠️ No se encontró la orden pendiente en Firestore:', commerceOrder);
+
+                    // Intento 2: Leer de "optional" data de Flow si existiera
+                    if (statusData.optional) {
+                        try {
+                            const optionalData = JSON.parse(statusData.optional);
+                            userEmail = statusData.payer; // Flow devuelve el pagador
+                            userId = optionalData.userId;
+                            courseId = optionalData.courseId;
+                            console.log('📂 Datos recuperados de OPTIONAL param:', { userId, courseId });
+                        } catch (e) { console.error('Error parsing optional:', e); }
+                    }
+                }
+            } catch (dbError) {
+                console.error('❌ Error leyendo Firestore en Webhook:', dbError);
+                return res.status(500).send('DB Error');
+            }
+
+            // Fallback final
+            if (!courseId) courseId = 'ia-aplicada-starter';
+            if (!userEmail && statusData.payer) userEmail = statusData.payer;
 
             if (userEmail && courseId) {
                 // 3. Activar en Firebase
                 try {
-                    const userRecord = await admin.auth().getUserByEmail(userEmail);
-                    await admin.firestore().collection("users").doc(userRecord.uid).set({
+                    // Si tenemos userId directo, es más seguro
+                    let targetUid = userId;
+                    if (!targetUid) {
+                        const userRecord = await admin.auth().getUserByEmail(userEmail);
+                        targetUid = userRecord.uid;
+                    }
+
+                    await admin.firestore().collection("users").doc(targetUid).set({
                         enrollments: { [courseId]: true },
                         flowOrder: statusData.flowOrder,
-                        paymentMethod: 'FLOW_CLP_SANDBOX'
+                        paymentMethod: 'FLOW_CLP_SANDBOX',
+                        lastPaymentDate: admin.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
-                    console.log(`✅ Curso ${courseId} activado para ${userEmail}`);
+
+                    console.log(`✅ Curso ${courseId} activado para ${userEmail} (UID: ${targetUid})`);
                 } catch (e) {
                     console.error('Error finding user for enrollment:', e);
                 }
