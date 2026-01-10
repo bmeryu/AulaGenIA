@@ -1311,9 +1311,17 @@
                             </div>
                         </div>
 
+                        <!-- Countdown Timer Pricing -->
                         <div
-                            class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-xs font-bold mb-6 w-full text-center">
-                            🔥 Oferta válida por tiempo limitado
+                            class="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg p-3 mb-6 text-center shadow-inner">
+                            <p class="text-xs font-bold uppercase tracking-wide mb-1">🔥 La oferta termina en:</p>
+                            <div id="countdown-pricing" class="flex justify-center gap-2 text-lg font-black">
+                                <span id="hours-pricing"
+                                    class="bg-white/20 px-2 py-1 rounded text-white">00</span>:<span
+                                    id="minutes-pricing"
+                                    class="bg-white/20 px-2 py-1 rounded text-white">00</span>:<span
+                                    id="seconds-pricing" class="bg-white/20 px-2 py-1 rounded text-white">00</span>
+                            </div>
                         </div>
 
                         <p class="text-gray-700 font-bold mb-4">Lo que te llevas:</p>
@@ -1818,9 +1826,9 @@
 
 
     <!-- Countdown Timer Script -->
+    <!-- Countdown Timer Script -->
     <script>
         (function () {
-            // Set countdown to end of today (midnight)
             function getTimeRemaining() {
                 const now = new Date();
                 const endOfDay = new Date(now);
@@ -1832,14 +1840,19 @@
                 return { total, hours, minutes, seconds };
             }
 
-            function updateCountdown() {
-                const t = getTimeRemaining();
-                const hoursEl = document.getElementById('hours-hero');
-                const minutesEl = document.getElementById('minutes-hero');
-                const secondsEl = document.getElementById('seconds-hero');
+            function updateDisplay(suffix, t) {
+                const hoursEl = document.getElementById('hours-' + suffix);
+                const minutesEl = document.getElementById('minutes-' + suffix);
+                const secondsEl = document.getElementById('seconds-' + suffix);
                 if (hoursEl) hoursEl.textContent = String(t.hours).padStart(2, '0');
                 if (minutesEl) minutesEl.textContent = String(t.minutes).padStart(2, '0');
                 if (secondsEl) secondsEl.textContent = String(t.seconds).padStart(2, '0');
+            }
+
+            function updateCountdown() {
+                const t = getTimeRemaining();
+                updateDisplay('hero', t);
+                updateDisplay('pricing', t);
             }
 
             updateCountdown();
