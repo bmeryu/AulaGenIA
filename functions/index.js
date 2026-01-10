@@ -1142,9 +1142,137 @@ exports.checkPendingHotmartPurchase = onCall(
                 message: `Se activaron ${coursesActivated.length} curso(s)`
             };
 
-        } catch (error) {
-            console.error('Error verificando compras pendientes de Hotmart:', error);
-            throw new HttpsError('internal', 'Error al verificar compras pendientes');
         }
     }
 );
+
+// =======================================================================================
+// SYSTEMA DE PAGOS FLOW (CHILE) - INTEGRACIÓN SANDBOX
+// =======================================================================================
+
+// Credenciales (SANDBOX) - TODO: Mover a Secret Manager en producción
+const FLOW_API_KEY = "1F31D9A0-28D7-4EA6-80F3-4E87LF908EE0";
+const FLOW_SECRET_KEY = "49e7033c82fb239c10ea111192b6c069b1231faf";
+const FLOW_API_URL = "https://sandbox.flow.cl/api";
+
+// Helper para firmar parámetros (HMAC SHA256)
+const crypto = require('crypto');
+function signFlowParams(params) {
+    const keys = Object.keys(params).sort();
+    let toSign = "";
+    keys.forEach(key => {
+        toSign += key + params[key];
+    });
+    return crypto.createHmac('sha256', FLOW_SECRET_KEY).update(toSign).digest('hex');
+}
+
+exports.createFlowPayment = onCall(
+    { cors: true },
+    async (request) => {
+        // 1. Validar Usuario
+        const userEmail = request.auth ? request.auth.token.email : request.data.email;
+        if (!userEmail) {
+            throw new HttpsError('invalid-argument', 'Se requiere email para generar el pago.');
+        }
+
+        const courseId = request.data.courseId || 'ia-aplicada-starter';
+
+        // 2. Configurar Orden
+        const commerceOrder = `${userEmail}_${courseId}_${Date.now()}`;
+        const amount = 8900; // PRECIO FIJO CLP 
+
+        // 3. Parámetros Flow
+        const params = {
+            apiKey: FLOW_API_KEY,
+            commerceOrder: commerceOrder,
+            subject: 'Curso Aula GenIA: ' + courseId,
+            currency: 'CLP',
+            amount: amount,
+            email: userEmail,
+            paymentMethod: 9, // 9 = Webpay / Todos
+            urlConfirmation: 'https://aulagenia.cloudfunctions.net/flowWebhook',
+            urlReturn: 'https://aulagenia.cl/pago-exitoso.html',
+        };
+
+        // 4. Firmar
+        params.s = signFlowParams(params);
+
+        try {
+            // 5. Enviar Request (Form Data)
+            const formData = new URLSearchParams(params);
+
+            console.log('🚀 Iniciando pago Flow para:', userEmail);
+            const response = await fetch(`${FLOW_API_URL}/payment/create`, {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.token) {
+                console.error('❌ Error Flow API:', data);
+                throw new HttpsError('internal', data.message || 'Error al conectar con Flow (Sandbox)');
+            }
+
+            // 6. Retornar URL
+            return {
+                url: `${data.url}?token=${data.token}`,
+                token: data.token,
+                flowOrder: data.flowOrder
+            };
+
+        } catch (error) {
+            console.error('❌ Error createFlowPayment:', error);
+            if (error instanceof HttpsError) throw error;
+            throw new HttpsError('internal', 'Error generando el pago Flow: ' + error.message);
+        }
+    }
+);
+
+exports.flowWebhook = onRequest(async (req, res) => {
+    try {
+        console.log('🔔 Flow Webhook (Body):', req.body);
+        const token = req.body.token;
+
+        if (!token) return res.status(400).send('No token');
+
+        // 1. Consultar estado 
+        const params = { apiKey: FLOW_API_KEY, token: token };
+        params.s = signFlowParams(params);
+
+        const query = new URLSearchParams(params).toString();
+        const statusResponse = await fetch(`${FLOW_API_URL}/payment/getStatus?${query}`);
+        const statusData = await statusResponse.json();
+
+        console.log('🔍 Estado Flow:', statusData);
+
+        // 2. Validar (2 = Pagada)
+        if (statusData.status === 2) {
+            const commerceOrder = statusData.commerceOrder;
+            const parts = commerceOrder.split('_');
+            const userEmail = parts[0];
+            const courseId = parts[1];
+
+            if (userEmail && courseId) {
+                // 3. Activar en Firebase
+                try {
+                    const userRecord = await admin.auth().getUserByEmail(userEmail);
+                    await admin.firestore().collection("users").doc(userRecord.uid).set({
+                        enrollments: { [courseId]: true },
+                        flowOrder: statusData.flowOrder,
+                        paymentMethod: 'FLOW_CLP_SANDBOX'
+                    }, { merge: true });
+                    console.log(`✅ Curso ${courseId} activado para ${userEmail}`);
+                } catch (e) {
+                    console.error('Error finding user for enrollment:', e);
+                }
+            }
+        }
+
+        return res.status(200).send('OK');
+
+    } catch (error) {
+        console.error('💥 Flow Webhook Error:', error);
+        return res.status(500).send('Server Error');
+    }
+});
