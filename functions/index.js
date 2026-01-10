@@ -1142,6 +1142,9 @@ exports.checkPendingHotmartPurchase = onCall(
                 message: `Se activaron ${coursesActivated.length} curso(s)`
             };
 
+        } catch (error) {
+            console.error("Error checking pending purchases:", error);
+            throw new HttpsError("internal", "Unable to check pending purchases: " + error.message);
         }
     }
 );
@@ -1183,7 +1186,11 @@ exports.createFlowPayment = onCall(
         console.log('📦 Course:', courseId, 'User:', userEmail);
 
         // 2. Configurar Orden
-        const commerceOrder = `${userEmail}_${courseId}_${Date.now()}`;
+        // 2. Configurar Orden (Max 45 chars) -> Usamos Timestamp base36 + Random
+        // Ej: starter-lzz7j2 (timestamp) - a1b2 (random)
+        const shortId = Date.now().toString(36);
+        const randomSuffix = Math.random().toString(36).substring(2, 6);
+        const commerceOrder = `start-${shortId}-${randomSuffix}`;
         const amount = 8900; // PRECIO FIJO CLP 
 
         // 3. Parámetros Flow
