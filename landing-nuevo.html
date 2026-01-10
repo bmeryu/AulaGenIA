@@ -1436,7 +1436,7 @@
         </div>
     </section>
 
-    <footer class="bg-gray-900 text-white py-12 px-6">
+    <footer id="site-footer" class="bg-gray-900 text-white py-12 px-6">
         <div class="max-w-6xl mx-auto">
             <div class="text-center"><img src="https://aulagenia.cl/Logo_AGIA_dark.png" alt="Aula GenIA"
                     class="h-12 w-auto mx-auto mb-4">
@@ -1517,30 +1517,44 @@
         document.addEventListener('DOMContentLoaded', () => {
             const stickyCTA = document.getElementById('mobile-sticky-cta');
             const heroBtn = document.getElementById('hero-cta-button');
+            const footer = document.getElementById('site-footer');
 
-            if (stickyCTA && heroBtn) {
-                // Estado inicial: Asegurar oculto
-                stickyCTA.classList.add('translate-y-full');
+            if (stickyCTA && heroBtn && footer) {
+                let isPastHero = false;
+                let isFooterVisible = false;
 
-                const observer = new IntersectionObserver((entries) => {
+                function updateStickyState() {
+                    if (isPastHero && !isFooterVisible) {
+                        // SHOP
+                        stickyCTA.classList.remove('translate-y-full');
+                        stickyCTA.style.transform = 'translateY(0)';
+                    } else {
+                        // HIDE
+                        stickyCTA.classList.add('translate-y-full');
+                        stickyCTA.style.transform = 'translateY(100%)';
+                    }
+                }
+
+                // 1. Observer for Hero (Show when scrolling past)
+                const heroObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        // isIntersecting es false cuando NO se ve.
-                        // top < 0 significa que está por ARRIBA del viewport (ya pasamos).
-                        const isPastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-
-                        if (isPastHero) {
-                            // SHOW
-                            stickyCTA.classList.remove('translate-y-full');
-                            stickyCTA.style.transform = 'translateY(0)';
-                        } else {
-                            // HIDE
-                            stickyCTA.classList.add('translate-y-full');
-                            stickyCTA.style.transform = 'translateY(100%)';
-                        }
+                        // isIntersecting is false when element is GONE.
+                        // boundingClientRect.top < 0 means it scrolled UP (we are past it).
+                        isPastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+                        updateStickyState();
                     });
                 }, { threshold: 0 });
 
-                observer.observe(heroBtn);
+                // 2. Observer for Footer (Hide when reaching bottom)
+                const footerObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        isFooterVisible = entry.isIntersecting;
+                        updateStickyState();
+                    });
+                }, { threshold: 0 });
+
+                heroObserver.observe(heroBtn);
+                footerObserver.observe(footer);
             }
         });
     </script>
