@@ -1511,15 +1511,18 @@
 
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        // Solo mostrar si NO es visible Y está por encima del viewport (ya scroleamos pasado él)
+                        // isIntersecting es false cuando NO se ve.
+                        // top < 0 significa que está por ARRIBA del viewport (ya pasamos).
                         const isPastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
 
                         if (isPastHero) {
+                            // SHOW
                             stickyCTA.classList.remove('translate-y-full');
-                            stickyCTA.style.transform = ''; // Limpiar inline style force-hide
+                            stickyCTA.style.transform = 'translateY(0)';
                         } else {
-                            // En cualquier otro caso (visible o debajo), ocultar
+                            // HIDE
                             stickyCTA.classList.add('translate-y-full');
+                            stickyCTA.style.transform = 'translateY(100%)';
                         }
                     });
                 }, { threshold: 0 });
