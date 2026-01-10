@@ -1169,13 +1169,18 @@ function signFlowParams(params) {
 exports.createFlowPayment = onCall(
     { cors: true },
     async (request) => {
+        // Debug Init
+        console.log('✅ createFlowPayment invoked.');
+
         // 1. Validar Usuario
         const userEmail = request.auth ? request.auth.token.email : request.data.email;
         if (!userEmail) {
+            console.error('❌ Missing email');
             throw new HttpsError('invalid-argument', 'Se requiere email para generar el pago.');
         }
 
         const courseId = request.data.courseId || 'ia-aplicada-starter';
+        console.log('📦 Course:', courseId, 'User:', userEmail);
 
         // 2. Configurar Orden
         const commerceOrder = `${userEmail}_${courseId}_${Date.now()}`;
@@ -1195,23 +1200,45 @@ exports.createFlowPayment = onCall(
         };
 
         // 4. Firmar
-        params.s = signFlowParams(params);
+        try {
+            params.s = signFlowParams(params);
+        } catch (signError) {
+            console.error('❌ Error signing params:', signError);
+            throw new HttpsError('internal', 'Error criptográfico al firmar.');
+        }
 
         try {
-            // 5. Enviar Request (Form Data)
+            // 5. Enviar Request
             const formData = new URLSearchParams(params);
 
-            console.log('🚀 Iniciando pago Flow para:', userEmail);
+            // Log params for debugging (excluding secret logic which is handled)
+            console.log('🚀 Sending request to Flow:', FLOW_API_URL + '/payment/create');
+
             const response = await fetch(`${FLOW_API_URL}/payment/create`, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
             });
 
-            const data = await response.json();
+            // Leer respuesta como texto primero para evitar fallos de JSON parsing
+            const rawText = await response.text();
+            console.log('📩 Flow Response (Raw):', rawText);
+
+            let data;
+            try {
+                data = JSON.parse(rawText);
+            } catch (jsonError) {
+                console.error('❌ Failed to parse Flow response JSON:', jsonError);
+                throw new HttpsError('internal', 'Respuesta inválida de Flow (No JSON): ' + rawText.substring(0, 100));
+            }
 
             if (!response.ok || !data.token) {
-                console.error('❌ Error Flow API:', data);
-                throw new HttpsError('internal', data.message || 'Error al conectar con Flow (Sandbox)');
+                console.error('❌ Flow API Error Response:', data);
+                // Si Flow da un mensaje, lo pasamos
+                const flowMsg = data.message || 'Error desconocido de Flow';
+                throw new HttpsError('internal', flowMsg);
             }
 
             // 6. Retornar URL
@@ -1222,7 +1249,7 @@ exports.createFlowPayment = onCall(
             };
 
         } catch (error) {
-            console.error('❌ Error createFlowPayment:', error);
+            console.error('❌ Error in createFlowPayment execution:', error);
             if (error instanceof HttpsError) throw error;
             throw new HttpsError('internal', 'Error generando el pago Flow: ' + error.message);
         }
