@@ -365,58 +365,58 @@
             } catch (e) { console.log('Smart login error', e); }
             // --- ENHANCED SMART LOGIN END ---
 
-            firebase.initializeApp({ apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f", measurementId: "G-X500LE6Z8X" }); const e = firebase.auth(), o = firebase.analytics(); o.logEvent("view_item", { item_id: "login_page", item_name: "Login/Register Page", content_type: "page" }); const t = document.getElementById("login-tab"), n = document.getElementById("register-tab"), a = document.getElementById("login-form-container"), r = document.getElementById("register-form-container"), i = document.getElementById("login-form"), s = document.getElementById("register-form"), c = document.getElementById("google-signin-btn"), l = document.getElementById("facebook-signin-btn"), d = document.getElementById("forgot-password-link"); t.addEventListener("click", () => { t.classList.add("active-tab"), n.classList.remove("active-tab"), a.classList.remove("hidden"), r.classList.add("hidden") }), n.addEventListener("click", () => { n.classList.add("active-tab"), t.classList.remove("active-tab"), r.classList.remove("hidden"), a.classList.add("hidden") }); const u = { "google.com": { name: "Google", instance: () => new firebase.auth.GoogleAuthProvider }, "facebook.com": { name: "Facebook", instance: () => { const e = new firebase.auth.FacebookAuthProvider; return e.addScope("email"), e.setCustomParameters({ display: "popup" }), e } }, password: { name: "correo y contraseña", instance: () => null } }; async function m(t) { try { await e.signInWithPopup(t) } catch (t) { if ("auth/account-exists-with-different-credential" !== t.code) return console.error("Error de autenticación:", t), void alert(`Ocurrió un error: ${t.message}`); const n = t.credential, a = (t.email || t.customData && t.customData.email || "").toLowerCase().trim(); if (console.log("--- Account Collision Detected ---"), console.log("Error Code:", t.code), console.log("Extracted Email:", a), console.log("Full Error Object:", t), !a) return console.error("No se pudo obtener el email del proveedor tras el error de colisión.", t), void alert("No pudimos obtener tu correo del proveedor para vincular las cuentas. Intenta iniciar sesión con tu método original."); console.log(`[Colisión] Buscando métodos de inicio de sesión para: ${a}`); const r = await e.fetchSignInMethodsForEmail(a); if (console.log("[Colisión] Métodos encontrados:", r), !r || 0 === r.length) return console.error("Inconsistencia de Firebase: 'auth/account-exists-with-different-credential' fue lanzado, pero fetchSignInMethodsForEmail retornó un arreglo vacío.", { email: a }), void alert("Ya existe una cuenta con este correo, pero el método fue Google. Por favor, intenta iniciar sesión directamente con tu método original (Google) o con tu correo y contraseña."); const i = r[0], s = u[i] || { name: i, instance: () => null }; if ("password" === i) return void alert(`Ya tienes una cuenta con ${s.name}. Por favor, inicia sesión con tu correo y contraseña para continuar.`); const c = s.instance(); if (!c) return void alert(`No se pudo reconstruir el proveedor original (${i}). Por favor, inicia sesión manualmente.`); alert(`Ya tienes una cuenta con ${s.name}. Inicia sesión con ${s.name} para vincular tu nueva cuenta.`); try { const { user: t } = await e.signInWithPopup(c); await t.linkWithCredential(n), console.log("¡Cuentas vinculadas con éxito!"), o.logEvent("login", { method: s.name }); if (typeof fbq !== 'undefined') { fbq('track', 'Lead'); } } catch (e) { console.error("Error al vincular las cuentas:", e), alert(`No se pudieron vincular las cuentas: ${e.message}`), description: `Link Error: ${e.message}`, fatal: !1 }) } } }
-        c.addEventListener("click", () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.initializeApp({ apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM", authDomain: "aulagenia.firebaseapp.com", projectId: "aulagenia", storageBucket: "aulagenia.appspot.com", messagingSenderId: "173328075630", appId: "1:173328075630:web:825606db4271ea1e66cf7f", measurementId: "G-X500LE6Z8X" }); const e = firebase.auth(), o = firebase.analytics(); o.logEvent("view_item", { item_id: "login_page", item_name: "Login/Register Page", content_type: "page" }); const t = document.getElementById("login-tab"), n = document.getElementById("register-tab"), a = document.getElementById("login-form-container"), r = document.getElementById("register-form-container"), i = document.getElementById("login-form"), s = document.getElementById("register-form"), c = document.getElementById("google-signin-btn"), l = document.getElementById("facebook-signin-btn"), d = document.getElementById("forgot-password-link"); t.addEventListener("click", () => { t.classList.add("active-tab"), n.classList.remove("active-tab"), a.classList.remove("hidden"), r.classList.add("hidden") }), n.addEventListener("click", () => { n.classList.add("active-tab"), t.classList.remove("active-tab"), r.classList.remove("hidden"), a.classList.add("hidden") }); const u = { "google.com": { name: "Google", instance: () => new firebase.auth.GoogleAuthProvider }, "facebook.com": { name: "Facebook", instance: () => { const e = new firebase.auth.FacebookAuthProvider; return e.addScope("email"), e.setCustomParameters({ display: "popup" }), e } }, password: { name: "correo y contraseña", instance: () => null } }; async function m(t) { try { await e.signInWithPopup(t) } catch (t) { if ("auth/account-exists-with-different-credential" !== t.code) return console.error("Error de autenticación:", t), void alert(`Ocurrió un error: ${t.message}`); const n = t.credential, a = (t.email || t.customData && t.customData.email || "").toLowerCase().trim(); if (console.log("--- Account Collision Detected ---"), console.log("Error Code:", t.code), console.log("Extracted Email:", a), console.log("Full Error Object:", t), !a) return console.error("No se pudo obtener el email del proveedor tras el error de colisión.", t), void alert("No pudimos obtener tu correo del proveedor para vincular las cuentas. Intenta iniciar sesión con tu método original."); console.log(`[Colisión] Buscando métodos de inicio de sesión para: ${a}`); const r = await e.fetchSignInMethodsForEmail(a); if (console.log("[Colisión] Métodos encontrados:", r), !r || 0 === r.length) return console.error("Inconsistencia de Firebase: 'auth/account-exists-with-different-credential' fue lanzado, pero fetchSignInMethodsForEmail retornó un arreglo vacío.", { email: a }), void alert("Ya existe una cuenta con este correo, pero el método fue Google. Por favor, intenta iniciar sesión directamente con tu método original (Google) o con tu correo y contraseña."); const i = r[0], s = u[i] || { name: i, instance: () => null }; if ("password" === i) return void alert(`Ya tienes una cuenta con ${s.name}. Por favor, inicia sesión con tu correo y contraseña para continuar.`); const c = s.instance(); if (!c) return void alert(`No se pudo reconstruir el proveedor original (${i}). Por favor, inicia sesión manualmente.`); alert(`Ya tienes una cuenta con ${s.name}. Inicia sesión con ${s.name} para vincular tu nueva cuenta.`); try { const { user: t } = await e.signInWithPopup(c); await t.linkWithCredential(n), console.log("¡Cuentas vinculadas con éxito!"), o.logEvent("login", { method: s.name }); if (typeof fbq !== 'undefined') { fbq('track', 'Lead'); } } catch (e) { console.error("Error al vincular las cuentas:", e), alert(`No se pudieron vincular las cuentas: ${e.message}`) } } }
+            c.addEventListener("click", () => {
+                const provider = new firebase.auth.GoogleAuthProvider();
 
-            // Intentar obtener email del pre-llenado (URL o stored)
-            // Usamos la misma lógica que el banner de éxito
-            const urlParams = new URLSearchParams(window.location.search);
-            const emailParam = urlParams.get('email');
-            const storedEmail = localStorage.getItem('agia_user_email');
-            const emailToHint = emailParam || storedEmail;
+                // Intentar obtener email del pre-llenado (URL o stored)
+                // Usamos la misma lógica que el banner de éxito
+                const urlParams = new URLSearchParams(window.location.search);
+                const emailParam = urlParams.get('email');
+                const storedEmail = localStorage.getItem('agia_user_email');
+                const emailToHint = emailParam || storedEmail;
 
-            if (emailToHint) {
-                provider.setCustomParameters({ login_hint: emailToHint });
-                console.log('✅ Google Login Hint aplicado:', emailToHint);
-            }
-
-            m(provider);
-        }), l.addEventListener("click", () => { m(u["facebook.com"].instance()) }), s.addEventListener("submit", t => { t.preventDefault(); const n = s.querySelector("#register-name").value, a = s.querySelector("#register-email").value, r = s.querySelector("#register-password").value; e.createUserWithEmailAndPassword(a, r).then(e => e.user.updateProfile({ displayName: n })).then(() => { console.log("Usuario registrado y perfil actualizado:", e.currentUser), o.logEvent("sign_up", { method: "password" }); if (typeof fbq !== 'undefined') { fbq('track', 'CompleteRegistration'); } }).catch(e => { console.error("Error en el registro:", e), "auth/email-already-in-use" === e.code ? alert("Ya existe una cuenta con este correo electrónico. Por favor, intenta iniciar sesión o utiliza otro correo.") : alert(`Error en el registro: ${e.message}`) }) }), i.addEventListener("submit", t => { t.preventDefault(); const n = i.querySelector("#login-email").value, a = i.querySelector("#login-password").value; e.signInWithEmailAndPassword(n, a).then(e => { console.log("Usuario ha iniciado sesión:", e.user), o.logEvent("login", { method: "password" }); if (typeof fbq !== 'undefined') { fbq('track', 'Lead'); } }).catch(e => { console.error("Error en inicio de sesión:", e), alert("Error: Credenciales incorrectas. Por favor, inténtalo de nuevo.") }) }), d.addEventListener("click", o => { o.preventDefault(); const t = document.getElementById("login-email"), n = t.value; if (!n) return alert("Por favor, ingresa tu correo electrónico en el campo correspondiente para restablecer tu contraseña."), void t.focus(); e.sendPasswordResetEmail(n).then(() => { alert("Se ha enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada (y la carpeta de spam).") }).catch(e => { console.error("Error al enviar correo de restablecimiento:", e), "auth/user-not-found" === e.code ? alert("No se encontró ninguna cuenta con ese correo electrónico.") : alert(`Ocurrió un error: ${e.message}`) }) }), e.onAuthStateChanged(async e => {
-            if (e) {
-                console.log("Usuario autenticado. Verificando estado...");
-                if (typeof fbq !== 'undefined') { fbq('track', 'Lead'); }
-
-                // Manejo de compra pendiente (flujo modal -> login -> pago)
-                const pendingPurchase = sessionStorage.getItem("pendingPurchase");
-                if (pendingPurchase) {
-                    console.log("Procesando compra pendiente...");
-                    // Mostrar overlay de carga
-                    const overlay = document.createElement("div");
-                    overlay.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:white;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;";
-                    overlay.innerHTML = '<div style="border:4px solid #f3f3f3;border-top:4px solid #14b8a6;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite;"></div><h2 style="margin-top:20px;font-family:sans-serif;color:#333;">Procesando tu inscripción...</h2><style>@keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>';
-                    document.body.appendChild(overlay);
-
-                    try {
-                        const purchaseData = JSON.parse(pendingPurchase);
-                        const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
-                        const result = await createPreference(purchaseData);
-                        if (result.data && result.data.init_point) {
-                            sessionStorage.removeItem("pendingPurchase");
-                            window.location.href = result.data.init_point;
-                            return;
-                        }
-                    } catch (err) {
-                        console.error("Error al procesar pago:", err);
-                        alert("Error al iniciar el pago. Por favor intenta nuevamente.");
-                        overlay.remove();
-                    }
+                if (emailToHint) {
+                    provider.setCustomParameters({ login_hint: emailToHint });
+                    console.log('✅ Google Login Hint aplicado:', emailToHint);
                 }
 
-                const r = new URLSearchParams(window.location.search).get("redirect") || "campus.html";
-                window.location.href = r
-            } else document.getElementById("auth-container") ? document.getElementById("auth-container").style.display = "block" : null, document.getElementById("userInfo") ? document.getElementById("userInfo").style.display = "none" : null, document.getElementById("auth-title") ? document.getElementById("auth-title").textContent = "Crea tu cuenta para continuar al pago" : null
-        }), lucide.createIcons(), window.addEventListener("load", () => { window.cookieconsent && window.cookieconsent.initialise({ palette: { popup: { background: "#1f2937" }, button: { background: "#14b8a6" } }, theme: "classic", position: "bottom", type: "opt-in", content: { message: "Usamos cookies para mejorar tu experiencia.", dismiss: "Aceptar", deny: "Rechazar", link: "Más info", href: "politica-cookies.html" } }) })
+                m(provider);
+            }), l.addEventListener("click", () => { m(u["facebook.com"].instance()) }), s.addEventListener("submit", t => { t.preventDefault(); const n = s.querySelector("#register-name").value, a = s.querySelector("#register-email").value, r = s.querySelector("#register-password").value; e.createUserWithEmailAndPassword(a, r).then(e => e.user.updateProfile({ displayName: n })).then(() => { console.log("Usuario registrado y perfil actualizado:", e.currentUser), o.logEvent("sign_up", { method: "password" }); if (typeof fbq !== 'undefined') { fbq('track', 'CompleteRegistration'); } }).catch(e => { console.error("Error en el registro:", e), "auth/email-already-in-use" === e.code ? alert("Ya existe una cuenta con este correo electrónico. Por favor, intenta iniciar sesión o utiliza otro correo.") : alert(`Error en el registro: ${e.message}`) }) }), i.addEventListener("submit", t => { t.preventDefault(); const n = i.querySelector("#login-email").value, a = i.querySelector("#login-password").value; e.signInWithEmailAndPassword(n, a).then(e => { console.log("Usuario ha iniciado sesión:", e.user), o.logEvent("login", { method: "password" }); if (typeof fbq !== 'undefined') { fbq('track', 'Lead'); } }).catch(e => { console.error("Error en inicio de sesión:", e), alert("Error: Credenciales incorrectas. Por favor, inténtalo de nuevo.") }) }), d.addEventListener("click", o => { o.preventDefault(); const t = document.getElementById("login-email"), n = t.value; if (!n) return alert("Por favor, ingresa tu correo electrónico en el campo correspondiente para restablecer tu contraseña."), void t.focus(); e.sendPasswordResetEmail(n).then(() => { alert("Se ha enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada (y la carpeta de spam).") }).catch(e => { console.error("Error al enviar correo de restablecimiento:", e), "auth/user-not-found" === e.code ? alert("No se encontró ninguna cuenta con ese correo electrónico.") : alert(`Ocurrió un error: ${e.message}`) }) }), e.onAuthStateChanged(async e => {
+                if (e) {
+                    console.log("Usuario autenticado. Verificando estado...");
+                    if (typeof fbq !== 'undefined') { fbq('track', 'Lead'); }
+
+                    // Manejo de compra pendiente (flujo modal -> login -> pago)
+                    const pendingPurchase = sessionStorage.getItem("pendingPurchase");
+                    if (pendingPurchase) {
+                        console.log("Procesando compra pendiente...");
+                        // Mostrar overlay de carga
+                        const overlay = document.createElement("div");
+                        overlay.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:white;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;";
+                        overlay.innerHTML = '<div style="border:4px solid #f3f3f3;border-top:4px solid #14b8a6;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite;"></div><h2 style="margin-top:20px;font-family:sans-serif;color:#333;">Procesando tu inscripción...</h2><style>@keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>';
+                        document.body.appendChild(overlay);
+
+                        try {
+                            const purchaseData = JSON.parse(pendingPurchase);
+                            const createPreference = firebase.functions().httpsCallable("createMercadoPagoPreference");
+                            const result = await createPreference(purchaseData);
+                            if (result.data && result.data.init_point) {
+                                sessionStorage.removeItem("pendingPurchase");
+                                window.location.href = result.data.init_point;
+                                return;
+                            }
+                        } catch (err) {
+                            console.error("Error al procesar pago:", err);
+                            alert("Error al iniciar el pago. Por favor intenta nuevamente.");
+                            overlay.remove();
+                        }
+                    }
+
+                    const r = new URLSearchParams(window.location.search).get("redirect") || "campus.html";
+                    window.location.href = r
+                } else document.getElementById("auth-container") ? document.getElementById("auth-container").style.display = "block" : null, document.getElementById("userInfo") ? document.getElementById("userInfo").style.display = "none" : null, document.getElementById("auth-title") ? document.getElementById("auth-title").textContent = "Crea tu cuenta para continuar al pago" : null
+            }), lucide.createIcons(), window.addEventListener("load", () => { window.cookieconsent && window.cookieconsent.initialise({ palette: { popup: { background: "#1f2937" }, button: { background: "#14b8a6" } }, theme: "classic", position: "bottom", type: "opt-in", content: { message: "Usamos cookies para mejorar tu experiencia.", dismiss: "Aceptar", deny: "Rechazar", link: "Más info", href: "politica-cookies.html" } }) })
         })</script>
 </body>
 
