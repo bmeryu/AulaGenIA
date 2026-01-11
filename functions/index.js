@@ -1191,13 +1191,22 @@ exports.createFlowPayment = onCall(
         const shortId = Date.now().toString(36);
         const randomSuffix = Math.random().toString(36).substring(2, 6);
         const commerceOrder = `start-${shortId}-${randomSuffix}`;
-        const amount = 8900; // PRECIO FIJO CLP 
+        const includeBump = request.data.includeBump || false;
+
+        // Config: Precios y Descripciones
+        let amount = 8900;
+        let subject = 'Pack Starter: IA Aplicada';
+
+        if (includeBump) {
+            amount = 13800; // 8900 + 4900
+            subject = 'Pack Starter + Masterclass Imágenes';
+        }
 
         // 3. Parámetros Flow
         const params = {
             apiKey: FLOW_API_KEY,
             commerceOrder: commerceOrder,
-            subject: 'Pack Starter: IA Aplicada',
+            subject: subject,
             currency: 'CLP',
             amount: amount,
             email: userEmail,

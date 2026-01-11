@@ -1741,7 +1741,8 @@
             // Scroll suave al formulario
             setTimeout(() => {
                 form.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                document.getElementById('checkout-email').focus();
+                const emailField = document.getElementById('inline-email');
+                if (emailField) emailField.focus();
             }, 100);
         }
 
@@ -1757,8 +1758,9 @@
         async function handleCheckoutSubmit(event) {
             event.preventDefault();
 
-            const submitBtn = document.getElementById('checkout-submit-btn');
+            const submitBtn = document.getElementById('inline-submit-btn');
             const originalText = submitBtn.innerHTML;
+            const nombre = "Estudiante"; // Default value for inline checkout
 
             // Loading state
             submitBtn.disabled = true;
@@ -1773,66 +1775,37 @@
             `;
 
             try {
-                // Capturar datos del formulario
-                const email = document.getElementById('checkout-email').value.trim();
-                const nombre = document.getElementById('checkout-nombre').value.trim();
-
-                // Validación básica
-                if (!email.includes('@')) {
-                    throw new Error('Email inválido');
-                }
-
-                if (nombre.length < 2) {
-                    throw new Error('Nombre muy corto');
-                }
-
-                // Preparar datos del lead
-                const leadData = {
-                    email: email,
-                    nombre: nombre,
-                    courseId: 'ia-aplicada-starter',
-                    source: 'landing-nuevo',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    status: 'pending'
-                };
-
-                console.log('💾 Guardando lead en Firestore...');
-
-                // Guardar lead en Firestore
+                // 1. Guardar Lead en Firestore
                 const db = firebase.firestore();
-                const leadRef = await db.collection('leads').add(leadData);
-                console.log('✅ Lead guardado:', leadRef.id);
-
-                // Llamar a Cloud Function para generar URL de Flow
-                console.log('🔄 Generando URL de Flow...');
-                const createFlowPayment = firebase.functions().httpsCallable("createFlowPayment");
-                const result = await createFlowPayment({
-                    courseId: 'ia-aplicada-starter',
+                const leadRef = await db.collection('leads').add({
                     email: email,
-                    nombre: nombre,
-                    leadId: leadRef.id
+                    nombre: nombre, // Save nombre
+                    courseId: 'ia-aplicada-starter', // Default course ID
+                    source: 'landing_inline_checkout',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    includeBump: includeBump // Guardar dato en el lead también
                 });
 
-                console.log('✅ Flow URL recibida:', result.data.url);
+                // 2. Iniciar Pago Flow (Cloud Function)
+                const createPayment = firebase.functions().httpsCallable('createFlowPayment');
 
-                // Actualizar lead con URL de Flow
-                await leadRef.update({
-                    flowPaymentUrl: result.data.url,
-                    flowToken: result.data.token || null
+                // Enviar flag 'includeBump' al backend
+                const result = await createPayment({
+                    email: email,
+                    nombre: nombre, // Pass nombre to the function
+                    leadId: leadRef.id, // Pass lead ID
+                    includeBump: includeBump
                 });
 
-                // Redirigir a Flow
-                if (result.data && result.data.url) {
+                if (result.data && result.data.url) { // Changed from redirectUrl to url based on original code
                     window.location.href = result.data.url;
                 } else {
-                    throw new Error("No se recibió URL de pago");
+                    throw new Error('No se recibió URL de redirección');
                 }
 
             } catch (error) {
-                console.error("❌ Error en checkout:", error);
-                alert(error.message || "Hubo un error. Por favor intenta nuevamente.");
-
-                // Restore button
+                console.error("Error en checkout:", error);
+                alert('Hubo un error al iniciar el pago. Por favor intenta nuevamente.');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
             }
