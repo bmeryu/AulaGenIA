@@ -4,6 +4,7 @@
 
 const { onCall, HttpsError, onRequest } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
+const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const { MercadoPagoConfig, Preference, Payment } = require("mercadopago");
 
@@ -1231,13 +1232,18 @@ exports.createFlowPayment = onCall(
             }
 
             // GUARDAR ESTADO PENDIENTE (CRUCIAL PARA WEBHOOK)
-            await admin.firestore().collection('pending_flows').doc(commerceOrder).set({
+            // GUARDAR EN SALES (NUEVA COLECCIÓN UNIFICADA)
+            await admin.firestore().collection('sales').doc(commerceOrder).set({
                 email: userEmail,
                 courseId: courseId,
+                amount: amount,
+                // flowOrder se recibe en la respuesta inmediata o webhook, lo dejamos opcional aquí
+                status: 'INITIATED',
+                enrollmentStatus: 'PENDING',
                 userId: request.auth ? request.auth.uid : null, // Opcional si no hay auth
                 leadId: request.data.leadId || null, // ID del lead si viene del formulario
-                amount: amount,
-                timestamp: admin.firestore.FieldValue.serverTimestamp()
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                paymentMethod: 'FLOW_CLP_SANDBOX'
             });
 
             // Log params for debugging (excluding secret logic which is handled)
@@ -1303,32 +1309,33 @@ exports.flowWebhook = onRequest(async (req, res) => {
         console.log('🔍 Estado Flow:', statusData);
 
         // 2. Validar (2 = Pagada)
+        // 2. Validar (2 = Pagada)
         if (statusData.status === 2) {
             const commerceOrder = statusData.commerceOrder;
+            const salesRef = admin.firestore().collection('sales').doc(commerceOrder);
 
-            // RECUPERAR DATOS DE PENDING_FLOWS
+            // RECUPERAR DATOS DE SALES
             let userEmail, courseId, userId;
+            let saleData = {};
 
             try {
-                // Intento 1: Leer de Firestore (Lo ideal)
-                const docRef = await admin.firestore().collection('pending_flows').doc(commerceOrder).get();
-                if (docRef.exists) {
-                    const data = docRef.data();
-                    userEmail = data.email;
-                    courseId = data.courseId;
-                    userId = data.userId;
-                    console.log('📂 Datos recuperados de Firestore PENDING:', { userEmail, courseId });
+                // Leer de Firestore (Colección Unificada)
+                const docSnap = await salesRef.get();
+                if (docSnap.exists) {
+                    saleData = docSnap.data();
+                    userEmail = saleData.email;
+                    courseId = saleData.courseId;
+                    userId = saleData.userId;
+                    console.log('📂 Datos recuperados de SALES:', { userEmail, courseId });
                 } else {
-                    console.error('⚠️ No se encontró la orden pendiente en Firestore:', commerceOrder);
-
-                    // Intento 2: Leer de "optional" data de Flow si existiera
+                    console.error('⚠️ No se encontró la orden en SALES:', commerceOrder);
+                    // Fallback: Leer de "optional" data de Flow si existiera
                     if (statusData.optional) {
                         try {
                             const optionalData = JSON.parse(statusData.optional);
-                            userEmail = statusData.payer; // Flow devuelve el pagador
+                            userEmail = statusData.payer;
                             userId = optionalData.userId;
                             courseId = optionalData.courseId;
-                            console.log('📂 Datos recuperados de OPTIONAL param:', { userId, courseId });
                         } catch (e) { console.error('Error parsing optional:', e); }
                     }
                 }
@@ -1337,28 +1344,56 @@ exports.flowWebhook = onRequest(async (req, res) => {
                 return res.status(500).send('DB Error');
             }
 
-            // Fallback final
-            if (!courseId) courseId = 'ia-aplicada-starter';
-            if (!userEmail && statusData.payer) userEmail = statusData.payer;
+            // Fallback final de datos
+            if (!courseId) courseId = saleData.courseId || 'ia-aplicada-starter';
+            if (!userEmail) userEmail = saleData.email || statusData.payer;
+
+            // Actualizar estado a PAID en Sales
+            await salesRef.set({
+                status: 'PAID',
+                flowOrder: statusData.flowOrder,
+                paidAt: admin.firestore.FieldValue.serverTimestamp(),
+                // Aseguramos datos esenciales por si vinieron de optional
+                email: userEmail,
+                courseId: courseId
+            }, { merge: true });
 
             if (userEmail && courseId) {
-                // 3. Activar en Firebase
+                // 3. Activar en Firebase (Enrollment)
                 try {
-                    // Si tenemos userId directo, es más seguro
                     let targetUid = userId;
+
+                    // Si no tenemos UID, lo buscamos
                     if (!targetUid) {
-                        const userRecord = await admin.auth().getUserByEmail(userEmail);
-                        targetUid = userRecord.uid;
+                        try {
+                            const userRecord = await admin.auth().getUserByEmail(userEmail);
+                            targetUid = userRecord.uid;
+                        } catch (authError) {
+                            if (authError.code === 'auth/user-not-found') {
+                                console.log(`👤 Usuario no registrado (${userEmail}). Venta queda en estado PAID (Pending Delivery).`);
+                                // No hacemos nada más, el onUserCreated se encargará
+                            } else {
+                                throw authError;
+                            }
+                        }
                     }
 
-                    await admin.firestore().collection("users").doc(targetUid).set({
-                        enrollments: { [courseId]: true },
-                        flowOrder: statusData.flowOrder,
-                        paymentMethod: 'FLOW_CLP_SANDBOX',
-                        lastPaymentDate: admin.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
+                    if (targetUid) {
+                        // Enrolar usuario
+                        await admin.firestore().collection("users").doc(targetUid).set({
+                            enrollments: { [courseId]: true },
+                            lastPaymentDate: admin.firestore.FieldValue.serverTimestamp()
+                        }, { merge: true });
 
-                    console.log(`✅ Curso ${courseId} activado para ${userEmail} (UID: ${targetUid})`);
+                        // Marcar venta como DELIVERED
+                        await salesRef.update({
+                            enrollmentStatus: 'DELIVERED',
+                            userId: targetUid,
+                            deliveredAt: admin.firestore.FieldValue.serverTimestamp()
+                        });
+
+                        console.log(`✅ Curso ${courseId} activado para ${userEmail} (UID: ${targetUid}) - Status: DELIVERED`);
+                    }
 
                     // ============================================
                     // EMAIL DE BIENVENIDA (Logic reused from Hotmart)
@@ -1472,5 +1507,92 @@ exports.flowWebhook = onRequest(async (req, res) => {
     } catch (error) {
         console.error('💥 Flow Webhook Error:', error);
         return res.status(500).send('Server Error');
+    }
+});
+
+// ============================================
+// 7. Trigger: Auto-Enrollment on User Creation (V1)
+// ============================================
+exports.onUserCreated = functions.auth.user().onCreate(async (user) => {
+    const email = user.email;
+    if (!email) return;
+
+    try {
+        // Buscar ventas PAGADAS pero NO ENTREGADAS para este email
+        const salesSnapshot = await admin.firestore().collection('sales')
+            .where('email', '==', email)
+            .where('status', '==', 'PAID')
+            .where('enrollmentStatus', '==', 'PENDING')
+            .get();
+
+        if (salesSnapshot.empty) {
+            console.log(`ℹ️ No pending sales found for new user ${email}`);
+            return;
+        }
+
+        const batch = admin.firestore().batch();
+        const userRef = admin.firestore().collection('users').doc(user.uid);
+
+        // Preparar actualización de usuario (enrollment)
+        // Podría haber múltiples compras pendientes (raro, pero posible)
+        let newEnrollments = {};
+
+        salesSnapshot.forEach(doc => {
+            const sale = doc.data();
+            if (sale.courseId) {
+                newEnrollments[sale.courseId] = true;
+
+                // Actualizar venta a DELIVERED
+                batch.update(doc.ref, {
+                    enrollmentStatus: 'DELIVERED',
+                    userId: user.uid,
+                    deliveredAt: admin.firestore.FieldValue.serverTimestamp()
+                });
+                console.log(`✅ Found pending sale ${doc.id} for course ${sale.courseId}`);
+            }
+        });
+
+        if (Object.keys(newEnrollments).length > 0) {
+            // Actualizar usuario
+            await userRef.set({
+                enrollments: newEnrollments,
+                lastPaymentDate: admin.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+
+            // Ejecutar batch de ventas
+            await batch.commit();
+            console.log(`✅ Auto-enrolled user ${email} from sales collection.`);
+        }
+
+    } catch (error) {
+        console.error('Error in onUserCreated:', error);
+    }
+});
+
+// ============================================
+// 8. Manual Fix for bmeryu (Temporary HTTP Function)
+// ============================================
+exports.fixBmeryu = onRequest(async (req, res) => {
+    try {
+        const email = 'bmeryu@gmail.com';
+        console.log(`🔧 Attempting manual fix for: ${email}`);
+
+        const userRecord = await admin.auth().getUserByEmail(email);
+        console.log(`👤 Found UID: ${userRecord.uid}`);
+
+        await admin.firestore().collection('users').doc(userRecord.uid).set({
+            enrollments: {
+                'ia-aplicada-starter': true,
+                'ia-aplicada-esencial': true // Granting essentials just in case as validation
+            },
+            email: email,
+            manualFix: true,
+            fixedAt: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        res.status(200).send(`✅ FIXED: Granted access to ${email} (UID: ${userRecord.uid})`);
+    } catch (e) {
+        console.error('❌ Error in fixBmeryu:', e);
+        res.status(500).send('Error: ' + e.toString());
     }
 });
