@@ -475,7 +475,7 @@
                             <!-- Email -->
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 mb-1">Email *</label>
-                                <input type="email" id="checkout-email" required
+                                <input type="email" id="inline-email" required
                                     class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                                     placeholder="tu@email.com">
                             </div>
@@ -483,15 +483,36 @@
                             <!-- Nombre -->
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 mb-1">Nombre Completo *</label>
-                                <input type="text" id="checkout-nombre" required
+                                <input type="text" id="inline-nombre" required
                                     class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                                     placeholder="Juan Pérez">
                             </div>
 
+                            <!-- Order Bump Container -->
+                            <div class="mt-4 mb-4 p-4 bg-yellow-50 border-2 border-dashed border-yellow-400 rounded-xl relative overflow-hidden group hover:bg-yellow-100 transition-colors cursor-pointer"
+                                onclick="toggleBump()">
+                                <div class="flex items-start gap-3">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <input type="checkbox" id="bump-checkbox"
+                                            class="w-5 h-5 text-teal-600 rounded focus:ring-teal-500 cursor-pointer pointer-events-none">
+                                    </div>
+                                    <div class="text-left">
+                                        <h5 class="font-black text-gray-900 text-sm leading-tight">¡OFERTA ÚNICA: Domina
+                                            la IA Generativa!</h5>
+                                        <p class="text-xs text-gray-800 mt-1 leading-relaxed">
+                                            Añade la <strong class="text-gray-900">Masterclass de DALL-E 3 +
+                                                Canva</strong> por solo <span
+                                                class="text-green-600 font-bold">$4.900</span> adicionales.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Submit Button -->
-                            <button type="submit" id="checkout-submit-btn"
-                                class="w-full bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] text-sm">
-                                Continuar al Pago Seguro →
+                            <button type="submit" id="inline-submit-btn"
+                                class="w-full bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] text-lg flex items-center justify-center gap-2">
+                                <span>Inscribirme por $8.900 CLP</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
                             </button>
 
                             <!-- Trust Badge -->
@@ -1702,13 +1723,47 @@
             button.classList.remove('hidden');
         }
 
+        // Función para cambiar estado del Bump (Precio y Checkbox)
+        function toggleBump() {
+            const checkbox = document.getElementById('bump-checkbox');
+            const submitBtn = document.getElementById('inline-submit-btn');
+
+            // Toggle manual porque el click es en el div container
+            if (checkbox) checkbox.checked = !checkbox.checked;
+
+            if (checkbox && checkbox.checked) {
+                // Estado: CON Bump
+                submitBtn.querySelector('span').textContent = 'Inscribirme por $13.800 CLP';
+                submitBtn.classList.remove('from-teal-500', 'to-emerald-500');
+                submitBtn.classList.add('from-yellow-400', 'to-orange-500');
+            } else {
+                // Estado: SIN Bump
+                submitBtn.querySelector('span').textContent = 'Inscribirme por $8.900 CLP';
+                submitBtn.classList.add('from-teal-500', 'to-emerald-500');
+                submitBtn.classList.remove('from-yellow-400', 'to-orange-500');
+            }
+        }
+
         // ✅ MANEJAR ENVÍO DEL FORMULARIO
         async function handleCheckoutSubmit(event) {
             event.preventDefault();
 
             const submitBtn = document.getElementById('inline-submit-btn');
             const originalText = submitBtn.innerHTML;
-            const nombre = "Estudiante"; // Default value for inline checkout
+
+            // Capturar datos de los inputs correctos
+            const emailInput = document.getElementById('inline-email');
+            const nombreInput = document.getElementById('inline-nombre');
+            const checkbox = document.getElementById('bump-checkbox');
+
+            const email = emailInput ? emailInput.value.trim() : '';
+            const nombre = nombreInput ? nombreInput.value.trim() : 'Estudiante';
+            const includeBump = checkbox ? checkbox.checked : false;
+
+            if (!email || !email.includes('@')) {
+                alert('Por favor verifique su correo electrónico.');
+                return;
+            }
 
             // Loading state
             submitBtn.disabled = true;
