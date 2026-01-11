@@ -1203,7 +1203,7 @@ exports.createFlowPayment = onCall(
             email: userEmail,
             paymentMethod: 9, // 9 = Webpay / Todos
             urlConfirmation: 'https://flowwebhook-3kbbtamy5q-uc.a.run.app',
-            urlReturn: 'https://aulagenia.web.app/pago-exitoso.html', // Revertido a web.app porque .cl está en Netlify
+            urlReturn: `https://aulagenia.web.app/acceso.html?email=${encodeURIComponent(userEmail)}`,
         };
 
         // 4. Firmar
