@@ -1225,7 +1225,8 @@ exports.createFlowPayment = onCall(
             await admin.firestore().collection('pending_flows').doc(commerceOrder).set({
                 email: userEmail,
                 courseId: courseId,
-                userId: request.auth.uid,
+                userId: request.auth ? request.auth.uid : null, // Opcional si no hay auth
+                leadId: request.data.leadId || null, // ID del lead si viene del formulario
                 amount: amount,
                 timestamp: admin.firestore.FieldValue.serverTimestamp()
             });
