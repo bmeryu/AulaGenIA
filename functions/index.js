@@ -1204,7 +1204,6 @@ exports.createFlowPayment = onCall(
             paymentMethod: 9, // 9 = Webpay / Todos
             urlConfirmation: 'https://flowwebhook-3kbbtamy5q-uc.a.run.app',
             urlReturn: 'https://aulagenia.cl/pago-exitoso.html', // Volver al dominio principal para mantener sesión
-            optional: JSON.stringify({ userId: request.auth.uid, courseId: courseId }) // Backup
         };
 
         // 4. Firmar
@@ -1350,6 +1349,108 @@ exports.flowWebhook = onRequest(async (req, res) => {
                     }, { merge: true });
 
                     console.log(`✅ Curso ${courseId} activado para ${userEmail} (UID: ${targetUid})`);
+
+                    // ============================================
+                    // EMAIL DE BIENVENIDA (Logic reused from Hotmart)
+                    // ============================================
+                    try {
+                        const Mailjet = require('node-mailjet');
+                        // Usamos las mismas keys secretas definidas globalmente o via process.env
+                        const mailjet = Mailjet.apiConnect(
+                            mailjetApiKey.value(),
+                            mailjetSecretKey.value()
+                        );
+
+                        // Mapear nombre del curso
+                        const courseName = courseId === 'ia-aplicada-starter'
+                            ? 'Kit Starter: +100 Master Prompts'
+                            : 'Curso IA Aplicada Esencial';
+
+                        // En Flow el nombre del usuario no siempre viene claro
+                        const buyerName = 'Estudiante Aula GenIA';
+
+                        await mailjet.post('send', { version: 'v3.1' }).request({
+                            Messages: [{
+                                From: {
+                                    Email: 'hola@aulagenia.cl',
+                                    Name: 'Aula GenIA'
+                                },
+                                To: [{
+                                    Email: userEmail,
+                                    Name: buyerName
+                                }],
+                                Bcc: [{
+                                    Email: 'hola@aulagenia.cl',
+                                    Name: 'Aula GenIA Admin'
+                                }],
+                                Subject: `Bienvenido/a a Aula GenIA - Acceso Confirmado`,
+                                HTMLPart: `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5;">
+    <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        
+        <div style="background: #ffffff; padding: 40px 30px 30px; text-align: center; border-bottom: 3px solid #14b8a6;">
+            <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 150px; margin-bottom: 15px; display: inline-block;">
+            <h1 style="color: #1e293b; margin: 15px 0 8px 0; font-size: 26px; font-weight: 700;">¡Tu Acceso está listo!</h1>
+            <p style="color: #64748b; margin: 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquí.</p>
+        </div>
+        
+        <div style="padding: 40px 30px;">
+            <p style="font-size: 18px; color: #333; margin-bottom: 20px;">
+                Hola <strong style="color: #0d9488;">${userEmail}</strong>,
+            </p>
+            
+            <p style="font-size: 16px; color: #555; line-height: 1.7; margin-bottom: 25px;">
+                Es un gusto saludarte. Ya confirmamos tu inscripción al <strong>${courseName}</strong>. 
+                A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarán tu productividad.
+            </p>
+            
+            <div style="background: #f0fdfa; border-left: 4px solid #14b8a6; padding: 15px 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0;">
+                <p style="margin: 0; color: #0d9488; font-weight: 600;">✨ Tu acceso a la Bóveda de Recursos ya ha sido sincronizado.</p>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); border-radius: 16px; padding: 30px; margin-bottom: 30px; border: 2px solid #99f6e4;">
+                <h2 style="color: #0d9488; margin: 0 0 25px 0; font-size: 20px; text-align: center;">🔑 Tus Credenciales de Acceso</h2>
+                
+                <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
+                    <tr>
+                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">📍 Portal de Acceso</p>
+                            <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.cl/acceso</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">👤 Tu Usuario</p>
+                            <p style="color: #1e293b; margin: 0; font-size: 16px; font-weight: 600;">${userEmail}</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://aulagenia.cl/campus.html" style="background-color: #14b8a6; color: white; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4); display: inline-block;">Acceder al Campus Ahora &rarr;</a>
+            </div>
+        </div>
+        
+        <div style="background: #f8fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;">© 2026 Aula GenIA. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>`
+                            }]
+                        });
+                        console.log('✅ Email de bienvenida enviado a:', userEmail);
+
+                    } catch (mailError) {
+                        console.error('❌ Error enviando email de bienvenida:', mailError);
+                    }
                 } catch (e) {
                     console.error('Error finding user for enrollment:', e);
                 }
