@@ -1199,7 +1199,7 @@ exports.createFlowPayment = onCall(
         let subject = 'Pack Starter: IA Aplicada';
 
         if (includeBump) {
-            amount = 13800; // 8900 + 4900
+            amount = 14900; // 8900 + 6000
             subject = 'Pack Starter + Masterclass Imágenes';
         }
 
