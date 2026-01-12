@@ -340,14 +340,15 @@
                     <div class="bg-gray-50 rounded-xl p-4 mb-4 border border-gray-100">
                         <div class="flex justify-between items-center mb-2 text-sm">
                             <span class="text-gray-600">Biblioteca +100 Prompts</span>
-                            <span class="font-bold text-gray-400 line-through">~~$45.000~~</span>
+                            <span id="breakdown-ref-price"
+                                class="font-bold text-gray-400 line-through">~~$29.900~~</span>
                         </div>
                         <div class="flex justify-between items-center mb-3 text-sm">
                             <span class="text-gray-600">Tu Ruta de Transformación Fases 1-4</span>
                             <span class="font-bold text-teal-600">Incluido</span>
                         </div>
                         <div class="border-t border-gray-200 pt-3 text-center">
-                            <span class="text-4xl font-black text-gray-900">$8.900 CLP</span>
+                            <span id="breakdown-total-price" class="text-4xl font-black text-gray-900">$8.900 CLP</span>
                             <div class="flex items-center justify-center gap-2 mt-1">
                                 <span
                                     class="bg-teal-100 text-teal-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">Oferta
@@ -442,8 +443,11 @@
                                             class="w-5 h-5 text-teal-600 rounded focus:ring-teal-500 cursor-pointer pointer-events-none">
                                     </div>
                                     <div class="text-left">
-                                        <h5 class="font-black text-gray-900 text-sm leading-tight text-red-600">¡OFERTA
-                                            ÚNICA: Convierte tu Kit en PRO!</h5>
+                                        <span
+                                            class="inline-block bg-teal-800 text-teal-50 text-[10px] font-black px-2 py-0.5 rounded mb-2 tracking-wide uppercase">¡Oferta
+                                            Única!</span>
+                                        <h5 class="font-bold text-gray-900 text-sm leading-tight">Convierte tu Kit en
+                                            PRO</h5>
                                         <div class="text-xs text-gray-800 mt-2 space-y-1">
                                             <p class="font-bold">Suma el Pack de Aceleración Total:</p>
                                             <ul class="list-disc pl-4 space-y-0.5 text-gray-700">
@@ -1690,20 +1694,37 @@
             const checkbox = document.getElementById('bump-checkbox');
             const submitBtn = document.getElementById('inline-submit-btn');
 
+            // Elements to update in Breakdown Card
+            const breakdownRef = document.getElementById('breakdown-ref-price');
+            const breakdownTotal = document.getElementById('breakdown-total-price');
+
             // Toggle manual porque el click es en el div container
             if (checkbox) checkbox.checked = !checkbox.checked;
 
             if (checkbox && checkbox.checked) {
                 // Estado: CON Bump
-                // $8.900 (Base) + $6.000 (Upgrade) = $14.900
+                // 1. Update Breakdown Card
+                if (breakdownRef) breakdownRef.textContent = '~~$45.000~~';
+                if (breakdownTotal) breakdownTotal.textContent = '$14.900 CLP';
+
+                // 2. Update Button
                 submitBtn.querySelector('span').textContent = 'Inscribirme por $14.900 CLP';
+
+                // Style: High Contrast (Gray-900) instead of Yellow to fix visibility
                 submitBtn.classList.remove('bg-teal-600', 'hover:bg-teal-700');
-                submitBtn.classList.add('bg-yellow-500', 'hover:bg-yellow-600');
+                submitBtn.classList.add('bg-gray-900', 'hover:bg-black');
             } else {
                 // Estado: SIN Bump
+                // 1. Update Breakdown Card
+                if (breakdownRef) breakdownRef.textContent = '~~$29.900~~';
+                if (breakdownTotal) breakdownTotal.textContent = '$8.900 CLP';
+
+                // 2. Update Button
                 submitBtn.querySelector('span').textContent = 'Inscribirme por $8.900 CLP';
+
+                // Style: Default Teal
                 submitBtn.classList.add('bg-teal-600', 'hover:bg-teal-700');
-                submitBtn.classList.remove('bg-yellow-500', 'hover:bg-yellow-600');
+                submitBtn.classList.remove('bg-gray-900', 'hover:bg-black');
             }
         }
 
