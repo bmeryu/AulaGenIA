@@ -1406,10 +1406,19 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                             mailjetSecretKey.value()
                         );
 
-                        // Mapear nombre del curso
-                        const courseName = courseId === 'ia-aplicada-starter'
-                            ? 'Pack Starter: +100 Master Prompts'
-                            : 'Curso IA Aplicada Esencial';
+                        // Determinar si es Pack PRO (Monto > 14000)
+                        const isPro = saleData.amount && saleData.amount > 14000;
+
+                        // Configuración del Correo
+                        let emailSubject = 'Bienvenido/a a Aula GenIA - Acceso Confirmado';
+                        let emailCourseName = 'Pack Starter: +100 Master Prompts';
+
+                        if (isPro) {
+                            emailSubject = '¡Bienvenido/a al Nivel PRO! - Acceso Confirmado';
+                            emailCourseName = 'Pack PRO (Starter + Kit Profesional)';
+                        } else if (courseId !== 'ia-aplicada-starter') {
+                            emailCourseName = 'Curso IA Aplicada Esencial';
+                        }
 
                         // Intentar obtener el nombre real del usuario
                         let buyerName = 'Estudiante Aula GenIA';
@@ -1434,7 +1443,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                     Email: 'hola@aulagenia.cl',
                                     Name: 'Aula GenIA Admin'
                                 }],
-                                Subject: `Bienvenido/a a Aula GenIA - Acceso Confirmado`,
+                                Subject: emailSubject,
                                 HTMLPart: `
 <!DOCTYPE html>
 <html>
@@ -1447,8 +1456,8 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
         
         <div style="background: #ffffff; padding: 40px 30px 30px; text-align: center; border-bottom: 3px solid #14b8a6;">
             <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 150px; margin-bottom: 15px; display: inline-block;">
-            <h1 style="color: #1e293b; margin: 15px 0 8px 0; font-size: 26px; font-weight: 700;">¡Tu Acceso está listo!</h1>
-            <p style="color: #64748b; margin: 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquí.</p>
+            <h1 style="color: #1e293b; margin: 15px 0 8px 0; font-size: 26px; font-weight: 700;">${isPro ? '¡Bienvenido/a al Nivel PRO!' : '¡Tu Acceso está listo!'}</h1>
+            <p style="color: #64748b; margin: 0; font-size: 16px;">${isPro ? 'Has desbloqueado el arsenal completo.' : 'Tu futuro en Inteligencia Artificial comienza aquí.'}</p>
         </div>
         
         <div style="padding: 40px 30px;">
@@ -1457,8 +1466,10 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
             </p>
             
             <p style="font-size: 16px; color: #555; line-height: 1.7; margin-bottom: 25px;">
-                Es un gusto saludarte. Ya confirmamos tu inscripción al <strong>${courseName}</strong>. 
-                A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarán tu productividad.
+                ${isPro
+                                        ? `¡Excelente decisión! Ya confirmamos tu inscripción al <strong>${emailCourseName}</strong>. Has dado el paso extra para diferenciarte visual y estratégicamente.`
+                                        : `Es un gusto saludarte. Ya confirmamos tu inscripción al <strong>${emailCourseName}</strong>. A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarán tu productividad.`
+                                    }
             </p>
             
             <div style="background: #f0fdfa; border-left: 4px solid #14b8a6; padding: 15px 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0;">
@@ -1497,39 +1508,35 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
             <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">📦 Lo que recibes hoy:</h3>
 
             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
-                            <span style="color: #64748b; font-size: 14px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini. <a href="https://aulagenia.web.app/maestro-prompts-app.html" style="color: #0d9488;">Accede aquí</a></span>
-                        </td>
-                    </tr>
-                </table>
+                 <strong style="color: #1e293b; display: block; margin-bottom: 4px;">✅ +100 Instrucciones Maestras</strong>
+                 <span style="color: #64748b; font-size: 14px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini. <a href="https://aulagenia.web.app/maestro-prompts-app.html" style="color: #0d9488; font-weight: 600;">Acceder a App de Prompts</a></span>
+            </div>
+
+            ${isPro ? `
+            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                <strong style="color: #1e293b; display: block; margin-bottom: 4px;">✅ Masterclass LinkedIn Pro</strong>
+                <span style="color: #64748b; font-size: 14px;">Tu perfil en modo automático. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488; font-weight: 600;">Disponible aquí desde el 15 de enero</a></span>
             </div>
 
             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🚀</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Ahorro de Tiempo</strong>
-                            <span style="color: #64748b; font-size: 14px;">Recupera hasta 10 horas de tu semana automatizando tareas repetitivas. <a href="https://aulagenia.web.app/maestro-prompts-app.html" style="color: #0d9488;">Accede aquí</a></span>
-                        </td>
-                    </tr>
-                </table>
+                <strong style="color: #1e293b; display: block; margin-bottom: 4px;">✅ Taller Visual</strong>
+                <span style="color: #64748b; font-size: 14px;">Dominando Canva, Google Nano Banana y Veo3. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488; font-weight: 600;">Disponible aquí desde el 15 de enero</a></span>
             </div>
 
+             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                <strong style="color: #1e293b; display: block; margin-bottom: 4px;">✅ Guía de Consulta Rápida</strong>
+                <span style="color: #64748b; font-size: 14px;">El Manual de escritorio. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488; font-weight: 600;">Disponible aquí desde el 15 de enero</a></span>
+            </div>
+            ` : `
+            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                <strong style="color: #1e293b; display: block; margin-bottom: 4px;">🚀 Ahorro de Tiempo</strong>
+                <span style="color: #64748b; font-size: 14px;">Recupera hasta 10 horas de tu semana automatizando tareas repetitivas. <a href="https://aulagenia.web.app/maestro-prompts-app.html" style="color: #0d9488; font-weight: 600;">Accede aquí</a></span>
+            </div>
+            `}
+
             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 30px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">💎</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Licencia Permanente de Arquitecto</strong>
-                            <span style="color: #64748b; font-size: 14px;">Tu entrada a la plataforma y todas sus actualizaciones futuras, sin suscripciones.</span>
-                        </td>
-                    </tr>
-                </table>
+                <strong style="color: #1e293b; display: block; margin-bottom: 4px;">💎 Licencia Permanente de Arquitecto</strong>
+                <span style="color: #64748b; font-size: 14px;">Tu entrada a la plataforma y todas sus actualizaciones futuras, sin suscripciones.</span>
             </div>
 
             <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
@@ -1543,7 +1550,22 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
         </div>
     </div>
 </body>
-</html>`
+</html>`,
+                                TextPart: `¡Hola ${buyerName}! Bienvenido/a a la élite de la IA.
+
+Tu inscripción al ${emailCourseName} está confirmada.
+
+🔑 TUS CREDENCIALES:
+Portal: https://aulagenia.cl/acceso.html
+Usuario: ${userEmail}
+Contraseña: Crea tu contraseña aquí: https://aulagenia.web.app/acceso.html
+
+📦 LO QUE RECIBES:
+- +100 Instrucciones Maestras para ChatGPT, Claude y Gemini
+${isPro ? '- Masterclass LinkedIn Pro\n- Taller Visual\n- Guía de Consulta Rápida' : '- Ecosistema de Automatización'}
+- Acceso Vitalicio
+
+¿Dudas? Escríbenos a hola@aulagenia.cl`
                             }]
                         });
                         console.log('✅ Email de bienvenida enviado a:', userEmail);
