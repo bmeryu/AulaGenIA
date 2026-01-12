@@ -876,7 +876,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                             );
 
                             const courseName = courseId === 'ia-aplicada-starter'
-                                ? 'Kit Starter: +100 Master Prompts'
+                                ? 'Pack Starter: +100 Master Prompts'
                                 : 'Curso IA Aplicada Esencial';
 
                             await mailjet.post('send', { version: 'v3.1' }).request({
@@ -918,7 +918,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
             </p>
             
             <p style="font-size: 16px; color: #555; line-height: 1.7; margin-bottom: 25px;">
-                Es un gusto saludarte. Ya confirmamos tu inscripción al <strong>Kit Starter + Fórmulas Maestras</strong>. 
+                Es un gusto saludarte. Ya confirmamos tu inscripción al <strong>Pack Starter + Fórmulas Maestras</strong>. 
                 A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarán tu productividad.
             </p>
             
@@ -1000,7 +1000,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                                     `,
                                     TextPart: `¡Hola ${buyerName}! Bienvenido/a a la élite de la IA.
 
-Tu inscripción al Kit Starter + Fórmulas Maestras está confirmada.
+Tu inscripción al Pack Starter + Fórmulas Maestras está confirmada.
 
 🔑 TUS CREDENCIALES:
 Portal: https://aulagenia.cl/acceso.html
@@ -1408,7 +1408,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
 
                         // Mapear nombre del curso
                         const courseName = courseId === 'ia-aplicada-starter'
-                            ? 'Kit Starter: +100 Master Prompts'
+                            ? 'Pack Starter: +100 Master Prompts'
                             : 'Curso IA Aplicada Esencial';
 
                         // En Flow el nombre del usuario no siempre viene claro
