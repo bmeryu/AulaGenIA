@@ -1447,7 +1447,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
         
         <div style="padding: 40px 30px;">
             <p style="font-size: 18px; color: #333; margin-bottom: 20px;">
-                Hola <strong style="color: #0d9488;">${userEmail}</strong>,
+                Hola <strong style="color: #0d9488;">${buyerName}</strong>,
             </p>
             
             <p style="font-size: 16px; color: #555; line-height: 1.7; margin-bottom: 25px;">
@@ -1475,11 +1475,60 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                             <p style="color: #1e293b; margin: 0; font-size: 16px; font-weight: 600;">${userEmail}</p>
                         </td>
                     </tr>
+                    <tr>
+                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔐 Tu Contraseña</p>
+                            <p style="color: #555; margin: 0; font-size: 14px;">Haz clic en el botón verde de abajo para crearla</p>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="text-align: center; margin-top: 25px;">
+                     <a href="https://aulagenia.cl/acceso.html" style="background-color: #0d9488; color: white; padding: 16px 32px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);">🔐 Crear mi Contraseña y Acceder</a>
+                </div>
+            </div>
+
+            <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">📦 Lo que recibes hoy:</h3>
+
+            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
+                        <td>
+                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
+                            <span style="color: #64748b; font-size: 14px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini. <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488;">Accede aquí</a></span>
+                        </td>
+                    </tr>
                 </table>
             </div>
-            
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="https://aulagenia.cl/campus.html" style="background-color: #14b8a6; color: white; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4); display: inline-block;">Acceder al Campus Ahora &rarr;</a>
+
+            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🚀</span></td>
+                        <td>
+                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Ahorro de Tiempo</strong>
+                            <span style="color: #64748b; font-size: 14px;">Recupera hasta 10 horas de tu semana automatizando tareas repetitivas. <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488;">Accede aquí</a></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">💎</span></td>
+                        <td>
+                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Licencia Permanente de Arquitecto</strong>
+                            <span style="color: #64748b; font-size: 14px;">Tu entrada a la plataforma y todas sus actualizaciones futuras, sin suscripciones.</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 5px;">¿Tienes dudas? Escríbenos a <a href="mailto:hola@aulagenia.cl" style="color: #0d9488; text-decoration: none;">hola@aulagenia.cl</a></p>
+                <p style="color: #0d9488; font-weight: 600; font-size: 14px;">¡Y recuerda: en Aula GenIA, la IA no es el futuro... TÚ lo eres!</p>
             </div>
         </div>
         
@@ -1569,30 +1618,4 @@ exports.onUserCreated = functions.auth.user().onCreate(async (user) => {
     }
 });
 
-// ============================================
-// 8. Manual Fix for bmeryu (Temporary HTTP Function)
-// ============================================
-exports.fixBmeryu = onRequest(async (req, res) => {
-    try {
-        const email = 'bmeryu@gmail.com';
-        console.log(`🔧 Attempting manual fix for: ${email}`);
 
-        const userRecord = await admin.auth().getUserByEmail(email);
-        console.log(`👤 Found UID: ${userRecord.uid}`);
-
-        await admin.firestore().collection('users').doc(userRecord.uid).set({
-            enrollments: {
-                'ia-aplicada-starter': true,
-                'ia-aplicada-esencial': true // Granting essentials just in case as validation
-            },
-            email: email,
-            manualFix: true,
-            fixedAt: admin.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
-        res.status(200).send(`✅ FIXED: Granted access to ${email} (UID: ${userRecord.uid})`);
-    } catch (e) {
-        console.error('❌ Error in fixBmeryu:', e);
-        res.status(500).send('Error: ' + e.toString());
-    }
-});
