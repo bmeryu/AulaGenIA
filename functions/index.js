@@ -1291,7 +1291,7 @@ exports.createFlowPayment = onCall(
     }
 );
 
-exports.flowWebhook = onRequest(async (req, res) => {
+exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, async (req, res) => {
     try {
         console.log('🔔 Flow Webhook (Body):', req.body);
         const token = req.body.token;
