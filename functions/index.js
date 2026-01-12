@@ -1411,8 +1411,14 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                             ? 'Pack Starter: +100 Master Prompts'
                             : 'Curso IA Aplicada Esencial';
 
-                        // En Flow el nombre del usuario no siempre viene claro
-                        const buyerName = 'Estudiante Aula GenIA';
+                        // Intentar obtener el nombre real del usuario
+                        let buyerName = 'Estudiante Aula GenIA';
+                        try {
+                            const userRecord = await admin.auth().getUserByEmail(userEmail);
+                            if (userRecord.displayName) buyerName = userRecord.displayName;
+                        } catch (e) {
+                            console.log('No se pudo obtener nombre para el email, usando default.');
+                        }
 
                         await mailjet.post('send', { version: 'v3.1' }).request({
                             Messages: [{
