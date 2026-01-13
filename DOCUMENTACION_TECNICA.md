@@ -123,3 +123,31 @@ La plantilla de correo (en `functions/index.js`) fue actualizada para unificar t
 2.  **Redirección Post-Pago:** Se actualizó `createFlowPayment` para que el `urlReturn` dirija a la página de éxito en el dominio `web.app`, cerrando el ciclo de compra correctamente.
 3.  **Robustez:** Se protegieron las llamadas a Analytics/Pixel en `landing-nuevo.html` con bloques `try-catch` para evitar que bloqueadores de anuncios rompan el flujo de pago.
 
+
+## 8. Optimización de Landing Page & Pricing (Enero 2026 - Sprint 2)
+
+Se implementaron mejoras críticas en la estrategia de precios y diseño de conversión en `landing-nuevo.html`.
+
+### 8.1. Estrategia de Precios Dinámicos (Anchoring)
+Se reestructuró la visualización de precios para maximizar la percepción de valor:
+- **Pack Starter:** Precio ancla de `~~$29.900~~` tachado (gris, estilizado) junto al precio final de `$8.900`.
+- **Order Bump (Pack Pro):** Precio ancla dinámico de `~~$45.000~~` que se activa visualmente al seleccionar el upgrade.
+- **Implementación:** Lógica JS en `toggleBump()` que actualiza en tiempo real los elementos `#breakdown-ref-price` y `#breakdown-total-price`.
+
+### 8.2. Rediseño del Order Bump
+Se transformó el bloque de "Upgrade" para aumentar el AOV (Average Order Value):
+- **Estética:** Se eliminó el texto rojo alarmista. Se usa ahora un **Badge "¡OFERTA ÚNICA!"** con fondo `teal-800` y borde amarillo sutil.
+- **Copy:** Título actualizado a "Convierte tu Kit en PRO (Acceso Vitalicio)".
+- **Lista de Valor:** Se detallan explícitamente los entregables: LinkedIn Pro, Taller Visual IA y Guía Rápida.
+
+### 8.3. Refuerzo de Confianza (Trust Elements)
+Correcciones de UX para reducir la fricción en el checkout:
+1.  **Logos de Pago (Transbank/Webpay):**
+    - **Problema:** Los logos desaparecían o se superponían al estar fuera del contenedor principal.
+    - **Solución:** Se integró el bloque SVG de logos **DENTRO** del formulario de pago (`inline-checkout-form`). Esto garantiza que sean parte del flujo visual crítico y siempre visibles.
+    - **Diseño:** Se replica el estilo de botón oficial de Transbank (Azul degradado + Webpay Amarillo).
+2.  **Sello de Garantía:** Se añadió un badge de "Garantía 7 Días de Satisfacción" con icono de escudo, ubicado visiblemente bajo el precio final.
+
+### 8.4. UX y Compacidad
+- Se compactó el diseño de la tarjeta "Pack Starter" eliminando títulos redundantes ("El Acelerador") y reduciendo márgenes/padding para que la oferta sea visible "Above the Fold" en más dispositivos.
+

@@ -352,6 +352,34 @@
                             if (flowEmailDisplay) flowEmailDisplay.textContent = emailFromUrl;
 
                             console.log('✅ Email pre-llenado desde Flow:', emailFromUrl);
+
+                            // Check for Order ID
+                            const orderIdFromUrl = urlParams.get('orderId');
+                            if (orderIdFromUrl) console.log('📦 Order ID:', orderIdFromUrl);
+
+                            // TRACKING: Disparar evento de Compra SOLO si viene de Flow y no se ha disparado antes en esta sesión
+                            // Usamos OrderID si existe para mayor precisión, sino Email
+                            const uniqueKey = orderIdFromUrl ? ('purchase_' + orderIdFromUrl) : ('purchase_tracked_' + emailFromUrl);
+
+                            if (typeof fbq !== 'undefined' && !sessionStorage.getItem(uniqueKey)) {
+                                const eventData = {
+                                    value: 8900,
+                                    currency: 'CLP',
+                                    content_name: 'Flow Payment Return'
+                                };
+                                // Agregar Order ID si existe (Mejor práctica Meta)
+                                if (orderIdFromUrl) {
+                                    eventData.order_id = orderIdFromUrl;
+                                }
+
+                                fbq('track', 'Purchase', eventData);
+
+                                // Marcar como trackeado para evitar duplicados al refrescar
+                                sessionStorage.setItem(uniqueKey, 'true');
+                                console.log('💸 Pixel Purchase disparado (Origen: Flow, ID: ' + (orderIdFromUrl || 'Email') + ')');
+                            } else if (sessionStorage.getItem(uniqueKey)) {
+                                console.log('⚠️ Pixel Purchase omitido: Ya registrado en esta sesión (' + uniqueKey + ').');
+                            }
                         }
                         // If saved method is password, show login tab
                         else if (savedMethod === 'password') {

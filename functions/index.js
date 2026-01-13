@@ -1154,10 +1154,10 @@ exports.checkPendingHotmartPurchase = onCall(
 // SYSTEMA DE PAGOS FLOW (CHILE) - INTEGRACIÓN SANDBOX
 // =======================================================================================
 
-// Credenciales (SANDBOX) - TODO: Mover a Secret Manager en producción
-const FLOW_API_KEY = "1F31D9A0-28D7-4EA6-80F3-4E87LF908EE0";
-const FLOW_SECRET_KEY = "49e7033c82fb239c10ea111192b6c069b1231faf";
-const FLOW_API_URL = "https://sandbox.flow.cl/api";
+// Credenciales (PRODUCCIÓN)
+const FLOW_API_KEY = "1F52067F-EE87-492E-A1D9-4775L8BE40B4";
+const FLOW_SECRET_KEY = "ad4a0c0622988212d305d04ac5068d0e9042a11a";
+const FLOW_API_URL = "https://www.flow.cl/api";
 
 // Helper para firmar parámetros (HMAC SHA256)
 const crypto = require('crypto');
@@ -1213,7 +1213,7 @@ exports.createFlowPayment = onCall(
             email: userEmail,
             paymentMethod: 9, // 9 = Webpay / Todos
             urlConfirmation: 'https://flowwebhook-3kbbtamy5q-uc.a.run.app',
-            urlReturn: `https://aulagenia.web.app/acceso.html?email=${encodeURIComponent(userEmail)}`,
+            urlReturn: `https://aulagenia.web.app/acceso.html?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}`,
         };
 
         // 4. Firmar
@@ -1243,7 +1243,7 @@ exports.createFlowPayment = onCall(
                 userId: request.auth ? request.auth.uid : null, // Opcional si no hay auth
                 leadId: request.data.leadId || null, // ID del lead si viene del formulario
                 createdAt: admin.firestore.FieldValue.serverTimestamp(),
-                paymentMethod: 'FLOW_CLP_SANDBOX'
+                paymentMethod: 'FLOW_CLP_PROD'
             });
 
             // Log params for debugging (excluding secret logic which is handled)
@@ -1428,212 +1428,178 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                         let buyerName = 'Estudiante Aula GenIA';
                         try {
                             const userRecord = await admin.auth().getUserByEmail(userEmail);
-                            if (userRecord.displayName) buyerName = userRecord.displayName;
+                            if (userRecord.displayName && !userRecord.displayName.includes('@')) buyerName = userRecord.displayName;
                         } catch (e) {
                             console.log('No se pudo obtener nombre para el email, usando default.');
                         }
 
-                        // HTML DEL CONTENIDO (Diferente para PRO vs Starter)
-                        let featuresHtml = '';
+                        // HTML DEL CONTENIDO - Replicando estilo Teal/Mint original
 
+                        const itemRuta = `
+                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🗺️</span></td>
+                                        <td>
+                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de Transformación: Fases 1-4</strong>
+                                            <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488;">Ingresa al Campus aquí</a></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>`;
+
+                        const itemPrompts = `
+                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
+                                        <td>
+                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
+                                            <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini.</div>
+                                            <div style="font-size: 13px;">
+                                                <a href="https://aulagenia.web.app/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a la Herramienta</a><br>
+                                                <a href="https://aulagenia.web.app/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>`;
+
+                        const itemBonusPRO = `
+                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">💼</span></td>
+                                        <td>
+                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Masterclass LinkedIn Pro</strong>
+                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">👁️</span></td>
+                                        <td>
+                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Taller Visual: Piensa en Imágenes</strong>
+                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">📘</span></td>
+                                        <td>
+                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Guía de Consulta Rápida</strong>
+                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">💎</span></td>
+                                        <td>
+                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Licencia Permanente de Arquitecto</strong>
+                                            <span style="color: #64748b; font-size: 14px;">Tu entrada a la plataforma y todas sus actualizaciones futuras, sin suscripciones.</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>`;
+
+                        let featuresHtml = itemRuta + itemPrompts;
                         if (isPro) {
-                            // HTML PARA PACK PRO
-                            featuresHtml = `
-            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
-                            <span style="color: #64748b; font-size: 14px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini. <a href="${appPromptsUrl}" style="color: #0d9488;">Acceder a la App</a></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Masterclass LinkedIn Pro</strong>
-                            <span style="color: #64748b; font-size: 14px;">Tu perfil en modo automático. <a href="${campusUrl}" style="color: #0d9488;">Disponible aquí desde el 15 de enero</a></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Taller Visual</strong>
-                            <span style="color: #64748b; font-size: 14px;">Dominando Canva, Google Nano Banana y Veo3. <a href="${campusUrl}" style="color: #0d9488;">Disponible aquí desde el 15 de enero</a></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Guía de Consulta Rápida</strong>
-                            <span style="color: #64748b; font-size: 14px;">El Manual de escritorio para no volver a fallar. <a href="${campusUrl}" style="color: #0d9488;">Disponible aquí desde el 15 de enero</a></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🚀</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Ahorro de Tiempo</strong>
-                            <span style="color: #64748b; font-size: 14px;">Recupera hasta 10 horas de tu semana automatizando tareas repetitivas.</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>`;
-                        } else {
-                            // HTML PARA PACK STARTER STANDARD
-                            featuresHtml = `
-            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
-                            <span style="color: #64748b; font-size: 14px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini. <a href="${appPromptsUrl}" style="color: #0d9488;">Accede aquí</a></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🚀</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Ahorro de Tiempo</strong>
-                            <span style="color: #64748b; font-size: 14px;">Recupera hasta 10 horas de tu semana automatizando tareas repetitivas. <a href="${appPromptsUrl}" style="color: #0d9488;">Accede aquí</a></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>`;
+                            featuresHtml += itemBonusPRO;
                         }
 
-                        // Agregar footer común de Licencia
-                        featuresHtml += `
-            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 30px;">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">💎</span></td>
-                        <td>
-                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Licencia Permanente de Arquitecto</strong>
-                            <span style="color: #64748b; font-size: 14px;">Tu entrada a la plataforma y todas sus actualizaciones futuras, sin suscripciones.</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>`;
+                        // ENVIAR EL CORREO
+                        const request = await mailjet
+                            .post("send", { 'version': 'v3.1' })
+                            .request({
+                                "Messages": [{
+                                    "From": { "Email": "contacto@aulagenia.cl", "Name": "Aula GenIA" },
+                                    "To": [{ "Email": userEmail, "Name": buyerName }],
+                                    "Bcc": [{ "Email": "benjamery@gmail.com", "Name": "Admin" }, { "Email": "hola@aulagenia.cl", "Name": "Hola Aula GenIA" }],
+                                    "Subject": subjectLine,
+                                    "HTMLPart": `
+                                <!DOCTYPE html>
+                                <html>
+                                <head>
+                                <meta charset="utf-8">
+                                </head>
+                                <body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                                 <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: 40px; margin-bottom: 40px;">
+                                    <!-- Header -->
+                                    <div style="background: white; padding: 40px 0; text-align: center; border-bottom: 4px solid #0d9488;">
+                                        <h1 style="color: #1e293b; margin: 0; font-size: 24px; font-weight: 800;">¡Tu Acceso está listo!</h1>
+                                        <p style="color: #64748b; margin: 10px 0 0 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquí.</p>
+                                    </div>
 
-                        await mailjet.post('send', { version: 'v3.1' }).request({
-                            Messages: [{
-                                From: {
-                                    Email: 'hola@aulagenia.cl',
-                                    Name: 'Aula GenIA'
-                                },
-                                To: [{
-                                    Email: userEmail,
-                                    Name: buyerName
-                                }],
-                                Bcc: [{
-                                    Email: 'hola@aulagenia.cl',
-                                    Name: 'Aula GenIA Admin'
-                                }],
-                                Subject: subjectLine,
-                                HTMLPart: `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5;">
-    <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-        
-        <div style="background: #ffffff; padding: 40px 30px 30px; text-align: center; border-bottom: 3px solid #14b8a6;">
-            <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 150px; margin-bottom: 15px; display: inline-block;">
-            <h1 style="color: #1e293b; margin: 15px 0 8px 0; font-size: 26px; font-weight: 700;">¡Tu Acceso está listo!</h1>
-            <p style="color: #64748b; margin: 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquí.</p>
-        </div>
-        
-        <div style="padding: 40px 30px;">
-            <p style="font-size: 18px; color: #333; margin-bottom: 20px;">
-                Hola <strong style="color: #0d9488;">${buyerName}</strong>,
-            </p>
-            
-            <p style="font-size: 16px; color: #555; line-height: 1.7; margin-bottom: 25px;">
-                Es un gusto saludarte. Ya confirmamos tu inscripción al <strong>${courseName}</strong>. 
-                A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarán tu productividad.
-            </p>
-            
-            <div style="background: #f0fdfa; border-left: 4px solid #14b8a6; padding: 15px 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0;">
-                <p style="margin: 0; color: #0d9488; font-weight: 600;">✨ Tu acceso a la Bóveda de Recursos ya ha sido sincronizado.</p>
-            </div>
-            
-            <div style="background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); border-radius: 16px; padding: 30px; margin-bottom: 30px; border: 2px solid #99f6e4;">
-                <h2 style="color: #0d9488; margin: 0 0 25px 0; font-size: 20px; text-align: center;">🔑 Tus Credenciales de Acceso</h2>
-                
-                <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
-                    <tr>
-                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">📍 Portal de Acceso</p>
-                            <a href="${portalUrl}" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.web.app/acceso</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">👤 Tu Usuario</p>
-                            <p style="color: #1e293b; margin: 0; font-size: 16px; font-weight: 600;">${userEmail}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔐 Tu Contraseña</p>
-                            <p style="color: #555; margin: 0; font-size: 14px;">Haz clic en el botón verde de abajo para crearla</p>
-                        </td>
-                    </tr>
-                </table>
+                                    <div style="padding: 40px;">
+                                        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hola <strong style="color: #0d9488;">${buyerName}</strong>,</p>
+                                        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Es un gusto saludarte. Ya confirmamos tu inscripción al <strong style="color: #1e293b;">${courseName}</strong>. 
+                                        ${isPro ? 'A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarán tu productividad.' : ''}
+                                        </p>
 
-                <div style="text-align: center; margin-top: 25px;">
-                     <a href="${portalUrl}" style="background-color: #0d9488; color: white; padding: 16px 32px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);">🔐 Crear mi Contraseña y Acceder</a>
-                </div>
-            </div>
+                                        <!-- Highlight Box -->
+                                        <div style="background: #f0fdf4; border-left: 4px solid #4ade80; padding: 15px; margin: 25px 0; border-radius: 4px;">
+                                            <p style="margin: 0; color: #15803d; font-size: 14px; font-weight: 600;">✨ Tu acceso a la Bóveda de Recursos ya ha sido sincronizado.</p>
+                                        </div>
 
-            <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">📦 Lo que recibes hoy:</h3>
+                                        <!-- Credentials Card -->
+                                        <div style="background: #ccfbf1; border-radius: 16px; padding: 25px; margin: 30px 0; border: 1px solid #99f6e4;">
+                                            <h2 style="text-align: center; color: #0f766e; font-size: 18px; margin-top: 0; margin-bottom: 25px;">🔑 Tus Credenciales de Acceso</h2>
+                                            <!-- Details Table -->
+                                            <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
+                                                <tr>
+                                                    <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                                        <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">📍 Portal de Acceso</p>
+                                                        <a href="https://aulagenia.web.app/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.web.app/acceso</a>
+                                                    </td>
+                                                </tr>
+                                                 <tr>
+                                                    <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                                        <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">👤 Tu Usuario</p>
+                                                        <p style="color: #1e293b; margin: 0; font-size: 16px; font-weight: 600;">${userEmail}</p>
+                                                    </td>
+                                                </tr>
+                                                 <tr>
+                                                    <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                                       <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔐 Tu Contraseña</p>
+                                                        <p style="color: #555; margin: 0; font-size: 14px;">Haz clic en el botón verde de abajo para crearla</p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                             <div style="text-align: center; margin-top: 25px;">
+                                                  <a href="https://aulagenia.web.app/acceso.html" style="background-color: #0d9488; color: white; padding: 16px 32px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);">🔐 Crear mi Contraseña y Acceder</a>
+                                             </div>
+                                        </div>
 
-            ${featuresHtml}
+                                        <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">📦 Lo que recibes hoy:</h3>
 
-            <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 5px;">¿Tienes dudas? Escríbenos a <a href="mailto:hola@aulagenia.cl" style="color: #0d9488; text-decoration: none;">hola@aulagenia.cl</a></p>
-                <p style="color: #0d9488; font-weight: 600; font-size: 14px;">¡Y recuerda: en Aula GenIA, la IA no es el futuro... TÚ lo eres!</p>
-            </div>
-        </div>
-        
-        <div style="background: #f8fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-            <p style="color: #94a3b8; font-size: 13px; margin: 0;">© 2026 Aula GenIA. Todos los derechos reservados.</p>
-        </div>
-    </div>
-</body>
-</html>`
-                            }]
-                        });
+                                        ${featuresHtml}
+
+                                        <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                                            <p style="color: #94a3b8; font-size: 14px; margin-bottom: 5px;">¿Tienes dudas? Escríbenos a <a href="mailto:hola@aulagenia.cl" style="color: #0d9488; text-decoration: none;">hola@aulagenia.cl</a></p>
+                                            <p style="color: #0d9488; font-weight: 600; font-size: 14px;">¡Y recuerda: en Aula GenIA, la IA no es el futuro... TÚ lo eres!</p>
+                                        </div>
+
+                                    </div>
+                                    <!-- Footer -->
+                                    <div style="background: #f8fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+                                        <p style="color: #94a3b8; font-size: 13px; margin: 0;">© 2026 Aula GenIA. Todos los derechos reservados.</p>
+                                    </div>
+                                 </div>
+                                </body>
+                                </html>`
+                                }]
+                            });
+
                         console.log('✅ Email de bienvenida enviado a:', userEmail);
-
                     } catch (mailError) {
                         console.error('❌ Error enviando email de bienvenida:', mailError);
                     }
@@ -1702,7 +1668,7 @@ exports.onUserCreated = functions.auth.user().onCreate(async (user) => {
 
             // Ejecutar batch de ventas
             await batch.commit();
-            console.log(`✅ Auto-enrolled user ${email} from sales collection.`);
+            console.log(`✅ Auto - enrolled user ${email} from sales collection.`);
         }
 
     } catch (error) {
