@@ -1298,16 +1298,18 @@ exports.createFlowPayment = onCall(
         const includeBump = request.data.includeBump || false;
         const hiddenCoupon = request.data.hiddenCoupon || false;
 
+        console.log('🔍 Payment Params:', { includeBump, hiddenCoupon, email: userEmail });
+
         // Config: Precios y Descripciones
         let amount = 8900;
         let subject = 'Pack Starter: IA Aplicada';
 
         if (hiddenCoupon) {
             amount = 1000;
-            subject = 'Pack Starter: IA Aplicada (TEST)';
+            subject = 'Pack Starter TEST'; // Removed parens just in case
         } else if (includeBump) {
             amount = 14900; // 8900 + 6000
-            subject = 'Pack Starter + Masterclass Imágenes';
+            subject = 'Pack Starter + Masterclass';
         }
 
         // 3. Parámetros Flow
