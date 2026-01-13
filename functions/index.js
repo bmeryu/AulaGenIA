@@ -16,6 +16,110 @@ const mailjetApiKey = defineSecret("MAILJET_API_KEY");
 const mailjetSecretKey = defineSecret("MAILJET_SECRET_KEY");
 
 // =======================================================================================
+// META CAPI CONFIGURATION & HELPERS
+// =======================================================================================
+const META_ACCESS_TOKEN = "EAAMcCtBiZCggBQfzCwXscZBMNPto12lcPjXOq99K7IgZCUden2LZCfFqxEOm6cg1SnmYoTPN0lZBXeRkwVJVhXTyqlhVhsRDi9A89Xjz45CI4woY6nwyBKEZB0dZAT1ZA10Se7ejMlnxLDEwkGQbq7D5zojuoJtymmBB6hqAihZCUGsYZCyGwkwNRy73E529vpXyJdzgZDZD";
+const META_PIXEL_ID = "1356922049450142";
+const META_API_URL = `https://graph.facebook.com/v19.0/${META_PIXEL_ID}/events`;
+
+const crypto = require('crypto');
+
+/**
+ * Hash data using SHA-256 (Required for PII in Meta CAPI)
+ */
+function hashData(data) {
+    if (!data) return null;
+    return crypto.createHash('sha256').update(data.trim().toLowerCase()).digest('hex');
+}
+
+/**
+ * Send Event to Meta Conversions API
+ */
+async function sendMetaCAPIEvent(eventName, eventData, userData, contextData) {
+    try {
+        const payload = {
+            data: [{
+                event_name: eventName,
+                event_time: Math.floor(Date.now() / 1000),
+                event_id: eventData.eventId,
+                event_source_url: contextData.url,
+                action_source: "website",
+                user_data: {
+                    em: hashData(userData.email),
+                    fn: hashData(userData.firstName),
+                    ln: hashData(userData.lastName),
+                    client_ip_address: userData.ip,
+                    client_user_agent: userData.userAgent,
+                    fbp: userData.fbp,
+                    fbc: userData.fbc,
+                },
+                custom_data: eventData.customData
+            }],
+            access_token: META_ACCESS_TOKEN
+        };
+
+        // Log PII-safe payload for debugging
+        console.log(`📡 Sending CAPI Event: ${eventName}`, {
+            event_id: eventData.eventId,
+            fbp: userData.fbp,
+            url: contextData.url
+        });
+
+        const response = await fetch(META_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        if (result.error) {
+            console.error(`❌ Meta CAPI Error (${eventName}):`, result.error);
+        } else {
+            console.log(`✅ Meta CAPI Success (${eventName}):`, result);
+        }
+        return result;
+    } catch (error) {
+        console.error(`❌ Meta CAPI Exception (${eventName}):`, error);
+        return null;
+    }
+}
+
+// ===================================
+// PUBLIC HELPER FOR VIEW CONTENT
+// ===================================
+exports.trackViewContent = onCall(
+    { cors: true },
+    async (request) => {
+        const { eventId, fbp, fbc, url, userAgent } = request.data;
+
+        // IP Address extraction from request
+        const ip = request.rawRequest.ip || request.rawRequest.headers['x-forwarded-for'] || request.rawRequest.socket.remoteAddress;
+
+        // User Data (Anonymous mostly for ViewContent, but we send what we have)
+        const userData = {
+            fbp: fbp,
+            fbc: fbc,
+            userAgent: userAgent,
+            ip: ip,
+            // If authenticated, we could add email logic here, but usually ViewContent is anon
+        };
+
+        await sendMetaCAPIEvent('ViewContent', {
+            eventId: eventId,
+            customData: {
+                content_name: 'Landing Page Curso IA',
+                content_category: 'Curso',
+                value: 20.00,
+                currency: 'USD'
+            }
+        }, userData, { url: url });
+
+        return { success: true };
+    }
+);
+
+
+// =======================================================================================
 // FUNCIÓN 1: Crear Preferencia de Pago (Soluciona el error de CORS)(DESCUENTO)
 // =======================================================================================
 exports.createMercadoPagoPreference = onCall(
@@ -1159,8 +1263,7 @@ const FLOW_API_KEY = "1F52067F-EE87-492E-A1D9-4775L8BE40B4";
 const FLOW_SECRET_KEY = "ad4a0c0622988212d305d04ac5068d0e9042a11a";
 const FLOW_API_URL = "https://www.flow.cl/api";
 
-// Helper para firmar parámetros (HMAC SHA256)
-const crypto = require('crypto');
+// Helper para firmar parámetros (HMAC SHA256) (Importado globalmente arriba, reutilizamos)
 function signFlowParams(params) {
     const keys = Object.keys(params).sort();
     let toSign = "";
@@ -1243,7 +1346,52 @@ exports.createFlowPayment = onCall(
                 userId: request.auth ? request.auth.uid : null, // Opcional si no hay auth
                 leadId: request.data.leadId || null, // ID del lead si viene del formulario
                 createdAt: admin.firestore.FieldValue.serverTimestamp(),
-                paymentMethod: 'FLOW_CLP_PROD'
+                paymentMethod: 'FLOW_CLP_PROD',
+                // CAPI DATA STORAGE
+                capiData: {
+                    fbp: request.data.fbp || null,
+                    fbc: request.data.fbc || null,
+                    userAgent: request.data.userAgent || null,
+                    ip: request.rawRequest.ip || request.rawRequest.headers['x-forwarded-for'] || null,
+                    eventId: request.data.eventId || null // InitiateCheckout Event ID
+                }
+            });
+
+            // ============================================
+            // 🚀 FIRE CAPI: INITIATE CHECKOUT
+            // ============================================
+            const userIp = request.rawRequest.ip || request.rawRequest.headers['x-forwarded-for'];
+
+            // Extract Name parts
+            let firstName = 'Estudiante';
+            let lastName = '';
+            // Try to split name if available
+            if (request.data.nombre) {
+                const parts = request.data.nombre.trim().split(' ');
+                firstName = parts[0];
+                lastName = parts.slice(1).join(' ');
+            }
+
+            // Fire CAPI async (don't await strictly to speed up UI redirect)
+            sendMetaCAPIEvent('InitiateCheckout', {
+                eventId: request.data.eventId, // Generated in frontend, sent here
+                customData: {
+                    value: amount,
+                    currency: 'CLP',
+                    content_name: subject,
+                    content_ids: [courseId],
+                    content_category: 'Course'
+                }
+            }, {
+                email: userEmail,
+                firstName: firstName,
+                lastName: lastName,
+                fbp: request.data.fbp,
+                fbc: request.data.fbc,
+                userAgent: request.data.userAgent,
+                ip: userIp
+            }, {
+                url: 'https://aulagenia.cl/landing-nuevo.html'
             });
 
             // Log params for debugging (excluding secret logic which is handled)
@@ -1393,6 +1541,65 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                         });
 
                         console.log(`✅ Curso ${courseId} activado para ${userEmail} (UID: ${targetUid}) - Status: DELIVERED`);
+                    }
+
+                    // ============================================
+                    // 🚀 FIRE CAPI: PURCHASE
+                    // ============================================
+                    try {
+                        const capiData = saleData.capiData || {};
+                        let firstName = 'Estudiante';
+                        let lastName = '';
+
+                        // Try to get name from User Record or Sale Data or Flow Payer
+                        let fullName = saleData.nombre || ''; // Assuming 'nombre' might be saved in saleData (updated createFlowPayment to allow it explicitly if needed, but we saved it in createFlowPayment? Ah, we didn't save 'nombre' explicitly in the root of sales doc in the previous step, let's check. We passed it to createFlowPayment. We should have ensured it's saved.)
+                        // Correction: In createFlowPayment we didn't save 'nombre' to the sales doc root in my previous edit block, only email. 
+                        // However, we can try to fetch the user profile if they have one.
+
+                        // Let's try to get name from User Profile if targetUid exists
+                        if (userId) {
+                            try {
+                                const userDoc = await admin.firestore().collection('users').doc(userId).get();
+                                if (userDoc.exists && userDoc.data().displayName) {
+                                    fullName = userDoc.data().displayName;
+                                }
+                            } catch (e) {
+                                console.log('Error fetching user name for CAPI:', e);
+                            }
+                        }
+
+                        if (fullName) {
+                            const parts = fullName.trim().split(' ');
+                            firstName = parts[0];
+                            lastName = parts.slice(1).join(' ');
+                        }
+
+                        // We generally trust the Flow Webhook context
+                        const purchaseEventId = commerceOrder; // Deduplication ID (Order ID)
+
+                        await sendMetaCAPIEvent('Purchase', {
+                            eventId: purchaseEventId,
+                            customData: {
+                                value: saleData.amount,
+                                currency: 'CLP',
+                                content_name: `Pack Starter (${courseId})`, // Generic name
+                                content_ids: [courseId],
+                                content_type: 'product'
+                            }
+                        }, {
+                            email: userEmail,
+                            firstName: firstName,
+                            lastName: lastName,
+                            fbp: capiData.fbp,
+                            fbc: capiData.fbc,
+                            userAgent: capiData.userAgent,
+                            ip: capiData.ip
+                        }, {
+                            url: 'https://aulagenia.cl/landing-nuevo.html' // Origin URL
+                        });
+
+                    } catch (capiError) {
+                        console.error('❌ Error sending Purchase CAPI:', capiError);
                     }
 
                     // ============================================

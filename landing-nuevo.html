@@ -5,6 +5,24 @@
     <meta name="facebook-domain-verification" content="niivbyzi16r2yajamdpwk8sb66uo7f" />
     <!-- Meta Pixel Code -->
     <script>
+        // ✅ CAPI HELPERS: UUID & Cookie Reader
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        // Generate ViewContent ID for Deduplication
+        const VIEW_CONTENT_ID = generateUUID();
+        console.log('🆔 ViewContent Event ID:', VIEW_CONTENT_ID);
+
         !function (f, b, e, v, n, t, s) {
             if (f.fbq) return; n = f.fbq = function () {
                 n.callMethod ?
@@ -18,11 +36,39 @@
             'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '1356922049450142');
         fbq('track', 'PageView');
+
+        // Browser Pixel Track with EventID
         fbq('track', 'ViewContent', {
             content_name: 'Landing Page Curso IA',
             content_category: 'Curso',
             value: 20.00,
-            currency: 'USD'
+            currency: 'USD',
+            event_id: VIEW_CONTENT_ID
+        });
+
+        // Backend CAPI Track
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                try {
+                    const functions = firebase.functions();
+                    const trackViewContent = functions.httpsCallable('trackViewContent');
+
+                    const fbp = getCookie('_fbp');
+                    const fbc = getCookie('_fbc');
+                    const userAgent = navigator.userAgent;
+
+                    trackViewContent({
+                        eventId: VIEW_CONTENT_ID,
+                        fbp: fbp,
+                        fbc: fbc,
+                        userAgent: userAgent,
+                        url: window.location.href
+                    }).then(result => {
+                        console.log('📡 CAPI ViewContent Sent');
+                    }).catch(err => console.error('CAPI Error:', err));
+
+                } catch (e) { console.error('CAPI Setup Error:', e); }
+            }, 2000); // Wait for cookies/libraries
         });
     </script>
     <noscript><img height="1" width="1" style="display:none"
@@ -1723,16 +1769,24 @@
                     });
                 }
 
-                // Meta Pixel: Track InitiateCheckout
+                // Meta Pixel: Track InitiateCheckout with Deduplication
+                const initiateCheckoutId = generateUUID(); // Helper defined in head
+
+                // 1. Browser PC
                 if (typeof fbq !== 'undefined') {
                     fbq('track', 'InitiateCheckout', {
                         value: 9000, // CLP
                         currency: 'CLP',
                         content_name: 'Pack Starter (Flow)',
                         content_category: 'Course',
-                        content_ids: ['ia-aplicada-starter']
+                        content_ids: ['ia-aplicada-starter'],
+                        event_id: initiateCheckoutId
                     });
                 }
+
+                // Store ID for CAPI usage in the checkout form
+                window.currentInitiateCheckoutId = initiateCheckoutId;
+
             } catch (analyticsError) {
                 console.warn("Analytics error (non-blocking):", analyticsError);
             }
@@ -1860,7 +1914,12 @@
                     email: email,
                     nombre: nombre, // Pass nombre to the function
                     leadId: leadRef.id, // Pass lead ID
-                    includeBump: includeBump
+                    includeBump: includeBump,
+                    // CAPI Data
+                    fbp: getCookie('_fbp'),
+                    fbc: getCookie('_fbc'),
+                    userAgent: navigator.userAgent,
+                    eventId: window.currentInitiateCheckoutId || generateUUID() // Use generated ID or new one
                 });
 
                 if (result.data && result.data.url) { // Changed from redirectUrl to url based on original code
