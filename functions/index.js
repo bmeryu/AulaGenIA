@@ -1296,12 +1296,16 @@ exports.createFlowPayment = onCall(
         const randomSuffix = Math.random().toString(36).substring(2, 6);
         const commerceOrder = `start-${shortId}-${randomSuffix}`;
         const includeBump = request.data.includeBump || false;
+        const hiddenCoupon = request.data.hiddenCoupon || false;
 
         // Config: Precios y Descripciones
         let amount = 8900;
         let subject = 'Pack Starter: IA Aplicada';
 
-        if (includeBump) {
+        if (hiddenCoupon) {
+            amount = 1000;
+            subject = 'Pack Starter: IA Aplicada (TEST)';
+        } else if (includeBump) {
             amount = 14900; // 8900 + 6000
             subject = 'Pack Starter + Masterclass Imágenes';
         }
