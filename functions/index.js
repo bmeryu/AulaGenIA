@@ -1322,7 +1322,7 @@ exports.createFlowPayment = onCall(
             email: userEmail,
             paymentMethod: 9, // 9 = Webpay / Todos
             urlConfirmation: 'https://flowwebhook-3kbbtamy5q-uc.a.run.app',
-            urlReturn: `https://aulagenia.web.app/acceso.html?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}`,
+            urlReturn: `https://aulagenia.cl/acceso.html?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}`,
         };
 
         // 4. Firmar
@@ -1633,9 +1633,9 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                             : 'Bienvenido/a a Aula GenIA - Acceso Confirmado';
 
                         // Variables comunes
-                        const portalUrl = "https://aulagenia.web.app/acceso.html";
-                        const appPromptsUrl = "https://aulagenia.web.app/maestro-prompts-app.html";
-                        const campusUrl = "https://aulagenia.web.app/campus.html";
+                        const portalUrl = "https://aulagenia.cl/acceso.html";
+                        const appPromptsUrl = "https://aulagenia.cl/maestro-prompts-app.html";
+                        const campusUrl = "https://aulagenia.cl/campus.html";
 
                         // Intentar obtener el nombre real del usuario
                         let buyerName = 'Estudiante Aula GenIA';
@@ -1655,7 +1655,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                         <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🗺️</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de Transformación: Fases 1-4</strong>
-                                            <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488;">Ingresa al Campus aquí</a></span>
+                                            <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquí</a></span>
                                         </td>
                                     </tr>
                                 </table>
@@ -1670,8 +1670,8 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
                                             <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini.</div>
                                             <div style="font-size: 13px;">
-                                                <a href="https://aulagenia.web.app/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a la Herramienta</a><br>
-                                                <a href="https://aulagenia.web.app/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
+                                                <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a la Herramienta</a><br>
+                                                <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -1685,7 +1685,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                         <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">💼</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Masterclass LinkedIn Pro</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
+                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
                                         </td>
                                     </tr>
                                 </table>
@@ -1696,7 +1696,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                         <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">👁️</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Taller Visual: Piensa en Imágenes</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
+                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
                                         </td>
                                     </tr>
                                 </table>
@@ -1707,7 +1707,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                         <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">📘</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Guía de Consulta Rápida</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.web.app/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
+                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
                                         </td>
                                     </tr>
                                 </table>
@@ -1771,7 +1771,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                                 <tr>
                                                     <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
                                                         <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">📍 Portal de Acceso</p>
-                                                        <a href="https://aulagenia.web.app/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.web.app/acceso</a>
+                                                        <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.cl/acceso</a>
                                                     </td>
                                                 </tr>
                                                  <tr>
@@ -1788,7 +1788,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                                 </tr>
                                             </table>
                                              <div style="text-align: center; margin-top: 25px;">
-                                                  <a href="https://aulagenia.web.app/acceso.html" style="background-color: #0d9488; color: white; padding: 16px 32px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);">🔐 Crear mi Contraseña y Acceder</a>
+                                                  <a href="https://aulagenia.cl/acceso.html" style="background-color: #0d9488; color: white; padding: 16px 32px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);">🔐 Crear mi Contraseña y Acceder</a>
                                              </div>
                                         </div>
 
