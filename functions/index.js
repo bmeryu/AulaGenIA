@@ -1322,7 +1322,7 @@ exports.createFlowPayment = onCall(
             email: userEmail,
             paymentMethod: 9, // 9 = Webpay / Todos
             urlConfirmation: 'https://flowwebhook-3kbbtamy5q-uc.a.run.app',
-            urlReturn: `https://aulagenia.cl/acceso.html?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}`,
+            urlReturn: `https://aulagenia.cl/payment-return?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}`,
         };
 
         // 4. Firmar
@@ -1890,3 +1890,28 @@ exports.onUserCreated = functions.auth.user().onCreate(async (user) => {
 });
 
 
+
+// ============================================
+// 8. FLOW POST-TO-GET RETURN HANDLER
+// ============================================
+exports.flowReturnRedirect = onRequest(async (req, res) => {
+    try {
+        const query = req.query || {};
+
+        // We preserve query params (email, orderId) passed in the URL.
+        // We use 303 Redirect to force the browser to change method from POST to GET.
+
+        const targetUrl = new URL('https://aulagenia.cl/acceso.html');
+
+        Object.keys(query).forEach(key => {
+            targetUrl.searchParams.append(key, query[key]);
+        });
+
+        console.log(`🔀 Redirecting Flow POST to GET: ${targetUrl.toString()}`);
+        res.redirect(303, targetUrl.toString());
+
+    } catch (error) {
+        console.error('Error in flowReturnRedirect:', error);
+        res.redirect(303, 'https://aulagenia.cl/acceso.html'); // Fallback
+    }
+});
