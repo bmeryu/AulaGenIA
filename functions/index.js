@@ -1259,9 +1259,9 @@ exports.checkPendingHotmartPurchase = onCall(
 // =======================================================================================
 
 // Credenciales (PRODUCCIÓN)
-const FLOW_API_KEY = "1F52067F-EE87-492E-A1D9-4775L8BE40B4";
-const FLOW_SECRET_KEY = "ad4a0c0622988212d305d04ac5068d0e9042a11a";
-const FLOW_API_URL = "https://www.flow.cl/api";
+const FLOW_API_KEY = "1F31D9A0-28D7-4EA6-80F3-4E87LF908EE0";
+const FLOW_SECRET_KEY = "49e7033c82fb239c10ea111192b6c069b1231faf";
+const FLOW_API_URL = "https://sandbox.flow.cl/api";
 
 // Helper para firmar parámetros (HMAC SHA256) (Importado globalmente arriba, reutilizamos)
 function signFlowParams(params) {
