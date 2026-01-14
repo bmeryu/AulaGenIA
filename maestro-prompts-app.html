@@ -989,7 +989,7 @@
                                     <div id="detail-prompt-rendered" class="hidden"></div>
                                 </div>
                                 <div id="locked-teaser"
-                                    class="hidden absolute inset-0 z-20 flex items-center justify-center p-3 md:p-4 backdrop-blur-[2px] bg-white/60 transition-all duration-500 rounded-xl">
+                                    class="hidden relative z-0 flex items-center justify-center p-0 transition-all duration-500 rounded-xl">
                                     <div
                                         class="bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-xl px-5 py-6 md:px-8 md:py-10 rounded-2xl md:rounded-3xl border-2 border-gray-200 shadow-2xl max-w-md w-full text-center transform transition-all hover:scale-[1.01] animate-in fade-in zoom-in duration-300">
                                         <div
@@ -1337,7 +1337,23 @@
                             console.error("❌ Error verificando enrollment:", e)
                         }
                         isVaultUnlocked = l, isVaultUnlocked ? console.log("🔓 Desbloqueando vault (Usuario Premium)...") : console.log("🔒 Vault bloqueado (Usuario Freemium)..."), t && t.classList.add("hidden");
+
+                        // Toggle Prompt Content vs Teaser content
+                        const sectionsContainer = document.getElementById("agia-sections-container");
+                        const rawPromptContainer = document.getElementById("detail-prompt-rendered");
+
+                        if (l) {
+                            // UNLOCKED
+                            sectionsContainer && sectionsContainer.classList.remove("hidden");
+                            rawPromptContainer && rawPromptContainer.classList.remove("hidden");
+                        } else {
+                            // LOCKED: Hide actual content so container collapses
+                            sectionsContainer && sectionsContainer.classList.add("hidden");
+                            rawPromptContainer && rawPromptContainer.classList.add("hidden");
+                        }
+
                         const i = document.getElementById("locked-teaser");
+
                         i && (i.classList.add("hidden"), i.classList.remove("flex")), currentCaseId && n(currentCaseId);
                         const c = document.getElementById("unlock-btn");
                         c && (l ? c.classList.add("hidden") : (c.innerHTML = '<span class="material-symbols-rounded text-sm text-emerald-400">rocket_launch</span><span class="hidden sm:inline">Acceso Premium</span>', c.onclick = e => {
