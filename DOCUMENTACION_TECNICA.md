@@ -109,18 +109,18 @@ Se realizó una reingeniería visual completa bajo estándares de diseño "Senio
 Se realizaron correcciones críticas para estabilizar el flujo de onboarding, pago y acceso post-compra.
 
 ### 7.1. Estrategia de Dominios y Acceso
-Se estableció una distinción clara para evitar problemas de autenticación y redirección:
-*   **Acceso / Login / Campus:** `https://aulagenia.web.app/acceso.html` (Dominio técnico de Firebase para asegurar auth correcta).
+Se consolidó todo el tráfico en **`aulagenia.cl`** para evitar redirecciones y problemas de sesión.
+*   **Acceso / Login / Campus:** `https://aulagenia.cl/acceso.html`.
 *   **App de Herramientas (Pública/Marketing):** `https://aulagenia.cl/maestro-prompts-app.html`.
 
 ### 7.2. Correo de Bienvenida
-La plantilla de correo (en `functions/index.js`) fue actualizada para unificar todo el tráfico en el dominio seguro:
-*   El botón "Crear Contraseña" apunta a `aulagenia.web.app/acceso.html`.
-*   Los enlaces a la "App de Prompts" también redirigen a `aulagenia.web.app/maestro-prompts-app.html` para evitar confusiones de dominio/sesión.
+La plantilla de correo (en `functions/index.js`) fue actualizada para unificar todo el tráfico en el dominio principal:
+*   El botón "Crear Contraseña" apunta a `aulagenia.cl/acceso.html`.
+*   Los enlaces a la "App de Prompts" redirigen a `aulagenia.cl/maestro-prompts-app.html`.
 
 ### 7.3. Correcciones de Infraestructura
 1.  **CSP (Content Security Policy):** Se inyectó una política permisiva (`unsafe-inline`) en `firebase.json` para permitir la ejecución de scripts de terceros (Flow, Analytics) que bloqueaban el pago.
-2.  **Redirección Post-Pago:** Se actualizó `createFlowPayment` para que el `urlReturn` dirija a la página de éxito en el dominio `web.app`, cerrando el ciclo de compra correctamente.
+2.  **Redirección Post-Pago:** Se actualizó `createFlowPayment` para que el `urlReturn` dirija a la página de éxito en el dominio `aulagenia.cl`, cerrando el ciclo de compra correctamente.
 3.  **Robustez:** Se protegieron las llamadas a Analytics/Pixel en `landing-nuevo.html` con bloques `try-catch` para evitar que bloqueadores de anuncios rompan el flujo de pago.
 
 

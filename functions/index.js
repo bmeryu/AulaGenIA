@@ -1322,7 +1322,7 @@ exports.createFlowPayment = onCall(
             email: userEmail,
             paymentMethod: 9, // 9 = Webpay / Todos
             urlConfirmation: 'https://flowwebhook-3kbbtamy5q-uc.a.run.app',
-            urlReturn: `https://aulagenia.cl/payment-return?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}`,
+            urlReturn: `https://flowreturnredirect-3kbbtamy5q-uc.a.run.app?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}`,
         };
 
         // 4. Firmar
