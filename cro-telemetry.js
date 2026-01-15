@@ -7,12 +7,24 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("🚀 CRO Telemetry Loaded");
 
     // --- Helper: Safe GTAG ---
+    // Robust wrapper to ensure events are sent even if gtag is not fully defined yet
     const sendEvent = (eventName, params) => {
-        if (typeof gtag === 'function') {
-            gtag('event', eventName, params);
-            // console.log(`📡 Event Sent: ${eventName}`, params);
-        } else {
-            console.warn("⚠️ GTAG not found. Event dropped:", eventName);
+        try {
+            if (typeof gtag === 'function') {
+                gtag('event', eventName, params);
+                // console.log(`📡 Event Sent: ${eventName}`, params);
+            } else if (window.dataLayer) {
+                // Fallback: Push direct to dataLayer if gtag function is missing but GTM is there
+                window.dataLayer.push({
+                    'event': eventName,
+                    ...params
+                });
+                console.log(`📡 Event Pushed to DL: ${eventName}`, params);
+            } else {
+                console.warn("⚠️ GA4/GTM not found. Event dropped:", eventName);
+            }
+        } catch (e) {
+            console.error("Telemetry Error:", e);
         }
     };
 
@@ -36,10 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
         });
-    });
+    }, { passive: true }); // Optimized for performance
 
     // --- 2. Video Engagement (Hero Video) ---
-    const video = document.querySelector("#hero-video video");
+    const videoContainer = document.getElementById("hero-video");
+    const video = videoContainer ? videoContainer.querySelector("video") : null;
+
     if (video) {
         let videoStarted = false;
         let progress10 = false;
@@ -84,8 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 3. Form Interaction & Abandonment ---
-    const checkoutForm = document.getElementById("checkout-form");
+    // --- 3. Form Interaction & Abandonment (INLINE FORM) ---
+    // Targets the visible form: #inline-checkout-form
+    const checkoutForm = document.getElementById("inline-checkout-form");
+
     if (checkoutForm) {
         const emailInput = document.getElementById("inline-email");
         let formStarted = false;
@@ -110,9 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         }
-
-        // Detect abandonment (simple page unload check if form started but not submitted)
-        // Note: Tracking actual abandonment reliably is tricky, focus/start is a good proxy.
     }
 
     // --- 4. CTA Click Tracking ---
@@ -125,16 +138,15 @@ document.addEventListener("DOMContentLoaded", () => {
             sendEvent('click_cta_hero', { 'event_category': 'Conversion', 'event_label': 'Hero Section Button' });
         }
 
-        // Sticky/Nav CTA (if exists)
-        if (btn.classList.contains("sticky-cta")) { // Assuming a class for sticky
-            sendEvent('click_cta_sticky', { 'event_category': 'Conversion', 'event_label': 'Sticky Header Button' });
+        // Sticky CTA (Mobile)
+        if (btn.closest("#mobile-sticky-cta")) {
+            sendEvent('click_cta_sticky', { 'event_category': 'Conversion', 'event_label': 'Sticky Mobile Button' });
         }
 
-        // Order Bump Toggle
-        if (btn.closest("#bump-checkbox") || btn.closest(".order-bump-container")) {
-            // Let the toggle logic handle the UI, we just track intention
-            // This might fire multiple times, so be careful. 
-            // Better to track the final submission state in the main script.
+        // WhatsApp Button
+        if (btn.id === "whatsapp-button") {
+            sendEvent('click_whatsapp', { 'event_category': 'Contact', 'event_label': 'WhatsApp Float' });
         }
-    });
+
+    }, { passive: true });
 });
