@@ -1685,7 +1685,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                         <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">💼</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Masterclass LinkedIn Pro</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
+                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 20 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
                                         </td>
                                     </tr>
                                 </table>
@@ -1696,7 +1696,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                         <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">👁️</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Taller Visual: Piensa en Imágenes</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
+                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 20 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
                                         </td>
                                     </tr>
                                 </table>
@@ -1707,7 +1707,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                                         <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">📘</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Guía de Consulta Rápida</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 15 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
+                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 20 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
                                         </td>
                                     </tr>
                                 </table>
