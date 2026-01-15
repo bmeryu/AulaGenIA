@@ -51,29 +51,38 @@
             event_id: VIEW_CONTENT_ID
         });
 
-        // Backend CAPI Track
+        // Backend CAPI Track (Optimized for Speed & Deduplication)
         document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
-                try {
-                    const functions = firebase.functions();
-                    const trackViewContent = functions.httpsCallable('trackViewContent');
+            let attempts = 0;
+            const maxAttempts = 10; // 1 second max wait
 
-                    const fbp = getCookie('_fbp');
-                    const fbc = getCookie('_fbc');
-                    const userAgent = navigator.userAgent;
+            const trySendCAPI = setInterval(function () {
+                attempts++;
+                const fbp = getCookie('_fbp');
 
-                    trackViewContent({
-                        eventId: VIEW_CONTENT_ID,
-                        fbp: fbp,
-                        fbc: fbc,
-                        userAgent: userAgent,
-                        url: window.location.href
-                    }).then(result => {
-                        console.log('📡 CAPI ViewContent Sent');
-                    }).catch(err => console.error('CAPI Error:', err));
+                // Send if fbp exists OR timeout reached
+                if (fbp || attempts >= maxAttempts) {
+                    clearInterval(trySendCAPI);
 
-                } catch (e) { console.error('CAPI Setup Error:', e); }
-            }, 2000); // Wait for cookies/libraries
+                    try {
+                        const functions = firebase.functions();
+                        const trackViewContent = functions.httpsCallable('trackViewContent');
+                        const fbc = getCookie('_fbc');
+                        const userAgent = navigator.userAgent;
+
+                        trackViewContent({
+                            eventId: VIEW_CONTENT_ID,
+                            fbp: fbp, // Might be null if timeout reached (but we have eventId)
+                            fbc: fbc,
+                            userAgent: userAgent,
+                            url: window.location.href
+                        }).then(result => {
+                            console.log('📡 CAPI ViewContent Sent. FBP:', fbp ? 'Found' : 'Missing');
+                        }).catch(err => console.error('CAPI Error:', err));
+
+                    } catch (e) { console.error('CAPI Setup Error:', e); }
+                }
+            }, 100); // Check every 100ms
         });
     </script>
     <noscript><img height="1" width="1" style="display:none"
