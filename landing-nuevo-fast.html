@@ -2385,30 +2385,39 @@
                     });
                 }
 
-                // 4. CAPI BACKEND (Preserved)
+                // 4. CAPI BACKEND (Preserved & Enhanced for Coverage)
                 let attempts = 0;
-                const maxAttempts = 10;
+                const maxAttempts = 5; // Wait max 2.5s (5 * 500ms) for cookies
+
                 const trySendCAPI = setInterval(function () {
                     attempts++;
                     const fbp = window.getCookie('_fbp');
+                    const fbc = window.getCookie('_fbc');
+
+                    // Send condition: Cookies found OR timeout reached
                     if (fbp || attempts >= maxAttempts) {
                         clearInterval(trySendCAPI);
+
                         try {
                             const functions = firebase.functions();
                             const trackViewContent = functions.httpsCallable('trackViewContent');
-                            const fbc = window.getCookie('_fbc');
                             const userAgent = navigator.userAgent;
+
+                            // Debug log
+                            const matchQuality = fbp ? 'High (FBP Found)' : 'Low (FBP Missing)';
+                            console.log(`📡 CAPI Triggered. Match Quality: ${matchQuality}`);
+
                             trackViewContent({
                                 eventId: window.VIEW_CONTENT_ID,
-                                fbp: fbp,
-                                fbc: fbc,
+                                fbp: fbp || null, // Send null if missing
+                                fbc: fbc || null,
                                 userAgent: userAgent,
                                 url: window.location.href
                             }).then(result => {
-                                console.log('📡 CAPI Sent (Deferred)');
-                            }).catch(err => console.error('CAPI Error:', err));
+                                console.log('✅ CAPI Sent Successfully');
+                            }).catch(err => console.error('❌ CAPI Error:', err));
                         } catch (e) {
-                            // Silent fail for firebase unavailable
+                            console.error('❌ Firebase Functions not ready yet', e);
                         }
                     }
                 }, 500);
