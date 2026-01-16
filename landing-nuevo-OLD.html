@@ -14,34 +14,107 @@
         }
     </script>
 
-    <!-- GTM Moved to Footer for Speed -->
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-TV6ZWS36');</script>
+    <!-- End Google Tag Manager -->
 
-    <!-- Preloads & Optimized Init -->
-    <link rel="preload" as="image" href="hero-poster.jpg">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X500LE6Z8X"></script>
     <script>
-        // Minimal DataLayer
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        // Global Helpers
-        window.generateUUID = function () {
+        gtag('config', 'G-X500LE6Z8X');
+    </script>
+    <meta name="facebook-domain-verification" content="niivbyzi16r2yajamdpwk8sb66uo7f" />
+    <!-- Meta Pixel Code -->
+    <script>
+        // ✅ CAPI HELPERS: UUID & Cookie Reader
+        function generateUUID() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
                 var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
                 return v.toString(16);
             });
-        };
-        window.getCookie = function (name) {
+        }
+        function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
             return null;
-        };
-        // Generate ID early
-        window.VIEW_CONTENT_ID = window.generateUUID();
+        }
+
+        // Generate ViewContent ID for Deduplication
+        const VIEW_CONTENT_ID = generateUUID();
+        console.log('🆔 ViewContent Event ID:', VIEW_CONTENT_ID);
+
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1356922049450142');
+        fbq('track', 'PageView');
+
+        // Browser Pixel Track with EventID
+        fbq('track', 'ViewContent', {
+            content_name: 'Landing Page Curso IA',
+            content_category: 'Curso',
+            value: 20.00,
+            currency: 'USD',
+            event_id: VIEW_CONTENT_ID
+        });
+
+        // Backend CAPI Track (Optimized for Speed & Deduplication)
+        document.addEventListener('DOMContentLoaded', function () {
+            let attempts = 0;
+            const maxAttempts = 10; // 1 second max wait
+
+            const trySendCAPI = setInterval(function () {
+                attempts++;
+                const fbp = getCookie('_fbp');
+
+                // Send if fbp exists OR timeout reached
+                if (fbp || attempts >= maxAttempts) {
+                    clearInterval(trySendCAPI);
+
+                    try {
+                        const functions = firebase.functions();
+                        const trackViewContent = functions.httpsCallable('trackViewContent');
+                        const fbc = getCookie('_fbc');
+                        const userAgent = navigator.userAgent;
+
+                        trackViewContent({
+                            eventId: VIEW_CONTENT_ID,
+                            fbp: fbp, // Might be null if timeout reached (but we have eventId)
+                            fbc: fbc,
+                            userAgent: userAgent,
+                            url: window.location.href
+                        }).then(result => {
+                            console.log('📡 CAPI ViewContent Sent. FBP:', fbp ? 'Found' : 'Missing');
+                        }).catch(err => console.error('CAPI Error:', err));
+
+                    } catch (e) { console.error('CAPI Setup Error:', e); }
+                }
+            }, 100); // Check every 100ms
+        });
     </script>
-    <meta name="facebook-domain-verification" content="niivbyzi16r2yajamdpwk8sb66uo7f" />
-    <!-- Meta Pixel Moved to Footer -->
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=1356922049450142&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -56,10 +129,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
-    <link href="css/styles.css?v=final_fix_v2" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="css/styles.css?v=final_fix_v2">
-    </noscript>
+    <link href="css/styles.css?v=final_fix_v2" rel="stylesheet">
     <script>console.log("%c ✅ VERSIÓN LIMPIA DE ERRORES CARGADA", "background: #2dd4bf; color: #fff; font-size: 14px; padding: 5px;");</script>
     <!-- Lucide icons moved to end of body for proper loading -->
     <style>
@@ -189,8 +259,7 @@
 
             /* Reduce hero padding for faster content visibility */
             .hero-mobile-optimized {
-                padding-top: 8.5rem !important;
-                /* Increased from 5rem to avoid header overlap */
+                padding-top: 5rem !important;
                 padding-bottom: 3rem !important;
             }
 
@@ -366,74 +435,20 @@
                 Recorre Tu <strong>Ruta de Transformación</strong> en Aula GenIA para recuperar 10 horas de tu semana.
             </p>
 
-            <!-- Video Principal (Delayed Autoplay - Speed Optimized) -->
+            <!-- Video Principal (Premium & Clean) -->
             <div class="my-6 md:my-16 relative group max-w-4xl mx-auto">
-                <!-- Subtle Ambient Shadow -->
+                <!-- Subtle Ambient Shadow (No crazy colors) -->
                 <div class="absolute -inset-4 bg-teal-900/5 blur-3xl rounded-[3rem] -z-10"></div>
 
-                <!-- DELAYED LOAD CONTAINER -->
+                <!-- Video Container (16:9) -->
                 <div id="hero-video"
-                    class="relative bg-black rounded-2xl overflow-hidden aspect-video shadow-[0_24px_60px_-12px_rgba(0,0,0,0.15)] ring-1 ring-black/10 transform transition-transform duration-500 hover:scale-[1.01]"
-                    onclick="loadMainVideo()">
-
-                    <!-- POSTER IMAGE (Lightweight) -->
-                    <img src="hero-poster.jpg" alt="Presentación AulaGenIA"
-                        class="w-full h-full absolute inset-0 object-cover z-20 transition-opacity duration-1000"
-                        id="video-poster">
-
-                    <!-- REAL VIDEO (Hidden Initially) -->
-                    <video id="main-video-element" class="w-full h-full absolute inset-0 object-cover hidden" controls
-                        muted playsinline preload="none">
-                        <!-- Source injected via JS -->
-                        <p class="hidden">Tu navegador no soporta videos HTML5.</p>
+                    class="relative bg-black rounded-2xl overflow-hidden aspect-video shadow-[0_24px_60px_-12px_rgba(0,0,0,0.15)] ring-1 ring-black/10 transform transition-transform duration-500 hover:scale-[1.01]">
+                    <video class="w-full h-full absolute inset-0 object-cover" controls autoplay muted loop playsinline>
+                        <source src="Video-Hero.mp4" type="video/mp4">
+                        Tu navegador no soporta videos HTML5.
                     </video>
                 </div>
             </div>
-
-            <script>
-                function loadMainVideo() {
-                    const container = document.getElementById('hero-video');
-                    const poster = document.getElementById('video-poster');
-                    const video = document.getElementById('main-video-element');
-
-                    // Prevent double loading
-                    if (video.dataset.loaded === "true") return;
-                    video.dataset.loaded = "true";
-
-                    console.log("🚀 Starting Delayed Video Load...");
-
-                    if (!video.src) {
-                        video.src = "Video-Hero.mp4";
-                        video.load();
-                    }
-
-                    // UI Transition
-                    poster.style.opacity = '0';
-                    video.classList.remove('hidden');
-
-                    setTimeout(() => {
-                        video.play().then(() => {
-                            console.log("✅ Video Autoplay Started");
-                        }).catch(e => {
-                            console.log("⚠️ Autoplay blocked, showing controls", e);
-                            video.controls = true;
-                        });
-
-                        // Remove manual click listener
-                        if (container.onclick) container.onclick = null;
-                        container.removeAttribute('onclick');
-                        container.classList.remove('cursor-pointer');
-
-                        // Clean up poster after fade
-                        setTimeout(() => { poster.style.display = 'none'; }, 1000);
-                    }, 50);
-                }
-
-                // ⚡Smart Delay: Load video 3.5s after page load
-                document.addEventListener("DOMContentLoaded", function () {
-                    setTimeout(loadMainVideo, 3500);
-                });
-            </script>
 
 
             <!-- PACK STARTER CARD IN HERO -->
@@ -2340,92 +2355,7 @@
         });
     </script>
 
-    <!-- ⚡ DEFERRED ANALYTICS (GTM, Meta, Etc) -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Delay heavy scripts slightly for TTI
-            setTimeout(function () {
-                // 1. GTM (GTM-TV6ZWS36)
-                (function (w, d, s, l, i) {
-                    w[l] = w[l] || []; w[l].push({
-                        'gtm.start':
-                            new Date().getTime(), event: 'gtm.js'
-                    }); var f = d.getElementsByTagName(s)[0],
-                        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-                })(window, document, 'script', 'dataLayer', 'GTM-TV6ZWS36');
-
-                // 2. GTAG Config
-                gtag('config', 'G-X500LE6Z8X');
-
-                // 3. META PIXEL (Lazy Load)
-                !function (f, b, e, v, n, t, s) {
-                    if (f.fbq) return; n = f.fbq = function () {
-                        n.callMethod ?
-                            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-                    };
-                    if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-                    n.queue = []; t = b.createElement(e); t.async = !0;
-                    t.src = v; s = b.getElementsByTagName(e)[0];
-                    s.parentNode.insertBefore(t, s)
-                }(window, document, 'script',
-                    'https://connect.facebook.net/en_US/fbevents.js');
-
-                // Re-init basics
-                fbq('init', '1356922049450142');
-                fbq('track', 'PageView');
-                // Use the global ID generated in Head
-                if (window.VIEW_CONTENT_ID) {
-                    fbq('track', 'ViewContent', {
-                        content_name: 'Landing Page Curso IA',
-                        content_category: 'Curso',
-                        value: 20.00,
-                        currency: 'USD',
-                        event_id: window.VIEW_CONTENT_ID
-                    });
-                }
-
-                // 4. CAPI BACKEND (Preserved & Enhanced for Coverage)
-                let attempts = 0;
-                const maxAttempts = 5; // Wait max 2.5s (5 * 500ms) for cookies
-
-                const trySendCAPI = setInterval(function () {
-                    attempts++;
-                    const fbp = window.getCookie('_fbp');
-                    const fbc = window.getCookie('_fbc');
-
-                    // Send condition: Cookies found OR timeout reached
-                    if (fbp || attempts >= maxAttempts) {
-                        clearInterval(trySendCAPI);
-
-                        try {
-                            const functions = firebase.functions();
-                            const trackViewContent = functions.httpsCallable('trackViewContent');
-                            const userAgent = navigator.userAgent;
-
-                            // Debug log
-                            const matchQuality = fbp ? 'High (FBP Found)' : 'Low (FBP Missing)';
-                            console.log(`📡 CAPI Triggered. Match Quality: ${matchQuality}`);
-
-                            trackViewContent({
-                                eventId: window.VIEW_CONTENT_ID,
-                                fbp: fbp || null, // Send null if missing
-                                fbc: fbc || null,
-                                userAgent: userAgent,
-                                url: window.location.href
-                            }).then(result => {
-                                console.log('✅ CAPI Sent Successfully');
-                            }).catch(err => console.error('❌ CAPI Error:', err));
-                        } catch (e) {
-                            console.error('❌ Firebase Functions not ready yet', e);
-                        }
-                    }
-                }, 500);
-
-            }, 500);
-        });
-    </script>
-    <script src="cro-telemetry.js" defer></script>
+    <script src="cro-telemetry.js"></script>
 </body>
 
 </html>
