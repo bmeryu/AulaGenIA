@@ -1871,15 +1871,19 @@
             // Scroll listener for header shrink
             window.addEventListener('scroll', handleHeaderShrink);
 
-            // Observer for Hero button
+            // Observer for Hero button - STRICT: only show sticky when hero is GONE
             if (heroBtn) {
                 const heroObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        const scrolledPast = window.scrollY > 400;
-                        isPastHero = (!entry.isIntersecting && entry.boundingClientRect.top < 0) || scrolledPast;
+                        // isPastHero is TRUE only when hero button is completely out of view
+                        // AND scrolled past (boundingClientRect.top < 0)
+                        isPastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
                         updateAllStickyStates();
                     });
-                }, { threshold: 0 });
+                }, {
+                    threshold: 0,  // Trigger when fully out of view
+                    rootMargin: '0px'  // No margin - exact viewport detection
+                });
                 heroObserver.observe(heroBtn);
             }
 
