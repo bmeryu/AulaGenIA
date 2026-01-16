@@ -823,20 +823,31 @@
                     function validateBirthDate(showError = true) {
                         if (!F_d || !F_m || !F_y) return true;
 
-                        // Check individual fields
-                        const dValid = F_d.value !== "";
-                        const mValid = F_m.value !== "";
-                        const yValid = F_y.value !== "";
+                        const dVal = F_d.value;
+                        const mVal = F_m.value;
+                        const yVal = F_y.value;
+
+                        // Optional: All empty is valid
+                        const allEmpty = dVal === "" && mVal === "" && yVal === "";
+                        if (allEmpty) {
+                            F_d.classList.remove("form-input-error");
+                            F_m.classList.remove("form-input-error");
+                            F_y.classList.remove("form-input-error");
+                            return true;
+                        }
+
+                        // If not empty, ALL must be filled
+                        const dValid = dVal !== "";
+                        const mValid = mVal !== "";
+                        const yValid = yVal !== "";
                         const isValid = dValid && mValid && yValid;
 
                         if (showError) {
-                            // Apply error visual per field
-                            const errClass = "form-input-error"; // Reusing the global error class
+                            const errClass = "form-input-error";
                             !dValid ? F_d.classList.add(errClass) : F_d.classList.remove(errClass);
                             !mValid ? F_m.classList.add(errClass) : F_m.classList.remove(errClass);
                             !yValid ? F_y.classList.add(errClass) : F_y.classList.remove(errClass);
                         } else {
-                            // Clear errors if not showing (e.g. typing)
                             F_d.classList.remove("form-input-error");
                             F_m.classList.remove("form-input-error");
                             F_y.classList.remove("form-input-error");
@@ -893,7 +904,7 @@
                                 jobTitle: b.value.trim(),
                                 country: w.value,
                                 gender: E.value,
-                                birthdate: `${F_y.value}-${F_m.value}-${F_d.value}`,
+                                birthdate: (F_y.value && F_m.value && F_d.value) ? `${F_y.value}-${F_m.value}-${F_d.value}` : null,
                                 profileCompleted: !0
                             }, {
                                 merge: !0
