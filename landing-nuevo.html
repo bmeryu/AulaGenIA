@@ -384,16 +384,15 @@
         style="z-index: 100;">
         <div class="max-w-7xl mx-auto px-6 transition-all duration-300" id="header-container"
             style="padding-top: 16px; padding-bottom: 16px;">
-            <div class="flex justify-between items-center">
-                <!-- Logo -->
-                <div class="flex justify-center items-center">
-                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA"
-                        class="h-12 w-auto transition-all duration-300" id="header-logo">
-                </div>
+            <div class="flex justify-center items-center relative">
+                <!-- Logo (fades out when sticky button appears) -->
+                <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA"
+                    class="h-12 w-auto transition-all duration-300" id="header-logo">
 
-                <!-- Desktop Sticky CTA Button (appears on scroll) -->
+                <!-- Desktop Sticky CTA Button (appears on scroll, centered) -->
                 <button id="desktop-sticky-cta" onclick="initiateStarterPurchase('desktop_header')"
-                    class="hidden md:block opacity-0 transition-all duration-300 font-black text-sm px-6 py-3" style="background: linear-gradient(135deg, #FF4B2B 0%, #DC143C 100%); 
+                    class="hidden md:block absolute opacity-0 transition-all duration-300 font-black text-sm px-6 py-3 pointer-events-none"
+                    style="background: linear-gradient(135deg, #FF4B2B 0%, #DC143C 100%); 
                            color: #FFFFFF; 
                            border-radius: 12px; 
                            box-shadow: 0 4px 12px -2px rgba(220, 20, 60, 0.4);
@@ -1821,14 +1820,24 @@
                     }
                 }
 
-                // Desktop header CTA button (fade in/out)
+                // Desktop header CTA button (fade in/out + swap with logo)
                 if (desktopStickyBtn) {
                     if (shouldShowSticky && hasScrolled) {
+                        // Show button, hide logo
                         desktopStickyBtn.style.opacity = '1';
                         desktopStickyBtn.style.transform = 'scale(1)';
+                        desktopStickyBtn.style.pointerEvents = 'auto';
+                        if (headerLogo) {
+                            headerLogo.style.opacity = '0';
+                        }
                     } else {
+                        // Hide button, show logo
                         desktopStickyBtn.style.opacity = '0';
                         desktopStickyBtn.style.transform = 'scale(0.95)';
+                        desktopStickyBtn.style.pointerEvents = 'none';
+                        if (headerLogo) {
+                            headerLogo.style.opacity = '1';
+                        }
                     }
                 }
             }
