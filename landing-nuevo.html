@@ -379,10 +379,30 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TV6ZWS36" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <nav class="bg-white/80 backdrop-blur-md fixed w-full top-0 z-50 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex justify-center items-center"><img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA"
-                    class="h-12 w-auto"></div>
+    <nav id="main-header"
+        class="bg-white/80 backdrop-blur-md fixed w-full top-0 border-b border-gray-100 transition-all duration-300"
+        style="z-index: 100;">
+        <div class="max-w-7xl mx-auto px-6 transition-all duration-300" id="header-container"
+            style="padding-top: 16px; padding-bottom: 16px;">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex justify-center items-center">
+                    <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA"
+                        class="h-12 w-auto transition-all duration-300" id="header-logo">
+                </div>
+
+                <!-- Desktop Sticky CTA Button (appears on scroll) -->
+                <button id="desktop-sticky-cta" onclick="initiateStarterPurchase('desktop_header')"
+                    class="hidden md:block opacity-0 transition-all duration-300 font-black text-sm px-6 py-3" style="background: linear-gradient(135deg, #FF4B2B 0%, #DC143C 100%); 
+                           color: #FFFFFF; 
+                           border-radius: 12px; 
+                           box-shadow: 0 4px 12px -2px rgba(220, 20, 60, 0.4);
+                           text-transform: uppercase;
+                           letter-spacing: 0.02em;
+                           transform: scale(0.95);">
+                    INSCRIBIRME AHORA
+                </button>
+            </div>
         </div>
     </nav>
     <section
@@ -1771,50 +1791,120 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const stickyCTA = document.getElementById('mobile-sticky-cta');
+            // Elements
+            const mobileStickyEl = document.getElementById('mobile-sticky-cta');
+            const desktopStickyBtn = document.getElementById('desktop-sticky-cta');
+            const headerEl = document.getElementById('main-header');
+            const headerContainer = document.getElementById('header-container');
+            const headerLogo = document.getElementById('header-logo');
             const heroBtn = document.getElementById('hero-cta-button');
             const footer = document.getElementById('site-footer');
 
-            if (stickyCTA && heroBtn && footer) {
-                let isPastHero = false;
-                let isFooterVisible = false;
+            // State variables
+            let isPastHero = false;
+            let isFooterVisible = false;
+            let isCheckoutFormVisible = false;
+            let hasScrolled = false;
 
-                function updateStickyState() {
-                    if (isPastHero && !isFooterVisible) {
-                        // SHOP
-                        stickyCTA.classList.remove('translate-y-full');
-                        stickyCTA.style.transform = 'translateY(0)';
+            // Update ALL sticky states (mobile bar + desktop header button)
+            function updateAllStickyStates() {
+                const shouldShowSticky = isPastHero && !isFooterVisible && !isCheckoutFormVisible;
+
+                // Mobile sticky bar
+                if (mobileStickyEl) {
+                    if (shouldShowSticky) {
+                        mobileStickyEl.classList.remove('translate-y-full');
+                        mobileStickyEl.style.transform = 'translateY(0)';
                     } else {
-                        // HIDE
-                        stickyCTA.classList.add('translate-y-full');
-                        stickyCTA.style.transform = 'translateY(100%)';
+                        mobileStickyEl.classList.add('translate-y-full');
+                        mobileStickyEl.style.transform = 'translateY(100%)';
                     }
                 }
 
-                // 1. Observer for Hero (Show when scrolling past)
+                // Desktop header CTA button (fade in/out)
+                if (desktopStickyBtn) {
+                    if (shouldShowSticky && hasScrolled) {
+                        desktopStickyBtn.style.opacity = '1';
+                        desktopStickyBtn.style.transform = 'scale(1)';
+                    } else {
+                        desktopStickyBtn.style.opacity = '0';
+                        desktopStickyBtn.style.transform = 'scale(0.95)';
+                    }
+                }
+            }
+
+            // Header shrink effect on scroll
+            function handleHeaderShrink() {
+                if (window.scrollY > 100) {
+                    hasScrolled = true;
+                    // Shrink header
+                    if (headerContainer) {
+                        headerContainer.style.paddingTop = '8px';
+                        headerContainer.style.paddingBottom = '8px';
+                    }
+                    if (headerLogo) {
+                        headerLogo.style.height = '40px';
+                    }
+                } else {
+                    hasScrolled = false;
+                    // Restore header
+                    if (headerContainer) {
+                        headerContainer.style.paddingTop = '16px';
+                        headerContainer.style.paddingBottom = '16px';
+                    }
+                    if (headerLogo) {
+                        headerLogo.style.height = '48px';
+                    }
+                }
+                updateAllStickyStates();
+            }
+
+            // Scroll listener for header shrink
+            window.addEventListener('scroll', handleHeaderShrink);
+
+            // Observer for Hero button
+            if (heroBtn) {
                 const heroObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        // isIntersecting is false when element is GONE.
-                        // boundingClientRect.top < 0 means it scrolled UP (we are past it).
-                        // FIX: Added more robust logic - if we scroll past 400px, show it
                         const scrolledPast = window.scrollY > 400;
                         isPastHero = (!entry.isIntersecting && entry.boundingClientRect.top < 0) || scrolledPast;
-                        if (scrolledPast) isPastHero = true; // Force true on deep scroll
-                        updateStickyState();
+                        updateAllStickyStates();
                     });
                 }, { threshold: 0 });
+                heroObserver.observe(heroBtn);
+            }
 
-                // 2. Observer for Footer (Hide when reaching bottom)
+            // Observer for Footer
+            if (footer) {
                 const footerObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         isFooterVisible = entry.isIntersecting;
-                        updateStickyState();
+                        updateAllStickyStates();
                     });
                 }, { threshold: 0 });
-
-                heroObserver.observe(heroBtn);
                 footerObserver.observe(footer);
             }
+
+            // Observer for Checkout Form - hide stickies when form is visible
+            // Look for the inline checkout section (appears when hero CTA is clicked)
+            const checkForCheckoutForm = setInterval(() => {
+                const checkoutSection = document.querySelector('[id*="checkout"]') ||
+                    document.querySelector('[id*="inline-checkout"]') ||
+                    document.querySelector('form[id*="checkout"]');
+
+                if (checkoutSection && checkoutSection.offsetParent !== null) {
+                    // Form exists and is visible
+                    const formObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            isCheckoutFormVisible = entry.isIntersecting;
+                            updateAllStickyStates();
+                        });
+                    }, { threshold: 0.1 });
+
+                    formObserver.observe(checkoutSection);
+                    clearInterval(checkForCheckoutForm); // Stop checking once found
+                }
+            }, 500);
         });
     </script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
