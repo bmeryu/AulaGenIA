@@ -15,6 +15,7 @@ const mercadoPagoToken = defineSecret("MERCADOPAGO_TOKEN");
 const hotmartToken = defineSecret("HOTMART_TOKEN");
 const mailjetApiKey = defineSecret("MAILJET_API_KEY");
 const mailjetSecretKey = defineSecret("MAILJET_SECRET_KEY");
+const ga4ApiSecret = defineSecret("GA4_API_SECRET");
 
 // =======================================================================================
 // META CAPI CONFIGURATION & HELPERS
@@ -82,6 +83,46 @@ async function sendMetaCAPIEvent(eventName, eventData, userData, contextData) {
     } catch (error) {
         console.error(`❌ Meta CAPI Exception (${eventName}):`, error);
         return null;
+    }
+}
+
+// =======================================================================================
+// GA4 MEASUREMENT PROTOCOL (Server-Side Tracking)
+// =======================================================================================
+const GA4_MEASUREMENT_ID = 'G-X500LE6Z8X';
+
+/**
+ * Send event to GA4 via Measurement Protocol (Server-Side)
+ * Bypasses ad blockers for critical events like Purchase
+ */
+async function sendGA4ServerEvent(clientId, eventName, eventParams) {
+    try {
+        const apiSecret = ga4ApiSecret.value();
+        const response = await fetch(
+            `https://www.google-analytics.com/mp/collect?measurement_id=${GA4_MEASUREMENT_ID}&api_secret=${apiSecret}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    client_id: clientId, // Firebase UID
+                    events: [{
+                        name: eventName,
+                        params: eventParams
+                    }]
+                })
+            }
+        );
+
+        if (response.ok) {
+            console.log(`✅ GA4 Server Event: ${eventName}`);
+            return true;
+        } else {
+            console.error(`❌ GA4 API Error (${eventName}):`, await response.text());
+            return false;
+        }
+    } catch (error) {
+        console.error(`❌ GA4 Server Event Exception (${eventName}):`, error);
+        return false;
     }
 }
 
@@ -359,7 +400,7 @@ exports.createMercadoPagoPreference = onCall(
 // =======================================================================================
 // FUNCIÓN 2: Webhook para recibir notificaciones de pago
 // =======================================================================================
-exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (req, res) => {
+exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken, ga4ApiSecret] }, async (req, res) => {
     try {
         const tokenValue = mercadoPagoToken.value().trim();
         const client = new MercadoPagoConfig({ accessToken: tokenValue });
@@ -395,6 +436,29 @@ exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (r
             }, { merge: true });
 
             console.log(`Acceso al curso ${courseId} concedido al usuario ${userId}`);
+
+            // =================================================================
+            // GA4 SERVER-SIDE PURCHASE EVENT (Phase 3 - Bypass Ad Blockers)
+            // =================================================================
+            try {
+                await sendGA4ServerEvent(
+                    userId, // Firebase UID as client_id
+                    'purchase',
+                    {
+                        transaction_id: paymentId.toString(),
+                        value: payment.transaction_amount || 0,
+                        currency: payment.currency_id || 'USD',
+                        items: [{
+                            item_id: courseId,
+                            item_name: courseId === 'ia-aplicada-starter' ? 'Pack Starter' : 'Programa Esencial',
+                            price: payment.transaction_amount || 0,
+                            quantity: 1
+                        }]
+                    }
+                );
+            } catch (ga4Error) {
+                console.error('GA4 server event failed (non-blocking):', ga4Error);
+            }
 
             // =================================================================
             // NUEVO: Lógica de seguimiento de cupones
