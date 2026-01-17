@@ -130,6 +130,52 @@ exports.trackViewContent = onCall(
 );
 
 
+// ===================================
+// META CAPI: INITIATE CHECKOUT
+// ===================================
+exports.trackInitiateCheckout = onCall(
+    { cors: true },
+    async (request) => {
+        const { eventId, fbp, fbc, url, userAgent, email, firstName, lastName, value, currency } = request.data;
+
+        // IP Extraction (IPv6 Friendly) - Same logic as ViewContent
+        let ip = request.rawRequest.ip;
+        const forwardedFor = request.rawRequest.headers['x-forwarded-for'];
+
+        if (forwardedFor) {
+            // "2001:db8::1, 192.168.1.1" → "2001:db8::1"
+            ip = forwardedFor.split(',')[0].trim();
+        } else if (!ip) {
+            // Fallback
+            ip = request.rawRequest.socket.remoteAddress;
+        }
+
+        // User Data (Authenticated user has email)
+        const userData = {
+            fbp: fbp,
+            fbc: fbc,
+            userAgent: userAgent,
+            ip: ip,
+            email: email,     // Will be hashed by sendMetaCAPIEvent
+            firstName: firstName,
+            lastName: lastName
+        };
+
+        await sendMetaCAPIEvent('InitiateCheckout', {
+            eventId: eventId,
+            customData: {
+                value: value,
+                currency: currency,
+                content_ids: ['ia-aplicada-starter'],
+                content_category: 'Course'
+            }
+        }, userData, { url: url });
+
+        return { success: true };
+    }
+);
+
+
 // =======================================================================================
 // FUNCIÓN 1: Crear Preferencia de Pago (Soluciona el error de CORS)(DESCUENTO)
 // =======================================================================================
