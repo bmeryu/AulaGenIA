@@ -3,6 +3,7 @@
 // ===============================
 
 const { onCall, HttpsError, onRequest } = require("firebase-functions/v2/https");
+const { onDocumentWritten } = require("firebase-functions/v2/firestore");
 const { defineSecret } = require("firebase-functions/params");
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
@@ -92,8 +93,18 @@ exports.trackViewContent = onCall(
     async (request) => {
         const { eventId, fbp, fbc, url, userAgent } = request.data;
 
-        // IP Address extraction from request
-        const ip = request.rawRequest.ip || request.rawRequest.headers['x-forwarded-for'] || request.rawRequest.socket.remoteAddress;
+        // PCC-SAFE IP ADRESS EXTRACTION (IPv6 Friendly)
+        // Extract the first IP from x-forwarded-for to get the true client IP
+        let ip = request.rawRequest.ip;
+        const forwardedFor = request.rawRequest.headers['x-forwarded-for'];
+
+        if (forwardedFor) {
+            // "client, proxy1, proxy2" -> take "client"
+            ip = forwardedFor.split(',')[0].trim();
+        } else if (!ip) {
+            // Fallback
+            ip = request.rawRequest.socket.remoteAddress;
+        }
 
         // User Data (Anonymous mostly for ViewContent, but we send what we have)
         const userData = {
@@ -971,169 +982,17 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
 
                         console.log(`🔗 Link de reset generado para: ${buyerEmail}`);
 
-                        // ENVIAR EMAIL VIA MAILJET
+                        // ENVIAR EMAIL VIA MAILJET (Usa Helper)
                         try {
-                            const Mailjet = require('node-mailjet');
-                            const mailjet = Mailjet.apiConnect(
-                                mailjetApiKey.value(),
-                                mailjetSecretKey.value()
-                            );
-
-                            const courseName = courseId === 'ia-aplicada-starter'
-                                ? 'Pack Starter: +100 Master Prompts'
-                                : 'Curso IA Aplicada Esencial';
-
-                            await mailjet.post('send', { version: 'v3.1' }).request({
-                                Messages: [{
-                                    From: {
-                                        Email: 'hola@aulagenia.cl',
-                                        Name: 'Aula GenIA'
-                                    },
-                                    To: [{
-                                        Email: buyerEmail,
-                                        Name: buyerName
-                                    }],
-                                    Bcc: [{
-                                        Email: 'hola@aulagenia.cl',
-                                        Name: 'Aula GenIA Admin'
-                                    }],
-                                    Subject: `Bienvenido/a a Aula GenIA - Acceso Confirmado`,
-                                    HTMLPart: `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5;">
-    <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-        
-        <!-- Header Limpio (Fondo Blanco para Logo Oscuro) -->
-        <div style="background: #ffffff; padding: 40px 30px 30px; text-align: center; border-bottom: 3px solid #14b8a6;">
-            <img src="https://aulagenia.cl/Logo_AGIA.png" alt="Aula GenIA" style="max-width: 150px; margin-bottom: 15px; display: inline-block;">
-            <h1 style="color: #1e293b; margin: 15px 0 8px 0; font-size: 26px; font-weight: 700;">¡Tu Acceso está listo!</h1>
-            <p style="color: #64748b; margin: 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquí.</p>
-        </div>
-        
-        <!-- Contenido principal -->
-        <div style="padding: 40px 30px;">
-            <p style="font-size: 18px; color: #333; margin-bottom: 20px;">
-                Hola <strong style="color: #0d9488;">${buyerName}</strong>,
-            </p>
-            
-            <p style="font-size: 16px; color: #555; line-height: 1.7; margin-bottom: 25px;">
-                Es un gusto saludarte. Ya confirmamos tu inscripción al <strong>Pack Starter + Fórmulas Maestras</strong>. 
-                A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarán tu productividad.
-            </p>
-            
-            <div style="background: #f0fdfa; border-left: 4px solid #14b8a6; padding: 15px 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0;">
-                <p style="margin: 0; color: #0d9488; font-weight: 600;">✨ Tu acceso a la Bóveda de Recursos ya ha sido sincronizado.</p>
-            </div>
-            
-            <!-- Credenciales -->
-            <div style="background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); border-radius: 16px; padding: 30px; margin-bottom: 30px; border: 2px solid #99f6e4;">
-                <h2 style="color: #0d9488; margin: 0 0 25px 0; font-size: 20px; text-align: center;">🔑 Tus Credenciales de Acceso</h2>
-                
-                <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
-                    <tr>
-                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">📍 Portal de Acceso</p>
-                            <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.cl/acceso</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">👤 Tu Usuario</p>
-                            <p style="color: #1e293b; margin: 0; font-size: 16px; font-weight: 600;">${buyerEmail}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                            <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔐 Tu Contraseña</p>
-                            <p style="color: #1e293b; margin: 0; font-size: 14px;">Haz clic en el botón verde de abajo para crearla</p>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            
-            <!-- Botón CTA -->
-            <div style="text-align: center; margin-bottom: 35px;">
-                <a href="${resetLink}" style="display: inline-block; background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; padding: 18px 40px; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4);">
-                    🔐 Crear mi Contraseña y Acceder
-                </a>
-            </div>
-            
-            <!-- Lo que recibes -->
-            <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">📦 Lo que recibes hoy:</h3>
-            
-            <div style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; display: flex; align-items: flex-start;">
-                <span style="font-size: 24px; margin-right: 15px;">✅</span>
-                <div>
-                    <strong style="color: #1e293b;">+100 Instrucciones Maestras</strong>
-                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini. <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #14b8a6;">Accede aquí</a></p>
-                </div>
-            </div>
-            
-            <div style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; display: flex; align-items: flex-start;">
-                <span style="font-size: 24px; margin-right: 15px;">🚀</span>
-                <div>
-                    <strong style="color: #1e293b;">Ahorro de Tiempo</strong>
-                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Recupera hasta 10 horas de tu semana automatizando tareas repetitivas. <a href="https://aulagenia.cl/campus.html" style="color: #14b8a6;">Accede aquí</a></p>
-                </div>
-            </div>
-            
-            <div style="margin-bottom: 25px; padding: 15px; background: #f8fafc; border-radius: 10px; display: flex; align-items: flex-start;">
-                <span style="font-size: 24px; margin-right: 15px;">💎</span>
-                <div>
-                    <strong style="color: #1e293b;">Licencia Permanente de Arquitecto</strong>
-                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px;">Tu entrada a la plataforma y todas sus actualizaciones futuras, sin suscripciones.</p>
-                </div>
-            </div>
-            
-        </div>
-        
-        <!-- Footer -->
-        <div style="background: #f8fafc; padding: 25px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-            <p style="color: #64748b; margin: 0 0 10px 0; font-size: 14px;">¿Tienes dudas? Escríbenos a <a href="mailto:hola@aulagenia.cl" style="color: #14b8a6;">hola@aulagenia.cl</a></p>
-            <p style="color: #0d9488; margin: 0; font-size: 13px; font-weight: 600;">¡Y recuerda: en Aula GenIA, la IA no es el futuro… TÚ lo eres!</p>
-        </div>
-        
-    </div>
-</body>
-</html>
-                                    `,
-                                    TextPart: `¡Hola ${buyerName}! Bienvenido/a a la élite de la IA.
-
-Tu inscripción al Pack Starter + Fórmulas Maestras está confirmada.
-
-🔑 TUS CREDENCIALES:
-Portal: https://aulagenia.cl/acceso.html
-Usuario: ${buyerEmail}
-Contraseña: Crea tu contraseña aquí: ${resetLink}
-
-📦 LO QUE RECIBES:
-- +100 Instrucciones Maestras para ChatGPT, Claude y Gemini
-- Ecosistema de Automatización
-- Acceso Vitalicio
-
-¿Dudas? Escríbenos a hola@aulagenia.cl`
-                                }]
-                            });
-
-                            console.log(`✉️ Email enviado exitosamente a: ${buyerEmail}`);
-
-                            // Guardar registro del email enviado
-                            await admin.firestore().collection("emailsSent").add({
-                                to: buyerEmail,
-                                type: 'welcome-hotmart',
+                            await sendWelcomeEmailHelper({
+                                email: buyerEmail,
+                                name: buyerName,
                                 courseId: courseId,
-                                sentAt: admin.firestore.FieldValue.serverTimestamp(),
-                                status: 'sent'
+                                resetLink: resetLink
                             });
-
                         } catch (emailError) {
-                            console.error('❌ Error enviando email:', emailError);
-                            // Guardar en cola para reintento manual
+                            console.error('❌ Error enviando email (wrapper):', emailError);
+                            // Guardar en cola para reintento manual (fallback)
                             await admin.firestore().collection("emailQueue").add({
                                 to: buyerEmail,
                                 template: 'welcome-hotmart',
@@ -1913,5 +1772,277 @@ exports.flowReturnRedirect = onRequest(async (req, res) => {
     } catch (error) {
         console.error('Error in flowReturnRedirect:', error);
         res.redirect(303, 'https://aulagenia.cl/acceso.html'); // Fallback
+    }
+});
+// =======================================================================================
+// TEMP ADMIN TOOL: Quick Add to Allowlist
+// =======================================================================================
+
+// =======================================================================================
+// HELPERS & TRIGGERS (EMAIL AUTOMATION)
+// =======================================================================================
+
+/**
+ * Helper reutilizable para enviar correo de bienvenida via Mailjet
+ */
+async function sendWelcomeEmailHelper({ email, name, courseId, resetLink }) {
+    const Mailjet = require('node-mailjet');
+    // Acceder a secretos globalmente definidos
+    const mailjet = Mailjet.apiConnect(
+        mailjetApiKey.value(),
+        mailjetSecretKey.value()
+    );
+
+    console.log('📧 Helper: Iniciando envío de correo a:', email);
+
+    // Determinar si es Pack PRO (Starter + Bump) logic placeholder (for allowlist default is starter/esencial)
+    // Para allowlist asumimos precio 0 o default starter, pero podemos pasar flags si se requiere.
+    // Por ahora usamos lógica simple basada en courseId
+
+    const isPro = false; // Default para allowlist simple por ahora
+    const courseName = courseId === 'ia-aplicada-starter'
+        ? 'Pack Starter: +100 Master Prompts'
+        : (courseId === 'ia-aplicada-esencial' ? 'Curso IA Aplicada Esencial' : 'Pack Starter de IA'); // Default generic
+
+    const subjectLine = 'Bienvenido/a a Aula GenIA - Acceso Confirmado';
+
+    // HTML from Flow Webhook Template
+    const itemRuta = `
+        <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🗺️</span></td>
+                    <td>
+                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de Transformación: Fases 1-4</strong>
+                        <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquí</a></span>
+                    </td>
+                </tr>
+            </table>
+        </div>`;
+
+    const itemPrompts = `
+        <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
+                    <td>
+                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
+                        <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini.</div>
+                        <div style="font-size: 13px;">
+                            <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a la Herramienta</a><br>
+                            <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>`;
+
+    // Starter items are standard for allowlist
+    let featuresHtml = itemRuta + itemPrompts;
+
+    try {
+        const result = await mailjet.post('send', { version: 'v3.1' }).request({
+            Messages: [{
+                From: {
+                    Email: 'contacto@aulagenia.cl',
+                    Name: 'Aula GenIA'
+                },
+                To: [{
+                    Email: email,
+                    Name: name
+                }],
+                Bcc: [{
+                    Email: 'benjamery@gmail.com',
+                    Name: 'Admin'
+                }, {
+                    Email: 'hola@aulagenia.cl',
+                    Name: 'Hola Aula GenIA' // Keep BCCs as in Flow
+                }],
+                Subject: subjectLine,
+                HTMLPart: `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+ <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: 40px; margin-bottom: 40px;">
+    <!-- Header -->
+    <div style="background: white; padding: 40px 0; text-align: center; border-bottom: 4px solid #0d9488;">
+        <h1 style="color: #1e293b; margin: 0; font-size: 24px; font-weight: 800;">¡Tu Acceso está listo!</h1>
+        <p style="color: #64748b; margin: 10px 0 0 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquí.</p>
+    </div>
+
+    <div style="padding: 40px;">
+        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hola <strong style="color: #0d9488;">${name}</strong>,</p>
+        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Es un gusto saludarte. Ya confirmamos tu inscripción al <strong style="color: #1e293b;">${courseName}</strong>. 
+        </p>
+
+        <!-- Highlight Box -->
+        <div style="background: #f0fdf4; border-left: 4px solid #4ade80; padding: 15px; margin: 25px 0; border-radius: 4px;">
+            <p style="margin: 0; color: #15803d; font-size: 14px; font-weight: 600;">✨ Tu acceso a la Bóveda de Recursos ya ha sido sincronizado.</p>
+        </div>
+
+        <!-- Credentials Card -->
+        <div style="background: #ccfbf1; border-radius: 16px; padding: 25px; margin: 30px 0; border: 1px solid #99f6e4;">
+            <h2 style="text-align: center; color: #0f766e; font-size: 18px; margin-top: 0; margin-bottom: 25px;">🔑 Tus Credenciales de Acceso</h2>
+            <!-- Details Table -->
+            <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
+                <tr>
+                    <td style="background: white; border-radius: 8px; padding: 15px; width: 100%;">
+                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">📍 Portal de Acceso</div>
+                        <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.cl/acceso</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background: white; border-radius: 8px; padding: 15px;">
+                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">👤 Tu Usuario</div>
+                        <div style="color: #1e293b; font-size: 16px; font-weight: 600;">${email}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background: white; border-radius: 8px; padding: 15px;">
+                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">🔐 Tu Contraseña</div>
+                        <div style="color: #1e293b; font-size: 14px;">Haz clic abajo para crearla 👇</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- CTA Button -->
+        <div style="text-align: center; margin: 35px 0;">
+            <a href="${resetLink}" style="display: inline-block; background: #0d9488; color: white; padding: 18px 40px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.4);">
+                🔐 Crear mi Contraseña y Acceder
+            </a>
+            <p style="color: #94a3b8; font-size: 13px; margin-top: 15px;">(Este enlace es único y seguro)</p>
+        </div>
+
+        <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">📦 Tu Arsenal Confirmado:</h3>
+        
+        ${featuresHtml}
+
+    </div>
+
+    <!-- Footer -->
+    <div style="background: #f8fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+        <p style="color: #64748b; margin: 0 0 10px 0; font-size: 14px;">¿Tienes dudas? Responde a este correo.</p>
+        <p style="color: #0f766e; margin: 0; font-size: 13px; font-weight: 600;">Enviado con ❤️ desde Aula GenIA</p>
+    </div>
+ </div>
+</body>
+</html>`,
+                TextPart: `¡Hola ${name}! Acceso Confirmado.\n\nUsuario: ${email}\nLink de Acceso: ${resetLink}\n\nIngresa a https://aulagenia.cl/acceso.html`
+            }]
+        });
+
+        console.log('📧 Helper: Email enviado OK (Template Flow)');
+        return result;
+    } catch (err) {
+        console.error('📧 Helper Error:', err);
+        throw err;
+    }
+}
+
+/**
+ * TRIGGER: Enviar correo de bienvenida automáticamente al agregar/editar Allowlist
+ * Escucha write en allowlist/{email}
+ */
+exports.onAllowlistChange = onDocumentWritten(
+    {
+        document: 'allowlist/{email}',
+        region: 'southamerica-west1',
+        secrets: [mailjetApiKey, mailjetSecretKey]
+    },
+    async (event) => {
+        const email = event.params.email;
+        const newData = event.data.after.data();
+        const oldData = event.data.before ? event.data.before.data() : null;
+
+        // 1. Validar que exista data y que sendWelcomeEmail sea true
+        if (!newData || !newData.sendWelcomeEmail) {
+            return console.log('🚫 Trigger: No data or sendWelcomeEmail not true');
+        }
+
+        // 2. Prevenir loops: si ya se envió, salir
+        if (newData.welcomeEmailSent) {
+            return console.log('✅ Trigger: Email ya enviado previamente.');
+        }
+
+        console.log('⚡ Trigger: Detectado sendWelcomeEmail=true para', email);
+
+        try {
+            // 3. Generar Link de Reset
+            // Estrategia: Intentar crear el usuario si no existe (Pattern Idempotente)
+
+            let userRecord;
+            try {
+                userRecord = await admin.auth().getUserByEmail(email);
+            } catch (e) {
+                if (e.code === 'auth/user-not-found') {
+                    console.log('👤 Creando usuario desde Trigger Allowlist...');
+                    userRecord = await admin.auth().createUser({
+                        email: email,
+                        emailVerified: true,
+                        displayName: 'Estudiante (Allowlist)'
+                    });
+                } else {
+                    throw e;
+                }
+            }
+
+            const resetLink = await admin.auth().generatePasswordResetLink(email, {
+                url: 'https://aulagenia.cl/acceso.html?from=allowlist'
+            });
+
+            // 4. Enviar Correo
+            await sendWelcomeEmailHelper({
+                email: email,
+                name: userRecord.displayName || 'Estudiante',
+                courseId: 'ia-aplicada-starter', // Default para allowlist
+                resetLink: resetLink
+            });
+
+            // 5. Actualizar documento para no re-enviar
+            await event.data.after.ref.set({
+                welcomeEmailSent: true,
+                sendWelcomeEmail: false, // Reset flag
+                emailSentAt: admin.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+
+            console.log('✅ Trigger: Email flow completado para', email);
+
+        } catch (error) {
+            console.error('❌ Trigger Error:', error);
+        }
+    }
+);
+
+// ============================================
+// ADMIN: Quick Add to Allowlist (Restored)
+// ============================================
+exports.quickAddAllowlist = onRequest(async (req, res) => {
+    // Basic security key check
+    if (req.query.key !== 'temp_admin_key_123') {
+        return res.status(403).send('Forbidden');
+    }
+
+    const email = req.query.email || 'bmeryu@gmail.com'; // Default or param
+    const db = admin.firestore();
+
+    try {
+        console.log(`⚡ Admin Tool: Agregando ${email} a allowlist con trigger...`);
+        await db.collection('allowlist').doc(email).set({
+            active: true,
+            courses: ['ia-aplicada-esencial', 'ia-aplicada-starter'],
+            addedAt: admin.firestore.FieldValue.serverTimestamp(),
+            note: 'Added via Admin Tool (Restored)',
+            sendWelcomeEmail: true, // Esto dispara el TRIGGER
+            welcomeEmailSent: false
+        }, { merge: true });
+
+        res.send(`✅ Success! Updated ${email} in Allowlist. Trigger should fire now.`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error: ' + error.message);
     }
 });
