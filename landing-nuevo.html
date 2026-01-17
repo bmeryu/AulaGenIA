@@ -45,6 +45,38 @@
         })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
     </script>
 
+    <!-- 4. Meta Pixel (CRITICAL: Load with GTM for Session Accuracy) -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+        fbq('init', '1356922049450142');
+        fbq('track', 'PageView');
+
+        // ViewContent with enhanced parameters
+        if (window.VIEW_CONTENT_ID) {
+            fbq('track', 'ViewContent', {
+                content_ids: ['ia-aplicada-esencial'],
+                content_type: 'product',
+                content_name: 'Curso IA Aplicada - Programa Esencial',
+                content_category: 'Online Courses',
+                value: 20.00,
+                currency: 'USD',
+                event_id: window.VIEW_CONTENT_ID
+            });
+        }
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=1356922049450142&ev=PageView&noscript=1" /></noscript>
+
     <!-- Preloads & Optimized Init -->
     <link rel="preload" as="image" href="hero-poster.jpg">
     <script>
@@ -2382,32 +2414,8 @@
                 // 1. GTM & GTAG Moved to Head for Session Accuracy
 
 
-                // 3. META PIXEL (Lazy Load)
-                !function (f, b, e, v, n, t, s) {
-                    if (f.fbq) return; n = f.fbq = function () {
-                        n.callMethod ?
-                            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-                    };
-                    if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-                    n.queue = []; t = b.createElement(e); t.async = !0;
-                    t.src = v; s = b.getElementsByTagName(e)[0];
-                    s.parentNode.insertBefore(t, s)
-                }(window, document, 'script',
-                    'https://connect.facebook.net/en_US/fbevents.js');
-
-                // Re-init basics
-                fbq('init', '1356922049450142');
-                fbq('track', 'PageView');
-                // Use the global ID generated in Head
-                if (window.VIEW_CONTENT_ID) {
-                    fbq('track', 'ViewContent', {
-                        content_name: 'Landing Page Curso IA',
-                        content_category: 'Curso',
-                        value: 20.00,
-                        currency: 'USD',
-                        event_id: window.VIEW_CONTENT_ID
-                    });
-                }
+                // Meta Pixel now loaded in HEAD for faster capture
+                // Keeping only CAPI backup below
 
                 // 4. CAPI BACKEND (Preserved & Enhanced for Coverage)
                 let attempts = 0;
