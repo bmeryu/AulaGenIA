@@ -3,7 +3,7 @@
 // ===============================
 
 const { onCall, HttpsError, onRequest } = require("firebase-functions/v2/https");
-const { onDocumentWritten } = require("firebase-functions/v2/firestore");
+const { onDocumentWritten, onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { defineSecret } = require("firebase-functions/params");
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
@@ -2221,3 +2221,74 @@ exports.quickAddAllowlist = onRequest(async (req, res) => {
         res.status(500).send('Error: ' + error.message);
     }
 });
+
+// =======================================================================================
+// FUNCIÓN 7: Notificación de Nuevo Lead (Admin Alert)
+// =======================================================================================
+exports.notifyNewLead = onDocumentCreated(
+    {
+        document: "leads/{leadId}",
+        secrets: [mailjetApiKey, mailjetSecretKey],
+        region: "us-central1"
+    },
+    async (event) => {
+        const snapshot = event.data;
+        if (!snapshot) {
+            console.log("No data associated with the event");
+            return;
+        }
+        const data = snapshot.data();
+        const leadId = event.params.leadId;
+
+        console.log(`🔔 Nuevo Lead detectado: ${leadId}`, data);
+
+        const email = data.email || "No email";
+        const nombre = data.nombre || "Sin nombre";
+        const source = data.source || "Desconocido";
+
+        // Time with TZ support (requires Intl) or just UTC
+        const time = new Date().toISOString();
+
+        try {
+            const Mailjet = require('node-mailjet');
+            const mailjet = Mailjet.apiConnect(
+                mailjetApiKey.value(),
+                mailjetSecretKey.value()
+            );
+
+            const result = await mailjet
+                .post("send", { 'version': 'v3.1' })
+                .request({
+                    "Messages": [
+                        {
+                            "From": {
+                                "Email": "hola@aulagenia.cl",
+                                "Name": "Aula GenIA Notificaciones"
+                            },
+                            "To": [
+                                { "Email": "hola@aulagenia.cl", "Name": "Admin" },
+                                { "Email": "bmeryu@gmail.com", "Name": "Bernardita Mery" }
+                            ],
+                            "Subject": `🔔 Nuevo Lead: ${nombre} (${email})`,
+                            "HTMLPart": `
+                                <h3>¡Nuevo Lead Generado! 🚀</h3>
+                                <p>Se ha registrado un nuevo intento de compra o registro.</p>
+                                <ul>
+                                    <li><strong>Email:</strong> ${email}</li>
+                                    <li><strong>Nombre:</strong> ${nombre}</li>
+                                    <li><strong>Fecha:</strong> ${time}</li>
+                                    <li><strong>Origen:</strong> ${source}</li>
+                                    <li><strong>ID:</strong> ${leadId}</li>
+                                </ul>
+                                <p>Revisa el dashboard de Firebase o Stripe/Flow para más detalles.</p>
+                            `
+                        }
+                    ]
+                });
+
+            console.log(`✅ Notificación de lead enviada para ${email}`);
+        } catch (error) {
+            console.error("❌ Error enviando notificación de lead:", error);
+        }
+    }
+);
