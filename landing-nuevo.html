@@ -2171,6 +2171,7 @@
 
         // ✅ MANEJAR ENVÍO DEL FORMULARIO
         async function handleCheckoutSubmit(event) {
+            console.log("🚀 Zero-Lag Checkout v2.0 - Parallel Execution Active"); // Identifier for User
             event.preventDefault();
 
             const submitBtn = document.getElementById('inline-submit-btn');
@@ -2203,9 +2204,16 @@
             `;
 
             try {
-                // 1. Guardar Lead en Firestore
+                // 🚀 OPTIMIZATION: Parallel Execution (Zero-Lag)
                 const db = firebase.firestore();
-                const leadRef = await db.collection('leads').add({
+
+                // 1. Generate ID locally (Instant)
+                const leadRef = db.collection('leads').doc();
+
+                // 2. Prepare Promises (Start both operations immediately)
+
+                // A. Save Lead (Background)
+                const saveLeadPromise = leadRef.set({
                     email: email,
                     nombre: nombre, // Save nombre
                     courseId: 'ia-aplicada-starter', // Default course ID
@@ -2214,14 +2222,12 @@
                     includeBump: includeBump // Guardar dato en el lead también
                 });
 
-                // 2. Iniciar Pago Flow (Cloud Function)
+                // B. Init Payment (Critical Path)
                 const createPayment = firebase.functions().httpsCallable('createFlowPayment');
-
-                // Enviar flag 'includeBump' al backend
-                const result = await createPayment({
+                const paymentPromise = createPayment({
                     email: email,
                     nombre: nombre, // Pass nombre to the function
-                    leadId: leadRef.id, // Pass lead ID
+                    leadId: leadRef.id, // Pass generated ID
                     includeBump: includeBump,
                     hiddenCoupon: hiddenCouponActive, // Flag para backend
                     // CAPI Data
@@ -2231,7 +2237,10 @@
                     eventId: window.currentInitiateCheckoutId || generateUUID() // Use generated ID or new one
                 });
 
-                if (result.data && result.data.url) { // Changed from redirectUrl to url based on original code
+                // 3. Await both (Parallel wait is faster than Sequential)
+                const [_, result] = await Promise.all([saveLeadPromise, paymentPromise]);
+
+                if (result.data && result.data.url) {
                     window.location.href = result.data.url;
                 } else {
                     throw new Error('No se recibió URL de redirección');
