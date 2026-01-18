@@ -400,7 +400,7 @@ exports.createMercadoPagoPreference = onCall(
 // =======================================================================================
 // FUNCIÓN 2: Webhook para recibir notificaciones de pago
 // =======================================================================================
-exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken, ga4ApiSecret] }, async (req, res) => {
+exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (req, res) => {
     try {
         const tokenValue = mercadoPagoToken.value().trim();
         const client = new MercadoPagoConfig({ accessToken: tokenValue });
@@ -440,6 +440,7 @@ exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken, ga4ApiSecre
             // =================================================================
             // GA4 SERVER-SIDE PURCHASE EVENT (Phase 3 - Bypass Ad Blockers)
             // =================================================================
+            /* ⏸️ Re-habilitar cuando el secret esté configurado
             try {
                 await sendGA4ServerEvent(
                     userId, // Firebase UID as client_id
@@ -459,6 +460,7 @@ exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken, ga4ApiSecre
             } catch (ga4Error) {
                 console.error('GA4 server event failed (non-blocking):', ga4Error);
             }
+            */
 
             // =================================================================
             // NUEVO: Lógica de seguimiento de cupones
@@ -1452,7 +1454,7 @@ exports.createFlowPayment = onCall(
     }
 );
 
-exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, async (req, res) => {
+exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4ApiSecret] }, async (req, res) => {
     try {
         console.log('🔔 Flow Webhook (Body):', req.body);
         const token = req.body.token;
@@ -1543,8 +1545,31 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey] }, 
                         // Enrolar usuario
                         await admin.firestore().collection("users").doc(targetUid).set({
                             enrollments: { [courseId]: true },
-                            lastPaymentDate: admin.firestore.FieldValue.serverTimestamp()
+                            flowStatus: 'PAID' // Flag opcional
                         }, { merge: true });
+
+                        console.log(`✅ [FLOW] Acceso concedido a ${targetUid} para ${courseId}`);
+
+                        // =================================================================
+                        // GA4 SERVER-SIDE PURCHASE EVENT (Phase 3 - Correct Hook: Flow)
+                        // =================================================================
+                        try {
+                            const params = {
+                                transaction_id: commerceOrder,
+                                value: statusData.amount || 0,
+                                currency: 'CLP', // Flow es CLP
+                                items: [{
+                                    item_id: courseId,
+                                    item_name: courseId === 'ia-aplicada-starter' ? 'Pack Starter' : 'Programa Esencial',
+                                    price: statusData.amount || 0,
+                                    quantity: 1
+                                }]
+                            };
+
+                            await sendGA4ServerEvent(targetUid, 'purchase', params);
+                        } catch (ga4Error) {
+                            console.error('GA4 server event failed (non-blocking):', ga4Error);
+                        }
 
                         // Marcar venta como DELIVERED
                         await salesRef.update({
