@@ -1294,6 +1294,44 @@ exports.createFlowPayment = onCall(
             urlReturn: `https://flowreturnredirect-3kbbtamy5q-uc.a.run.app?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}`,
         };
 
+        // =================================================================
+        // META CAPI: INITIATE CHECKOUT (CRITICAL FIX FOR DISCREPANCY)
+        // =================================================================
+        // Enviamos el evento aquí para capturar a TODOS los usuarios (Auth y Guest)
+        // que realmente inician el proceso de pago.
+        try {
+            const { fbp, fbc, userAgent, eventId, nombre } = request.data;
+            let ip = request.rawRequest.ip;
+            const forwardedFor = request.rawRequest.headers['x-forwarded-for'];
+            if (forwardedFor) ip = forwardedFor.split(',')[0].trim();
+            else if (!ip) ip = request.rawRequest.socket.remoteAddress;
+
+            // Extraer nombre y apellido
+            const nameParts = (nombre || '').split(' ');
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || '';
+
+            await sendMetaCAPIEvent('InitiateCheckout', {
+                eventId: eventId, // ID compartido con Pixel (generado en landing)
+                customData: {
+                    value: amount,
+                    currency: 'CLP',
+                    content_ids: ['ia-aplicada-starter'],
+                    content_category: 'Course',
+                    order_id: commerceOrder
+                }
+            }, {
+                fbp, fbc, userAgent, ip,
+                email: userEmail,
+                firstName: firstName,
+                lastName: lastName
+            }, { url: 'https://aulagenia.cl/landing-nuevo.html' }); // URL fija o dinámica si se envía
+
+        } catch (capiError) {
+            console.error('⚠️ CAPI InitiateCheckout failed in createFlowPayment (non-blocking):', capiError);
+        }
+
+
         // 4. Firmar
         try {
             params.s = signFlowParams(params);
