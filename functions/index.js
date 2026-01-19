@@ -1320,7 +1320,7 @@ exports.createFlowPayment = onCall(
             await sendMetaCAPIEvent('InitiateCheckout', {
                 eventId: eventId, // ID compartido con Pixel (generado en landing)
                 customData: {
-                    value: amount,
+                    value: 0, // Changed to 0 to fix ROAS inflation (Optimization Signal Only)
                     currency: 'CLP',
                     content_ids: ['ia-aplicada-starter'],
                     content_category: 'Course',
