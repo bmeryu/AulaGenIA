@@ -8,6 +8,7 @@ const { defineSecret } = require("firebase-functions/params");
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const { MercadoPagoConfig, Preference, Payment } = require("mercadopago");
+const { sendUnifiedWelcomeEmail } = require("./emailTemplates");
 
 admin.initializeApp();
 
@@ -805,7 +806,7 @@ exports.validateCoupon = onCall(
 
             // Valida coincidencia de curso (si el cupÃ³n tiene restricciÃ³n)
             if (coupon.applicableTo && Array.isArray(coupon.applicableTo) && coupon.applicableTo.length > 0) {
-                // Si la lista tiene "true" o estÃ¡ vacÃ­a, es global (comportamiento legacy/error usuario)
+                // Si la lista tiene "true" o está vacÃ­a, es global (comportamiento legacy/error usuario)
                 // Pero si tiene IDs de cursos, verificamos.
                 const hasValidIds = coupon.applicableTo.some(id => id !== "true" && typeof id === 'string');
                 if (hasValidIds && !coupon.applicableTo.includes(courseId)) {
@@ -913,7 +914,7 @@ exports.getPromptsData = onCall(
                     if (allowDoc.exists) {
                         const allowData = allowDoc.data();
                         const allowedCourses = allowData.courses || [];
-                        // Verificar si estÃ¡ activo y tiene acceso a este curso (o al ID antiguo)
+                        // Verificar si está activo y tiene acceso a este curso (o al ID antiguo)
                         if (allowData.active === true &&
                             (allowedCourses.includes(courseId) || allowedCourses.includes(oldCourseId))) {
                             isAllowed = true;
@@ -925,7 +926,7 @@ exports.getPromptsData = onCall(
                 }
             }
 
-            // El usuario tiene acceso si tiene enrollment O si estÃ¡ en la allowlist
+            // El usuario tiene acceso si tiene enrollment O si está en la allowlist
             const finalAccess = hasEnrollment || isAllowed;
 
             // â FREEMIUM MODEL ACTIVADO: NO bloqueamos si no hay enrollment
@@ -1003,7 +1004,7 @@ exports.getPromptsData = onCall(
  */
 const HOTMART_PRODUCT_MAP = {
     '6932550': 'ia-aplicada-starter',
-    // Agregar mÃ¡s productos aquÃ­ cuando se creen:
+    // Agregar mÃ¡s productos aquí cuando se creen:
     // 'ID_ESENCIAL': 'ia-aplicada-esencial'
 };
 
@@ -1065,7 +1066,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                     console.log(`ð Creando nuevo usuario para: ${buyerEmail}`);
 
                     try {
-                        // Obtener nombre del comprador si estÃ¡ disponible
+                        // Obtener nombre del comprador si está disponible
                         const buyerName = data.buyer?.name || data.data?.buyer?.name || 'Estudiante';
 
                         // Crear usuario en Firebase Auth con contraseÃ±a temporal
@@ -1106,7 +1107,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                                 resetLink: resetLink
                             });
                         } catch (emailError) {
-                            console.error('â Error enviando email (wrapper):', emailError);
+                            console.error('❌ Error enviando email (wrapper):', emailError);
                             // Guardar en cola para reintento manual (fallback)
                             await admin.firestore().collection("emailQueue").add({
                                 to: buyerEmail,
@@ -1302,7 +1303,7 @@ exports.createFlowPayment = onCall(
         // =================================================================
         // META CAPI: INITIATE CHECKOUT (CRITICAL FIX FOR DISCREPANCY)
         // =================================================================
-        // Enviamos el evento aquÃ­ para capturar a TODOS los usuarios (Auth y Guest)
+        // Enviamos el evento aquí para capturar a TODOS los usuarios (Auth y Guest)
         // que realmente inician el proceso de pago.
         try {
             const { fbp, fbc, userAgent, eventId, nombre } = request.data;
@@ -1358,7 +1359,7 @@ exports.createFlowPayment = onCall(
                 email: userEmail,
                 courseId: courseId,
                 amount: amount,
-                // flowOrder se recibe en la respuesta inmediata o webhook, lo dejamos opcional aquÃ­
+                // flowOrder se recibe en la respuesta inmediata o webhook, lo dejamos opcional aquí
                 status: 'INITIATED',
                 enrollmentStatus: 'PENDING',
                 userId: request.auth ? request.auth.uid : null, // Opcional si no hay auth
@@ -1644,212 +1645,42 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                     }
 
                     // ============================================
-                    // EMAIL DE BIENVENIDA (Logic reused from Hotmart)
+                    // EMAIL DE BIENVENIDA (Unified System)
                     // ============================================
                     try {
                         const Mailjet = require('node-mailjet');
-                        // Usamos las mismas keys secretas definidas globalmente o via process.env
-                        const mailjet = Mailjet.apiConnect(
+                        const mailjetClient = Mailjet.apiConnect(
                             mailjetApiKey.value(),
                             mailjetSecretKey.value()
                         );
 
-                        // Determinar si es Pack PRO (Starter + Bump)
-                        // El precio del bump es ~14900, el starter solo es ~8900
+                        // Determinar si es Pack PRO
                         const paidAmount = saleData.amount || 0;
                         const isPro = paidAmount >= 14000;
 
-                        const courseName = isPro
-                            ? 'Pack PRO (Starter + Arsenal Experto)'
-                            : (courseId === 'ia-aplicada-starter' ? 'Pack Starter: +100 Master Prompts' : 'Curso IA Aplicada Esencial');
-
-                        const subjectLine = isPro
-                            ? 'Â¡Bienvenido/a al Nivel PRO! - Acceso Confirmado'
-                            : 'Bienvenido/a a Aula GenIA - Acceso Confirmado';
-
-                        // Variables comunes
-                        const portalUrl = "https://aulagenia.cl/acceso.html";
-                        const appPromptsUrl = "https://aulagenia.cl/maestro-prompts-app.html";
-                        const campusUrl = "https://aulagenia.cl/campus.html";
-
-                        // Intentar obtener el nombre real del usuario
+                        // Obtener nombre del usuario
                         let buyerName = 'Estudiante Aula GenIA';
                         try {
                             const userRecord = await admin.auth().getUserByEmail(userEmail);
-                            if (userRecord.displayName && !userRecord.displayName.includes('@')) buyerName = userRecord.displayName;
+                            if (userRecord.displayName && !userRecord.displayName.includes('@')) {
+                                buyerName = userRecord.displayName;
+                            }
                         } catch (e) {
                             console.log('No se pudo obtener nombre para el email, usando default.');
                         }
 
-                        // HTML DEL CONTENIDO - Replicando estilo Teal/Mint original
+                        // Enviar usando sistema unificado
+                        await sendUnifiedWelcomeEmail({
+                            email: userEmail,
+                            name: buyerName,
+                            isPro: isPro,
+                            paidAmount: paidAmount,
+                            resetLink: null, // No reset link for sales (user creates password on access)
+                            mailjetClient: mailjetClient
+                        });
 
-                        const itemRuta = `
-                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                                <table style="width: 100%;">
-                                    <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ðºï¸</span></td>
-                                        <td>
-                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de TransformaciÃ³n: Fases 1-4</strong>
-                                            <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquÃ­</a></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>`;
-
-                        const itemPrompts = `
-                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                                <table style="width: 100%;">
-                                    <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">â</span></td>
-                                        <td>
-                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
-                                            <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fÃ³rmulas probadas para ChatGPT, Claude y Gemini.</div>
-                                            <div style="font-size: 13px;">
-                                                <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">ð Acceder a la Herramienta</a><br>
-                                                <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">ð¥ Descargar PDF (Auto-descarga)</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>`;
-
-                        const itemBonusPRO = `
-                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                                <table style="width: 100%;">
-                                    <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ð¼</span></td>
-                                        <td>
-                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Masterclass LinkedIn Pro</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 22 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                                <table style="width: 100%;">
-                                    <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ðï¸</span></td>
-                                        <td>
-                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Taller Visual: Piensa en ImÃ¡genes</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 22 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-                                <table style="width: 100%;">
-                                    <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ð</span></td>
-                                        <td>
-                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">GuÃ­a de Consulta RÃ¡pida</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Disponible desde el 22 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 30px;">
-                                <table style="width: 100%;">
-                                    <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ð</span></td>
-                                        <td>
-                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Licencia Permanente de Arquitecto</strong>
-                                            <span style="color: #64748b; font-size: 14px;">Tu entrada a la plataforma y todas sus actualizaciones futuras, sin suscripciones.</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>`;
-
-                        let featuresHtml = itemRuta + itemPrompts;
-                        if (isPro) {
-                            featuresHtml += itemBonusPRO;
-                        }
-
-                        // ENVIAR EL CORREO
-                        const request = await mailjet
-                            .post("send", { 'version': 'v3.1' })
-                            .request({
-                                "Messages": [{
-                                    "From": { "Email": "contacto@aulagenia.cl", "Name": "Aula GenIA" },
-                                    "To": [{ "Email": userEmail, "Name": buyerName }],
-                                    "Bcc": [{ "Email": "benjamery@gmail.com", "Name": "Admin" }, { "Email": "hola@aulagenia.cl", "Name": "Hola Aula GenIA" }],
-                                    "Subject": subjectLine,
-                                    "HTMLPart": `
-                                <!DOCTYPE html>
-                                <html>
-                                <head>
-                                <meta charset="utf-8">
-                                </head>
-                                <body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-                                 <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: 40px; margin-bottom: 40px;">
-                                    <!-- Header -->
-                                    <div style="background: white; padding: 40px 0; text-align: center; border-bottom: 4px solid #0d9488;">
-                                        <h1 style="color: #1e293b; margin: 0; font-size: 24px; font-weight: 800;">Â¡Tu Acceso estÃ¡ listo!</h1>
-                                        <p style="color: #64748b; margin: 10px 0 0 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquÃ­.</p>
-                                    </div>
-
-                                    <div style="padding: 40px;">
-                                        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hola <strong style="color: #0d9488;">${buyerName}</strong>,</p>
-                                        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Es un gusto saludarte. Ya confirmamos tu inscripciÃ³n al <strong style="color: #1e293b;">${courseName}</strong>. 
-                                        ${isPro ? 'A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarÃ¡n tu productividad.' : ''}
-                                        </p>
-
-                                        <!-- Highlight Box -->
-                                        <div style="background: #f0fdf4; border-left: 4px solid #4ade80; padding: 15px; margin: 25px 0; border-radius: 4px;">
-                                            <p style="margin: 0; color: #15803d; font-size: 14px; font-weight: 600;">â¨ Tu acceso a la BÃ³veda de Recursos ya ha sido sincronizado.</p>
-                                        </div>
-
-                                        <!-- Credentials Card -->
-                                        <div style="background: #ccfbf1; border-radius: 16px; padding: 25px; margin: 30px 0; border: 1px solid #99f6e4;">
-                                            <h2 style="text-align: center; color: #0f766e; font-size: 18px; margin-top: 0; margin-bottom: 25px;">ð Tus Credenciales de Acceso</h2>
-                                            <!-- Details Table -->
-                                            <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
-                                                <tr>
-                                                    <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                                        <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">ð Portal de Acceso</p>
-                                                        <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.cl/acceso</a>
-                                                    </td>
-                                                </tr>
-                                                 <tr>
-                                                    <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                                        <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">ð¤ Tu Usuario</p>
-                                                        <p style="color: #1e293b; margin: 0; font-size: 16px; font-weight: 600;">${userEmail}</p>
-                                                    </td>
-                                                </tr>
-                                                 <tr>
-                                                    <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                                       <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">ð Tu ContraseÃ±a</p>
-                                                        <p style="color: #555; margin: 0; font-size: 14px;">Haz clic en el botÃ³n verde de abajo para crearla</p>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                             <div style="text-align: center; margin-top: 25px;">
-                                                  <a href="https://aulagenia.cl/acceso.html" style="background-color: #0d9488; color: white; padding: 16px 32px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);">ð Crear mi ContraseÃ±a y Acceder</a>
-                                             </div>
-                                        </div>
-
-                                        <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">ð¦ Lo que recibes hoy:</h3>
-
-                                        ${featuresHtml}
-
-                                        <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-                                            <p style="color: #94a3b8; font-size: 14px; margin-bottom: 5px;">Â¿Tienes dudas? EscrÃ­benos a <a href="mailto:hola@aulagenia.cl" style="color: #0d9488; text-decoration: none;">hola@aulagenia.cl</a></p>
-                                            <p style="color: #0d9488; font-weight: 600; font-size: 14px;">Â¡Y recuerda: en Aula GenIA, la IA no es el futuro... TÃ lo eres!</p>
-                                        </div>
-
-                                    </div>
-                                    <!-- Footer -->
-                                    <div style="background: #f8fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-                                        <p style="color: #94a3b8; font-size: 13px; margin: 0;">Â© 2026 Aula GenIA. Todos los derechos reservados.</p>
-                                    </div>
-                                 </div>
-                                </body>
-                                </html>`
-                                }]
-                            });
-
-                        console.log('â Email de bienvenida enviado a:', userEmail);
                     } catch (mailError) {
-                        console.error('â Error enviando email de bienvenida:', mailError);
+                        console.error('❌ Error enviando email de bienvenida:', mailError);
                     }
                 } catch (e) {
                     console.error('Error finding user for enrollment:', e);
@@ -1860,7 +1691,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
         return res.status(200).send('OK');
 
     } catch (error) {
-        console.error('ð¥ Flow Webhook Error:', error);
+        console.error('💥 Flow Webhook Error:', error);
         return res.status(500).send('Server Error');
     }
 });
@@ -1956,171 +1787,11 @@ exports.flowReturnRedirect = onRequest(async (req, res) => {
 
 // =======================================================================================
 // HELPERS & TRIGGERS (EMAIL AUTOMATION)
+// Note: Email templates are now in emailTemplates.js (sendUnifiedWelcomeEmail)
 // =======================================================================================
 
 /**
- * Helper reutilizable para enviar correo de bienvenida via Mailjet
- */
-async function sendWelcomeEmailHelper({ email, name, courseId, resetLink }) {
-    const Mailjet = require('node-mailjet');
-    // Acceder a secretos globalmente definidos
-    const mailjet = Mailjet.apiConnect(
-        mailjetApiKey.value(),
-        mailjetSecretKey.value()
-    );
-
-    console.log('ð§ Helper: Iniciando envÃ­o de correo a:', email);
-
-    // Determinar si es Pack PRO (Starter + Bump) logic placeholder (for allowlist default is starter/esencial)
-    // Para allowlist asumimos precio 0 o default starter, pero podemos pasar flags si se requiere.
-    // Por ahora usamos lÃ³gica simple basada en courseId
-
-    const isPro = false; // Default para allowlist simple por ahora
-    const courseName = courseId === 'ia-aplicada-starter'
-        ? 'Pack Starter: +100 Master Prompts'
-        : (courseId === 'ia-aplicada-esencial' ? 'Curso IA Aplicada Esencial' : 'Pack Starter de IA'); // Default generic
-
-    const subjectLine = 'Bienvenido/a a Aula GenIA - Acceso Confirmado';
-
-    // HTML from Flow Webhook Template
-    const itemRuta = `
-        <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-            <table style="width: 100%;">
-                <tr>
-                    <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ðºï¸</span></td>
-                    <td>
-                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de TransformaciÃ³n: Fases 1-4</strong>
-                        <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquÃ­</a></span>
-                    </td>
-                </tr>
-            </table>
-        </div>`;
-
-    const itemPrompts = `
-        <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-            <table style="width: 100%;">
-                <tr>
-                    <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">â</span></td>
-                    <td>
-                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
-                        <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fÃ³rmulas probadas para ChatGPT, Claude y Gemini.</div>
-                        <div style="font-size: 13px;">
-                            <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">ð Acceder a la Herramienta</a><br>
-                            <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">ð¥ Descargar PDF (Auto-descarga)</a>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>`;
-
-    // Starter items are standard for allowlist
-    let featuresHtml = itemRuta + itemPrompts;
-
-    try {
-        const result = await mailjet.post('send', { version: 'v3.1' }).request({
-            Messages: [{
-                From: {
-                    Email: 'contacto@aulagenia.cl',
-                    Name: 'Aula GenIA'
-                },
-                To: [{
-                    Email: email,
-                    Name: name
-                }],
-                Bcc: [{
-                    Email: 'benjamery@gmail.com',
-                    Name: 'Admin'
-                }, {
-                    Email: 'hola@aulagenia.cl',
-                    Name: 'Hola Aula GenIA' // Keep BCCs as in Flow
-                }],
-                Subject: subjectLine,
-                HTMLPart: `
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-</head>
-<body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
- <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: 40px; margin-bottom: 40px;">
-    <!-- Header -->
-    <div style="background: white; padding: 40px 0; text-align: center; border-bottom: 4px solid #0d9488;">
-        <h1 style="color: #1e293b; margin: 0; font-size: 24px; font-weight: 800;">Â¡Tu Acceso estÃ¡ listo!</h1>
-        <p style="color: #64748b; margin: 10px 0 0 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquÃ­.</p>
-    </div>
-
-    <div style="padding: 40px;">
-        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hola <strong style="color: #0d9488;">${name}</strong>,</p>
-        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Es un gusto saludarte. Ya confirmamos tu inscripciÃ³n al <strong style="color: #1e293b;">${courseName}</strong>. 
-        </p>
-
-        <!-- Highlight Box -->
-        <div style="background: #f0fdf4; border-left: 4px solid #4ade80; padding: 15px; margin: 25px 0; border-radius: 4px;">
-            <p style="margin: 0; color: #15803d; font-size: 14px; font-weight: 600;">â¨ Tu acceso a la BÃ³veda de Recursos ya ha sido sincronizado.</p>
-        </div>
-
-        <!-- Credentials Card -->
-        <div style="background: #ccfbf1; border-radius: 16px; padding: 25px; margin: 30px 0; border: 1px solid #99f6e4;">
-            <h2 style="text-align: center; color: #0f766e; font-size: 18px; margin-top: 0; margin-bottom: 25px;">ð Tus Credenciales de Acceso</h2>
-            <!-- Details Table -->
-            <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
-                <tr>
-                    <td style="background: white; border-radius: 8px; padding: 15px; width: 100%;">
-                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">ð Portal de Acceso</div>
-                        <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.cl/acceso</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background: white; border-radius: 8px; padding: 15px;">
-                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">ð¤ Tu Usuario</div>
-                        <div style="color: #1e293b; font-size: 16px; font-weight: 600;">${email}</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background: white; border-radius: 8px; padding: 15px;">
-                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">ð Tu ContraseÃ±a</div>
-                        <div style="color: #1e293b; font-size: 14px;">Haz clic abajo para crearla ð</div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- CTA Button -->
-        <div style="text-align: center; margin: 35px 0;">
-            <a href="${resetLink}" style="display: inline-block; background: #0d9488; color: white; padding: 18px 40px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.4);">
-                ð Crear mi ContraseÃ±a y Acceder
-            </a>
-            <p style="color: #94a3b8; font-size: 13px; margin-top: 15px;">(Este enlace es Ãºnico y seguro)</p>
-        </div>
-
-        <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">ð¦ Tu Arsenal Confirmado:</h3>
-        
-        ${featuresHtml}
-
-    </div>
-
-    <!-- Footer -->
-    <div style="background: #f8fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-        <p style="color: #64748b; margin: 0 0 10px 0; font-size: 14px;">Â¿Tienes dudas? Responde a este correo.</p>
-        <p style="color: #0f766e; margin: 0; font-size: 13px; font-weight: 600;">Enviado con â¤ï¸ desde Aula GenIA</p>
-    </div>
- </div>
-</body>
-</html>`,
-                TextPart: `Â¡Hola ${name}! Acceso Confirmado.\n\nUsuario: ${email}\nLink de Acceso: ${resetLink}\n\nIngresa a https://aulagenia.cl/acceso.html`
-            }]
-        });
-
-        console.log('ð§ Helper: Email enviado OK (Template Flow)');
-        return result;
-    } catch (err) {
-        console.error('ð§ Helper Error:', err);
-        throw err;
-    }
-}
-
-/**
- * TRIGGER: Enviar correo de bienvenida automÃ¡ticamente al agregar/editar Allowlist
+ * TRIGGER: Enviar correo de bienvenida automáticamente al agregar/editar Allowlist
  * Escucha write en allowlist/{email}
  */
 exports.onAllowlistChange = onDocumentWritten(
@@ -2139,7 +1810,7 @@ exports.onAllowlistChange = onDocumentWritten(
             return console.log('ð« Trigger: No data or sendWelcomeEmail not true');
         }
 
-        // 2. Prevenir loops: si ya se enviÃ³, salir
+        // 2. Prevenir loops: si ya se envió, salir
         if (newData.welcomeEmailSent) {
             return console.log('â Trigger: Email ya enviado previamente.');
         }
@@ -2170,12 +1841,22 @@ exports.onAllowlistChange = onDocumentWritten(
                 url: 'https://aulagenia.cl/acceso.html?from=allowlist'
             });
 
-            // 4. Enviar Correo
-            await sendWelcomeEmailHelper({
+            // 4. Enviar Correo usando sistema unificado
+            const Mailjet = require('node-mailjet');
+            const mailjetClient = Mailjet.apiConnect(
+                mailjetApiKey.value(),
+                mailjetSecretKey.value()
+            );
+
+            // Determinar si es PRO basado en cursos del allowlist
+            const isPro = newData.courses && newData.courses.includes('ia-aplicada-esencial');
+
+            await sendUnifiedWelcomeEmail({
                 email: email,
                 name: userRecord.displayName || 'Estudiante',
-                courseId: 'ia-aplicada-starter', // Default para allowlist
-                resetLink: resetLink
+                isPro: isPro,
+                resetLink: resetLink,
+                mailjetClient: mailjetClient
             });
 
             // 5. Actualizar documento para no re-enviar
@@ -2222,6 +1903,114 @@ exports.quickAddAllowlist = onRequest(async (req, res) => {
         res.status(500).send('Error: ' + error.message);
     }
 });
+
+// =======================================================================================
+// ADMIN: Resend Welcome Email (for Sales)
+// Usage: /resendWelcomeEmail?email=user@example.com&key=admin_key
+// =======================================================================================
+exports.resendWelcomeEmail = onRequest(
+    { secrets: [mailjetApiKey, mailjetSecretKey] },
+    async (req, res) => {
+        // Security check
+        if (req.query.key !== 'temp_admin_key_123') {
+            return res.status(403).send('Forbidden');
+        }
+
+        const email = req.query.email;
+        if (!email) {
+            return res.status(400).send('Missing email parameter');
+        }
+
+        const db = admin.firestore();
+
+        try {
+            console.log(`📧 Resend: Buscando venta para ${email}...`);
+
+            // 1. Buscar en sales collection (query simple para evitar índice compuesto)
+            const salesQuery = await db.collection('sales')
+                .where('email', '==', email)
+                .limit(10)
+                .get();
+
+            // Filtrar por DELIVERED manualmente
+            let deliveredSales = [];
+            salesQuery.docs.forEach(doc => {
+                const data = doc.data();
+                if (data.enrollmentStatus === 'DELIVERED') {
+                    deliveredSales.push({ id: doc.id, ...data });
+                }
+            });
+
+            let isPro = false;
+            let paidAmount = 0;
+            let source = 'unknown';
+
+            if (deliveredSales.length > 0) {
+                const saleData = deliveredSales[0];
+                paidAmount = saleData.amount || 0;
+                isPro = paidAmount >= 14000;
+                source = 'sales';
+                console.log(`✅ Encontrada venta: $${paidAmount}, isPro: ${isPro}`);
+            } else {
+                // 2. Si no hay venta, buscar en allowlist
+                const allowlistDoc = await db.collection('allowlist').doc(email).get();
+                if (allowlistDoc.exists) {
+                    const allowData = allowlistDoc.data();
+                    isPro = allowData.courses && allowData.courses.includes('ia-aplicada-esencial');
+                    source = 'allowlist';
+                    console.log(`✅ Encontrado en allowlist, isPro: ${isPro}`);
+                } else {
+                    return res.status(404).send(`No se encontró venta ni registro de allowlist para: ${email}`);
+                }
+            }
+
+            // 3. Obtener nombre del usuario
+            let userName = 'Estudiante';
+            try {
+                const userRecord = await admin.auth().getUserByEmail(email);
+                if (userRecord.displayName && !userRecord.displayName.includes('@')) {
+                    userName = userRecord.displayName;
+                }
+            } catch (e) {
+                console.log('No se pudo obtener nombre, usando default.');
+            }
+
+            // 4. Enviar email usando sistema unificado
+            const Mailjet = require('node-mailjet');
+            const mailjetClient = Mailjet.apiConnect(
+                mailjetApiKey.value(),
+                mailjetSecretKey.value()
+            );
+
+            await sendUnifiedWelcomeEmail({
+                email: email,
+                name: userName,
+                isPro: isPro,
+                paidAmount: paidAmount,
+                resetLink: null,
+                mailjetClient: mailjetClient
+            });
+
+            res.send(`
+                <html>
+                <body style="font-family: sans-serif; padding: 2rem; text-align: center;">
+                    <h1>✅ Email Reenviado</h1>
+                    <p><strong>Destinatario:</strong> ${email}</p>
+                    <p><strong>Tipo:</strong> ${isPro ? 'PRO' : 'Starter'}</p>
+                    <p><strong>Fuente:</strong> ${source}</p>
+                    <p><strong>Monto:</strong> $${paidAmount}</p>
+                    <hr>
+                    <a href="javascript:history.back()">← Volver</a>
+                </body>
+                </html>
+            `);
+
+        } catch (error) {
+            console.error('❌ Error en resendWelcomeEmail:', error);
+            res.status(500).send('Error: ' + error.message);
+        }
+    }
+);
 
 // =======================================================================================
 // FUNCIÓN 7: Notificación de Nuevo Lead (Admin Alert)
