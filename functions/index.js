@@ -1,5 +1,5 @@
 // ===============================
-// index.js — Aula GenIA · Lógica de Servidor Completa v3 (con CORS)
+// index.js â Aula GenIA Â· LÃ³gica de Servidor Completa v3 (con CORS)
 // ===============================
 
 const { onCall, HttpsError, onRequest } = require("firebase-functions/v2/https");
@@ -57,13 +57,13 @@ async function sendMetaCAPIEvent(eventName, eventData, userData, contextData) {
                 },
                 custom_data: eventData.customData
             }],
-            // ⚠️ TEST MODE ACTIVE (Remove in Prod)
+            // â ï¸ TEST MODE ACTIVE (Remove in Prod)
             test_event_code: 'TEST68724',
             access_token: META_ACCESS_TOKEN
         };
 
         // Log PII-safe payload for debugging
-        console.log(`📡 Sending CAPI Event: ${eventName}`, {
+        console.log(`ð¡ Sending CAPI Event: ${eventName}`, {
             event_id: eventData.eventId,
             fbp: userData.fbp,
             url: contextData.url
@@ -77,13 +77,13 @@ async function sendMetaCAPIEvent(eventName, eventData, userData, contextData) {
 
         const result = await response.json();
         if (result.error) {
-            console.error(`❌ Meta CAPI Error (${eventName}):`, result.error);
+            console.error(`â Meta CAPI Error (${eventName}):`, result.error);
         } else {
-            console.log(`✅ Meta CAPI Success (${eventName}):`, result);
+            console.log(`â Meta CAPI Success (${eventName}):`, result);
         }
         return result;
     } catch (error) {
-        console.error(`❌ Meta CAPI Exception (${eventName}):`, error);
+        console.error(`â Meta CAPI Exception (${eventName}):`, error);
         return null;
     }
 }
@@ -116,14 +116,14 @@ async function sendGA4ServerEvent(clientId, eventName, eventParams) {
         );
 
         if (response.ok) {
-            console.log(`✅ GA4 Server Event: ${eventName}`);
+            console.log(`â GA4 Server Event: ${eventName}`);
             return true;
         } else {
-            console.error(`❌ GA4 API Error (${eventName}):`, await response.text());
+            console.error(`â GA4 API Error (${eventName}):`, await response.text());
             return false;
         }
     } catch (error) {
-        console.error(`❌ GA4 Server Event Exception (${eventName}):`, error);
+        console.error(`â GA4 Server Event Exception (${eventName}):`, error);
         return false;
     }
 }
@@ -186,7 +186,7 @@ exports.trackInitiateCheckout = onCall(
         const forwardedFor = request.rawRequest.headers['x-forwarded-for'];
 
         if (forwardedFor) {
-            // "2001:db8::1, 192.168.1.1" → "2001:db8::1"
+            // "2001:db8::1, 192.168.1.1" â "2001:db8::1"
             ip = forwardedFor.split(',')[0].trim();
         } else if (!ip) {
             // Fallback
@@ -220,7 +220,7 @@ exports.trackInitiateCheckout = onCall(
 
 
 // =======================================================================================
-// FUNCIÓN 1: Crear Preferencia de Pago (Soluciona el error de CORS)(DESCUENTO)
+// FUNCIÃN 1: Crear Preferencia de Pago (Soluciona el error de CORS)(DESCUENTO)
 // =======================================================================================
 exports.createMercadoPagoPreference = onCall(
     {
@@ -244,7 +244,7 @@ exports.createMercadoPagoPreference = onCall(
         const userId = request.auth.uid;
         const userEmail = request.auth.token.email;
 
-        // Precio base dinámico según el curso
+        // Precio base dinÃ¡mico segÃºn el curso
         let basePrice = 120; // Default legacy
 
         if (courseId === 'ia-aplicada-starter') {
@@ -255,7 +255,7 @@ exports.createMercadoPagoPreference = onCall(
         let finalPrice = basePrice;
         let discountAmount = 0;
 
-        // Intentar buscar cupón por ID o por Código
+        // Intentar buscar cupÃ³n por ID o por CÃ³digo
         let couponDoc = null;
         let couponData = null;
 
@@ -268,7 +268,7 @@ exports.createMercadoPagoPreference = onCall(
                 }
             }
 
-            // Si no se encontró por ID y tenemos código, buscar por código
+            // Si no se encontrÃ³ por ID y tenemos cÃ³digo, buscar por cÃ³digo
             if (!couponData && couponCode) {
                 const snapshot = await admin.firestore()
                     .collection('coupons')
@@ -285,7 +285,7 @@ exports.createMercadoPagoPreference = onCall(
                     if (code === 'LANZAMIENTO') {
                         // LANZAMIENTO solo para Starter
                         if (courseId !== 'ia-aplicada-starter') {
-                            throw new HttpsError('failed-precondition', 'El cupón LANZAMIENTO solo aplica al programa Starter.');
+                            throw new HttpsError('failed-precondition', 'El cupÃ³n LANZAMIENTO solo aplica al programa Starter.');
                         }
                         couponData = {
                             code: 'LANZAMIENTO',
@@ -295,7 +295,7 @@ exports.createMercadoPagoPreference = onCall(
                     } else if (code === 'FUNDADOR') {
                         // FUNDADOR solo para Esencial
                         if (courseId !== 'ia-aplicada-esencial') {
-                            throw new HttpsError('failed-precondition', 'El cupón FUNDADOR solo aplica al programa Esencial.');
+                            throw new HttpsError('failed-precondition', 'El cupÃ³n FUNDADOR solo aplica al programa Esencial.');
                         }
                         couponData = {
                             code: 'FUNDADOR',
@@ -305,7 +305,7 @@ exports.createMercadoPagoPreference = onCall(
                     } else if (code === 'UPGRADESTARTER') {
                         // UPGRADESTARTER solo para Esencial
                         if (courseId !== 'ia-aplicada-esencial') {
-                            throw new HttpsError('failed-precondition', 'El cupón UPGRADESTARTER solo aplica al programa Esencial.');
+                            throw new HttpsError('failed-precondition', 'El cupÃ³n UPGRADESTARTER solo aplica al programa Esencial.');
                         }
                         couponData = {
                             code: 'UPGRADESTARTER',
@@ -316,7 +316,7 @@ exports.createMercadoPagoPreference = onCall(
                 }
             }
 
-            // Aplicar descuento si se encontró cupón
+            // Aplicar descuento si se encontrÃ³ cupÃ³n
             if (couponData) {
                 // Calcular descuento
                 if (couponData.discountType === 'percentage') {
@@ -326,22 +326,22 @@ exports.createMercadoPagoPreference = onCall(
                 }
 
                 finalPrice = Math.max(0, basePrice - discountAmount);
-                console.log(`Cupón aplicado: ${couponData.code}, Descuento: $${discountAmount}, Precio final: $${finalPrice}`);
+                console.log(`CupÃ³n aplicado: ${couponData.code}, Descuento: $${discountAmount}, Precio final: $${finalPrice}`);
             } else if (couponId || couponCode) {
-                // Si se intentó usar cupón pero no se encontró
-                console.warn(`Cupón no encontrado: ID=${couponId}, Code=${couponCode}`);
-                throw new HttpsError('not-found', 'El cupón indicado no es válido o ha expirado.');
+                // Si se intentÃ³ usar cupÃ³n pero no se encontrÃ³
+                console.warn(`CupÃ³n no encontrado: ID=${couponId}, Code=${couponCode}`);
+                throw new HttpsError('not-found', 'El cupÃ³n indicado no es vÃ¡lido o ha expirado.');
             }
 
         } catch (error) {
-            console.error('Error aplicando cupón:', error);
-            // Re-lanzar error para que el usuario sepa que falló el cupón
+            console.error('Error aplicando cupÃ³n:', error);
+            // Re-lanzar error para que el usuario sepa que fallÃ³ el cupÃ³n
             if (error instanceof HttpsError) throw error;
-            throw new HttpsError('internal', 'Error al procesar el cupón de descuento.');
+            throw new HttpsError('internal', 'Error al procesar el cupÃ³n de descuento.');
         }
 
         const courseDetails = {
-            title: "Curso IA Aplicada · Esencial",
+            title: "Curso IA Aplicada Â· Esencial",
             priceUSD: finalPrice,
         };
 
@@ -374,7 +374,7 @@ exports.createMercadoPagoPreference = onCall(
                 pending: "https://aulagenia.cl/pago-pendiente.html",
             },
             auto_return: "approved",
-            binary_mode: true, // Aprobación inmediata o rechazo (sin estado pendiente)
+            binary_mode: true, // AprobaciÃ³n inmediata o rechazo (sin estado pendiente)
             notification_url: notificationUrl,
             external_reference: `${userId}_${courseId}`,
 
@@ -384,13 +384,13 @@ exports.createMercadoPagoPreference = onCall(
                 discountAmount: discountAmount
             },
 
-            // ✅ CONFIGURACIÓN ADICIONAL
+            // â CONFIGURACIÃN ADICIONAL
             expires: false
         };
 
         try {
             const pref = await preferenceClient.create({ body: preferenceBody });
-            console.log("Preferencia de Mercado Pago creada con éxito:", { id: pref.id });
+            console.log("Preferencia de Mercado Pago creada con Ã©xito:", { id: pref.id });
             return { init_point: pref.init_point, id: pref.id };
         } catch (error) {
             console.error("Error al crear la preferencia de Mercado Pago:", error);
@@ -400,7 +400,7 @@ exports.createMercadoPagoPreference = onCall(
 );
 
 // =======================================================================================
-// FUNCIÓN 2: Webhook para recibir notificaciones de pago
+// FUNCIÃN 2: Webhook para recibir notificaciones de pago
 // =======================================================================================
 exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (req, res) => {
     try {
@@ -414,12 +414,12 @@ exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (r
 
         const isPaymentNotification = type === "payment" || action.startsWith("payment.");
         if (!isPaymentNotification || !paymentId) {
-            console.log("Notificación de Webhook ignorada (no es un pago):", { type, action });
+            console.log("NotificaciÃ³n de Webhook ignorada (no es un pago):", { type, action });
             return res.status(200).send("Ignored");
         }
 
         const payment = await paymentClient.get({ id: paymentId });
-        console.log("Pago recibido vía Webhook:", {
+        console.log("Pago recibido vÃ­a Webhook:", {
             id: paymentId,
             status: payment.status,
             external_reference: payment.external_reference,
@@ -430,7 +430,7 @@ exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (r
             const [userId, courseId] = externalReference.split("_");
 
             if (!userId || !courseId) {
-                throw new Error(`Referencia externa inválida: ${externalReference}`);
+                throw new Error(`Referencia externa invÃ¡lida: ${externalReference}`);
             }
 
             await admin.firestore().collection("users").doc(userId).set({
@@ -442,7 +442,7 @@ exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (r
             // =================================================================
             // GA4 SERVER-SIDE PURCHASE EVENT (Phase 3 - Bypass Ad Blockers)
             // =================================================================
-            /* ⏸️ Re-habilitar cuando el secret esté configurado
+            /* â¸ï¸ Re-habilitar cuando el secret estÃ© configurado
             try {
                 await sendGA4ServerEvent(
                     userId, // Firebase UID as client_id
@@ -465,41 +465,41 @@ exports.mercadoPagoWebhook = onRequest({ secrets: [mercadoPagoToken] }, async (r
             */
 
             // =================================================================
-            // NUEVO: Lógica de seguimiento de cupones
+            // NUEVO: LÃ³gica de seguimiento de cupones
             // =================================================================
             try {
-                // Mercado Pago devuelve metadata en snake_case (coupon_id) o camelCase según la versión.
+                // Mercado Pago devuelve metadata en snake_case (coupon_id) o camelCase segÃºn la versiÃ³n.
                 // Revisamos ambas por seguridad. Y 'metadata' viene dentro de 'payment'.
                 const metadata = payment.metadata || {};
                 const couponId = metadata.coupon_id || metadata.couponId; // MP suele normalizar a snake_case
 
                 if (couponId) {
-                    console.log(`Procesando uso de cupón: ${couponId}`);
+                    console.log(`Procesando uso de cupÃ³n: ${couponId}`);
                     const couponRef = admin.firestore().collection('coupons').doc(couponId);
 
                     await couponRef.update({
                         currentUses: admin.firestore.FieldValue.increment(1)
                     });
-                    console.log(`Cupón ${couponId} actualizado (+1 uso).`);
+                    console.log(`CupÃ³n ${couponId} actualizado (+1 uso).`);
                 } else {
-                    console.log("No se detectó uso de cupón en la metadata del pago.");
+                    console.log("No se detectÃ³ uso de cupÃ³n en la metadata del pago.");
                 }
             } catch (couponError) {
-                console.error("Error al actualizar el uso del cupón:", couponError);
-                // No lanzamos error para no fallar el webhook completo, ya que el curso se entregó
+                console.error("Error al actualizar el uso del cupÃ³n:", couponError);
+                // No lanzamos error para no fallar el webhook completo, ya que el curso se entregÃ³
             }
             // =================================================================
         }
 
         return res.status(200).send("OK");
     } catch (err) {
-        console.error("Error crítico en el webhook de Mercado Pago:", err);
+        console.error("Error crÃ­tico en el webhook de Mercado Pago:", err);
         return res.status(500).send("Error");
     }
 });
 
 // =======================================================================================
-// FUNCIÓN 3: Activar curso manualmente (Para Administradores)
+// FUNCIÃN 3: Activar curso manualmente (Para Administradores)
 // =======================================================================================
 exports.grantCourseAccess = onCall(async (request) => {
     const adminUIDs = ["L2FWh01btKWW8lB5HotJXjXRtMf2"];
@@ -527,7 +527,7 @@ exports.grantCourseAccess = onCall(async (request) => {
 });
 
 // =======================================================================================
-// FUNCIÓN 4: Resetear progreso (Administrador)
+// FUNCIÃN 4: Resetear progreso (Administrador)
 // =======================================================================================
 exports.resetCourseProgress = onCall(async (request) => {
     const adminUIDs = ["L2FWh01btKWW8lB5HotJXjXRtMf2"];
@@ -562,19 +562,19 @@ exports.resetCourseProgress = onCall(async (request) => {
 });
 
 // =======================================================================================
-// FUNCIÓN 5: Completar curso al 100% (Administrador)
+// FUNCIÃN 5: Completar curso al 100% (Administrador)
 // =======================================================================================
 exports.completeCourseForUser = onCall(async (request) => {
     const adminUIDs = ['L2FWh01btKWW8lB5HotJXjXRtMf2'];
 
     if (!request.auth || !adminUIDs.includes(request.auth.uid)) {
-        throw new HttpsError('permission-denied', 'Debes ser un administrador para ejecutar esta acción.');
+        throw new HttpsError('permission-denied', 'Debes ser un administrador para ejecutar esta acciÃ³n.');
     }
 
     const { userEmail, courseId } = request.data || {};
 
     if (!userEmail || !courseId) {
-        throw new HttpsError('invalid-argument', 'Faltan los parámetros "userEmail" y "courseId".');
+        throw new HttpsError('invalid-argument', 'Faltan los parÃ¡metros "userEmail" y "courseId".');
     }
 
     try {
@@ -599,7 +599,7 @@ exports.completeCourseForUser = onCall(async (request) => {
 
         const courseData = ALL_COURSES_DATA[courseId];
         if (!courseData) {
-            throw new HttpsError('not-found', `El curso con ID "${courseId}" no se encontró en la configuración.`);
+            throw new HttpsError('not-found', `El curso con ID "${courseId}" no se encontrÃ³ en la configuraciÃ³n.`);
         }
 
         const allLessonIds = courseData.modules.flatMap(m => m.lessons.map(l => l.id));
@@ -620,40 +620,40 @@ exports.completeCourseForUser = onCall(async (request) => {
         if (error.code === 'auth/user-not-found') {
             throw new HttpsError('not-found', `El usuario con email ${userEmail} no fue encontrado.`);
         }
-        throw new HttpsError('internal', 'Ocurrió un error en el servidor.');
+        throw new HttpsError('internal', 'OcurriÃ³ un error en el servidor.');
     }
 });
 
 // =======================================================================================
-// FUNCIÓN 6: Generar Certificado Seguro (Backend Authority - V2)
+// FUNCIÃN 6: Generar Certificado Seguro (Backend Authority - V2)
 // =======================================================================================
 exports.generateCertificate = onCall(async (request) => {
     if (!request.auth) {
-        throw new HttpsError('unauthenticated', 'Debes iniciar sesión para obtener tu certificado.');
+        throw new HttpsError('unauthenticated', 'Debes iniciar sesiÃ³n para obtener tu certificado.');
     }
     const uid = request.auth.uid;
     const courseId = request.data.courseId || 'ia-aplicada-esencial';
     const userDisplayName = request.auth.token.name || 'Alumno';
     const COURSE_CONFIG = {
         'ia-aplicada-esencial': {
-            title: 'IA Aplicada · Esencial',
+            title: 'IA Aplicada Â· Esencial',
             totalLessons: 20
         }
     };
     // REPLICAR CONFIG PARA STARTER
     COURSE_CONFIG['ia-aplicada-starter'] = {
-        title: 'IA Aplicada · Starter',
+        title: 'IA Aplicada Â· Starter',
         totalLessons: 20
     };
     const courseInfo = COURSE_CONFIG[courseId];
     if (!courseInfo) {
-        throw new HttpsError('not-found', 'El curso solicitado no existe o no tiene certificación habilitada.');
+        throw new HttpsError('not-found', 'El curso solicitado no existe o no tiene certificaciÃ³n habilitada.');
     }
     try {
         const db = admin.firestore();
         const progressDoc = await db.collection('userProgress').doc(uid).get();
         if (!progressDoc.exists) {
-            throw new HttpsError('failed-precondition', 'No se encontró progreso para este usuario.');
+            throw new HttpsError('failed-precondition', 'No se encontrÃ³ progreso para este usuario.');
         }
         const userData = progressDoc.data();
         const courseProgress = userData[courseId];
@@ -709,7 +709,7 @@ exports.validateCoupon = onCall(
     },
     async (request) => {
         // Permitimos validar sin auth para mostrar precios en landing
-        // if (!request.auth) throw new HttpsError('unauthenticated', 'Debes iniciar sesión');
+        // if (!request.auth) throw new HttpsError('unauthenticated', 'Debes iniciar sesiÃ³n');
 
         const { couponCode, courseId } = request.data;
         const userId = request.auth ? request.auth.uid : null;
@@ -728,7 +728,7 @@ exports.validateCoupon = onCall(
                 if (code === 'LANZAMIENTO') {
                     // LANZAMIENTO solo para Starter
                     if (courseId !== 'ia-aplicada-starter') {
-                        throw new HttpsError('failed-precondition', 'El cupón LANZAMIENTO solo aplica al programa Starter.');
+                        throw new HttpsError('failed-precondition', 'El cupÃ³n LANZAMIENTO solo aplica al programa Starter.');
                     }
                     return {
                         valid: true,
@@ -744,7 +744,7 @@ exports.validateCoupon = onCall(
                 if (code === 'FUNDADOR') {
                     // FUNDADOR solo para Esencial
                     if (courseId !== 'ia-aplicada-esencial') {
-                        throw new HttpsError('failed-precondition', 'El cupón FUNDADOR solo aplica al programa Esencial.');
+                        throw new HttpsError('failed-precondition', 'El cupÃ³n FUNDADOR solo aplica al programa Esencial.');
                     }
                     return {
                         valid: true,
@@ -760,7 +760,7 @@ exports.validateCoupon = onCall(
                 if (code === 'UPGRADESTARTER') {
                     // UPGRADESTARTER solo para Esencial
                     if (courseId !== 'ia-aplicada-esencial') {
-                        throw new HttpsError('failed-precondition', 'El cupón UPGRADESTARTER solo aplica al programa Esencial.');
+                        throw new HttpsError('failed-precondition', 'El cupÃ³n UPGRADESTARTER solo aplica al programa Esencial.');
                     }
                     return {
                         valid: true,
@@ -774,7 +774,7 @@ exports.validateCoupon = onCall(
                     };
                 }
 
-                throw new HttpsError('not-found', 'Cupón inválido');
+                throw new HttpsError('not-found', 'CupÃ³n invÃ¡lido');
             }
 
             const couponDoc = snapshot.docs[0];
@@ -782,11 +782,11 @@ exports.validateCoupon = onCall(
             const now = admin.firestore.Timestamp.now();
 
             if (coupon.validFrom > now || coupon.validUntil < now) {
-                throw new HttpsError('failed-precondition', 'Cupón expirado');
+                throw new HttpsError('failed-precondition', 'CupÃ³n expirado');
             }
 
             if (coupon.currentUses >= coupon.maxUses) {
-                throw new HttpsError('resource-exhausted', 'Cupón agotado');
+                throw new HttpsError('resource-exhausted', 'CupÃ³n agotado');
             }
 
             // Verificar uso por usuario (solo si hay usuario autenticado)
@@ -798,17 +798,17 @@ exports.validateCoupon = onCall(
                     .get();
 
                 if (usageSnapshot.size >= coupon.maxUsesPerUser) {
-                    throw new HttpsError('failed-precondition', 'Ya usaste este cupón');
+                    throw new HttpsError('failed-precondition', 'Ya usaste este cupÃ³n');
                 }
             }
 
-            // Valida coincidencia de curso (si el cupón tiene restricción)
+            // Valida coincidencia de curso (si el cupÃ³n tiene restricciÃ³n)
             if (coupon.applicableTo && Array.isArray(coupon.applicableTo) && coupon.applicableTo.length > 0) {
-                // Si la lista tiene "true" o está vacía, es global (comportamiento legacy/error usuario)
+                // Si la lista tiene "true" o estÃ¡ vacÃ­a, es global (comportamiento legacy/error usuario)
                 // Pero si tiene IDs de cursos, verificamos.
                 const hasValidIds = coupon.applicableTo.some(id => id !== "true" && typeof id === 'string');
                 if (hasValidIds && !coupon.applicableTo.includes(courseId)) {
-                    throw new HttpsError('failed-precondition', 'Este cupón no es válido para este curso.');
+                    throw new HttpsError('failed-precondition', 'Este cupÃ³n no es vÃ¡lido para este curso.');
                 }
             }
 
@@ -816,7 +816,7 @@ exports.validateCoupon = onCall(
             if (courseId === 'ia-aplicada-starter') originalPrice = 15;
             if (courseId === 'ia-aplicada-esencial') originalPrice = 45;
 
-            // Asegurar tipos numéricos (Firestore puede devolver strings si se ingresó mal)
+            // Asegurar tipos numÃ©ricos (Firestore puede devolver strings si se ingresÃ³ mal)
             const discountVal = Number(coupon.discountValue);
             let discountAmount = 0;
 
@@ -904,7 +904,7 @@ exports.getPromptsData = onCall(
                 (userData.enrollments[courseId] === true ||
                     userData.enrollments[oldCourseId] === true);
 
-            // ✅ VERIFICAR ALLOWLIST (Lista blanca para admins/testers)
+            // â VERIFICAR ALLOWLIST (Lista blanca para admins/testers)
             let isAllowed = false;
             if (!hasEnrollment && request.auth.token.email) {
                 try {
@@ -912,11 +912,11 @@ exports.getPromptsData = onCall(
                     if (allowDoc.exists) {
                         const allowData = allowDoc.data();
                         const allowedCourses = allowData.courses || [];
-                        // Verificar si está activo y tiene acceso a este curso (o al ID antiguo)
+                        // Verificar si estÃ¡ activo y tiene acceso a este curso (o al ID antiguo)
                         if (allowData.active === true &&
                             (allowedCourses.includes(courseId) || allowedCourses.includes(oldCourseId))) {
                             isAllowed = true;
-                            console.log(`🔓 Acceso concedido vía Allowlist para: ${request.auth.token.email}`);
+                            console.log(`ð Acceso concedido vÃ­a Allowlist para: ${request.auth.token.email}`);
                         }
                     }
                 } catch (allowError) {
@@ -924,46 +924,46 @@ exports.getPromptsData = onCall(
                 }
             }
 
-            // El usuario tiene acceso si tiene enrollment O si está en la allowlist
+            // El usuario tiene acceso si tiene enrollment O si estÃ¡ en la allowlist
             const finalAccess = hasEnrollment || isAllowed;
 
-            // ✅ FREEMIUM MODEL ACTIVADO: NO bloqueamos si no hay enrollment
-            // (Se eliminó el bloque if (!hasEnrollment) throw...)
+            // â FREEMIUM MODEL ACTIVADO: NO bloqueamos si no hay enrollment
+            // (Se eliminÃ³ el bloque if (!hasEnrollment) throw...)
 
-            // ✅ FREEMIUM MODEL ACTIVADO: NO bloqueamos si no hay enrollment
-            // Pero SÍ requiere autenticación (verificado en línea 490-492)
+            // â FREEMIUM MODEL ACTIVADO: NO bloqueamos si no hay enrollment
+            // Pero SÃ requiere autenticaciÃ³n (verificado en lÃ­nea 490-492)
 
-            // USAR BUCKET EXPLÍCITO (Confirmado por imagen del usuario)
+            // USAR BUCKET EXPLÃCITO (Confirmado por imagen del usuario)
             const bucketName = 'aulagenia.firebasestorage.app';
-            console.log(`🪣 Initializing Storage bucket: ${bucketName}`);
+            console.log(`ðª£ Initializing Storage bucket: ${bucketName}`);
             const bucket = admin.storage().bucket(bucketName);
 
-            console.log('📦 Attempting to download: private/prompts_db.json');
+            console.log('ð¦ Attempting to download: private/prompts_db.json');
             let contents;
             try {
                 [contents] = await bucket.file('private/prompts_db.json').download();
-                console.log('✅ File downloaded successfully, size:', contents.length, 'bytes');
+                console.log('â File downloaded successfully, size:', contents.length, 'bytes');
             } catch (storageError) {
-                console.error('❌ Storage download failed on primary bucket:', {
+                console.error('â Storage download failed on primary bucket:', {
                     bucket: bucketName,
                     code: storageError.code,
                     message: storageError.message
                 });
 
-                // Intento Fallback con nombre común (por si acaso config interna difiere)
+                // Intento Fallback con nombre comÃºn (por si acaso config interna difiere)
                 try {
-                    console.log('⚠️ Trying fallback bucket: aulagenia.appspot.com');
+                    console.log('â ï¸ Trying fallback bucket: aulagenia.appspot.com');
                     const fallbackBucket = admin.storage().bucket('aulagenia.appspot.com');
                     [contents] = await fallbackBucket.file('private/prompts_db.json').download();
-                    console.log('✅ File downloaded successfully from FALLBACK bucket');
+                    console.log('â File downloaded successfully from FALLBACK bucket');
                 } catch (fallbackError) {
-                    console.error('❌ Fallback Storage failed:', fallbackError.message);
+                    console.error('â Fallback Storage failed:', fallbackError.message);
                     // Lanzamos error claro para debugging
                     throw new HttpsError('internal', `Storage error (${bucketName}): ${storageError.message}`);
                 }
             }
 
-            console.log('💾 Logging download to Firestore...');
+            console.log('ð¾ Logging download to Firestore...');
             // CRITICAL FIX: Ensure hasEnrollment is not undefined, as Firestore might throw
             // If undefined (no enrollment), default to false
             const safeHasEnrollment = !!finalAccess;
@@ -973,9 +973,9 @@ exports.getPromptsData = onCall(
                 email: request.auth.token.email || 'unknown',
                 timestamp: admin.firestore.FieldValue.serverTimestamp(),
                 hasEnrollment: safeHasEnrollment
-            }).catch(err => console.error('⚠️ Failed to log download (non-fatal):', err));
+            }).catch(err => console.error('â ï¸ Failed to log download (non-fatal):', err));
 
-            console.log('📝 Parsing JSON data...');
+            console.log('ð Parsing JSON data...');
             const parsedData = JSON.parse(contents.toString('utf-8'));
 
             return {
@@ -1002,7 +1002,7 @@ exports.getPromptsData = onCall(
  */
 const HOTMART_PRODUCT_MAP = {
     '6932550': 'ia-aplicada-starter',
-    // Agregar más productos aquí cuando se creen:
+    // Agregar mÃ¡s productos aquÃ­ cuando se creen:
     // 'ID_ESENCIAL': 'ia-aplicada-esencial'
 };
 
@@ -1012,37 +1012,37 @@ const HOTMART_PRODUCT_MAP = {
  */
 exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mailjetSecretKey] }, async (req, res) => {
     try {
-        // Hotmart envía el token en el header para verificación
+        // Hotmart envÃ­a el token en el header para verificaciÃ³n
         const receivedToken = req.headers['x-hotmart-hottok'];
         const expectedToken = hotmartToken.value().trim();
 
         // Verificar autenticidad del webhook
         if (receivedToken !== expectedToken) {
-            console.error("❌ Token de Hotmart inválido", { received: receivedToken ? 'present' : 'missing' });
+            console.error("â Token de Hotmart invÃ¡lido", { received: receivedToken ? 'present' : 'missing' });
             return res.status(401).send("Unauthorized");
         }
 
         const data = req.body;
         const event = data.event || data.status;
 
-        console.log("📦 Evento Hotmart recibido:", { event, data: JSON.stringify(data).substring(0, 500) });
+        console.log("ð¦ Evento Hotmart recibido:", { event, data: JSON.stringify(data).substring(0, 500) });
 
         // Solo procesamos compras aprobadas
         if (event === "PURCHASE_APPROVED" || event === "PURCHASE_COMPLETE" || event === "PURCHASE_BILLET_PRINTED") {
-            // Hotmart puede enviar datos en diferentes estructuras según la versión del webhook
+            // Hotmart puede enviar datos en diferentes estructuras segÃºn la versiÃ³n del webhook
             const buyerEmail = data.buyer?.email || data.data?.buyer?.email || data.email;
             const productId = String(data.product?.id || data.data?.product?.id || data.prod);
             const transactionId = data.transaction || data.data?.purchase?.transaction || data.purchase?.transaction;
 
             if (!buyerEmail) {
-                console.error("❌ Email del comprador no encontrado en webhook Hotmart");
+                console.error("â Email del comprador no encontrado en webhook Hotmart");
                 return res.status(400).send("Missing buyer email");
             }
 
             // Mapear producto Hotmart -> courseId de tu sistema
             const courseId = HOTMART_PRODUCT_MAP[productId] || 'ia-aplicada-starter';
 
-            console.log(`🔄 Procesando compra Hotmart: ${buyerEmail} -> ${courseId} (Product: ${productId})`);
+            console.log(`ð Procesando compra Hotmart: ${buyerEmail} -> ${courseId} (Product: ${productId})`);
 
             // Buscar usuario por email en Firebase Auth
             try {
@@ -1056,18 +1056,18 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                     hotmartPurchaseDate: admin.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
 
-                console.log(`✅ Acceso Hotmart concedido (usuario existente): ${buyerEmail} -> ${courseId}`);
+                console.log(`â Acceso Hotmart concedido (usuario existente): ${buyerEmail} -> ${courseId}`);
 
             } catch (authError) {
-                // Usuario no existe - CREAR AUTOMÁTICAMENTE
+                // Usuario no existe - CREAR AUTOMÃTICAMENTE
                 if (authError.code === 'auth/user-not-found') {
-                    console.log(`📝 Creando nuevo usuario para: ${buyerEmail}`);
+                    console.log(`ð Creando nuevo usuario para: ${buyerEmail}`);
 
                     try {
-                        // Obtener nombre del comprador si está disponible
+                        // Obtener nombre del comprador si estÃ¡ disponible
                         const buyerName = data.buyer?.name || data.data?.buyer?.name || 'Estudiante';
 
-                        // Crear usuario en Firebase Auth con contraseña temporal
+                        // Crear usuario en Firebase Auth con contraseÃ±a temporal
                         const tempPassword = Math.random().toString(36).slice(-12) + 'Aa1!';
                         const newUser = await admin.auth().createUser({
                             email: buyerEmail,
@@ -1076,7 +1076,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                             emailVerified: false
                         });
 
-                        console.log(`✅ Usuario creado: ${newUser.uid}`);
+                        console.log(`â Usuario creado: ${newUser.uid}`);
 
                         // Activar el curso para el nuevo usuario
                         await admin.firestore().collection("users").doc(newUser.uid).set({
@@ -1089,12 +1089,12 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                             createdVia: 'hotmart-webhook'
                         }, { merge: true });
 
-                        // Generar link de reset de contraseña
+                        // Generar link de reset de contraseÃ±a
                         const resetLink = await admin.auth().generatePasswordResetLink(buyerEmail, {
                             url: 'https://aulagenia.cl/acceso.html?from=hotmart'
                         });
 
-                        console.log(`🔗 Link de reset generado para: ${buyerEmail}`);
+                        console.log(`ð Link de reset generado para: ${buyerEmail}`);
 
                         // ENVIAR EMAIL VIA MAILJET (Usa Helper)
                         try {
@@ -1105,7 +1105,7 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                                 resetLink: resetLink
                             });
                         } catch (emailError) {
-                            console.error('❌ Error enviando email (wrapper):', emailError);
+                            console.error('â Error enviando email (wrapper):', emailError);
                             // Guardar en cola para reintento manual (fallback)
                             await admin.firestore().collection("emailQueue").add({
                                 to: buyerEmail,
@@ -1117,10 +1117,10 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                             });
                         }
 
-                        console.log(`✅ Compra Hotmart procesada(usuario nuevo): ${buyerEmail} -> ${courseId}`);
+                        console.log(`â Compra Hotmart procesada(usuario nuevo): ${buyerEmail} -> ${courseId}`);
 
                     } catch (createError) {
-                        console.error("❌ Error creando usuario:", createError);
+                        console.error("â Error creando usuario:", createError);
                         // Fallback: guardar en cola pendiente
                         await admin.firestore().collection("pendingHotmartPurchases").add({
                             email: buyerEmail.toLowerCase(),
@@ -1134,29 +1134,29 @@ exports.hotmartWebhook = onRequest({ secrets: [hotmartToken, mailjetApiKey, mail
                         });
                     }
                 } else {
-                    console.error("❌ Error buscando usuario:", authError);
+                    console.error("â Error buscando usuario:", authError);
                     throw authError;
                 }
             }
         } else if (event === "REFUND" || event === "PURCHASE_REFUNDED" || event === "CHARGEBACK") {
             // Manejar reembolsos - opcional pero recomendado
             const buyerEmail = data.buyer?.email || data.data?.buyer?.email;
-            console.log(`⚠️ Reembolso / Chargeback detectado para: ${buyerEmail}`);
-            // Aquí podrías desactivar el acceso si lo deseas
+            console.log(`â ï¸ Reembolso / Chargeback detectado para: ${buyerEmail}`);
+            // AquÃ­ podrÃ­as desactivar el acceso si lo deseas
         } else {
-            console.log(`ℹ️ Evento Hotmart ignorado(no relevante): ${event}`);
+            console.log(`â¹ï¸ Evento Hotmart ignorado(no relevante): ${event}`);
         }
 
         return res.status(200).send("OK");
     } catch (err) {
-        console.error("❌ Error crítico en webhook Hotmart:", err);
+        console.error("â Error crÃ­tico en webhook Hotmart:", err);
         return res.status(500).send("Error");
     }
 });
 
 /**
- * Función para verificar y activar compras pendientes de Hotmart
- * Se llama cuando un usuario se registra o inicia sesión
+ * FunciÃ³n para verificar y activar compras pendientes de Hotmart
+ * Se llama cuando un usuario se registra o inicia sesiÃ³n
  */
 exports.checkPendingHotmartPurchase = onCall(
     {
@@ -1196,7 +1196,7 @@ exports.checkPendingHotmartPurchase = onCall(
                 enrollments[data.courseId] = true;
                 coursesActivated.push(data.courseId);
 
-                // Marcar como procesado (no eliminar para auditoría)
+                // Marcar como procesado (no eliminar para auditorÃ­a)
                 batch.update(doc.ref, {
                     processed: true,
                     processedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -1212,7 +1212,7 @@ exports.checkPendingHotmartPurchase = onCall(
 
             await batch.commit();
 
-            console.log(`✅ Compras pendientes activadas para ${userEmail}: `, coursesActivated);
+            console.log(`â Compras pendientes activadas para ${userEmail}: `, coursesActivated);
 
             return {
                 found: true,
@@ -1228,15 +1228,15 @@ exports.checkPendingHotmartPurchase = onCall(
 );
 
 // =======================================================================================
-// SYSTEMA DE PAGOS FLOW (CHILE) - INTEGRACIÓN PRODUCCIÓN
+// SYSTEMA DE PAGOS FLOW (CHILE) - INTEGRACIÃN PRODUCCIÃN
 // =======================================================================================
 
-// Credenciales (PRODUCCIÓN)
+// Credenciales (PRODUCCIÃN)
 const FLOW_API_KEY = "1F52067F-EE87-492E-A1D9-4775L8BE40B4";
 const FLOW_SECRET_KEY = "ad4a0c0622988212d305d04ac5068d0e9042a11a";
 const FLOW_API_URL = "https://www.flow.cl/api";
 
-// Helper para firmar parámetros (HMAC SHA256) (Importado globalmente arriba, reutilizamos)
+// Helper para firmar parÃ¡metros (HMAC SHA256) (Importado globalmente arriba, reutilizamos)
 function signFlowParams(params) {
     const keys = Object.keys(params).sort();
     let toSign = "";
@@ -1250,17 +1250,17 @@ exports.createFlowPayment = onCall(
     { cors: true },
     async (request) => {
         // Debug Init
-        console.log('✅ createFlowPayment invoked.');
+        console.log('â createFlowPayment invoked.');
 
         // 1. Validar Usuario
         const userEmail = request.auth ? request.auth.token.email : request.data.email;
         if (!userEmail) {
-            console.error('❌ Missing email');
+            console.error('â Missing email');
             throw new HttpsError('invalid-argument', 'Se requiere email para generar el pago.');
         }
 
         const courseId = request.data.courseId || 'ia-aplicada-starter';
-        console.log('📦 Course:', courseId, 'User:', userEmail);
+        console.log('ð¦ Course:', courseId, 'User:', userEmail);
 
         // 2. Configurar Orden
         // 2. Configurar Orden (Max 45 chars) -> Usamos Timestamp base36 + Random
@@ -1271,7 +1271,7 @@ exports.createFlowPayment = onCall(
         const includeBump = request.data.includeBump || false;
         const hiddenCoupon = request.data.hiddenCoupon || false;
 
-        console.log('🔍 Payment Params:', { includeBump, hiddenCoupon, email: userEmail });
+        console.log('ð Payment Params:', { includeBump, hiddenCoupon, email: userEmail });
 
         // Config: Precios y Descripciones
         let amount = 8900;
@@ -1285,7 +1285,7 @@ exports.createFlowPayment = onCall(
             subject = 'Pack Starter + Masterclass';
         }
 
-        // 3. Parámetros Flow
+        // 3. ParÃ¡metros Flow
         const params = {
             apiKey: FLOW_API_KEY,
             commerceOrder: commerceOrder,
@@ -1301,7 +1301,7 @@ exports.createFlowPayment = onCall(
         // =================================================================
         // META CAPI: INITIATE CHECKOUT (CRITICAL FIX FOR DISCREPANCY)
         // =================================================================
-        // Enviamos el evento aquí para capturar a TODOS los usuarios (Auth y Guest)
+        // Enviamos el evento aquÃ­ para capturar a TODOS los usuarios (Auth y Guest)
         // que realmente inician el proceso de pago.
         try {
             const { fbp, fbc, userAgent, eventId, nombre } = request.data;
@@ -1329,10 +1329,10 @@ exports.createFlowPayment = onCall(
                 email: userEmail,
                 firstName: firstName,
                 lastName: lastName
-            }, { url: 'https://aulagenia.cl/landing-nuevo.html' }); // URL fija o dinámica si se envía
+            }, { url: 'https://aulagenia.cl/landing-nuevo.html' }); // URL fija o dinÃ¡mica si se envÃ­a
 
         } catch (capiError) {
-            console.error('⚠️ CAPI InitiateCheckout failed in createFlowPayment (non-blocking):', capiError);
+            console.error('â ï¸ CAPI InitiateCheckout failed in createFlowPayment (non-blocking):', capiError);
         }
 
 
@@ -1340,8 +1340,8 @@ exports.createFlowPayment = onCall(
         try {
             params.s = signFlowParams(params);
         } catch (signError) {
-            console.error('❌ Error signing params:', signError);
-            throw new HttpsError('internal', 'Error criptográfico al firmar.');
+            console.error('â Error signing params:', signError);
+            throw new HttpsError('internal', 'Error criptogrÃ¡fico al firmar.');
         }
 
         try {
@@ -1352,12 +1352,12 @@ exports.createFlowPayment = onCall(
             }
 
             // GUARDAR ESTADO PENDIENTE (CRUCIAL PARA WEBHOOK)
-            // GUARDAR EN SALES (NUEVA COLECCIÓN UNIFICADA)
+            // GUARDAR EN SALES (NUEVA COLECCIÃN UNIFICADA)
             await admin.firestore().collection('sales').doc(commerceOrder).set({
                 email: userEmail,
                 courseId: courseId,
                 amount: amount,
-                // flowOrder se recibe en la respuesta inmediata o webhook, lo dejamos opcional aquí
+                // flowOrder se recibe en la respuesta inmediata o webhook, lo dejamos opcional aquÃ­
                 status: 'INITIATED',
                 enrollmentStatus: 'PENDING',
                 userId: request.auth ? request.auth.uid : null, // Opcional si no hay auth
@@ -1375,7 +1375,7 @@ exports.createFlowPayment = onCall(
             });
 
             // ============================================
-            // 🚀 FIRE CAPI: INITIATE CHECKOUT
+            // ð FIRE CAPI: INITIATE CHECKOUT
             // ============================================
             const userIp = request.rawRequest.ip || request.rawRequest.headers['x-forwarded-for'];
 
@@ -1412,7 +1412,7 @@ exports.createFlowPayment = onCall(
             });
 
             // Log params for debugging (excluding secret logic which is handled)
-            console.log('🚀 Sending request to Flow:', FLOW_API_URL + '/payment/create');
+            console.log('ð Sending request to Flow:', FLOW_API_URL + '/payment/create');
 
             const response = await fetch(`${FLOW_API_URL}/payment/create`, {
                 method: 'POST',
@@ -1424,18 +1424,18 @@ exports.createFlowPayment = onCall(
 
             // Leer respuesta como texto primero para evitar fallos de JSON parsing
             const rawText = await response.text();
-            console.log('📩 Flow Response (Raw):', rawText);
+            console.log('ð© Flow Response (Raw):', rawText);
 
             let data;
             try {
                 data = JSON.parse(rawText);
             } catch (jsonError) {
-                console.error('❌ Failed to parse Flow response JSON:', jsonError);
-                throw new HttpsError('internal', 'Respuesta inválida de Flow (No JSON): ' + rawText.substring(0, 100));
+                console.error('â Failed to parse Flow response JSON:', jsonError);
+                throw new HttpsError('internal', 'Respuesta invÃ¡lida de Flow (No JSON): ' + rawText.substring(0, 100));
             }
 
             if (!response.ok || !data.token) {
-                console.error('❌ Flow API Error Response:', data);
+                console.error('â Flow API Error Response:', data);
                 // Si Flow da un mensaje, lo pasamos
                 const flowMsg = data.message || 'Error desconocido de Flow';
                 throw new HttpsError('internal', flowMsg);
@@ -1449,7 +1449,7 @@ exports.createFlowPayment = onCall(
             };
 
         } catch (error) {
-            console.error('❌ Error in createFlowPayment execution:', error);
+            console.error('â Error in createFlowPayment execution:', error);
             if (error instanceof HttpsError) throw error;
             throw new HttpsError('internal', 'Error generando el pago Flow: ' + error.message);
         }
@@ -1458,7 +1458,7 @@ exports.createFlowPayment = onCall(
 
 exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4ApiSecret] }, async (req, res) => {
     try {
-        console.log('🔔 Flow Webhook (Body):', req.body);
+        console.log('ð Flow Webhook (Body):', req.body);
         const token = req.body.token;
 
         if (!token) return res.status(400).send('No token');
@@ -1471,7 +1471,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
         const statusResponse = await fetch(`${FLOW_API_URL}/payment/getStatus?${query}`);
         const statusData = await statusResponse.json();
 
-        console.log('🔍 Estado Flow:', statusData);
+        console.log('ð Estado Flow:', statusData);
 
         // 2. Validar (2 = Pagada)
         // 2. Validar (2 = Pagada)
@@ -1484,16 +1484,16 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
             let saleData = {};
 
             try {
-                // Leer de Firestore (Colección Unificada)
+                // Leer de Firestore (ColecciÃ³n Unificada)
                 const docSnap = await salesRef.get();
                 if (docSnap.exists) {
                     saleData = docSnap.data();
                     userEmail = saleData.email;
                     courseId = saleData.courseId;
                     userId = saleData.userId;
-                    console.log('📂 Datos recuperados de SALES:', { userEmail, courseId });
+                    console.log('ð Datos recuperados de SALES:', { userEmail, courseId });
                 } else {
-                    console.error('⚠️ No se encontró la orden en SALES:', commerceOrder);
+                    console.error('â ï¸ No se encontrÃ³ la orden en SALES:', commerceOrder);
                     // Fallback: Leer de "optional" data de Flow si existiera
                     if (statusData.optional) {
                         try {
@@ -1505,7 +1505,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                     }
                 }
             } catch (dbError) {
-                console.error('❌ Error leyendo Firestore en Webhook:', dbError);
+                console.error('â Error leyendo Firestore en Webhook:', dbError);
                 return res.status(500).send('DB Error');
             }
 
@@ -1535,8 +1535,8 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             targetUid = userRecord.uid;
                         } catch (authError) {
                             if (authError.code === 'auth/user-not-found') {
-                                console.log(`👤 Usuario no registrado (${userEmail}). Venta queda en estado PAID (Pending Delivery).`);
-                                // No hacemos nada más, el onUserCreated se encargará
+                                console.log(`ð¤ Usuario no registrado (${userEmail}). Venta queda en estado PAID (Pending Delivery).`);
+                                // No hacemos nada mÃ¡s, el onUserCreated se encargarÃ¡
                             } else {
                                 throw authError;
                             }
@@ -1550,7 +1550,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             flowStatus: 'PAID' // Flag opcional
                         }, { merge: true });
 
-                        console.log(`✅ [FLOW] Acceso concedido a ${targetUid} para ${courseId}`);
+                        console.log(`â [FLOW] Acceso concedido a ${targetUid} para ${courseId}`);
 
                         // =================================================================
                         // GA4 SERVER-SIDE PURCHASE EVENT (Phase 3 - Correct Hook: Flow)
@@ -1580,11 +1580,11 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             deliveredAt: admin.firestore.FieldValue.serverTimestamp()
                         });
 
-                        console.log(`✅ Curso ${courseId} activado para ${userEmail} (UID: ${targetUid}) - Status: DELIVERED`);
+                        console.log(`â Curso ${courseId} activado para ${userEmail} (UID: ${targetUid}) - Status: DELIVERED`);
                     }
 
                     // ============================================
-                    // 🚀 FIRE CAPI: PURCHASE
+                    // ð FIRE CAPI: PURCHASE
                     // ============================================
                     try {
                         const capiData = saleData.capiData || {};
@@ -1639,7 +1639,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                         });
 
                     } catch (capiError) {
-                        console.error('❌ Error sending Purchase CAPI:', capiError);
+                        console.error('â Error sending Purchase CAPI:', capiError);
                     }
 
                     // ============================================
@@ -1663,7 +1663,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             : (courseId === 'ia-aplicada-starter' ? 'Pack Starter: +100 Master Prompts' : 'Curso IA Aplicada Esencial');
 
                         const subjectLine = isPro
-                            ? '¡Bienvenido/a al Nivel PRO! - Acceso Confirmado'
+                            ? 'Â¡Bienvenido/a al Nivel PRO! - Acceso Confirmado'
                             : 'Bienvenido/a a Aula GenIA - Acceso Confirmado';
 
                         // Variables comunes
@@ -1686,10 +1686,10 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🗺️</span></td>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ðºï¸</span></td>
                                         <td>
-                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de Transformación: Fases 1-4</strong>
-                                            <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquí</a></span>
+                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de TransformaciÃ³n: Fases 1-4</strong>
+                                            <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquÃ­</a></span>
                                         </td>
                                     </tr>
                                 </table>
@@ -1699,13 +1699,13 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">â</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
-                                            <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini.</div>
+                                            <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fÃ³rmulas probadas para ChatGPT, Claude y Gemini.</div>
                                             <div style="font-size: 13px;">
-                                                <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a la Herramienta</a><br>
-                                                <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
+                                                <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">ð Acceder a la Herramienta</a><br>
+                                                <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">ð¥ Descargar PDF (Auto-descarga)</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -1716,7 +1716,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">💼</span></td>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ð¼</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Masterclass LinkedIn Pro</strong>
                                             <span style="color: #64748b; font-size: 14px;">Disponible desde el 22 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
@@ -1727,9 +1727,9 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">👁️</span></td>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ðï¸</span></td>
                                         <td>
-                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Taller Visual: Piensa en Imágenes</strong>
+                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Taller Visual: Piensa en ImÃ¡genes</strong>
                                             <span style="color: #64748b; font-size: 14px;">Disponible desde el 22 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
                                         </td>
                                     </tr>
@@ -1738,9 +1738,9 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">📘</span></td>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ð</span></td>
                                         <td>
-                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Guía de Consulta Rápida</strong>
+                                            <strong style="color: #1e293b; display: block; margin-bottom: 4px;">GuÃ­a de Consulta RÃ¡pida</strong>
                                             <span style="color: #64748b; font-size: 14px;">Disponible desde el 22 de enero. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ver en Campus</a></span>
                                         </td>
                                     </tr>
@@ -1749,7 +1749,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                             <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 30px;">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">💎</span></td>
+                                        <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ð</span></td>
                                         <td>
                                             <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Licencia Permanente de Arquitecto</strong>
                                             <span style="color: #64748b; font-size: 14px;">Tu entrada a la plataforma y todas sus actualizaciones futuras, sin suscripciones.</span>
@@ -1782,63 +1782,63 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                                  <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: 40px; margin-bottom: 40px;">
                                     <!-- Header -->
                                     <div style="background: white; padding: 40px 0; text-align: center; border-bottom: 4px solid #0d9488;">
-                                        <h1 style="color: #1e293b; margin: 0; font-size: 24px; font-weight: 800;">¡Tu Acceso está listo!</h1>
-                                        <p style="color: #64748b; margin: 10px 0 0 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquí.</p>
+                                        <h1 style="color: #1e293b; margin: 0; font-size: 24px; font-weight: 800;">Â¡Tu Acceso estÃ¡ listo!</h1>
+                                        <p style="color: #64748b; margin: 10px 0 0 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquÃ­.</p>
                                     </div>
 
                                     <div style="padding: 40px;">
                                         <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hola <strong style="color: #0d9488;">${buyerName}</strong>,</p>
-                                        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Es un gusto saludarte. Ya confirmamos tu inscripción al <strong style="color: #1e293b;">${courseName}</strong>. 
-                                        ${isPro ? 'A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarán tu productividad.' : ''}
+                                        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Es un gusto saludarte. Ya confirmamos tu inscripciÃ³n al <strong style="color: #1e293b;">${courseName}</strong>. 
+                                        ${isPro ? 'A partir de este momento, tienes <strong style="color: #0d9488;">acceso vitalicio</strong> a las herramientas que transformarÃ¡n tu productividad.' : ''}
                                         </p>
 
                                         <!-- Highlight Box -->
                                         <div style="background: #f0fdf4; border-left: 4px solid #4ade80; padding: 15px; margin: 25px 0; border-radius: 4px;">
-                                            <p style="margin: 0; color: #15803d; font-size: 14px; font-weight: 600;">✨ Tu acceso a la Bóveda de Recursos ya ha sido sincronizado.</p>
+                                            <p style="margin: 0; color: #15803d; font-size: 14px; font-weight: 600;">â¨ Tu acceso a la BÃ³veda de Recursos ya ha sido sincronizado.</p>
                                         </div>
 
                                         <!-- Credentials Card -->
                                         <div style="background: #ccfbf1; border-radius: 16px; padding: 25px; margin: 30px 0; border: 1px solid #99f6e4;">
-                                            <h2 style="text-align: center; color: #0f766e; font-size: 18px; margin-top: 0; margin-bottom: 25px;">🔑 Tus Credenciales de Acceso</h2>
+                                            <h2 style="text-align: center; color: #0f766e; font-size: 18px; margin-top: 0; margin-bottom: 25px;">ð Tus Credenciales de Acceso</h2>
                                             <!-- Details Table -->
                                             <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
                                                 <tr>
                                                     <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                                        <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">📍 Portal de Acceso</p>
+                                                        <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">ð Portal de Acceso</p>
                                                         <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.cl/acceso</a>
                                                     </td>
                                                 </tr>
                                                  <tr>
                                                     <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                                        <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">👤 Tu Usuario</p>
+                                                        <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">ð¤ Tu Usuario</p>
                                                         <p style="color: #1e293b; margin: 0; font-size: 16px; font-weight: 600;">${userEmail}</p>
                                                     </td>
                                                 </tr>
                                                  <tr>
                                                     <td style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                                       <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔐 Tu Contraseña</p>
-                                                        <p style="color: #555; margin: 0; font-size: 14px;">Haz clic en el botón verde de abajo para crearla</p>
+                                                       <p style="color: #64748b; margin: 0 0 6px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">ð Tu ContraseÃ±a</p>
+                                                        <p style="color: #555; margin: 0; font-size: 14px;">Haz clic en el botÃ³n verde de abajo para crearla</p>
                                                     </td>
                                                 </tr>
                                             </table>
                                              <div style="text-align: center; margin-top: 25px;">
-                                                  <a href="https://aulagenia.cl/acceso.html" style="background-color: #0d9488; color: white; padding: 16px 32px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);">🔐 Crear mi Contraseña y Acceder</a>
+                                                  <a href="https://aulagenia.cl/acceso.html" style="background-color: #0d9488; color: white; padding: 16px 32px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);">ð Crear mi ContraseÃ±a y Acceder</a>
                                              </div>
                                         </div>
 
-                                        <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">📦 Lo que recibes hoy:</h3>
+                                        <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px;">ð¦ Lo que recibes hoy:</h3>
 
                                         ${featuresHtml}
 
                                         <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-                                            <p style="color: #94a3b8; font-size: 14px; margin-bottom: 5px;">¿Tienes dudas? Escríbenos a <a href="mailto:hola@aulagenia.cl" style="color: #0d9488; text-decoration: none;">hola@aulagenia.cl</a></p>
-                                            <p style="color: #0d9488; font-weight: 600; font-size: 14px;">¡Y recuerda: en Aula GenIA, la IA no es el futuro... TÚ lo eres!</p>
+                                            <p style="color: #94a3b8; font-size: 14px; margin-bottom: 5px;">Â¿Tienes dudas? EscrÃ­benos a <a href="mailto:hola@aulagenia.cl" style="color: #0d9488; text-decoration: none;">hola@aulagenia.cl</a></p>
+                                            <p style="color: #0d9488; font-weight: 600; font-size: 14px;">Â¡Y recuerda: en Aula GenIA, la IA no es el futuro... TÃ lo eres!</p>
                                         </div>
 
                                     </div>
                                     <!-- Footer -->
                                     <div style="background: #f8fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-                                        <p style="color: #94a3b8; font-size: 13px; margin: 0;">© 2026 Aula GenIA. Todos los derechos reservados.</p>
+                                        <p style="color: #94a3b8; font-size: 13px; margin: 0;">Â© 2026 Aula GenIA. Todos los derechos reservados.</p>
                                     </div>
                                  </div>
                                 </body>
@@ -1846,9 +1846,9 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
                                 }]
                             });
 
-                        console.log('✅ Email de bienvenida enviado a:', userEmail);
+                        console.log('â Email de bienvenida enviado a:', userEmail);
                     } catch (mailError) {
-                        console.error('❌ Error enviando email de bienvenida:', mailError);
+                        console.error('â Error enviando email de bienvenida:', mailError);
                     }
                 } catch (e) {
                     console.error('Error finding user for enrollment:', e);
@@ -1859,7 +1859,7 @@ exports.flowWebhook = onRequest({ secrets: [mailjetApiKey, mailjetSecretKey, ga4
         return res.status(200).send('OK');
 
     } catch (error) {
-        console.error('💥 Flow Webhook Error:', error);
+        console.error('ð¥ Flow Webhook Error:', error);
         return res.status(500).send('Server Error');
     }
 });
@@ -1880,15 +1880,15 @@ exports.onUserCreated = functions.auth.user().onCreate(async (user) => {
             .get();
 
         if (salesSnapshot.empty) {
-            console.log(`ℹ️ No pending sales found for new user ${email}`);
+            console.log(`â¹ï¸ No pending sales found for new user ${email}`);
             return;
         }
 
         const batch = admin.firestore().batch();
         const userRef = admin.firestore().collection('users').doc(user.uid);
 
-        // Preparar actualización de usuario (enrollment)
-        // Podría haber múltiples compras pendientes (raro, pero posible)
+        // Preparar actualizaciÃ³n de usuario (enrollment)
+        // PodrÃ­a haber mÃºltiples compras pendientes (raro, pero posible)
         let newEnrollments = {};
 
         salesSnapshot.forEach(doc => {
@@ -1902,7 +1902,7 @@ exports.onUserCreated = functions.auth.user().onCreate(async (user) => {
                     userId: user.uid,
                     deliveredAt: admin.firestore.FieldValue.serverTimestamp()
                 });
-                console.log(`✅ Found pending sale ${doc.id} for course ${sale.courseId}`);
+                console.log(`â Found pending sale ${doc.id} for course ${sale.courseId}`);
             }
         });
 
@@ -1915,7 +1915,7 @@ exports.onUserCreated = functions.auth.user().onCreate(async (user) => {
 
             // Ejecutar batch de ventas
             await batch.commit();
-            console.log(`✅ Auto - enrolled user ${email} from sales collection.`);
+            console.log(`â Auto - enrolled user ${email} from sales collection.`);
         }
 
     } catch (error) {
@@ -1941,7 +1941,7 @@ exports.flowReturnRedirect = onRequest(async (req, res) => {
             targetUrl.searchParams.append(key, query[key]);
         });
 
-        console.log(`🔀 Redirecting Flow POST to GET: ${targetUrl.toString()}`);
+        console.log(`ð Redirecting Flow POST to GET: ${targetUrl.toString()}`);
         res.redirect(303, targetUrl.toString());
 
     } catch (error) {
@@ -1968,11 +1968,11 @@ async function sendWelcomeEmailHelper({ email, name, courseId, resetLink }) {
         mailjetSecretKey.value()
     );
 
-    console.log('📧 Helper: Iniciando envío de correo a:', email);
+    console.log('ð§ Helper: Iniciando envÃ­o de correo a:', email);
 
     // Determinar si es Pack PRO (Starter + Bump) logic placeholder (for allowlist default is starter/esencial)
     // Para allowlist asumimos precio 0 o default starter, pero podemos pasar flags si se requiere.
-    // Por ahora usamos lógica simple basada en courseId
+    // Por ahora usamos lÃ³gica simple basada en courseId
 
     const isPro = false; // Default para allowlist simple por ahora
     const courseName = courseId === 'ia-aplicada-starter'
@@ -1986,10 +1986,10 @@ async function sendWelcomeEmailHelper({ email, name, courseId, resetLink }) {
         <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
             <table style="width: 100%;">
                 <tr>
-                    <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🗺️</span></td>
+                    <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">ðºï¸</span></td>
                     <td>
-                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de Transformación: Fases 1-4</strong>
-                        <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquí</a></span>
+                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de TransformaciÃ³n: Fases 1-4</strong>
+                        <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquÃ­</a></span>
                     </td>
                 </tr>
             </table>
@@ -1999,13 +1999,13 @@ async function sendWelcomeEmailHelper({ email, name, courseId, resetLink }) {
         <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
             <table style="width: 100%;">
                 <tr>
-                    <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
+                    <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">â</span></td>
                     <td>
                         <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
-                        <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini.</div>
+                        <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fÃ³rmulas probadas para ChatGPT, Claude y Gemini.</div>
                         <div style="font-size: 13px;">
-                            <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a la Herramienta</a><br>
-                            <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
+                            <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">ð Acceder a la Herramienta</a><br>
+                            <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">ð¥ Descargar PDF (Auto-descarga)</a>
                         </div>
                     </td>
                 </tr>
@@ -2044,41 +2044,41 @@ async function sendWelcomeEmailHelper({ email, name, courseId, resetLink }) {
  <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: 40px; margin-bottom: 40px;">
     <!-- Header -->
     <div style="background: white; padding: 40px 0; text-align: center; border-bottom: 4px solid #0d9488;">
-        <h1 style="color: #1e293b; margin: 0; font-size: 24px; font-weight: 800;">¡Tu Acceso está listo!</h1>
-        <p style="color: #64748b; margin: 10px 0 0 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquí.</p>
+        <h1 style="color: #1e293b; margin: 0; font-size: 24px; font-weight: 800;">Â¡Tu Acceso estÃ¡ listo!</h1>
+        <p style="color: #64748b; margin: 10px 0 0 0; font-size: 16px;">Tu futuro en Inteligencia Artificial comienza aquÃ­.</p>
     </div>
 
     <div style="padding: 40px;">
         <p style="color: #334155; font-size: 16px; line-height: 1.6;">Hola <strong style="color: #0d9488;">${name}</strong>,</p>
-        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Es un gusto saludarte. Ya confirmamos tu inscripción al <strong style="color: #1e293b;">${courseName}</strong>. 
+        <p style="color: #334155; font-size: 16px; line-height: 1.6;">Es un gusto saludarte. Ya confirmamos tu inscripciÃ³n al <strong style="color: #1e293b;">${courseName}</strong>. 
         </p>
 
         <!-- Highlight Box -->
         <div style="background: #f0fdf4; border-left: 4px solid #4ade80; padding: 15px; margin: 25px 0; border-radius: 4px;">
-            <p style="margin: 0; color: #15803d; font-size: 14px; font-weight: 600;">✨ Tu acceso a la Bóveda de Recursos ya ha sido sincronizado.</p>
+            <p style="margin: 0; color: #15803d; font-size: 14px; font-weight: 600;">â¨ Tu acceso a la BÃ³veda de Recursos ya ha sido sincronizado.</p>
         </div>
 
         <!-- Credentials Card -->
         <div style="background: #ccfbf1; border-radius: 16px; padding: 25px; margin: 30px 0; border: 1px solid #99f6e4;">
-            <h2 style="text-align: center; color: #0f766e; font-size: 18px; margin-top: 0; margin-bottom: 25px;">🔑 Tus Credenciales de Acceso</h2>
+            <h2 style="text-align: center; color: #0f766e; font-size: 18px; margin-top: 0; margin-bottom: 25px;">ð Tus Credenciales de Acceso</h2>
             <!-- Details Table -->
             <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
                 <tr>
                     <td style="background: white; border-radius: 8px; padding: 15px; width: 100%;">
-                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">📍 Portal de Acceso</div>
+                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">ð Portal de Acceso</div>
                         <a href="https://aulagenia.cl/acceso.html" style="color: #0d9488; font-size: 16px; font-weight: 600; text-decoration: none;">aulagenia.cl/acceso</a>
                     </td>
                 </tr>
                 <tr>
                     <td style="background: white; border-radius: 8px; padding: 15px;">
-                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">👤 Tu Usuario</div>
+                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">ð¤ Tu Usuario</div>
                         <div style="color: #1e293b; font-size: 16px; font-weight: 600;">${email}</div>
                     </td>
                 </tr>
                 <tr>
                     <td style="background: white; border-radius: 8px; padding: 15px;">
-                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">🔐 Tu Contraseña</div>
-                        <div style="color: #1e293b; font-size: 14px;">Haz clic abajo para crearla 👇</div>
+                        <div style="color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">ð Tu ContraseÃ±a</div>
+                        <div style="color: #1e293b; font-size: 14px;">Haz clic abajo para crearla ð</div>
                     </td>
                 </tr>
             </table>
@@ -2087,12 +2087,12 @@ async function sendWelcomeEmailHelper({ email, name, courseId, resetLink }) {
         <!-- CTA Button -->
         <div style="text-align: center; margin: 35px 0;">
             <a href="${resetLink}" style="display: inline-block; background: #0d9488; color: white; padding: 18px 40px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.4);">
-                🔐 Crear mi Contraseña y Acceder
+                ð Crear mi ContraseÃ±a y Acceder
             </a>
-            <p style="color: #94a3b8; font-size: 13px; margin-top: 15px;">(Este enlace es único y seguro)</p>
+            <p style="color: #94a3b8; font-size: 13px; margin-top: 15px;">(Este enlace es Ãºnico y seguro)</p>
         </div>
 
-        <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">📦 Tu Arsenal Confirmado:</h3>
+        <h3 style="color: #1e293b; font-size: 18px; margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">ð¦ Tu Arsenal Confirmado:</h3>
         
         ${featuresHtml}
 
@@ -2100,26 +2100,26 @@ async function sendWelcomeEmailHelper({ email, name, courseId, resetLink }) {
 
     <!-- Footer -->
     <div style="background: #f8fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-        <p style="color: #64748b; margin: 0 0 10px 0; font-size: 14px;">¿Tienes dudas? Responde a este correo.</p>
-        <p style="color: #0f766e; margin: 0; font-size: 13px; font-weight: 600;">Enviado con ❤️ desde Aula GenIA</p>
+        <p style="color: #64748b; margin: 0 0 10px 0; font-size: 14px;">Â¿Tienes dudas? Responde a este correo.</p>
+        <p style="color: #0f766e; margin: 0; font-size: 13px; font-weight: 600;">Enviado con â¤ï¸ desde Aula GenIA</p>
     </div>
  </div>
 </body>
 </html>`,
-                TextPart: `¡Hola ${name}! Acceso Confirmado.\n\nUsuario: ${email}\nLink de Acceso: ${resetLink}\n\nIngresa a https://aulagenia.cl/acceso.html`
+                TextPart: `Â¡Hola ${name}! Acceso Confirmado.\n\nUsuario: ${email}\nLink de Acceso: ${resetLink}\n\nIngresa a https://aulagenia.cl/acceso.html`
             }]
         });
 
-        console.log('📧 Helper: Email enviado OK (Template Flow)');
+        console.log('ð§ Helper: Email enviado OK (Template Flow)');
         return result;
     } catch (err) {
-        console.error('📧 Helper Error:', err);
+        console.error('ð§ Helper Error:', err);
         throw err;
     }
 }
 
 /**
- * TRIGGER: Enviar correo de bienvenida automáticamente al agregar/editar Allowlist
+ * TRIGGER: Enviar correo de bienvenida automÃ¡ticamente al agregar/editar Allowlist
  * Escucha write en allowlist/{email}
  */
 exports.onAllowlistChange = onDocumentWritten(
@@ -2135,15 +2135,15 @@ exports.onAllowlistChange = onDocumentWritten(
 
         // 1. Validar que exista data y que sendWelcomeEmail sea true
         if (!newData || !newData.sendWelcomeEmail) {
-            return console.log('🚫 Trigger: No data or sendWelcomeEmail not true');
+            return console.log('ð« Trigger: No data or sendWelcomeEmail not true');
         }
 
-        // 2. Prevenir loops: si ya se envió, salir
+        // 2. Prevenir loops: si ya se enviÃ³, salir
         if (newData.welcomeEmailSent) {
-            return console.log('✅ Trigger: Email ya enviado previamente.');
+            return console.log('â Trigger: Email ya enviado previamente.');
         }
 
-        console.log('⚡ Trigger: Detectado sendWelcomeEmail=true para', email);
+        console.log('â¡ Trigger: Detectado sendWelcomeEmail=true para', email);
 
         try {
             // 3. Generar Link de Reset
@@ -2154,7 +2154,7 @@ exports.onAllowlistChange = onDocumentWritten(
                 userRecord = await admin.auth().getUserByEmail(email);
             } catch (e) {
                 if (e.code === 'auth/user-not-found') {
-                    console.log('👤 Creando usuario desde Trigger Allowlist...');
+                    console.log('ð¤ Creando usuario desde Trigger Allowlist...');
                     userRecord = await admin.auth().createUser({
                         email: email,
                         emailVerified: true,
@@ -2184,10 +2184,10 @@ exports.onAllowlistChange = onDocumentWritten(
                 emailSentAt: admin.firestore.FieldValue.serverTimestamp()
             }, { merge: true });
 
-            console.log('✅ Trigger: Email flow completado para', email);
+            console.log('â Trigger: Email flow completado para', email);
 
         } catch (error) {
-            console.error('❌ Trigger Error:', error);
+            console.error('â Trigger Error:', error);
         }
     }
 );
@@ -2205,7 +2205,7 @@ exports.quickAddAllowlist = onRequest(async (req, res) => {
     const db = admin.firestore();
 
     try {
-        console.log(`⚡ Admin Tool: Agregando ${email} a allowlist con trigger...`);
+        console.log(`â¡ Admin Tool: Agregando ${email} a allowlist con trigger...`);
         await db.collection('allowlist').doc(email).set({
             active: true,
             courses: ['ia-aplicada-esencial', 'ia-aplicada-starter'],
@@ -2215,7 +2215,7 @@ exports.quickAddAllowlist = onRequest(async (req, res) => {
             welcomeEmailSent: false
         }, { merge: true });
 
-        res.send(`✅ Success! Updated ${email} in Allowlist. Trigger should fire now.`);
+        res.send(`â Success! Updated ${email} in Allowlist. Trigger should fire now.`);
     } catch (error) {
         console.error(error);
         res.status(500).send('Error: ' + error.message);
@@ -2292,3 +2292,95 @@ exports.notifyNewLead = onDocumentCreated(
         }
     }
 );
+
+// =======================================================================================
+// MANTENIMIENTO: Limpiar Leads de Prueba (HTTP Trigger)
+// =======================================================================================
+exports.cleanTestLeads = onRequest(async (req, res) => {
+    // Seguridad básica vía URL param
+    // Uso: https://us-central1-aulagenia.cloudfunctions.net/cleanTestLeads?key=borrar123
+    const key = req.query.key;
+    if (key !== 'borrar123') {
+        return res.status(403).send('Acceso denegado. Faltan permisos.');
+    }
+
+    try {
+        const db = admin.firestore();
+        const leadsRef = db.collection('leads');
+        const salesRef = db.collection('sales');
+
+        // Términos a buscar (Actualizado)
+        const terms = ['aulagenia', 'bmery', 'aiplushie', 'capivairal', 'ardillavairal'];
+
+        let deletedLeads = 0;
+        let deletedSales = 0;
+        const batch = db.batch();
+        let batchCount = 0;
+
+        // 1. Limpiar LEADS
+        const leadsSnapshot = await leadsRef.get();
+        let processedLeads = 0;
+
+        leadsSnapshot.docs.forEach(doc => {
+            const data = doc.data();
+            const email = (data.email || '').toLowerCase();
+            const nombre = (data.nombre || '').toLowerCase();
+
+            const matches = terms.some(term => email.includes(term) || nombre.includes(term));
+
+            if (matches) {
+                batch.delete(doc.ref);
+                batchCount++;
+                deletedLeads++;
+            }
+            processedLeads++;
+        });
+
+        // 2. Limpiar SALES
+        const salesSnapshot = await salesRef.get();
+        let processedSales = 0;
+
+        salesSnapshot.docs.forEach(doc => {
+            const data = doc.data();
+            const email = (data.email || '').toLowerCase();
+            // Sales might use 'contact_email' or 'payer_email' depending on provider, but 'email' is standard in our conversions
+            // Let's check typical fields just in case
+            const payerEmail = (data.payer_email || '').toLowerCase();
+
+            const matches = terms.some(term => email.includes(term) || payerEmail.includes(term));
+
+            if (matches) {
+                batch.delete(doc.ref);
+                batchCount++;
+                deletedSales++;
+            }
+            processedSales++;
+        });
+
+        if (batchCount > 0) {
+            await batch.commit();
+        }
+
+        res.send(`
+            <html>
+                <body style="font-family: sans-serif; padding: 2rem;">
+                    <h1>✅ Limpieza Completada</h1>
+                    <h2>Resumen:</h2>
+                    <ul>
+                        <li><strong>Leads Eliminados:</strong> ${deletedLeads} (de ${processedLeads} analizados)</li>
+                        <li><strong>Ventas Eliminadas:</strong> ${deletedSales} (de ${processedSales} analizadas)</li>
+                        <li><strong>Total Eliminado:</strong> ${deletedLeads + deletedSales}</li>
+                    </ul>
+                    <hr>
+                    <p><strong>Criterios de eliminación (email o nombre contiene):</strong></p>
+                    <ul>
+                        ${terms.map(t => `<li>${t}</li>`).join('')}
+                    </ul>
+                </body>
+            </html>
+        `);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error interno: ' + error.message);
+    }
+});

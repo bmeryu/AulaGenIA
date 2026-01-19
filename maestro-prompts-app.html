@@ -1470,53 +1470,76 @@
                 return e ? String(e).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : ""
             } function t(t) { if (!t) return ""; let o = String(t).trim(); console.log("📥 INPUT:", o.substring(0, 200)), o = o.replace(/<\/?[^>]+(>|$)/g, ""), o = o.replace(/^["']|["']$/g, "").trim(), o = o.replace(/[ \t]+/g, " ").trim(), o = o.replace(/\\n/g, "\n"), o = function (e) { const t = /(\|[^\n]+\|\n(?:\|[\s:-]+\|[\s\S]*?\n)?(?:\|[^\n]+\|\n?)*)/g; return e.replace(t, e => { const t = e.trim().split("\n").filter(e => e.trim()); if (t.length < 2) return e; const o = t[0].split("|").filter(e => e.trim()).map(e => e.trim()); let a = 1; (t[1] && t[1].includes("---") || t[1].includes(":--")) && (a = 2); const n = t.slice(a).map(e => e.split("|").filter(e => e.trim()).map(e => e.trim())); let r = "<table><thead><tr>"; return o.forEach(e => { r += `<th>${e}</th>` }), r += "</tr></thead><tbody>", n.forEach(e => { r += "<tr>", e.forEach(e => { r += `<td>${e}</td>` }), r += "</tr>" }), r += "</tbody></table>", r }) }(o), o = o.replace(/```([a-z]*)\n([\s\S]*?)```/gi, (e, t, o) => `§§§PRE§§§${o.trim()}§§§/PRE§§§`), o = o.replace(/`([^`]+)`/g, "§§§CODE§§§$1§§§/CODE§§§"), o = o.replace(/\*\*([^\*]+)\*\*/g, "§§§STRONG§§§$1§§§/STRONG§§§"), o = o.replace(/\*([^\*\n]+)\*/g, "§§§EM§§§$1§§§/EM§§§"), o = o.replace(/((?:^|\n)- .+(?:\n|$))+/g, e => `§§§UL§§§${e.trim().split("\n").map(e => `§§§LI§§§${e.replace(/^- /, "").trim()}§§§/LI§§§`).join("")}§§§/UL§§§`), o = o.replace(/((?:^|\n)\d+\. .+(?:\n|$))+/g, e => `§§§OL§§§${e.trim().split("\n").map(e => `§§§LI§§§${e.replace(/^\d+\. /, "").trim()}§§§/LI§§§`).join("")}§§§/OL§§§`), o = o.replace(/^---$/gm, "§§§HR§§§"); const a = [], n = /(§§§[^§]+§§§|<table>[\s\S]*?<\/table>)/g; let r, s = 0; for (; null !== (r = n.exec(o));)r.index > s && a.push(e(o.substring(s, r.index))), a.push(r[0]), s = r.index + r[0].length; s < o.length && a.push(e(o.substring(s))), o = a.join(""), o = o.replace(/§§§HR§§§/g, '<hr class="my-6 border-t-2 border-dashed border-slate-200 w-full">'), o = o.replace(/§§§PRE§§§/g, "<pre><code>"), o = o.replace(/§§§\/PRE§§§/g, "</code></pre>"), o = o.replace(/§§§CODE§§§/g, "<code>"), o = o.replace(/§§§\/CODE§§§/g, "</code>"), o = o.replace(/§§§STRONG§§§/g, "<strong>"), o = o.replace(/§§§\/STRONG§§§/g, "</strong>"), o = o.replace(/§§§EM§§§/g, "<em>"), o = o.replace(/§§§\/EM§§§/g, "</em>"), o = o.replace(/§§§UL§§§/g, "<ul>"), o = o.replace(/§§§\/UL§§§/g, "</ul>"), o = o.replace(/§§§OL§§§/g, "<ol>"), o = o.replace(/§§§\/OL§§§/g, "</ol>"), o = o.replace(/§§§LI§§§/g, "<li>"), o = o.replace(/§§§\/LI§§§/g, "</li>"), o = o.split("\n\n").map(e => { if (!(e = e.trim())) return ""; if (e.startsWith("<table") || e.startsWith("<pre") || e.startsWith("<ul") || e.startsWith("<ol") || e.startsWith("<hr")) return e; const t = e.split("\n"), o = t.some(e => e.trim().match(/^- /)), a = t.some(e => e.trim().match(/^\d+\.\s/)); if (o || a) { let e = "", o = !1, a = !1; const n = "list-disc ml-5 space-y-1 text-slate-600 my-2", r = "list-decimal ml-5 space-y-1 text-slate-600 my-2", s = "mb-1 leading-snug text-slate-600"; return t.forEach(t => { let l = t.trim(); if (l.match(/^-{3,}$/)) return o && (e += "</ul>", o = !1), a && (e += "</ol>", a = !1), void (e += '<hr class="my-6 border-t-2 border-dashed border-slate-200 w-full">'); if (!l.includes("|") || !l.includes("-") || 0 !== l.replace(/[\s\:\-\|]/g, "").length) if (l.match(/^- /)) { a && (e += "</ol>", a = !1), o || (e += `<ul class="${n}">`, o = !0); const t = l.substring(2).trim(); e += `<li>${t}</li>` } else if (l.match(/^\d+\.\s/)) { o && (e += "</ul>", o = !1), a || (e += `<ol class="${r}">`, a = !0); const t = l.replace(/^\d+\.\s+/, "").trim(); e += `<li>${t}</li>` } else o && (e += "</ul>", o = !1), a && (e += "</ol>", a = !1), l && (e += `<div class="${s}">${l}</div>`) }), o && (e += "</ul>"), a && (e += "</ol>"), e } return `<div class="mb-2 leading-snug text-slate-600">${e.replace(/\n/g, "<br>")}</div>` }).join(""); const l = `<div class="markdown-content">${o}</div>`; return console.log("📤 OUTPUT:", l.substring(0, 300)), l } function o(e) { try { if (!e) return ""; if (!e.startsWith("U2F")) return e; const t = CryptoJS.AES.decrypt(e, getEncryptionKey()); return t.toString(CryptoJS.enc.Utf8) || "Error: Corrupted Data" } catch (e) { return console.error("Decryption failed", e), "Error: Decryption Failed" } } function a(e) { currentViewMode = e; const t = document.getElementById("btn-basic"), o = document.getElementById("btn-agia"), a = document.getElementById("maestro-cta-badge"), n = document.getElementById("content-basic"), r = document.getElementById("content-agia"), s = document.getElementById("copy-btn"), l = document.getElementById("copy-btn-container"); if ("basic" === e) { n.classList.remove("hidden"), r.classList.add("hidden"), t.classList.add("bg-slate-600", "text-white"), t.classList.remove("text-slate-600"), o.classList.remove("bg-indigo-600", "text-white"), o.classList.add("text-slate-600", "animate-pulse", "ring-2", "ring-teal-400", "ring-offset-2"), a && a.classList.remove("hidden"), l && l.classList.add("hidden"), s.disabled = !0, s.classList.remove("bg-indigo-600", "hover:bg-indigo-700", "text-white", "shadow-sm"), s.classList.add("bg-slate-300", "text-slate-500", "cursor-not-allowed", "opacity-60"); const e = document.getElementById("maestro-social-proof"); e && (e.classList.add("hidden"), e.classList.remove("flex")) } else { n.classList.add("hidden"), r.classList.remove("hidden"), t.classList.remove("bg-slate-600", "text-white"), t.classList.add("text-slate-600"), o.classList.add("bg-indigo-600", "text-white"), o.classList.remove("text-slate-600", "animate-pulse", "ring-2", "ring-teal-400", "ring-offset-2"), a && a.classList.add("hidden"), l && l.classList.remove("hidden"), s.disabled = !1, s.classList.add("bg-indigo-600", "hover:bg-indigo-700", "text-white", "shadow-sm"), s.classList.remove("bg-slate-300", "text-slate-500", "cursor-not-allowed", "opacity-60"); const e = document.getElementById("maestro-social-proof"), i = document.getElementById("maestro-counter"), c = document.querySelector("#maestro-social-proof .text-\\[9px\\]"); if (e && i && c && currentCaseId) { const t = `social-proof-${currentCaseId}`; let o = localStorage.getItem(t); o || (o = Math.floor(251 * Math.random()) + 150, localStorage.setItem(t, o)), i.textContent = o; const a = ["visitas", "visitas", "visitas", "visitas"], n = currentCaseId % a.length; c.innerHTML = `<span id="maestro-counter">${o}</span> ${a[n]}`, e.classList.remove("smoke-effect"), e.classList.remove("hidden"), e.classList.add("flex"), e.offsetWidth, e.classList.add("smoke-effect") } } } function n(n) {
                 currentCaseId = n; const r = casesData.find(e => e.id === n); if (!r) return; const s = document.getElementById("detail-scroll-container"); s && (s.scrollTop = 0); const l = !0 === r.locked, i = isVaultUnlocked || !l, c = !i; console.log(`🔒 Prompt #${n} "${r.title}": locked=${r.locked}, enrollment=${isVaultUnlocked} => effectivelyLocked=${c}`), currentDifficulty = r.difficulty || "beginner", document.querySelectorAll(".case-item").forEach(e => { e.classList.remove("bg-indigo-50", "border-indigo-100", "text-indigo-700"), e.classList.add("border-transparent", "text-slate-600") }); const d = document.getElementById(`case-item-${n}`); d && (d.classList.remove("border-transparent", "text-slate-600"), d.classList.add("bg-indigo-50", "border-indigo-100", "text-indigo-700")), document.getElementById("workspace-empty").classList.add("hidden"), document.getElementById("case-detail").classList.remove("hidden"), document.getElementById("detail-title").innerText = r.title, document.getElementById("detail-problem").innerText = r.description || r.problem, document.getElementById("bad-result-preview").innerHTML = t(r.badResponsePreview || ""), document.getElementById("bad-response-analysis").innerHTML = r.badResponseAnalysis || "", document.getElementById("good-result-preview").innerHTML = t(r.previewResponse); const m = config.categories[r.category] || { label: "General", color: "slate" }, u = document.getElementById("detail-category-badge"); u.innerText = r.category, u.className = `text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm bg-white text-${m.color}-600 border-${m.color}-100`; const p = document.getElementById("ai-suggestion-badge"), g = document.getElementById("ai-name"); if (r.suggestedAI) { let e = r.suggestedAI.toUpperCase(); g.innerText = e, p.classList.remove("hidden"), p.classList.add("flex") } else p.classList.add("hidden"), p.classList.remove("flex"); const b = document.getElementById("benefit-badge"); b && ("beginner" === currentDifficulty ? (b.innerHTML = '<span class="material-symbols-rounded text-sm">bolt</span> Ahorro: ~15 min', b.className = "text-[10px] font-bold text-teal-600 bg-teal-50 px-2.5 py-1 rounded-md border border-teal-100 flex items-center gap-1.5 shadow-sm") : "intermediate" === currentDifficulty ? (b.innerHTML = '<span class="material-symbols-rounded text-sm">rocket_launch</span> Ahorro: ~45 min', b.className = "text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100 flex items-center gap-1.5 shadow-sm") : (b.innerHTML = '<span class="material-symbols-rounded text-sm">diamond</span> Ahorro: +2 Horas', b.className = "text-[10px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-100 flex items-center gap-1.5 shadow-sm")); const f = document.getElementById("tip-container"), h = document.getElementById("validation-container"), y = document.getElementById("detail-example-tip"), x = document.getElementById("detail-validation-tip"); if (r.exampleTip ? (y.innerHTML = r.exampleTip, f.classList.remove("hidden"), f.classList.add("flex")) : (f.classList.add("hidden"), f.classList.remove("flex")), r.validationTip ? (x.innerHTML = r.validationTip, h.classList.remove("hidden"), h.classList.add("flex")) : (h.classList.add("hidden"), h.classList.remove("flex")), currentPromptTemplate = r.agiaPromptTagged, currentPromptTemplate.startsWith("U2F") && i && (currentPromptTemplate = o(currentPromptTemplate)), currentBadPromptTemplate = r.badPromptDynamic || r.badPrompt, currentVariables = {}, !currentPromptTemplate.startsWith("U2F")) { const e = /{([a-z0-9_]+)\|([^}]+)}/g; let t; for (; null !== (t = e.exec(currentPromptTemplate));)currentVariables[t[1]] = t[2] } !function () {
-                    // Refactored prompt processing to avoid syntax errors
-                    let t = e(currentPromptTemplate);
-                    Object.keys(currentVariables).forEach(o => {
-                        const a = currentVariables[o] || "___";
-                        const n = e(a);
-                        const r = new RegExp("{" + o + "\\\\|[^}]+}", "g");
-                        t = t.replace(r, '<span class="var-highlight">' + n + '</span>');
-                    });
-                    const o = { r: "rol", c: "contexto", m: "meta", l: "restricciones", f: "formato" };
-                    Object.keys(o).forEach(e => {
-                        const a = "hl-" + o[e];
-                        const n = new RegExp("{" + e + "}(.*?){/" + e + "}", "gs");
-                        t = t.replace(n, '<span class="hl-tag ' + a + '" data-tag-type="' + e + '">$1</span>');
-                    });
-                    t = t.replace(/\n/g, "<br>");
-                    document.getElementById("detail-prompt-rendered").innerHTML = t;
-                    !function (t) {
-                        const o = document.getElementById("agia-sections-container");
-                        const rawContainer = document.getElementById("detail-prompt-rendered");
-                        if (!o) return;
-                        o.innerHTML = "";
+                    // === REFRACTORED PARSING LOGIC START ===
 
-                        // Define sections, including the new generic CONTENIDO
+                    // --- 1. RAW VIEW RENDER (detail-prompt-rendered) ---
+                    // We render the raw view first using a copy of the template
+                    let rawT = e(currentPromptTemplate); // Initial escape
+
+                    // Replace Vars in Raw View
+                    Object.keys(currentVariables).forEach(key => {
+                        const val = currentVariables[key] || "___";
+                        const valEscaped = e(val);
+                        const regex = new RegExp("{" + key + "\\\\|[^}]+}", "g"); // Match {key|val} (escaped pipe)
+                        rawT = rawT.replace(regex, '<span class="var-highlight">' + valEscaped + '</span>');
+                    });
+
+                    // Replace Tags in Raw View
+                    const tags = { r: "rol", c: "contexto", m: "meta", l: "restricciones", f: "formato" };
+                    Object.keys(tags).forEach(tagKey => {
+                        const className = "hl-" + tags[tagKey];
+                        const regex = new RegExp("{" + tagKey + "}(.*?){/" + tagKey + "}", "gs");
+                        rawT = rawT.replace(regex, '<span class="hl-tag ' + className + '" data-tag-type="' + tagKey + '">$1</span>');
+                    });
+
+                    rawT = rawT.replace(/\n/g, "<br>"); // Now safe to replace Newlines for display
+                    document.getElementById("detail-prompt-rendered").innerHTML = rawT;
+
+                    // --- 2. MAESTRO VIEW RENDER (agia-sections-container) ---
+                    (function (templateStr) {
+                        const sectionsContainer = document.getElementById("agia-sections-container");
+                        const rawContainer = document.getElementById("detail-prompt-rendered");
+                        if (!sectionsContainer) return;
+
+                        sectionsContainer.innerHTML = "";
+
+                        // Inject Variables into Template for Parsing *First*
+                        // This ensures parsed sections contain the VALUES, not the {key|val} strings.
+                        let processedTemplate = templateStr;
+                        Object.keys(currentVariables).forEach(key => {
+                            const val = currentVariables[key] || "";
+                            const regex = new RegExp("{" + key + "\\\\|[^}]+}", "g");
+                            processedTemplate = processedTemplate.replace(regex, val);
+                        });
+                        Object.keys(currentVariables).forEach(key => {
+                            const val = currentVariables[key] || "";
+                            const regex = new RegExp("{" + key + "}", "g");
+                            processedTemplate = processedTemplate.replace(regex, val);
+                        });
+
                         const sectionsConfig = {
                             ROL: { bg: "bg-slate-50", text: "text-slate-700", label: "Rol", border: "border-slate-200" },
                             CONTEXTO: { bg: "bg-teal-50", text: "text-teal-800", label: "Contexto", border: "border-teal-200" },
                             META: { bg: "bg-indigo-50", text: "text-indigo-800", label: "Meta", border: "border-indigo-200" },
                             RESTRICCIONES: { bg: "bg-rose-50", text: "text-rose-800", label: "Restricciones", border: "border-rose-200" },
                             FORMATO: { bg: "bg-violet-50", text: "text-violet-800", label: "Formato", border: "border-violet-200" },
-                            CONTENIDO: { bg: "bg-gray-50", text: "text-gray-700", label: "Contenido", border: "border-gray-200" } // Fallback
+                            CONTENIDO: { bg: "bg-gray-50", text: "text-gray-700", label: "Contenido", border: "border-gray-200" }
                         };
 
                         let parsedSections = {};
                         let hasParsedContent = false;
 
-                        // STRATEGY 1: Exact Numbered Headers (1. ROL:)
-                        if (/\d+\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):/i.test(t)) {
+                        // Strategy 1: Numbered Headers
+                        if (/\d+\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):/i.test(processedTemplate)) {
                             const regex = /(\d+)\.\s*(ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):\s*([^]*?)(?=\d+\.\s*(?:ROL|CONTEXTO|META|RESTRICCIONES|FORMATO):|$)/gi;
                             let match;
-                            while ((match = regex.exec(t)) !== null) {
+                            while ((match = regex.exec(processedTemplate)) !== null) {
                                 const key = match[2].toUpperCase();
-                                const content = match[3].trim();
-                                parsedSections[key] = content;
+                                parsedSections[key] = match[3].trim();
                                 hasParsedContent = true;
                             }
                         }
-                        // STRATEGY 2: Variable/Keyword Markers ({r} or uppercase keywords)
+                        // Strategy 2: Markers (Fallback)
                         else {
                             const markers = {
                                 ROL: /{r}|(?:^|\n)(?:Eres un|Actúa como|ROL:)/i,
@@ -1528,30 +1551,22 @@
 
                             let foundMatches = [];
                             Object.entries(markers).forEach(([key, regex]) => {
-                                let match;
-                                // Use a fresh regex for each iteration to avoid state issues
                                 const r = new RegExp(regex.source, "gi");
-                                while ((match = r.exec(t)) !== null) {
+                                let match;
+                                while ((match = r.exec(processedTemplate)) !== null) {
                                     foundMatches.push({ index: match.index, length: match[0].length, section: key });
                                 }
                             });
 
                             foundMatches.sort((a, b) => a.index - b.index);
 
-                            if (foundMatches.length === 0) {
-                                // NO MATCHES: Fallback to CONTENIDO
-                                if (t.trim().length > 0) {
-                                    parsedSections.CONTENIDO = t;
-                                    hasParsedContent = true;
-                                }
-                            } else {
+                            if (foundMatches.length > 0) {
                                 for (let i = 0; i < foundMatches.length; i++) {
                                     const current = foundMatches[i];
-                                    const nextIndex = (i + 1 < foundMatches.length) ? foundMatches[i + 1].index : t.length;
+                                    const nextIndex = (i + 1 < foundMatches.length) ? foundMatches[i + 1].index : processedTemplate.length;
                                     const startContent = current.index + current.length;
 
-                                    let content = t.substring(startContent, nextIndex).trim();
-                                    // Clean up leading colons or whitespace
+                                    let content = processedTemplate.substring(startContent, nextIndex).trim();
                                     content = content.replace(/^(ROL:|CONTEXTO:|META:|RESTRICCIONES:|FORMATO:)\s*/i, "").trim();
 
                                     if (content) {
@@ -1560,16 +1575,20 @@
                                         hasParsedContent = true;
                                     }
                                 }
+                            } else if (processedTemplate.trim().length > 0) {
+                                // FALLBACK: Everything is CONTENIDO
+                                parsedSections.CONTENIDO = processedTemplate;
+                                hasParsedContent = true;
                             }
                         }
 
-                        // If somehow we still have no content but 't' exists, dump it into CONTENIDO
-                        if (!hasParsedContent && t.trim().length > 0) {
-                            parsedSections.CONTENIDO = t;
+                        // Final check
+                        if (!hasParsedContent && processedTemplate.trim().length > 0) {
+                            parsedSections.CONTENIDO = processedTemplate;
                             hasParsedContent = true;
                         }
 
-                        // Render Sections
+                        // Render
                         ["ROL", "CONTEXTO", "META", "RESTRICCIONES", "FORMATO", "CONTENIDO"].forEach(key => {
                             const content = parsedSections[key];
                             if (!content) return;
@@ -1578,38 +1597,37 @@
                             const el = document.createElement("div");
                             el.className = `my-2 rounded-lg border ${style.border} hover:border-indigo-300 transition-all ${style.bg} px-4 py-3 shadow-sm`;
 
-                            // Format content
-                            let formatted = e(content)
+                            // Format: Escape -> Remove Tags -> Newlines
+                            let formatted = e(content); // Escape HTML entities first
+
+                            formatted = formatted
                                 .replace(/^-{3,}\s*$/gm, "") // Remove HRs
-                                .replace(/{\/?[rcmlf]}/gi, "") // Remove closing tags
-                                .replace(/\[([^\]\n]+)\](?!\()/g, '<span class="var-highlight">$1</span>') // Highlight vars
-                                .replace(/\n/g, "<br>");
+                                .replace(/{\/?[rcmlf]}/gi, "") // Remove remaining tags like {/r}
+                                .replace(/\n/g, "<br>"); // Newlines to BR
 
                             el.innerHTML = `
-                        <div class="flex items-start gap-2">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider ${style.text} bg-white/60 px-2 py-1 rounded border ${style.border} flex-shrink-0 shadow-sm">
-                                ${style.label}
-                            </span>
-                            <span class="${style.text} text-sm leading-relaxed flex-1" style="word-wrap: break-word; overflow-wrap: break-word;">
-                                ${formatted}
-                            </span>
-                        </div>
-                    `;
-                            o.appendChild(el);
+                                <div class="flex items-start gap-2">
+                                     <span class="text-[10px] font-extrabold uppercase tracking-wider ${style.text} bg-white/60 px-2 py-1 rounded border ${style.border} flex-shrink-0 shadow-sm">
+                                        ${style.label}
+                                    </span>
+                                    <span class="${style.text} text-sm leading-relaxed flex-1" style="word-wrap: break-word; overflow-wrap: break-word;">
+                                        ${formatted}
+                                    </span>
+                                </div>
+                            `;
+                            sectionsContainer.appendChild(el);
                         });
 
-                        // VISIBILITY TOGGLE:
-                        // If we successfully rendered sections, SHOW sections container and HIDE raw container.
-                        // If no sections (empty prompt?), HIDE sections and SHOW raw (as backup).
+                        // Visibility Toggle
                         if (hasParsedContent) {
-                            o.classList.remove("hidden");
+                            sectionsContainer.classList.remove("hidden");
                             if (rawContainer) rawContainer.classList.add("hidden");
                         } else {
-                            o.classList.add("hidden");
+                            sectionsContainer.classList.add("hidden");
                             if (rawContainer) rawContainer.classList.remove("hidden");
                         }
 
-                    }(currentPromptTemplate);
+                    })(currentPromptTemplate);
                     let a = e(currentBadPromptTemplate);
                     Object.keys(currentVariables).forEach(t => {
                         const o = currentVariables[t] || "...";
