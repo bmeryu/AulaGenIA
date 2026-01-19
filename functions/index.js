@@ -58,7 +58,8 @@ async function sendMetaCAPIEvent(eventName, eventData, userData, contextData) {
                 custom_data: eventData.customData
             }],
             // â ï¸ TEST MODE ACTIVE (Remove in Prod)
-            test_event_code: 'TEST68724',
+            // ⚠️ TEST MODE ACTIVE (Remove in Prod)
+            // test_event_code: 'TEST68724',
             access_token: META_ACCESS_TOKEN
         };
 
