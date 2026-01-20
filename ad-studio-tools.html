@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Studio Tools V22 - Instagram Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* RESET & SETUP */
+        :root {
+            --brand-teal: #00d4a1;
+            --brand-dark: #0f172a;
+            --brand-darker: #020617;
+        }
+
+        body {
+            background-color: #000;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* FRAME */
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border-radius: 0px;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.8);
+            transition: all 0.3s;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            /* Default: Vertical Split */
+        }
+
+        /* CINEMA MODE */
+        body.cinema-mode {
+            background-color: #000;
+        }
+
+        body.cinema-mode .phone-frame {
+            border: none;
+            box-shadow: none;
+        }
+
+        body.cinema-mode .controls,
+        body.cinema-mode .status-panel,
+        body.cinema-mode .show-outro-btn,
+        body.cinema-mode .template-panel,
+        body.cinema-mode .version-tag,
+        body.cinema-mode .fit-btn {
+            display: none !important;
+        }
+
+        /* --- SPLIT LAYOUTS --- */
+
+        /* PANE 1: TOOLS (Primary) */
+        .pane-tool {
+            position: relative;
+            background: var(--brand-dark);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+
+        /* PANE 2: EXPERT (Julia) */
+        .pane-expert {
+            position: relative;
+            background: #000;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Tool Video Styles */
+        .pane-tool video.active {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Main video fits nicely */
+            z-index: 5;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            /* Pop from bg */
+            padding-bottom: 0;
+        }
+
+        /* Blur Background Video */
+        .pane-tool video.blur-bg {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            object-fit: cover;
+            filter: blur(20px) brightness(0.6);
+            z-index: 1;
+            opacity: 1;
+        }
+
+        /* Expert Video */
+        .pane-expert video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        /* === VERTICAL MODE (Default) === */
+        /* Top / Bottom Split */
+        .phone-frame:not(.mode-16-9) .pane-tool {
+            flex: 65;
+            width: 100%;
+            border-bottom: 2px solid var(--brand-teal);
+        }
+
+        .phone-frame:not(.mode-16-9) .pane-expert {
+            flex: 35;
+            width: 100%;
+        }
+
+        /* === HORIZONTAL MODE (16:9) === */
+        /* Side-by-Side Split */
+        .phone-frame.mode-16-9 {
+            width: 667px;
+            /* Swap dimensions */
+            height: 375px;
+            flex-direction: row;
+        }
+
+        .phone-frame.mode-16-9 .pane-tool {
+            flex: 60;
+            height: 100%;
+            border-bottom: none;
+            border-right: 2px solid var(--brand-teal);
+        }
+
+        .phone-frame.mode-16-9 .pane-expert {
+            flex: 40;
+            height: 100%;
+        }
+
+        /* --- UI ELEMENTS --- */
+
+        .brand-pill {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-pill span {
+            font-weight: 700;
+            color: #fff;
+            font-size: 10px;
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .brand-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--brand-teal);
+            border-radius: 50%;
+        }
+
+        /* NAME LABEL (Top) */
+        .tool-label {
+            position: absolute;
+            top: 60px;
+            left: 15px;
+            z-index: 60;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(4px);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border-left: 3px solid var(--brand-teal);
+            transition: all 0.3s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tool-label.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tool-label.hidden-state {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .tool-name {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* CATCHY PHRASE PILL (V22 - INSTAGRAM STICKER STYLE) */
+        .catchy-bar {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            max-width: 90%;
+
+            /* Instagram "Classic / Modern" Text Style */
+            background: rgba(0, 0, 0, 0.85);
+            /* Slightly transparent Black */
+            color: #ffffff;
+            /* White Text */
+
+            /* Boxy but rounded - Sticker feel */
+            border-radius: 8px;
+            padding: 8px 16px;
+
+            z-index: 55;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* No Border or heavy shadow - clean */
+            /* border: 1px solid rgba(255,255,255,0.1); */
+        }
+
+        .catchy-text {
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            /* Clean, modern sans */
+            font-weight: 600;
+            font-size: 12px;
+            /* text-transform: uppercase; -- Optional, let user decide case? keeping uppercase for impact */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        /* Optional: Highlight word in Teal if needed, but keeping pure white for "Insta" feel */
+
+        .cta-container {
+            position: absolute;
+            z-index: 50;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        /* Responsive Positioning for CTA */
+        .phone-frame:not(.mode-16-9) .cta-container {
+            bottom: 20px;
+        }
+
+        .phone-frame.mode-16-9 .cta-container {
+            bottom: 20px;
+            right: 0;
+            width: 40%;
+        }
+
+        .cta-pill {
+            background: linear-gradient(90deg, #2563eb, #00d4a1);
+            color: white;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 11px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            text-transform: uppercase;
+            pointer-events: auto;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* OUTRO */
+        .outro-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #020617;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .outro-screen.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .white-logo {
+            filter: brightness(0) invert(1);
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        /* PROGRESS */
+        .progress-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            display: flex;
+            gap: 2px;
+            z-index: 60;
+        }
+
+        .progress-bar {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.2);
+            height: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--brand-teal);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* CONTROLS */
+        .version-tag {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            color: #555;
+            font-size: 10px;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .template-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: #0f172a;
+            padding: 15px;
+            width: 280px;
+            z-index: 100;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .fit-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+            background: #1e293b;
+            color: #cbd5e1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #334155;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .edit-tip {
+            font-size: 10px;
+            color: #555;
+            position: absolute;
+            top: -20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* UTILS */
+        .tpl-btn {
+            background: #1e293b;
+            color: #ddd;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 11px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tpl-btn:hover {
+            background: #334155;
+        }
+
+        .section-title {
+            color: var(--brand-teal);
+            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .btn-save {
+            width: 100%;
+            background: var(--brand-teal);
+            color: #000;
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 11px;
+        }
+
+        [contenteditable]:focus {
+            outline: none;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        #rotate-msg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 200;
+            display: none;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="version-tag">V22 (Instagram Style)</div>
+
+    <div class="template-panel">
+        <div>
+            <div class="section-title">📝 Maquetas (Tools)</div>
+            <div id="list-story"></div><button onclick="saveTemplate('story')" class="btn-save">💾 Guardar Maqueta
+                Actual</button>
+        </div>
+        <div>
+            <div class="section-title">👇 CTA</div>
+            <div id="list-cta"></div><button onclick="saveTemplate('cta')" class="btn-save">💾 Guardar CTA</button>
+        </div>
+        <div>
+            <div class="section-title">🏁 Final</div>
+            <div id="list-outro"></div><button onclick="saveTemplate('outro')" class="btn-save">💾 Guardar
+                Final</button>
+        </div>
+        <button onclick="if(confirm('Reset?')) {localStorage.clear(); location.reload();}"
+            style="color:#666; font-size:10px; margin-top:15px; background:none; border:none; width:100%; cursor:pointer;">Restaurar</button>
+    </div>
+
+    <button class="fit-btn" onclick="toggleMode()">📐 Layout: Vertical (9:16)</button>
+
+    <div id="phone" class="phone-frame">
+        <div class="progress-container" id="progressContainer"></div>
+
+        <!-- PANE 1: TOOL -->
+        <div class="pane-tool">
+            <div class="brand-pill">
+                <div class="brand-dot"></div><span>AULA GENIA TOOLS</span>
+            </div>
+
+            <div id="toolLabel" class="tool-label">
+                <span id="toolName" class="tool-name" contenteditable="true"
+                    oninput="updateCurrentStep('name', this.innerText)">1. Herramienta #1</span>
+            </div>
+
+            <!-- BLUR BACKGROUND LAYER -->
+            <video id="vid1Bg" src="1.mp4" playsinline muted loop class="blur-bg"></video>
+            <!-- MAIN CONTENT VIDEO -->
+            <video id="vid1" src="1.mp4" playsinline muted class="active"></video>
+
+            <!-- CATCHY PHRASE TEXT BOX (V22 Style) -->
+            <div class="catchy-bar">
+                <span id="catchyText" class="catchy-text" contenteditable="true"
+                    oninput="updateCurrentStep('desc', this.innerText)">🔥 FRASE GANCHO AQUÍ!</span>
+            </div>
+        </div>
+
+        <!-- PANE 2: EXPERT -->
+        <div class="pane-expert">
+            <video id="vidJ" src="julia1.mp4" loop playsinline muted></video>
+        </div>
+
+        <!-- FLOATING LAYERS -->
+        <div class="cta-container">
+            <div class="cta-pill"><span id="cta-text" contenteditable="true">👇 Comenta "PDF" 👇</span></div>
+        </div>
+
+        <audio id="bgMusic" src="tech-audio.MP3"></audio>
+
+        <!-- Outro -->
+        <div id="outro" class="outro-screen">
+            <img src="Logo_AGIA.png" class="white-logo" alt="Logo">
+            <h2 id="outro-title" contenteditable="true"
+                class="text-white text-2xl font-bold mb-4 font-['Montserrat'] text-center px-4">¿Te sirvió?</h2>
+            <div
+                class="bg-teal-500 text-black font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition">
+                <span id="outro-btn" contenteditable="true">👉 ¡SÍGUEME!</span></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="edit-tip">LISTO PARA GRABAR</div>
+        <button onclick="startCinemaMode()"
+            class="bg-teal-500 text-black px-10 py-4 rounded-full font-bold shadow-lg hover:bg-teal-400 font-['Montserrat']">🍿
+            REC</button>
+    </div>
+
+    <div id="rotate-msg">ℹ️ Para grabar en 16:9, rota tu pantalla<br>o ajusta la ventana de grabación.</div>
+
+    <script>
+        // --- DEFAULTS ---
+        const DEF_STORY = [
+            {
+                id: 101,
+                name: "Maqueta: Descriptiva",
+                step1: { name: "1. ChatGPT (Texto)", desc: "💡 REDACCIÓN EXPERTA", vid: "1.mp4" },
+                step2: { name: "2. Midjourney (Img)", desc: "🎨 ARTE HIPERREALISTA", vid: "2.mp4" },
+                step3: { name: "3. Runway (Video)", desc: "🎬 VIDEO CON IA", vid: "1.mp4" }
+            },
+            {
+                id: 102,
+                name: "Maqueta: Beneficios",
+                step1: { name: "1. ChatGPT", desc: "🚀 AHORRA TIEMPO", vid: "1.mp4" },
+                step2: { name: "2. Midjourney", desc: "✨ CREA SIN LIMITES", vid: "2.mp4" },
+                step3: { name: "3. Runway", desc: "🎥 VIDEO PROFESIONAL", vid: "1.mp4" }
+            },
+            {
+                id: 103,
+                name: "Maqueta: Acción",
+                step1: { name: "Paso 1: Escribe", desc: "TÍTERE DE TU IDEA", vid: "1.mp4" },
+                step2: { name: "Paso 2: Genera", desc: "VISUALIZA AL INSTANTE", vid: "2.mp4" },
+                step3: { name: "Paso 3: Anima", desc: "DALE VIDA YA", vid: "1.mp4" }
+            }
+        ];
+        const DEF_CTA = [{ id: 1, name: "Comenta PDF", text: "👇 Comenta \"PDF\" 👇" }];
+        const DEF_OUTRO = [{ id: 1, name: "Opinion", t: "¿Te sirvió?", b: "👉 ¡SÍGUEME!" }];
+
+        const STORAGE_PREFIX = 'adstools_v21_';
+        let dataStory = [], dataCta = [], dataOutro = [];
+        let currentSequence = null;
+        let mode169 = false;
+
+        function init() { loadAll(); loadActiveTemplate(DEF_STORY[0]); }
+        function loadAll() {
+            // Merge defaults if LS is empty implies new version
+            dataStory = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'story') || JSON.stringify(DEF_STORY));
+            dataCta = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'cta') || JSON.stringify(DEF_CTA));
+            dataOutro = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'outro') || JSON.stringify(DEF_OUTRO));
+            renderLists();
+        }
+        function saveAll() { localStorage.setItem(STORAGE_PREFIX + 'story', JSON.stringify(dataStory)); localStorage.setItem(STORAGE_PREFIX + 'cta', JSON.stringify(dataCta)); localStorage.setItem(STORAGE_PREFIX + 'outro', JSON.stringify(dataOutro)); renderLists(); }
+
+        function renderLists() {
+            renderList('list-story', dataStory, 'story'); renderList('list-cta', dataCta, 'cta'); renderList('list-outro', dataOutro, 'outro');
+        }
+        function renderList(id, data, type) {
+            const c = document.getElementById(id); c.innerHTML = '';
+            data.forEach((item, idx) => {
+                const b = document.createElement('div'); b.className = 'tpl-btn'; b.innerHTML = `<span style="font-weight:bold">${item.name}</span>`;
+                // Allow deleting only user items id > 200
+                if (item.id > 200) b.innerHTML += `<div class="delete-btn" onclick="delItem('${type}',${idx})">×</div>`;
+                b.onclick = (e) => { if (!e.target.classList.contains('delete-btn')) apply(type, item); };
+                c.appendChild(b);
+            });
+        }
+        window.delItem = (t, i) => { if (confirm('Del?')) { if (t == 'story') dataStory.splice(i, 1); if (t == 'cta') dataCta.splice(i, 1); if (t == 'outro') dataOutro.splice(i, 1); saveAll(); } };
+
+        function apply(t, i) {
+            if (t === 'story') loadActiveTemplate(i);
+            if (t === 'cta') document.getElementById('cta-text').innerText = i.text;
+            if (t === 'outro') { document.getElementById('outro-title').innerText = i.t; document.getElementById('outro-btn').innerText = i.b; }
+        }
+
+        function loadActiveTemplate(item) {
+            currentSequence = [
+                { vid: item.step1.vid, n: item.step1.name, d: item.step1.desc || "FRASE FUERTE AQUÍ" },
+                { vid: item.step2.vid, n: item.step2.name, d: item.step2.desc || "FRASE FUERTE AQUÍ" },
+                { vid: item.step3.vid, n: item.step3.name, d: item.step3.desc || "FRASE FUERTE AQUÍ" }
+            ];
+
+            // Immediately update the display to show the layout of the FIRST step
+            updateDisplay(0);
+
+            // Reset Bars
+            const pc = document.getElementById('progressContainer'); pc.innerHTML = '';
+            currentSequence.forEach(() => { pc.appendChild(Object.assign(document.createElement('div'), { className: 'progress-bar' })).appendChild(Object.assign(document.createElement('div'), { className: 'progress-fill' })); });
+
+            const label = document.getElementById('toolLabel');
+            label.classList.remove('hidden-state');
+            label.classList.add('visible');
+        }
+
+        function updateDisplay(idx) {
+            const obj = currentSequence[idx];
+            document.getElementById('toolName').innerText = obj.n;
+            document.getElementById('catchyText').innerText = obj.d;
+            // Only update video if it changed, to prevent flickering? Actually standard src replacement is fine.
+            document.getElementById('vid1').src = obj.vid;
+            document.getElementById('vid1Bg').src = obj.vid;
+        }
+
+        window.updateCurrentStep = (field, val) => {
+            if (!currentSequence) return;
+            if (currentSequence[stepIdx]) {
+                if (field === 'name') currentSequence[stepIdx].n = val;
+                if (field === 'desc') currentSequence[stepIdx].d = val;
+            }
+        };
+
+        function saveTemplate(t) {
+            const n = prompt("Nombre:"); if (!n) return; const id = Date.now();
+            if (t === 'story') {
+                const newStory = {
+                    id, name: n,
+                    step1: { name: currentSequence[0].n, desc: currentSequence[0].d, vid: currentSequence[0].vid },
+                    step2: { name: currentSequence[1].n, desc: currentSequence[1].d, vid: currentSequence[1].vid },
+                    step3: { name: currentSequence[2].n, desc: currentSequence[2].d, vid: currentSequence[2].vid }
+                };
+                dataStory.push(newStory);
+            }
+            if (t === 'cta') dataCta.push({ id, name: n, text: document.getElementById('cta-text').innerText });
+            if (t === 'outro') dataOutro.push({ id, name: n, t: document.getElementById('outro-title').innerText, b: document.getElementById('outro-btn').innerText });
+            saveAll();
+        }
+
+        // --- LOGIC ---
+        const phone = document.getElementById('phone');
+        const vid1 = document.getElementById('vid1');
+        const vid1Bg = document.getElementById('vid1Bg');
+        const vidJ = document.getElementById('vidJ');
+        const label = document.getElementById('toolLabel');
+        const outro = document.getElementById('outro');
+        const audio = document.getElementById('bgMusic');
+
+        let stepIdx = 0; let isRec = false;
+
+        document.addEventListener('DOMContentLoaded', init);
+
+        function toggleMode() {
+            mode169 = !mode169;
+            const btn = document.querySelector('.fit-btn');
+
+            if (mode169) { // Switch to Horizontal
+                phone.classList.add('mode-16-9');
+                btn.innerText = "📐 Layout: Horizontal (16:9)";
+                document.getElementById('rotate-msg').style.display = 'block';
+                setTimeout(() => document.getElementById('rotate-msg').style.display = 'none', 3000);
+            } else { // Switch to Vertical
+                phone.classList.remove('mode-16-9');
+                btn.innerText = "📐 Layout: Vertical (9:16)";
+            }
+        }
+
+        function startCinemaMode() {
+            isRec = true;
+            document.body.classList.add('cinema-mode');
+            playSeq(0);
+        }
+
+        function playSeq(idx) {
+            if (idx >= currentSequence.length) { triggerOutro(); return; }
+            stepIdx = idx;
+            document.querySelectorAll('.progress-fill').forEach((f, i) => f.style.width = i < idx ? '100%' : '0%');
+
+            label.classList.remove('visible');
+            label.classList.add('hidden-state');
+
+            updateDisplay(idx);
+
+            audio.play();
+            vid1.play(); vid1Bg.play(); vidJ.play();
+
+            setTimeout(() => {
+                label.classList.remove('hidden-state');
+                label.classList.add('visible');
+            }, 500);
+        }
+
+        // SYNC BG
+        vid1.addEventListener('play', () => vid1Bg.play());
+        vid1.addEventListener('pause', () => vid1Bg.pause());
+        vid1.addEventListener('seeked', () => vid1Bg.currentTime = vid1.currentTime);
+
+        // Auto Advance
+        vid1.addEventListener('timeupdate', () => {
+            if (isRec && vid1.duration) {
+                const p = (vid1.currentTime / vid1.duration) * 100;
+                const fills = document.querySelectorAll('.progress-fill');
+                if (fills[stepIdx]) fills[stepIdx].style.width = p + '%';
+            }
+        });
+        vid1.addEventListener('ended', () => {
+            if (isRec) {
+                const fills = document.querySelectorAll('.progress-fill');
+                if (fills[stepIdx]) fills[stepIdx].style.width = '100%';
+                playSeq(stepIdx + 1);
+            }
+        });
+
+        function triggerOutro() {
+            audio.pause(); vid1.pause(); vid1Bg.pause(); vidJ.pause();
+            outro.classList.add('visible');
+            setTimeout(() => {
+                if (isRec) { isRec = false; document.body.classList.remove('cinema-mode'); outro.classList.remove('visible'); loadActiveTemplate(DEF_STORY[0]); }
+            }, 5000);
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.code == 'Space' && !document.activeElement.isContentEditable) { e.preventDefault(); if (isRec) playSeq(stepIdx + 1); else startCinemaMode(); }
+        });
+
+    </script>
+</body>
+
+</html>

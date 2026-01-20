@@ -1,0 +1,2277 @@
+﻿document.addEventListener("DOMContentLoaded", () => {
+  const e = {
+    apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
+    authDomain: "aulagenia.firebaseapp.com",
+    projectId: "aulagenia",
+    storageBucket: "aulagenia.firebasestorage.app",
+    messagingSenderId: "173328075630",
+    appId: "1:173328075630:web:825606db4271ea1e66cf7f",
+  };
+  try {
+    firebase.initializeApp(e);
+  } catch (e) {
+    console.warn("Firebase ya fue inicializado.");
+  }
+  const a = firebase.auth(),
+    t = firebase.firestore(),
+    s = firebase.storage(),
+    o =
+      window.location.origin +
+      window.location.pathname.substring(
+        0,
+        window.location.pathname.lastIndexOf("/"),
+      );
+  const urlParam = new URLSearchParams(window.location.search).get("course");
+  let processed = urlParam ? urlParam.trim().replace(/\s+/g, "-") : "";
+  if (processed === "inteligencia-aplicada") processed = "ia-aplicada-esencial";
+  const r = processed || "ia-aplicada-esencial";
+  const essentialData = {
+    title: "IA Aplicada Â· Esencial",
+    hasCertificate: !0,
+    modules: [
+      {
+        title: "Bienvenida al Curso",
+        badge: "Alumno Registrado",
+        practiceTasks: [
+          {
+            text: 'Video 1 | El Pacto: Me comprometo a ver a la IA como un "asistente" o "copiloto" para facilitar mi aprendizaje, aunque entienda que es un programa.',
+            done: !1,
+          },
+          {
+            text: "Video 2 | Recursos: DescarguÃ© las guÃ­as de acceso rÃ¡pido desde la pestaÃ±a de materiales de la plataforma.",
+            done: !1,
+          },
+        ],
+        lessons: [
+          {
+            id: "0-1",
+            title: "Video de Onboarding: Â¡Bienvenido a Aula GenIA!",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/ONBOARDING-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/ONBOARDING-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Link ChatGPT",
+                url: "https://chatgpt.com",
+                external: !0,
+              },
+              {
+                name: "GuÃ­a de Acceso: ChatGPT",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-ChatGPT-para-Novatos.pdf",
+                external: !1,
+              },
+              {
+                name: "Link Gemini",
+                url: "https://gemini.google.com",
+                external: !0,
+              },
+              {
+                name: "GuÃ­a de Acceso: Gemini",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Gemini-para-Novatos.pdf",
+                external: !1,
+              },
+              { name: "Link Grok", url: "https://x.com/i/grok", external: !0 },
+              {
+                name: "GuÃ­a de Acceso: Grok",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Grok-para-Novatos.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "0-2",
+            title: "Tu recorrido dentro de la plataforma",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/ONBOARDING-VIDEO2.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/ONBOARDING-VIDEO2-caption.srt",
+            resources: [],
+          },
+        ],
+      },
+      {
+        title: "MÃ³dulo 1: Â¿QuÃ© es la Inteligencia Artificial?",
+        badge: "Explorador Conceptual",
+        practiceTasks: [
+          {
+            text: "Video 1 | DesafÃ­o de Debate: IngresÃ© al chat y le planteÃ© a la IA una duda actual o una opiniÃ³n subjetiva para debatirla juntos, tal como se indicÃ³ en el taller.",
+            done: !1,
+          },
+          {
+            text: 'Video 2 | Detector de Alucinaciones: Le pedÃ­ informaciÃ³n sobre un tema que domino al 100% para comprobar si la IA inventaba datos o "alucinaba".',
+            done: !1,
+          },
+          {
+            text: "Video 3 | VerificaciÃ³n: Hice una bÃºsqueda crÃ­tica de un resultado que me dio la IA para confirmar que la informaciÃ³n fuera correcta, actuando como el supervisor del copiloto.",
+            done: !1,
+          },
+        ],
+        lessons: [
+          {
+            id: "1-1",
+            title:
+              'QuÃ© es la Inteligencia Artificial y por quÃ© es tu nuevo "Copiloto"',
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 1.1",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf",
+                external: !1,
+              },
+              {
+                name: "InfografÃ­a: El rol del Copiloto",
+                url: "gs://aulagenia.firebasestorage.app/Copiloto_vs_Programador.pdf",
+                external: !1,
+              },
+              {
+                name: "Â¿QuÃ© hay dentro del Copiloto? 1.0",
+                url: "gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf",
+                external: !1,
+              },
+              {
+                name: "Listado de VerificaciÃ³n del MÃ³dulo",
+                url: "gs://aulagenia.firebasestorage.app/Listado-Verificacion.pdf",
+                external: !1,
+              },
+              {
+                name: "Fuentes de Autoridad 1.0",
+                url: "gs://aulagenia.firebasestorage.app/Fuentesde-Autoridad-1.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "1-2",
+            title: "Diccionario IA: Hablando con el Genio",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO1-VIDEO2-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO1-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 1.2",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M1V2.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a: 6 Pilares de la IA",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Conceptos-Clave-Los-6-Pilares-de-laIA.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "1-3",
+            title: "Desarmando los Mitos de la IA",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO1-VIDEO3-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO1-VIDEO3-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 1.3",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M1V3.pdf",
+                external: !1,
+              },
+              {
+                name: "Mitos Derribados de la IA",
+                url: "gs://aulagenia.firebasestorage.app/Mitos-Derribados-de-la IA.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "q-1",
+            title: "Test: MÃ³dulo 1",
+            type: "quiz",
+            questions: [
+              {
+                text: 'Â¿QuÃ© es el "cerebro" de ChatGPT y otras IAs conversacionales?',
+                options: [
+                  "Un buscador como Google",
+                  "Un modelo que aprendiÃ³ leyendo millones de textos",
+                  "Una base de datos con respuestas fijas",
+                  "Un programa que solo traduce",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Es como un estudiante que leyÃ³ muchÃ­simos libros y ahora puede conversar sobre cualquier tema.",
+              },
+              {
+                text: "Si la IA te da informaciÃ³n falsa pero con mucha confianza, Â¿cÃ³mo se llama ese problema?",
+                options: [
+                  "Error de internet",
+                  "AlucinaciÃ³n de la IA",
+                  "Falta de baterÃ­a",
+                  "Problema de traducciÃ³n",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: 'Es cuando la IA "inventa" datos que suenan reales pero son completamente falsos.',
+              },
+              {
+                text: 'Â¿QuÃ© significa que una IA pueda "ver" fotos, "leer" texto y "escuchar" audio?',
+                options: [
+                  "Que trabaja en varios idiomas",
+                  "Que es Multimodal (entiende varios tipos de informaciÃ³n)",
+                  "Que tiene varias versiones",
+                  "Que funciona en varios dispositivos",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Como tener varios sentidos: puede procesar imÃ¡genes, texto y sonido al mismo tiempo.",
+              },
+              {
+                text: "Â¿CÃ³mo lee la IA el texto que le escribes?",
+                options: [
+                  "Letra por letra",
+                  'En pedacitos de palabras llamados "tokens"',
+                  "Solo palabras completas",
+                  "Como una imagen",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "La IA divide el texto en fragmentos pequeÃ±os para procesarlo mejor.",
+              },
+              {
+                text: "Si la IA olvida lo que le dijiste al inicio de una conversaciÃ³n muy larga, Â¿quÃ© pasÃ³?",
+                options: [
+                  "Se quedÃ³ sin internet",
+                  "AlcanzÃ³ su lÃ­mite de memoria (Ventana de Contexto)",
+                  "Se quedÃ³ sin baterÃ­a",
+                  "Tuvo un error de traducciÃ³n",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Es como una pizarra: si escribes mucho, tienes que borrar lo viejo para seguir.",
+              },
+            ],
+            resources: [],
+          },
+        ],
+      },
+      {
+        title: "MÃ³dulo 2: La IA para ti, en tu dÃ­a a dÃ­a",
+        badge: "Asistente IA Personal",
+        practiceTasks: [
+          {
+            text: "Video 2 | Creatividad Visual: EntrÃ© a Ideogram (o Midjourney) y generÃ© una imagen o logo para mi proyecto usando IA.",
+            done: !1,
+          },
+          {
+            text: "Video 3 | El DiagnÃ³stico: IdentifiquÃ© y anotÃ© esa tarea repetitiva que hago todos los dÃ­as y que me consume al menos 30 minutos.",
+            done: !1,
+          },
+          {
+            text: "Video 3 | La DecisiÃ³n: ElegÃ­ cuÃ¡l de mis tareas identificadas voy a delegar o automatizar primero con IA durante este curso.",
+            done: !1,
+          },
+        ],
+        lessons: [
+          {
+            id: "2-1",
+            title: "Del Uso Superficial al EstratÃ©gico",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO2-VIDEO1-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO2-VIDEO1-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 2.1",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M2V1.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a Maestra de Herramientas",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Maestra-Herramientas.pdf",
+                external: !1,
+              },
+              {
+                name: "Fuentes de Autoridad 2.0",
+                url: "gs://aulagenia.firebasestorage.app/Fuentesde-Autoridad-2.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "2-2",
+            title: "El Efecto Real: MarÃ­a, Carlos y Luis",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO2-VIDEO2-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO2-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 2.2",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M2V2.pdf",
+                external: !1,
+              },
+              {
+                name: "El Salto de Principiante a Pro",
+                url: "gs://aulagenia.firebasestorage.app/El-Salto-de-Principiante-a Pro.pdf",
+                external: !1,
+              },
+              {
+                name: "Â¿QuÃ© hay dentro del Copiloto? 2.0",
+                url: "gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto-2.pdf",
+                external: !1,
+              },
+              {
+                name: "Aprende de los Expertos: Los Caminos de MarÃ­a, Carlos y Luis",
+                url: "gs://aulagenia.firebasestorage.app/Aprende-de-los-Expertos-Los-Caminos-de-MarÃ­a-Carlos-y-Luis.pdf",
+                external: !1,
+              },
+              {
+                name: "Test de DiagnÃ³stico Avanzado: Tu Ruta",
+                url: "gs://aulagenia.firebasestorage.app/Test-de-DiagnÃ³stico-Avanzado-Tu-Ruta.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a de Acceso: Ideogram",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Ideogram-para-Novatos.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a de Acceso: Midjourney",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Midjourney-para-Novatos.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a de Acceso: Gamma",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Gamma-para-Novatos.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a de Acceso: DALL-E 3",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Acceso-a-DALL-E3-para-Novatos.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a de Acceso: Canva",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Canva-para-Novatos.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "2-3",
+            title: "Tu Radar de AutomatizaciÃ³n",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO2-VIDEO3-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO2-VIDEO3-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Herramienta: Checklist de Complejidad",
+                url: "gs://aulagenia.firebasestorage.app/Herramienta-Checklist-de-Complejidad.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "2-taller",
+            title: "AplicaciÃ³n: Radar de AutomatizaciÃ³n",
+            type: "taller",
+            resources: [],
+          },
+          {
+            id: "q-2",
+            title: "Test: MÃ³dulo 2",
+            type: "quiz",
+            questions: [
+              {
+                text: 'Â¿CuÃ¡l es la diferencia entre usar la IA de forma "superficial" vs "estratÃ©gica"?',
+                options: [
+                  "Pagar mÃ¡s dinero por la herramienta",
+                  "Usarla con un objetivo claro y repetirlo en tus tareas diarias",
+                  "Saber programar",
+                  "Tener la Ãºltima versiÃ³n",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Lo importante es cÃ³mo la integras en tu trabajo, no cuÃ¡nto pagas por ella.",
+              },
+              {
+                text: "Si quieres hacer presentaciones rÃ¡pidas y profesionales, Â¿quÃ© herramienta te ayuda?",
+                options: ["Excel", "Gamma", "WhatsApp", "Photoshop"],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Es una herramienta que transforma tus ideas en slides visuales en minutos.",
+              },
+              {
+                text: "Â¿QuÃ© tareas deberÃ­as automatizar primero con IA?",
+                options: [
+                  "Todas las tareas sin importar cuÃ¡nto tiempo tomen",
+                  "Las que se repiten mucho y te quitan al menos 30 minutos",
+                  "Solo las mÃ¡s difÃ­ciles",
+                  "Las que haces una vez al aÃ±o",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: 'Busca el "fruto que cuelga mÃ¡s bajo": lo que se repite mucho y consume tiempo.',
+              },
+              {
+                text: "Â¿Para quÃ© sirve DALL-E 3?",
+                options: [
+                  "Para escribir correos",
+                  "Para crear imÃ¡genes originales con IA",
+                  "Para hacer cÃ¡lculos",
+                  "Para traducir idiomas",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Es una herramienta que genera imÃ¡genes personalizadas desde cero.",
+              },
+              {
+                text: 'Â¿QuÃ© logrÃ³ MarÃ­a usando la IA como "asistente mÃ¡gico"?',
+                options: [
+                  "AprendiÃ³ a programar",
+                  "DuplicÃ³ su trabajo reduciendo sus horas",
+                  "ComprÃ³ una computadora nueva",
+                  "CambiÃ³ de profesiÃ³n",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "La IA le liberÃ³ tiempo para enfocarse en estrategia y creatividad.",
+              },
+            ],
+            resources: [],
+          },
+        ],
+      },
+      {
+        title: "MÃ³dulo 3: Preparando tus herramientas",
+        badge: "Creativo IA",
+        practiceTasks: [
+          {
+            text: "Video 1 | La Receta BÃ¡sica: EscribÃ­ mi primer prompt estructurado definiendo claramente: 1) El Rol, 2) El Contexto y 3) La Meta (PropÃ³sito).",
+            done: !1,
+          },
+          {
+            text: 'Video 2 | Nivel Experto: ReescribÃ­ el prompt anterior agregando los dos ingredientes faltantes de la "Estructura Maestra": Restricciones (quÃ© NO quiero) y Formato (cÃ³mo lo quiero).',
+            done: !1,
+          },
+          {
+            text: 'Video 2 | RotaciÃ³n de Sombrero: Sin cambiar de chat, le pedÃ­ a la IA que asuma un nuevo rol (ej. de "Estratega" a "Redactor") para aprovechar el contexto que ya tenÃ­a.',
+            done: !1,
+          },
+        ],
+        lessons: [
+          {
+            id: "3-1",
+            title: "La Receta WOW: El Arte de Pedir",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO3-VIDEO1-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO3-VIDEO1-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 3.1",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M3V1.pdf",
+                external: !1,
+              },
+              {
+                name: "Mi Primer Prompt WOW",
+                url: "gs://aulagenia.firebasestorage.app/Mi-Primer-Prompt-WOW.pdf",
+                external: !1,
+              },
+              {
+                name: "InfografÃ­a: La Receta WOW",
+                url: "gs://aulagenia.firebasestorage.app/InfografÃ­a-La Receta-WOW.pdf",
+                external: !1,
+              },
+              {
+                name: "Plantilla: Rellena tu Prompt WOW",
+                url: "gs://aulagenia.firebasestorage.app/Plantilla-Rellena-tu-Prompt-WOW.pdf",
+                external: !1,
+              },
+              {
+                name: "Fuentes de Autoridad 3.0",
+                url: "gs://aulagenia.firebasestorage.app/Fuentesde-Autoridad-3.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "3-2",
+            title: "FÃ³rmula AGIA: Instrucciones Maestras",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO3-VIDEO2-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO3-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 3.2",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M3V2.pdf",
+                external: !1,
+              },
+              {
+                name: "El Arte de la PersuasiÃ³n",
+                url: "gs://aulagenia.firebasestorage.app/El-Arte-de-la-Persuacion.pdf",
+                external: !1,
+              },
+              {
+                name: "El CÃ³digo de las Frases de Poder",
+                url: "gs://aulagenia.firebasestorage.app/El-CÃ³digo-de-las-Frases-de-Poder.pdf",
+                external: !1,
+              },
+              {
+                name: "Diccionario de Verbos de Poder",
+                url: "gs://aulagenia.firebasestorage.app/Diccionario-de-Verbos-de-Poder.pdf",
+                external: !1,
+              },
+              {
+                name: "Ejemplos: Instrucciones de Alta Fidelidad",
+                url: "gs://aulagenia.firebasestorage.app/Ejemplos-Instrucciones-de-Alta-Fidelidad.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a de Acceso: Gemini Image",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Gemini-Image-Nano-Banana.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "3-3",
+            title: "3 Salvavidas para Prompts en Crisis",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO3-VIDEO3-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO3-VIDEO3-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 3.3",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M3V3.pdf",
+                external: !1,
+              },
+              {
+                name: "Kit Maestro: DelegaciÃ³n IA",
+                url: "gs://aulagenia.firebasestorage.app/Kit-Maestro-DelegaciÃ³n-IA.pdf",
+                external: !1,
+              },
+              {
+                name: "Kit de Primeros Auxilios IA",
+                url: "gs://aulagenia.firebasestorage.app/Kit-Primeros-Auxilios-IA.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "q-3",
+            title: "Test: MÃ³dulo 3",
+            type: "quiz",
+            questions: [
+              {
+                text: "Para pedirle algo a la IA de forma efectiva, Â¿quÃ© 3 cosas bÃ¡sicas necesitas decirle?",
+                options: [
+                  "TÃ­tulo, Cuerpo y ConclusiÃ³n",
+                  "Rol (quiÃ©n es), Contexto (la situaciÃ³n) y Meta (quÃ© quieres)",
+                  "Pregunta, Respuesta y Gracias",
+                  "Inicio, Desarrollo y Final",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Piensa en: Â¿QuiÃ©n debe actuar? Â¿En quÃ© situaciÃ³n? Â¿QuÃ© resultado quieres?",
+              },
+              {
+                text: "Si quieres que la IA NO haga algo especÃ­fico, Â¿dÃ³nde lo pones en tu pedido?",
+                options: [
+                  "En el Formato",
+                  "En las Restricciones",
+                  "En el Rol",
+                  "En el Contexto",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Es donde defines los lÃ­mites o lo que NO quieres que haga.",
+              },
+              {
+                text: "Si la IA corta su respuesta a la mitad, Â¿quÃ© es lo mÃ¡s rÃ¡pido para que continÃºe?",
+                options: [
+                  "Empezar de nuevo",
+                  'Escribir "ContinÃºa"',
+                  "Cerrar y abrir el chat",
+                  "Borrar todo",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Una sola palabra es suficiente para que retome donde quedÃ³.",
+              },
+              {
+                text: 'Â¿QuÃ© es la "Estructura Maestra AGIA"?',
+                options: [
+                  "Un tipo de IA",
+                  "La forma completa de pedirle algo a la IA: Rol, Contexto, Meta, Restricciones y Formato",
+                  "Un programa de computadora",
+                  "Una empresa de tecnologÃ­a",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Es la receta completa con todos los ingredientes para un prompt perfecto.",
+              },
+              {
+                text: "Si quieres que la IA te dÃ© una respuesta mÃ¡s profunda, Â¿quÃ© puedes hacer?",
+                options: [
+                  "Gritar al micrÃ³fono",
+                  "Decirle que es importante y crÃ­tico para tu trabajo",
+                  "Escribir en mayÃºsculas",
+                  "Reiniciar el chat",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "AÃ±adir importancia o consecuencias activa las capacidades mÃ¡s avanzadas de la IA.",
+              },
+            ],
+            resources: [],
+          },
+        ],
+      },
+      {
+        title: "MÃ³dulo 4: Arquitectura de Ideas",
+        badge: "Maestro de Prompts",
+        practiceTasks: [
+          {
+            text: "Video 1 | El Plano: ElegÃ­ un proyecto grande y le pedÃ­ a la IA solo el Ã­ndice o la estructura general, prohibiÃ©ndole desarrollar el contenido todavÃ­a.",
+            done: !1,
+          },
+          {
+            text: "Video 2 | El Ladrillo: SeleccionÃ© un Ãºnico punto del Ã­ndice y le pedÃ­ a la IA que se concentre exclusivamente en desarrollarlo a fondo.",
+            done: !1,
+          },
+          {
+            text: "Video 2 | El Cemento: Le pedÃ­ a la IA que transforme ese contenido suelto en un formato ejecutable (como una tabla de planificaciÃ³n semanal o calendario).",
+            done: !1,
+          },
+          {
+            text: "Video 2 | DesafÃ­o de Estilo: SubÃ­ mi logo (o una imagen de referencia) y le pedÃ­ 3 variaciones de estilo (cinemÃ¡tico, minimalista, 3D) para entrenar mi criterio visual.",
+            done: !1,
+          },
+        ],
+        lessons: [
+          {
+            id: "4-1",
+            title: "Intro al Arquitecto de Ideas",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO4-VIDEO1-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO4-VIDEO1-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 4.1",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M4V1.pdf",
+                external: !1,
+              },
+              {
+                name: "Fuentes de Autoridad 4.0",
+                url: "gs://aulagenia.firebasestorage.app/Fuentesde-Autoridad-4.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a Visual: El Mapa del Arquitecto",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Visual-El-Mapa-del-Arquitecto.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "4-2",
+            title: "TÃº eres el Arquitecto de Ideas",
+            type: "video",
+            videoUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO4-VIDEO2-IA-Aplicada-Programa-Esencial.mp4",
+            transcriptionUrl:
+              "gs://aulagenia.firebasestorage.app/MODULO4-VIDEO2-IA-Aplicada-Programa-Esencial-caption.srt",
+            resources: [
+              {
+                name: "Glosario 4.2",
+                url: "gs://aulagenia.firebasestorage.app/Glosario-M4V2.pdf",
+                external: !1,
+              },
+              {
+                name: "GuÃ­a Visual: El Mapa del Arquitecto",
+                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Visual-El-Mapa-del-Arquitecto.pdf",
+                external: !1,
+              },
+              {
+                name: "Herramienta: Checklist de Complejidad",
+                url: "gs://aulagenia.firebasestorage.app/Herramienta-Checklist-de-Complejidad.pdf",
+                external: !1,
+              },
+              {
+                name: "Caso PrÃ¡ctico: Estrategia 0 a 10k Seguidores",
+                url: "gs://aulagenia.firebasestorage.app/Caso-Practico-Estrategia-0-a-10k-Seguidores.pdf",
+                external: !1,
+              },
+            ],
+          },
+          {
+            id: "q-4",
+            title: "Test: MÃ³dulo 4",
+            type: "quiz",
+            questions: [
+              {
+                text: 'Â¿QuÃ© hace diferente a un "Arquitecto de Ideas" de alguien que solo pide cosas a la IA?',
+                options: [
+                  "Usa mejores palabras",
+                  "Planifica y estructura proyectos complejos paso a paso",
+                  "Sabe programar",
+                  "Paga mÃ¡s por la herramienta",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "No solo pide, sino que organiza la informaciÃ³n para que la IA trabaje mejor.",
+              },
+              {
+                text: "Si tu pedido a la IA es muy complejo y se confunde, Â¿quÃ© deberÃ­as hacer?",
+                options: [
+                  "Pedirle que vaya mÃ¡s rÃ¡pido",
+                  "Dividirlo en pasos mÃ¡s pequeÃ±os y claros",
+                  "Cambiar de IA",
+                  "Escribir mÃ¡s texto",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "A veces menos es mÃ¡s. Divide tareas grandes en pasos pequeÃ±os.",
+              },
+              {
+                text: "Â¿Por quÃ© TÃš eres importante al trabajar con IA?",
+                options: [
+                  "Porque pagas la suscripciÃ³n",
+                  "Porque tÃº das la direcciÃ³n y el criterio que la IA no tiene",
+                  "Porque sabes arreglar computadoras",
+                  "Porque tienes las contraseÃ±as",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "La IA es la herramienta, pero tÃº eres quien decide quÃ© hacer y cÃ³mo.",
+              },
+              {
+                text: 'Â¿QuÃ© es el "Mapa del Arquitecto"?',
+                options: [
+                  "Un plano de construcciÃ³n",
+                  "Una herramienta para organizar ideas complejas antes de pedirlas a la IA",
+                  "Un tipo de GPS",
+                  "Un programa de diseÃ±o",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Te ayuda a estructurar proyectos grandes dividiÃ©ndolos en partes manejables.",
+              },
+              {
+                text: "Si un proyecto es muy grande, Â¿quÃ© es mejor hacer?",
+                options: [
+                  "Pedirlo todo de una vez",
+                  "Dividirlo en pasos pequeÃ±os y claros",
+                  "Abandonarlo",
+                  "Cambiar de IA",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Menos es mÃ¡s: divide tareas complejas en mÃ³dulos simples.",
+              },
+            ],
+            resources: [],
+          },
+        ],
+      },
+      {
+        title: "Final del Camino: CertificaciÃ³n",
+        badge: "Maestro de IA Aplicada",
+        lessons: [
+          {
+            id: "final-exam",
+            title: "Examen Final de CertificaciÃ³n (MÃ³dulos 1-4)",
+            type: "quiz",
+            questions: [
+              {
+                text: 'CASO INTEGRAL: Recibes un reporte de la IA sobre tendencias de mercado pero sospechas que algunos datos de 2024 son "alucinaciones". SegÃºn el curso, Â¿cuÃ¡l es el procedimiento correcto de un Alumno Aula GenIA?',
+                options: [
+                  "Aceptar el reporte porque los LLM nunca se equivocan en datos numÃ©ricos.",
+                  'Aplicar el truco de validaciÃ³n: preguntar "Â¿EstÃ¡s 100% seguro de estos datos?" y contrastar con fuentes de autoridad.',
+                  "Borrar el chat y pedirle que use Google Search Ãºnicamente.",
+                  "Rechazar el uso de IA para reportes y hacerlo manualmente de nuevo.",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "Recuerda que la IA es tu copiloto, no tu orÃ¡culo. El pensamiento crÃ­tico y la validaciÃ³n iterativa son tu mayor poder.",
+              },
+              {
+                text: "CASO DE AUTOMATIZACIÃ“N: Tienes 3 tareas acumuladas: A) Responder 50 correos similares al dÃ­a. B) Decidir la estrategia de expansiÃ³n de tu empresa a 5 aÃ±os. C) Revisar la ortografÃ­a de un post. SegÃºn el Radar de AutomatizaciÃ³n, Â¿cuÃ¡l deberÃ­as delegar a la IA hoy mismo?",
+                options: [
+                  "La tarea B, porque es la mÃ¡s difÃ­cil y la IA piensa mejor.",
+                  "La tarea A, porque es mecÃ¡nica, repetitiva y consume bloques grandes de tiempo.",
+                  "Ninguna, todas requieren criterio humano del 100%.",
+                  "Solo la tarea C, porque es la mÃ¡s rÃ¡pida.",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: 'Buscamos tareas que estÃ©n en el Ã¡rea de "Tareas MecÃ¡nicas" que consuman mÃ¡s de 30 minutos por sesiÃ³n para liberar tu tiempo estratÃ©gico.',
+              },
+              {
+                text: 'INGENIERÃA DE PROMPTS: Deseas que la IA analice el perfil de un cliente ideal para tu negocio. Â¿QuÃ© estructura de la "FÃ³rmula AGIA" garantiza el mejor resultado?',
+                options: [
+                  "Contexto + Formato solamente.",
+                  "Rol (Experto en ventas) + Contexto (Datos de tu negocio) + Meta (Perfil del cliente) + Restricciones (Evitar tecnicismos) + Formato (Tabla resumen).",
+                  'Pedirle: "Dame un perfil de cliente ideal" de forma directa.',
+                  "Usar solamente la Ventana de Contexto sin darle un Rol.",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: 'Una instrucciÃ³n completa de un "Arquitecto de Ideas" siempre define quiÃ©n es la IA, quÃ© sabe, quÃ© busca y cÃ³mo debe entregar el resultado.',
+              },
+              {
+                text: "CASO DE ARQUITECTURA: EstÃ¡s diseÃ±ando un flujo para automatizar la creaciÃ³n de facturas a partir de fotos de recibos. Â¿QuÃ© combinaciÃ³n de capacidades estÃ¡s uniendo?",
+                options: [
+                  "TokenizaciÃ³n y LLM bÃ¡sico.",
+                  "Multimodalidad (visiÃ³n) y ExtracciÃ³n de Patrones estratÃ©gica.",
+                  "NavegaciÃ³n web y BÃºsqueda semÃ¡ntica.",
+                  "TraducciÃ³n automÃ¡tica y AlucinaciÃ³n controlada.",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: 'La capacidad de "ver" archivos (multimodalidad) y entender la estructura de un documento es una de las aplicaciones mÃ¡s potentes del curso.',
+              },
+              {
+                text: "CONCEPTO ESTRATÃ‰GICO: SegÃºn lo visto en el curso, Â¿por quÃ© los humanos que usan IA reemplazarÃ¡n a los que no la usan?",
+                options: [
+                  "Porque la suscripciÃ³n a la IA los hace mÃ¡s ricos.",
+                  "Porque pueden procesar informaciÃ³n, iterar y ejecutar a una velocidad y escala humanamente imposibles sin ayuda.",
+                  "Porque la IA les da siempre la razÃ³n en las discusiones de negocio.",
+                  "Porque ya no necesitan estudiar ni tener criterio propio.",
+                ],
+                correctAnswerHash:
+                  "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
+                tip: "La IA no es magia, es un amplificador de tus propias capacidades. Quien tiene un motor corre mÃ¡s que quien va a pie.",
+              },
+            ],
+            resources: [],
+          },
+        ],
+      },
+    ],
+  };
+  // --- AGIA MÓDULO 5 START ---
+  const agiaConfig = {
+    categories: {
+      "Productividad Ninja": { label: "Productividad", color: "teal", icon: "rocket_launch" },
+      "Ventas & Persuasión": { label: "Ventas", color: "teal", icon: "campaign" },
+      "Contenido & Redes": { label: "Marketing", color: "indigo", icon: "share" },
+      "Finanzas Inteligentes": { label: "Finanzas", color: "slate", icon: "payments" },
+      "Legal & Formalización": { label: "Legal", color: "slate", icon: "gavel" },
+      "Estrategia & Lanzamiento": { label: "Estrategia", color: "indigo", icon: "flag" },
+      "Diseño & Arte Digital": { label: "Diseño", color: "teal", icon: "palette" },
+      "Operaciones & Procesos": { label: "Operaciones", color: "slate", icon: "settings_suggest" },
+      "Liderazgo & Equipos": { label: "Liderazgo", color: "indigo", icon: "groups" },
+      "Tecnología & Herramientas": { label: "Tecnología", color: "slate", icon: "terminal" },
+      "Otros / Análisis": { label: "Análisis", color: "gray", icon: "analytics" }
+    }
+  };
+
+  const module5 = {
+    title: "Módulo 5: Casos Aplicados",
+    badge: "Maestro de Casos",
+    lessons: []
+  };
+
+  Object.entries(agiaConfig.categories).forEach(([name, cat]) => {
+    module5.lessons.push({
+      id: "cat-" + name.replace(/\s+/g, '-').toLowerCase().replace(/[^\w-]/g, ''),
+      title: "📂 " + (cat.label || name),
+      type: "case_category",
+      categoryId: name,
+      icon: cat.icon,
+      categoryColor: cat.color,
+      resources: []
+    });
+  });
+
+  essentialData.modules.splice(4, 0, module5);
+
+  let casesData = [];
+  async function loadPromptsDatabase() {
+    try {
+      console.log("🔒 Secure Load: Solicitando prompts a Cloud Function...");
+      const getPrompts = firebase.functions().httpsCallable("getPromptsData");
+      const result = await getPrompts();
+      if (result.data.success) {
+        casesData = result.data.data;
+        console.log(`✅ Secure Load Success: ${casesData.length} prompts loaded.`);
+      } else {
+        console.error("Respuesta inválida:", result.data);
+      }
+    } catch (error) {
+      console.error("Secure Load Error:", error);
+    }
+  }
+  loadPromptsDatabase();
+
+  function getEncryptionKey() { return [65, 71, 73, 65, 50, 48, 50, 53].map(e => String.fromCharCode(e)).join("") }
+  function decryptPrompt(e) { try { if (!e) return ""; if (!e.startsWith("U2F")) return e; const t = CryptoJS.AES.decrypt(e, getEncryptionKey()); return t.toString(CryptoJS.enc.Utf8) || "Error: Corrupted Data" } catch (e) { return console.error("Decryption failed", e), "Error: Decryption Failed" } }
+
+  window.openCaseDetail = function (caseId) {
+    const cCase = casesData.find(c => c.id === caseId);
+    if (!cCase) return;
+    const container = document.getElementById("lesson-material-container");
+    if (container) {
+      container.innerHTML = renderCaseDetailHTML(cCase);
+      lucide.createIcons();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.backToCategory = function () {
+    b();
+  };
+
+  function renderCaseListHTML(categoryId) {
+    const filtered = casesData.filter(c => c.category === categoryId);
+    if (filtered.length === 0) return '<div class="p-8 text-center text-slate-500">Cargando casos... (o no hay casos para esta categoría)</div>';
+    return `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">${filtered.map(c => `
+        <div onclick="openCaseDetail(${c.id})" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-teal-400 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer group">
+             <div class="flex items-center gap-2.5 mb-3">
+                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-teal-50 transition-colors">
+                    <i data-lucide="${c.locked ? 'lock' : 'zap'}" class="w-4 h-4 ${c.locked ? 'text-slate-400' : 'text-teal-500'}"></i>
+                </div>
+                <h3 class="font-bold text-slate-800 text-sm leading-tight flex-1">${c.title}</h3>
+             </div>
+             <p class="text-[11px] text-slate-500 line-clamp-2 bg-slate-50 p-2 rounded-lg border border-slate-100 italic">"${c.problem || c.description}"</p>
+             <div class="mt-3 flex items-center justify-between">
+                <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">${c.difficulty || 'Básico'}</span>
+                <span class="text-[10px] text-slate-400 flex items-center gap-1">Ver Caso <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+             </div>
+        </div>
+      `).join('')}</div>`;
+  }
+
+  function renderCaseDetailHTML(c) {
+    return `
+        <div class="p-4 max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <button onclick="backToCategory()" class="mb-6 flex items-center gap-2 text-slate-500 hover:text-teal-600 font-bold text-xs uppercase tracking-wider transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a ${c.category}
+            </button>
+            
+            <div class="flex items-start justify-between gap-4 mb-6">
+                <h2 class="text-2xl md:text-3xl font-black text-slate-800 leading-tight">${c.title}</h2>
+                <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-wide whitespace-nowrap">${c.difficulty || 'General'}</span>
+            </div>
+            
+            <div class="space-y-8">
+                <!-- Challenge -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="target" class="w-24 h-24 text-slate-900"></i></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="p-2 rounded-lg bg-orange-100 text-orange-600"><i data-lucide="alert-circle" class="w-5 h-5"></i></span>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500">El Desafío / Problema</h3>
+                    </div>
+                    <p class="text-slate-700 text-lg leading-relaxed italic relative z-10">"${c.problem || c.description}"</p>
+                </div>
+
+                <!-- Solution (Prompt) -->
+                <div class="bg-gradient-to-br from-indigo-50 to-white p-6 md:p-8 rounded-3xl border border-indigo-100 shadow-md relative group">
+                     <div class="flex items-center gap-3 mb-4">
+                        <span class="p-2 rounded-lg bg-indigo-100 text-indigo-600"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Solución (Prompt Maestro)</h3>
+                     </div>
+                     <div class="bg-white p-5 rounded-2xl border border-indigo-200 shadow-inner">
+                        <pre class="text-sm font-mono text-slate-600 whitespace-pre-wrap leading-relaxed">${decryptPrompt(c.agiaPromptTagged)}</pre>
+                     </div>
+                     <button onclick="copyPromptText('${decryptPrompt(c.agiaPromptTagged).replace(/'/g, "\\'").replace(/\n/g, "\\n")}')" class="mt-4 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="copy" class="w-5 h-5"></i> Copiar Prompt
+                     </button>
+                </div>
+                
+                 <!-- Anatomy -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 shadow-sm">
+                         <div class="flex items-center gap-2 mb-3">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <h3 class="text-xs font-black uppercase tracking-wider text-emerald-600">Estrategia</h3>
+                         </div>
+                         <p class="text-sm text-emerald-900 leading-relaxed">${c.exampleTip || "Sigue la estructura maestra para adaptar este caso."}</p>
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-3xl border border-blue-100 shadow-sm">
+                         <div class="flex items-center gap-2 mb-3">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <h3 class="text-xs font-black uppercase tracking-wider text-blue-600">Validación</h3>
+                         </div>
+                         <p class="text-sm text-blue-900 leading-relaxed">${c.validationTip || "Verifica siempre que la IA cumpla el rol asignado."}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      `;
+  }
+
+  window.copyPromptText = function (text) {
+    navigator.clipboard.writeText(text);
+    A("¡Prompt copiado al portapapeles!");
+  };
+
+  // --- AGIA MÓDULO 5 END ---
+  const n =
+    r === "ia-aplicada-starter"
+      ? { ...essentialData, title: "IA Aplicada Â· Starter" }
+      : essentialData;
+  if (!n) return void console.error("Curso no encontrado");
+  const i = n.modules.flatMap((e) => e.lessons);
+  let l = null,
+    c = {
+      completedLessons: [],
+      currentLessonId: i.length > 0 ? i[0].id : null,
+      unlockedBadges: [],
+    },
+    d = null,
+    u = null,
+    p = !1;
+  const m = {
+    userName: document.getElementById("user-name"),
+    userAvatar: document.getElementById("user-avatar"),
+    userProfile: document.getElementById("user-profile-container"),
+    logoutButton: document.getElementById("logout-button"),
+    courseTitle: document.getElementById("course-title"),
+    progressBar: document.getElementById("progress-bar"),
+    progressText: document.getElementById("progress-text"),
+    modulesContainer: document.getElementById("modules-container"),
+    lessonTitle: document.getElementById("lesson-title"),
+    lessonMaterialContainer: document.getElementById(
+      "lesson-material-container",
+    ),
+    navigationButtons: document.getElementById("navigation-buttons"),
+    prevBtn: document.getElementById("prev-lesson-btn"),
+    mainActionBtn: document.getElementById("main-action-btn"),
+    toast: document.getElementById("toast-notification"),
+    toastMessage: document.getElementById("toast-message"),
+    badgeToast: document.getElementById("badge-toast"),
+    badgeMessage: document.getElementById("badge-message"),
+    completionModalOverlay: document.getElementById("completion-modal-overlay"),
+    completionModal: document.getElementById("completion-modal"),
+    modalUserName: document.getElementById("modal-user-name"),
+    modalCourseName: document.getElementById("modal-course-name"),
+    certificateLink: document.getElementById("certificate-link"),
+    reviewCourseBtn: document.getElementById("review-course-btn"),
+    closeModalBtn: document.getElementById("close-modal-btn"),
+    learningTabs: document.getElementById("learning-tabs"),
+    notesTextarea: document.getElementById("notes-textarea"),
+    notesSaveStatus: document.getElementById("notes-save-status"),
+    resourceFileInput: document.getElementById("resource-file-input"),
+    uploadResourcesBtn: document.getElementById("upload-resources-btn"),
+    uploadProgress: document.getElementById("upload-progress"),
+    resourcesList: document.getElementById("resources-list"),
+    userResourceList: document.getElementById("user-resource-list"),
+    taskInput: document.getElementById("task-input"),
+    addTaskBtn: document.getElementById("add-task-btn"),
+    taskList: document.getElementById("task-list"),
+    tabMaterialPanel: document.getElementById("tab-material"),
+    integratedResourcesArea: document.getElementById(
+      "integrated-resources-container",
+    ),
+    pdfModalOverlay: document.getElementById("pdf-modal-overlay"),
+    pdfModal: document.getElementById("pdf-modal"),
+    pdfModalContent: document.getElementById("pdf-modal-content"),
+    pdfModalTitle: document.getElementById("pdf-modal-title"),
+    pdfModalCloseBtn: document.getElementById("pdf-modal-close-btn"),
+    pdfIframe: document.getElementById("pdf-iframe"),
+    supportForm: document.getElementById("support-form"),
+    supportSubmitBtn: document.getElementById("support-submit-btn"),
+    supportBtnText: document.getElementById("support-btn-text"),
+    supportSpinner: document.getElementById("support-spinner"),
+    supportFormStatus: document.getElementById("support-form-status"),
+    sidebar: document.getElementById("course-sidebar"),
+    sidebarToggle: document.getElementById("sidebar-toggle-desktop"),
+    tabsNavContainer: document.getElementById("tabs-navigation-container"),
+  };
+  function g() {
+    if (0 === i.length) return !1;
+    return new Set(c.completedLessons).size >= i.length;
+  }
+  function f(e) {
+    for (let a = 0; a < n.modules.length; a++) {
+      const t = n.modules[a],
+        s = t.lessons.findIndex((a) => a.id === e);
+      if (-1 !== s) return { lesson: t.lessons[s], moduleIndex: a, module: t };
+    }
+    return null;
+  }
+  function b() {
+    (!c.currentLessonId && i.length > 0 && (c.currentLessonId = i[0].id),
+      (m.courseTitle.textContent = n.title),
+      (function () {
+        if (!m.modulesContainer) return;
+        ((m.modulesContainer.innerHTML = n.modules
+          .map((e, a) => {
+            const t = e.lessons
+              .map((e) => {
+                const a = c.completedLessons.includes(e.id),
+                  t = c.currentLessonId === e.id;
+                let s = "text-gray-600 hover:bg-slate-50",
+                  o = a
+                    ? "check-circle-2"
+                    : "quiz" === e.type
+                      ? "edit-3"
+                      : "video" === e.type
+                        ? "play"
+                        : "file-text",
+                  r = a
+                    ? "text-green-500"
+                    : "quiz" === e.type
+                      ? "text-amber-500"
+                      : "video" === e.type
+                        ? "text-teal-500"
+                        : "text-slate-400";
+                t &&
+                  ((s = "bg-teal-50 text-teal-700 font-semibold"),
+                    (o =
+                      "video" === e.type
+                        ? "play-circle"
+                        : "quiz" === e.type
+                          ? "help-circle"
+                          : "file-text"),
+                    (r = "text-teal-600"));
+                const n =
+                  { video: "video", resource: "book-open", quiz: "edit-3", case_category: "folder" }[
+                  e.type
+                  ] || "file";
+                return `<li class="lesson-item" data-lesson-id="${e.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${s}"><i data-lucide="${o}" class="h-4 w-4 mr-3 flex-shrink-0 ${r}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${e.title}</span><i data-lucide="${n}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
+              })
+              .join(""),
+              s = "chevron-down";
+            return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide text-gray-800">${e.title}</span><i data-lucide="${s}" class="h-4 w-4 transition-transform text-gray-400"></i></button><div class="accordion-content open"><ul class="py-1 space-y-0.5">${t}</ul></div></div>`;
+          })
+          .join("")),
+          (function () {
+            if (!m.modulesContainer) return;
+            (m.modulesContainer
+              .querySelectorAll(".lesson-item a")
+              .forEach((e) => {
+                e.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  const a = e.currentTarget.closest(".lesson-item");
+                  a && h(a.dataset.lessonId);
+                });
+              }),
+              m.modulesContainer
+                .querySelectorAll(".accordion-item")
+                .forEach((e) => {
+                  const a = e.querySelector(".accordion-header");
+                  a &&
+                    a.addEventListener("click", () => {
+                      const e = a.nextElementSibling,
+                        t = a.querySelector("i"),
+                        s = e.classList.toggle("open");
+                      t &&
+                        "chevron-down" === t.getAttribute("data-lucide") &&
+                        (t.style.transform = s
+                          ? "rotate(180deg)"
+                          : "rotate(0deg)");
+                    });
+                }));
+          })());
+      })());
+    const e = f(c.currentLessonId);
+    (e &&
+      ((m.lessonTitle.textContent = e.lesson.title),
+        (function (e) {
+          let a = "";
+          u && (u.pause(), (u = null));
+          if (window.currentQuizHandler) {
+            const e = document.getElementById("check-quiz-btn");
+            e && e.removeEventListener("click", window.currentQuizHandler);
+          }
+          m.tabsNavContainer &&
+            ("quiz" === e.type || "taller" === e.type
+              ? (m.tabsNavContainer.classList.add("hidden"), F("tab-clases"))
+              : m.tabsNavContainer.classList.remove("hidden"));
+          switch (e.type) {
+            case "taller":
+              a =
+                '\n                        <div class="bg-white p-8 md:p-12 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center min-h-[400px]">\n                            <div class="bg-gradient-to-br from-teal-100 to-blue-100 p-6 rounded-full mb-6 shadow-inner">\n                                <i data-lucide="target" class="h-16 w-16 text-teal-600"></i>\n                            </div>\n                            <h3 class="text-3xl font-bold text-gray-900 mb-3">Radar de AutomatizaciÃ³n Pro</h3>\n                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full mb-6">Herramienta Interactiva</span>\n                            <p class="text-gray-600 text-lg max-w-xl mb-8 leading-relaxed">\n                                Accede a nuestra herramienta exclusiva para diagnosticar, priorizar y automatizar tus tareas diarias. \n                                <br class="hidden md:block">Descubre dÃ³nde estÃ¡ tu verdadero retorno de inversiÃ³n (ROI) con IA.\n                            </p>\n                            <a href="radar-automatizacion-pro.html" target="_blank"\n                                class="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center gap-3 text-lg group">\n                                <span>Iniciar AplicaciÃ³n</span>\n                                <i data-lucide="external-link" class="h-5 w-5 group-hover:translate-x-1 transition-transform"></i>\n                            </a>\n                            <p class="text-sm text-slate-400 mt-6 flex items-center gap-2">\n                                <i data-lucide="info" class="h-4 w-4"></i> Se abrirÃ¡ en una nueva pestaÃ±a para no perder tu progreso.\n                            </p>\n                        </div>';
+              break;
+            case "video":
+              a = e.videoUrl
+                ? `<div class="flex flex-col gap-4 mt-8">\n                                <div class="video-wrapper-optimized">\n                                    <video id="course-video" controls>\n                                        <source id="course-video-source" data-src="${e.videoUrl || ""}" type="video/mp4">\n                                        ${e.transcriptionUrl ? '<track id="caption-track" kind="subtitles" srclang="es" label="EspaÃ±ol" default>' : ""}\n                                        Tu navegador no soporta el elemento de video.\n                                    </video>\n                                </div>\n                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-[1200px] mx-auto w-full">\n                                ${e.transcriptionUrl ? '\n                                    <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="captions" class="h-5 w-5"></i>\n                                        <span>Desactivar SubtÃ­tulos</span>\n                                    </button>\n                                    <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="download" class="h-5 w-5"></i>\n                                        <span>Descargar TranscripciÃ³n</span>\n                                    </button>\n                                ' : '\n                                    <div class="sm:col-span-2">\n                                        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled>\n                                            <i data-lucide="captions-off" class="h-5 w-5"></i>\n                                            <span>SubtÃ­tulos No Disponibles</span>\n                                        </button>\n                                    </div>\n                                '}\n                                </div>\n                            </div>`
+                : '<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>';
+              break;
+            case "resource":
+              a =
+                '<div class="bg-white p-12 border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 text-center">\n                            <i data-lucide="library-big" class="h-16 w-16 text-teal-500 mb-4"></i>\n                            <h3 class="text-xl font-bold text-gray-900">LecciÃ³n de Consulta</h3>\n                            <p class="mt-2 text-gray-600 max-w-md">Esta lecciÃ³n se compone de recursos teÃ³ricos y enlaces externos que puedes consultar en la pestaÃ±a "Materiales".</p>\n                        </div>';
+              break;
+            case "quiz": {
+              if (!e.questions || 0 === e.questions.length) {
+                a =
+                  '<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>';
+                break;
+              }
+              const t = c.completedLessons.includes(e.id);
+              let s = e.questions
+                .map((a, s) => {
+                  const o = a.options
+                    .map((o, r) => {
+                      if (t) {
+                        return `<div class="${r === a.correctAnswer ? "quiz-option correct" : "quiz-option opacity-60"} border-2 p-4 rounded-lg cursor-default">${o}</div>`;
+                      }
+                      return `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${r}" data-question-id="${`quiz-${e.id}-q-${s}`}">${o}</div>`;
+                    })
+                    .join(""),
+                    r = a.tip
+                      ? `\n                                <div class="mt-2">\n                                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-teal-600 font-bold flex items-center gap-1 hover:text-teal-700 transition-colors">\n                                        <i data-lucide="lightbulb" class="h-3.5 w-3.5"></i> Â¿Necesitas una pista?\n                                    </button>\n                                    <p class="hidden text-[11px] text-slate-500 mt-2 italic bg-teal-50 p-2 rounded-lg border border-teal-100 leading-relaxed shadow-sm">\n                                        ${a.tip}\n                                    </p>\n                                </div>`
+                      : "";
+                  return `<div class="space-y-4 mb-8 p-4 bg-white rounded-xl border border-slate-200 shadow-sm" ${t ? "" : `id="quiz-${e.id}-q-${s}"`}>\n                                        <h3 class="text-lg font-bold text-slate-800">${s + 1}. ${a.text}</h3>\n                                        <div class="space-y-2.5">${o}</div>\n                                        ${r}\n                                    </div>`;
+                })
+                .join("");
+              if (t) {
+                a = `${s}<p class="text-sm text-slate-500 mt-4 font-semibold text-center p-4 bg-slate-100 rounded-md">${"Ya has completado este quiz. Puedes revisar las respuestas correctas."}</p>`;
+              } else
+                a = `<div id="quiz-container" class="max-w-3xl mx-auto">${s}<div class="flex justify-center mt-6"><button id="check-quiz-btn" class="bg-slate-900 text-white font-bold px-10 py-4 rounded-full hover:bg-slate-800 transition-all shadow-lg hover:scale-105">Verificar Respuestas</button></div></div>`;
+              break;
+            }
+            case "case_category":
+              a = renderCaseListHTML(e.categoryId);
+              break;
+            default:
+              a = "<p>Tipo de lecciÃ³n no reconocido.</p>";
+          }
+          const t = document.getElementById("lesson-material-container");
+          t && (t.innerHTML = a);
+          if (
+            ((async function (e) {
+              if (!m.resourcesList || !m.integratedResourcesArea) return;
+              const a = f(e.id);
+              if (!a || !a.module) return;
+              const t = a.module.lessons.flatMap((e) => e.resources || []),
+                o = Array.from(new Map(t.map((e) => [e.name, e])).values());
+              if (o.length > 0) {
+                (m.integratedResourcesArea.classList.remove("hidden"),
+                  (m.resourcesList.innerHTML =
+                    '<div class="col-span-full py-5"><p class="text-gray-500 animate-pulse">Cargando recursos del mÃ³dulo...</p></div>'));
+                const e = await Promise.all(
+                  o.map(async (e) => {
+                    let a = e.url;
+                    if (e.url.startsWith("gs://"))
+                      try {
+                        a = await X(s, e.url);
+                      } catch (a) {
+                        console.error("Error resolviendo recurso:", e.name, a);
+                      }
+                    const t = !e.external && a.toLowerCase().includes(".pdf"),
+                      o = e.external
+                        ? "link"
+                        : t
+                          ? "file-text"
+                          : "download-cloud",
+                      r = t ? "button" : "a";
+                    return `<${r} ${t ? `data-pdf-url="${a}" data-pdf-title="${e.name}"` : `href="${a}"`} ${e.external ? 'target="_blank" rel="noopener noreferrer"' : t ? "" : "download"} class="resource-item flex items-center p-4 bg-white border border-gray-200 rounded-xl hover:bg-slate-50 hover:border-teal-500 transition-all duration-200 group text-left">\n                                    <div class="bg-teal-50 p-2 rounded-lg mr-4 group-hover:bg-teal-100 transition-colors"><i data-lucide="${o}" class="h-6 w-6 text-teal-600"></i></div>\n                                    <span class="flex-1 font-medium text-gray-700 group-hover:text-teal-700 truncate">${e.name}</span>\n                                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i>\n                                </${r}>`;
+                  }),
+                );
+                m.resourcesList.innerHTML = e.join("");
+              } else m.integratedResourcesArea.classList.add("hidden");
+              lucide.createIcons();
+            })(e),
+              "quiz" === e.type && e.questions && e.questions.length > 0)
+          ) {
+            if (!c.completedLessons.includes(e.id)) {
+              const a = document.getElementById("tab-clases");
+              a.querySelectorAll(".quiz-option").forEach((e) => {
+                e.addEventListener("click", () => {
+                  const t = e.dataset.questionId;
+                  (a
+                    .querySelectorAll(`.quiz-option[data-question-id="${t}"]`)
+                    .forEach((e) => e.classList.remove("selected")),
+                    e.classList.add("selected"));
+                });
+              });
+              const t = document.getElementById("check-quiz-btn");
+              t &&
+                ((window.currentQuizHandler = () =>
+                  (async function (e) {
+                    const a = e.questions.length;
+                    let t = 0,
+                      s = !0;
+                    for (let a = 0; a < e.questions.length; a++) {
+                      const t = `quiz-${e.id}-q-${a}`;
+                      if (
+                        !document
+                          .getElementById(t)
+                          .querySelector(".quiz-option.selected")
+                      ) {
+                        s = !1;
+                        break;
+                      }
+                    }
+                    if (!s)
+                      return void A("Por favor, responde todas las preguntas.");
+                    const o = await Promise.all(
+                      e.questions.map(async (a, t) => {
+                        const s = `quiz-${e.id}-q-${t}`,
+                          o = document.getElementById(s),
+                          r = o.querySelector(".quiz-option.selected"),
+                          n = parseInt(r.dataset.index);
+                        return {
+                          questionContainer: o,
+                          selectedOption: r,
+                          isCorrect: (await y(n)) === a.correctAnswerHash,
+                          correctHash: a.correctAnswerHash,
+                        };
+                      }),
+                    );
+                    for (const e of o) {
+                      const {
+                        questionContainer: a,
+                        selectedOption: s,
+                        isCorrect: o,
+                        correctHash: r,
+                      } = e;
+                      if (
+                        (a.querySelectorAll(".quiz-option").forEach((e) => {
+                          ((e.style.pointerEvents = "none"),
+                            e.classList.remove("selected"));
+                        }),
+                          o)
+                      )
+                        (s.classList.add("correct"), t++);
+                      else {
+                        s.classList.add("incorrect");
+                        for (let e = 0; e < 4; e++) {
+                          if ((await y(e)) === r) {
+                            a.querySelector(`[data-index="${e}"]`)?.classList.add(
+                              "correct",
+                            );
+                            break;
+                          }
+                        }
+                      }
+                    }
+                    if (t === a)
+                      (A("Â¡Todas las respuestas son correctas!"),
+                        c.completedLessons.includes(e.id) ||
+                        ((c.completedLessons = [
+                          ...new Set([...c.completedLessons, e.id]),
+                        ]),
+                          await I(),
+                          E(e.id),
+                          b()),
+                        v());
+                    else {
+                      A(`Revisa tus respuestas. ${t} de ${a} son correctas.`);
+                      const e = document.querySelector(".quiz-option.incorrect");
+                      if (e) {
+                        const a = e.closest(".space-y-4.mb-8");
+                        a &&
+                          a.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center",
+                          });
+                      }
+                      setTimeout(() => {
+                        document.querySelectorAll(".quiz-option").forEach((e) => {
+                          (e.classList.remove("incorrect", "correct"),
+                            (e.style.pointerEvents = "auto"));
+                        });
+                      }, 5e3);
+                    }
+                  })(e)),
+                  t.addEventListener("click", window.currentQuizHandler));
+            }
+          }
+          const o = document.getElementById("course-video");
+          o &&
+            ((u = o),
+              (o.onended = async () => {
+                c.completedLessons.includes(e.id) ||
+                  (c.completedLessons.push(e.id),
+                    await I(),
+                    x(),
+                    b(),
+                    A("Â¡LecciÃ³n completada al ver el video!"));
+              }));
+          const r = document.getElementById("toggle-subtitles-btn");
+          r &&
+            o &&
+            r.addEventListener("click", () => {
+              if (!o.textTracks || 0 === o.textTracks.length) return;
+              const e = o.textTracks[0],
+                a = r.querySelector("span"),
+                t = r.querySelector("i"),
+                s = "showing" === e.mode;
+              ((e.mode = s ? "hidden" : "showing"),
+                "showing" === e.mode
+                  ? (a && (a.textContent = "Desactivar SubtÃ­tulos"),
+                    t && t.setAttribute("data-lucide", "captions"))
+                  : (a && (a.textContent = "Activar SubtÃ­tulos"),
+                    t && t.setAttribute("data-lucide", "captions-off")),
+                lucide.createIcons());
+            });
+          const n = document.getElementById("transcription-button");
+          n &&
+            e.transcriptionUrl &&
+            n.addEventListener("click", () =>
+              (async function (e, a) {
+                if (!e) return void A("No hay transcripciÃ³n disponible.");
+                const t = document.getElementById("transcription-button"),
+                  o = t ? t.querySelector("span") : null,
+                  r = o ? o.textContent : "";
+                o && (o.textContent = "Preparando...");
+                t && (t.disabled = !0);
+                try {
+                  const t = await X(s, e),
+                    o = await fetch(t);
+                  if (!o.ok) throw new Error("Respuesta de red no fue OK");
+                  const r = (await o.text())
+                    .split(/\r?\n/)
+                    .filter(
+                      (e) => !/^\d+$/.test(e.trim()) && !e.includes("--\x3e"),
+                    )
+                    .join("\n")
+                    .replace(/(\n\s*){2,}/g, "\n\n")
+                    .trim(),
+                    n = new Blob([r], { type: "text/plain;charset=utf-8" }),
+                    i = document.createElement("a");
+                  i.href = URL.createObjectURL(n);
+                  const l = a.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+                  ((i.download = `transcripcion_${l}.txt`),
+                    document.body.appendChild(i),
+                    i.click(),
+                    document.body.removeChild(i),
+                    URL.revokeObjectURL(i.href),
+                    A("Descarga iniciada."));
+                } catch (e) {
+                  (console.error("Error al descargar transcripciÃ³n:", e),
+                    A("No se pudo descargar."));
+                } finally {
+                  (o && (o.textContent = r), t && (t.disabled = !1));
+                }
+              })(e.transcriptionUrl, e.title),
+            );
+          (async () => {
+            if (o)
+              try {
+                await (async function ({
+                  storage: e,
+                  videoEl: a,
+                  videoSrc: t,
+                  srtOrVttSrc: s,
+                }) {
+                  const o = a.querySelector("#course-video-source"),
+                    r = await X(e, t);
+                  o && r && (o.src = r);
+                  const n = a.querySelector("#caption-track");
+                  if (!n || !s) return void a.load();
+                  const i = await X(e, s);
+                  if (!i) return void a.load();
+                  if (/(\.srt)(\?|$)/i.test(i)) {
+                    const e = await fetch(i),
+                      a = await e.text();
+                    n.src = URL.createObjectURL(
+                      new Blob([Y(a)], { type: "text/vtt" }),
+                    );
+                  } else n.src = i;
+                  n.default = !0;
+                  const [l] = a.textTracks;
+                  l && (l.mode = "showing");
+                  a.load();
+                })({
+                  storage: s,
+                  videoEl: o,
+                  videoSrc: (e && e.videoUrl) || "",
+                  srtOrVttSrc: (e && e.transcriptionUrl) || "",
+                });
+              } catch (e) {
+                console.error("No se pudieron adjuntar medios/subtÃ­tulos:", e);
+              } finally {
+                Z();
+              }
+          })();
+        })(e.lesson),
+        m.prevBtn &&
+        (m.prevBtn.disabled = 0 === i.findIndex((a) => a.id === e.lesson.id))),
+      x(),
+      (function () {
+        if (!m.navigationButtons || !m.mainActionBtn) return;
+        m.navigationButtons.classList.remove("hidden");
+        const e = i.find((e) => e.id === c.currentLessonId);
+        if (!e) return;
+        if (c.completedLessons.includes(e.id))
+          return (
+            (m.mainActionBtn.textContent = "LecciÃ³n completada âœ“"),
+            (m.mainActionBtn.disabled = !0),
+            m.mainActionBtn.classList.replace("bg-teal-500", "bg-slate-400"),
+            void m.mainActionBtn.classList.remove("hover:bg-teal-600")
+          );
+        ((m.mainActionBtn.disabled = "quiz" === e.type),
+          (m.mainActionBtn.textContent = "Marcar como completada"),
+          m.mainActionBtn.classList.replace("bg-slate-400", "bg-teal-500"),
+          m.mainActionBtn.classList.add("hover:bg-teal-600"));
+      })(),
+      lucide.createIcons(),
+      Z());
+  }
+  async function v() {
+    const e = i.findIndex((e) => e.id === c.currentLessonId);
+    e < i.length - 1
+      ? (A("Â¡Excelente! Cargando siguiente lecciÃ³n..."),
+        setTimeout(() => {
+          h(i[e + 1].id);
+        }, 1500))
+      : p || (await L(), (p = !0));
+  }
+  async function y(e) {
+    const a = new TextEncoder().encode("AGIA-SEC-" + e),
+      t = await crypto.subtle.digest("SHA-256", a);
+    return Array.from(new Uint8Array(t))
+      .map((e) => e.toString(16).padStart(2, "0"))
+      .join("");
+  }
+  function x() {
+    const e = new Set(c.completedLessons).size,
+      a = i.length > 0 ? Math.round((e / i.length) * 100) : 0;
+    (m.progressBar && (m.progressBar.style.width = `${a}%`),
+      m.progressText && (m.progressText.textContent = `${a}%`));
+  }
+  async function h(e) {
+    f(e) && ((c = { ...c, currentLessonId: e }), await I(), b(), Q());
+  }
+  async function I() {
+    if (l)
+      try {
+        const e = t.collection("userProgress").doc(l.uid);
+        await e.set({ [r]: c }, { merge: !0 });
+      } catch (e) {
+        console.error("Error al guardar el progreso:", e);
+      }
+  }
+  function A(e, a = "generic") {
+    const t = "badge" === a ? m.badgeToast : m.toast,
+      s = "badge" === a ? m.badgeMessage : m.toastMessage;
+    t &&
+      s &&
+      ((s.textContent = e),
+        t.classList.add("show"),
+        setTimeout(() => t.classList.remove("show"), 4e3));
+  }
+  function E(e) {
+    const a = f(e);
+    if (!a || !a.module.badge) return;
+    if (e !== a.module.lessons[a.module.lessons.length - 1].id) return;
+    a.module.lessons
+      .map((e) => e.id)
+      .every((e) => c.completedLessons.includes(e)) &&
+      (c.unlockedBadges.includes(a.module.badge) ||
+        (c.unlockedBadges.push(a.module.badge),
+          I(),
+          A(`Has ganado la insignia: "${a.module.badge}"`, "badge")));
+  }
+  async function L() {
+    if (m.completionModal && m.completionModalOverlay) {
+      if (
+        (m.modalUserName && (m.modalUserName.textContent = l ? l.name : ""),
+          m.modalCourseName && (m.modalCourseName.textContent = n.title),
+          n.hasCertificate && m.certificateLink)
+      ) {
+        const e = await (async function () {
+          if (!l || !n.hasCertificate) return null;
+          const e = `${l.uid}_${r}`,
+            a = "undefined" != typeof __app_id ? __app_id : "aulagenia-app",
+            s = t
+              .collection("artifacts")
+              .doc(a)
+              .collection("public")
+              .doc("data")
+              .collection("certificates")
+              .doc(e);
+          try {
+            return (
+              (await s.get()).exists ||
+              (await s.set({
+                userId: l.uid,
+                userName: l.name,
+                courseId: r,
+                courseName: n.title,
+                issuedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                appId: a,
+              })),
+              e
+            );
+          } catch (e) {
+            return (
+              console.error(
+                "Error creating or checking certificate record:",
+                e,
+              ),
+              null
+            );
+          }
+        })();
+        e
+          ? ((m.certificateLink.href = `./portal-certificacion.html?id=${e}`),
+            m.certificateLink.classList.remove("hidden"),
+            m.certificateLink.classList.add("flex"))
+          : (m.certificateLink.classList.add("hidden"),
+            m.certificateLink.classList.remove("flex"));
+      } else
+        m.certificateLink &&
+          (m.certificateLink.classList.add("hidden"),
+            m.certificateLink.classList.remove("flex"));
+      (m.completionModalOverlay.classList.remove("hidden"),
+        m.completionModal.classList.remove("hidden"),
+        setTimeout(() => {
+          (m.completionModalOverlay.classList.add("opacity-100"),
+            m.completionModal.classList.add("show"));
+        }, 10));
+    }
+  }
+  (m.sidebarToggle &&
+    m.sidebar &&
+    m.sidebarToggle.addEventListener("click", () => {
+      m.sidebar.classList.toggle("collapsed");
+      const e = document.getElementById("toggle-icon");
+      (m.sidebar.classList.contains("collapsed")
+        ? (e.setAttribute("data-lucide", "panel-left-open"),
+          (m.sidebarToggle.title = "Mostrar menÃº"))
+        : (e.setAttribute("data-lucide", "panel-left-close"),
+          (m.sidebarToggle.title = "Ocultar menÃº")),
+        lucide.createIcons());
+    }),
+    m.mainActionBtn &&
+    m.mainActionBtn.addEventListener("click", async () => {
+      const e = c.currentLessonId;
+      if (!c.completedLessons.includes(e)) {
+        ((c = {
+          ...c,
+          completedLessons: [...new Set([...c.completedLessons, e])],
+        }),
+          await I(),
+          E(e),
+          b());
+        const a = i.findIndex((a) => a.id === e) === i.length - 1;
+        g() || a ? p || (await L(), (p = !0)) : v();
+      }
+    }),
+    m.prevBtn &&
+    m.prevBtn.addEventListener("click", () => {
+      const e = i.findIndex((e) => e.id === c.currentLessonId);
+      e > 0 && h(i[e - 1].id);
+    }),
+    m.closeModalBtn &&
+    m.closeModalBtn.addEventListener(
+      "click",
+      () => (window.location.href = `${o}/campus.html`),
+    ),
+    m.reviewCourseBtn &&
+    m.reviewCourseBtn.addEventListener("click", function () {
+      if (!m.completionModal || !m.completionModalOverlay) return;
+      (m.completionModalOverlay.classList.remove("opacity-100"),
+        m.completionModal.classList.remove("show"));
+      const e = m.completionModal.querySelector("div");
+      (e && e.classList.add("scale-95", "opacity-0"),
+        setTimeout(() => {
+          (m.completionModal.classList.add("hidden"),
+            m.completionModalOverlay.classList.add("hidden"),
+            e && e.classList.remove("scale-95", "opacity-0"));
+        }, 300));
+    }));
+  const w = document.getElementById("profile-modal-overlay"),
+    q = document.getElementById("profile-modal"),
+    B = document.getElementById("avatar-button"),
+    C = document.getElementById("cancel-profile-btn"),
+    M = document.getElementById("close-profile-modal-btn"),
+    T = document.getElementById("profile-form"),
+    k = document.getElementById("profile-name-input"),
+    S = document.getElementById("profile-rut-input"),
+    O = document.getElementById("profile-email-input"),
+    P = document.getElementById("profile-job-input"),
+    D = document.getElementById("profile-country-select"),
+    U = document.getElementById("profile-gender-select"),
+    $ = document.getElementById("profile-birthdate-input"),
+    R = document.getElementById("form-status"),
+    G = document.getElementById("save-profile-btn"),
+    z = document.getElementById("save-btn-text"),
+    V = document.getElementById("save-spinner");
+  function N() {
+    if (!w || !q) return;
+    const e = q.querySelector("div.bg-white");
+    (e && e.classList.add("scale-95", "opacity-0"),
+      setTimeout(() => {
+        (w.classList.add("hidden"),
+          q.classList.add("hidden"),
+          e && e.classList.remove("scale-95", "opacity-0"));
+      }, 300));
+  }
+  function j(e, a, t = "") {
+    const s =
+      document.getElementById(`profile-${e}-input`) ||
+      document.getElementById(`profile-${e}-select`),
+      o = document.getElementById(`${e}-error`),
+      r = document.getElementById(`${e}-status-icon`);
+    s &&
+      (s.classList.remove("form-input-error", "form-input-success"),
+        o && (o.textContent = ""),
+        r && (r.innerHTML = ""),
+        "error" === a
+          ? (s.classList.add("form-input-error"),
+            o && (o.textContent = t),
+            r &&
+            (r.innerHTML =
+              '<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>'))
+          : "success" === a &&
+          (s.classList.add("form-input-success"),
+            r &&
+            (r.innerHTML =
+              '<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>')),
+        r &&
+        r.innerHTML &&
+        lucide.createIcons({ nodes: [r.querySelector("i")] }));
+  }
+  function H() {
+    const e =
+      k.value.trim().length < 3 || !k.value.includes(" ")
+        ? (j("name", "error", "Ingresa tu nombre y apellido completo."), !1)
+        : (j("name", "success"), !0),
+      a =
+        "" === D.value
+          ? (j("country", "error", "Selecciona tu paÃ­s de residencia."), !1)
+          : (j("country", "success"), !0),
+      t = (function () {
+        if ("CL" === D.value) {
+          if (
+            !(function (e) {
+              const a = (e = e
+                .replace(/\./g, "")
+                .replace(/-/g, "")
+                .trim()
+                .toLowerCase()).slice(0, -1);
+              let t = e.slice(-1);
+              if (!/^[0-9]+[0-9kK]{1}$/.test(e)) return !1;
+              let s = 0,
+                o = 2;
+              for (let e = a.length - 1; e >= 0; e--)
+                ((s += a.charAt(e) * o), o < 7 ? o++ : (o = 2));
+              const r = 11 - (s % 11);
+              return t === (11 === r ? "0" : 10 === r ? "k" : r.toString());
+            })(S.value)
+          )
+            return (j("rut", "error", "El RUT ingresado no es vÃ¡lido."), !1);
+          j("rut", "success");
+        } else j("rut", "neutral");
+        return !0;
+      })(),
+      s = e && a && ("CL" !== D.value || t);
+    G && (G.disabled = !s);
+  }
+  function F(e) {
+    m.learningTabs &&
+      (m.learningTabs.querySelectorAll(".ltab").forEach((a) => {
+        const t = a.dataset.tab === e;
+        (a.classList.toggle("active", t),
+          a.classList.toggle("text-teal-600", t),
+          a.classList.toggle("border-teal-500", t),
+          a.classList.toggle("text-slate-500", !t),
+          a.classList.toggle("border-transparent", !t));
+      }),
+        m.learningTabs
+          .querySelectorAll(".ltab-panel")
+          .forEach((a) => a.classList.toggle("hidden", a.id !== e)));
+  }
+  function Q() {
+    if (!l) return;
+    const e = c.currentLessonId;
+    (!(async function (e) {
+      if (!l || !m.notesTextarea || !m.notesSaveStatus) return;
+      m.notesTextarea.value = "";
+      const a = t.collection("userNotes").doc(`${l.uid}_${r}_${e}`);
+      try {
+        const e = await a.get();
+        (e.exists && (m.notesTextarea.value = e.data().content || ""),
+          (m.notesSaveStatus.textContent = "Sin cambios"));
+      } catch (e) {
+        (console.error("Error al cargar las notas:", e),
+          (m.notesSaveStatus.textContent = "Error al cargar"));
+      }
+    })(e),
+      (async function (e) {
+        if (!l || !m.userResourceList) return;
+        m.userResourceList.innerHTML =
+          '<li><p class="p-3 text-sm text-slate-500">Cargando tus archivos...</p></li>';
+        try {
+          const a = await t
+            .collection("userResources")
+            .where("uid", "==", l.uid)
+            .where("courseId", "==", r)
+            .where("lessonId", "==", e)
+            .get();
+          if (a.empty)
+            return void (m.userResourceList.innerHTML =
+              '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos aÃºn.</p></li>');
+          const s = a.docs.sort(
+            (e, a) =>
+              (a.data().createdAt?.toDate() || 0) -
+              (e.data().createdAt?.toDate() || 0),
+          );
+          ((m.userResourceList.innerHTML = ""), s.forEach((e) => W(e)));
+        } catch (e) {
+          (console.error("Error listando recursos:", e),
+            (m.userResourceList.innerHTML =
+              '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos.</p></li>'));
+        }
+      })(e),
+      (async function (e) {
+        if (!l || !m.taskList) return;
+        const a = `${l.uid}_${r}_${e}`;
+        m.taskList.innerHTML = "";
+        const s = f(e),
+          o = s?.module?.practiceTasks || [];
+        try {
+          const e = t.collection("userTasks").doc(a),
+            s = await e.get();
+          let r = [];
+          (s.exists && (r = s.data().items || []),
+            o.length > 0 && 0 === r.length
+              ? (await e.set(
+                { uid: l.uid, items: o.map((e) => ({ ...e })) },
+                { merge: !0 },
+              ),
+                o.forEach((a) => K(a, e)))
+              : r.length > 0 && r.forEach((a) => K(a, e)));
+        } catch (e) {
+          console.error("Error cargando tareas:", e);
+        }
+      })(e),
+      F("tab-clases"));
+  }
+  function _() {
+    m.pdfModal &&
+      m.pdfModalOverlay &&
+      m.pdfModalContent &&
+      m.pdfIframe &&
+      (m.pdfModalOverlay.classList.remove("opacity-100"),
+        m.pdfModalContent.classList.add("scale-95", "opacity-0"),
+        setTimeout(() => {
+          (m.pdfModal.classList.add("hidden"),
+            m.pdfModalOverlay.classList.add("hidden"),
+            (m.pdfIframe.src = ""));
+        }, 300));
+  }
+  function W(e) {
+    const a = e.data(),
+      t = document.createElement("li");
+    ((t.className = "px-4 py-3 flex items-center justify-between"),
+      (t.innerHTML = `<div class="min-w-0 flex-1"><p class="text-sm font-medium text-slate-900 truncate">${a.name}</p><p class="text-xs text-slate-500 truncate">${a.contentType || ""} - ${Math.round(a.size / 1024)} KB</p></div><div class="flex items-center gap-3"><a href="${a.downloadURL}" target="_blank" class="text-teal-700 text-sm font-semibold hover:underline">Abrir</a><button class="delete-resource-btn text-red-600 text-sm font-semibold hover:underline">Eliminar</button></div>`),
+      t
+        .querySelector(".delete-resource-btn")
+        .addEventListener("click", async () => {
+          if (confirm(`Â¿Seguro que quieres eliminar "${a.name}"?`))
+            try {
+              (await s.ref(a.storagePath).delete(),
+                await e.ref.delete(),
+                t.remove(),
+                A("Archivo eliminado."));
+            } catch (e) {
+              (console.error("Error eliminando:", e),
+                A("No se pudo eliminar."));
+            }
+        }),
+      m.userResourceList.prepend(t));
+  }
+  function K(e, a) {
+    const t = document.createElement("li");
+    ((t.className =
+      "bg-white border border-slate-200 rounded-lg p-3 flex items-center justify-between group"),
+      (t.innerHTML = `<label class="flex-1 flex items-center gap-3 cursor-pointer"><input type="checkbox" class="task-toggle h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500" ${e.done ? "checked" : ""}/><span class="text-sm ${e.done ? "line-through text-slate-400" : "text-slate-800"}">${e.text}</span></label><button class="task-delete text-slate-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="h-4 w-4"></i></button>`));
+    const s = t.querySelector(".task-toggle");
+    (s.addEventListener("change", async () => {
+      const o = await a.get(),
+        r = (o.exists && o.data().items) || [],
+        n = r.findIndex((a) => a.text === e.text);
+      n > -1 &&
+        ((r[n].done = s.checked), await a.set({ items: r }, { merge: !0 }));
+      const i = t.querySelector("span");
+      i &&
+        (i.classList.toggle("line-through", s.checked),
+          i.classList.toggle("text-slate-400", s.checked));
+    }),
+      t.querySelector(".task-delete").addEventListener("click", async () => {
+        const s = ((await a.get()).data().items || []).filter(
+          (a) => a.text !== e.text,
+        );
+        (await a.set({ items: s }, { merge: !0 }), t.remove());
+      }),
+      m.taskList.append(t),
+      lucide.createIcons());
+  }
+  async function J() {
+    if (!l || !m.taskInput) return;
+    const e = m.taskInput.value.trim();
+    if (!e) return;
+    const a = c.currentLessonId,
+      s = `${l.uid}_${r}_${a}`,
+      o = { text: e, done: !1 };
+    try {
+      const e = t.collection("userTasks").doc(s);
+      (await e.set(
+        { uid: l.uid, items: firebase.firestore.FieldValue.arrayUnion(o) },
+        { merge: !0 },
+      ),
+        K(o, e),
+        (m.taskInput.value = ""));
+    } catch (e) {
+      console.error("Error agregando tarea:", e);
+    }
+  }
+  function Y(e) {
+    return (
+      "WEBVTT\n\n" +
+      e
+        .replace(/\r+/g, "")
+        .replace(/^\s*\d+\s*$/gm, "")
+        .replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, "$1:$2:$3.$4")
+        .trim()
+    );
+  }
+  async function X(e, a) {
+    if (!a) return null;
+    try {
+      const t = e.refFromURL(a);
+      return await t.getDownloadURL();
+    } catch (e) {
+      if (/^https?:\/\//i.test(a)) return a;
+      throw e;
+    }
+  }
+  function Z() {
+    g() &&
+      document
+        .querySelectorAll(
+          'button[id*="encuesta"], .btn-encuesta, a[href*="encuesta"]',
+        )
+        .forEach((e) =>
+          (function (e) {
+            if (!e) return;
+            (e.setAttribute("aria-disabled", "true"),
+              e.setAttribute("tabindex", "-1"),
+              e.classList.add("opacity-60", "cursor-not-allowed"),
+              "BUTTON" === e.tagName && (e.disabled = !0),
+              e.addEventListener(
+                "click",
+                (e) => (e.preventDefault(), e.stopImmediatePropagation(), !1),
+                !0,
+              ));
+          })(e),
+        );
+  }
+  (B &&
+    B.addEventListener("click", () =>
+      (async function () {
+        if (!(T && O && w && q)) return;
+        T.reset();
+        const e = a.currentUser;
+        if (!e) return;
+        O.value = e.email || "";
+        const s = t.collection("users").doc(e.uid);
+        try {
+          const a = await s.get(),
+            t = a.exists ? a.data() : {},
+            o = !0 === t.profileCompleted;
+          (k && (k.value = o ? t.displayName || "" : e.displayName || ""),
+            S && (S.value = t.rut || ""),
+            P && (P.value = t.jobTitle || ""),
+            D && (D.value = t.country || ""),
+            U && (U.value = t.gender || ""),
+            $ && ($.value = t.birthdate || ""));
+        } catch (e) {
+          console.error("Error al cargar datos del perfil:", e);
+        }
+        (H(),
+          R.classList.add("hidden"),
+          w.classList.remove("hidden"),
+          q.classList.remove("hidden"),
+          setTimeout(() => {
+            const e = q.querySelector("div.bg-white");
+            e && e.classList.remove("scale-95", "opacity-0");
+          }, 10));
+      })(),
+    ),
+    C && C.addEventListener("click", N),
+    M && M.addEventListener("click", N),
+    w &&
+    w.addEventListener("click", (e) => {
+      e.target === w && N();
+    }),
+    k && k.addEventListener("input", H),
+    S && S.addEventListener("input", H),
+    D && D.addEventListener("change", H),
+    T &&
+    T.addEventListener("submit", async (e) => {
+      if ((e.preventDefault(), H(), G && G.disabled))
+        return void (
+          R &&
+          ((R.className =
+            "text-center p-3 rounded-lg bg-yellow-100 text-yellow-700"),
+            (R.textContent = "Por favor, corrige los campos marcados en rojo."),
+            R.classList.remove("hidden"))
+        );
+      (G && (G.disabled = !0),
+        z && (z.textContent = "Guardando..."),
+        V && V.classList.remove("hidden"),
+        R && R.classList.add("hidden"));
+      const s = a.currentUser,
+        o = k ? k.value.trim() : "",
+        r = t.collection("users").doc(s.uid);
+      try {
+        (o &&
+          s &&
+          o !== s.displayName &&
+          (await s.updateProfile({ displayName: o })),
+          await r.set(
+            {
+              displayName: o,
+              email: s.email,
+              rut: S ? S.value.trim() : "",
+              jobTitle: P ? P.value.trim() : "",
+              country: D ? D.value : "",
+              gender: U ? U.value : "",
+              birthdate: $ ? $.value : "",
+              profileCompleted: !0,
+            },
+            { merge: !0 },
+          ),
+          m.userName && (m.userName.textContent = o),
+          R &&
+          ((R.className =
+            "text-center p-3 rounded-lg bg-green-100 text-green-700"),
+            (R.textContent = "Â¡Perfil actualizado con Ã©xito!"),
+            R.classList.remove("hidden")),
+          A("Â¡Perfil actualizado con Ã©xito!"),
+          setTimeout(N, 1500));
+      } catch (e) {
+        (console.error("Error al guardar perfil:", e),
+          R &&
+          ((R.className =
+            "text-center p-3 rounded-lg bg-red-100 text-red-700"),
+            (R.textContent =
+              "Hubo un error al guardar. IntÃ©ntalo de nuevo."),
+            R.classList.remove("hidden")));
+      } finally {
+        (z && (z.textContent = "Guardar Cambios"),
+          V && V.classList.add("hidden"));
+      }
+    }),
+    m.learningTabs &&
+    m.learningTabs.addEventListener("click", (e) => {
+      const a = e.target.closest(".ltab");
+      a && F(a.dataset.tab);
+    }),
+    m.notesTextarea &&
+    m.notesTextarea.addEventListener("input", () => {
+      m.notesSaveStatus &&
+        ((m.notesSaveStatus.textContent = "Editando..."),
+          clearTimeout(d),
+          (d = setTimeout(
+            () =>
+              (async function (e) {
+                if (!l || !m.notesTextarea || !m.notesSaveStatus) return;
+                m.notesSaveStatus.textContent = "Guardando...";
+                const a = t.collection("userNotes").doc(`${l.uid}_${r}_${e}`);
+                try {
+                  (await a.set(
+                    {
+                      uid: l.uid,
+                      content: m.notesTextarea.value,
+                      lastUpdated:
+                        firebase.firestore.FieldValue.serverTimestamp(),
+                    },
+                    { merge: !0 },
+                  ),
+                    (m.notesSaveStatus.textContent = "Guardado"));
+                } catch (e) {
+                  (console.error("Error al guardar las notas:", e),
+                    (m.notesSaveStatus.textContent = "Error al cargar"));
+                } finally {
+                  setTimeout(() => {
+                    "Guardado" === m.notesSaveStatus.textContent &&
+                      (m.notesSaveStatus.textContent = "Sin cambios");
+                  }, 2e3);
+                }
+              })(c.currentLessonId),
+            1500,
+          )));
+    }),
+    m.tabMaterialPanel &&
+    m.tabMaterialPanel.addEventListener("click", (e) => {
+      const a = e.target.closest(".resource-item[data-pdf-url]");
+      a &&
+        (function (e, a) {
+          if (
+            !(
+              m.pdfModal &&
+              m.pdfModalOverlay &&
+              m.pdfModalContent &&
+              m.pdfIframe
+            )
+          )
+            return;
+          m.pdfModalTitle && (m.pdfModalTitle.textContent = a);
+          const t = `https://docs.google.com/gview?url=${encodeURIComponent(e)}&embedded=true`;
+          ((m.pdfIframe.src = t),
+            m.pdfModal.classList.remove("hidden"),
+            m.pdfModalOverlay.classList.remove("hidden"),
+            setTimeout(() => {
+              (m.pdfModalOverlay.classList.add("opacity-100"),
+                m.pdfModalContent.classList.remove("scale-95", "opacity-0"));
+            }, 10));
+        })(a.dataset.pdfUrl, a.dataset.pdfTitle);
+    }),
+    m.pdfModalCloseBtn && m.pdfModalCloseBtn.addEventListener("click", _),
+    m.pdfModalOverlay && m.pdfModalOverlay.addEventListener("click", _),
+    m.resourceFileInput &&
+    m.resourceFileInput.addEventListener("change", () => {
+      m.uploadResourcesBtn &&
+        (m.uploadResourcesBtn.disabled =
+          0 === m.resourceFileInput.files.length);
+    }),
+    m.uploadResourcesBtn &&
+    m.uploadResourcesBtn.addEventListener("click", async () => {
+      const e = m.resourceFileInput ? m.resourceFileInput.files : null;
+      if (!e || !e.length || !l) return;
+      const a = c.currentLessonId;
+      m.uploadProgress.classList.remove("hidden");
+      for (const o of e) {
+        m.uploadProgress.textContent = `Subiendo ${o.name}...`;
+        const e = `user_uploads/${l.uid}/${r}/${a}/${Date.now()}_${o.name}`,
+          n = s.ref(e);
+        try {
+          const s = await n.put(o),
+            i = await s.ref.getDownloadURL(),
+            c = await t.collection("userResources").add({
+              uid: l.uid,
+              courseId: r,
+              lessonId: a,
+              name: o.name,
+              size: o.size,
+              contentType: o.type,
+              storagePath: e,
+              downloadURL: i,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            }),
+            d = await c.get();
+          (m.userResourceList.querySelector("p.text-slate-500") &&
+            (m.userResourceList.innerHTML = ""),
+            W(d));
+        } catch (e) {
+          return (
+            console.error("Error en subida:", e),
+            void (m.uploadProgress.textContent = `Error al subir ${o.name}.`)
+          );
+        }
+      }
+      ((m.uploadProgress.textContent = "Â¡Archivos subidos!"),
+        m.resourceFileInput && (m.resourceFileInput.value = ""),
+        m.uploadResourcesBtn && (m.uploadResourcesBtn.disabled = !0),
+        setTimeout(
+          () => m.uploadProgress && m.uploadProgress.classList.add("hidden"),
+          3e3,
+        ));
+    }),
+    m.addTaskBtn && m.addTaskBtn.addEventListener("click", J),
+    m.taskInput &&
+    m.taskInput.addEventListener("keydown", (e) => {
+      "Enter" === e.key && (e.preventDefault(), J());
+    }),
+    m.supportForm &&
+    m.supportForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const t = new FormData(m.supportForm),
+        s = f(c.currentLessonId),
+        o = {
+          email: a.currentUser.email,
+          curso: n.title,
+          fecha: new Date().toLocaleString("es-CL"),
+          asunto: t.get("subject"),
+          mensaje: t.get("message"),
+          leccion: s ? s.lesson.title : "N/A",
+          nombreAlumno: l ? l.name : "",
+        };
+      (m.supportSubmitBtn && (m.supportSubmitBtn.disabled = !0),
+        m.supportBtnText && (m.supportBtnText.textContent = "Enviando..."),
+        m.supportSpinner && m.supportSpinner.classList.remove("hidden"));
+      try {
+        if (
+          !(
+            await fetch("https://muna.auto.hostybee.com/webhook/soporte", {
+              method: "POST",
+              body: JSON.stringify(o),
+              headers: { "Content-Type": "application/json" },
+            })
+          ).ok
+        )
+          throw new Error("Error en el envÃ­o");
+        ((m.supportFormStatus.innerHTML =
+          '<p class="text-green-600 font-semibold">Â¡Consulta enviada!</p>'),
+          m.supportForm.reset());
+      } catch (e) {
+        m.supportFormStatus.innerHTML =
+          '<p class="text-red-600 font-semibold">Error al enviar. Intenta mÃ¡s tarde.</p>';
+      } finally {
+        (m.supportSubmitBtn && (m.supportSubmitBtn.disabled = !1),
+          m.supportBtnText &&
+          (m.supportBtnText.textContent = "Enviar Consulta"),
+          m.supportSpinner && m.supportSpinner.classList.add("hidden"));
+      }
+    }),
+    m.logoutButton &&
+    m.logoutButton.addEventListener("click", () =>
+      a.signOut().then(() => (window.location.href = `${o}/index.html`)),
+    ),
+    a.onAuthStateChanged((e) => {
+      e
+        ? ((l = { uid: e.uid, name: e.displayName || "Alumno" }),
+          m.userName && (m.userName.textContent = l.name),
+          m.userAvatar &&
+          (m.userAvatar.src =
+            e.photoURL ||
+            `https://placehold.co/100x100/14b8a6/FFFFFF?text=${l.name.charAt(0).toUpperCase()}`),
+          m.userProfile &&
+          (m.userProfile.classList.remove("hidden"),
+            m.userProfile.classList.add("flex")),
+          (async function () {
+            const e = t.collection("userProgress").doc(l.uid);
+            try {
+              const a = await e.get();
+              if (a.exists) {
+                const e = a.data()[r];
+                e &&
+                  (c = {
+                    completedLessons: Array.isArray(e.completedLessons)
+                      ? e.completedLessons
+                      : [],
+                    currentLessonId: i.some((a) => a.id === e.currentLessonId)
+                      ? e.currentLessonId
+                      : i[0].id,
+                    unlockedBadges: Array.isArray(e.unlockedBadges)
+                      ? e.unlockedBadges
+                      : [],
+                  });
+              }
+            } catch (e) {
+              console.error("Error al cargar el progreso.", e);
+            }
+            (b(), Q());
+          })())
+        : (window.location.href = `${o}/acceso.html`);
+    }),
+    window.lucide && window.lucide.createIcons());
+});
