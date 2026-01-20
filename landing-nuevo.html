@@ -2096,28 +2096,29 @@
                 }
 
                 // 2. Server-Side CAPI Backup (Phase 2 - Bypass Ad Blockers)
-                if (firebase && firebase.auth().currentUser) {
-                    const user = firebase.auth().currentUser;
-                    const displayName = user.displayName || '';
-                    const nameParts = displayName.split(' ');
+                // MODIFIED: Send for ALL users (auth or anon) to improve coverage
+                const currentUser = firebase.auth().currentUser;
+                const userEmail = currentUser ? currentUser.email : '';
+                const userName = currentUser ? (currentUser.displayName || '') : '';
+                const nameParts = userName.split(' ');
 
-                    firebase.functions().httpsCallable('trackInitiateCheckout')({
-                        eventId: initiateCheckoutId, // Same ID as Pixel for deduplication
-                        fbp: getCookie('_fbp'),
-                        fbc: getCookie('_fbc'),
-                        userAgent: navigator.userAgent,
-                        email: user.email,
-                        firstName: nameParts[0] || '',
-                        lastName: nameParts.slice(1).join(' ') || '',
-                        value: 9000,
-                        currency: 'CLP',
-                        url: window.location.href
-                    }).then(() => {
-                        console.log('✅ CAPI InitiateCheckout enviado');
-                    }).catch(err => {
-                        console.warn('⚠️ CAPI InitiateCheckout falló (no-bloqueante)', err);
-                    });
-                }
+                // Call function regardless of auth state
+                firebase.functions().httpsCallable('trackInitiateCheckout')({
+                    eventId: initiateCheckoutId, // Same ID as Pixel for deduplication
+                    fbp: getCookie('_fbp'),
+                    fbc: getCookie('_fbc'),
+                    userAgent: navigator.userAgent,
+                    email: userEmail, // Valid email if logged in, empty string if anon
+                    firstName: nameParts[0] || '',
+                    lastName: nameParts.slice(1).join(' ') || '',
+                    value: 0, // Changed to 0 to match Pixel
+                    currency: 'CLP',
+                    url: window.location.href
+                }).then(() => {
+                    console.log('✅ CAPI InitiateCheckout enviado');
+                }).catch(err => {
+                    console.warn('⚠️ CAPI InitiateCheckout falló (no-bloqueante)', err);
+                });
 
                 // Store ID for potential future use
                 window.currentInitiateCheckoutId = initiateCheckoutId;
