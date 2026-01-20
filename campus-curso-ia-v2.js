@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
+�document.addEventListener("DOMContentLoaded", () => {
   const e = {
     apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
     authDomain: "aulagenia.firebaseapp.com",
@@ -26,7 +26,7 @@
   if (processed === "inteligencia-aplicada") processed = "ia-aplicada-esencial";
   const r = processed || "ia-aplicada-esencial";
   const essentialData = {
-    title: "IA Aplicada Â· Esencial",
+    title: "IA Aplicada · Esencial",
     hasCertificate: !0,
     modules: [
       {
@@ -38,14 +38,14 @@
             done: !1,
           },
           {
-            text: "Video 2 | Recursos: DescarguÃ© las guÃ­as de acceso rÃ¡pido desde la pestaÃ±a de materiales de la plataforma.",
+            text: "Video 2 | Recursos: Descargué las guías de acceso rápido desde la pestaña de materiales de la plataforma.",
             done: !1,
           },
         ],
         lessons: [
           {
             id: "0-1",
-            title: "Video de Onboarding: Â¡Bienvenido a Aula GenIA!",
+            title: "Video de Onboarding: ¡Bienvenido a Aula GenIA!",
             type: "video",
             videoUrl:
               "gs://aulagenia.firebasestorage.app/ONBOARDING-IA-Aplicada-Programa-Esencial.mp4",
@@ -58,8 +58,8 @@
                 external: !0,
               },
               {
-                name: "GuÃ­a de Acceso: ChatGPT",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-ChatGPT-para-Novatos.pdf",
+                name: "Guía de Acceso: ChatGPT",
+                url: "gs://aulagenia.firebasestorage.app/Guía-de-Acceso-a-ChatGPT-para-Novatos.pdf",
                 external: !1,
               },
               {
@@ -68,14 +68,14 @@
                 external: !0,
               },
               {
-                name: "GuÃ­a de Acceso: Gemini",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Gemini-para-Novatos.pdf",
+                name: "Guía de Acceso: Gemini",
+                url: "gs://aulagenia.firebasestorage.app/Guía-de-Acceso-a-Gemini-para-Novatos.pdf",
                 external: !1,
               },
               { name: "Link Grok", url: "https://x.com/i/grok", external: !0 },
               {
-                name: "GuÃ­a de Acceso: Grok",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Grok-para-Novatos.pdf",
+                name: "Guía de Acceso: Grok",
+                url: "gs://aulagenia.firebasestorage.app/Guía-de-Acceso-a-Grok-para-Novatos.pdf",
                 external: !1,
               },
             ],
@@ -93,19 +93,19 @@
         ],
       },
       {
-        title: "MÃ³dulo 1: Â¿QuÃ© es la Inteligencia Artificial?",
+        title: "Módulo 1: ¿Qué es la Inteligencia Artificial?",
         badge: "Explorador Conceptual",
         practiceTasks: [
           {
-            text: "Video 1 | DesafÃ­o de Debate: IngresÃ© al chat y le planteÃ© a la IA una duda actual o una opiniÃ³n subjetiva para debatirla juntos, tal como se indicÃ³ en el taller.",
+            text: "Video 1 | Desafío de Debate: Ingresé al chat y le planteé a la IA una duda actual o una opinión subjetiva para debatirla juntos, tal como se indicó en el taller.",
             done: !1,
           },
           {
-            text: 'Video 2 | Detector de Alucinaciones: Le pedÃ­ informaciÃ³n sobre un tema que domino al 100% para comprobar si la IA inventaba datos o "alucinaba".',
+            text: 'Video 2 | Detector de Alucinaciones: Le pedí información sobre un tema que domino al 100% para comprobar si la IA inventaba datos o "alucinaba".',
             done: !1,
           },
           {
-            text: "Video 3 | VerificaciÃ³n: Hice una bÃºsqueda crÃ­tica de un resultado que me dio la IA para confirmar que la informaciÃ³n fuera correcta, actuando como el supervisor del copiloto.",
+            text: "Video 3 | Verificación: Hice una búsqueda crítica de un resultado que me dio la IA para confirmar que la información fuera correcta, actuando como el supervisor del copiloto.",
             done: !1,
           },
         ],
@@ -113,7 +113,7 @@
           {
             id: "1-1",
             title:
-              'QuÃ© es la Inteligencia Artificial y por quÃ© es tu nuevo "Copiloto"',
+              'Qué es la Inteligencia Artificial y por qué es tu nuevo "Copiloto"',
             type: "video",
             videoUrl:
               "gs://aulagenia.firebasestorage.app/MODULO1-VIDEO1-IA-Aplicada-Programa-Esencial.mp4",
@@ -126,17 +126,17 @@
                 external: !1,
               },
               {
-                name: "InfografÃ­a: El rol del Copiloto",
+                name: "Infografía: El rol del Copiloto",
                 url: "gs://aulagenia.firebasestorage.app/Copiloto_vs_Programador.pdf",
                 external: !1,
               },
               {
-                name: "Â¿QuÃ© hay dentro del Copiloto? 1.0",
+                name: "¿Qué hay dentro del Copiloto? 1.0",
                 url: "gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto.pdf",
                 external: !1,
               },
               {
-                name: "Listado de VerificaciÃ³n del MÃ³dulo",
+                name: "Listado de Verificación del Módulo",
                 url: "gs://aulagenia.firebasestorage.app/Listado-Verificacion.pdf",
                 external: !1,
               },
@@ -162,8 +162,8 @@
                 external: !1,
               },
               {
-                name: "GuÃ­a: 6 Pilares de la IA",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Conceptos-Clave-Los-6-Pilares-de-laIA.pdf",
+                name: "Guía: 6 Pilares de la IA",
+                url: "gs://aulagenia.firebasestorage.app/Guía-Conceptos-Clave-Los-6-Pilares-de-laIA.pdf",
                 external: !1,
               },
             ],
@@ -191,47 +191,47 @@
           },
           {
             id: "q-1",
-            title: "Test: MÃ³dulo 1",
+            title: "Test: Módulo 1",
             type: "quiz",
             questions: [
               {
-                text: 'Â¿QuÃ© es el "cerebro" de ChatGPT y otras IAs conversacionales?',
+                text: '¿Qué es el "cerebro" de ChatGPT y otras IAs conversacionales?',
                 options: [
                   "Un buscador como Google",
-                  "Un modelo que aprendiÃ³ leyendo millones de textos",
+                  "Un modelo que aprendió leyendo millones de textos",
                   "Una base de datos con respuestas fijas",
                   "Un programa que solo traduce",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Es como un estudiante que leyÃ³ muchÃ­simos libros y ahora puede conversar sobre cualquier tema.",
+                tip: "Es como un estudiante que leyó muchísimos libros y ahora puede conversar sobre cualquier tema.",
               },
               {
-                text: "Si la IA te da informaciÃ³n falsa pero con mucha confianza, Â¿cÃ³mo se llama ese problema?",
+                text: "Si la IA te da información falsa pero con mucha confianza, ¿cómo se llama ese problema?",
                 options: [
                   "Error de internet",
-                  "AlucinaciÃ³n de la IA",
-                  "Falta de baterÃ­a",
-                  "Problema de traducciÃ³n",
+                  "Alucinación de la IA",
+                  "Falta de batería",
+                  "Problema de traducción",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
                 tip: 'Es cuando la IA "inventa" datos que suenan reales pero son completamente falsos.',
               },
               {
-                text: 'Â¿QuÃ© significa que una IA pueda "ver" fotos, "leer" texto y "escuchar" audio?',
+                text: '¿Qué significa que una IA pueda "ver" fotos, "leer" texto y "escuchar" audio?',
                 options: [
                   "Que trabaja en varios idiomas",
-                  "Que es Multimodal (entiende varios tipos de informaciÃ³n)",
+                  "Que es Multimodal (entiende varios tipos de información)",
                   "Que tiene varias versiones",
                   "Que funciona en varios dispositivos",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Como tener varios sentidos: puede procesar imÃ¡genes, texto y sonido al mismo tiempo.",
+                tip: "Como tener varios sentidos: puede procesar imágenes, texto y sonido al mismo tiempo.",
               },
               {
-                text: "Â¿CÃ³mo lee la IA el texto que le escribes?",
+                text: "¿Cómo lee la IA el texto que le escribes?",
                 options: [
                   "Letra por letra",
                   'En pedacitos de palabras llamados "tokens"',
@@ -240,15 +240,15 @@
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "La IA divide el texto en fragmentos pequeÃ±os para procesarlo mejor.",
+                tip: "La IA divide el texto en fragmentos pequeños para procesarlo mejor.",
               },
               {
-                text: "Si la IA olvida lo que le dijiste al inicio de una conversaciÃ³n muy larga, Â¿quÃ© pasÃ³?",
+                text: "Si la IA olvida lo que le dijiste al inicio de una conversación muy larga, ¿qué pasó?",
                 options: [
-                  "Se quedÃ³ sin internet",
-                  "AlcanzÃ³ su lÃ­mite de memoria (Ventana de Contexto)",
-                  "Se quedÃ³ sin baterÃ­a",
-                  "Tuvo un error de traducciÃ³n",
+                  "Se quedó sin internet",
+                  "Alcanzó su límite de memoria (Ventana de Contexto)",
+                  "Se quedó sin batería",
+                  "Tuvo un error de traducción",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
@@ -260,26 +260,26 @@
         ],
       },
       {
-        title: "MÃ³dulo 2: La IA para ti, en tu dÃ­a a dÃ­a",
+        title: "Módulo 2: La IA para ti, en tu día a día",
         badge: "Asistente IA Personal",
         practiceTasks: [
           {
-            text: "Video 2 | Creatividad Visual: EntrÃ© a Ideogram (o Midjourney) y generÃ© una imagen o logo para mi proyecto usando IA.",
+            text: "Video 2 | Creatividad Visual: Entré a Ideogram (o Midjourney) y generé una imagen o logo para mi proyecto usando IA.",
             done: !1,
           },
           {
-            text: "Video 3 | El DiagnÃ³stico: IdentifiquÃ© y anotÃ© esa tarea repetitiva que hago todos los dÃ­as y que me consume al menos 30 minutos.",
+            text: "Video 3 | El Diagnóstico: Identifiqué y anoté esa tarea repetitiva que hago todos los días y que me consume al menos 30 minutos.",
             done: !1,
           },
           {
-            text: "Video 3 | La DecisiÃ³n: ElegÃ­ cuÃ¡l de mis tareas identificadas voy a delegar o automatizar primero con IA durante este curso.",
+            text: "Video 3 | La Decisión: Elegí cuál de mis tareas identificadas voy a delegar o automatizar primero con IA durante este curso.",
             done: !1,
           },
         ],
         lessons: [
           {
             id: "2-1",
-            title: "Del Uso Superficial al EstratÃ©gico",
+            title: "Del Uso Superficial al Estratégico",
             type: "video",
             videoUrl:
               "gs://aulagenia.firebasestorage.app/MODULO2-VIDEO1-IA-Aplicada-Programa-Esencial.mp4",
@@ -292,8 +292,8 @@
                 external: !1,
               },
               {
-                name: "GuÃ­a Maestra de Herramientas",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Maestra-Herramientas.pdf",
+                name: "Guía Maestra de Herramientas",
+                url: "gs://aulagenia.firebasestorage.app/Guía-Maestra-Herramientas.pdf",
                 external: !1,
               },
               {
@@ -305,7 +305,7 @@
           },
           {
             id: "2-2",
-            title: "El Efecto Real: MarÃ­a, Carlos y Luis",
+            title: "El Efecto Real: María, Carlos y Luis",
             type: "video",
             videoUrl:
               "gs://aulagenia.firebasestorage.app/MODULO2-VIDEO2-IA-Aplicada-Programa-Esencial.mp4",
@@ -323,50 +323,50 @@
                 external: !1,
               },
               {
-                name: "Â¿QuÃ© hay dentro del Copiloto? 2.0",
+                name: "¿Qué hay dentro del Copiloto? 2.0",
                 url: "gs://aulagenia.firebasestorage.app/Que-hay-dentro-del-copiloto-2.pdf",
                 external: !1,
               },
               {
-                name: "Aprende de los Expertos: Los Caminos de MarÃ­a, Carlos y Luis",
-                url: "gs://aulagenia.firebasestorage.app/Aprende-de-los-Expertos-Los-Caminos-de-MarÃ­a-Carlos-y-Luis.pdf",
+                name: "Aprende de los Expertos: Los Caminos de María, Carlos y Luis",
+                url: "gs://aulagenia.firebasestorage.app/Aprende-de-los-Expertos-Los-Caminos-de-María-Carlos-y-Luis.pdf",
                 external: !1,
               },
               {
-                name: "Test de DiagnÃ³stico Avanzado: Tu Ruta",
-                url: "gs://aulagenia.firebasestorage.app/Test-de-DiagnÃ³stico-Avanzado-Tu-Ruta.pdf",
+                name: "Test de Diagnóstico Avanzado: Tu Ruta",
+                url: "gs://aulagenia.firebasestorage.app/Test-de-Diagnóstico-Avanzado-Tu-Ruta.pdf",
                 external: !1,
               },
               {
-                name: "GuÃ­a de Acceso: Ideogram",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Ideogram-para-Novatos.pdf",
+                name: "Guía de Acceso: Ideogram",
+                url: "gs://aulagenia.firebasestorage.app/Guía-de-Acceso-a-Ideogram-para-Novatos.pdf",
                 external: !1,
               },
               {
-                name: "GuÃ­a de Acceso: Midjourney",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Midjourney-para-Novatos.pdf",
+                name: "Guía de Acceso: Midjourney",
+                url: "gs://aulagenia.firebasestorage.app/Guía-de-Acceso-a-Midjourney-para-Novatos.pdf",
                 external: !1,
               },
               {
-                name: "GuÃ­a de Acceso: Gamma",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Gamma-para-Novatos.pdf",
+                name: "Guía de Acceso: Gamma",
+                url: "gs://aulagenia.firebasestorage.app/Guía-de-Acceso-a-Gamma-para-Novatos.pdf",
                 external: !1,
               },
               {
-                name: "GuÃ­a de Acceso: DALL-E 3",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Acceso-a-DALL-E3-para-Novatos.pdf",
+                name: "Guía de Acceso: DALL-E 3",
+                url: "gs://aulagenia.firebasestorage.app/Guía-Acceso-a-DALL-E3-para-Novatos.pdf",
                 external: !1,
               },
               {
-                name: "GuÃ­a de Acceso: Canva",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Canva-para-Novatos.pdf",
+                name: "Guía de Acceso: Canva",
+                url: "gs://aulagenia.firebasestorage.app/Guía-de-Acceso-a-Canva-para-Novatos.pdf",
                 external: !1,
               },
             ],
           },
           {
             id: "2-3",
-            title: "Tu Radar de AutomatizaciÃ³n",
+            title: "Tu Radar de Automatización",
             type: "video",
             videoUrl:
               "gs://aulagenia.firebasestorage.app/MODULO2-VIDEO3-IA-Aplicada-Programa-Esencial.mp4",
@@ -382,69 +382,69 @@
           },
           {
             id: "2-taller",
-            title: "AplicaciÃ³n: Radar de AutomatizaciÃ³n",
+            title: "Aplicación: Radar de Automatización",
             type: "taller",
             resources: [],
           },
           {
             id: "q-2",
-            title: "Test: MÃ³dulo 2",
+            title: "Test: Módulo 2",
             type: "quiz",
             questions: [
               {
-                text: 'Â¿CuÃ¡l es la diferencia entre usar la IA de forma "superficial" vs "estratÃ©gica"?',
+                text: '¿Cuál es la diferencia entre usar la IA de forma "superficial" vs "estratégica"?',
                 options: [
-                  "Pagar mÃ¡s dinero por la herramienta",
+                  "Pagar más dinero por la herramienta",
                   "Usarla con un objetivo claro y repetirlo en tus tareas diarias",
                   "Saber programar",
-                  "Tener la Ãºltima versiÃ³n",
+                  "Tener la última versión",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Lo importante es cÃ³mo la integras en tu trabajo, no cuÃ¡nto pagas por ella.",
+                tip: "Lo importante es cómo la integras en tu trabajo, no cuánto pagas por ella.",
               },
               {
-                text: "Si quieres hacer presentaciones rÃ¡pidas y profesionales, Â¿quÃ© herramienta te ayuda?",
+                text: "Si quieres hacer presentaciones rápidas y profesionales, ¿qué herramienta te ayuda?",
                 options: ["Excel", "Gamma", "WhatsApp", "Photoshop"],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
                 tip: "Es una herramienta que transforma tus ideas en slides visuales en minutos.",
               },
               {
-                text: "Â¿QuÃ© tareas deberÃ­as automatizar primero con IA?",
+                text: "¿Qué tareas deberías automatizar primero con IA?",
                 options: [
-                  "Todas las tareas sin importar cuÃ¡nto tiempo tomen",
+                  "Todas las tareas sin importar cuánto tiempo tomen",
                   "Las que se repiten mucho y te quitan al menos 30 minutos",
-                  "Solo las mÃ¡s difÃ­ciles",
-                  "Las que haces una vez al aÃ±o",
+                  "Solo las más difíciles",
+                  "Las que haces una vez al año",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: 'Busca el "fruto que cuelga mÃ¡s bajo": lo que se repite mucho y consume tiempo.',
+                tip: 'Busca el "fruto que cuelga más bajo": lo que se repite mucho y consume tiempo.',
               },
               {
-                text: "Â¿Para quÃ© sirve DALL-E 3?",
+                text: "¿Para qué sirve DALL-E 3?",
                 options: [
                   "Para escribir correos",
-                  "Para crear imÃ¡genes originales con IA",
-                  "Para hacer cÃ¡lculos",
+                  "Para crear imágenes originales con IA",
+                  "Para hacer cálculos",
                   "Para traducir idiomas",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Es una herramienta que genera imÃ¡genes personalizadas desde cero.",
+                tip: "Es una herramienta que genera imágenes personalizadas desde cero.",
               },
               {
-                text: 'Â¿QuÃ© logrÃ³ MarÃ­a usando la IA como "asistente mÃ¡gico"?',
+                text: '¿Qué logró María usando la IA como "asistente mágico"?',
                 options: [
-                  "AprendiÃ³ a programar",
-                  "DuplicÃ³ su trabajo reduciendo sus horas",
-                  "ComprÃ³ una computadora nueva",
-                  "CambiÃ³ de profesiÃ³n",
+                  "Aprendió a programar",
+                  "Duplicó su trabajo reduciendo sus horas",
+                  "Compró una computadora nueva",
+                  "Cambió de profesión",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "La IA le liberÃ³ tiempo para enfocarse en estrategia y creatividad.",
+                tip: "La IA le liberó tiempo para enfocarse en estrategia y creatividad.",
               },
             ],
             resources: [],
@@ -452,19 +452,19 @@
         ],
       },
       {
-        title: "MÃ³dulo 3: Preparando tus herramientas",
+        title: "Módulo 3: Preparando tus herramientas",
         badge: "Creativo IA",
         practiceTasks: [
           {
-            text: "Video 1 | La Receta BÃ¡sica: EscribÃ­ mi primer prompt estructurado definiendo claramente: 1) El Rol, 2) El Contexto y 3) La Meta (PropÃ³sito).",
+            text: "Video 1 | La Receta Básica: Escribí mi primer prompt estructurado definiendo claramente: 1) El Rol, 2) El Contexto y 3) La Meta (Propósito).",
             done: !1,
           },
           {
-            text: 'Video 2 | Nivel Experto: ReescribÃ­ el prompt anterior agregando los dos ingredientes faltantes de la "Estructura Maestra": Restricciones (quÃ© NO quiero) y Formato (cÃ³mo lo quiero).',
+            text: 'Video 2 | Nivel Experto: Reescribí el prompt anterior agregando los dos ingredientes faltantes de la "Estructura Maestra": Restricciones (qué NO quiero) y Formato (cómo lo quiero).',
             done: !1,
           },
           {
-            text: 'Video 2 | RotaciÃ³n de Sombrero: Sin cambiar de chat, le pedÃ­ a la IA que asuma un nuevo rol (ej. de "Estratega" a "Redactor") para aprovechar el contexto que ya tenÃ­a.',
+            text: 'Video 2 | Rotación de Sombrero: Sin cambiar de chat, le pedí a la IA que asuma un nuevo rol (ej. de "Estratega" a "Redactor") para aprovechar el contexto que ya tenía.',
             done: !1,
           },
         ],
@@ -489,8 +489,8 @@
                 external: !1,
               },
               {
-                name: "InfografÃ­a: La Receta WOW",
-                url: "gs://aulagenia.firebasestorage.app/InfografÃ­a-La Receta-WOW.pdf",
+                name: "Infografía: La Receta WOW",
+                url: "gs://aulagenia.firebasestorage.app/Infografía-La Receta-WOW.pdf",
                 external: !1,
               },
               {
@@ -507,7 +507,7 @@
           },
           {
             id: "3-2",
-            title: "FÃ³rmula AGIA: Instrucciones Maestras",
+            title: "Fórmula AGIA: Instrucciones Maestras",
             type: "video",
             videoUrl:
               "gs://aulagenia.firebasestorage.app/MODULO3-VIDEO2-IA-Aplicada-Programa-Esencial.mp4",
@@ -520,13 +520,13 @@
                 external: !1,
               },
               {
-                name: "El Arte de la PersuasiÃ³n",
+                name: "El Arte de la Persuasión",
                 url: "gs://aulagenia.firebasestorage.app/El-Arte-de-la-Persuacion.pdf",
                 external: !1,
               },
               {
-                name: "El CÃ³digo de las Frases de Poder",
-                url: "gs://aulagenia.firebasestorage.app/El-CÃ³digo-de-las-Frases-de-Poder.pdf",
+                name: "El Código de las Frases de Poder",
+                url: "gs://aulagenia.firebasestorage.app/El-Código-de-las-Frases-de-Poder.pdf",
                 external: !1,
               },
               {
@@ -540,8 +540,8 @@
                 external: !1,
               },
               {
-                name: "GuÃ­a de Acceso: Gemini Image",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-de-Acceso-a-Gemini-Image-Nano-Banana.pdf",
+                name: "Guía de Acceso: Gemini Image",
+                url: "gs://aulagenia.firebasestorage.app/Guía-de-Acceso-a-Gemini-Image-Nano-Banana.pdf",
                 external: !1,
               },
             ],
@@ -561,8 +561,8 @@
                 external: !1,
               },
               {
-                name: "Kit Maestro: DelegaciÃ³n IA",
-                url: "gs://aulagenia.firebasestorage.app/Kit-Maestro-DelegaciÃ³n-IA.pdf",
+                name: "Kit Maestro: Delegación IA",
+                url: "gs://aulagenia.firebasestorage.app/Kit-Maestro-Delegación-IA.pdf",
                 external: !1,
               },
               {
@@ -574,23 +574,23 @@
           },
           {
             id: "q-3",
-            title: "Test: MÃ³dulo 3",
+            title: "Test: Módulo 3",
             type: "quiz",
             questions: [
               {
-                text: "Para pedirle algo a la IA de forma efectiva, Â¿quÃ© 3 cosas bÃ¡sicas necesitas decirle?",
+                text: "Para pedirle algo a la IA de forma efectiva, ¿qué 3 cosas básicas necesitas decirle?",
                 options: [
-                  "TÃ­tulo, Cuerpo y ConclusiÃ³n",
-                  "Rol (quiÃ©n es), Contexto (la situaciÃ³n) y Meta (quÃ© quieres)",
+                  "Título, Cuerpo y Conclusión",
+                  "Rol (quién es), Contexto (la situación) y Meta (qué quieres)",
                   "Pregunta, Respuesta y Gracias",
                   "Inicio, Desarrollo y Final",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Piensa en: Â¿QuiÃ©n debe actuar? Â¿En quÃ© situaciÃ³n? Â¿QuÃ© resultado quieres?",
+                tip: "Piensa en: ¿Quién debe actuar? ¿En qué situación? ¿Qué resultado quieres?",
               },
               {
-                text: "Si quieres que la IA NO haga algo especÃ­fico, Â¿dÃ³nde lo pones en tu pedido?",
+                text: "Si quieres que la IA NO haga algo específico, ¿dónde lo pones en tu pedido?",
                 options: [
                   "En el Formato",
                   "En las Restricciones",
@@ -599,43 +599,43 @@
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Es donde defines los lÃ­mites o lo que NO quieres que haga.",
+                tip: "Es donde defines los límites o lo que NO quieres que haga.",
               },
               {
-                text: "Si la IA corta su respuesta a la mitad, Â¿quÃ© es lo mÃ¡s rÃ¡pido para que continÃºe?",
+                text: "Si la IA corta su respuesta a la mitad, ¿qué es lo más rápido para que continúe?",
                 options: [
                   "Empezar de nuevo",
-                  'Escribir "ContinÃºa"',
+                  'Escribir "Continúa"',
                   "Cerrar y abrir el chat",
                   "Borrar todo",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Una sola palabra es suficiente para que retome donde quedÃ³.",
+                tip: "Una sola palabra es suficiente para que retome donde quedó.",
               },
               {
-                text: 'Â¿QuÃ© es la "Estructura Maestra AGIA"?',
+                text: '¿Qué es la "Estructura Maestra AGIA"?',
                 options: [
                   "Un tipo de IA",
                   "La forma completa de pedirle algo a la IA: Rol, Contexto, Meta, Restricciones y Formato",
                   "Un programa de computadora",
-                  "Una empresa de tecnologÃ­a",
+                  "Una empresa de tecnología",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
                 tip: "Es la receta completa con todos los ingredientes para un prompt perfecto.",
               },
               {
-                text: "Si quieres que la IA te dÃ© una respuesta mÃ¡s profunda, Â¿quÃ© puedes hacer?",
+                text: "Si quieres que la IA te dé una respuesta más profunda, ¿qué puedes hacer?",
                 options: [
-                  "Gritar al micrÃ³fono",
-                  "Decirle que es importante y crÃ­tico para tu trabajo",
-                  "Escribir en mayÃºsculas",
+                  "Gritar al micrófono",
+                  "Decirle que es importante y crítico para tu trabajo",
+                  "Escribir en mayúsculas",
                   "Reiniciar el chat",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "AÃ±adir importancia o consecuencias activa las capacidades mÃ¡s avanzadas de la IA.",
+                tip: "Añadir importancia o consecuencias activa las capacidades más avanzadas de la IA.",
               },
             ],
             resources: [],
@@ -643,23 +643,23 @@
         ],
       },
       {
-        title: "MÃ³dulo 4: Arquitectura de Ideas",
+        title: "Módulo 4: Arquitectura de Ideas",
         badge: "Maestro de Prompts",
         practiceTasks: [
           {
-            text: "Video 1 | El Plano: ElegÃ­ un proyecto grande y le pedÃ­ a la IA solo el Ã­ndice o la estructura general, prohibiÃ©ndole desarrollar el contenido todavÃ­a.",
+            text: "Video 1 | El Plano: Elegí un proyecto grande y le pedí a la IA solo el índice o la estructura general, prohibiéndole desarrollar el contenido todavía.",
             done: !1,
           },
           {
-            text: "Video 2 | El Ladrillo: SeleccionÃ© un Ãºnico punto del Ã­ndice y le pedÃ­ a la IA que se concentre exclusivamente en desarrollarlo a fondo.",
+            text: "Video 2 | El Ladrillo: Seleccioné un único punto del índice y le pedí a la IA que se concentre exclusivamente en desarrollarlo a fondo.",
             done: !1,
           },
           {
-            text: "Video 2 | El Cemento: Le pedÃ­ a la IA que transforme ese contenido suelto en un formato ejecutable (como una tabla de planificaciÃ³n semanal o calendario).",
+            text: "Video 2 | El Cemento: Le pedí a la IA que transforme ese contenido suelto en un formato ejecutable (como una tabla de planificación semanal o calendario).",
             done: !1,
           },
           {
-            text: "Video 2 | DesafÃ­o de Estilo: SubÃ­ mi logo (o una imagen de referencia) y le pedÃ­ 3 variaciones de estilo (cinemÃ¡tico, minimalista, 3D) para entrenar mi criterio visual.",
+            text: "Video 2 | Desafío de Estilo: Subí mi logo (o una imagen de referencia) y le pedí 3 variaciones de estilo (cinemático, minimalista, 3D) para entrenar mi criterio visual.",
             done: !1,
           },
         ],
@@ -684,15 +684,15 @@
                 external: !1,
               },
               {
-                name: "GuÃ­a Visual: El Mapa del Arquitecto",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Visual-El-Mapa-del-Arquitecto.pdf",
+                name: "Guía Visual: El Mapa del Arquitecto",
+                url: "gs://aulagenia.firebasestorage.app/Guía-Visual-El-Mapa-del-Arquitecto.pdf",
                 external: !1,
               },
             ],
           },
           {
             id: "4-2",
-            title: "TÃº eres el Arquitecto de Ideas",
+            title: "Tú eres el Arquitecto de Ideas",
             type: "video",
             videoUrl:
               "gs://aulagenia.firebasestorage.app/MODULO4-VIDEO2-IA-Aplicada-Programa-Esencial.mp4",
@@ -705,8 +705,8 @@
                 external: !1,
               },
               {
-                name: "GuÃ­a Visual: El Mapa del Arquitecto",
-                url: "gs://aulagenia.firebasestorage.app/GuÃ­a-Visual-El-Mapa-del-Arquitecto.pdf",
+                name: "Guía Visual: El Mapa del Arquitecto",
+                url: "gs://aulagenia.firebasestorage.app/Guía-Visual-El-Mapa-del-Arquitecto.pdf",
                 external: !1,
               },
               {
@@ -715,7 +715,7 @@
                 external: !1,
               },
               {
-                name: "Caso PrÃ¡ctico: Estrategia 0 a 10k Seguidores",
+                name: "Caso Práctico: Estrategia 0 a 10k Seguidores",
                 url: "gs://aulagenia.firebasestorage.app/Caso-Practico-Estrategia-0-a-10k-Seguidores.pdf",
                 external: !1,
               },
@@ -723,68 +723,68 @@
           },
           {
             id: "q-4",
-            title: "Test: MÃ³dulo 4",
+            title: "Test: Módulo 4",
             type: "quiz",
             questions: [
               {
-                text: 'Â¿QuÃ© hace diferente a un "Arquitecto de Ideas" de alguien que solo pide cosas a la IA?',
+                text: '¿Qué hace diferente a un "Arquitecto de Ideas" de alguien que solo pide cosas a la IA?',
                 options: [
                   "Usa mejores palabras",
                   "Planifica y estructura proyectos complejos paso a paso",
                   "Sabe programar",
-                  "Paga mÃ¡s por la herramienta",
+                  "Paga más por la herramienta",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "No solo pide, sino que organiza la informaciÃ³n para que la IA trabaje mejor.",
+                tip: "No solo pide, sino que organiza la información para que la IA trabaje mejor.",
               },
               {
-                text: "Si tu pedido a la IA es muy complejo y se confunde, Â¿quÃ© deberÃ­as hacer?",
+                text: "Si tu pedido a la IA es muy complejo y se confunde, ¿qué deberías hacer?",
                 options: [
-                  "Pedirle que vaya mÃ¡s rÃ¡pido",
-                  "Dividirlo en pasos mÃ¡s pequeÃ±os y claros",
+                  "Pedirle que vaya más rápido",
+                  "Dividirlo en pasos más pequeños y claros",
                   "Cambiar de IA",
-                  "Escribir mÃ¡s texto",
+                  "Escribir más texto",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "A veces menos es mÃ¡s. Divide tareas grandes en pasos pequeÃ±os.",
+                tip: "A veces menos es más. Divide tareas grandes en pasos pequeños.",
               },
               {
-                text: "Â¿Por quÃ© TÃš eres importante al trabajar con IA?",
+                text: "¿Por qué T�a eres importante al trabajar con IA?",
                 options: [
-                  "Porque pagas la suscripciÃ³n",
-                  "Porque tÃº das la direcciÃ³n y el criterio que la IA no tiene",
+                  "Porque pagas la suscripción",
+                  "Porque tú das la dirección y el criterio que la IA no tiene",
                   "Porque sabes arreglar computadoras",
-                  "Porque tienes las contraseÃ±as",
+                  "Porque tienes las contraseñas",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "La IA es la herramienta, pero tÃº eres quien decide quÃ© hacer y cÃ³mo.",
+                tip: "La IA es la herramienta, pero tú eres quien decide qué hacer y cómo.",
               },
               {
-                text: 'Â¿QuÃ© es el "Mapa del Arquitecto"?',
+                text: '¿Qué es el "Mapa del Arquitecto"?',
                 options: [
-                  "Un plano de construcciÃ³n",
+                  "Un plano de construcción",
                   "Una herramienta para organizar ideas complejas antes de pedirlas a la IA",
                   "Un tipo de GPS",
-                  "Un programa de diseÃ±o",
+                  "Un programa de diseño",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Te ayuda a estructurar proyectos grandes dividiÃ©ndolos en partes manejables.",
+                tip: "Te ayuda a estructurar proyectos grandes dividiéndolos en partes manejables.",
               },
               {
-                text: "Si un proyecto es muy grande, Â¿quÃ© es mejor hacer?",
+                text: "Si un proyecto es muy grande, ¿qué es mejor hacer?",
                 options: [
                   "Pedirlo todo de una vez",
-                  "Dividirlo en pasos pequeÃ±os y claros",
+                  "Dividirlo en pasos pequeños y claros",
                   "Abandonarlo",
                   "Cambiar de IA",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Menos es mÃ¡s: divide tareas complejas en mÃ³dulos simples.",
+                tip: "Menos es más: divide tareas complejas en módulos simples.",
               },
             ],
             resources: [],
@@ -792,40 +792,40 @@
         ],
       },
       {
-        title: "Final del Camino: CertificaciÃ³n",
+        title: "Final del Camino: Certificación",
         badge: "Maestro de IA Aplicada",
         lessons: [
           {
             id: "final-exam",
-            title: "Examen Final de CertificaciÃ³n (MÃ³dulos 1-4)",
+            title: "Examen Final de Certificación (Módulos 1-4)",
             type: "quiz",
             questions: [
               {
-                text: 'CASO INTEGRAL: Recibes un reporte de la IA sobre tendencias de mercado pero sospechas que algunos datos de 2024 son "alucinaciones". SegÃºn el curso, Â¿cuÃ¡l es el procedimiento correcto de un Alumno Aula GenIA?',
+                text: 'CASO INTEGRAL: Recibes un reporte de la IA sobre tendencias de mercado pero sospechas que algunos datos de 2024 son "alucinaciones". Según el curso, ¿cuál es el procedimiento correcto de un Alumno Aula GenIA?',
                 options: [
-                  "Aceptar el reporte porque los LLM nunca se equivocan en datos numÃ©ricos.",
-                  'Aplicar el truco de validaciÃ³n: preguntar "Â¿EstÃ¡s 100% seguro de estos datos?" y contrastar con fuentes de autoridad.',
-                  "Borrar el chat y pedirle que use Google Search Ãºnicamente.",
+                  "Aceptar el reporte porque los LLM nunca se equivocan en datos numéricos.",
+                  'Aplicar el truco de validación: preguntar "¿Estás 100% seguro de estos datos?" y contrastar con fuentes de autoridad.',
+                  "Borrar el chat y pedirle que use Google Search únicamente.",
                   "Rechazar el uso de IA para reportes y hacerlo manualmente de nuevo.",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "Recuerda que la IA es tu copiloto, no tu orÃ¡culo. El pensamiento crÃ­tico y la validaciÃ³n iterativa son tu mayor poder.",
+                tip: "Recuerda que la IA es tu copiloto, no tu oráculo. El pensamiento crítico y la validación iterativa son tu mayor poder.",
               },
               {
-                text: "CASO DE AUTOMATIZACIÃ“N: Tienes 3 tareas acumuladas: A) Responder 50 correos similares al dÃ­a. B) Decidir la estrategia de expansiÃ³n de tu empresa a 5 aÃ±os. C) Revisar la ortografÃ­a de un post. SegÃºn el Radar de AutomatizaciÃ³n, Â¿cuÃ¡l deberÃ­as delegar a la IA hoy mismo?",
+                text: "CASO DE AUTOMATIZACI�N: Tienes 3 tareas acumuladas: A) Responder 50 correos similares al día. B) Decidir la estrategia de expansión de tu empresa a 5 años. C) Revisar la ortografía de un post. Según el Radar de Automatización, ¿cuál deberías delegar a la IA hoy mismo?",
                 options: [
-                  "La tarea B, porque es la mÃ¡s difÃ­cil y la IA piensa mejor.",
-                  "La tarea A, porque es mecÃ¡nica, repetitiva y consume bloques grandes de tiempo.",
+                  "La tarea B, porque es la más difícil y la IA piensa mejor.",
+                  "La tarea A, porque es mecánica, repetitiva y consume bloques grandes de tiempo.",
                   "Ninguna, todas requieren criterio humano del 100%.",
-                  "Solo la tarea C, porque es la mÃ¡s rÃ¡pida.",
+                  "Solo la tarea C, porque es la más rápida.",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: 'Buscamos tareas que estÃ©n en el Ã¡rea de "Tareas MecÃ¡nicas" que consuman mÃ¡s de 30 minutos por sesiÃ³n para liberar tu tiempo estratÃ©gico.',
+                tip: 'Buscamos tareas que estén en el área de "Tareas Mecánicas" que consuman más de 30 minutos por sesión para liberar tu tiempo estratégico.',
               },
               {
-                text: 'INGENIERÃA DE PROMPTS: Deseas que la IA analice el perfil de un cliente ideal para tu negocio. Â¿QuÃ© estructura de la "FÃ³rmula AGIA" garantiza el mejor resultado?',
+                text: 'INGENIERÍA DE PROMPTS: Deseas que la IA analice el perfil de un cliente ideal para tu negocio. ¿Qué estructura de la "Fórmula AGIA" garantiza el mejor resultado?',
                 options: [
                   "Contexto + Formato solamente.",
                   "Rol (Experto en ventas) + Contexto (Datos de tu negocio) + Meta (Perfil del cliente) + Restricciones (Evitar tecnicismos) + Formato (Tabla resumen).",
@@ -834,31 +834,31 @@
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: 'Una instrucciÃ³n completa de un "Arquitecto de Ideas" siempre define quiÃ©n es la IA, quÃ© sabe, quÃ© busca y cÃ³mo debe entregar el resultado.',
+                tip: 'Una instrucción completa de un "Arquitecto de Ideas" siempre define quién es la IA, qué sabe, qué busca y cómo debe entregar el resultado.',
               },
               {
-                text: "CASO DE ARQUITECTURA: EstÃ¡s diseÃ±ando un flujo para automatizar la creaciÃ³n de facturas a partir de fotos de recibos. Â¿QuÃ© combinaciÃ³n de capacidades estÃ¡s uniendo?",
+                text: "CASO DE ARQUITECTURA: Estás diseñando un flujo para automatizar la creación de facturas a partir de fotos de recibos. ¿Qué combinación de capacidades estás uniendo?",
                 options: [
-                  "TokenizaciÃ³n y LLM bÃ¡sico.",
-                  "Multimodalidad (visiÃ³n) y ExtracciÃ³n de Patrones estratÃ©gica.",
-                  "NavegaciÃ³n web y BÃºsqueda semÃ¡ntica.",
-                  "TraducciÃ³n automÃ¡tica y AlucinaciÃ³n controlada.",
+                  "Tokenización y LLM básico.",
+                  "Multimodalidad (visión) y Extracción de Patrones estratégica.",
+                  "Navegación web y Búsqueda semántica.",
+                  "Traducción automática y Alucinación controlada.",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: 'La capacidad de "ver" archivos (multimodalidad) y entender la estructura de un documento es una de las aplicaciones mÃ¡s potentes del curso.',
+                tip: 'La capacidad de "ver" archivos (multimodalidad) y entender la estructura de un documento es una de las aplicaciones más potentes del curso.',
               },
               {
-                text: "CONCEPTO ESTRATÃ‰GICO: SegÃºn lo visto en el curso, Â¿por quÃ© los humanos que usan IA reemplazarÃ¡n a los que no la usan?",
+                text: "CONCEPTO ESTRAT�0GICO: Según lo visto en el curso, ¿por qué los humanos que usan IA reemplazarán a los que no la usan?",
                 options: [
-                  "Porque la suscripciÃ³n a la IA los hace mÃ¡s ricos.",
-                  "Porque pueden procesar informaciÃ³n, iterar y ejecutar a una velocidad y escala humanamente imposibles sin ayuda.",
-                  "Porque la IA les da siempre la razÃ³n en las discusiones de negocio.",
+                  "Porque la suscripción a la IA los hace más ricos.",
+                  "Porque pueden procesar información, iterar y ejecutar a una velocidad y escala humanamente imposibles sin ayuda.",
+                  "Porque la IA les da siempre la razón en las discusiones de negocio.",
                   "Porque ya no necesitan estudiar ni tener criterio propio.",
                 ],
                 correctAnswerHash:
                   "4f12c7b863c648b23f3b487f54cece480f0cb675827fb8408405e431a64669e9",
-                tip: "La IA no es magia, es un amplificador de tus propias capacidades. Quien tiene un motor corre mÃ¡s que quien va a pie.",
+                tip: "La IA no es magia, es un amplificador de tus propias capacidades. Quien tiene un motor corre más que quien va a pie.",
               },
             ],
             resources: [],
@@ -867,25 +867,25 @@
       },
     ],
   };
-  // --- AGIA MÓDULO 5 START ---
+  // --- AGIA M�DULO 5 START ---
   const agiaConfig = {
     categories: {
       "Productividad Ninja": { label: "Productividad", color: "teal", icon: "rocket_launch" },
-      "Ventas & Persuasión": { label: "Ventas", color: "teal", icon: "campaign" },
+      "Ventas & Persuasi�n": { label: "Ventas", color: "teal", icon: "campaign" },
       "Contenido & Redes": { label: "Marketing", color: "indigo", icon: "share" },
       "Finanzas Inteligentes": { label: "Finanzas", color: "slate", icon: "payments" },
-      "Legal & Formalización": { label: "Legal", color: "slate", icon: "gavel" },
+      "Legal & Formalizaci�n": { label: "Legal", color: "slate", icon: "gavel" },
       "Estrategia & Lanzamiento": { label: "Estrategia", color: "indigo", icon: "flag" },
-      "Diseño & Arte Digital": { label: "Diseño", color: "teal", icon: "palette" },
+      "Dise�o & Arte Digital": { label: "Dise�o", color: "teal", icon: "palette" },
       "Operaciones & Procesos": { label: "Operaciones", color: "slate", icon: "settings_suggest" },
       "Liderazgo & Equipos": { label: "Liderazgo", color: "indigo", icon: "groups" },
-      "Tecnología & Herramientas": { label: "Tecnología", color: "slate", icon: "terminal" },
-      "Otros / Análisis": { label: "Análisis", color: "gray", icon: "analytics" }
+      "Tecnolog�a & Herramientas": { label: "Tecnolog�a", color: "slate", icon: "terminal" },
+      "Otros / An�lisis": { label: "An�lisis", color: "gray", icon: "analytics" }
     }
   };
 
   const module5 = {
-    title: "Módulo 5: Casos Aplicados",
+    title: "M�dulo 5: Casos Aplicados",
     badge: "Maestro de Casos",
     lessons: []
   };
@@ -893,7 +893,7 @@
   Object.entries(agiaConfig.categories).forEach(([name, cat]) => {
     module5.lessons.push({
       id: "cat-" + name.replace(/\s+/g, '-').toLowerCase().replace(/[^\w-]/g, ''),
-      title: "📂 " + (cat.label || name),
+      title: "=� " + (cat.label || name),
       type: "case_category",
       categoryId: name,
       icon: cat.icon,
@@ -907,14 +907,14 @@
   let casesData = [];
   async function loadPromptsDatabase() {
     try {
-      console.log("🔒 Secure Load: Solicitando prompts a Cloud Function...");
+      console.log("= Secure Load: Solicitando prompts a Cloud Function...");
       const getPrompts = firebase.functions().httpsCallable("getPromptsData");
       const result = await getPrompts();
       if (result.data.success) {
         casesData = result.data.data;
-        console.log(`✅ Secure Load Success: ${casesData.length} prompts loaded.`);
+        console.log(` Secure Load Success: ${casesData.length} prompts loaded.`);
       } else {
-        console.error("Respuesta inválida:", result.data);
+        console.error("Respuesta inv�lida:", result.data);
       }
     } catch (error) {
       console.error("Secure Load Error:", error);
@@ -942,7 +942,7 @@
 
   function renderCaseListHTML(categoryId) {
     const filtered = casesData.filter(c => c.category === categoryId);
-    if (filtered.length === 0) return '<div class="p-8 text-center text-slate-500">Cargando casos... (o no hay casos para esta categoría)</div>';
+    if (filtered.length === 0) return '<div class="p-8 text-center text-slate-500">Cargando casos... (o no hay casos para esta categor�a)</div>';
     return `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">${filtered.map(c => `
         <div onclick="openCaseDetail(${c.id})" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-teal-400 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer group">
              <div class="flex items-center gap-2.5 mb-3">
@@ -953,7 +953,7 @@
              </div>
              <p class="text-[11px] text-slate-500 line-clamp-2 bg-slate-50 p-2 rounded-lg border border-slate-100 italic">"${c.problem || c.description}"</p>
              <div class="mt-3 flex items-center justify-between">
-                <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">${c.difficulty || 'Básico'}</span>
+                <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">${c.difficulty || 'B�sico'}</span>
                 <span class="text-[10px] text-slate-400 flex items-center gap-1">Ver Caso <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
              </div>
         </div>
@@ -978,7 +978,7 @@
                     <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="target" class="w-24 h-24 text-slate-900"></i></div>
                     <div class="flex items-center gap-3 mb-4">
                         <span class="p-2 rounded-lg bg-orange-100 text-orange-600"><i data-lucide="alert-circle" class="w-5 h-5"></i></span>
-                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500">El Desafío / Problema</h3>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500">El Desaf�o / Problema</h3>
                     </div>
                     <p class="text-slate-700 text-lg leading-relaxed italic relative z-10">"${c.problem || c.description}"</p>
                 </div>
@@ -987,7 +987,7 @@
                 <div class="bg-gradient-to-br from-indigo-50 to-white p-6 md:p-8 rounded-3xl border border-indigo-100 shadow-md relative group">
                      <div class="flex items-center gap-3 mb-4">
                         <span class="p-2 rounded-lg bg-indigo-100 text-indigo-600"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
-                        <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Solución (Prompt Maestro)</h3>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Soluci�n (Prompt Maestro)</h3>
                      </div>
                      <div class="bg-white p-5 rounded-2xl border border-indigo-200 shadow-inner">
                         <pre class="text-sm font-mono text-slate-600 whitespace-pre-wrap leading-relaxed">${decryptPrompt(c.agiaPromptTagged)}</pre>
@@ -1009,7 +1009,7 @@
                     <div class="bg-blue-50 p-6 rounded-3xl border border-blue-100 shadow-sm">
                          <div class="flex items-center gap-2 mb-3">
                             <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                            <h3 class="text-xs font-black uppercase tracking-wider text-blue-600">Validación</h3>
+                            <h3 class="text-xs font-black uppercase tracking-wider text-blue-600">Validaci�n</h3>
                          </div>
                          <p class="text-sm text-blue-900 leading-relaxed">${c.validationTip || "Verifica siempre que la IA cumpla el rol asignado."}</p>
                     </div>
@@ -1021,13 +1021,13 @@
 
   window.copyPromptText = function (text) {
     navigator.clipboard.writeText(text);
-    A("¡Prompt copiado al portapapeles!");
+    A("�Prompt copiado al portapapeles!");
   };
 
-  // --- AGIA MÓDULO 5 END ---
+  // --- AGIA M�DULO 5 END ---
   const n =
     r === "ia-aplicada-starter"
-      ? { ...essentialData, title: "IA Aplicada Â· Starter" }
+      ? { ...essentialData, title: "IA Aplicada · Starter" }
       : essentialData;
   if (!n) return void console.error("Curso no encontrado");
   const i = n.modules.flatMap((e) => e.lessons);
@@ -1201,16 +1201,16 @@
           switch (e.type) {
             case "taller":
               a =
-                '\n                        <div class="bg-white p-8 md:p-12 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center min-h-[400px]">\n                            <div class="bg-gradient-to-br from-teal-100 to-blue-100 p-6 rounded-full mb-6 shadow-inner">\n                                <i data-lucide="target" class="h-16 w-16 text-teal-600"></i>\n                            </div>\n                            <h3 class="text-3xl font-bold text-gray-900 mb-3">Radar de AutomatizaciÃ³n Pro</h3>\n                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full mb-6">Herramienta Interactiva</span>\n                            <p class="text-gray-600 text-lg max-w-xl mb-8 leading-relaxed">\n                                Accede a nuestra herramienta exclusiva para diagnosticar, priorizar y automatizar tus tareas diarias. \n                                <br class="hidden md:block">Descubre dÃ³nde estÃ¡ tu verdadero retorno de inversiÃ³n (ROI) con IA.\n                            </p>\n                            <a href="radar-automatizacion-pro.html" target="_blank"\n                                class="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center gap-3 text-lg group">\n                                <span>Iniciar AplicaciÃ³n</span>\n                                <i data-lucide="external-link" class="h-5 w-5 group-hover:translate-x-1 transition-transform"></i>\n                            </a>\n                            <p class="text-sm text-slate-400 mt-6 flex items-center gap-2">\n                                <i data-lucide="info" class="h-4 w-4"></i> Se abrirÃ¡ en una nueva pestaÃ±a para no perder tu progreso.\n                            </p>\n                        </div>';
+                '\n                        <div class="bg-white p-8 md:p-12 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center min-h-[400px]">\n                            <div class="bg-gradient-to-br from-teal-100 to-blue-100 p-6 rounded-full mb-6 shadow-inner">\n                                <i data-lucide="target" class="h-16 w-16 text-teal-600"></i>\n                            </div>\n                            <h3 class="text-3xl font-bold text-gray-900 mb-3">Radar de Automatización Pro</h3>\n                            <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full mb-6">Herramienta Interactiva</span>\n                            <p class="text-gray-600 text-lg max-w-xl mb-8 leading-relaxed">\n                                Accede a nuestra herramienta exclusiva para diagnosticar, priorizar y automatizar tus tareas diarias. \n                                <br class="hidden md:block">Descubre dónde está tu verdadero retorno de inversión (ROI) con IA.\n                            </p>\n                            <a href="radar-automatizacion-pro.html" target="_blank"\n                                class="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center gap-3 text-lg group">\n                                <span>Iniciar Aplicación</span>\n                                <i data-lucide="external-link" class="h-5 w-5 group-hover:translate-x-1 transition-transform"></i>\n                            </a>\n                            <p class="text-sm text-slate-400 mt-6 flex items-center gap-2">\n                                <i data-lucide="info" class="h-4 w-4"></i> Se abrirá en una nueva pestaña para no perder tu progreso.\n                            </p>\n                        </div>';
               break;
             case "video":
               a = e.videoUrl
-                ? `<div class="flex flex-col gap-4 mt-8">\n                                <div class="video-wrapper-optimized">\n                                    <video id="course-video" controls>\n                                        <source id="course-video-source" data-src="${e.videoUrl || ""}" type="video/mp4">\n                                        ${e.transcriptionUrl ? '<track id="caption-track" kind="subtitles" srclang="es" label="EspaÃ±ol" default>' : ""}\n                                        Tu navegador no soporta el elemento de video.\n                                    </video>\n                                </div>\n                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-[1200px] mx-auto w-full">\n                                ${e.transcriptionUrl ? '\n                                    <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="captions" class="h-5 w-5"></i>\n                                        <span>Desactivar SubtÃ­tulos</span>\n                                    </button>\n                                    <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="download" class="h-5 w-5"></i>\n                                        <span>Descargar TranscripciÃ³n</span>\n                                    </button>\n                                ' : '\n                                    <div class="sm:col-span-2">\n                                        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled>\n                                            <i data-lucide="captions-off" class="h-5 w-5"></i>\n                                            <span>SubtÃ­tulos No Disponibles</span>\n                                        </button>\n                                    </div>\n                                '}\n                                </div>\n                            </div>`
+                ? `<div class="flex flex-col gap-4 mt-8">\n                                <div class="video-wrapper-optimized">\n                                    <video id="course-video" controls>\n                                        <source id="course-video-source" data-src="${e.videoUrl || ""}" type="video/mp4">\n                                        ${e.transcriptionUrl ? '<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>' : ""}\n                                        Tu navegador no soporta el elemento de video.\n                                    </video>\n                                </div>\n                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-[1200px] mx-auto w-full">\n                                ${e.transcriptionUrl ? '\n                                    <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="captions" class="h-5 w-5"></i>\n                                        <span>Desactivar Subtítulos</span>\n                                    </button>\n                                    <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="download" class="h-5 w-5"></i>\n                                        <span>Descargar Transcripción</span>\n                                    </button>\n                                ' : '\n                                    <div class="sm:col-span-2">\n                                        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled>\n                                            <i data-lucide="captions-off" class="h-5 w-5"></i>\n                                            <span>Subtítulos No Disponibles</span>\n                                        </button>\n                                    </div>\n                                '}\n                                </div>\n                            </div>`
                 : '<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>';
               break;
             case "resource":
               a =
-                '<div class="bg-white p-12 border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 text-center">\n                            <i data-lucide="library-big" class="h-16 w-16 text-teal-500 mb-4"></i>\n                            <h3 class="text-xl font-bold text-gray-900">LecciÃ³n de Consulta</h3>\n                            <p class="mt-2 text-gray-600 max-w-md">Esta lecciÃ³n se compone de recursos teÃ³ricos y enlaces externos que puedes consultar en la pestaÃ±a "Materiales".</p>\n                        </div>';
+                '<div class="bg-white p-12 border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 text-center">\n                            <i data-lucide="library-big" class="h-16 w-16 text-teal-500 mb-4"></i>\n                            <h3 class="text-xl font-bold text-gray-900">Lección de Consulta</h3>\n                            <p class="mt-2 text-gray-600 max-w-md">Esta lección se compone de recursos teóricos y enlaces externos que puedes consultar en la pestaña "Materiales".</p>\n                        </div>';
               break;
             case "quiz": {
               if (!e.questions || 0 === e.questions.length) {
@@ -1230,7 +1230,7 @@
                     })
                     .join(""),
                     r = a.tip
-                      ? `\n                                <div class="mt-2">\n                                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-teal-600 font-bold flex items-center gap-1 hover:text-teal-700 transition-colors">\n                                        <i data-lucide="lightbulb" class="h-3.5 w-3.5"></i> Â¿Necesitas una pista?\n                                    </button>\n                                    <p class="hidden text-[11px] text-slate-500 mt-2 italic bg-teal-50 p-2 rounded-lg border border-teal-100 leading-relaxed shadow-sm">\n                                        ${a.tip}\n                                    </p>\n                                </div>`
+                      ? `\n                                <div class="mt-2">\n                                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-teal-600 font-bold flex items-center gap-1 hover:text-teal-700 transition-colors">\n                                        <i data-lucide="lightbulb" class="h-3.5 w-3.5"></i> ¿Necesitas una pista?\n                                    </button>\n                                    <p class="hidden text-[11px] text-slate-500 mt-2 italic bg-teal-50 p-2 rounded-lg border border-teal-100 leading-relaxed shadow-sm">\n                                        ${a.tip}\n                                    </p>\n                                </div>`
                       : "";
                   return `<div class="space-y-4 mb-8 p-4 bg-white rounded-xl border border-slate-200 shadow-sm" ${t ? "" : `id="quiz-${e.id}-q-${s}"`}>\n                                        <h3 class="text-lg font-bold text-slate-800">${s + 1}. ${a.text}</h3>\n                                        <div class="space-y-2.5">${o}</div>\n                                        ${r}\n                                    </div>`;
                 })
@@ -1245,7 +1245,7 @@
               a = renderCaseListHTML(e.categoryId);
               break;
             default:
-              a = "<p>Tipo de lecciÃ³n no reconocido.</p>";
+              a = "<p>Tipo de lección no reconocido.</p>";
           }
           const t = document.getElementById("lesson-material-container");
           t && (t.innerHTML = a);
@@ -1259,7 +1259,7 @@
               if (o.length > 0) {
                 (m.integratedResourcesArea.classList.remove("hidden"),
                   (m.resourcesList.innerHTML =
-                    '<div class="col-span-full py-5"><p class="text-gray-500 animate-pulse">Cargando recursos del mÃ³dulo...</p></div>'));
+                    '<div class="col-span-full py-5"><p class="text-gray-500 animate-pulse">Cargando recursos del módulo...</p></div>'));
                 const e = await Promise.all(
                   o.map(async (e) => {
                     let a = e.url;
@@ -1358,7 +1358,7 @@
                       }
                     }
                     if (t === a)
-                      (A("Â¡Todas las respuestas son correctas!"),
+                      (A("¡Todas las respuestas son correctas!"),
                         c.completedLessons.includes(e.id) ||
                         ((c.completedLessons = [
                           ...new Set([...c.completedLessons, e.id]),
@@ -1398,7 +1398,7 @@
                     await I(),
                     x(),
                     b(),
-                    A("Â¡LecciÃ³n completada al ver el video!"));
+                    A("¡Lección completada al ver el video!"));
               }));
           const r = document.getElementById("toggle-subtitles-btn");
           r &&
@@ -1411,9 +1411,9 @@
                 s = "showing" === e.mode;
               ((e.mode = s ? "hidden" : "showing"),
                 "showing" === e.mode
-                  ? (a && (a.textContent = "Desactivar SubtÃ­tulos"),
+                  ? (a && (a.textContent = "Desactivar Subtítulos"),
                     t && t.setAttribute("data-lucide", "captions"))
-                  : (a && (a.textContent = "Activar SubtÃ­tulos"),
+                  : (a && (a.textContent = "Activar Subtítulos"),
                     t && t.setAttribute("data-lucide", "captions-off")),
                 lucide.createIcons());
             });
@@ -1422,7 +1422,7 @@
             e.transcriptionUrl &&
             n.addEventListener("click", () =>
               (async function (e, a) {
-                if (!e) return void A("No hay transcripciÃ³n disponible.");
+                if (!e) return void A("No hay transcripción disponible.");
                 const t = document.getElementById("transcription-button"),
                   o = t ? t.querySelector("span") : null,
                   r = o ? o.textContent : "";
@@ -1451,7 +1451,7 @@
                     URL.revokeObjectURL(i.href),
                     A("Descarga iniciada."));
                 } catch (e) {
-                  (console.error("Error al descargar transcripciÃ³n:", e),
+                  (console.error("Error al descargar transcripción:", e),
                     A("No se pudo descargar."));
                 } finally {
                   (o && (o.textContent = r), t && (t.disabled = !1));
@@ -1492,7 +1492,7 @@
                   srtOrVttSrc: (e && e.transcriptionUrl) || "",
                 });
               } catch (e) {
-                console.error("No se pudieron adjuntar medios/subtÃ­tulos:", e);
+                console.error("No se pudieron adjuntar medios/subtítulos:", e);
               } finally {
                 Z();
               }
@@ -1508,7 +1508,7 @@
         if (!e) return;
         if (c.completedLessons.includes(e.id))
           return (
-            (m.mainActionBtn.textContent = "LecciÃ³n completada âœ“"),
+            (m.mainActionBtn.textContent = "Lección completada �S"),
             (m.mainActionBtn.disabled = !0),
             m.mainActionBtn.classList.replace("bg-teal-500", "bg-slate-400"),
             void m.mainActionBtn.classList.remove("hover:bg-teal-600")
@@ -1524,7 +1524,7 @@
   async function v() {
     const e = i.findIndex((e) => e.id === c.currentLessonId);
     e < i.length - 1
-      ? (A("Â¡Excelente! Cargando siguiente lecciÃ³n..."),
+      ? (A("¡Excelente! Cargando siguiente lección..."),
         setTimeout(() => {
           h(i[e + 1].id);
         }, 1500))
@@ -1642,9 +1642,9 @@
       const e = document.getElementById("toggle-icon");
       (m.sidebar.classList.contains("collapsed")
         ? (e.setAttribute("data-lucide", "panel-left-open"),
-          (m.sidebarToggle.title = "Mostrar menÃº"))
+          (m.sidebarToggle.title = "Mostrar menú"))
         : (e.setAttribute("data-lucide", "panel-left-close"),
-          (m.sidebarToggle.title = "Ocultar menÃº")),
+          (m.sidebarToggle.title = "Ocultar menú")),
         lucide.createIcons());
     }),
     m.mainActionBtn &&
@@ -1744,7 +1744,7 @@
         : (j("name", "success"), !0),
       a =
         "" === D.value
-          ? (j("country", "error", "Selecciona tu paÃ­s de residencia."), !1)
+          ? (j("country", "error", "Selecciona tu país de residencia."), !1)
           : (j("country", "success"), !0),
       t = (function () {
         if ("CL" === D.value) {
@@ -1765,7 +1765,7 @@
               return t === (11 === r ? "0" : 10 === r ? "k" : r.toString());
             })(S.value)
           )
-            return (j("rut", "error", "El RUT ingresado no es vÃ¡lido."), !1);
+            return (j("rut", "error", "El RUT ingresado no es válido."), !1);
           j("rut", "success");
         } else j("rut", "neutral");
         return !0;
@@ -1816,7 +1816,7 @@
             .get();
           if (a.empty)
             return void (m.userResourceList.innerHTML =
-              '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos aÃºn.</p></li>');
+              '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos aún.</p></li>');
           const s = a.docs.sort(
             (e, a) =>
               (a.data().createdAt?.toDate() || 0) -
@@ -1874,7 +1874,7 @@
       t
         .querySelector(".delete-resource-btn")
         .addEventListener("click", async () => {
-          if (confirm(`Â¿Seguro que quieres eliminar "${a.name}"?`))
+          if (confirm(`¿Seguro que quieres eliminar "${a.name}"?`))
             try {
               (await s.ref(a.storagePath).delete(),
                 await e.ref.delete(),
@@ -2053,9 +2053,9 @@
           R &&
           ((R.className =
             "text-center p-3 rounded-lg bg-green-100 text-green-700"),
-            (R.textContent = "Â¡Perfil actualizado con Ã©xito!"),
+            (R.textContent = "¡Perfil actualizado con éxito!"),
             R.classList.remove("hidden")),
-          A("Â¡Perfil actualizado con Ã©xito!"),
+          A("¡Perfil actualizado con éxito!"),
           setTimeout(N, 1500));
       } catch (e) {
         (console.error("Error al guardar perfil:", e),
@@ -2063,7 +2063,7 @@
           ((R.className =
             "text-center p-3 rounded-lg bg-red-100 text-red-700"),
             (R.textContent =
-              "Hubo un error al guardar. IntÃ©ntalo de nuevo."),
+              "Hubo un error al guardar. Inténtalo de nuevo."),
             R.classList.remove("hidden")));
       } finally {
         (z && (z.textContent = "Guardar Cambios"),
@@ -2178,7 +2178,7 @@
           );
         }
       }
-      ((m.uploadProgress.textContent = "Â¡Archivos subidos!"),
+      ((m.uploadProgress.textContent = "¡Archivos subidos!"),
         m.resourceFileInput && (m.resourceFileInput.value = ""),
         m.uploadResourcesBtn && (m.uploadResourcesBtn.disabled = !0),
         setTimeout(
@@ -2218,13 +2218,13 @@
             })
           ).ok
         )
-          throw new Error("Error en el envÃ­o");
+          throw new Error("Error en el envío");
         ((m.supportFormStatus.innerHTML =
-          '<p class="text-green-600 font-semibold">Â¡Consulta enviada!</p>'),
+          '<p class="text-green-600 font-semibold">¡Consulta enviada!</p>'),
           m.supportForm.reset());
       } catch (e) {
         m.supportFormStatus.innerHTML =
-          '<p class="text-red-600 font-semibold">Error al enviar. Intenta mÃ¡s tarde.</p>';
+          '<p class="text-red-600 font-semibold">Error al enviar. Intenta más tarde.</p>';
       } finally {
         (m.supportSubmitBtn && (m.supportSubmitBtn.disabled = !1),
           m.supportBtnText &&
