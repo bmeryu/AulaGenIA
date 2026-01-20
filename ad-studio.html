@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Studio V38 - 4 Fases</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <style>
+        /* RESET & SETUP */
+        body {
+            background-color: #1f2937;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        /* FRAME */
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border-radius: 0px;
+            border: 1px solid #444;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        /* CINEMA MODE */
+        body.cinema-mode {
+            background-color: #000;
+        }
+
+        body.cinema-mode .phone-frame {
+            border: none;
+            box-shadow: none;
+        }
+
+        body.cinema-mode .controls,
+        body.cinema-mode .status-panel,
+        body.cinema-mode .show-outro-btn,
+        body.cinema-mode .template-panel,
+        body.cinema-mode .version-tag {
+            display: none !important;
+        }
+
+        /* BRAND COLORS & UTILS */
+        .bg-brand {
+            background-color: #00d4a1;
+        }
+
+        .border-brand {
+            border-color: #00d4a1 !important;
+        }
+
+        /* CONTENT */
+        .split-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .video-box {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        .video-box video.bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #fff;
+        }
+
+        .bubble {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 3px solid white;
+            overflow: hidden;
+            z-index: 20;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
+
+        .bubble-top {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .bubble-bottom {
+            bottom: 80px;
+            right: 20px;
+        }
+
+        .bubble video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            z-index: 15;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            max-width: 250px;
+            white-space: nowrap;
+        }
+
+        .brand-pill {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .brand-pill span {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            color: #1a1a1a;
+            font-size: 14px;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background: #00d4a1;
+            border-radius: 50%;
+        }
+
+        /* BALLOONS */
+        .opinion-balloon {
+            position: absolute;
+            z-index: 25;
+            background: white;
+            color: black;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            max-width: 160px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        .opinion-balloon.visible {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .opinion-balloon::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .balloon-top {
+            bottom: 80px;
+            right: 80px;
+            border: 2px solid #ef4444;
+        }
+
+        .balloon-top::after {
+            border-width: 10px 10px 0 0;
+            border-color: #ef4444 transparent transparent transparent;
+            bottom: -10px;
+            right: 20px;
+        }
+
+        .balloon-bottom {
+            bottom: 140px;
+            right: 80px;
+            border: 2px solid #00d4a1;
+        }
+
+        .balloon-bottom::after {
+            border-width: 10px 10px 0 0;
+            border-color: #00d4a1 transparent transparent transparent;
+            bottom: -10px;
+            right: 20px;
+        }
+
+        .balloon-intro-top {
+            bottom: 80px;
+            right: 80px;
+            border: 2px solid #3b82f6;
+            background: #eff6ff;
+        }
+
+        .balloon-intro-top::after {
+            border-width: 10px 10px 0 0;
+            border-color: #3b82f6 transparent transparent transparent;
+            bottom: -10px;
+            right: 20px;
+        }
+
+        .balloon-intro-bottom {
+            bottom: 140px;
+            right: 80px;
+            border: 2px solid #eab308;
+            background: #fefce8;
+        }
+
+        .balloon-intro-bottom::after {
+            border-width: 10px 10px 0 0;
+            border-color: #eab308 transparent transparent transparent;
+            bottom: -10px;
+            right: 20px;
+        }
+
+        .outro-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .outro-screen.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .white-logo {
+            filter: brightness(0) invert(1);
+        }
+
+        /* MODULAR PANELS */
+        .version-tag {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            color: #555;
+            font-size: 10px;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .status-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            font-size: 12px;
+            z-index: 100;
+            border: 1px solid #333;
+        }
+
+        .show-outro-btn {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            z-index: 101;
+            font-size: 10px;
+            background: #333;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .template-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            z-index: 100;
+            width: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #fbbf24;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+        }
+
+        .tpl-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 6px 10px;
+            margin-bottom: 4px;
+            background: #222;
+            color: #ccc;
+            border-radius: 4px;
+            font-size: 11px;
+            transition: all 0.2s;
+            border: 1px solid #333;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tpl-btn:hover {
+            background: #333;
+            color: white;
+            border-color: #666;
+            transform: translateX(2px);
+        }
+
+        .tpl-name {
+            color: white;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .tpl-preview {
+            color: #888;
+            font-size: 9px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-mini {
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .btn-save {
+            background: #2563eb;
+            width: 100%;
+        }
+
+        .btn-save:hover {
+            background: #1d4ed8;
+        }
+
+        .delete-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            color: #ff4444;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 0 4px;
+        }
+
+        .reset-btn {
+            font-size: 9px;
+            color: #666;
+            text-decoration: underline;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        [contenteditable]:focus {
+            outline: none;
+            border-bottom: 2px dashed #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="version-tag">V38 (4 Fases)</div>
+
+    <div class="template-panel">
+        <div>
+            <div class="section-title">💬 Historia (+ Etiquetas)</div>
+            <div id="list-story"></div><button onclick="saveTemplate('story')" class="btn-mini btn-save">💾 Guardar
+                Historia</button>
+        </div>
+        <div>
+            <div class="section-title">👇 Botón CTA (Flotante)</div>
+            <div id="list-cta"></div><button onclick="saveTemplate('cta')" class="btn-mini btn-save">💾 Guardar
+                CTA</button>
+        </div>
+        <div>
+            <div class="section-title">🏁 Pantalla Final</div>
+            <div id="list-outro"></div><button onclick="saveTemplate('outro')" class="btn-mini btn-save">💾 Guardar
+                Final</button>
+        </div>
+        <button onclick="resetAllDefaults()" class="reset-btn">Restaurar Todo Original</button>
+    </div>
+
+    <div class="status-panel">
+        <h3 class="font-bold mb-2 text-yellow-400">ESTATUS V38:</h3>
+        <div id="status-text">4 Fases de Transformación</div>
+    </div>
+    <button class="show-outro-btn" onclick="toggleOutroPreview()">👁️ Editar Final</button>
+
+    <div class="phone-frame">
+        <div class="brand-pill">
+            <div class="brand-dot"></div><span>Aula GenIA</span>
+        </div>
+        <audio id="bgMusic" src="tech-audio.MP3"></audio>
+
+        <div class="split-container">
+            <div class="video-box border-b-4 border-black">
+                <div id="label1" class="label bg-red-600 border border-white/20" contenteditable="true">😫 Sin
+                    Metodología</div>
+                <div id="intro1" class="opinion-balloon balloon-intro-top" contenteditable="true">🤔 Sigues diciéndole:
+                    "Necesito..."</div>
+                <div id="balloon1" class="opinion-balloon balloon-top" contenteditable="true">❌ ¡Muy vago!</div>
+                <video id="vid1" class="bg-video" src="1.mp4" playsinline muted></video>
+                <div class="bubble bubble-top border-red-500"><video id="vidJ1" src="julia1.mp4" loop playsinline
+                        muted></video></div>
+            </div>
+            <div class="video-box">
+                <div id="label2" class="label bg-brand border border-white/20" contenteditable="true">🚀 Metodología
+                    Aula GenIA</div>
+                <div id="intro2" class="opinion-balloon balloon-intro-bottom" contenteditable="true">💡 ¡Hay una forma
+                    mejor!</div>
+                <div id="balloon2" class="opinion-balloon balloon-bottom" contenteditable="true">✅ ¡Perfecto!</div>
+                <video id="vid2" class="bg-video" src="2.mp4" playsinline muted></video>
+                <div class="bubble bubble-bottom border-brand"><video id="vidJ2" src="julia2.mp4" loop playsinline
+                        muted></video></div>
+            </div>
+        </div>
+
+        <div id="cta-bottom"
+            class="absolute bottom-6 left-0 right-0 px-10 text-center z-30 pointer-events-none transition-opacity duration-300">
+            <div
+                class="bg-blue-600 text-white font-bold py-3 rounded-full text-sm shadow-xl animate-pulse ring-2 ring-white">
+                <span id="cta-text" contenteditable="true" class="pointer-events-auto">Ver Pack Starter 👇</span>
+            </div>
+        </div>
+
+        <div id="outro" class="outro-screen">
+            <img src="Logo_AGIA.png" class="w-28 mb-4 white-logo" alt="Logo">
+            <h2 id="outro-title" contenteditable="true"
+                class="text-white text-3xl font-bold mb-3 font-['Montserrat'] text-center px-4 leading-tight">Deja de
+                improvisar con la IA</h2>
+            <p id="outro-sub" contenteditable="true"
+                class="text-gray-300 text-center px-6 mb-8 text-sm leading-relaxed">Accede hoy a tus 100 Instrucciones
+                Maestras (Copiar y Pegar) con el Pack Starter por $8.900</p>
+            <div
+                class="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-base font-bold py-4 px-8 rounded-full shadow-lg ring-4 ring-white/20 transform hover:scale-105 transition">
+                <span id="outro-btn" contenteditable="true" class="outline-none">👉 ¡SÍ, QUIERO EMPEZAR YA!</span></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <p class="edit-tip text-yellow-300 text-sm mb-2">💡 Combina plantillas y graba</p>
+        <button onclick="startCinemaMode()"
+            class="bg-yellow-400 text-black px-10 py-4 rounded-full font-bold hover:bg-yellow-500 transition shadow-lg transform active:scale-95 text-lg flex items-center justify-center gap-2">🍿
+            MODO CINE</button>
+    </div>
+
+    <script>
+        // --- DEFAULTS ---
+        const CONST_L1 = "😫 Sin Metodología";
+        const CONST_L2 = "🚀 Metodología Aula GenIA";
+
+        const DEF_STORY = [
+            { id: 1, name: "Metodología", l1: CONST_L1, l2: CONST_L2, i1: '🤔 Sigues diciéndole: "Necesito..."', i2: '💡 ¡Hay una forma mejor!', o1: '❌ ¡Muy vago!', o2: '✅ ¡Perfecto!' },
+            { id: 2, name: "Tiempo", l1: CONST_L1, l2: CONST_L2, i1: '🤔 ¿Te demoras horas?', i2: '⚡ Automatiza en segundos', o1: '🐌 Muy lento', o2: '🚀 ¡Así se hace!' },
+            { id: 3, name: "Calidad", l1: CONST_L1, l2: CONST_L2, i1: '🤔 ¿Resultados mediocres?', i2: '💎 Resultados PRO', o1: '👎 No sirve', o2: '🏅 Calidad 10/10' }
+        ];
+
+        const DEF_CTA = [
+            { id: 1, name: "Pack Starter", text: "Ver Pack Starter 👇" },
+            { id: 2, name: "Oferta Limitada", text: "🔥 Oferta Limitada -50% 👇" },
+            { id: 3, name: "Quiero mis Instrucciones", text: "🚀 Quiero mis Instrucciones 👇" }
+        ];
+
+        const DEF_OUTRO = [
+            { id: 1, name: "Pack Starter", t: "Deja de improvisar con la IA", s: "Accede hoy a tus 100 Instrucciones Maestras (Copiar y Pegar) con el Pack Starter por $8.900", b: "👉 ¡SÍ, QUIERO EMPEZAR YA!" },
+            { id: 2, name: "Productividad", t: "¡No Pierdas Tiempo!", s: "Automatiza tus tareas repetitivas y gana 10 horas extras a la semana.", b: "🚀 VER CLASE GRATIS" },
+            // UPDATED LINE BELOW
+            { id: 3, name: "Oferta Flash", t: "🚨 Oferta Flash -50%", s: "Solo por hoy: Pack completo de instrucciones + 4 fases de transformación. ¡No te quedes fuera!", b: "🔥 RECLAMAR OFERTA" }
+        ];
+
+        // --- STATE ---
+        let dataStory = [], dataCta = [], dataOutro = [];
+
+        function init() { loadAll(); }
+
+        function loadAll() {
+            // Check for update in Outro #3 (4 Fases)
+            let o = JSON.parse(localStorage.getItem('ads_outro') || '[]');
+            if (o.length > 0 && o[2] && (o[2].s.includes("+ Curso") || o[2].s.includes("prompts"))) {
+                // If text is old ("+ Curso" or legacy "prompts"), refresh it
+                let fresh = JSON.parse(JSON.stringify(DEF_OUTRO));
+                o[2] = fresh[2];
+                localStorage.setItem('ads_outro', JSON.stringify(o));
+            }
+
+            dataStory = JSON.parse(localStorage.getItem('ads_story') || JSON.stringify(DEF_STORY));
+            dataCta = JSON.parse(localStorage.getItem('ads_cta') || JSON.stringify(DEF_CTA));
+            dataOutro = JSON.parse(localStorage.getItem('ads_outro') || JSON.stringify(DEF_OUTRO));
+
+            renderLists();
+        }
+
+        function saveAll() {
+            localStorage.setItem('ads_story', JSON.stringify(dataStory));
+            localStorage.setItem('ads_cta', JSON.stringify(dataCta));
+            localStorage.setItem('ads_outro', JSON.stringify(dataOutro));
+            renderLists();
+        }
+
+        function resetAllDefaults() { if (!confirm("¿Restaurar Todo?")) return; localStorage.clear(); location.reload(); }
+
+        function renderLists() {
+            renderList('list-story', dataStory, 'story');
+            renderList('list-cta', dataCta, 'cta');
+            renderList('list-outro', dataOutro, 'outro');
+        }
+
+        function renderList(divId, data, type) {
+            const container = document.getElementById(divId);
+            container.innerHTML = '';
+            data.forEach((item, idx) => {
+                const btn = document.createElement('div');
+                btn.className = 'tpl-btn';
+                btn.onclick = (e) => { if (!e.target.classList.contains('delete-btn')) apply(type, item); };
+                let html = `<div class="tpl-name">${item.name}</div>`;
+                if (item.id > 10) html += `<span class="delete-btn" onclick="deleteItem('${type}', ${idx})">×</span>`;
+                btn.innerHTML = html;
+                container.appendChild(btn);
+            });
+        }
+
+        function apply(type, item) {
+            if (type === 'story') {
+                document.getElementById('intro1').innerText = item.i1; document.getElementById('intro2').innerText = item.i2;
+                document.getElementById('balloon1').innerText = item.o1; document.getElementById('balloon2').innerText = item.o2;
+                if (item.l1) document.getElementById('label1').innerText = item.l1;
+                if (item.l2) document.getElementById('label2').innerText = item.l2;
+            }
+            if (type === 'cta') document.getElementById('cta-text').innerText = item.text;
+            if (type === 'outro') {
+                document.getElementById('outro-title').innerText = item.t;
+                document.getElementById('outro-sub').innerText = item.s;
+                document.getElementById('outro-btn').innerText = item.b;
+                const o = document.getElementById('outro'); o.classList.add('visible');
+                setTimeout(() => { if (!document.body.classList.contains('cinema-mode')) o.classList.remove('visible'); }, 1000);
+            }
+        }
+
+        function saveTemplate(type) {
+            const name = prompt("Nombre:", "Nueva Plantilla");
+            if (!name) return;
+            const id = Date.now();
+
+            if (type === 'story') {
+                dataStory.push({
+                    id, name,
+                    i1: document.getElementById('intro1').innerText, i2: document.getElementById('intro2').innerText,
+                    o1: document.getElementById('balloon1').innerText, o2: document.getElementById('balloon2').innerText,
+                    l1: document.getElementById('label1').innerText, l2: document.getElementById('label2').innerText
+                });
+            }
+            if (type === 'cta') dataCta.push({ id, name, text: document.getElementById('cta-text').innerText });
+            if (type === 'outro') dataOutro.push({ id, name, t: document.getElementById('outro-title').innerText, s: document.getElementById('outro-sub').innerText, b: document.getElementById('outro-btn').innerText });
+            saveAll();
+        }
+
+        window.deleteItem = function (type, idx) {
+            if (confirm("¿Eliminar?")) {
+                if (type === 'story') dataStory.splice(idx, 1); if (type === 'cta') dataCta.splice(idx, 1); if (type === 'outro') dataOutro.splice(idx, 1);
+                saveAll();
+            }
+        }
+
+        // --- ENGINE ---
+        const vid1 = document.getElementById('vid1'); const vid2 = document.getElementById('vid2');
+        const vidJ1 = document.getElementById('vidJ1'); const vidJ2 = document.getElementById('vidJ2');
+        const audio = document.getElementById('bgMusic'); const outro = document.getElementById('outro');
+        // Nodes
+        const label1 = document.getElementById('label1'); const label2 = document.getElementById('label2');
+
+        const ctaBottom = document.getElementById('cta-bottom');
+        const balloon1 = document.getElementById('balloon1'); const balloon2 = document.getElementById('balloon2');
+        const intro1 = document.getElementById('intro1'); const intro2 = document.getElementById('intro2');
+        const allVideos = [vid1, vid2, vidJ1, vidJ2];
+        let isCinema = false;
+
+        document.addEventListener('DOMContentLoaded', init);
+
+        function startCinemaMode() {
+            resetUI();
+            isCinema = true;
+            document.body.classList.add('cinema-mode');
+            setTimeout(() => { togglePlay(true); }, 800);
+        }
+
+        function toggleOutroPreview() { outro.classList.toggle('visible'); }
+        document.addEventListener('keydown', (e) => {
+            if (e.code === "Space") { if (document.activeElement.isContentEditable) return; e.preventDefault(); isCinema ? exitCinema() : startCinemaMode(); }
+            if (e.key === "Escape") exitCinema();
+        });
+
+        function exitCinema() { isCinema = false; document.body.classList.remove('cinema-mode'); togglePlay(false); resetUI(); }
+
+        function resetUI() {
+            balloon1.classList.remove('visible'); balloon2.classList.remove('visible');
+            intro1.classList.remove('visible'); intro2.classList.remove('visible');
+            outro.classList.remove('visible'); ctaBottom.classList.remove('opacity-0');
+        }
+
+        function checkTime(v, intro, opinion) {
+            const t = v.currentTime;
+            const timeLeft = v.duration - t;
+            if (t > 0.5 && t < 4.5) { intro.classList.add('visible'); } else { intro.classList.remove('visible'); }
+            if (timeLeft <= 3.5 && timeLeft > 0.5) { opinion.classList.add('visible'); }
+        }
+
+        vid1.addEventListener('timeupdate', () => checkTime(vid1, intro1, balloon1));
+        vid2.addEventListener('timeupdate', () => checkTime(vid2, intro2, balloon2));
+        vid1.addEventListener('ended', () => { if (vid1.duration >= vid2.duration) triggerOutro(); });
+        vid2.addEventListener('ended', () => { if (vid2.duration >= vid1.duration) triggerOutro(); });
+
+        function triggerOutro() {
+            audio.pause(); vid1.pause(); vid2.pause(); vidJ1.pause(); vidJ2.pause();
+            outro.classList.add('visible'); ctaBottom.classList.add('opacity-0');
+            setTimeout(() => { if (isCinema) exitCinema(); }, 5000);
+        }
+
+        function togglePlay(play) {
+            if (play) {
+                resetUI(); audio.currentTime = 0; audio.volume = 0.5; audio.play();
+                allVideos.forEach(v => { v.currentTime = 0; v.play(); });
+            } else { audio.pause(); allVideos.forEach(v => { v.pause(); v.currentTime = 0; }); }
+        }
+    </script>
+</body>
+
+</html>
