@@ -139,13 +139,16 @@ exports.trackViewContent = onCall(
         const { eventId, fbp, fbc, url, userAgent } = request.data;
 
         // PCC-SAFE IP ADRESS EXTRACTION (IPv6 Friendly)
-        // Extract the first IP from x-forwarded-for to get the true client IP
+        // Extract the first IPv6 IP from x-forwarded-for if available, otherwise fallback to IPv4
         let ip = request.rawRequest.ip;
         const forwardedFor = request.rawRequest.headers['x-forwarded-for'];
 
         if (forwardedFor) {
-            // "client, proxy1, proxy2" -> take "client"
-            ip = forwardedFor.split(',')[0].trim();
+            const ips = forwardedFor.split(',').map(i => i.trim());
+            // Try to find an IPv6 address (contains a colon)
+            const ipv6 = ips.find(i => i.includes(':'));
+            // If IPv6 found, use it; otherwise use the first IP (likely IPv4)
+            ip = ipv6 || ips[0];
         } else if (!ip) {
             // Fallback
             ip = request.rawRequest.socket.remoteAddress;
@@ -183,13 +186,16 @@ exports.trackInitiateCheckout = onCall(
     async (request) => {
         const { eventId, fbp, fbc, url, userAgent, email, firstName, lastName, value, currency } = request.data;
 
-        // IP Extraction (IPv6 Friendly) - Same logic as ViewContent
+        // IP Extraction (IPv6 Friendly) - Prioritize IPv6
         let ip = request.rawRequest.ip;
         const forwardedFor = request.rawRequest.headers['x-forwarded-for'];
 
         if (forwardedFor) {
-            // "2001:db8::1, 192.168.1.1" â "2001:db8::1"
-            ip = forwardedFor.split(',')[0].trim();
+            const ips = forwardedFor.split(',').map(i => i.trim());
+            // Try to find an IPv6 address (contains a colon)
+            const ipv6 = ips.find(i => i.includes(':'));
+            // If IPv6 found, use it; otherwise use the first IP
+            ip = ipv6 || ips[0];
         } else if (!ip) {
             // Fallback
             ip = request.rawRequest.socket.remoteAddress;
