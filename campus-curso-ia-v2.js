@@ -968,11 +968,40 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderCaseDetailHTML(c) {
+    // Logic for Navigation (Previous/Next in same category)
+    const categoryCases = casesData.filter(item => item.category === c.category);
+    const currentIndex = categoryCases.findIndex(item => item.id === c.id);
+    const prevCase = currentIndex > 0 ? categoryCases[currentIndex - 1] : null;
+    const nextCase = currentIndex < categoryCases.length - 1 ? categoryCases[currentIndex + 1] : null;
+
+    // Helper to generate Button HTML (Reused for Top and Bottom)
+    const renderNavBtn = (targetCase, type) => {
+      if (!targetCase) return `<div class="w-10 md:w-32"></div>`; // Invisible spacer
+      const isPrev = type === 'prev';
+      return `
+        <button onclick="openCaseDetail(${targetCase.id})" 
+            class="flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:text-teal-600 hover:border-teal-400 hover:bg-slate-50 hover:shadow-sm transition-all group ${isPrev ? '' : 'text-right flex-row-reverse'}">
+             <i data-lucide="${isPrev ? 'chevron-left' : 'chevron-right'}" class="w-4 h-4 ${isPrev ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'} transition-transform text-slate-400 group-hover:text-teal-500"></i>
+             <div class="hidden md:block">
+               <span class="block text-[10px] text-slate-400 font-medium uppercase tracking-wider">${isPrev ? 'Anterior' : 'Siguiente'}</span>
+               <span class="font-bold text-xs leading-none max-w-[120px] truncate block text-slate-700 group-hover:text-teal-700">${targetCase.title}</span>
+             </div>
+        </button>
+      `;
+    };
+
     return `
         <div class="p-4 max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <button onclick="backToCategory()" class="mb-6 flex items-center gap-2 text-slate-500 hover:text-teal-600 font-bold text-xs uppercase tracking-wider transition-colors">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a ${c.category}
-            </button>
+            <!-- Navigation Header -->
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                <button onclick="backToCategory()" class="flex items-center gap-2 text-slate-500 hover:text-teal-600 font-bold text-xs uppercase tracking-wider transition-colors">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a ${c.category}
+                </button>
+                <div class="flex items-center gap-2">
+                    ${renderNavBtn(prevCase, 'prev')}
+                    ${renderNavBtn(nextCase, 'next')}
+                </div>
+            </div>
             
             <div class="flex items-start justify-between gap-4 mb-6">
                 <h2 class="text-2xl md:text-3xl font-black text-slate-800 leading-tight">${c.title}</h2>
@@ -1085,6 +1114,13 @@ document.addEventListener("DOMContentLoaded", () => {
                   </ul>
               </div>
               ` : ''}
+              
+              <!-- Navigation Footer (Better UX for long content) -->
+               <div class="flex items-center justify-between mt-10 pt-6 border-t border-slate-200">
+                    <div>${renderNavBtn(prevCase, 'prev')}</div>
+                    <div>${renderNavBtn(nextCase, 'next')}</div>
+               </div>
+
             </div>
         </div>
       `;
@@ -1323,7 +1359,12 @@ document.addEventListener("DOMContentLoaded", () => {
               break;
             }
             case "case_category":
-              a = renderCaseListHTML(e.categoryId);
+              const catCases = casesData.filter(item => item.category === e.categoryId);
+              if (catCases.length > 0) {
+                a = renderCaseDetailHTML(catCases[0]);
+              } else {
+                a = renderCaseListHTML(e.categoryId);
+              }
               break;
             default:
               a = "<p>Tipo de lección no reconocido.</p>";
@@ -2340,6 +2381,20 @@ document.addEventListener("DOMContentLoaded", () => {
       a.signOut().then(() => (window.location.href = `${o}/index.html`)),
     ),
     a.onAuthStateChanged((e) => {
+      // --- LOCALHOST BYPASS ---
+      const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "";
+      console.log("Auth Check - Hostname:", window.location.hostname, "Protocol:", window.location.protocol, "isLocal:", isLocal);
+      if (!e && isLocal) {
+        console.warn("⚠️ MODO LOCAL DETECTADO: Usando usuario mock para desarrollo.");
+        e = {
+          uid: "local_dev_user_123",
+          displayName: "Desarrollador Local",
+          email: "dev@localhost",
+          photoURL: null
+        };
+      }
+      // -------------------------
+
       e
         ? ((l = { uid: e.uid, name: e.displayName || "Alumno" }),
           m.userName && (m.userName.textContent = l.name),
