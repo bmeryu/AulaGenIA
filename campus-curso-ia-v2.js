@@ -986,7 +986,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderNavBtn = (targetCase, type) => {
       // Empty state (spacer)
       if (!targetCase) {
-        return `<div class="hidden md:block w-1/2"></div>`;
+        return `<div class="hidden md:block flex-1"></div>`;
       }
 
       const isPrev = type === 'prev';
@@ -994,28 +994,28 @@ document.addEventListener("DOMContentLoaded", () => {
       // Card Design
       return `
         <button onclick="openCaseDetail(${targetCase.id})" 
-          class="group relative w-full md:w-1/2 flex items-center ${isPrev ? 'justify-start text-left' : 'justify-end text-right'} 
-                 p-4 md:p-5 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-lg transition-all duration-300
+          class="group relative w-full flex-1 flex items-stretch ${isPrev ? 'justify-start text-left' : 'justify-end text-right'} 
+                 p-5 md:p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-lg transition-all duration-300
                  active:scale-[0.98]">
            
            ${isPrev ? `
-             <div class="mr-4 flex-shrink-0 w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
-                <i data-lucide="arrow-left" class="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors"></i>
+             <div class="mr-5 flex-shrink-0 w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-50 border border-slate-100 group-hover:border-indigo-100 transition-colors shadow-sm self-center">
+                <i data-lucide="arrow-left" class="w-6 h-6 text-slate-400 group-hover:text-indigo-600 transition-colors"></i>
              </div>
            ` : ''}
 
-           <div class="flex-1 min-w-0">
-             <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group-hover:text-indigo-500 transition-colors">
+           <div class="flex-1 min-w-0 py-1 flex flex-col justify-center">
+             <span class="block text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5 group-hover:text-indigo-500 transition-colors">
                 ${isPrev ? 'Anterior' : 'Siguiente'}
              </span>
-             <span class="block text-sm md:text-base font-bold text-slate-700 leading-tight group-hover:text-slate-900 truncate">
+             <span class="block text-sm md:text-lg font-bold text-slate-700 leading-snug group-hover:text-slate-900 line-clamp-2">
                 ${targetCase.title}
              </span>
            </div>
 
            ${!isPrev ? `
-             <div class="ml-4 flex-shrink-0 w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
-                <i data-lucide="arrow-right" class="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors"></i>
+             <div class="ml-5 flex-shrink-0 w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-50 border border-slate-100 group-hover:border-indigo-100 transition-colors shadow-sm self-center">
+                <i data-lucide="arrow-right" class="w-6 h-6 text-slate-400 group-hover:text-indigo-600 transition-colors"></i>
              </div>
            ` : ''}
            
@@ -1033,7 +1033,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span>Volver a ${c.category}</span>
                 </button>
                 
-                <div class="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
+                <div class="flex flex-col md:flex-row items-stretch justify-between gap-6 w-full">
                     ${renderNavBtn(prevCase, 'prev')}
                     ${renderNavBtn(nextCase, 'next')}
                 </div>
@@ -1147,7 +1147,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- Footer Navigation (Duplicate for convenience) -->
             <div class="mt-16 pt-8 border-t border-slate-100">
                 <span class="block text-xs text-slate-400 font-medium mb-6 text-center md:text-left">Continúa aprendiendo</span>
-                <div class="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
+                <div class="flex flex-col md:flex-row items-stretch justify-between gap-6 w-full">
                     ${renderNavBtn(prevCase, 'prev')}
                     ${renderNavBtn(nextCase, 'next')}
                 </div>
