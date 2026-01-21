@@ -1163,7 +1163,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.addEventListener("click", (e) => {
                   e.preventDefault();
                   const a = e.currentTarget.closest(".lesson-item");
-                  a && h(a.dataset.lessonId);
+                  if (a) {
+                    h(a.dataset.lessonId);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    const title = document.getElementById("lesson-title");
+                    if (title) title.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
                 });
               }),
               m.modulesContainer
