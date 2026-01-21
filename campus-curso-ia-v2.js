@@ -1084,26 +1084,18 @@ document.addEventListener("DOMContentLoaded", () => {
                             <p class="text-xs text-slate-500 mt-1">Optimizado para mejores resultados con esta IA</p>
                         </div>
                         <button onclick="(function(){ 
-                            const prompt = decodeURIComponent('${encodeURIComponent(decryptPrompt(c.agiaPromptTagged))}');
+                            const prompt = decryptPrompt('${c.agiaPromptTagged.replace(/'/g, "\\'")}');
                             navigator.clipboard.writeText(prompt);
-                            const toast = document.getElementById('toast-notification');
-                            const toastMsg = document.getElementById('toast-message');
-                            if(toast && toastMsg) {
-                                toastMsg.textContent = '✓ Prompt copiado. ¡Pégalo en la IA!';
-                                toast.classList.remove('hidden');
-                                setTimeout(() => { toast.classList.add('hidden'); }, 3000);
-                            }
-                            setTimeout(() => {
-                                const aiName = '${(c.suggestedAI || '').toLowerCase()}';
-                                let url = '#';
-                                if (aiName.includes('chatgpt') || aiName.includes('gpt') || aiName.includes('openai')) url = 'https://chat.openai.com';
-                                else if (aiName.includes('claude') || aiName.includes('anthropic')) url = 'https://claude.ai';
-                                else if (aiName.includes('gemini') || aiName.includes('google') || aiName.includes('bard')) url = 'https://gemini.google.com';
-                                window.open(url, '_blank');
-                            }, 500);
+                            A('¡Prompt copiado! Abriendo IA...');
+                            const aiName = '${(c.suggestedAI || '').toLowerCase()}';
+                            let url = '#';
+                            if (aiName.includes('chatgpt') || aiName.includes('gpt') || aiName.includes('openai')) url = 'https://chat.openai.com';
+                            else if (aiName.includes('claude') || aiName.includes('anthropic')) url = 'https://claude.ai';
+                            else if (aiName.includes('gemini') || aiName.includes('google') || aiName.includes('bard')) url = 'https://gemini.google.com';
+                            setTimeout(() => window.open(url, '_blank'), 300);
                         })()" class="flex-shrink-0 hidden sm:flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer">
                             <i data-lucide="external-link" class="w-4 h-4"></i>
-                            <span>Abrir IA</span>
+                            <span>Copiar y Abrir IA</span>
                         </button>
                     </div>
                 </section>
