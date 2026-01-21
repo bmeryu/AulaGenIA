@@ -1121,7 +1121,12 @@ document.addEventListener("DOMContentLoaded", () => {
       (m.courseTitle.textContent = n.title),
       (function () {
         if (!m.modulesContainer) return;
-        ((m.modulesContainer.innerHTML = n.modules
+
+        // Preserve sidebar scroll position
+        const previousScrollTop = m.modulesContainer.scrollTop;
+
+        // Render Sidebar Content
+        m.modulesContainer.innerHTML = n.modules
           .map((e, a) => {
             const t = e.lessons
               .map((e) => {
@@ -1161,37 +1166,40 @@ document.addEventListener("DOMContentLoaded", () => {
               s = "chevron-down";
             return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide text-gray-800">${e.title}</span><i data-lucide="${s}" class="h-4 w-4 transition-transform text-gray-400"></i></button><div class="accordion-content open"><ul class="py-1 space-y-0.5">${t}</ul></div></div>`;
           })
-          .join("")),
-          (function () {
-            if (!m.modulesContainer) return;
-            (m.modulesContainer
-              .querySelectorAll(".lesson-item a")
-              .forEach((e) => {
-                e.addEventListener("click", (e) => {
-                  e.preventDefault();
-                  const a = e.currentTarget.closest(".lesson-item");
-                  if (a) {
-                    h(a.dataset.lessonId);
-                  }
-                });
-              }),
-              m.modulesContainer
-                .querySelectorAll(".accordion-item")
-                .forEach((e) => {
-                  const a = e.querySelector(".accordion-header");
-                  a &&
-                    a.addEventListener("click", () => {
-                      const e = a.nextElementSibling,
-                        t = a.querySelector("i"),
-                        s = e.classList.toggle("open");
-                      t &&
-                        "chevron-down" === t.getAttribute("data-lucide") &&
-                        (t.style.transform = s
-                          ? "rotate(180deg)"
-                          : "rotate(0deg)");
-                    });
-                }));
-          })());
+          .join("");
+
+        // Restore sidebar scroll position
+        m.modulesContainer.scrollTop = previousScrollTop;
+
+        // Attach Listeners
+        m.modulesContainer
+          .querySelectorAll(".lesson-item a")
+          .forEach((e) => {
+            e.addEventListener("click", (e) => {
+              e.preventDefault();
+              const a = e.currentTarget.closest(".lesson-item");
+              if (a) {
+                h(a.dataset.lessonId);
+              }
+            });
+          });
+
+        m.modulesContainer
+          .querySelectorAll(".accordion-item")
+          .forEach((e) => {
+            const a = e.querySelector(".accordion-header");
+            a &&
+              a.addEventListener("click", () => {
+                const e = a.nextElementSibling,
+                  t = a.querySelector("i"),
+                  s = e.classList.toggle("open");
+                t &&
+                  "chevron-down" === t.getAttribute("data-lucide") &&
+                  (t.style.transform = s
+                    ? "rotate(180deg)"
+                    : "rotate(0deg)");
+              });
+          });
       })());
     const e = f(c.currentLessonId);
     (e &&
