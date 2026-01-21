@@ -2441,7 +2441,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             (b(), Q());
           })())
-        : (window.location.href = `${o}/acceso.html?redirect=https://aulagenia.cl/campus-curso-ia-v2.html`);
+        : (window.location.href = `${o}/acceso.html?redirect=${encodeURIComponent(window.location.href)}`);
     }),
     window.lucide && window.lucide.createIcons());
 });
