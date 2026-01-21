@@ -1062,26 +1062,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 </section>
 
                 <!-- Prompt Master Card -->
-                <section class="bg-white rounded-2xl shadow-lg shadow-slate-200/60 overflow-hidden border border-slate-200/80">
-                    <div class="p-5 md:p-6 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center justify-between flex-wrap gap-4">
+                <section class="bg-gradient-to-br from-indigo-50 to-white p-6 md:p-8 rounded-3xl border border-indigo-100 shadow-md relative group">
+                     <div class="flex items-center justify-between gap-3 mb-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-500/25">
-                                <i data-lucide="sparkles" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-base font-bold text-slate-900">Prompt Maestro</h2>
-                                <p class="text-xs text-slate-500">Listo para copiar</p>
-                            </div>
+                            <span class="p-2 rounded-lg bg-indigo-100 text-indigo-600"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
+                            <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Solución (Prompt Maestro)</h3>
                         </div>
-                        <button onclick="copyPromptText('${decryptPrompt(c.agiaPromptTagged).replace(/'/g, "\\'").replace(/\n/g, "\\n")}')" 
-                            class="flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm rounded-xl font-semibold transition-all shadow-md hover:shadow-lg active:scale-[0.98]">
-                            <i data-lucide="copy" class="w-4 h-4"></i>
-                            <span>Copiar</span>
-                        </button>
-                    </div>
-                    <div class="bg-slate-900 p-6 md:p-8 overflow-x-auto">
-                        <pre class="font-mono text-sm md:text-base leading-relaxed text-slate-100 whitespace-pre-wrap selection:bg-indigo-500 selection:text-white">${decryptPrompt(c.agiaPromptTagged)}</pre>
-                    </div>
+                        ${c.suggestedAI ? `<span class="px-3 py-1 rounded-full bg-teal-100 text-teal-700 text-xs font-bold whitespace-nowrap"><i data-lucide="cpu" class="w-3 h-3 inline mr-1"></i>${c.suggestedAI}</span>` : ''}
+                     </div>
+                     <div class="bg-white p-5 rounded-2xl border border-indigo-200 shadow-inner">
+                        <pre class="text-sm md:text-base font-mono text-slate-700 whitespace-pre-wrap leading-relaxed">${decryptPrompt(c.agiaPromptTagged)}</pre>
+                     </div>
+                     <button onclick="copyPromptText('${decryptPrompt(c.agiaPromptTagged).replace(/'/g, "\\'").replace(/\n/g, "\\n")}')" class="mt-4 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2">
+                         <i data-lucide="copy" class="w-5 h-5"></i> Copiar Prompt
+                     </button>
                 </section>
 
                 <!-- Insights Grid -->
