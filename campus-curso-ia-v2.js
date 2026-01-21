@@ -1,4 +1,4 @@
-�document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const e = {
     apiKey: "AIzaSyC9sVJwEfFdIN4VmSMooAoQLXYl5Mcu1yM",
     authDomain: "aulagenia.firebaseapp.com",
