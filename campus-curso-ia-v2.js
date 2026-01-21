@@ -1368,8 +1368,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             case "case_category":
               const catCases = casesData.filter(item => item.category === e.categoryId);
+              console.log("DEBUG: Category:", e.categoryId, "Cases Found:", catCases.length);
+
               if (catCases.length > 0) {
-                a = renderCaseDetailHTML(catCases[0]);
+                // FIXED: Adding version badge for user verification
+                const vBadge = '<div style="position:fixed;bottom:10px;right:10px;background:black;color:white;padding:5px;font-size:10px;opacity:0.6;z-index:9999">v2.0.21-R</div>';
+                a = renderCaseDetailHTML(catCases[0]) + vBadge;
               } else {
                 a = renderCaseListHTML(e.categoryId);
               }
