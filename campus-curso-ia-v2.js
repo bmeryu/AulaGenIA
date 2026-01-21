@@ -867,33 +867,33 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     ],
   };
-  // --- AGIA M�DULO 5 START ---
+  // --- AGIA MÓDULO 5 START ---
   const agiaConfig = {
     categories: {
       "Productividad Ninja": { label: "Productividad", color: "teal", icon: "rocket_launch" },
-      "Ventas & Persuasi�n": { label: "Ventas", color: "teal", icon: "campaign" },
+      "Ventas & Persuasión": { label: "Ventas", color: "teal", icon: "campaign" },
       "Contenido & Redes": { label: "Marketing", color: "indigo", icon: "share" },
       "Finanzas Inteligentes": { label: "Finanzas", color: "slate", icon: "payments" },
-      "Legal & Formalizaci�n": { label: "Legal", color: "slate", icon: "gavel" },
+      "Legal & Formalización": { label: "Legal", color: "slate", icon: "gavel" },
       "Estrategia & Lanzamiento": { label: "Estrategia", color: "indigo", icon: "flag" },
-      "Dise�o & Arte Digital": { label: "Dise�o", color: "teal", icon: "palette" },
+      "Diseño & Arte Digital": { label: "Diseño", color: "teal", icon: "palette" },
       "Operaciones & Procesos": { label: "Operaciones", color: "slate", icon: "settings_suggest" },
       "Liderazgo & Equipos": { label: "Liderazgo", color: "indigo", icon: "groups" },
-      "Tecnolog�a & Herramientas": { label: "Tecnolog�a", color: "slate", icon: "terminal" },
-      "Otros / An�lisis": { label: "An�lisis", color: "gray", icon: "analytics" }
+      "Tecnología & Herramientas": { label: "Tecnología", color: "slate", icon: "terminal" },
+      "Otros / Análisis": { label: "Análisis", color: "gray", icon: "analytics" }
     }
   };
 
   const module5 = {
-    title: "M�dulo 5: Casos Aplicados",
+    title: "Módulo 5: Casos Aplicados",
     badge: "Maestro de Casos",
     lessons: []
   };
 
   Object.entries(agiaConfig.categories).forEach(([name, cat]) => {
     module5.lessons.push({
-      id: "cat-" + name.replace(/\s+/g, '-').toLowerCase().replace(/[^\w-]/g, ''),
-      title: "=� " + (cat.label || name),
+      id: 'cat-' + name.replace(/\s+/g, '-').toLowerCase().replace(/[^\w-]/g, ''),
+      title: (cat.label || name),
       type: "case_category",
       categoryId: name,
       icon: cat.icon,
@@ -902,7 +902,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  essentialData.modules.splice(4, 0, module5);
+  essentialData.modules.splice(5, 0, module5);
 
   let casesData = [];
   async function loadPromptsDatabase() {
