@@ -976,162 +976,160 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderCaseDetailHTML(c) {
-    // Logic for Navigation (Previous/Next in same category)
+    // Logic for Navigation
     const categoryCases = casesData.filter(item => item.category === c.category);
     const currentIndex = categoryCases.findIndex(item => item.id === c.id);
     const prevCase = currentIndex > 0 ? categoryCases[currentIndex - 1] : null;
     const nextCase = currentIndex < categoryCases.length - 1 ? categoryCases[currentIndex + 1] : null;
 
-    // Helper to generate Button HTML (Reused for Top and Bottom)
+    // Helper: Minimalist Navigation Button
     const renderNavBtn = (targetCase, type) => {
-      if (!targetCase) return `<div class="w-10 md:w-32"></div>`; // Invisible spacer
+      if (!targetCase) return `<div class="w-24"></div>`; // Spacer
       const isPrev = type === 'prev';
       return `
         <button onclick="openCaseDetail(${targetCase.id})" 
-            class="flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:text-teal-600 hover:border-teal-400 hover:bg-slate-50 hover:shadow-sm transition-all group ${isPrev ? '' : 'text-right flex-row-reverse'}">
-             <i data-lucide="${isPrev ? 'chevron-left' : 'chevron-right'}" class="w-4 h-4 ${isPrev ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'} transition-transform text-slate-400 group-hover:text-teal-500"></i>
-             <div class="hidden md:block">
-               <span class="block text-[10px] text-slate-400 font-medium uppercase tracking-wider">${isPrev ? 'Anterior' : 'Siguiente'}</span>
-               <span class="font-bold text-xs leading-none max-w-[120px] truncate block text-slate-700 group-hover:text-teal-700">${targetCase.title}</span>
-             </div>
+          class="group flex items-center gap-3 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 hover:border-indigo-200 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all shadow-sm hover:shadow-md">
+           ${isPrev ? '<i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>' : ''}
+           <div class="flex flex-col ${isPrev ? 'items-start' : 'items-end'}">
+             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">${isPrev ? 'Anterior' : 'Siguiente'}</span>
+             <span class="text-xs font-semibold truncate max-w-[120px] md:max-w-xs">${targetCase.title}</span>
+           </div>
+           ${!isPrev ? '<i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>' : ''}
         </button>
       `;
     };
 
     return `
-        <div class="p-4 max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <!-- Navigation Header -->
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-                <button onclick="backToCategory()" class="flex items-center gap-2 text-slate-500 hover:text-teal-600 font-bold text-xs uppercase tracking-wider transition-colors">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a ${c.category}
+        <div class="max-w-5xl mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+            
+            <!-- Top Navigation -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
+                <button onclick="backToCategory()" class="flex items-center gap-2 text-slate-400 hover:text-slate-800 transition-colors text-sm font-medium">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Volver a ${c.category}</span>
                 </button>
-                <div class="flex items-center gap-2">
+                 <div class="flex items-center gap-4">
                     ${renderNavBtn(prevCase, 'prev')}
                     ${renderNavBtn(nextCase, 'next')}
                 </div>
             </div>
-            
-            <div class="flex items-start justify-between gap-4 mb-6">
-                <h2 class="text-2xl md:text-3xl font-black text-slate-800 leading-tight">${c.title}</h2>
-                <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-wide whitespace-nowrap">${c.difficulty || 'General'}</span>
-            </div>
-            
-            <div class="space-y-8">
-                <!-- Challenge -->
-                <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="target" class="w-24 h-24 text-slate-900"></i></div>
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="p-2 rounded-lg bg-orange-100 text-orange-600"><i data-lucide="alert-circle" class="w-5 h-5"></i></span>
-                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500">El Desafío / Problema</h3>
-                    </div>
-                    <p class="text-slate-700 text-lg leading-relaxed italic relative z-10">"${c.problem || c.description}"</p>
-                </div>
 
-                <!-- Solution (Prompt) -->
-                <div class="bg-gradient-to-br from-indigo-50 to-white p-6 md:p-8 rounded-3xl border border-indigo-100 shadow-md relative group">
-                     <div class="flex items-center justify-between gap-3 mb-4">
-                        <div class="flex items-center gap-3">
-                            <span class="p-2 rounded-lg bg-indigo-100 text-indigo-600"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
-                            <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Solución (Prompt Maestro)</h3>
-                        </div>
-                        ${c.suggestedAI ? `<span class="px-3 py-1 rounded-full bg-teal-100 text-teal-700 text-xs font-bold whitespace-nowrap"><i data-lucide="cpu" class="w-3 h-3 inline mr-1"></i>${c.suggestedAI}</span>` : ''}
-                     </div>
-                     <div class="bg-white p-5 rounded-2xl border border-indigo-200 shadow-inner">
-                        <pre class="text-sm font-mono text-slate-600 whitespace-pre-wrap leading-relaxed">${decryptPrompt(c.agiaPromptTagged)}</pre>
-                     </div>
-                     <button onclick="copyPromptText('${decryptPrompt(c.agiaPromptTagged).replace(/'/g, "\\'").replace(/\n/g, "\\n")}')" class="mt-4 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="copy" class="w-5 h-5"></i> Copiar Prompt
-                     </button>
+            <!-- Header Section -->
+            <div class="text-center md:text-left mb-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-bold uppercase tracking-wider mb-4">
+                    <span>${c.difficulty || 'General'}</span>
                 </div>
+                <h1 class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-4 text-balance">
+                    ${c.title}
+                </h1>
+                ${c.suggestedAI ? `<div class="flex items-center justify-center md:justify-start gap-2 text-indigo-600 font-medium text-sm"><i data-lucide="cpu" class="w-4 h-4"></i> Recomendado: ${c.suggestedAI}</div>` : ''}
+            </div>
+
+            <div class="space-y-12">
                 
-              ${c.solutionPlus ? `
-              <!-- Why It Works (The Plus) -->
-              <div class="bg-indigo-50 p-6 md:p-8 rounded-3xl border border-indigo-100 shadow-sm relative overflow-hidden">
-                  <div class="flex items-center gap-3 mb-4">
-                      <span class="p-2 rounded-lg bg-white text-indigo-600 shadow-sm"><i data-lucide="zap" class="w-5 h-5"></i></span>
-                      <h3 class="text-sm font-black uppercase tracking-wider text-indigo-700">¿Por qué funciona? (El Plus)</h3>
-                  </div>
-                  <p class="text-indigo-900 text-base md:text-lg leading-relaxed relative z-10">${c.solutionPlus}</p>
-              </div>
-              ` : ''}
-              
-                 <!-- Anatomy -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 shadow-sm">
-                         <div class="flex items-center gap-2 mb-3">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            <h3 class="text-xs font-black uppercase tracking-wider text-emerald-600">Estrategia</h3>
-                         </div>
-                         <p class="text-sm text-emerald-900 leading-relaxed">${c.exampleTip || "Sigue la estructura maestra para adaptar este caso."}</p>
+                <!-- The Problem (Clean Minimalist) -->
+                <div class="relative bg-orange-50/80 rounded-2xl p-8 md:p-10 border-l-4 border-orange-400">
+                     <div class="flex items-center gap-3 mb-4 text-orange-600">
+                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                        <h3 class="text-xs font-black uppercase tracking-widest">El Desafío</h3>
+                     </div>
+                     <p class="text-lg md:text-xl text-slate-800 leading-relaxed font-medium italic">
+                        "${c.problem || c.description}"
+                     </p>
+                </div>
+
+                <!-- The Solution (Pro Code Editor Style) -->
+                <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100 ring-1 ring-slate-900/5">
+                    <div class="p-6 md:p-8 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white flex md:items-center justify-between flex-col md:flex-row gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-indigo-600 rounded-xl text-white shadow-lg shadow-indigo-600/20">
+                                <i data-lucide="sparkles" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900">Prompt Maestro</h3>
+                                <p class="text-sm text-slate-500">Copia y pega en tu IA favorita</p>
+                            </div>
+                        </div>
+                        <button onclick="copyPromptText('${decryptPrompt(c.agiaPromptTagged).replace(/'/g, "\\'").replace(/\n/g, "\\n")}')" 
+                            class="flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span>Copiar Prompt</span>
+                        </button>
                     </div>
-                    <div class="bg-blue-50 p-6 rounded-3xl border border-blue-100 shadow-sm">
-                         <div class="flex items-center gap-2 mb-3">
-                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                            <h3 class="text-xs font-black uppercase tracking-wider text-blue-600">Validación</h3>
-                         </div>
-                         <p class="text-sm text-blue-900 leading-relaxed">${c.validationTip || "Verifica siempre que la IA cumpla el rol asignado."}</p>
+                    
+                    <!-- Code Editor Look -->
+                    <div class="bg-[#1e1e1e] p-6 md:p-8 overflow-x-auto">
+                        <pre class="font-mono text-sm md:text-base leading-relaxed text-slate-300 whitespace-pre-wrap selection:bg-indigo-500 selection:text-white">${decryptPrompt(c.agiaPromptTagged)}</pre>
                     </div>
                 </div>
-              
-              ${c.verticalMatrix && c.verticalMatrix.length > 0 ? `
-              <!-- Vertical Matrix -->
-              <div class="bg-amber-50 p-6 md:p-8 rounded-3xl border border-amber-100 shadow-sm">
-                  <div class="flex items-center gap-3 mb-4">
-                      <span class="p-2 rounded-lg bg-white text-amber-600 shadow-sm"><i data-lucide="layers" class="w-5 h-5"></i></span>
-                      <h3 class="text-sm font-black uppercase tracking-wider text-amber-700">Matriz de Verticalización</h3>
-                  </div>
-                  <p class="text-amber-800 text-sm mb-4">Adapta este mismo prompt a diferentes rubros:</p>
-                  <div class="overflow-x-auto">
-                      <table class="w-full text-sm">
-                          <thead>
-                              <tr class="border-b border-amber-200">
-                                  <th class="text-left py-2 px-3 font-bold text-amber-800">Rubro</th>
-                                  <th class="text-left py-2 px-3 font-bold text-amber-800">Contexto</th>
-                                  <th class="text-left py-2 px-3 font-bold text-amber-800">Ajuste</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              ${c.verticalMatrix.map(v => `
-                                  <tr class="border-b border-amber-100">
-                                      <td class="py-2 px-3 font-semibold text-amber-900">${v.rubro}</td>
-                                      <td class="py-2 px-3 text-amber-800">${v.contexto}</td>
-                                      <td class="py-2 px-3 text-amber-700">${v.ajuste}</td>
-                                  </tr>
-                              `).join('')}
-                          </tbody>
-                      </table>
-                  </div>
-              </div>
-              ` : ''}
 
-              ${c.fineTuning && c.fineTuning.length > 0 ? `
-              <!-- Fine Tuning Tips -->
-              <div class="bg-rose-50 p-6 md:p-8 rounded-3xl border border-rose-100 shadow-sm">
-                  <div class="flex items-center gap-3 mb-4">
-                      <span class="p-2 rounded-lg bg-white text-rose-600 shadow-sm"><i data-lucide="sliders" class="w-5 h-5"></i></span>
-                      <h3 class="text-sm font-black uppercase tracking-wider text-rose-700">Ajuste Fino</h3>
-                  </div>
-                  <p class="text-rose-800 text-sm mb-4">Si la respuesta no es perfecta, prueba estos ajustes:</p>
-                  <ul class="space-y-2">
-                      ${c.fineTuning.map(tip => `
-                          <li class="flex items-start gap-2 text-rose-900 text-sm">
-                              <i data-lucide="message-circle" class="w-4 h-4 text-rose-400 mt-0.5 flex-shrink-0"></i>
-                              <span>${tip}</span>
-                          </li>
-                      `).join('')}
-                  </ul>
-              </div>
-              ` : ''}
-              
-              <!-- Navigation Footer (Better UX for long content) -->
-               <div class="flex items-center justify-between mt-10 pt-6 border-t border-slate-200">
-                    <div>${renderNavBtn(prevCase, 'prev')}</div>
-                    <div>${renderNavBtn(nextCase, 'next')}</div>
-               </div>
+                <!-- "Why it works" & "Anatomy" Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    ${c.solutionPlus ? `
+                    <div class="col-span-1 md:col-span-2 bg-indigo-50 rounded-2xl p-8 border border-indigo-100">
+                        <h3 class="flex items-center gap-2 text-indigo-900 font-bold mb-3">
+                            <i data-lucide="zap" class="w-5 h-5 text-indigo-500"></i> ¿Por qué funciona?
+                        </h3>
+                        <p class="text-indigo-800 leading-relaxed">${c.solutionPlus}</p>
+                    </div>` : ''}
 
+                    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+                        <h3 class="text-emerald-600 font-bold text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Estrategia
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">${c.exampleTip || "Sigue la estructura maestra."}</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+                         <h3 class="text-blue-600 font-bold text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Validación
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed text-sm">${c.validationTip || "Verifica el resultado."}</p>
+                    </div>
+                </div>
+
+                ${c.verticalMatrix && c.verticalMatrix.length > 0 ? `
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+                    <div class="px-6 py-4 bg-slate-50 border-b border-slate-200">
+                        <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                             <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i> Matriz de Adaptación
+                        </h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs text-slate-500 uppercase bg-slate-50/50">
+                                <tr>
+                                    <th class="px-6 py-3 font-bold">Rubro</th>
+                                    <th class="px-6 py-3 font-bold">Contexto</th>
+                                    <th class="px-6 py-3 font-bold">Ajuste</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                ${c.verticalMatrix.map(v => `
+                                    <tr class="hover:bg-slate-50/50 transition-colors">
+                                        <td class="px-6 py-4 font-semibold text-slate-900">${v.rubro}</td>
+                                        <td class="px-6 py-4 text-slate-600">${v.contexto}</td>
+                                        <td class="px-6 py-4 text-slate-600 italic">"${v.ajuste}"</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                ` : ''}
             </div>
+
+            <!-- Footer Navigation (Duplicate for convenience) -->
+            <div class="flex items-center justify-between mt-16 pt-8 border-t border-slate-100">
+                <span class="text-xs text-slate-400 font-medium">Navegación del Módulo</span>
+                <div class="flex items-center gap-4">
+                    ${renderNavBtn(prevCase, 'prev')}
+                    ${renderNavBtn(nextCase, 'next')}
+                </div>
+            </div>
+
         </div>
-      `;
+    `;
   }
 
   window.copyPromptText = function (text) {
@@ -2441,7 +2439,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             (b(), Q());
           })())
-        : (window.location.href = `${o}/acceso.html?redirect=https://aulagenia.cl/campus-curso-ia-v2.html`);
+        : (window.location.href = `${o}/acceso.html?redirect=${encodeURIComponent(window.location.href)}`);
     }),
     window.lucide && window.lucide.createIcons());
 });
