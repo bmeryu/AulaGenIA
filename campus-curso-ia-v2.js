@@ -982,19 +982,43 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevCase = currentIndex > 0 ? categoryCases[currentIndex - 1] : null;
     const nextCase = currentIndex < categoryCases.length - 1 ? categoryCases[currentIndex + 1] : null;
 
-    // Helper: Minimalist Navigation Button
+    // Helper: Robo-Card Navigation Button (Desktop & Mobile Optimized)
     const renderNavBtn = (targetCase, type) => {
-      if (!targetCase) return `<div class="w-24"></div>`; // Spacer
+      // Empty state (spacer)
+      if (!targetCase) {
+        return `<div class="hidden md:block w-1/2"></div>`;
+      }
+
       const isPrev = type === 'prev';
+
+      // Card Design
       return `
         <button onclick="openCaseDetail(${targetCase.id})" 
-          class="group flex items-center gap-3 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 hover:border-indigo-200 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all shadow-sm hover:shadow-md">
-           ${isPrev ? '<i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>' : ''}
-           <div class="flex flex-col ${isPrev ? 'items-start' : 'items-end'}">
-             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">${isPrev ? 'Anterior' : 'Siguiente'}</span>
-             <span class="text-xs font-semibold truncate max-w-[120px] md:max-w-xs">${targetCase.title}</span>
+          class="group relative w-full md:w-1/2 flex items-center ${isPrev ? 'justify-start text-left' : 'justify-end text-right'} 
+                 p-4 md:p-5 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-lg transition-all duration-300
+                 active:scale-[0.98]">
+           
+           ${isPrev ? `
+             <div class="mr-4 flex-shrink-0 w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
+                <i data-lucide="arrow-left" class="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors"></i>
+             </div>
+           ` : ''}
+
+           <div class="flex-1 min-w-0">
+             <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group-hover:text-indigo-500 transition-colors">
+                ${isPrev ? 'Anterior' : 'Siguiente'}
+             </span>
+             <span class="block text-sm md:text-base font-bold text-slate-700 leading-tight group-hover:text-slate-900 truncate">
+                ${targetCase.title}
+             </span>
            </div>
-           ${!isPrev ? '<i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>' : ''}
+
+           ${!isPrev ? `
+             <div class="ml-4 flex-shrink-0 w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
+                <i data-lucide="arrow-right" class="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors"></i>
+             </div>
+           ` : ''}
+           
         </button>
       `;
     };
@@ -1003,12 +1027,13 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="max-w-5xl mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
             
             <!-- Top Navigation -->
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
-                <button onclick="backToCategory()" class="flex items-center gap-2 text-slate-400 hover:text-slate-800 transition-colors text-sm font-medium">
+            <div class="flex flex-col gap-6 mb-12">
+                <button onclick="backToCategory()" class="self-start flex items-center gap-2 text-slate-400 hover:text-slate-800 transition-colors text-sm font-medium px-2 py-1 rounded-lg hover:bg-slate-100">
                     <i data-lucide="arrow-left" class="w-4 h-4"></i>
                     <span>Volver a ${c.category}</span>
                 </button>
-                 <div class="flex items-center gap-4">
+                
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
                     ${renderNavBtn(prevCase, 'prev')}
                     ${renderNavBtn(nextCase, 'next')}
                 </div>
@@ -1120,9 +1145,9 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <!-- Footer Navigation (Duplicate for convenience) -->
-            <div class="flex items-center justify-between mt-16 pt-8 border-t border-slate-100">
-                <span class="text-xs text-slate-400 font-medium">Navegación del Módulo</span>
-                <div class="flex items-center gap-4">
+            <div class="mt-16 pt-8 border-t border-slate-100">
+                <span class="block text-xs text-slate-400 font-medium mb-6 text-center md:text-left">Continúa aprendiendo</span>
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
                     ${renderNavBtn(prevCase, 'prev')}
                     ${renderNavBtn(nextCase, 'next')}
                 </div>
