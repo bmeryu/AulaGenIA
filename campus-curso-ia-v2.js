@@ -914,7 +914,7 @@ document.addEventListener("DOMContentLoaded", () => {
         casesData = result.data.data;
         console.log(` Secure Load Success: ${casesData.length} prompts loaded.`);
       } else {
-        console.error("Respuesta inv�lida:", result.data);
+        console.error("Respuesta inválida:", result.data);
       }
     } catch (error) {
       console.error("Secure Load Error:", error);
@@ -942,7 +942,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderCaseListHTML(categoryId) {
     const filtered = casesData.filter(c => c.category === categoryId);
-    if (filtered.length === 0) return '<div class="p-8 text-center text-slate-500">Cargando casos... (o no hay casos para esta categor�a)</div>';
+    if (filtered.length === 0) return '<div class="p-8 text-center text-slate-500">Cargando casos... (o no hay casos para esta categoría)</div>';
     return `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">${filtered.map(c => `
         <div onclick="openCaseDetail(${c.id})" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-teal-400 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer group">
              <div class="flex items-center gap-2.5 mb-3">
@@ -953,7 +953,7 @@ document.addEventListener("DOMContentLoaded", () => {
              </div>
              <p class="text-[11px] text-slate-500 line-clamp-2 bg-slate-50 p-2 rounded-lg border border-slate-100 italic">"${c.problem || c.description}"</p>
              <div class="mt-3 flex items-center justify-between">
-                <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">${c.difficulty || 'B�sico'}</span>
+                <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">${c.difficulty || 'Básico'}</span>
                 <span class="text-[10px] text-slate-400 flex items-center gap-1">Ver Caso <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
              </div>
         </div>
@@ -978,7 +978,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="target" class="w-24 h-24 text-slate-900"></i></div>
                     <div class="flex items-center gap-3 mb-4">
                         <span class="p-2 rounded-lg bg-orange-100 text-orange-600"><i data-lucide="alert-circle" class="w-5 h-5"></i></span>
-                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500">El Desaf�o / Problema</h3>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500">El Desafío / Problema</h3>
                     </div>
                     <p class="text-slate-700 text-lg leading-relaxed italic relative z-10">"${c.problem || c.description}"</p>
                 </div>
@@ -987,7 +987,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="bg-gradient-to-br from-indigo-50 to-white p-6 md:p-8 rounded-3xl border border-indigo-100 shadow-md relative group">
                      <div class="flex items-center gap-3 mb-4">
                         <span class="p-2 rounded-lg bg-indigo-100 text-indigo-600"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
-                        <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Soluci�n (Prompt Maestro)</h3>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Solución (Prompt Maestro)</h3>
                      </div>
                      <div class="bg-white p-5 rounded-2xl border border-indigo-200 shadow-inner">
                         <pre class="text-sm font-mono text-slate-600 whitespace-pre-wrap leading-relaxed">${decryptPrompt(c.agiaPromptTagged)}</pre>
@@ -1009,7 +1009,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="bg-blue-50 p-6 rounded-3xl border border-blue-100 shadow-sm">
                          <div class="flex items-center gap-2 mb-3">
                             <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                            <h3 class="text-xs font-black uppercase tracking-wider text-blue-600">Validaci�n</h3>
+                            <h3 class="text-xs font-black uppercase tracking-wider text-blue-600">Validación</h3>
                          </div>
                          <p class="text-sm text-blue-900 leading-relaxed">${c.validationTip || "Verifica siempre que la IA cumpla el rol asignado."}</p>
                     </div>
@@ -1021,10 +1021,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.copyPromptText = function (text) {
     navigator.clipboard.writeText(text);
-    A("�Prompt copiado al portapapeles!");
+    A("¡Prompt copiado al portapapeles!");
   };
 
-  // --- AGIA M�DULO 5 END ---
+  // --- AGIA MÓDULO 5 END ---
   const n =
     r === "ia-aplicada-starter"
       ? { ...essentialData, title: "IA Aplicada · Starter" }
