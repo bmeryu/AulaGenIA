@@ -1024,134 +1024,145 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     return `
-        <div class="max-w-5xl mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-10 animate-in fade-in slide-in-from-bottom-8 duration-500">
             
-            <!-- Top Navigation -->
-            <div class="flex flex-col gap-6 mb-12">
-                <button onclick="backToCategory()" class="self-start flex items-center gap-2 text-slate-400 hover:text-slate-800 transition-colors text-sm font-medium px-2 py-1 rounded-lg hover:bg-slate-100">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                    <span>Volver a ${c.category}</span>
+            <!-- Compact Header with Back Button -->
+            <header class="mb-8 md:mb-10">
+                <button onclick="backToCategory()" class="group inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors text-sm font-medium mb-6">
+                    <i data-lucide="chevron-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    <span>${c.category}</span>
                 </button>
                 
-                <div class="flex flex-col md:flex-row items-stretch justify-between gap-6 w-full">
-                    ${renderNavBtn(prevCase, 'prev')}
-                    ${renderNavBtn(nextCase, 'next')}
+                <div class="flex flex-wrap items-center gap-3 mb-4">
+                    <span class="px-3 py-1 rounded-full bg-gradient-to-r from-indigo-50 to-slate-50 border border-indigo-100 text-indigo-700 text-[11px] font-bold uppercase tracking-wider">
+                        ${c.difficulty || 'General'}
+                    </span>
+                    ${c.suggestedAI ? `<span class="flex items-center gap-1.5 text-slate-500 text-xs font-medium"><i data-lucide="cpu" class="w-3.5 h-3.5"></i>${c.suggestedAI}</span>` : ''}
                 </div>
-            </div>
-
-            <!-- Header Section -->
-            <div class="text-center md:text-left mb-12">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-bold uppercase tracking-wider mb-4">
-                    <span>${c.difficulty || 'General'}</span>
-                </div>
-                <h1 class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-4 text-balance">
+                
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
                     ${c.title}
                 </h1>
-                ${c.suggestedAI ? `<div class="flex items-center justify-center md:justify-start gap-2 text-indigo-600 font-medium text-sm"><i data-lucide="cpu" class="w-4 h-4"></i> Recomendado: ${c.suggestedAI}</div>` : ''}
-            </div>
+            </header>
 
-            <div class="space-y-12">
+            <!-- Main Content -->
+            <div class="space-y-8">
                 
-                <!-- The Problem (Clean Minimalist) -->
-                <div class="relative bg-orange-50/80 rounded-2xl p-8 md:p-10 border-l-4 border-orange-400">
-                     <div class="flex items-center gap-3 mb-4 text-orange-600">
-                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-                        <h3 class="text-xs font-black uppercase tracking-widest">El Desafío</h3>
-                     </div>
-                     <p class="text-lg md:text-xl text-slate-800 leading-relaxed font-medium italic">
-                        "${c.problem || c.description}"
-                     </p>
-                </div>
+                <!-- The Challenge Card -->
+                <section class="relative bg-gradient-to-br from-amber-50 to-orange-50/50 rounded-2xl p-6 md:p-8 border border-amber-100/80">
+                    <div class="flex items-center gap-2.5 mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                            <i data-lucide="target" class="w-4 h-4 text-amber-600"></i>
+                        </div>
+                        <h2 class="text-sm font-bold text-amber-800 uppercase tracking-wide">El Desafío</h2>
+                    </div>
+                    <p class="text-base md:text-lg text-slate-700 leading-relaxed">
+                        ${c.problem || c.description}
+                    </p>
+                </section>
 
-                <!-- The Solution (Pro Code Editor Style) -->
-                <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100 ring-1 ring-slate-900/5">
-                    <div class="p-6 md:p-8 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white flex md:items-center justify-between flex-col md:flex-row gap-4">
-                        <div class="flex items-center gap-4">
-                            <div class="p-3 bg-indigo-600 rounded-xl text-white shadow-lg shadow-indigo-600/20">
-                                <i data-lucide="sparkles" class="w-6 h-6"></i>
+                <!-- Prompt Master Card -->
+                <section class="bg-white rounded-2xl shadow-lg shadow-slate-200/60 overflow-hidden border border-slate-200/80">
+                    <div class="p-5 md:p-6 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center justify-between flex-wrap gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-500/25">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-slate-900">Prompt Maestro</h3>
-                                <p class="text-sm text-slate-500">Copia y pega en tu IA favorita</p>
+                                <h2 class="text-base font-bold text-slate-900">Prompt Maestro</h2>
+                                <p class="text-xs text-slate-500">Listo para copiar</p>
                             </div>
                         </div>
                         <button onclick="copyPromptText('${decryptPrompt(c.agiaPromptTagged).replace(/'/g, "\\'").replace(/\n/g, "\\n")}')" 
-                            class="flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">
+                            class="flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm rounded-xl font-semibold transition-all shadow-md hover:shadow-lg active:scale-[0.98]">
                             <i data-lucide="copy" class="w-4 h-4"></i>
-                            <span>Copiar Prompt</span>
+                            <span>Copiar</span>
                         </button>
                     </div>
-                    
-                    <!-- Code Editor Look -->
-                    <div class="bg-[#1e1e1e] p-6 md:p-8 overflow-x-auto">
-                        <pre class="font-mono text-sm md:text-base leading-relaxed text-slate-300 whitespace-pre-wrap selection:bg-indigo-500 selection:text-white">${decryptPrompt(c.agiaPromptTagged)}</pre>
+                    <div class="bg-[#0d1117] p-5 md:p-6 overflow-x-auto">
+                        <pre class="font-mono text-[13px] md:text-sm leading-relaxed text-slate-300 whitespace-pre-wrap selection:bg-indigo-500/50 selection:text-white">${decryptPrompt(c.agiaPromptTagged)}</pre>
                     </div>
-                </div>
+                </section>
 
-                <!-- "Why it works" & "Anatomy" Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Insights Grid -->
+                <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     ${c.solutionPlus ? `
-                    <div class="col-span-1 md:col-span-2 bg-indigo-50 rounded-2xl p-8 border border-indigo-100">
-                        <h3 class="flex items-center gap-2 text-indigo-900 font-bold mb-3">
-                            <i data-lucide="zap" class="w-5 h-5 text-indigo-500"></i> ¿Por qué funciona?
-                        </h3>
-                        <p class="text-indigo-800 leading-relaxed">${c.solutionPlus}</p>
+                    <div class="sm:col-span-2 bg-gradient-to-br from-indigo-50 to-violet-50/50 rounded-2xl p-6 border border-indigo-100/80">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i data-lucide="lightbulb" class="w-4 h-4 text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-indigo-900 mb-2">¿Por qué funciona?</h3>
+                                <p class="text-indigo-800/90 leading-relaxed text-sm">${c.solutionPlus}</p>
+                            </div>
+                        </div>
                     </div>` : ''}
 
-                    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
-                        <h3 class="text-emerald-600 font-bold text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Estrategia
-                        </h3>
-                        <p class="text-slate-600 leading-relaxed text-sm">${c.exampleTip || "Sigue la estructura maestra."}</p>
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="compass" class="w-4 h-4 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-bold text-emerald-700 uppercase tracking-wide mb-2">Estrategia</h3>
+                                <p class="text-slate-600 leading-relaxed text-sm">${c.exampleTip || "Sigue la estructura maestra."}</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
-                         <h3 class="text-blue-600 font-bold text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Validación
-                        </h3>
-                        <p class="text-slate-600 leading-relaxed text-sm">${c.validationTip || "Verifica el resultado."}</p>
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-bold text-blue-700 uppercase tracking-wide mb-2">Validación</h3>
+                                <p class="text-slate-600 leading-relaxed text-sm">${c.validationTip || "Verifica el resultado."}</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </section>
 
                 ${c.verticalMatrix && c.verticalMatrix.length > 0 ? `
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-                    <div class="px-6 py-4 bg-slate-50 border-b border-slate-200">
-                        <h3 class="font-bold text-slate-800 flex items-center gap-2">
-                             <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i> Matriz de Adaptación
-                        </h3>
+                <!-- Adaptation Matrix -->
+                <section class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                    <div class="px-5 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center gap-2">
+                        <i data-lucide="git-branch" class="w-4 h-4 text-slate-400"></i>
+                        <h3 class="font-semibold text-slate-800 text-sm">Matriz de Adaptación</h3>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-slate-500 uppercase bg-slate-50/50">
-                                <tr>
-                                    <th class="px-6 py-3 font-bold">Rubro</th>
-                                    <th class="px-6 py-3 font-bold">Contexto</th>
-                                    <th class="px-6 py-3 font-bold">Ajuste</th>
+                        <table class="w-full text-sm">
+                            <thead class="bg-slate-50/50">
+                                <tr class="text-left text-xs text-slate-500 uppercase tracking-wider">
+                                    <th class="px-5 py-3 font-semibold">Rubro</th>
+                                    <th class="px-5 py-3 font-semibold">Contexto</th>
+                                    <th class="px-5 py-3 font-semibold">Ajuste</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 ${c.verticalMatrix.map(v => `
                                     <tr class="hover:bg-slate-50/50 transition-colors">
-                                        <td class="px-6 py-4 font-semibold text-slate-900">${v.rubro}</td>
-                                        <td class="px-6 py-4 text-slate-600">${v.contexto}</td>
-                                        <td class="px-6 py-4 text-slate-600 italic">"${v.ajuste}"</td>
+                                        <td class="px-5 py-3.5 font-medium text-slate-900">${v.rubro}</td>
+                                        <td class="px-5 py-3.5 text-slate-600">${v.contexto}</td>
+                                        <td class="px-5 py-3.5 text-slate-500 italic">${v.ajuste}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </section>
                 ` : ''}
             </div>
 
-            <!-- Footer Navigation (Duplicate for convenience) -->
-            <div class="mt-16 pt-8 border-t border-slate-100">
-                <span class="block text-xs text-slate-400 font-medium mb-6 text-center md:text-left">Continúa aprendiendo</span>
-                <div class="flex flex-col md:flex-row items-stretch justify-between gap-6 w-full">
+            <!-- Navigation Footer -->
+            <nav class="mt-12 pt-8 border-t border-slate-200/80">
+                <p class="text-xs text-slate-400 font-medium mb-5 text-center">Navegar entre casos</p>
+                <div class="flex flex-col sm:flex-row items-stretch gap-4 w-full">
                     ${renderNavBtn(prevCase, 'prev')}
                     ${renderNavBtn(nextCase, 'next')}
                 </div>
-            </div>
+            </nav>
 
         </div>
     `;
