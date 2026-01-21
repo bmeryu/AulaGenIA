@@ -1079,8 +1079,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span>Copiar</span>
                         </button>
                     </div>
-                    <div class="bg-[#0d1117] p-5 md:p-6 overflow-x-auto">
-                        <pre class="font-mono text-[13px] md:text-sm leading-relaxed text-slate-300 whitespace-pre-wrap selection:bg-indigo-500/50 selection:text-white">${decryptPrompt(c.agiaPromptTagged)}</pre>
+                    <div class="bg-slate-900 p-6 md:p-8 overflow-x-auto">
+                        <pre class="font-mono text-sm md:text-base leading-relaxed text-slate-100 whitespace-pre-wrap selection:bg-indigo-500 selection:text-white">${decryptPrompt(c.agiaPromptTagged)}</pre>
                     </div>
                 </section>
 
