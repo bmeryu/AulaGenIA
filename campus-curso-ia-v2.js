@@ -1165,9 +1165,13 @@ document.addEventListener("DOMContentLoaded", () => {
                   const a = e.currentTarget.closest(".lesson-item");
                   if (a) {
                     h(a.dataset.lessonId);
+                    // Desktop: Scroll internal container
+                    const contentContainer = document.getElementById("lesson-content");
+                    if (contentContainer) {
+                      contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                    // Mobile: Scroll window
                     window.scrollTo({ top: 0, behavior: 'smooth' });
-                    const title = document.getElementById("lesson-title");
-                    if (title) title.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }
                 });
               }),
