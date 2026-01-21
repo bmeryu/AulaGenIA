@@ -1037,7 +1037,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="px-3 py-1 rounded-full bg-gradient-to-r from-indigo-50 to-slate-50 border border-indigo-100 text-indigo-700 text-[11px] font-bold uppercase tracking-wider">
                         ${c.difficulty || 'General'}
                     </span>
-                    ${c.suggestedAI ? `<span class="flex items-center gap-1.5 text-slate-500 text-xs font-medium"><i data-lucide="cpu" class="w-3.5 h-3.5"></i>${c.suggestedAI}</span>` : ''}
                 </div>
                 
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
@@ -1061,14 +1060,48 @@ document.addEventListener("DOMContentLoaded", () => {
                     </p>
                 </section>
 
+                ${c.suggestedAI ? `
+                <!-- AI Tool Recommendation Card -->
+                <section class="bg-gradient-to-br from-slate-50 via-white to-teal-50/30 p-5 md:p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-4">
+                        <div class="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white shadow-md border border-slate-100 flex items-center justify-center p-2.5 overflow-hidden">
+                            ${(function () {
+          const aiName = (c.suggestedAI || '').toLowerCase();
+          if (aiName.includes('chatgpt') || aiName.includes('gpt') || aiName.includes('openai')) {
+            return '<svg viewBox="0 0 24 24" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.2819 9.821C22.6198 8.68099 22.6337 7.47092 22.322 6.32229C22.0103 5.17366 21.3848 4.13264 20.517 3.31207C19.5279 2.37392 18.2751 1.75377 16.9269 1.53389C15.5787 1.314 14.1976 1.50472 12.9613 2.08073C12.0502 1.28507 10.9224 0.772503 9.71959 0.609329C8.51677 0.446154 7.29239 0.639909 6.20075 1.16535C5.10911 1.69079 4.19903 2.52461 3.5813 3.56349C2.96356 4.60238 2.66483 5.80054 2.72259 7.00957C1.67668 7.43406 0.772107 8.14186 0.105765 9.05326C-0.560578 9.96466 -0.964268 11.0441 -1.06093 12.1708C-1.15758 13.2975 -0.944169 14.4306 -0.442706 15.4407C0.0587571 16.4508 0.829336 17.3003 1.78459 17.8989C1.44674 19.0389 1.43283 20.249 1.74454 21.3976C2.05624 22.5462 2.68172 23.5872 3.54959 24.4078C4.53865 25.346 5.79148 25.9661 7.13967 26.186C8.48787 26.4059 9.8689 26.2152 11.1053 25.6392C12.0163 26.4348 13.1442 26.9474 14.347 27.1106C15.5498 27.2737 16.7742 27.08 17.8658 26.5546C18.9575 26.0291 19.8676 25.1953 20.4853 24.1564C21.103 23.1175 21.4018 21.9194 21.344 20.7103C22.3899 20.2858 23.2945 19.5781 23.9608 18.6667C24.6272 17.7553 25.0309 16.6758 25.1275 15.5491C25.2242 14.4224 25.0108 13.2893 24.5093 12.2792C24.0079 11.2691 23.2373 10.4196 22.2819 9.821ZM13.6069 25.157C12.5272 25.1583 11.4743 24.8241 10.5901 24.1989L10.7697 24.0969L15.6588 21.2709C15.8107 21.184 15.9375 21.0585 16.0256 20.9075C16.1137 20.7565 16.16 20.5853 16.16 20.4109V12.5689L18.2037 13.7489C18.2164 13.7555 18.2273 13.7651 18.2355 13.7769C18.2436 13.7887 18.2489 13.8024 18.2507 13.8167V20.4759C18.2483 21.716 17.7536 22.9044 16.8745 23.7821C15.9953 24.6599 14.8053 25.1539 13.5638 25.157H13.6069ZM3.84392 20.7103C3.30168 19.7768 3.07792 18.695 3.20392 17.6263L3.38359 17.7283L8.27259 20.5553C8.42317 20.6426 8.59449 20.6886 8.76892 20.6886C8.94336 20.6886 9.11468 20.6426 9.26526 20.5553L15.2266 17.1123V19.4723C15.2275 19.4869 15.2248 19.5016 15.2187 19.5149C15.2127 19.5282 15.2036 19.5397 15.1922 19.5483L10.2386 22.4123C9.15916 23.0321 7.89395 23.2437 6.67208 23.0098C5.45022 22.776 4.34816 22.112 3.54959 21.1342L3.84392 20.7103ZM2.28159 8.87473C2.82101 7.94064 3.64135 7.20267 4.62759 6.76373V13.5317C4.62558 13.7046 4.67026 13.875 4.75709 14.0253C4.84392 14.1755 4.96963 14.3001 5.12059 14.3863L11.0819 17.8253L9.03826 19.0053C9.02474 19.0137 9.00932 19.0189 8.99335 19.0202C8.97739 19.0216 8.96131 19.0192 8.94659 19.0133L3.99292 16.1453C2.91479 15.5237 2.08653 14.5488 1.64696 13.3881C1.20739 12.2274 1.18342 10.9514 1.57892 9.77473C1.76192 9.43107 1.99992 9.12273 2.28159 8.87473ZM19.5222 13.6107L13.5609 10.1717L15.6046 8.99173C15.6181 8.98336 15.6335 8.97829 15.6495 8.97693C15.6655 8.97556 15.6816 8.97794 15.6963 8.98386L20.6499 11.8519C21.4675 12.3205 22.1332 13.0082 22.5748 13.8405C23.0163 14.6729 23.2163 15.6168 23.1514 16.5619C23.0865 17.507 22.7593 18.4139 22.2061 19.1774C21.653 19.9408 20.8962 20.5305 20.0262 20.8809V14.1129C20.0279 13.9401 19.9832 13.7699 19.8965 13.6198C19.8098 13.4697 19.6843 13.3451 19.5336 13.2589L19.5222 13.6107ZM21.5622 10.3347L21.3826 10.2327L16.4936 7.40573C16.343 7.31848 16.1717 7.27251 15.9972 7.27251C15.8228 7.27251 15.6515 7.31848 15.5009 7.40573L9.53959 10.8487V8.48873C9.53867 8.47413 9.54144 8.45955 9.54761 8.44638C9.55378 8.43321 9.56318 8.42183 9.57492 8.41323L14.5286 5.55573C15.3467 5.08767 16.2791 4.86066 17.2194 4.90108C18.1597 4.9415 19.0693 5.24758 19.8446 5.78461C20.62 6.32165 21.2294 7.06871 21.6033 7.93693C21.9771 8.80516 22.1005 9.76007 21.9592 10.6937L21.5622 10.3347ZM8.48326 15.3927L6.43959 14.2127C6.42693 14.2061 6.41599 14.1965 6.40787 14.1847C6.39975 14.1729 6.39475 14.1592 6.39326 14.1449V7.48573C6.39544 6.53756 6.6566 5.60856 7.14799 4.79963C7.63937 3.9907 8.34243 3.33308 9.18172 2.89714C10.021 2.4612 10.965 2.26318 11.9102 2.32402C12.8553 2.38487 13.7663 2.70222 14.5426 3.24073L14.3629 3.34273L9.47392 6.16873C9.32203 6.25568 9.19523 6.38117 9.10714 6.53215C9.01906 6.68314 8.97276 6.85432 8.97292 7.02873L8.48326 15.3927ZM9.53959 13.0209L12.3833 11.3769L15.2266 13.0209V16.3089L12.3833 17.9529L9.53959 16.3089V13.0209Z" fill="#10a37f"/></svg>';
+          } else if (aiName.includes('claude') || aiName.includes('anthropic')) {
+            return '<svg viewBox="0 0 24 24" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.3083 3.35334L12.6945 15.0606L15.8174 5.31787C16.0193 4.68709 16.5823 4.25 17.2407 4.25H23.25L17.3083 3.35334Z" fill="#D97757"/><path d="M17.3083 3.35334L12.6945 15.0606L8.08072 3.35334C7.81284 2.93116 7.19986 2.93116 6.93198 3.35334L0.75 15.0606L6.93198 20.8972C7.26683 21.3194 7.94678 21.3194 8.28163 20.8972L12.6945 15.0606L17.1074 20.8972C17.4422 21.3194 18.1222 21.3194 18.457 20.8972L23.25 15.0606L17.3083 3.35334Z" fill="#D97757"/></svg>';
+          } else if (aiName.includes('gemini') || aiName.includes('google') || aiName.includes('bard')) {
+            return '<svg viewBox="0 0 24 24" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 24C12 22.4087 11.6834 20.8327 11.0687 19.3599C10.454 17.8871 9.55305 16.5469 8.41424 15.4081C7.27544 14.2693 5.93523 13.3683 4.46243 12.7536C2.98962 12.1389 1.41372 11.8224 -0.177734 11.8224V12C1.41372 12 2.98962 12.3165 4.46243 12.9312C5.93523 13.5459 7.27544 14.4469 8.41424 15.5857C9.55305 16.7245 10.454 18.0647 11.0687 19.5375C11.6834 21.0103 12 22.5862 12 24.1776V24Z" fill="url(#paint0_radial)"/><path d="M12 24C12 22.4087 12.3166 20.8327 12.9313 19.3599C13.546 17.8871 14.447 16.5469 15.5858 15.4081C16.7246 14.2693 18.0648 13.3683 19.5376 12.7536C21.0104 12.1389 22.5863 11.8224 24.1777 11.8224V12C22.5863 12 21.0104 12.3165 19.5376 12.9312C18.0648 13.5459 16.7246 14.4469 15.5858 15.5857C14.447 16.7245 13.546 18.0647 12.9313 19.5375C12.3166 21.0103 12 22.5862 12 24.1776V24Z" fill="url(#paint1_radial)"/><path d="M12 0C12 1.59132 12.3166 3.16726 12.9313 4.64006C13.546 6.11287 14.447 7.45308 15.5858 8.59189C16.7246 9.73069 18.0648 10.6316 19.5376 11.2464C21.0104 11.8611 22.5863 12.1776 24.1777 12.1776V12C22.5863 12 21.0104 11.6835 19.5376 11.0688C18.0648 10.4541 16.7246 9.55305 15.5858 8.41424C14.447 7.27544 13.546 5.93523 12.9313 4.46243C12.3166 2.98962 12 1.41372 12 -0.177734V0Z" fill="url(#paint2_radial)"/><path d="M12 0C12 1.59132 11.6834 3.16726 11.0687 4.64006C10.454 6.11287 9.55305 7.45308 8.41424 8.59189C7.27544 9.73069 5.93523 10.6316 4.46243 11.2464C2.98962 11.8611 1.41372 12.1776 -0.177734 12.1776V12C1.41372 12 2.98962 11.6835 4.46243 11.0688C5.93523 10.4541 7.27544 9.55305 8.41424 8.41424C9.55305 7.27544 10.454 5.93523 11.0687 4.46243C11.6834 2.98962 12 1.41372 12 -0.177734V0Z" fill="url(#paint3_radial)"/><defs><radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(6 12) rotate(90) scale(12)"><stop stop-color="#1BA1E3"/><stop offset="0.5" stop-color="#5489D6"/><stop offset="1" stop-color="#9B72CB"/></radialGradient><radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(18 12) rotate(90) scale(12)"><stop stop-color="#D96570"/><stop offset="0.5" stop-color="#D9A066"/><stop offset="1" stop-color="#9B72CB"/></radialGradient><radialGradient id="paint2_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(18 12) rotate(-90) scale(12)"><stop stop-color="#6BB7A3"/><stop offset="0.5" stop-color="#5489D6"/><stop offset="1" stop-color="#9B72CB"/></radialGradient><radialGradient id="paint3_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(6 12) rotate(-90) scale(12)"><stop stop-color="#D9A066"/><stop offset="0.5" stop-color="#D96570"/><stop offset="1" stop-color="#9B72CB"/></radialGradient></defs></svg>';
+          } else {
+            return '<i data-lucide="bot" class="w-8 h-8 text-slate-600"></i>';
+          }
+        })()}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Herramienta Recomendada</p>
+                            <p class="text-base md:text-lg font-bold text-slate-800 leading-tight">${c.suggestedAI}</p>
+                            <p class="text-xs text-slate-500 mt-1">Optimizado para mejores resultados con esta IA</p>
+                        </div>
+                        <a href="${(function () {
+          const aiName = (c.suggestedAI || '').toLowerCase();
+          if (aiName.includes('chatgpt') || aiName.includes('gpt') || aiName.includes('openai')) return 'https://chat.openai.com';
+          if (aiName.includes('claude') || aiName.includes('anthropic')) return 'https://claude.ai';
+          if (aiName.includes('gemini') || aiName.includes('google') || aiName.includes('bard')) return 'https://gemini.google.com';
+          return '#';
+        })()}" target="_blank" rel="noopener noreferrer" class="flex-shrink-0 hidden sm:flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                            <span>Abrir IA</span>
+                        </a>
+                    </div>
+                </section>
+                ` : ''}
+
                 <!-- Prompt Master Card -->
                 <section class="bg-gradient-to-br from-indigo-50 to-white p-6 md:p-8 rounded-3xl border border-indigo-100 shadow-md relative group">
-                     <div class="flex items-center justify-between gap-3 mb-4">
-                        <div class="flex items-center gap-3">
-                            <span class="p-2 rounded-lg bg-indigo-100 text-indigo-600"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
-                            <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Solución (Prompt Maestro)</h3>
-                        </div>
-                        ${c.suggestedAI ? `<span class="px-3 py-1 rounded-full bg-teal-100 text-teal-700 text-xs font-bold whitespace-nowrap"><i data-lucide="cpu" class="w-3 h-3 inline mr-1"></i>${c.suggestedAI}</span>` : ''}
+                     <div class="flex items-center gap-3 mb-4">
+                        <span class="p-2 rounded-lg bg-indigo-100 text-indigo-600"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Solución (Prompt Maestro)</h3>
                      </div>
                      <div class="bg-white p-5 rounded-2xl border border-indigo-200 shadow-inner">
                         <pre class="text-sm md:text-base font-mono text-slate-700 whitespace-pre-wrap leading-relaxed">${decryptPrompt(c.agiaPromptTagged)}</pre>
