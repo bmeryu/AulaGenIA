@@ -1083,17 +1083,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <p class="text-base md:text-lg font-bold text-slate-800 leading-tight">${c.suggestedAI}</p>
                             <p class="text-xs text-slate-500 mt-1">Optimizado para mejores resultados con esta IA</p>
                         </div>
-                        <button onclick="(function(){ 
-                            const prompt = decryptPrompt('${c.agiaPromptTagged.replace(/'/g, "\\'")}');
-                            navigator.clipboard.writeText(prompt);
-                            A('¡Prompt copiado! Abriendo IA...');
-                            const aiName = '${(c.suggestedAI || '').toLowerCase()}';
-                            let url = '#';
-                            if (aiName.includes('chatgpt') || aiName.includes('gpt') || aiName.includes('openai')) url = 'https://chat.openai.com';
-                            else if (aiName.includes('claude') || aiName.includes('anthropic')) url = 'https://claude.ai';
-                            else if (aiName.includes('gemini') || aiName.includes('google') || aiName.includes('bard')) url = 'https://gemini.google.com';
-                            setTimeout(() => window.open(url, '_blank'), 300);
-                        })()" class="flex-shrink-0 hidden sm:flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer">
+                        <button onclick="copyAndOpenAI(${c.id})" class="flex-shrink-0 hidden sm:flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer">
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                             <span>Copiar y Abrir IA</span>
                         </button>
@@ -1202,6 +1192,20 @@ document.addEventListener("DOMContentLoaded", () => {
   window.copyPromptText = function (text) {
     navigator.clipboard.writeText(text);
     A("¡Prompt copiado al portapapeles!");
+  };
+
+  window.copyAndOpenAI = function (caseId) {
+    const cCase = casesData.find(c => c.id === caseId);
+    if (!cCase) return;
+    const prompt = decryptPrompt(cCase.agiaPromptTagged);
+    navigator.clipboard.writeText(prompt);
+    A("¡Prompt copiado! Abriendo IA...");
+    const aiName = (cCase.suggestedAI || '').toLowerCase();
+    let url = '#';
+    if (aiName.includes('chatgpt') || aiName.includes('gpt') || aiName.includes('openai')) url = 'https://chat.openai.com';
+    else if (aiName.includes('claude') || aiName.includes('anthropic')) url = 'https://claude.ai';
+    else if (aiName.includes('gemini') || aiName.includes('google') || aiName.includes('bard')) url = 'https://gemini.google.com';
+    setTimeout(() => window.open(url, '_blank'), 300);
   };
 
   // --- AGIA MÓDULO 5 END ---
