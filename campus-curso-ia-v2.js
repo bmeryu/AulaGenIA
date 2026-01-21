@@ -992,9 +992,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <!-- Solution (Prompt) -->
                 <div class="bg-gradient-to-br from-indigo-50 to-white p-6 md:p-8 rounded-3xl border border-indigo-100 shadow-md relative group">
-                     <div class="flex items-center gap-3 mb-4">
-                        <span class="p-2 rounded-lg bg-indigo-100 text-indigo-600"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
-                        <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Solución (Prompt Maestro)</h3>
+                     <div class="flex items-center justify-between gap-3 mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="p-2 rounded-lg bg-indigo-100 text-indigo-600"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
+                            <h3 class="text-sm font-black uppercase tracking-wider text-indigo-500">La Solución (Prompt Maestro)</h3>
+                        </div>
+                        ${c.suggestedAI ? `<span class="px-3 py-1 rounded-full bg-teal-100 text-teal-700 text-xs font-bold whitespace-nowrap"><i data-lucide="cpu" class="w-3 h-3 inline mr-1"></i>${c.suggestedAI}</span>` : ''}
                      </div>
                      <div class="bg-white p-5 rounded-2xl border border-indigo-200 shadow-inner">
                         <pre class="text-sm font-mono text-slate-600 whitespace-pre-wrap leading-relaxed">${decryptPrompt(c.agiaPromptTagged)}</pre>
