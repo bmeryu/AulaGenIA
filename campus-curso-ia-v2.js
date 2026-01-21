@@ -1799,8 +1799,13 @@ document.addEventListener("DOMContentLoaded", () => {
         (e.exists && (m.notesTextarea.value = e.data().content || ""),
           (m.notesSaveStatus.textContent = "Sin cambios"));
       } catch (e) {
-        (console.error("Error al cargar las notas:", e),
-          (m.notesSaveStatus.textContent = "Error al cargar"));
+        if (e.code === 'permission-denied') {
+          console.warn("Notas no inicializadas o acceso restringido (asumiendo vacío due to legacy rules).");
+          m.notesSaveStatus.textContent = "Sin cambios";
+        } else {
+          console.error("Error al cargar las notas:", e);
+          m.notesSaveStatus.textContent = "Error al cargar";
+        }
       }
     })(e),
       (async function (e) {
@@ -1824,9 +1829,13 @@ document.addEventListener("DOMContentLoaded", () => {
           );
           ((m.userResourceList.innerHTML = ""), s.forEach((e) => W(e)));
         } catch (e) {
-          (console.error("Error listando recursos:", e),
-            (m.userResourceList.innerHTML =
-              '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos.</p></li>'));
+          if (e.code === 'permission-denied') {
+            console.warn("Recursos no inicializados o acceso restringido (asumiendo vacío).");
+            m.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos aún.</p></li>';
+          } else {
+            console.error("Error listando recursos:", e);
+            m.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos.</p></li>';
+          }
         }
       })(e),
       (async function (e) {
@@ -1848,7 +1857,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 o.forEach((a) => K(a, e)))
               : r.length > 0 && r.forEach((a) => K(a, e)));
         } catch (e) {
-          console.error("Error cargando tareas:", e);
+          if (e.code === 'permission-denied') {
+            console.warn("Tareas no inicializadas o acceso restringido (asumiendo vacío).");
+          } else {
+            console.error("Error cargando tareas:", e);
+          }
         }
       })(e),
       F("tab-clases"));
