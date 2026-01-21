@@ -933,7 +933,14 @@ document.addEventListener("DOMContentLoaded", () => {
       container.innerHTML = renderCaseDetailHTML(cCase);
       lucide.createIcons();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.innerWidth >= 1024) {
+      const contentContainer = document.getElementById("lesson-content");
+      if (contentContainer) {
+        contentContainer.scrollTo({ top: 0, behavior: 'auto' });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   window.backToCategory = function () {
