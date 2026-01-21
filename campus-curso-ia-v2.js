@@ -1032,6 +1032,56 @@ document.addEventListener("DOMContentLoaded", () => {
                          <p class="text-sm text-blue-900 leading-relaxed">${c.validationTip || "Verifica siempre que la IA cumpla el rol asignado."}</p>
                     </div>
                 </div>
+              
+              ${c.verticalMatrix && c.verticalMatrix.length > 0 ? `
+              <!-- Vertical Matrix -->
+              <div class="bg-amber-50 p-6 md:p-8 rounded-3xl border border-amber-100 shadow-sm">
+                  <div class="flex items-center gap-3 mb-4">
+                      <span class="p-2 rounded-lg bg-white text-amber-600 shadow-sm"><i data-lucide="layers" class="w-5 h-5"></i></span>
+                      <h3 class="text-sm font-black uppercase tracking-wider text-amber-700">Matriz de Verticalización</h3>
+                  </div>
+                  <p class="text-amber-800 text-sm mb-4">Adapta este mismo prompt a diferentes rubros:</p>
+                  <div class="overflow-x-auto">
+                      <table class="w-full text-sm">
+                          <thead>
+                              <tr class="border-b border-amber-200">
+                                  <th class="text-left py-2 px-3 font-bold text-amber-800">Rubro</th>
+                                  <th class="text-left py-2 px-3 font-bold text-amber-800">Contexto</th>
+                                  <th class="text-left py-2 px-3 font-bold text-amber-800">Ajuste</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              ${c.verticalMatrix.map(v => `
+                                  <tr class="border-b border-amber-100">
+                                      <td class="py-2 px-3 font-semibold text-amber-900">${v.rubro}</td>
+                                      <td class="py-2 px-3 text-amber-800">${v.contexto}</td>
+                                      <td class="py-2 px-3 text-amber-700">${v.ajuste}</td>
+                                  </tr>
+                              `).join('')}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              ` : ''}
+
+              ${c.fineTuning && c.fineTuning.length > 0 ? `
+              <!-- Fine Tuning Tips -->
+              <div class="bg-rose-50 p-6 md:p-8 rounded-3xl border border-rose-100 shadow-sm">
+                  <div class="flex items-center gap-3 mb-4">
+                      <span class="p-2 rounded-lg bg-white text-rose-600 shadow-sm"><i data-lucide="sliders" class="w-5 h-5"></i></span>
+                      <h3 class="text-sm font-black uppercase tracking-wider text-rose-700">Ajuste Fino</h3>
+                  </div>
+                  <p class="text-rose-800 text-sm mb-4">Si la respuesta no es perfecta, prueba estos ajustes:</p>
+                  <ul class="space-y-2">
+                      ${c.fineTuning.map(tip => `
+                          <li class="flex items-start gap-2 text-rose-900 text-sm">
+                              <i data-lucide="message-circle" class="w-4 h-4 text-rose-400 mt-0.5 flex-shrink-0"></i>
+                              <span>${tip}</span>
+                          </li>
+                      `).join('')}
+                  </ul>
+              </div>
+              ` : ''}
             </div>
         </div>
       `;
