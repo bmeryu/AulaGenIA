@@ -912,6 +912,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await getPrompts();
       if (result.data.success) {
         casesData = result.data.data;
+
+        // --- AUTO-REFRESH UI IF ON A CASE LESSON ---
+        const currentLesson = f(c.currentLessonId);
+        if (currentLesson && currentLesson.lesson.type === 'case_category') {
+          console.log("  Refreshing current lesson with loaded data...");
+          h(c.currentLessonId);
+        }
+        // -------------------------------------------
         console.log(` Secure Load Success: ${casesData.length} prompts loaded.`);
       } else {
         console.error("Respuesta inválida:", result.data);
