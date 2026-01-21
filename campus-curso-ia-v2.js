@@ -1172,14 +1172,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   const a = e.currentTarget.closest(".lesson-item");
                   if (a) {
                     h(a.dataset.lessonId);
-                    if (window.innerWidth >= 1024) {
-                      const contentContainer = document.getElementById("lesson-content");
-                      if (contentContainer) {
-                        contentContainer.scrollTo({ top: 0, behavior: 'auto' });
-                      }
-                    } else {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
                   }
                 });
               }),
@@ -1266,6 +1258,15 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           const t = document.getElementById("lesson-material-container");
           t && (t.innerHTML = a);
+
+          if (window.innerWidth >= 1024) {
+            const contentContainer = document.getElementById("lesson-content");
+            if (contentContainer) {
+              contentContainer.scrollTo({ top: 0, behavior: 'auto' });
+            }
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
           if (
             ((async function (e) {
               if (!m.resourcesList || !m.integratedResourcesArea) return;
