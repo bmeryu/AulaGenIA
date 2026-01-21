@@ -1165,13 +1165,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   const a = e.currentTarget.closest(".lesson-item");
                   if (a) {
                     h(a.dataset.lessonId);
-                    // Desktop: Scroll internal container
-                    const contentContainer = document.getElementById("lesson-content");
-                    if (contentContainer) {
-                      contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                    if (window.innerWidth >= 1024) {
+                      const contentContainer = document.getElementById("lesson-content");
+                      if (contentContainer) {
+                        contentContainer.scrollTo({ top: 0, behavior: 'auto' });
+                      }
+                    } else {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
-                    // Mobile: Scroll window
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }
                 });
               }),
