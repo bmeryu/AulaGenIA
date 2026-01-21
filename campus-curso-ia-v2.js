@@ -1004,6 +1004,17 @@ document.addEventListener("DOMContentLoaded", () => {
                      </button>
                 </div>
                 
+              ${c.solutionPlus ? `
+              <!-- Why It Works (The Plus) -->
+              <div class="bg-indigo-50 p-6 md:p-8 rounded-3xl border border-indigo-100 shadow-sm relative overflow-hidden">
+                  <div class="flex items-center gap-3 mb-4">
+                      <span class="p-2 rounded-lg bg-white text-indigo-600 shadow-sm"><i data-lucide="zap" class="w-5 h-5"></i></span>
+                      <h3 class="text-sm font-black uppercase tracking-wider text-indigo-700">¿Por qué funciona? (El Plus)</h3>
+                  </div>
+                  <p class="text-indigo-900 text-base md:text-lg leading-relaxed relative z-10">${c.solutionPlus}</p>
+              </div>
+              ` : ''}
+              
                  <!-- Anatomy -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 shadow-sm">
