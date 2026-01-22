@@ -986,9 +986,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderCaseDetailHTML(c) {
     // Logic for Navigation
     const categoryCases = casesData.filter(item => item.category === c.category);
-    const currentIndex = categoryCases.findIndex(item => item.id === c.id);
+    // FIXED: Ensure ID comparison is type-safe
+    const currentIndex = categoryCases.findIndex(item => Number(item.id) === Number(c.id));
     const prevCase = currentIndex > 0 ? categoryCases[currentIndex - 1] : null;
-    const nextCase = currentIndex < categoryCases.length - 1 ? categoryCases[currentIndex + 1] : null;
+    const nextCase = currentIndex !== -1 && currentIndex < categoryCases.length - 1 ? categoryCases[currentIndex + 1] : null;
 
     // Helper: Robo-Card Navigation Button (Desktop & Mobile Optimized)
     const renderNavBtn = (targetCase, type) => {
