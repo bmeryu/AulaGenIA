@@ -958,7 +958,15 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderCaseListHTML(categoryId) {
     const filtered = casesData.filter(c => c.category === categoryId);
     if (filtered.length === 0) return '<div class="p-8 text-center text-slate-500">Cargando casos... (o no hay casos para esta categoría)</div>';
-    return `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">${filtered.map(c => `
+
+    return `
+    <div class="max-w-5xl mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2">${categoryId}</h1>
+            <p class="text-slate-500">Selecciona un caso práctico para comenzar.</p>
+        </header>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${filtered.map(c => `
         <div onclick="openCaseDetail(${c.id})" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-teal-400 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer group">
              <div class="flex items-center gap-2.5 mb-3">
                 <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-teal-50 transition-colors">
@@ -1026,7 +1034,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return `
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-10 animate-in fade-in slide-in-from-bottom-8 duration-500">
             
-            <!-- Compact Header with Back Button -->
+                <!-- Compact Header with Back Button -->
             <header class="mb-8 md:mb-10">
                 <button onclick="backToCategory()" class="group inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors text-sm font-medium mb-6">
                     <i data-lucide="chevron-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
@@ -1055,8 +1063,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                         <h2 class="text-sm font-bold text-amber-800 uppercase tracking-wide">El Desafío</h2>
                     </div>
-                    <p class="text-base md:text-lg text-slate-700 leading-relaxed">
-                        ${c.problem || c.description}
+                    <p class="text-base md:text-lg text-slate-700 leading-relaxed italic">
+                        "${c.problem || c.description}"
                     </p>
                 </section>
 
@@ -1070,6 +1078,25 @@ document.addEventListener("DOMContentLoaded", () => {
                         <pre class="text-sm md:text-base font-mono text-slate-700 whitespace-pre-wrap leading-relaxed">${decryptPrompt(c.agiaPromptTagged)}</pre>
                      </div>
                 </section>
+                
+                ${(c.fineTuning && c.fineTuning.length > 0) ? `
+                <!-- Fine Tuning / Checklist Card -->
+                <section class="bg-gradient-to-br from-emerald-50 to-teal-50/30 p-5 md:p-6 rounded-2xl border border-emerald-100/60 shadow-sm">
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
+                            <i data-lucide="list-checks" class="w-4 h-4 text-emerald-600"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-emerald-800 uppercase tracking-wide">Ajuste Fino & Calidad</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        ${c.fineTuning.map(item => `
+                        <li class="flex items-start gap-3 bg-white/80 p-3 rounded-xl border border-emerald-100 shadow-sm">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                            <span class="text-xs sm:text-sm text-slate-700 leading-snug">${item}</span>
+                        </li>`).join('')}
+                    </ul>
+                </section>
+                ` : ''}
 
                 ${c.suggestedAI ? `
                 <!-- AI Tool Recommendation Card -->
@@ -1474,15 +1501,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             case "case_category":
               const catCases = casesData.filter(item => item.category === e.categoryId);
-              console.log("DEBUG: Category:", e.categoryId, "Cases Found:", catCases.length);
-
-              if (catCases.length > 0) {
-                // FIXED: Adding version badge for user verification
-                const vBadge = '<div style="position:fixed;bottom:10px;right:10px;background:black;color:white;padding:5px;font-size:10px;opacity:0.6;z-index:9999">v2.0.21-R</div>';
-                a = renderCaseDetailHTML(catCases[0]) + vBadge;
-              } else {
-                a = renderCaseListHTML(e.categoryId);
-              }
+              // FIXED: Always show list first ("Index of Cases")
+              a = renderCaseListHTML(e.categoryId);
               break;
             default:
               a = "<p>Tipo de lección no reconocido.</p>";
