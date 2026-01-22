@@ -1503,6 +1503,9 @@ document.addEventListener("DOMContentLoaded", () => {
               const catCases = casesData.filter(item => item.category === e.categoryId);
               // FIXED: Always show list first ("Index of Cases")
               a = renderCaseListHTML(e.categoryId);
+              // Adding version badge
+              const vBadge = '<div style="position:fixed;bottom:10px;right:10px;background:black;color:white;padding:5px;font-size:10px;opacity:0.6;z-index:9999">v2.0.22-R</div>';
+              a += vBadge;
               break;
             default:
               a = "<p>Tipo de lección no reconocido.</p>";
