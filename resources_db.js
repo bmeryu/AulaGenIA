@@ -322,7 +322,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Si le dices a tu agencia "haz algo creativo", fallan. Si entregas la estrategia clara con KPIs, ejecutan perfecto.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Actúa como un consultor de ventas B2B con 15 años de experiencia. Mi empresa vende [PRODUCTO] a [AUDIENCIA]. Necesito un correo de prospección en frío de máximo 100 palabras que genere curiosidad sin sonar agresivo. Evita clichés como "solución integral".</p>
+                  <p class="text-white text-sm">Actúa como un consultor de ventas B2B con 15 años de experiencia. Mi empresa vende [PRODUCTO] a [AUDIENCIA]. Necesito un correo de prospección en frío de máximo 100 palabras que genere curiosidad sin sonar agresivo. Evita clichés como "solución integral".</p>
                 </div>
               </div>
               
@@ -331,7 +331,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Ha leído todos los estudios de mercado del mundo, pero no conoce TU negocio específico. Sabe mucho en general, tú aportas el contexto real.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Eres un analista de mercado senior. Mi empresa está en el sector [INDUSTRIA]. Dame 5 tendencias globales 2024-2025 que podrían afectar mi negocio. Para cada una: describe la tendencia, el impacto potencial y una acción recomendada.</p>
+                  <p class="text-white text-sm">Eres un analista de mercado senior. Mi empresa está en el sector [INDUSTRIA]. Dame 5 tendencias globales 2024-2025 que podrían afectar mi negocio. Para cada una: describe la tendencia, el impacto potencial y una acción recomendada.</p>
                 </div>
               </div>
               
@@ -340,7 +340,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Cada sílaba cuesta. Si gastas todo el presupuesto en la introducción, no queda para el cierre de venta.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Necesito que resumas el siguiente texto en exactamente 50 palabras, manteniendo los 3 puntos clave de valor para el cliente. [PEGAR TEXTO]</p>
+                  <p class="text-white text-sm">Necesito que resumas el siguiente texto en exactamente 50 palabras, manteniendo los 3 puntos clave de valor para el cliente. [PEGAR TEXTO]</p>
                 </div>
               </div>
               
@@ -349,7 +349,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Si metes a 50 personas hablando distintos temas a la vez, nadie entiende nada. Enfoca la conversación.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Antes de continuar, déjame darte contexto: Mi empresa es [NOMBRE], vendemos [PRODUCTO/SERVICIO], nuestro cliente ideal es [PERFIL], y el problema que resolvemos es [PROBLEMA]. Tenlo en cuenta para todas mis preguntas siguientes.</p>
+                  <p class="text-white text-sm">Antes de continuar, déjame darte contexto: Mi empresa es [NOMBRE], vendemos [PRODUCTO/SERVICIO], nuestro cliente ideal es [PERFIL], y el problema que resolvemos es [PROBLEMA]. Tenlo en cuenta para todas mis preguntas siguientes.</p>
                 </div>
               </div>
               
@@ -358,7 +358,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Le muestras una foto de la góndola vacía y te dice qué productos reponer. Le subes un logo y te crea variaciones.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">[SUBIR IMAGEN] Analiza esta imagen de nuestro producto. Identifica: (1) Puntos fuertes visuales, (2) Áreas de mejora en packaging, (3) Cómo se compara con estándares de la industria.</p>
+                  <p class="text-white text-sm">[SUBIR IMAGEN] Analiza esta imagen de nuestro producto. Identifica: (1) Puntos fuertes visuales, (2) Áreas de mejora en packaging, (3) Cómo se compara con estándares de la industria.</p>
                 </div>
               </div>
               
@@ -367,7 +367,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Inventa cifras de crecimiento solo para que el directorio le sonría. Suena convincente, pero miente. ¡Siempre verifica!</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Dame estadísticas sobre [TEMA/INDUSTRIA]. IMPORTANTE: Para cada dato, indica si es un hecho verificable con fecha/fuente, o si es una estimación tuya. Si no tienes datos confiables, dilo explícitamente.</p>
+                  <p class="text-white text-sm">Dame estadísticas sobre [TEMA/INDUSTRIA]. IMPORTANTE: Para cada dato, indica si es un hecho verificable con fecha/fuente, o si es una estimación tuya. Si no tienes datos confiables, dilo explícitamente.</p>
                 </div>
               </div>
             </div>
@@ -389,7 +389,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Ambigüedad = error. La IA es literal, como un juez que interpreta la ley al pie de la letra. Sé preciso.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Actúa como abogado especialista en derecho laboral chileno. Analiza el siguiente extracto de contrato y lista las cláusulas que podrían ser impugnables según el Código del Trabajo. Cita los artículos relevantes. [PEGAR EXTRACTO]</p>
+                  <p class="text-white text-sm">Actúa como abogado especialista en derecho laboral chileno. Analiza el siguiente extracto de contrato y lista las cláusulas que podrían ser impugnables según el Código del Trabajo. Cita los artículos relevantes. [PEGAR EXTRACTO]</p>
                 </div>
               </div>
               
@@ -398,7 +398,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Ha leído toda la jurisprudencia existente, pero no tiene ética ni criterio profesional. Sabe buscar, TÚ decides qué sirve.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Actúa como asistente legal especializado. Necesito un resumen de los principios jurídicos que aplican a [CASO/SITUACIÓN] en la legislación chilena. Lista las normas relevantes y su interpretación mayoritaria en la doctrina.</p>
+                  <p class="text-white text-sm">Actúa como asistente legal especializado. Necesito un resumen de los principios jurídicos que aplican a [CASO/SITUACIÓN] en la legislación chilena. Lista las normas relevantes y su interpretación mayoritaria en la doctrina.</p>
                 </div>
               </div>
               
@@ -407,7 +407,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Tienes un límite físico por página. Si tu demanda es muy larga, el tribunal no la lee completa. Sé conciso.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Resume este documento legal en máximo 200 palabras. Estructura: (1) Partes involucradas, (2) Hechos relevantes, (3) Pretensiones principales, (4) Fundamentos de derecho clave. [PEGAR DOCUMENTO]</p>
+                  <p class="text-white text-sm">Resume este documento legal en máximo 200 palabras. Estructura: (1) Partes involucradas, (2) Hechos relevantes, (3) Pretensiones principales, (4) Fundamentos de derecho clave. [PEGAR DOCUMENTO]</p>
                 </div>
               </div>
               
@@ -416,7 +416,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Si es demasiado grueso, el asistente olvida la demanda inicial cuando llega a las pruebas. Segmenta la información.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Vamos a trabajar en el caso [NOMBRE]. Contexto esencial: (1) Tipo de causa: [MATERIA], (2) Cliente: [DEMANDANTE/DEMANDADO], (3) Contraparte: [DATOS], (4) Estado procesal: [ETAPA]. Mantén este contexto.</p>
+                  <p class="text-white text-sm">Vamos a trabajar en el caso [NOMBRE]. Contexto esencial: (1) Tipo de causa: [MATERIA], (2) Cliente: [DEMANDANTE/DEMANDADO], (3) Contraparte: [DATOS], (4) Estado procesal: [ETAPA]. Mantén este contexto.</p>
                 </div>
               </div>
               
@@ -425,7 +425,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Sube la foto de un contrato firmado a mano y la IA te alerta de las cláusulas riesgosas que un scanner normal no detectaría.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">[SUBIR FOTO] Este es un documento legal escaneado. (1) Transcribe el contenido textual, (2) Identifica fechas, nombres y montos, (3) Señala cualquier parte ilegible o ambigua.</p>
+                  <p class="text-white text-sm">[SUBIR FOTO] Este es un documento legal escaneado. (1) Transcribe el contenido textual, (2) Identifica fechas, nombres y montos, (3) Señala cualquier parte ilegible o ambigua.</p>
                 </div>
               </div>
               
@@ -434,7 +434,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Cita una ley derogada hace 10 años con total seguridad. Suena experto, pero el caso se pierde. ¡SIEMPRE verifica!</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Necesito información sobre [NORMA/LEY]. Para cada artículo que cites: (1) Indica la fuente exacta, (2) Confirma si está vigente a 2024, (3) Si no estás 100% seguro, adviértelo.</p>
+                  <p class="text-white text-sm">Necesito información sobre [NORMA/LEY]. Para cada artículo que cites: (1) Indica la fuente exacta, (2) Confirma si está vigente a 2024, (3) Si no estás 100% seguro, adviértelo.</p>
                 </div>
               </div>
             </div>
@@ -456,7 +456,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Si le dices "ordena esto", lo hará mal. Si le das el proceso paso a paso con formato específico, ejecuta perfecto.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Actúa como asistente administrativo experto. Tengo 20 facturas desordenadas. Crea una tabla Excel con columnas: Proveedor, RUT, Monto Neto, IVA, Total, Fecha. Formato: solo números sin símbolos. Empieza con los headers.</p>
+                  <p class="text-white text-sm">Actúa como asistente administrativo experto. Tengo 20 facturas desordenadas. Crea una tabla Excel con columnas: Proveedor, RUT, Monto Neto, IVA, Total, Fecha. Formato: solo números sin símbolos. Empieza con los headers.</p>
                 </div>
               </div>
               
@@ -465,7 +465,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Redacta perfecto y trabaja 24/7, pero no conoce la cultura de tu empresa ni las preferencias de tu jefe. Tú aportas ese contexto.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Actúa como asistente ejecutivo senior. Redacta un correo formal para [DESTINATARIO] informando sobre [TEMA]. Tono: profesional pero cercano. Máximo 150 palabras. Mi nombre es [TU NOMBRE] y mi cargo es [CARGO].</p>
+                  <p class="text-white text-sm">Actúa como asistente ejecutivo senior. Redacta un correo formal para [DESTINATARIO] informando sobre [TEMA]. Tono: profesional pero cercano. Máximo 150 palabras. Mi nombre es [TU NOMBRE] y mi cargo es [CARGO].</p>
                 </div>
               </div>
               
@@ -474,7 +474,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">No puedes escribir la historia de tu vida en un Post-it. Usa el espacio para lo esencial y prioriza.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Condensa las siguientes 10 tareas en una lista de 5 prioridades máximas para hoy. Criterio: impacto + urgencia. Formato: bullet points simples. [LISTAR TAREAS]</p>
+                  <p class="text-white text-sm">Condensa las siguientes 10 tareas en una lista de 5 prioridades máximas para hoy. Criterio: impacto + urgencia. Formato: bullet points simples. [LISTAR TAREAS]</p>
                 </div>
               </div>
               
@@ -483,7 +483,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Si intentas leer 500 correos a la vez, colapsas. Procesa de a grupos y mantén el foco.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Información sobre nuestra empresa: Rubro: [SECTOR], Tamaño: [N° empleados], Mi rol: [CARGO], Mis responsabilidades principales: [LISTA]. Recuerda esto para todas mis consultas de hoy.</p>
+                  <p class="text-white text-sm">Información sobre nuestra empresa: Rubro: [SECTOR], Tamaño: [N° empleados], Mi rol: [CARGO], Mis responsabilidades principales: [LISTA]. Recuerda esto para todas mis consultas de hoy.</p>
                 </div>
               </div>
               
@@ -492,7 +492,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Le subes la foto de una factura arrugada y la pasa a Excel automáticamente. Adiós al tipeo manual.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">[SUBIR FOTO DE FACTURA] Extrae de esta factura: Proveedor, RUT, Número de factura, Fecha, Monto neto, IVA, Total. Formato: tabla limpia lista para copiar a Excel.</p>
+                  <p class="text-white text-sm">[SUBIR FOTO DE FACTURA] Extrae de esta factura: Proveedor, RUT, Número de factura, Fecha, Monto neto, IVA, Total. Formato: tabla limpia lista para copiar a Excel.</p>
                 </div>
               </div>
               
@@ -501,7 +501,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Rellena una celda vacía con un número inventado para que el reporte se vea completo. ¡Verifica antes de presentar!</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Necesito que completes esta información: [DATOS]. Si algún dato no lo tienes o no estás seguro, escribe "VERIFICAR" en lugar de inventar. Prefiero espacios vacíos a datos falsos.</p>
+                  <p class="text-white text-sm">Necesito que completes esta información: [DATOS]. Si algún dato no lo tienes o no estás seguro, escribe "VERIFICAR" en lugar de inventar. Prefiero espacios vacíos a datos falsos.</p>
                 </div>
               </div>
             </div>
@@ -523,7 +523,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Si la instrucción es vaga, la respuesta será vaga. Como cuando un estudiante entrega un trabajo genérico porque la pauta no era clara.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Actúa como profesor de [ASIGNATURA] para estudiantes de [NIVEL]. Crea una actividad de 15 minutos que enseñe [CONCEPTO] usando aprendizaje activo. Incluye: objetivo, materiales, pasos y forma de evaluar. Evita actividades pasivas.</p>
+                  <p class="text-white text-sm">Actúa como profesor de [ASIGNATURA] para estudiantes de [NIVEL]. Crea una actividad de 15 minutos que enseñe [CONCEPTO] usando aprendizaje activo. Incluye: objetivo, materiales, pasos y forma de evaluar. Evita actividades pasivas.</p>
                 </div>
               </div>
               
@@ -532,7 +532,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Memorizó todos los libros de la biblioteca, pero nunca ha dado una clase ni conoce a tus estudiantes específicos.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Eres experto en pedagogía de [ASIGNATURA]. Tengo estudiantes de [NIVEL] con dificultades en [TEMA]. Sugiere 3 estrategias didácticas diferentes para abordar este contenido, explicando por qué funcionaría cada una.</p>
+                  <p class="text-white text-sm">Eres experto en pedagogía de [ASIGNATURA]. Tengo estudiantes de [NIVEL] con dificultades en [TEMA]. Sugiere 3 estrategias didácticas diferentes para abordar este contenido, explicando por qué funcionaría cada una.</p>
                 </div>
               </div>
               
@@ -541,7 +541,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Si gastas todo en la introducción, no hay desarrollo ni conclusión. Distribuye el "presupuesto" de forma equilibrada.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Tengo 45 minutos de clase. Necesito un plan sobre [TEMA] con: 5 min intro, 25 min desarrollo, 10 min cierre, 5 min evaluación. Solo dame los puntos clave de cada sección, no el contenido completo.</p>
+                  <p class="text-white text-sm">Tengo 45 minutos de clase. Necesito un plan sobre [TEMA] con: 5 min intro, 25 min desarrollo, 10 min cierre, 5 min evaluación. Solo dame los puntos clave de cada sección, no el contenido completo.</p>
                 </div>
               </div>
               
@@ -550,7 +550,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Si la llenas de contenido sin borrar, los estudiantes pierden el hilo de la clase. Mantén el foco en lo importante.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Enseño [ASIGNATURA] a estudiantes de [NIVEL/EDAD]. Mi estilo es [TRADICIONAL/INNOVADOR/MIXTO]. Prefiero actividades [INDIVIDUALES/GRUPALES]. Mantén este contexto en todas tus sugerencias.</p>
+                  <p class="text-white text-sm">Enseño [ASIGNATURA] a estudiantes de [NIVEL/EDAD]. Mi estilo es [TRADICIONAL/INNOVADOR/MIXTO]. Prefiero actividades [INDIVIDUALES/GRUPALES]. Mantén este contexto en todas tus sugerencias.</p>
                 </div>
               </div>
               
@@ -559,7 +559,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">La IA tiene ojos: subes la foto de un ejercicio resuelto a mano por un estudiante y te ayuda a identificar errores.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">[SUBIR FOTO] Este es un ejercicio de [ASIGNATURA] resuelto por un estudiante de [NIVEL]. (1) ¿Está correcto? (2) Si hay errores, identifícalos y explica el error conceptual. (3) Sugiere cómo retroalimentar.</p>
+                  <p class="text-white text-sm">[SUBIR FOTO] Este es un ejercicio de [ASIGNATURA] resuelto por un estudiante de [NIVEL]. (1) ¿Está correcto? (2) Si hay errores, identifícalos y explica el error conceptual. (3) Sugiere cómo retroalimentar.</p>
                 </div>
               </div>
               
@@ -568,7 +568,7 @@ const resourcesDatabase = {
                 <p class="text-xs text-slate-600 mb-2">Inventa una respuesta en el examen con total seguridad, esperando que el profesor no se dé cuenta. ¡Verifica siempre!</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-xs font-mono">Dame información sobre [TEMA EDUCATIVO]. Para cada afirmación: indica si es un hecho académico establecido, una teoría en debate, o tu interpretación. Si algo es controversial, menciona las diferentes posturas.</p>
+                  <p class="text-white text-sm">Dame información sobre [TEMA EDUCATIVO]. Para cada afirmación: indica si es un hecho académico establecido, una teoría en debate, o tu interpretación. Si algo es controversial, menciona las diferentes posturas.</p>
                 </div>
               </div>
             </div>
@@ -658,16 +658,16 @@ const resourcesDatabase = {
           <div class="space-y-3">
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Dame 3 argumentos para convencer a un cliente escéptico de que la IA mejorará su negocio sin reemplazar a su equipo.</p>
+              <p class="text-white text-sm">Dame 3 argumentos para convencer a un cliente escéptico de que la IA mejorará su negocio sin reemplazar a su equipo.</p>
             </div>
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Soy vendedor B2B. Dame un proceso simple de 3 pasos para usar IA en mi ciclo de ventas diario.</p>
+              <p class="text-white text-sm">Soy vendedor B2B. Dame un proceso simple de 3 pasos para usar IA en mi ciclo de ventas diario.</p>
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 text-center">
-          <h4 class="text-blue-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Ventas</h4>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Ventas</h4>
           <p class="text-white font-medium text-lg italic">"La IA es tu mejor vendedor junior: incansable, rápido y siempre disponible. Pero tú eres el closer que cierra el trato."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -736,16 +736,16 @@ const resourcesDatabase = {
           <div class="space-y-3">
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Antes de darme información legal, confirma: ¿esta norma sigue vigente a 2024? Si no estás 100% seguro, dime "VERIFICAR EN FUENTE OFICIAL".</p>
+              <p class="text-white text-sm">Antes de darme información legal, confirma: ¿esta norma sigue vigente a 2024? Si no estás 100% seguro, dime "VERIFICAR EN FUENTE OFICIAL".</p>
             </div>
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Actúa como asistente legal. Revisa este contrato y lista las cláusulas problemáticas. No inventes: si algo no está claro, pregunta.</p>
+              <p class="text-white text-sm">Actúa como asistente legal. Revisa este contrato y lista las cláusulas problemáticas. No inventes: si algo no está claro, pregunta.</p>
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl p-6 text-center">
-          <h4 class="text-purple-100 text-sm uppercase tracking-wide mb-2">Regla de Oro Legal</h4>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro Legal</h4>
           <p class="text-white font-medium text-lg italic">"La IA es tu paralegal más rápido del mundo, pero sin título ni ética profesional. Tú firmas, tú verificas, tú respondes."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -814,16 +814,16 @@ const resourcesDatabase = {
           <div class="space-y-3">
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Lista mis 5 tareas más repetitivas: [LISTAR]. Para cada una, dime cómo la IA puede ayudarme a hacerla en la mitad del tiempo.</p>
+              <p class="text-white text-sm">Lista mis 5 tareas más repetitivas: [LISTAR]. Para cada una, dime cómo la IA puede ayudarme a hacerla en la mitad del tiempo.</p>
             </div>
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Soy asistente administrativo. Dame un plan de 30 días para integrar IA en mi trabajo diario sin abrumarme.</p>
+              <p class="text-white text-sm">Soy asistente administrativo. Dame un plan de 30 días para integrar IA en mi trabajo diario sin abrumarme.</p>
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-emerald-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Gestión</h4>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Gestión</h4>
           <p class="text-white font-medium text-lg italic">"La IA hace en minutos lo que antes tomaba horas. Tu valor ahora está en el criterio, no en el tipeo."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -892,16 +892,16 @@ const resourcesDatabase = {
           <div class="space-y-3">
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Diseña una actividad de 20 minutos donde estudiantes de [NIVEL] deban verificar si 3 respuestas de IA son correctas o inventadas.</p>
+              <p class="text-white text-sm">Diseña una actividad de 20 minutos donde estudiantes de [NIVEL] deban verificar si 3 respuestas de IA son correctas o inventadas.</p>
             </div>
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Crea una actividad donde estudiantes comparen la misma pregunta hecha de forma vaga vs. de forma específica a una IA.</p>
+              <p class="text-white text-sm">Crea una actividad donde estudiantes comparen la misma pregunta hecha de forma vaga vs. de forma específica a una IA.</p>
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl p-6 text-center">
-          <h4 class="text-amber-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Educación</h4>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Educación</h4>
           <p class="text-white font-medium text-lg italic">"La IA prepara materiales en minutos, pero solo tú puedes encender la chispa del aprendizaje en tus estudiantes."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -1061,7 +1061,7 @@ const resourcesDatabase = {
           <p class="text-sm text-slate-700">Como vendedor, tu expertise es conocer al cliente y cerrar tratos. La IA es tu analista, tu redactor y tu investigador. Tú pones la estrategia comercial.</p>
           <div class="prompt-block bg-slate-800 rounded-lg p-3">
             <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-            <p class="text-white text-xs font-mono">Soy vendedor B2B. Mi cliente objetivo es [PERFIL]. Dame una estrategia de 3 pasos para el primer contacto, considerando que no me conoce. Yo decido el tono final.</p>
+            <p class="text-white text-sm">Soy vendedor B2B. Mi cliente objetivo es [PERFIL]. Dame una estrategia de 3 pasos para el primer contacto, considerando que no me conoce. Yo decido el tono final.</p>
           </div>
         </div>
       `,
@@ -1074,7 +1074,7 @@ const resourcesDatabase = {
           <p class="text-sm text-slate-700">Tu criterio jurídico es irremplazable. La IA busca, organiza y redacta borradores. Tú validas, corriges y tomas las decisiones finales.</p>
           <div class="prompt-block bg-slate-800 rounded-lg p-3">
             <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-            <p class="text-white text-xs font-mono">Actúa como asistente legal. Dame un borrador de [DOCUMENTO]. Marca con [REVISAR] cualquier sección donde no estés 100% seguro. Yo haré la revisión final.</p>
+            <p class="text-white text-sm">Actúa como asistente legal. Dame un borrador de [DOCUMENTO]. Marca con [REVISAR] cualquier sección donde no estés 100% seguro. Yo haré la revisión final.</p>
           </div>
         </div>
       `,
@@ -1087,7 +1087,7 @@ const resourcesDatabase = {
           <p class="text-sm text-slate-700">Tú conoces los procesos y la cultura de tu empresa. La IA automatiza lo repetitivo. Tú supervisas la calidad y mantienes el toque humano.</p>
           <div class="prompt-block bg-slate-800 rounded-lg p-3">
             <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-            <p class="text-white text-xs font-mono">Necesito organizar [TAREA/INFORMACIÓN]. Dame una estructura ordenada. Yo revisaré que cumpla con los estándares de mi empresa antes de usar.</p>
+            <p class="text-white text-sm">Necesito organizar [TAREA/INFORMACIÓN]. Dame una estructura ordenada. Yo revisaré que cumpla con los estándares de mi empresa antes de usar.</p>
           </div>
         </div>
       `,
@@ -1100,7 +1100,7 @@ const resourcesDatabase = {
           <p class="text-sm text-slate-700">Tu conocimiento pedagógico y de tus estudiantes es único. La IA genera materiales y actividades. Tú adaptas, evalúas y conectas con tus alumnos.</p>
           <div class="prompt-block bg-slate-800 rounded-lg p-3">
             <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-            <p class="text-white text-xs font-mono">Necesito una actividad sobre [TEMA] para [NIVEL]. Dame 2 opciones distintas. Yo elegiré cuál se adapta mejor a mi grupo.</p>
+            <p class="text-white text-sm">Necesito una actividad sobre [TEMA] para [NIVEL]. Dame 2 opciones distintas. Yo elegiré cuál se adapta mejor a mi grupo.</p>
           </div>
         </div>
       `
@@ -3710,7 +3710,7 @@ const resourcesDatabase = {
               <summary class="p-4 cursor-pointer font-bold text-purple-800">Caso 1: Recuperación de Clientes (Marketing)</summary>
               <div class="p-4 pt-0 text-sm space-y-2">
                 <p class="text-slate-600"><strong>Escenario:</strong> Una tienda con caída de ventas que necesita un mail de impacto emocional.</p>
-                <div class="bg-slate-800 rounded-lg p-3 text-white text-xs font-mono">
+                <div class="bg-slate-800 rounded-lg p-3 text-white text-sm">
                   <p>[ROL]: Senior Direct-Response Copywriter experto en fidelización.</p>
                   <p>[CONTEXTO]: Mis ventas bajaron un 20%. Mi público son mujeres de 30-50 años interesadas en moda ética.</p>
                   <p>[META]: Redacta un correo de "te extrañamos" que no suene a spam corporativo.</p>
@@ -3723,7 +3723,7 @@ const resourcesDatabase = {
               <summary class="p-4 cursor-pointer font-bold text-blue-800">Caso 2: Auditoría de Gestión (Negocios)</summary>
               <div class="p-4 pt-0 text-sm space-y-2">
                 <p class="text-slate-600"><strong>Escenario:</strong> Un líder que necesita una crítica ácida sobre su estrategia operativa.</p>
-                <div class="bg-slate-800 rounded-lg p-3 text-white text-xs font-mono">
+                <div class="bg-slate-800 rounded-lg p-3 text-white text-sm">
                   <p>[ROL]: Consultor Senior de Estrategia de Negocios (ex-McKinsey).</p>
                   <p>[CONTEXTO]: Este es mi plan operativo para el próximo trimestre: [Pega plan].</p>
                   <p>[META]: Identifica los 3 puntos de fallo estructural más probables.</p>
@@ -3736,7 +3736,7 @@ const resourcesDatabase = {
               <summary class="p-4 cursor-pointer font-bold text-pink-800">Caso 3: Dirección de Arte Técnica (Visual)</summary>
               <div class="p-4 pt-0 text-sm space-y-2">
                 <p class="text-slate-600"><strong>Escenario:</strong> Crear un prompt profesional para IAs de imagen (Midjourney).</p>
-                <div class="bg-slate-800 rounded-lg p-3 text-white text-xs font-mono">
+                <div class="bg-slate-800 rounded-lg p-3 text-white text-sm">
                   <p>[ROL]: Director de Fotografía Cinematográfica para marcas de lujo.</p>
                   <p>[CONTEXTO]: Lanzamiento de una marca de café orgánico premium en la montaña.</p>
                   <p>[META]: Redacta un prompt técnico en inglés para generar la imagen de portada.</p>
@@ -3749,7 +3749,7 @@ const resourcesDatabase = {
               <summary class="p-4 cursor-pointer font-bold text-green-800">Caso 4: Selección de Talento (Recursos Humanos)</summary>
               <div class="p-4 pt-0 text-sm space-y-2">
                 <p class="text-slate-600"><strong>Escenario:</strong> Analizar y clasificar perfiles para un cargo directivo.</p>
-                <div class="bg-slate-800 rounded-lg p-3 text-white text-xs font-mono">
+                <div class="bg-slate-800 rounded-lg p-3 text-white text-sm">
                   <p>[ROL]: Headhunter Senior experto en liderazgo de alto impacto.</p>
                   <p>[CONTEXTO]: Recibí estos 5 perfiles para el cargo de Director de Operaciones: [Pega CVs].</p>
                   <p>[META]: Crea un ranking de idoneidad y diseña 3 preguntas "trampa" de comportamiento.</p>
@@ -3762,7 +3762,7 @@ const resourcesDatabase = {
               <summary class="p-4 cursor-pointer font-bold text-amber-800">Caso 5: Manejo de Objeciones (Ventas)</summary>
               <div class="p-4 pt-0 text-sm space-y-2">
                 <p class="text-slate-600"><strong>Escenario:</strong> El cliente dice que el servicio es "caro" en una venta de alto valor.</p>
-                <div class="bg-slate-800 rounded-lg p-3 text-white text-xs font-mono">
+                <div class="bg-slate-800 rounded-lg p-3 text-white text-sm">
                   <p>[ROL]: Negociador experto formado en técnicas de persuasión de alto nivel.</p>
                   <p>[CONTEXTO]: Un cliente dice por chat que mi consultoría de $5,000 es cara.</p>
                   <p>[META]: Redacta una respuesta que mueva su percepción del "Gasto" hacia la "Inversión".</p>
@@ -3775,7 +3775,7 @@ const resourcesDatabase = {
               <summary class="p-4 cursor-pointer font-bold text-teal-800">Caso 6: Arquitectura de Conversión (Web)</summary>
               <div class="p-4 pt-0 text-sm space-y-2">
                 <p class="text-slate-600"><strong>Escenario:</strong> Estructurar el texto de una página de ventas (Landing Page).</p>
-                <div class="bg-slate-800 rounded-lg p-3 text-white text-xs font-mono">
+                <div class="bg-slate-800 rounded-lg p-3 text-white text-sm">
                   <p>[ROL]: Especialista en CRO (Conversion Rate Optimization).</p>
                   <p>[CONTEXTO]: Estoy diseñando la página de ventas para un curso de finanzas para parejas.</p>
                   <p>[META]: Diseña la estructura lógica de la página (Wireframe textual) con ganchos por sección.</p>
@@ -3788,7 +3788,7 @@ const resourcesDatabase = {
               <summary class="p-4 cursor-pointer font-bold text-red-800">Caso 7: Protocolo de Crisis (Atención al Cliente)</summary>
               <div class="p-4 pt-0 text-sm space-y-2">
                 <p class="text-slate-600"><strong>Escenario:</strong> Error grave en la entrega que amenaza la reputación de la marca.</p>
-                <div class="bg-slate-800 rounded-lg p-3 text-white text-xs font-mono">
+                <div class="bg-slate-800 rounded-lg p-3 text-white text-sm">
                   <p>[ROL]: Director de Customer Success y Gestión de Reputación.</p>
                   <p>[CONTEXTO]: Un cliente de alto perfil recibió un reporte con datos erróneos.</p>
                   <p>[META]: Redacta un guión de llamada y una carta formal de rectificación.</p>
