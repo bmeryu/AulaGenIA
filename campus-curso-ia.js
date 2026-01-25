@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ==============================================================
-  // DEV SEGMENT SELECTOR (Solo visible en localhost)
+  // DEV SEGMENT SELECTOR (Solo visible en localhost o Netlify dev)
   // ==============================================================
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  const isDevEnv = window.location.hostname === 'localhost'
+    || window.location.hostname === '127.0.0.1'
+    || window.location.hostname.includes('netlify.app');
+
+  if (isDevEnv) {
     const devPanel = document.createElement('div');
     devPanel.id = 'dev-segment-selector';
     devPanel.innerHTML = `
