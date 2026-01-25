@@ -593,6 +593,77 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
           <p class="text-teal-700 italic">"Para dominar la IA, primero debemos limpiar nuestra mente de ideas falsas. En este video derribamos los muros que te impedían avanzar. Como dice el experto Andrew Ng: la IA no reemplazará a los humanos, pero los humanos que usan IA reemplazarán a los que no la usan. ¡A darle!"</p>
         </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Los 4 Mitos que Derribamos Hoy</h3>
+          <div class="overflow-hidden rounded-xl border border-slate-200">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-100">
+                <tr>
+                  <th class="text-left p-3 font-semibold text-slate-700 w-1/3">EL MITO</th>
+                  <th class="text-left p-3 font-semibold text-slate-700">LA REALIDAD AULAGENIA</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-slate-200 hover:bg-rose-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">1. Solo la gente que sabe de computadoras puede usar IA.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Falso.</strong> Herramientas como ChatGPT, Gemini o Grok son para todos. No necesitas programar ni ser técnico. La verdadera ventaja es saber guiarla con buenas solicitudes.</td>
+                </tr>
+                <tr class="border-t border-slate-200 hover:bg-rose-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">2. La IA es peligrosa porque reemplazará los trabajos.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Error.</strong> La IA no elimina al humano, sino que transforma el mercado. Trabajarás con más impacto y menos esfuerzo, amplificando tu propio nivel profesional.</td>
+                </tr>
+                <tr class="border-t border-slate-200 hover:bg-rose-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">3. La IA es un genio que lo sabe todo y no se equivoca.</td>
+                  <td class="p-4 bg-amber-50 text-amber-800"><strong>Peligro.</strong> La IA puede "alucinar" e inventar datos. Es un asistente que requiere tu supervisión constante. Debemos combatir el sesgo de autoridad y verificar siempre.</td>
+                </tr>
+                <tr class="border-t border-slate-200 hover:bg-rose-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">4. Usar IA es muy complicado y quita mucho tiempo.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Al contrario.</strong> Hoy puedes crear textos, imágenes o videos en minutos sin códigos. Son herramientas intuitivas diseñadas para facilitar tu integración diaria.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Nuevo Rol como Piloto</h3>
+          <p class="text-slate-600 mb-4">Siguiendo las enseñanzas de este video, tu mentalidad ahora debe ser:</p>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <span class="text-emerald-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">Colaborador, no competencia</h4>
+                <p class="text-sm text-slate-600">Mira a la IA como un socio que potencia lo que ya sabes hacer.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <span class="text-emerald-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">Pensamiento Crítico</h4>
+                <p class="text-sm text-slate-600">Es tu herramienta más importante. La IA propone el camino, pero tú eres el filtro final.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <span class="text-emerald-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">Curiosidad y Estrategia</h4>
+                <p class="text-sm text-slate-600">El éxito depende de tu intención. La máquina pone el motor, pero tú decides a dónde ir.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">La Regla de Oro de Julia</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es tu copiloto, no tu oráculo. Úsala para llegar más lejos, pero nunca sueltes el volante de la supervisión."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">
+          Documento exclusivo para el programa AulaGenIA. ¡Felicidades por completar el Módulo 1!
+        </div>
+        <div class="flex items-center gap-3 py-2">
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent to-teal-300"></div>
+          <span class="text-xs font-semibold text-teal-600 bg-teal-50 px-3 py-1 rounded-full">Para tu perfil</span>
+          <div class="flex-1 h-px bg-gradient-to-l from-transparent to-teal-300"></div>
+        </div>
+      </article>
     `,
     segments: {
       "Negocios & Ventas": `
