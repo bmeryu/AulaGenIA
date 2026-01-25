@@ -1,5 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ==============================================================
+  // DEV SEGMENT SELECTOR (Solo visible en localhost)
+  // ==============================================================
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    const devPanel = document.createElement('div');
+    devPanel.id = 'dev-segment-selector';
+    devPanel.innerHTML = `
+      <div style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#1e293b;padding:12px 16px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.5);border:1px solid #334155;font-family:system-ui;">
+        <div style="color:#94a3b8;font-size:11px;margin-bottom:6px;font-weight:600;">🧪 DEV: Segmento</div>
+        <select id="dev-segment-select" style="background:#0f172a;color:#f1f5f9;border:1px solid #475569;padding:8px 12px;border-radius:8px;font-size:13px;cursor:pointer;min-width:180px;">
+          <option value="Negocios & Ventas">Negocios & Ventas</option>
+          <option value="Legal & Profesional">Legal & Profesional</option>
+          <option value="Gestión & Administración">Gestión & Administración</option>
+          <option value="Educación & Capacitación">Educación & Capacitación</option>
+        </select>
+      </div>
+    `;
+    document.body.appendChild(devPanel);
+
+    const select = document.getElementById('dev-segment-select');
+    select.value = localStorage.getItem('userSegment') || 'Negocios & Ventas';
+    select.addEventListener('change', (e) => {
+      localStorage.setItem('userSegment', e.target.value);
+      location.reload();
+    });
+  }
+
+  // ==============================================================
   // SMART RESOURCE VIEWER FUNCTIONS (INLINE MODE - Option B)
   // ==============================================================
 
