@@ -593,178 +593,319 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
           <p class="text-teal-700 italic">"Para dominar la IA, primero debemos limpiar nuestra mente de ideas falsas. En este video derribamos los muros que te impedían avanzar. Como dice el experto Andrew Ng: la IA no reemplazará a los humanos, pero los humanos que usan IA reemplazarán a los que no la usan. ¡A darle!"</p>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
           <h3 class="text-lg font-bold text-slate-800 mb-4">Los 4 Mitos que Derribamos Hoy</h3>
-          <div class="overflow-hidden rounded-xl border border-slate-200">
+          <div class="overflow-hidden rounded-xl border border-blue-200">
             <table class="w-full text-sm">
-              <thead class="bg-slate-100">
+              <thead class="bg-blue-100">
                 <tr>
                   <th class="text-left p-3 font-semibold text-slate-700 w-1/3">EL MITO</th>
-                  <th class="text-left p-3 font-semibold text-slate-700">LA REALIDAD AULAGENIA</th>
+                  <th class="text-left p-3 font-semibold text-blue-800">LA REALIDAD PARA VENTAS</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="border-t border-slate-200 hover:bg-rose-50 transition-colors">
-                  <td class="p-4 bg-rose-100 font-medium text-rose-800">1. Solo la gente que sabe de computadoras puede usar IA.</td>
-                  <td class="p-4 bg-green-50 text-green-800"><strong>Falso.</strong> Herramientas como ChatGPT, Gemini o Grok son para todos. No necesitas programar ni ser técnico. La verdadera ventaja es saber guiarla con buenas solicitudes.</td>
+                <tr class="border-t border-blue-100 hover:bg-blue-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">1. Solo técnicos pueden usar IA.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Falso.</strong> Un vendedor que sabe hacer buenas preguntas obtiene mejores resultados de IA que un programador sin conocimiento comercial. Tu expertise en ventas es la clave.</td>
                 </tr>
-                <tr class="border-t border-slate-200 hover:bg-rose-50 transition-colors">
-                  <td class="p-4 bg-rose-100 font-medium text-rose-800">2. La IA es peligrosa porque reemplazará los trabajos.</td>
-                  <td class="p-4 bg-green-50 text-green-800"><strong>Error.</strong> La IA no elimina al humano, sino que transforma el mercado. Trabajarás con más impacto y menos esfuerzo, amplificando tu propio nivel profesional.</td>
+                <tr class="border-t border-blue-100 hover:bg-blue-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">2. La IA reemplazará mi trabajo.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Error.</strong> La IA no reemplaza vendedores, los <strong>amplifica</strong>: mismas horas, 3x más prospectos contactados, propuestas personalizadas en minutos.</td>
                 </tr>
-                <tr class="border-t border-slate-200 hover:bg-rose-50 transition-colors">
-                  <td class="p-4 bg-rose-100 font-medium text-rose-800">3. La IA es un genio que lo sabe todo y no se equivoca.</td>
-                  <td class="p-4 bg-amber-50 text-amber-800"><strong>Peligro.</strong> La IA puede "alucinar" e inventar datos. Es un asistente que requiere tu supervisión constante. Debemos combatir el sesgo de autoridad y verificar siempre.</td>
+                <tr class="border-t border-blue-100 hover:bg-blue-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">3. La IA lo sabe todo.</td>
+                  <td class="p-4 bg-amber-50 text-amber-800"><strong>Peligro.</strong> La IA puede inventar cifras de mercado o datos de competidores. Siempre verifica antes de presentar a clientes.</td>
                 </tr>
-                <tr class="border-t border-slate-200 hover:bg-rose-50 transition-colors">
-                  <td class="p-4 bg-rose-100 font-medium text-rose-800">4. Usar IA es muy complicado y quita mucho tiempo.</td>
-                  <td class="p-4 bg-green-50 text-green-800"><strong>Al contrario.</strong> Hoy puedes crear textos, imágenes o videos en minutos sin códigos. Son herramientas intuitivas diseñadas para facilitar tu integración diaria.</td>
+                <tr class="border-t border-blue-100 hover:bg-blue-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">4. Usar IA es complicado.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Al contrario.</strong> Generas propuestas, emails de seguimiento y análisis de competencia en minutos. Tus competidores que dudan están perdiendo terreno.</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Nuevo Rol como Piloto</h3>
-          <p class="text-slate-600 mb-4">Siguiendo las enseñanzas de este video, tu mentalidad ahora debe ser:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Nuevo Rol como Vendedor Potenciado</h3>
           <div class="space-y-3">
-            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 transition-colors">
-              <span class="text-emerald-500 text-xl">✓</span>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-blue-200 hover:border-blue-400 transition-colors">
+              <span class="text-blue-500 text-xl">✓</span>
               <div>
-                <h4 class="font-bold text-slate-800">Colaborador, no competencia</h4>
-                <p class="text-sm text-slate-600">Mira a la IA como un socio que potencia lo que ya sabes hacer.</p>
+                <h4 class="font-bold text-slate-800">IA como tu Asistente de Ventas 24/7</h4>
+                <p class="text-sm text-slate-600">Investiga prospectos, genera emails personalizados, prepara respuestas a objeciones mientras duermes.</p>
               </div>
             </div>
-            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 transition-colors">
-              <span class="text-emerald-500 text-xl">✓</span>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-blue-200 hover:border-blue-400 transition-colors">
+              <span class="text-blue-500 text-xl">✓</span>
               <div>
-                <h4 class="font-bold text-slate-800">Pensamiento Crítico</h4>
-                <p class="text-sm text-slate-600">Es tu herramienta más importante. La IA propone el camino, pero tú eres el filtro final.</p>
+                <h4 class="font-bold text-slate-800">Tú Cierras, la IA Prepara</h4>
+                <p class="text-sm text-slate-600">La IA arma la propuesta, tú pones la estrategia de cierre y el relacionamiento humano.</p>
               </div>
             </div>
-            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 transition-colors">
-              <span class="text-emerald-500 text-xl">✓</span>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-blue-200 hover:border-blue-400 transition-colors">
+              <span class="text-blue-500 text-xl">✓</span>
               <div>
-                <h4 class="font-bold text-slate-800">Curiosidad y Estrategia</h4>
-                <p class="text-sm text-slate-600">El éxito depende de tu intención. La máquina pone el motor, pero tú decides a dónde ir.</p>
+                <h4 class="font-bold text-slate-800">Verifica Siempre los Datos</h4>
+                <p class="text-sm text-slate-600">Antes de citar cifras en una presentación, confirma con fuentes reales. La IA puede inventar estadísticas.</p>
               </div>
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">La Regla de Oro de Julia</h4>
-          <p class="text-white font-medium text-lg italic">"La IA es tu copiloto, no tu oráculo. Úsala para llegar más lejos, pero nunca sueltes el volante de la supervisión."</p>
+        <section class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
+          <h4 class="font-bold text-blue-900 mb-3">🎯 Prompts para Ventas</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Dame 3 argumentos para convencer a un cliente escéptico de que la IA mejorará su negocio sin reemplazar a su equipo.</p>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Soy vendedor B2B. Dame un proceso simple de 3 pasos para usar IA en mi ciclo de ventas diario.</p>
+            </div>
+          </div>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">
-          Documento exclusivo para el programa AulaGenIA. ¡Felicidades por completar el Módulo 1!
-        </div>
-        <div class="flex items-center gap-3 py-2">
-          <div class="flex-1 h-px bg-gradient-to-r from-transparent to-teal-300"></div>
-          <span class="text-xs font-semibold text-teal-600 bg-teal-50 px-3 py-1 rounded-full">Para tu perfil</span>
-          <div class="flex-1 h-px bg-gradient-to-l from-transparent to-teal-300"></div>
-        </div>
+        <section class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 text-center">
+          <h4 class="text-blue-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Ventas</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es tu mejor vendedor junior: incansable, rápido y siempre disponible. Pero tú eres el closer que cierra el trato."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {
-      "Negocios & Ventas": `
-        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200 space-y-4">
-          <h4 class="font-bold text-blue-900 flex items-center gap-2">
-            <span class="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
-            Aplicación para Negocios & Ventas
-          </h4>
-          <div class="bg-white rounded-lg p-4 border border-slate-200">
-            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 2: "La IA reemplazará los trabajos"</h5>
-            <p class="text-sm text-slate-600 mb-3">Este mito es tu aliado en conversaciones con clientes escépticos. La IA no reemplaza vendedores, los <strong>amplifica</strong>: mismas horas, 3x más prospectos contactados.</p>
-            <div class="prompt-block bg-slate-800 rounded-lg p-3">
-              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Dame 3 argumentos para convencer a un cliente escéptico de que la IA mejorará su negocio sin reemplazar a su equipo. Incluye datos o ejemplos reales si los conoces.</p>
-            </div>
-          </div>
-          <div class="bg-white rounded-lg p-4 border border-slate-200">
-            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 4: "Usar IA es muy complicado"</h5>
-            <p class="text-sm text-slate-600 mb-3">Tus competidores que aún creen esto están perdiendo terreno. Mientras ellos dudan, tú ya estás generando propuestas, emails y análisis en minutos.</p>
-            <div class="prompt-block bg-slate-800 rounded-lg p-3">
-              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Soy vendedor B2B. Dame un proceso simple de 3 pasos para usar IA en mi ciclo de ventas diario sin complicaciones.</p>
-            </div>
-          </div>
-        </div>
-        </article>
       `,
       "Legal & Profesional": `
-        <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-5 border border-purple-200 space-y-4">
-          <h4 class="font-bold text-purple-900 flex items-center gap-2">
-            <span class="w-8 h-8 bg-purple-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
-            Aplicación Legal & Profesional
-          </h4>
-          <div class="bg-white rounded-lg p-4 border border-red-200">
-            <h5 class="font-bold text-red-800 text-sm mb-2">⚠️ CRÍTICO: Mito 3 - "La IA lo sabe todo"</h5>
-            <p class="text-sm text-slate-600 mb-3">Este es tu mito más peligroso. La IA puede citar leyes derogadas o inventar jurisprudencia con total seguridad. Tu pensamiento crítico es tu defensa contra el error profesional.</p>
-            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Los 4 Mitos que Derribamos Hoy</h3>
+          <div class="overflow-hidden rounded-xl border border-purple-200">
+            <table class="w-full text-sm">
+              <thead class="bg-purple-100">
+                <tr>
+                  <th class="text-left p-3 font-semibold text-slate-700 w-1/3">EL MITO</th>
+                  <th class="text-left p-3 font-semibold text-purple-800">LA REALIDAD PARA LEGAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-purple-100 hover:bg-purple-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">1. Solo técnicos pueden usar IA.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Falso.</strong> Un abogado que sabe formular preguntas precisas obtiene mejores resultados que un programador sin criterio jurídico.</td>
+                </tr>
+                <tr class="border-t border-purple-100 hover:bg-purple-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">2. La IA reemplazará a los abogados.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Error.</strong> La IA no tiene criterio ético ni puede firmar escritos. El abogado que usa IA produce más y mejor que el que no.</td>
+                </tr>
+                <tr class="border-t border-purple-100 hover:bg-purple-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">3. La IA lo sabe todo.</td>
+                  <td class="p-4 bg-red-50 text-red-800"><strong>⚠️ CRÍTICO.</strong> La IA puede citar leyes derogadas o inventar jurisprudencia. SIEMPRE verifica en fuentes oficiales antes de usar.</td>
+                </tr>
+                <tr class="border-t border-purple-100 hover:bg-purple-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">4. Usar IA es complicado.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Al contrario.</strong> Redactas borradores de contratos, resúmenes de jurisprudencia y minutas en minutos.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Nuevo Rol como Profesional Legal Potenciado</h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-purple-200 hover:border-purple-400 transition-colors">
+              <span class="text-purple-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">IA como tu Paralegal Digital</h4>
+                <p class="text-sm text-slate-600">Busca jurisprudencia, organiza expedientes, redacta borradores. Tú validas y firmas.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-red-200 hover:border-red-400 transition-colors">
+              <span class="text-red-500 text-xl">⚠️</span>
+              <div>
+                <h4 class="font-bold text-red-800">Verificación Obligatoria</h4>
+                <p class="text-sm text-slate-600">NUNCA uses citas legales de la IA sin verificar en fuentes oficiales. Tu responsabilidad profesional está en juego.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-purple-200 hover:border-purple-400 transition-colors">
+              <span class="text-purple-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">Criterio Humano Irremplazable</h4>
+                <p class="text-sm text-slate-600">La IA no tiene ética profesional ni conoce el contexto específico de tu caso. Tú aportas el juicio crítico.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-5 border border-purple-200">
+          <h4 class="font-bold text-purple-900 mb-3">⚖️ Prompts para Legal</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
               <p class="text-white text-xs font-mono">Antes de darme información legal, confirma: ¿esta norma sigue vigente a 2024? Si no estás 100% seguro, dime "VERIFICAR EN FUENTE OFICIAL".</p>
             </div>
-          </div>
-          <div class="bg-white rounded-lg p-4 border border-slate-200">
-            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 1: "Solo técnicos pueden usar IA"</h5>
-            <p class="text-sm text-slate-600 mb-3">Falso. La IA entiende lenguaje natural. Un abogado que sabe hacer buenas preguntas obtiene mejores resultados que un programador sin criterio jurídico.</p>
-            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+            <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Actúa como asistente legal. Revisa este contrato y lista las cláusulas que podrían ser problemáticas. No inventes: si algo no está claro, pregunta.</p>
+              <p class="text-white text-xs font-mono">Actúa como asistente legal. Revisa este contrato y lista las cláusulas problemáticas. No inventes: si algo no está claro, pregunta.</p>
             </div>
           </div>
-        </div>
-        </article>
+        </section>
+        <section class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl p-6 text-center">
+          <h4 class="text-purple-100 text-sm uppercase tracking-wide mb-2">Regla de Oro Legal</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es tu paralegal más rápido del mundo, pero sin título ni ética profesional. Tú firmas, tú verificas, tú respondes."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
+      </article>
       `,
       "Gestión & Administración": `
-        <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200 space-y-4">
-          <h4 class="font-bold text-emerald-900 flex items-center gap-2">
-            <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
-            Aplicación para Gestión & Administración
-          </h4>
-          <div class="bg-white rounded-lg p-4 border border-slate-200">
-            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 4: "Usar IA quita mucho tiempo"</h5>
-            <p class="text-sm text-slate-600 mb-3">Al contrario: procesos que tomaban horas ahora toman minutos. Reportes, actas, correos, organización de datos... todo más rápido.</p>
-            <div class="prompt-block bg-slate-800 rounded-lg p-3">
-              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Lista mis 5 tareas administrativas más repetitivas esta semana: [LISTAR]. Para cada una, dime cómo la IA puede ayudarme a hacerla en la mitad del tiempo.</p>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Los 4 Mitos que Derribamos Hoy</h3>
+          <div class="overflow-hidden rounded-xl border border-emerald-200">
+            <table class="w-full text-sm">
+              <thead class="bg-emerald-100">
+                <tr>
+                  <th class="text-left p-3 font-semibold text-slate-700 w-1/3">EL MITO</th>
+                  <th class="text-left p-3 font-semibold text-emerald-800">LA REALIDAD PARA GESTIÓN</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-emerald-100 hover:bg-emerald-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">1. Solo técnicos pueden usar IA.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Falso.</strong> Un asistente que conoce los procesos de su empresa obtiene mejores resultados que un técnico sin contexto organizacional.</td>
+                </tr>
+                <tr class="border-t border-emerald-100 hover:bg-emerald-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">2. La IA reemplazará mi trabajo.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Error.</strong> La IA reemplaza <strong>tareas repetitivas</strong>, no personas. El asistente que domina IA se vuelve indispensable.</td>
+                </tr>
+                <tr class="border-t border-emerald-100 hover:bg-emerald-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">3. La IA lo sabe todo.</td>
+                  <td class="p-4 bg-amber-50 text-amber-800"><strong>Peligro.</strong> La IA puede inventar datos en reportes. Siempre verifica números antes de enviar a gerencia.</td>
+                </tr>
+                <tr class="border-t border-emerald-100 hover:bg-emerald-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">4. Usar IA quita mucho tiempo.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Al contrario.</strong> Reportes, actas, correos, organización de datos... procesos de horas ahora toman minutos.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Nuevo Rol como Gestor Potenciado</h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-emerald-200 hover:border-emerald-400 transition-colors">
+              <span class="text-emerald-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">IA como tu Asistente Administrativo Digital</h4>
+                <p class="text-sm text-slate-600">Organiza datos, redacta correos, genera reportes. Tú supervisas la calidad y el toque humano.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-emerald-200 hover:border-emerald-400 transition-colors">
+              <span class="text-emerald-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">De Operativo a Estratégico</h4>
+                <p class="text-sm text-slate-600">La IA hace lo repetitivo, tú te enfocas en lo que requiere criterio y conocimiento de la empresa.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-emerald-200 hover:border-emerald-400 transition-colors">
+              <span class="text-emerald-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">Conoces la Cultura, la IA No</h4>
+                <p class="text-sm text-slate-600">Tú sabes cómo le gusta recibir información a tu jefe. La IA solo sabe formatos genéricos.</p>
+              </div>
             </div>
           </div>
-          <div class="bg-white rounded-lg p-4 border border-slate-200">
-            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 2: "La IA reemplazará mi trabajo"</h5>
-            <p class="text-sm text-slate-600 mb-3">La IA reemplaza tareas, no personas. El asistente que domina IA se vuelve indispensable. El que la ignora, se vuelve prescindible.</p>
-            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+        </section>
+        <section class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+          <h4 class="font-bold text-emerald-900 mb-3">📊 Prompts para Gestión</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Lista mis 5 tareas más repetitivas: [LISTAR]. Para cada una, dime cómo la IA puede ayudarme a hacerla en la mitad del tiempo.</p>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
               <p class="text-white text-xs font-mono">Soy asistente administrativo. Dame un plan de 30 días para integrar IA en mi trabajo diario sin abrumarme.</p>
             </div>
           </div>
-        </div>
-        </article>
+        </section>
+        <section class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-emerald-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"La IA hace en minutos lo que antes tomaba horas. Tu valor ahora está en el criterio, no en el tipeo."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
+      </article>
       `,
       "Educación & Capacitación": `
-        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200 space-y-4">
-          <h4 class="font-bold text-amber-900 flex items-center gap-2">
-            <span class="w-8 h-8 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
-            Aplicación para Educación
-          </h4>
-          <div class="bg-white rounded-lg p-4 border border-red-200">
-            <h5 class="font-bold text-red-800 text-sm mb-2">⚠️ Enseña el Mito 3: "La IA no se equivoca"</h5>
-            <p class="text-sm text-slate-600 mb-3">Tus estudiantes necesitan entender que la IA puede inventar información. El pensamiento crítico debe ser parte de la alfabetización digital.</p>
-            <div class="prompt-block bg-slate-800 rounded-lg p-3">
-              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Diseña una actividad de 20 minutos para estudiantes de [NIVEL] donde deban verificar si 3 respuestas de IA son correctas o inventadas.</p>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Los 4 Mitos que Derribamos Hoy</h3>
+          <div class="overflow-hidden rounded-xl border border-amber-200">
+            <table class="w-full text-sm">
+              <thead class="bg-amber-100">
+                <tr>
+                  <th class="text-left p-3 font-semibold text-slate-700 w-1/3">EL MITO</th>
+                  <th class="text-left p-3 font-semibold text-amber-800">LA REALIDAD PARA EDUCACIÓN</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-amber-100 hover:bg-amber-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">1. Solo técnicos pueden usar IA.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Falso.</strong> Un docente que sabe formular buenas instrucciones obtiene mejores resultados. Tu conocimiento pedagógico es la clave.</td>
+                </tr>
+                <tr class="border-t border-amber-100 hover:bg-amber-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">2. La IA reemplazará a los docentes.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Error.</strong> La IA no tiene empatía ni conoce a tus estudiantes. Transforma cómo preparas clases, no te reemplaza en el aula.</td>
+                </tr>
+                <tr class="border-t border-amber-100 hover:bg-amber-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">3. La IA lo sabe todo.</td>
+                  <td class="p-4 bg-red-50 text-red-800"><strong>⚠️ ENSEÑA ESTO.</strong> Tus estudiantes deben entender que la IA puede inventar información. El pensamiento crítico es esencial.</td>
+                </tr>
+                <tr class="border-t border-amber-100 hover:bg-amber-50 transition-colors">
+                  <td class="p-4 bg-rose-100 font-medium text-rose-800">4. Usar IA es complicado.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Al contrario.</strong> Generas planificaciones, actividades, rúbricas y materiales adaptados en minutos.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Nuevo Rol como Docente Potenciado</h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-amber-200 hover:border-amber-400 transition-colors">
+              <span class="text-amber-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">IA como tu Asistente Pedagógico</h4>
+                <p class="text-sm text-slate-600">Genera materiales, diferencia actividades por nivel, crea evaluaciones. Tú adaptas a tu contexto.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-red-200 hover:border-red-400 transition-colors">
+              <span class="text-red-500 text-xl">⚠️</span>
+              <div>
+                <h4 class="font-bold text-red-800">Enseña Pensamiento Crítico</h4>
+                <p class="text-sm text-slate-600">Tus estudiantes deben aprender que la IA puede equivocarse. Integra actividades de verificación en tu currículum.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-amber-200 hover:border-amber-400 transition-colors">
+              <span class="text-amber-500 text-xl">✓</span>
+              <div>
+                <h4 class="font-bold text-slate-800">Conoces a tus Estudiantes</h4>
+                <p class="text-sm text-slate-600">La IA no sabe quién es tímido, quién aprende visual o quién necesita más apoyo. Tú sí.</p>
+              </div>
             </div>
           </div>
-          <div class="bg-white rounded-lg p-4 border border-slate-200">
-            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 1: "Solo técnicos pueden usar IA"</h5>
-            <p class="text-sm text-slate-600 mb-3">Usa esto para motivar a tus estudiantes: no necesitan ser programadores. Lo que necesitan es saber preguntar bien.</p>
-            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+        </section>
+        <section class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200">
+          <h4 class="font-bold text-amber-900 mb-3">🎓 Prompts para Educación</h4>
+          <div class="space-y-3">
+            <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-xs font-mono">Crea una actividad donde estudiantes de [NIVEL] comparen la misma pregunta hecha de forma vaga vs. de forma específica a una IA.</p>
+              <p class="text-white text-xs font-mono">Diseña una actividad de 20 minutos donde estudiantes de [NIVEL] deban verificar si 3 respuestas de IA son correctas o inventadas.</p>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Crea una actividad donde estudiantes comparen la misma pregunta hecha de forma vaga vs. de forma específica a una IA.</p>
             </div>
           </div>
-        </div>
-        </article>
+        </section>
+        <section class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl p-6 text-center">
+          <h4 class="text-amber-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Educación</h4>
+          <p class="text-white font-medium text-lg italic">"La IA prepara materiales en minutos, pero solo tú puedes encender la chispa del aprendizaje en tus estudiantes."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
+      </article>
       `
     }
   },
