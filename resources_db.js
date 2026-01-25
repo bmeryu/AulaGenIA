@@ -666,10 +666,106 @@ const resourcesDatabase = {
       </article>
     `,
     segments: {
-      "Negocios & Ventas": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">🎯 Aplicación para Ventas</h4><p class="text-sm text-slate-700 mb-3">El mito 2 es tu aliado en conversaciones con clientes escépticos. La IA no te reemplaza, te amplifica: cierra más ventas en menos tiempo.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Dame 3 argumentos para convencer a un cliente escéptico de que la IA mejorará su negocio sin reemplazar a su equipo."</p></div></div>`,
-      "Legal & Profesional": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">⚖️ Aplicación para Legal</h4><p class="text-sm text-slate-700 mb-3">El mito 3 es CRÍTICO. Nunca confíes ciegamente en citas legales de la IA. Tu pensamiento crítico es tu mejor defensa contra las alucinaciones.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Antes de responder, dime: ¿esta información es verificable? Si no estás seguro, dime que debo verificar."</p></div></div>`,
-      "Gestión & Adm.": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">📊 Aplicación para Gestión</h4><p class="text-sm text-slate-700 mb-3">El mito 4 es tu oportunidad: procesos que tomaban horas ahora toman minutos. Usa IA para automatizar lo repetitivo y enfócate en lo estratégico.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Analiza este proceso administrativo y dime qué pasos puedo automatizar con IA sin perder control."</p></div></div>`,
-      "Educación": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">📚 Aplicación para Educación</h4><p class="text-sm text-slate-700 mb-3">Enseña a tus estudiantes el mito 3: la IA NO es infalible. El pensamiento crítico debe ser parte del currículum de alfabetización digital.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Diseña una actividad de clase para que estudiantes de secundaria detecten errores en respuestas de IA."</p></div></div>`
+      "Negocios & Ventas": `
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200 space-y-4">
+          <h4 class="font-bold text-blue-900 flex items-center gap-2">
+            <span class="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+            Aplicación para Negocios & Ventas
+          </h4>
+          <div class="bg-white rounded-lg p-4 border border-slate-200">
+            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 2: "La IA reemplazará los trabajos"</h5>
+            <p class="text-sm text-slate-600 mb-3">Este mito es tu aliado en conversaciones con clientes escépticos. La IA no reemplaza vendedores, los <strong>amplifica</strong>: mismas horas, 3x más prospectos contactados.</p>
+            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Dame 3 argumentos para convencer a un cliente escéptico de que la IA mejorará su negocio sin reemplazar a su equipo. Incluye datos o ejemplos reales si los conoces.</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-4 border border-slate-200">
+            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 4: "Usar IA es muy complicado"</h5>
+            <p class="text-sm text-slate-600 mb-3">Tus competidores que aún creen esto están perdiendo terreno. Mientras ellos dudan, tú ya estás generando propuestas, emails y análisis en minutos.</p>
+            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Soy vendedor B2B. Dame un proceso simple de 3 pasos para usar IA en mi ciclo de ventas diario sin complicaciones.</p>
+            </div>
+          </div>
+        </div>
+        </article>
+      `,
+      "Legal & Profesional": `
+        <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-5 border border-purple-200 space-y-4">
+          <h4 class="font-bold text-purple-900 flex items-center gap-2">
+            <span class="w-8 h-8 bg-purple-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+            Aplicación Legal & Profesional
+          </h4>
+          <div class="bg-white rounded-lg p-4 border border-red-200">
+            <h5 class="font-bold text-red-800 text-sm mb-2">⚠️ CRÍTICO: Mito 3 - "La IA lo sabe todo"</h5>
+            <p class="text-sm text-slate-600 mb-3">Este es tu mito más peligroso. La IA puede citar leyes derogadas o inventar jurisprudencia con total seguridad. Tu pensamiento crítico es tu defensa contra el error profesional.</p>
+            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Antes de darme información legal, confirma: ¿esta norma sigue vigente a 2024? Si no estás 100% seguro, dime "VERIFICAR EN FUENTE OFICIAL".</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-4 border border-slate-200">
+            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 1: "Solo técnicos pueden usar IA"</h5>
+            <p class="text-sm text-slate-600 mb-3">Falso. La IA entiende lenguaje natural. Un abogado que sabe hacer buenas preguntas obtiene mejores resultados que un programador sin criterio jurídico.</p>
+            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Actúa como asistente legal. Revisa este contrato y lista las cláusulas que podrían ser problemáticas. No inventes: si algo no está claro, pregunta.</p>
+            </div>
+          </div>
+        </div>
+        </article>
+      `,
+      "Gestión & Administración": `
+        <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200 space-y-4">
+          <h4 class="font-bold text-emerald-900 flex items-center gap-2">
+            <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+            Aplicación para Gestión & Administración
+          </h4>
+          <div class="bg-white rounded-lg p-4 border border-slate-200">
+            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 4: "Usar IA quita mucho tiempo"</h5>
+            <p class="text-sm text-slate-600 mb-3">Al contrario: procesos que tomaban horas ahora toman minutos. Reportes, actas, correos, organización de datos... todo más rápido.</p>
+            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Lista mis 5 tareas administrativas más repetitivas esta semana: [LISTAR]. Para cada una, dime cómo la IA puede ayudarme a hacerla en la mitad del tiempo.</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-4 border border-slate-200">
+            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 2: "La IA reemplazará mi trabajo"</h5>
+            <p class="text-sm text-slate-600 mb-3">La IA reemplaza tareas, no personas. El asistente que domina IA se vuelve indispensable. El que la ignora, se vuelve prescindible.</p>
+            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Soy asistente administrativo. Dame un plan de 30 días para integrar IA en mi trabajo diario sin abrumarme.</p>
+            </div>
+          </div>
+        </div>
+        </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200 space-y-4">
+          <h4 class="font-bold text-amber-900 flex items-center gap-2">
+            <span class="w-8 h-8 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+            Aplicación para Educación
+          </h4>
+          <div class="bg-white rounded-lg p-4 border border-red-200">
+            <h5 class="font-bold text-red-800 text-sm mb-2">⚠️ Enseña el Mito 3: "La IA no se equivoca"</h5>
+            <p class="text-sm text-slate-600 mb-3">Tus estudiantes necesitan entender que la IA puede inventar información. El pensamiento crítico debe ser parte de la alfabetización digital.</p>
+            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Diseña una actividad de 20 minutos para estudiantes de [NIVEL] donde deban verificar si 3 respuestas de IA son correctas o inventadas.</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-4 border border-slate-200">
+            <h5 class="font-bold text-slate-800 text-sm mb-2">Mito 1: "Solo técnicos pueden usar IA"</h5>
+            <p class="text-sm text-slate-600 mb-3">Usa esto para motivar a tus estudiantes: no necesitan ser programadores. Lo que necesitan es saber preguntar bien.</p>
+            <div class="prompt-block bg-slate-800 rounded-lg p-3">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-xs font-mono">Crea una actividad donde estudiantes de [NIVEL] comparen la misma pregunta hecha de forma vaga vs. de forma específica a una IA.</p>
+            </div>
+          </div>
+        </div>
+        </article>
+      `
     }
   },
   "infografia-rol-copiloto": {
@@ -814,7 +910,60 @@ const resourcesDatabase = {
         <div class="text-center text-xs text-slate-500 pt-2">Infografía oficial del Módulo 1. AulaGenIA 2025.</div>
       </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200 space-y-4 mt-4">
+          <h4 class="font-bold text-blue-900 flex items-center gap-2">
+            <span class="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+            Tu Rol de Copiloto en Ventas
+          </h4>
+          <p class="text-sm text-slate-700">Como vendedor, tu expertise es conocer al cliente y cerrar tratos. La IA es tu analista, tu redactor y tu investigador. Tú pones la estrategia comercial.</p>
+          <div class="prompt-block bg-slate-800 rounded-lg p-3">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-xs font-mono">Soy vendedor B2B. Mi cliente objetivo es [PERFIL]. Dame una estrategia de 3 pasos para el primer contacto, considerando que no me conoce. Yo decido el tono final.</p>
+          </div>
+        </div>
+      `,
+      "Legal & Profesional": `
+        <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-5 border border-purple-200 space-y-4 mt-4">
+          <h4 class="font-bold text-purple-900 flex items-center gap-2">
+            <span class="w-8 h-8 bg-purple-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+            Tu Rol de Copiloto Legal
+          </h4>
+          <p class="text-sm text-slate-700">Tu criterio jurídico es irremplazable. La IA busca, organiza y redacta borradores. Tú validas, corriges y tomas las decisiones finales.</p>
+          <div class="prompt-block bg-slate-800 rounded-lg p-3">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-xs font-mono">Actúa como asistente legal. Dame un borrador de [DOCUMENTO]. Marca con [REVISAR] cualquier sección donde no estés 100% seguro. Yo haré la revisión final.</p>
+          </div>
+        </div>
+      `,
+      "Gestión & Administración": `
+        <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200 space-y-4 mt-4">
+          <h4 class="font-bold text-emerald-900 flex items-center gap-2">
+            <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+            Tu Rol de Copiloto Administrativo
+          </h4>
+          <p class="text-sm text-slate-700">Tú conoces los procesos y la cultura de tu empresa. La IA automatiza lo repetitivo. Tú supervisas la calidad y mantienes el toque humano.</p>
+          <div class="prompt-block bg-slate-800 rounded-lg p-3">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-xs font-mono">Necesito organizar [TAREA/INFORMACIÓN]. Dame una estructura ordenada. Yo revisaré que cumpla con los estándares de mi empresa antes de usar.</p>
+          </div>
+        </div>
+      `,
+      "Educación & Capacitación": `
+        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200 space-y-4 mt-4">
+          <h4 class="font-bold text-amber-900 flex items-center gap-2">
+            <span class="w-8 h-8 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+            Tu Rol de Copiloto Docente
+          </h4>
+          <p class="text-sm text-slate-700">Tu conocimiento pedagógico y de tus estudiantes es único. La IA genera materiales y actividades. Tú adaptas, evalúas y conectas con tus alumnos.</p>
+          <div class="prompt-block bg-slate-800 rounded-lg p-3">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-xs font-mono">Necesito una actividad sobre [TEMA] para [NIVEL]. Dame 2 opciones distintas. Yo elegiré cuál se adapta mejor a mi grupo.</p>
+          </div>
+        </div>
+      `
+    }
   },
   "dentro-copiloto-1": {
     meta: {
