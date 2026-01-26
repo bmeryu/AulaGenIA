@@ -5912,62 +5912,156 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
-          <p class="text-teal-700 italic">"No todas las misiones se resuelven igual. Si usas el método Arquitecto para un correo, perderás tiempo. Si usas la Receta WOW para un libro, el resultado será pobre. Usa este diagrama para elegir tu arma antes de abrir el chat."</p>
+          <p class="text-teal-700 italic">"No todas las misiones se resuelven igual. Usa la Receta WOW para tareas puntuales. Usa el Método Arquitecto para proyectos complejos."</p>
         </section>
         <section>
           <h3 class="text-lg font-bold text-slate-800 text-center mb-4">¿Cuál es mi Misión?</h3>
           <div class="grid gap-4 md:grid-cols-2">
-            <div class="bg-purple-50 rounded-xl p-5 border-2 border-purple-300 hover:shadow-lg transition-all">
-              <h4 class="font-bold text-purple-800 text-center mb-3">✨ OPCIÓN A: LA TAREA</h4>
-              <p class="text-sm text-purple-700 text-center mb-3">(Uso de la Receta WOW)</p>
+            <div class="bg-purple-50 rounded-xl p-5 border-2 border-purple-300">
+              <h4 class="font-bold text-purple-800 text-center mb-3">✨ TAREA (Receta WOW)</h4>
               <ul class="text-sm text-purple-700 space-y-2">
-                <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> <strong>Alcance:</strong> Pieza única y específica.</li>
-                <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> <strong>Hilo:</strong> Se agota en un solo chat.</li>
-                <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> <strong>Temas:</strong> No se tocan puntos diferentes.</li>
-                <li class="flex items-start gap-2"><span class="text-purple-500">✓</span> <strong>Estructura:</strong> Resultado directo.</li>
+                <li>✓ Pieza única y específica</li>
+                <li>✓ Se resuelve en un solo chat</li>
+                <li>✓ No mezcla temas diferentes</li>
               </ul>
             </div>
-            <div class="bg-blue-50 rounded-xl p-5 border-2 border-blue-300 hover:shadow-lg transition-all">
-              <h4 class="font-bold text-blue-800 text-center mb-3">🏗️ OPCIÓN B: EL PROYECTO</h4>
-              <p class="text-sm text-blue-700 text-center mb-3">(Método Arquitecto)</p>
+            <div class="bg-blue-50 rounded-xl p-5 border-2 border-blue-300">
+              <h4 class="font-bold text-blue-800 text-center mb-3">🏗️ PROYECTO (Arquitecto)</h4>
               <ul class="text-sm text-blue-700 space-y-2">
-                <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> <strong>Alcance:</strong> Múltiples piezas conectadas.</li>
-                <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> <strong>Hilo:</strong> Requiere separar temas.</li>
-                <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> <strong>Mesa:</strong> Hay que "limpiar" con chats nuevos.</li>
-                <li class="flex items-start gap-2"><span class="text-blue-500">✓</span> <strong>Estructura:</strong> Exige un Plano Maestro.</li>
+                <li>✓ Múltiples piezas conectadas</li>
+                <li>✓ Requiere varios chats</li>
+                <li>✓ Exige un Plano Maestro</li>
               </ul>
             </div>
           </div>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">Veredicto de Ejecución</h3>
-          <div class="space-y-4">
-            <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
-              <h4 class="font-bold text-purple-800 mb-2">✨ VEREDICTO A: ESTRATEGIA WOW</h4>
-              <p class="text-sm text-purple-700 mb-2"><strong>Cuándo:</strong> Cuando la respuesta cabe en una sola conversación enfocada.</p>
-              <ul class="text-sm text-purple-700 space-y-1">
-                <li>• <strong>Acción:</strong> Aplica el Modelo AGIA completo en un prompt robusto.</li>
-                <li>• <strong>Foco:</strong> No dividas el tema; mantén el hilo hasta terminar la tarea.</li>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Contexto Comercial</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">✨ TAREAS (Receta WOW)</h4>
+              <ul class="text-sm text-purple-700 space-y-2">
+                <li class="bg-white p-2 rounded">• Email de seguimiento a cliente</li>
+                <li class="bg-white p-2 rounded">• Post promocional para red social</li>
+                <li class="bg-white p-2 rounded">• Script de llamada en frío</li>
+                <li class="bg-white p-2 rounded">• Descripción de producto</li>
               </ul>
             </div>
-            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
-              <h4 class="font-bold text-blue-800 mb-2">🏗️ VEREDICTO B: MÉTODO ARQUITECTO</h4>
-              <p class="text-sm text-blue-700 mb-2"><strong>Cuándo:</strong> Cuando el tema evoluciona o es demasiado largo para un solo chat.</p>
-              <ul class="text-sm text-blue-700 space-y-1">
-                <li>• <strong>Acción:</strong> Plano Maestro → Ladrillo → Cemento.</li>
-                <li>• <strong>Foco:</strong> Usa la Bitácora de Obra para saltar a chats nuevos y evitar que la IA se "ensucie" con el historial.</li>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">🏗️ PROYECTOS (Arquitecto)</h4>
+              <ul class="text-sm text-blue-700 space-y-2">
+                <li class="bg-white p-2 rounded">• Plan de marketing trimestral</li>
+                <li class="bg-white p-2 rounded">• Propuesta comercial completa</li>
+                <li class="bg-white p-2 rounded">• Catálogo de productos</li>
+                <li class="bg-white p-2 rounded">• Estrategia de lanzamiento</li>
               </ul>
             </div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La inteligencia del estratega no está en cómo escribe el prompt, sino en saber si la misión cabe en una sola conversación o requiere abrir una obra por etapas."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Ventas</h4>
+          <p class="text-white font-medium text-lg italic">"Cierra ventas con tareas rápidas; construye imperios con proyectos estratégicos."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial AulaGenIA 2025. Elige tu camino, domina tu tiempo.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Negocios - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Práctica Profesional</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">✨ TAREAS (Receta WOW)</h4>
+              <ul class="text-sm text-purple-700 space-y-2">
+                <li class="bg-white p-2 rounded">• Carta de respuesta a cliente</li>
+                <li class="bg-white p-2 rounded">• Resumen ejecutivo de caso</li>
+                <li class="bg-white p-2 rounded">• Memo interno específico</li>
+                <li class="bg-white p-2 rounded">• Email a contraparte</li>
+              </ul>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">🏗️ PROYECTOS (Arquitecto)</h4>
+              <ul class="text-sm text-blue-700 space-y-2">
+                <li class="bg-white p-2 rounded">• Estrategia de litigación</li>
+                <li class="bg-white p-2 rounded">• Due diligence completo</li>
+                <li class="bg-white p-2 rounded">• Manual de procedimientos</li>
+                <li class="bg-white p-2 rounded">• Reestructuración societaria</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"Resuelve lo urgente con tareas; construye lo trascendente con proyectos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Profesionales - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Trabajo de Gestión</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">✨ TAREAS (Receta WOW)</h4>
+              <ul class="text-sm text-purple-700 space-y-2">
+                <li class="bg-white p-2 rounded">• Comunicado interno puntual</li>
+                <li class="bg-white p-2 rounded">• Acta de reunión</li>
+                <li class="bg-white p-2 rounded">• Respuesta a consulta de empleado</li>
+                <li class="bg-white p-2 rounded">• Agenda de capacitación</li>
+              </ul>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">🏗️ PROYECTOS (Arquitecto)</h4>
+              <ul class="text-sm text-blue-700 space-y-2">
+                <li class="bg-white p-2 rounded">• Plan de onboarding completo</li>
+                <li class="bg-white p-2 rounded">• Manual de procesos</li>
+                <li class="bg-white p-2 rounded">• Evaluación de desempeño anual</li>
+                <li class="bg-white p-2 rounded">• Reestructuración de área</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Administra lo operativo con tareas; transforma con proyectos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Gestión - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Trabajo Docente</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">✨ TAREAS (Receta WOW)</h4>
+              <ul class="text-sm text-purple-700 space-y-2">
+                <li class="bg-white p-2 rounded">• Actividad para una clase</li>
+                <li class="bg-white p-2 rounded">• Quiz de repaso</li>
+                <li class="bg-white p-2 rounded">• Instrucciones de tarea</li>
+                <li class="bg-white p-2 rounded">• Retroalimentación individual</li>
+              </ul>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">🏗️ PROYECTOS (Arquitecto)</h4>
+              <ul class="text-sm text-blue-700 space-y-2">
+                <li class="bg-white p-2 rounded">• Planificación semestral</li>
+                <li class="bg-white p-2 rounded">• Curso completo nuevo</li>
+                <li class="bg-white p-2 rounded">• Material didáctico de unidad</li>
+                <li class="bg-white p-2 rounded">• Proyecto interdisciplinario</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"Enseña lo puntual con tareas; construye aprendizaje profundo con proyectos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Educación - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
 
   // HERRAMIENTA INTERACTIVA: Simulador de Recuperación de Tiempo
