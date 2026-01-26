@@ -5354,78 +5354,177 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">¿Qué es Gamma?</h2>
-          <p class="text-amber-700">Gamma es la herramienta de IA que está matando al PowerPoint tradicional. No es solo un editor; es un <strong>diseñador inteligente</strong> que recibe tus ideas (en texto o voz) y las convierte automáticamente en presentaciones, documentos o páginas web. Es el aliado perfecto para Carlos (nuestro estratega) y para cualquier alumno que necesite exponer sus ideas con un acabado de alto nivel sin saber nada de diseño.</p>
+          <p class="text-amber-700">Gamma convierte tus ideas en <strong>presentaciones, documentos o webs</strong> profesionales automáticamente. Solo escríbele y diseña por ti.</p>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">¿Cómo empiezo? (Paso a Paso)</h3>
-          <p class="text-slate-600 mb-3">Gamma funciona directamente en la nube y es extremadamente intuitivo.</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">¿Cómo empiezo?</h3>
           <div class="space-y-3">
             <div class="bg-white rounded-xl p-4 border border-slate-200">
-              <h4 class="font-bold text-amber-800 mb-2">1. Registro y Configuración</h4>
-              <ul class="text-sm text-slate-600 space-y-1">
-                <li>• <strong>La dirección:</strong> Entra en tu navegador a <a href="https://gamma.app" target="_blank" class="text-amber-600 hover:underline">gamma.app</a>.</li>
-                <li>• <strong>Inicio de sesión:</strong> Haz clic en "Sign up for free".</li>
-                <li>• <strong>El camino rápido:</strong> Usa tu cuenta de Google. Es seguro, rápido y mantiene tus presentaciones sincronizadas.</li>
-                <li>• <strong>Configuración inicial:</strong> Te preguntará para qué lo usarás. Selecciona "Personal" o "Trabajo" para que la IA adapte los estilos que te sugiere.</li>
-              </ul>
+              <h4 class="font-bold text-amber-800 mb-2">1. Registro</h4>
+              <p class="text-sm text-slate-600">Ve a <a href="https://gamma.app" target="_blank" class="text-amber-600 hover:underline">gamma.app</a> → "Sign up for free" → Usa tu Google.</p>
             </div>
             <div class="bg-white rounded-xl p-4 border border-slate-200">
-              <h4 class="font-bold text-amber-800 mb-2">2. Tu Primer Diseño Mágico</h4>
-              <ul class="text-sm text-slate-600 space-y-1">
-                <li>• Haz clic en el botón "Create new with AI".</li>
-                <li>• Elige "Generate": Solo escribe de qué trata tu tema (ej: "Presentación sobre los beneficios de la IA en la educación") y Gamma creará el índice y el diseño completo.</li>
-              </ul>
+              <h4 class="font-bold text-amber-800 mb-2">2. Crear con IA</h4>
+              <p class="text-sm text-slate-600">Clic en "Create new with AI" → Elige "Generate" → Escribe tu tema y listo.</p>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Sistema de Créditos</h4>
+              <p class="text-sm text-amber-700">400 créditos iniciales. Cada presentación ~40 créditos. Editar es gratis.</p>
             </div>
           </div>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones Estrella para el Alumno AulaGenIA</h3>
-          <p class="text-slate-600 mb-3">Gamma es el "maquetador" más veloz de nuestro arsenal:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Negocios</h3>
           <div class="grid gap-3 md:grid-cols-2">
-            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
-              <h4 class="font-bold text-amber-800 mb-1">✨ Generación de Esquema</h4>
-              <p class="text-sm text-amber-700">Si no tienes el texto, Gamma te propone una estructura de temas lógica para tu presentación.</p>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-1">✨ Texto a Presentación</h4>
+              <p class="text-sm text-blue-700">Pega tu propuesta y Gamma la convierte en slides profesionales.</p>
             </div>
-            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
-              <h4 class="font-bold text-amber-800 mb-1">📄 Texto a Gamma</h4>
-              <p class="text-sm text-amber-700">Puedes pegar un borrador largo de ChatGPT y Gamma lo dividirá inteligentemente en diapositivas elegantes.</p>
-            </div>
-            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
-              <h4 class="font-bold text-amber-800 mb-1">🔄 Cambio de Estilo un Clic</h4>
-              <p class="text-sm text-amber-700">¿No te gustan los colores? Haz clic en "Themes" y toda la presentación cambiará de fuente y color al instante sin desordenar nada.</p>
-            </div>
-            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
-              <h4 class="font-bold text-amber-800 mb-1">🌐 Publicación como Web</h4>
-              <p class="text-sm text-amber-700">Puedes compartir tu presentación como un enlace web. Tus clientes podrán verla en su celular de forma fluida.</p>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-1">🌐 Compartir como Web</h4>
+              <p class="text-sm text-blue-700">Envía un link a tu cliente. Ve la presentación en su celular perfectamente.</p>
             </div>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">¿Cómo funcionan los Créditos?</h3>
-          <p class="text-slate-600 mb-3">Gamma usa un sistema de energía para su IA:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Trabajo Comercial</h3>
           <ul class="text-sm space-y-2">
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>1. Créditos Iniciales:</strong> Al registrarte, recibes 400 créditos gratuitos. Cada vez que generas una presentación nueva, consumes unos 40 créditos.</li>
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>2. Recarga de Créditos:</strong> Puedes ganar más créditos invitando a otros alumnos o pasando a un plan de pago si necesitas crear presentaciones a diario.</li>
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>3. Edición Libre:</strong> Una vez generada la presentación, puedes editar el texto y las imágenes manualmente sin gastar créditos extra.</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Propuesta comercial:</strong> "Crea una presentación de 8 slides sobre [producto] destacando beneficios, precios y testimonios"</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Pitch de inversores:</strong> "Genera una presentación estilo startup: problema, solución, mercado, modelo de negocio, equipo"</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Reporte de resultados:</strong> "Crea un reporte visual de ventas Q4 con gráficos y conclusiones"</li>
           </ul>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos Pro de AulaGenIA</h3>
-          <p class="text-slate-600 mb-3">Para lograr presentaciones que realmente impresionen:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Ventas</h3>
           <ul class="text-sm space-y-2">
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Combina con ChatGPT:</strong> Primero usa la Receta WOW en ChatGPT para tener un contenido sólido, luego pégalo en Gamma.</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Usa las Tarjetas:</strong> Gamma no usa "hojas" fijas, usa tarjetas flexibles. Si necesitas más información en una diapositiva, simplemente sigue escribiendo y la tarjeta se agrandará sola.</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Exportación:</strong> Si lo necesitas para una reunión sin internet, puedes exportar tu creación a PDF o PowerPoint.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Combina con ChatGPT:</strong> Primero redacta el contenido en ChatGPT, luego pégalo en Gamma.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Usa Temas:</strong> Clic en "Themes" para cambiar toda la estética en un segundo.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Exporta si es necesario:</strong> Puedes bajar a PDF o PPT para reuniones sin internet.</li>
           </ul>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La tecnología elimina el trabajo pesado para que tú puedas brillar en la exposición. Gamma es tu escenario, tú eres el protagonista."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"Gamma diseña tu propuesta; TÚ cierras el trato."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Documento diseñado para el programa AulaGenIA. Información actualizada a diciembre de 2025.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Gamma para Negocios - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Profesionales</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">📄 Documento a Presentación</h4>
+              <p class="text-sm text-indigo-700">Convierte informes extensos en presentaciones ejecutivas.</p>
+            </div>
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">🎨 Temas Sobrios</h4>
+              <p class="text-sm text-indigo-700">Elige temas "Corporate" o "Minimal" para mantener la seriedad.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Práctica</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Resumen para cliente:</strong> "Crea una presentación ejecutiva de 5 slides sobre el estado del caso [tipo genérico]"</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Propuesta de servicios:</strong> "Genera una presentación profesional de servicios legales: áreas, equipo, proceso, contacto"</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Capacitación interna:</strong> "Crea material de onboarding para nuevos asociados sobre [procedimiento]"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Profesionales</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-400"><strong>⚠️ Sin datos sensibles:</strong> No incluyas información de casos reales en los prompts.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Exporta a PDF:</strong> Para documentos formales o anexos de expediente.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Revisa siempre:</strong> Gamma genera, TÚ validas el contenido antes de presentar.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"Gamma presenta tus ideas con elegancia; TÚ garantizas la precisión jurídica."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Gamma para Profesionales - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Gestión</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">📊 Reportes Automáticos</h4>
+              <p class="text-sm text-green-700">Convierte datos en presentaciones visuales rápidamente.</p>
+            </div>
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">🔄 Edición Libre</h4>
+              <p class="text-sm text-green-700">Una vez generado, edita sin gastar créditos adicionales.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Trabajo</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Reporte mensual:</strong> "Crea una presentación de reporte mensual: logros, KPIs, próximos pasos"</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Comunicado interno:</strong> "Genera un documento visual para anunciar [nueva política/cambio]"</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Onboarding:</strong> "Crea material de bienvenida para nuevos empleados: cultura, procesos, contactos"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Eficiencia</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Plantillas reutilizables:</strong> Guarda presentaciones como plantilla para futuros reportes.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Colores institucionales:</strong> Personaliza el tema con tu paleta corporativa.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Comparte como link:</strong> Evita enviar archivos pesados, comparte el enlace web.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Gamma formatea tus reportes; TÚ tomas las decisiones estratégicas."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Gamma para Gestión - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Educadores</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">✨ Clase en Minutos</h4>
+              <p class="text-sm text-emerald-700">Escribe tu tema y Gamma genera la presentación completa.</p>
+            </div>
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">🌐 Comparte con Alumnos</h4>
+              <p class="text-sm text-emerald-700">Envía un link. Tus estudiantes lo ven en cualquier dispositivo.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Aula</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Clase de historia:</strong> "Crea una presentación sobre la Revolución Francesa: causas, eventos clave, consecuencias"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Unidad de ciencias:</strong> "Genera material sobre el sistema solar: planetas, características, datos curiosos"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Repaso para examen:</strong> "Crea una presentación de repaso de [tema] con puntos clave y preguntas de práctica"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Proyecto estudiantil:</strong> Enseña a tus alumnos a usar Gamma para sus exposiciones.</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Docentes</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Adapta el nivel:</strong> Añade "para estudiantes de [nivel]" en tu prompt.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Interactivo:</strong> Las tarjetas de Gamma permiten contenido interactivo.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Exporta para offline:</strong> Descarga como PDF para proyectar sin internet.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"Gamma diseña tu material didáctico; TÚ inspiras a tus estudiantes."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Gamma para Educación - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "guia-acceso-dalle3": {
     meta: {
