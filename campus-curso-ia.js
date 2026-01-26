@@ -3843,13 +3843,40 @@ document.addEventListener("DOMContentLoaded", () => {
       "Negocios & Ventas": "Negocios & Estrategia"
     };
 
-    // Helper to get priority safely checking both keys
+    // Helper to get priority safely checking both keys and fuzzy match
     const getSegmentPriority = (caseItem, currentSeg) => {
       if (!caseItem.prioridadSegmento) return null;
-      const val1 = caseItem.prioridadSegmento[currentSeg];
-      if (val1 !== undefined) return val1;
+
+      // 1. Direct Match
+      let val = caseItem.prioridadSegmento[currentSeg];
+      if (val !== undefined) return val;
+
+      // 2. Legacy Map Match
       const legacyKey = legacyKeyMap[currentSeg];
-      if (legacyKey) return caseItem.prioridadSegmento[legacyKey];
+      if (legacyKey) {
+        val = caseItem.prioridadSegmento[legacyKey];
+        if (val !== undefined) return val;
+      }
+
+      // 3. Fuzzy/Robust Match (Emergency Fallback)
+      try {
+        const normalize = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const target = normalize(currentSeg);
+        const keys = Object.keys(caseItem.prioridadSegmento);
+
+        const foundKey = keys.find(k => {
+          const nK = normalize(k);
+          // Match main keywords
+          if (target.includes("negocios") && nK.includes("negocios")) return true;
+          if (target.includes("legal") && nK.includes("legal")) return true;
+          if (target.includes("educacion") && nK.includes("educacion")) return true;
+          if (target.includes("gestion") && nK.includes("gestion")) return true;
+          return false;
+        });
+
+        if (foundKey) return caseItem.prioridadSegmento[foundKey];
+      } catch (e) { console.error("Fuzzy match error", e); }
+
       return undefined;
     };
 
