@@ -3827,7 +3827,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let filtered;
     if (isSegmentView) {
       // Vista por segmento: mostrar todos los casos con prioridad para este segmento
-      filtered = casesData.filter(c => c.prioridadSegmento && c.prioridadSegmento[segment]);
+      // Vista por segmento: mostrar todos los casos (si no tiene prioridad, se asume general)
+      filtered = casesData.filter(c => !c.prioridadSegmento || (c.prioridadSegmento && c.prioridadSegmento[segment]));
       // Ordenar por prioridad
       filtered.sort((a, b) => {
         const prioA = a.prioridadSegmento?.[segment] || 99;
