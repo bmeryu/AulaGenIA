@@ -2886,10 +2886,208 @@ const resourcesDatabase = {
       </article>
     `,
     segments: {
-      "Negocios & Ventas": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">🎯 Tu Kit de Ventas</h4><p class="text-sm text-slate-700 mb-3">Para cerrar más ventas: <strong>Perplexity</strong> para investigar al cliente + <strong>ChatGPT</strong> para preparar tu pitch + <strong>Gamma</strong> para la propuesta visual.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Actúa como mi director comercial. Tengo una reunión con [tipo de cliente]. Dame 5 puntos clave y posibles objeciones."</p></div></div>`,
-      "Legal & Profesional": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">⚖️ Tu Kit Legal</h4><p class="text-sm text-slate-700 mb-3">Para investigación jurídica: <strong>Perplexity</strong> te da las fuentes verificables. Nunca confíes en ChatGPT para citas legales sin verificar.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Busca jurisprudencia reciente sobre [tema legal]. Dame enlaces a las fuentes originales."</p></div></div>`,
-      "Gestión & Administración": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">📊 Tu Kit de Gestión</h4><p class="text-sm text-slate-700 mb-3">Para automatizar reportes: <strong>ChatGPT</strong> para analizar datos + <strong>Gamma</strong> para presentarlos al equipo en minutos.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Analiza estos datos de ventas mensuales y dame un resumen ejecutivo con 3 insights clave."</p></div></div>`,
-      "Educación & Capacitación": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">📚 Tu Kit Educativo</h4><p class="text-sm text-slate-700 mb-3">Para preparar clases: <strong>Perplexity</strong> para fuentes + <strong>Gamma</strong> para diapositivas + <strong>DALL-E 3</strong> para ilustraciones didácticas.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Crea una presentación de 10 slides sobre [tema] para estudiantes de [nivel]. Incluye ejemplos prácticos."</p></div></div>`
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+              Tu Arsenal de Herramientas para Ventas
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Estos son los copilotos que los mejores vendedores están usando para cerrar más negocios en menos tiempo.</p>
+            
+            <div class="space-y-3 mb-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">🔍 INVESTIGAR AL PROSPECTO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> Perplexity</p>
+                <p class="text-xs text-teal-700 mb-2">Antes de la reunión, investiga la empresa, sus competidores y noticias recientes. Perplexity te da fuentes verificables.</p>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Investiga la empresa [NOMBRE] de [INDUSTRIA]. Dame: 1) Principales competidores, 2) Noticias recientes, 3) Posibles dolores de negocio. Incluye fuentes.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">✍️ REDACTAR PROPUESTAS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> Claude (elegancia) o ChatGPT (rapidez)</p>
+                <p class="text-xs text-teal-700 mb-2">Claude genera textos más sofisticados para propuestas premium. ChatGPT es más rápido para borradores iniciales.</p>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como consultor de ventas B2B. Redacta una propuesta comercial para [CLIENTE] que incluya: problema identificado, nuestra solución, beneficios y próximos pasos. Tono profesional pero cálido.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-orange-800 text-sm mb-2">📊 CREAR PRESENTACIONES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> Gamma</p>
+                <p class="text-xs text-teal-700 mb-2">Convierte tu propuesta en slides profesionales en minutos. Ideal para pitch decks y presentaciones a directivos.</p>
+              </div>
+            </div>
+            
+            <div class="bg-teal-100 rounded-lg p-3 border-l-4 border-teal-500">
+              <p class="text-xs text-teal-800"><strong>🔗 Flujo Pro de Ventas:</strong> Perplexity (investiga) → ChatGPT (estructura pitch) → Claude (pule el texto) → Gamma (presenta)</p>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"Quien investiga más, cierra más. Perplexity + Claude = propuestas que convierten."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Maestra - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+              Tu Arsenal de Herramientas para el Ejercicio Jurídico
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Herramientas especializadas para acelerar tu trabajo sin comprometer la calidad profesional.</p>
+            
+            <div class="space-y-3 mb-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">🔍 INVESTIGACIÓN JURÍDICA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> Perplexity</p>
+                <p class="text-xs text-teal-700 mb-2">Para buscar jurisprudencia y doctrina con fuentes verificables. SIEMPRE valida las citas antes de usar.</p>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Busca jurisprudencia reciente sobre [TEMA LEGAL] en [JURISDICCIÓN]. Dame casos relevantes con sus roles de identificación. Incluye enlaces a fuentes oficiales.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">✍️ REDACCIÓN DE ESCRITOS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> Claude</p>
+                <p class="text-xs text-teal-700 mb-2">Claude redacta con elegancia y puede manejar textos largos. Ideal para primeros borradores de escritos judiciales.</p>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como abogado [ESPECIALIDAD]. Redacta un borrador de [TIPO DE ESCRITO] para un caso de [MATERIA]. Hechos: [RESUMEN]. Marca [VERIFICAR] toda cita legal.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">📋 RESÚMENES DE EXPEDIENTES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> ChatGPT</p>
+                <p class="text-xs text-teal-700 mb-2">Para extraer puntos clave de documentos extensos y crear cronologías de hechos.</p>
+              </div>
+            </div>
+            
+            <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-500">
+              <p class="text-xs text-amber-800"><strong>⚠️ Advertencia Ética:</strong> Las IAs pueden inventar citas legales. NUNCA uses una referencia legislativa o jurisprudencial sin verificarla en fuentes oficiales.</p>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"Perplexity busca, Claude redacta, TÚ firmas y respondes profesionalmente."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Maestra - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+              Tu Arsenal de Herramientas para Gestión
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Automatiza tareas repetitivas y multiplica tu productividad administrativa.</p>
+            
+            <div class="space-y-3 mb-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📝 DOCUMENTOS Y REPORTES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> ChatGPT</p>
+                <p class="text-xs text-teal-700 mb-2">Para actas de reunión, resúmenes ejecutivos, correos y análisis de datos. El todoterreno de la oficina.</p>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Aquí están mis notas de la reunión: [PEGAR]. Genera: 1) Acta formal con asistentes y acuerdos, 2) Lista de tareas con responsables, 3) Correo de seguimiento para el equipo.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-orange-800 text-sm mb-2">📊 PRESENTACIONES RÁPIDAS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> Gamma</p>
+                <p class="text-xs text-teal-700 mb-2">Convierte cualquier texto en una presentación profesional en minutos. Ideal para reportes al jefe o al equipo.</p>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Crea una presentación de 8 slides sobre [TEMA]. Incluye: resumen ejecutivo, datos clave, gráficos sugeridos y conclusiones. Estilo corporativo y moderno.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">📧 COMUNICACIONES INTERNAS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> Gemini (integrado con Gmail)</p>
+                <p class="text-xs text-teal-700 mb-2">Si trabajas con Google Workspace, Gemini puede ayudarte directamente desde Gmail y Calendar.</p>
+              </div>
+            </div>
+            
+            <div class="bg-teal-100 rounded-lg p-3 border-l-4 border-teal-500">
+              <p class="text-xs text-teal-800"><strong>🔗 Flujo Pro de Gestión:</strong> ChatGPT (procesa datos) → Gamma (visualiza) → Gemini (distribuye por correo)</p>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Si lo haces igual todos los días, ChatGPT puede hacerlo por ti. Tu tiempo vale más."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Maestra - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+              Tu Arsenal de Herramientas para Educación
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Diseña materiales pedagógicos de calidad en una fracción del tiempo.</p>
+            
+            <div class="space-y-3 mb-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📚 DISEÑO DE ACTIVIDADES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> ChatGPT</p>
+                <p class="text-xs text-teal-700 mb-2">Para crear actividades, ejercicios, rúbricas y guías de aprendizaje adaptadas a tu contexto.</p>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como diseñador instruccional. Tengo [N] estudiantes de [NIVEL/GRADO]. Diseña una actividad de 30 minutos para enseñar [TEMA] que incluya: objetivo, materiales, procedimiento y evaluación.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-orange-800 text-sm mb-2">📊 PRESENTACIONES DIDÁCTICAS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> Gamma</p>
+                <p class="text-xs text-teal-700 mb-2">Crea presentaciones atractivas para tus clases sin pasar horas en PowerPoint.</p>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Crea una presentación de 10 slides sobre [TEMA] para estudiantes de [NIVEL]. Incluye: conceptos clave, ejemplos cotidianos, ejercicio práctico y preguntas de cierre. Estilo visual y atractivo.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">🎨 MATERIALES VISUALES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> DALL-E 3 / Canva AI</p>
+                <p class="text-xs text-teal-700 mb-2">Genera ilustraciones didácticas, infografías y recursos visuales para tus clases.</p>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">🔍 FUENTES CONFIABLES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Herramienta:</strong> Perplexity</p>
+                <p class="text-xs text-teal-700 mb-2">Para investigar temas con fuentes verificables que puedas compartir con tus estudiantes.</p>
+              </div>
+            </div>
+            
+            <div class="bg-teal-100 rounded-lg p-3 border-l-4 border-teal-500">
+              <p class="text-xs text-teal-800"><strong>🔗 Flujo Pro Educativo:</strong> Perplexity (investiga) → ChatGPT (diseña actividad) → Gamma (crea presentación) → DALL-E (ilustra)</p>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La IA prepara materiales; TÚ enciendes la chispa del aprendizaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Maestra - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
     }
   },
   "kit-delegacion-ia": {
