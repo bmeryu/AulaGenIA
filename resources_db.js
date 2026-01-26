@@ -1313,60 +1313,10 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">¿Para qué sirve este listado?</h2>
           <p class="text-emerald-700">La IA siempre querrá darte una respuesta, incluso si no sabe la verdad. Para que tu copiloto sea útil y no te confunda, sigue estos tres pasos sencillos cada vez que chatees con ella.</p>
         </section>
-        <section>
-          <div class="space-y-4">
-            <div class="bg-white rounded-xl p-5 border-2 border-indigo-200 hover:border-indigo-400 transition-colors">
-              <div class="flex items-center gap-3 mb-3">
-                <span class="w-10 h-10 bg-indigo-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">1</span>
-                <h3 class="font-bold text-indigo-800 text-lg">PASO 1: Da una orden clara</h3>
-              </div>
-              <p class="text-slate-600 mb-3">Antes de escribir, piensa qué quieres lograr exactamente.</p>
-              <div class="space-y-2">
-                <div class="flex items-start gap-2">
-                  <input type="checkbox" class="checkbox-custom">
-                  <label class="text-sm text-slate-700"><strong>La acción principal:</strong> ¿Empecé con un verbo claro como "Escribe", "Resume" o "Explica"?</label>
-                </div>
-                <div class="flex items-start gap-2">
-                  <input type="checkbox" class="checkbox-custom">
-                  <label class="text-sm text-slate-700"><strong>Pide honestidad:</strong> ¿Le dije a la IA que si no sabe la respuesta es mejor que me diga "no lo sé" antes que inventar?</label>
-                </div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl p-5 border-2 border-blue-200 hover:border-blue-400 transition-colors">
-              <div class="flex items-center gap-3 mb-3">
-                <span class="w-10 h-10 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">2</span>
-                <h3 class="font-bold text-blue-800 text-lg">PASO 2: Alinea la información</h3>
-              </div>
-              <p class="text-slate-600 mb-3">Asegúrate de que tu pedido y lo que la IA sabe vayan por el mismo camino.</p>
-              <div class="space-y-2">
-                <div class="flex items-start gap-2">
-                  <input type="checkbox" class="checkbox-custom">
-                  <label class="text-sm text-slate-700"><strong>Instrucción + Información:</strong> ¿Le di los datos necesarios para que trabaje? Es como darle a un cocinero los ingredientes exactos de tu receta favorita.</label>
-                </div>
-                <div class="flex items-start gap-2">
-                  <input type="checkbox" class="checkbox-custom">
-                  <label class="text-sm text-slate-700"><strong>El camino correcto:</strong> Si le pides algo muy difícil o extraño, la IA puede perderse. Pregúntale: "¿Entendiste bien lo que te pedí y tienes la información para hacerlo?".</label>
-                </div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl p-5 border-2 border-green-200 hover:border-green-400 transition-colors">
-              <div class="flex items-center gap-3 mb-3">
-                <span class="w-10 h-10 bg-green-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">3</span>
-                <h3 class="font-bold text-green-800 text-lg">PASO 3: Revisa el resultado</h3>
-              </div>
-              <p class="text-slate-600 mb-3">No aceptes la primera respuesta como la única verdad. Tú eres el piloto al mando.</p>
-              <div class="space-y-2">
-                <div class="flex items-start gap-2">
-                  <input type="checkbox" class="checkbox-custom">
-                  <label class="text-sm text-slate-700"><strong>La técnica de la duda:</strong> Justo después de que responda, escribe: "¿Revisaste si cometiste algún error? Por favor, asegúrate de que los datos sean correctos".</label>
-                </div>
-                <div class="flex items-start gap-2">
-                  <input type="checkbox" class="checkbox-custom">
-                  <label class="text-sm text-slate-700"><strong>Tu sentido común:</strong> Si algo suena raro o no te convence, ¡confía en ti! Verifica los nombres o fechas importantes en una fuente que conozcas.</label>
-                </div>
-              </div>
-            </div>
-          </div>
+        <section class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6 border border-slate-200 mb-6">
+          <p class="text-slate-600 text-sm">
+            Este checklist ha sido adaptado específicamente para que verifiques la calidad de las respuestas en tu área profesional.
+          </p>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
@@ -1375,7 +1325,184 @@ const resourcesDatabase = {
         <div class="text-center text-xs text-slate-500 pt-2">Material diseñado exclusivamente para alumnos de AulaGenIA. Edición Dic. 2025.</div>
       </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-white rounded-xl p-5 border-2 border-indigo-200 hover:border-indigo-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-indigo-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">1</span>
+              <h3 class="font-bold text-indigo-800 text-lg">PASO 1: Define el Objetivo Estratégico</h3>
+            </div>
+            <p class="text-slate-600 mb-3">No pidas "algo de ventas". Define el KPI o la meta.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Claridad:</strong> ¿Le dije si quiero aumentar leads, cerrar una venta o fidelizar? (Ej: "Objetivo: Reducir la tasa de churn un 5%").</label>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border-2 border-blue-200 hover:border-blue-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">2</span>
+              <h3 class="font-bold text-blue-800 text-lg">PASO 2: Da Contexto de Negocio</h3>
+            </div>
+            <p class="text-slate-600 mb-3">La IA no conoce tu empresa ni tu mercado si no se lo dices.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Perfil de Cliente:</strong> ¿Le expliqué quién es mi Buyer Persona? (Ej: "Gerentes de TI de 40-50 años en banca").</label>
+              </div>
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Propuesta de Valor:</strong> ¿Sabe la IA por qué mi producto gana a la competencia?</label>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border-2 border-green-200 hover:border-green-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-green-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">3</span>
+              <h3 class="font-bold text-green-800 text-lg">PASO 3: Verifica la Rentabilidad</h3>
+            </div>
+            <p class="text-slate-600 mb-3">La IA puede sugerir ideas creativas pero muy costosas. Tú filtras.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Factibilidad:</strong> ¿Es esta idea viable con mi presupuesto actual? ¿Los datos de mercado citados son reales?</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-white rounded-xl p-5 border-2 border-indigo-200 hover:border-indigo-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-indigo-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">1</span>
+              <h3 class="font-bold text-indigo-800 text-lg">PASO 1: Cero Ambigüedad</h3>
+            </div>
+            <p class="text-slate-600 mb-3">En derecho, una palabra cambia todo. Sé preciso.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Territorialidad:</strong> ¿Especifiqué la jurisdicción? (Ej: "Según el Código Civil de Chile", no "leyes generales").</label>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border-2 border-blue-200 hover:border-blue-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">2</span>
+              <h3 class="font-bold text-blue-800 text-lg">PASO 2: Contexto Procesal</h3>
+            </div>
+            <p class="text-slate-600 mb-3">La IA no sabe en qué etapa está tu caso.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Postura:</strong> ¿Le dije a quién defiendo? (Ej: "Redacta favoreciendo al demandado").</label>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border-2 border-red-200 hover:border-red-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-red-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">3</span>
+              <h3 class="font-bold text-red-800 text-lg">PASO 3: Verificación CRÍTICA</h3>
+            </div>
+            <p class="text-slate-600 mb-3">La IA inventa leyes. Tu licencia depende de esto.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Fuente Primaria:</strong> ¿He verificado cada artículo citado en la ley oficial vigente? NUNCA confíes ciegamente.</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-white rounded-xl p-5 border-2 border-indigo-200 hover:border-indigo-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-indigo-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">1</span>
+              <h3 class="font-bold text-indigo-800 text-lg">PASO 1: Formato de Salida</h3>
+            </div>
+            <p class="text-slate-600 mb-3">Para ser eficiente, la IA debe darte el trabajo listo para usar.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Estructura:</strong> ¿Pedí el formato exacto? (Ej: "Tabla CSV", "Lista con bullets", "Texto en 3 párrafos").</label>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border-2 border-blue-200 hover:border-blue-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">2</span>
+              <h3 class="font-bold text-blue-800 text-lg">PASO 2: Datos de Entrada</h3>
+            </div>
+            <p class="text-slate-600 mb-3">Si entra basura, sale basura.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Limpieza:</strong> ¿Le di los datos desordenados pero completos? (Ej: "Aquí están las notas de la reunión, extrae los acuerdos").</label>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border-2 border-green-200 hover:border-green-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-green-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">3</span>
+              <h3 class="font-bold text-green-800 text-lg">PASO 3: Control de Calidad</h3>
+            </div>
+            <p class="text-slate-600 mb-3">Revisa antes de enviar a gerencia.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Errores Numéricos:</strong> ¿Sumé las cifras yo mismo? (La IA falla en matemáticas simples a veces).</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-white rounded-xl p-5 border-2 border-indigo-200 hover:border-indigo-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-indigo-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">1</span>
+              <h3 class="font-bold text-indigo-800 text-lg">PASO 1: Objetivo de Aprendizaje</h3>
+            </div>
+            <p class="text-slate-600 mb-3">¿Qué deben lograr tus estudiantes?</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Meta Pedagógica:</strong> (Ej: "Que comprendan el concepto de X", no "haz una tarea sobre X").</label>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border-2 border-blue-200 hover:border-blue-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">2</span>
+              <h3 class="font-bold text-blue-800 text-lg">PASO 2: Adaptación al Nivel</h3>
+            </div>
+            <p class="text-slate-600 mb-3">La IA tiende a ser muy técnica o muy infantil si no la ajustas.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Audiencia:</strong> ¿Especifiqué la edad y conocimientos previos? (Ej: "Niños de 10 años sin base científica").</label>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border-2 border-green-200 hover:border-green-400 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 bg-green-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">3</span>
+              <h3 class="font-bold text-green-800 text-lg">PASO 3: Filtro Humano</h3>
+            </div>
+            <p class="text-slate-600 mb-3">La educación requiere conexión humana.</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <input type="checkbox" class="checkbox-custom">
+                <label class="text-sm text-slate-700"><strong>Calidez:</strong> ¿Suena como yo o como un robot? ¿La actividad fomenta la interacción real en el aula?</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+    }
   },
   "glosario-m1v1": {
     meta: {
