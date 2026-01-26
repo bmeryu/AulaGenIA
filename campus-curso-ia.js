@@ -3552,25 +3552,29 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: "trending_up",
       color: "indigo",
       badge: "🏢",
+      image: "images/segment_negocios.png",
       description: "Emprendedores, vendedores, dueños de negocio"
     },
     "Legal & Profesional": {
       icon: "gavel",
       color: "slate",
       badge: "⚖️",
+      image: "images/segment_legal.png",
       description: "Abogados, contadores, consultores"
     },
     "Gestión & Adm.": {
       icon: "settings",
       color: "teal",
       badge: "📊",
+      image: "images/segment_gestion.png",
       description: "Gerentes, asistentes, coordinadores"
     },
     "Educación": {
       icon: "school",
       color: "emerald",
       badge: "🎓",
-      description: "Docentes, capacitadores, diseñadores instruccionales"
+      image: "images/segment_educacion.png",
+      description: "Docentes, capacitadores, diseño instruccional"
     }
   };
 
@@ -3583,28 +3587,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const modal = document.createElement('div');
     modal.id = 'profile-selector-modal';
-    modal.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-in fade-in duration-300';
+    modal.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md animate-in fade-in duration-300';
     modal.innerHTML = `
-      <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-8 animate-in zoom-in-95 duration-300">
-        <div class="text-center mb-8">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-teal-400 to-indigo-500 flex items-center justify-center">
-            <i data-lucide="user-check" class="w-8 h-8 text-white"></i>
-          </div>
-          <h2 class="text-2xl font-extrabold text-slate-900 mb-2">¿Cuál es tu perfil?</h2>
-          <p class="text-slate-500">Personalizaremos los casos según tu área de trabajo</p>
+      <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full p-8 animate-in zoom-in-95 duration-300 overflow-hidden relative">
+        <div class="text-center mb-8 relative z-10">
+          <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Selecciona tu Perfil Profesional</h2>
+          <p class="text-slate-500 text-lg">Personalizaremos los casos y ejemplos según tu área</p>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           ${Object.entries(segmentConfig).map(([name, cfg]) => `
             <button onclick="selectUserSegment('${name}')" 
-              class="group p-6 rounded-2xl border-2 border-slate-200 hover:border-${cfg.color}-400 hover:bg-${cfg.color}-50 transition-all text-left">
-              <div class="flex items-center gap-4 mb-3">
-                <div class="w-12 h-12 rounded-xl bg-${cfg.color}-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <span class="text-2xl">${cfg.badge}</span>
+              class="group relative h-64 rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-${cfg.color}-500 transition-all text-left shadow-sm hover:shadow-xl hover:-translate-y-1">
+              
+              <!-- Background Image with Gradient Overlay -->
+              <div class="absolute inset-0 bg-slate-100">
+                <img src="${cfg.image}" alt="${name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
+              </div>
+              
+              <!-- Content -->
+              <div class="absolute bottom-0 left-0 right-0 p-5 relative z-10">
+                <div class="w-10 h-10 mb-3 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl border border-white/30">
+                  ${cfg.badge}
                 </div>
-                <div>
-                  <h3 class="font-bold text-slate-900">${name}</h3>
-                  <p class="text-xs text-slate-500">${cfg.description}</p>
-                </div>
+                <h3 class="font-bold text-white text-lg leading-tight mb-1">${name}</h3>
+                <p class="text-xs text-slate-300 font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
+                  ${cfg.description}
+                </p>
               </div>
             </button>
           `).join('')}
