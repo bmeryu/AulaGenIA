@@ -1880,139 +1880,728 @@ const resourcesDatabase = {
     meta: {
       type: "glossary",
       title: "📖 IA en Servilleta: Glosario de Conceptos Generativos",
-      subtitle: "Módulo 1 - Video 2",
+      subtitle: "Módulo 1 - Video 2: El lenguaje de la IA",
       icon: "book",
       color: "emerald",
       module: 1,
-      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V2.pdf",
-      isUniversal: true
+      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V2.pdf"
     },
-    content: {
-      intro: {
-        title: "Mensaje de Julia",
-        text: "\"¡Bienvenido al segundo video! Aquí aprenderás el lenguaje de la IA de forma sencilla. No te satures con los nombres; usa este glosario como tu brújula para entender cómo funciona la máquina. ¡Seguimos!\""
-      },
-      terms: [
-        {
-          term: "IA Generativa",
-          definition: "Una rama de la inteligencia artificial que no solo analiza datos, sino que crea contenido nuevo (texto, imagen, video) desde cero.",
-          analogy: "Es como pasar de tener un reproductor de música a tener a Mozart en vivo listo para componer lo que le pidas."
-        },
-        {
-          term: "LLM (Gran Modelo de Lenguaje)",
-          definition: "Los 'Cerebros' de texto. Modelos entrenados con trillones de palabras para predecir la siguiente palabra en una frase de forma coherente.",
-          analogy: "Es un autocompletar con esteroides: sabe predecir qué palabra sigue tan bien que parece que está razonando."
-        },
-        {
-          term: "Instrucción (Prompt)",
-          definition: "La orden o pregunta que le das a la IA. Es el puente entre tu necesidad y lo que la máquina genera.",
-          analogy: "Es el pedido en un restaurante: si pides 'algo rico', el chef se confunde; si pides 'pasta al pesto con poco ajo', el resultado es perfecto."
-        },
-        {
-          term: "Alucinación",
-          definition: "Cuando la IA inventa información con total seguridad. Sucede porque su prioridad es la coherencia, no siempre la verdad de los hechos.",
-          analogy: "Es como un amigo muy seguro de sí mismo que, cuando no sabe la respuesta, te la inventa con una sonrisa para no quedar mal."
-        },
-        {
-          term: "Tokens",
-          definition: "La unidad mínima que la IA 'lee'. No entiende palabras completas, sino fragmentos de caracteres o sílabas.",
-          analogy: "Son las piezas de LEGO que usa la IA para construir sus respuestas. A más piezas, más compleja la construcción."
-        },
-        {
-          term: "Ventana de Contexto",
-          definition: "La 'memoria a corto plazo' de la IA durante una conversación. Determina cuánta información puede recordar antes de empezar a olvidar el inicio.",
-          analogy: "Es el tamaño de la mesa de trabajo: si la mesa es pequeña, tienes que quitar papeles viejos para poner nuevos; si es grande, puedes tener todo a la vista."
-        },
-        {
-          term: "Multimodalidad",
-          definition: "La capacidad de la IA para procesar diferentes tipos de información (texto, audio, imagen) de forma simultánea.",
-          analogy: "Es un asistente con todos los sentidos: puede leer tu reporte, escuchar tu audio y ver tu boceto, todo a la vez."
-        }
-      ],
-      outro: {
-        title: "⚡ AulaGenIA Hack (M1-V2)",
-        quote: "\"La calidad del resultado depende de la claridad de tu instrucción.\"",
-        text: "Si la respuesta de la IA no te convence, no es un fallo de la máquina; revisa cómo diste la instrucción. En este nivel, aprender a preguntar a la IA es mucho más importante que saber la respuesta de antemano."
-      }
-    },
-    base_html: null,
+    base_html: `
+      <article class="space-y-6">
+        <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
+          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
+          <p class="text-teal-700 italic">"¡Bienvenido al segundo video! Aquí aprenderás el lenguaje de la IA de forma sencilla. No te satures con los nombres; usa este glosario como tu brújula para entender cómo funciona la máquina. ¡Seguimos!"</p>
+        </section>
+    `,
     segments: {
-      "Negocios & Ventas": "",
-      "Legal & Profesional": "",
-      "Gestión & Administración": "",
-      "Educación & Capacitación": ""
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+              Conceptos Generativos para Líderes de Negocio
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">El vocabulario técnico traducido a tu realidad comercial. Domina estos conceptos y lidera la transformación en tu empresa.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. IA GENERATIVA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> IA que no solo analiza datos, sino que crea contenido nuevo (texto, imagen, video) desde cero.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es pasar de tener reportes estáticos a tener un equipo creativo 24/7 que genera propuestas, presentaciones y estrategias personalizadas bajo demanda.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como director creativo senior. Genera 3 conceptos de campaña para lanzar [PRODUCTO] al segmento [AUDIENCIA]. Para cada uno incluye: hook principal, beneficio clave y call to action.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. LLM (GRAN MODELO DE LENGUAJE)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Los "cerebros" de texto entrenados con trillones de palabras para predecir respuestas coherentes.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es como tener acceso al conocimiento colectivo de todos los consultores de negocio del mundo, procesado en segundos para tu decisión específica.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INSTRUCCIÓN (PROMPT)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La orden que le das a la IA. Es el puente entre tu necesidad y lo que genera.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es el brief estratégico que le das a tu agencia. Si dices "hazme algo de marketing", fracasan. Si das objetivos, métricas y contexto, entregan oro.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Eres estratega comercial. Mi empresa vende [PRODUCTO] a [AUDIENCIA]. Objetivo: aumentar ticket promedio 20%. Dame 3 tácticas de upselling con scripts de venta para cada una.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-amber-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">4. ALUCINACIÓN ⚠️</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cuando la IA inventa información con total seguridad.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>⚠️ Riesgo para Negocios:</strong> Puede inventar cifras de mercado, estadísticas de competidores o datos financieros. Si los presentas sin verificar, pierdes credibilidad ante clientes e inversores.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. TOKENS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Las unidades mínimas que la IA procesa. Tiene un límite por conversación.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es tu presupuesto de atención en una presentación. Si gastas todo en la introducción, no queda "presupuesto" para el cierre de venta.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. VENTANA DE CONTEXTO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La memoria de corto plazo de la IA. Cuánto puede recordar en una conversación.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es como una reunión de directorio. Si metes 50 temas en una hora, los últimos se olvidan. Enfoca la conversación en lo estratégico.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. MULTIMODALIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La capacidad de procesar texto, audio e imagen simultáneamente.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es un analista que puede ver tu góndola, leer tu reporte y escuchar la llamada del cliente, todo a la vez, para darte insights integrados.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">[SUBIR IMAGEN] Esta es una foto de mi producto en góndola. Analiza: (1) Visibilidad vs competencia, (2) Oportunidades de mejora en packaging, (3) Sugerencias de posicionamiento.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad del resultado depende de la claridad de tu instrucción. Líder claro, IA poderosa."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+              Conceptos Generativos para Profesionales del Derecho
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">El vocabulario técnico traducido al ejercicio jurídico. Entiende la máquina para usarla con criterio profesional.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. IA GENERATIVA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> IA que crea contenido nuevo desde cero.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es pasar de buscar precedentes a tener un asistente que redacta borradores de escritos basándose en toda la doctrina existente. Pero recuerda: TÚ firmas.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. LLM (GRAN MODELO DE LENGUAJE)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Modelos entrenados para generar texto coherente.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Ha "leído" toda la legislación, pero como un estudiante que memoriza sin entender. Sabe el texto, no el espíritu de la ley.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INSTRUCCIÓN (PROMPT)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La orden que le das a la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es la instrucción que das al paralegal. Ambigüedad = error. Debes especificar jurisdicción, materia, postura y formato exacto.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como asistente legal chileno. Redacta un borrador de [TIPO DE ESCRITO] para un caso de [MATERIA]. Postura: favoreciendo al [DEMANDANTE/DEMANDADO]. Marca con [VERIFICAR] toda cita legal.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-red-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">4. ALUCINACIÓN ⚠️ CRÍTICO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cuando la IA inventa información con total seguridad.</p>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400 mb-2">
+                  <p class="text-xs text-red-800"><strong>⚠️ RIESGO PROFESIONAL:</strong> Puede citar leyes derogadas, inventar jurisprudencia inexistente o confundir artículos. Tu licencia profesional está en juego. SIEMPRE verifica en fuentes oficiales.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. TOKENS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Unidades de procesamiento con límite.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Son las fojas del expediente digital. Si tu documento es muy largo, la IA "olvida" las primeras páginas al llegar al final.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. VENTANA DE CONTEXTO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La memoria de corto plazo.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Si el expediente es muy grueso, el paralegal digital olvida la demanda inicial cuando llega a las pruebas. Segmenta tu trabajo en partes.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. MULTIMODALIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Procesar texto, audio e imagen.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Puedes subir una foto de un contrato escaneado y la IA lo transcribe, identifica cláusulas problemáticas y señala partes ilegibles.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack Legal</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad del resultado depende de la claridad de tu instrucción. Abogado preciso, IA útil."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+              Conceptos Generativos para Profesionales de Gestión
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">El vocabulario técnico traducido a tu operación diaria. Entiende la máquina para multiplicar tu eficiencia.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. IA GENERATIVA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> IA que crea contenido nuevo desde cero.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Es pasar de copiar y pegar plantillas a tener un asistente que genera reportes, correos y actas personalizadas en segundos.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Genera un correo profesional para informar a [DESTINATARIO] sobre [TEMA]. Tono: formal pero cercano. Máximo 100 palabras. Incluye saludo y despedida apropiados.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. LLM (GRAN MODELO DE LENGUAJE)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Modelos entrenados para generar texto coherente.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Es como tener acceso a todos los manuales de procedimientos del mundo, resumidos y adaptados a tu pregunta específica.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INSTRUCCIÓN (PROMPT)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La orden que le das a la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Es el procedimiento operativo (SOP) que le das. Si dices "ordena esto", lo hará mal. Si das formato, criterio y ejemplo, ejecuta perfecto.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-amber-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">4. ALUCINACIÓN ⚠️</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cuando la IA inventa información.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>⚠️ Riesgo para Gestión:</strong> Puede inventar cifras en reportes o datos de proveedores. Siempre verifica números antes de enviar a gerencia.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. TOKENS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Unidades de procesamiento con límite.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Es el tamaño del Post-it. No puedes escribir un manual completo en un Post-it. Prioriza lo esencial.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. VENTANA DE CONTEXTO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La memoria de corto plazo.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Es tu bandeja de entrada. Si intentas procesar 500 correos a la vez, te saturas. Procesa de a grupos manteniendo el foco.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. MULTIMODALIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Procesar texto, audio e imagen.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Puedes subir una foto de una factura arrugada y la IA extrae todos los datos estructurados para tu Excel. Adiós al tipeo manual.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">[SUBIR FOTO] Esta es una factura/boleta. Extrae: Proveedor, RUT, Número, Fecha, Monto neto, IVA, Total. Formato: tabla lista para copiar a Excel.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad del resultado depende de la claridad de tu instrucción. Proceso claro, resultado impecable."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+              Conceptos Generativos para Educadores
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">El vocabulario técnico traducido al aula. Entiende la máquina para potenciar tu práctica docente.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. IA GENERATIVA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> IA que crea contenido nuevo desde cero.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Es pasar de buscar materiales a tener un asistente que genera actividades, evaluaciones y recursos personalizados para tu clase específica.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Genera una actividad de 20 minutos para enseñar [CONCEPTO] a estudiantes de [NIVEL]. Incluye: objetivo, materiales, pasos detallados y forma de evaluar. Estilo: aprendizaje activo.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. LLM (GRAN MODELO DE LENGUAJE)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Modelos entrenados para generar texto coherente.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Es un bibliotecario que leyó todos los libros pero nunca dio clase. Sabe el contenido, no sabe cómo enseñarlo a TUS estudiantes. Eso lo aportas tú.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INSTRUCCIÓN (PROMPT)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La orden que le das a la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Es la rúbrica de evaluación. Si la instrucción es vaga, la respuesta es genérica. Si especificas nivel, estilo y objetivos, obtienes material de calidad.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-amber-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">4. ALUCINACIÓN ⚠️</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cuando la IA inventa información.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>⚠️ Oportunidad Pedagógica:</strong> En lugar de temerla, úsala para enseñar pensamiento crítico. Pide a tus estudiantes que detecten errores en respuestas de IA.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. TOKENS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Unidades de procesamiento con límite.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Es el límite de palabras de un ensayo. Si gastas todo en la introducción, no hay desarrollo ni conclusión. Enseña a tus estudiantes a ser concisos.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. VENTANA DE CONTEXTO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La memoria de corto plazo.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Es la pizarra del aula. Si la llenas sin borrar, los estudiantes pierden el hilo. Mantén el foco en lo importante.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. MULTIMODALIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Procesar texto, audio e imagen.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Puedes subir una foto del ejercicio resuelto a mano por un estudiante y la IA te ayuda a identificar errores conceptuales.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">[SUBIR FOTO] Este es un ejercicio de [ASIGNATURA] resuelto por un estudiante de [NIVEL]. (1) ¿Está correcto? (2) Si hay errores, identifícalos. (3) Sugiere retroalimentación constructiva.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad del resultado depende de la claridad de tu instrucción. Pedagogía clara, materiales brillantes."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `
     }
   },
   "glosario-m1v3": {
     meta: {
       type: "glossary",
       title: "📖 IA en Servilleta: Glosario de Ingeniería de Instrucciones",
-      subtitle: "Módulo 1 - Video 3",
+      subtitle: "Módulo 1 - Video 3: Aprende a hablarle a la IA",
       icon: "book",
       color: "emerald",
       module: 1,
-      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V3.pdf",
-      isUniversal: true
+      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V3.pdf"
     },
-    content: {
-      intro: {
-        title: "Mensaje de Julia",
-        text: "\"¡Llegamos al Video 3! Ahora que sabes qué es la IA, vamos a aprender a hablarle. En esta sesión descubriremos cómo diseñar órdenes que realmente funcionen. ¡Saca tu libreta de notas!\""
-      },
-      terms: [
-        {
-          term: "Ingeniería de Instrucciones",
-          definition: "La disciplina de diseñar y refinar las órdenes que le damos a la IA para obtener el mejor resultado posible.",
-          analogy: "Es como ser un director de orquesta: no tocas el instrumento, pero guías a los músicos para que suenen perfecto."
-        },
-        {
-          term: "Asignación de Roles",
-          definition: "Técnica de pedirle a la IA que actúe como una personalidad o experto específico (ej: 'Actúa como un profesor de historia').",
-          analogy: "Es ponerle un disfraz profesional a la IA para que su tono y conocimiento se ajusten a lo que necesitas."
-        },
-        {
-          term: "Instrucción Directa",
-          definition: "Cuando le pides algo a la IA sin darle ejemplos previos, confiando en su conocimiento general.",
-          analogy: "Es como pedirle a un desconocido en la calle que te dé la hora: una pregunta rápida, una respuesta directa."
-        },
-        {
-          term: "Instrucción con Ejemplos",
-          definition: "Darle a la IA uno o varios modelos de cómo quieres que responda antes de hacer la petición final.",
-          analogy: "Es como enseñarle a alguien a hacer nudos: primero le muestras dos o tres veces cómo se hace y luego dejas que lo intente."
-        },
-        {
-          term: "Delimitadores",
-          definition: "Signos de puntuación o símbolos (como comillas, asteriscos o corchetes) que usamos para separar las instrucciones del texto que queremos procesar.",
-          analogy: "Son las vallas de un jardín: le dicen a la IA exactamente dónde termina una idea y dónde empieza la siguiente."
-        },
-        {
-          term: "Iteración",
-          definition: "El proceso de repetir, ajustar y mejorar una instrucción basándote en la respuesta anterior de la IA.",
-          analogy: "Es como afinar una guitarra: vas ajustando las cuerdas poco a poco hasta que el sonido es perfecto."
-        },
-        {
-          term: "Temperatura",
-          definition: "Un ajuste (parámetro) que controla qué tan 'creativa' o 'predecible' es la respuesta de la IA.",
-          analogy: "Es el termostato de la imaginación: si está baja, la IA es seria y lógica; si está alta, se vuelve creativa y arriesgada."
-        },
-        {
-          term: "Sesgo de Autoridad",
-          definition: "La tendencia humana a creer que lo que dice la IA es verdad absoluta solo porque lo presenta con un lenguaje formal, seguro y profesional.",
-          analogy: "Es como creer todo lo que dice alguien con bata blanca, asumiendo que es médico aunque no hayamos visto su título."
-        }
-      ],
-      outro: {
-        title: "⚡ AulaGenIA Hack (M1-V3)",
-        quote: "\"El contexto es el rey de la instrucción.\"",
-        text: "No asumas que la IA sabe lo que tienes en la cabeza. Cuanto más contexto des (quién eres, para qué lo quieres y qué formato buscas), mejor será el resultado. Recuerda: el éxito está en saber preguntar a la IA con precisión quirúrgica y siempre verificando la información para evitar el sesgo de autoridad."
-      }
-    },
-    base_html: null,
+    base_html: `
+      <article class="space-y-6">
+        <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
+          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
+          <p class="text-teal-700 italic">"¡Llegamos al Video 3! Ahora que sabes qué es la IA, vamos a aprender a hablarle. En esta sesión descubriremos cómo diseñar órdenes que realmente funcionen. ¡Saca tu libreta de notas!"</p>
+        </section>
+    `,
     segments: {
-      "Negocios & Ventas": "",
-      "Legal & Profesional": "",
-      "Gestión & Administración": "",
-      "Educación & Capacitación": ""
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+              Ingeniería de Instrucciones para Líderes de Negocio
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Las técnicas que separan al usuario casual del profesional que obtiene resultados. Domina estas 8 herramientas para multiplicar tu productividad.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. INGENIERÍA DE INSTRUCCIONES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La disciplina de diseñar órdenes que produzcan el mejor resultado posible.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es como ser el CEO de tu interacción con IA: no ejecutas, pero diseñas la estrategia y las instrucciones que garantizan el resultado.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. ASIGNACIÓN DE ROLES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedirle a la IA que actúe como un experto específico.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es contratar al consultor perfecto para cada tarea. Un "Actúa como CFO" te da análisis financiero; un "Actúa como Director de Marketing" te da creatividad comercial.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como un Director Comercial con 15 años de experiencia en [INDUSTRIA]. Mi mayor desafío es [PROBLEMA]. Dame 3 estrategias probadas para resolverlo este trimestre.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INSTRUCCIÓN DIRECTA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedir algo sin dar ejemplos previos.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Uso en Negocios:</strong> Perfecto para tareas claras: "Dame 5 nombres para mi nuevo producto de [CATEGORÍA]". Rápido, directo, efectivo.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. INSTRUCCIÓN CON EJEMPLOS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Mostrar modelos antes de pedir el resultado.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Uso en Negocios:</strong> Si quieres que los correos de venta tengan TU estilo, muéstrale 2-3 ejemplos exitosos. La IA clonará el tono y estructura.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Aquí hay 2 ejemplos de correos de prospección que nos funcionan bien: [EJEMPLO 1] [EJEMPLO 2]. Ahora genera 3 variaciones nuevas manteniendo el mismo estilo y estructura para el prospecto [NOMBRE].</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. DELIMITADORES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Símbolos que separan instrucciones del contenido.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Uso en Negocios:</strong> Usa """ o ### para separar claramente TU instrucción del texto que quieres procesar (ej: un contrato, un email, un reporte).</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. ITERACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Ajustar y mejorar basándose en respuestas anteriores.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Uso en Negocios:</strong> No esperes la respuesta perfecta a la primera. Di: "Me gusta la estructura pero hazlo más agresivo comercialmente" o "Mantén los puntos 2 y 3 pero cambia el 1".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. TEMPERATURA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El control de creatividad vs. precisión.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Uso en Negocios:</strong> Para reportes financieros, "sé conservador". Para campañas creativas, "sé atrevido y disruptivo". Controla el termostato según la tarea.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-amber-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">8. SESGO DE AUTORIDAD ⚠️</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Creer que la IA siempre tiene razón porque "suena profesional".</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>⚠️ Trampa para Líderes:</strong> La IA puede inventar datos de mercado con total seguridad. Antes de presentar cifras a inversores o directorio, SIEMPRE verifica.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"El contexto es el rey de la instrucción. Líder que da contexto, líder que obtiene resultados de calidad."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+              Ingeniería de Instrucciones para el Ejercicio Jurídico
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Las técnicas que convierten a la IA en tu paralegal más eficiente. Domina estas 8 herramientas con criterio profesional.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. INGENIERÍA DE INSTRUCCIONES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Diseñar órdenes precisas para obtener resultados útiles.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es redactar una instrucción como si fuera una cláusula contractual: sin ambigüedad, con especificidad, definiendo exactamente qué esperas del resultado.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. ASIGNACIÓN DE ROLES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedirle a la IA que actúe como un experto específico.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Uso Legal:</strong> "Actúa como abogado penalista chileno" te dará un enfoque diferente a "Actúa como abogado tributarista". Define la especialidad que necesitas.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como abogado especialista en [MATERIA] con experiencia en tribunales chilenos. Tengo un caso de [SITUACIÓN] donde mi cliente [POSTURA]. Dame los 3 argumentos jurídicos más fuertes. Marca [VERIFICAR] en toda cita legal.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INSTRUCCIÓN DIRECTA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedir algo sin dar ejemplos previos.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Uso Legal:</strong> Útil para resúmenes rápidos: "Resume en 5 puntos las obligaciones del arrendador según el Código Civil chileno" (luego verificas).</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. INSTRUCCIÓN CON EJEMPLOS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Mostrar modelos del formato deseado.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Uso Legal:</strong> Si tienes un formato de minuta que funciona, muéstraselo. "Usa esta estructura de minuta como modelo" = resultados consistentes con tu estilo de estudio.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. DELIMITADORES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Símbolos para separar instrucciones del texto.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Uso Legal:</strong> Crítico cuando analizas contratos. Usa: "Analiza las cláusulas abusivas en el siguiente contrato: ### [PEGAR CONTRATO] ###"</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. ITERACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Refinar la respuesta progresivamente.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Uso Legal:</strong> "Expande el argumento 2", "Hazlo más formal para presentación en Corte", "Añade jurisprudencia de los últimos 5 años (luego verifico)".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. TEMPERATURA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Control de creatividad vs. precisión.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Uso Legal:</strong> Para escritos formales: "Sé conservador y preciso". Para brainstorming de estrategia: "Explora argumentos creativos, incluso agresivos".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-red-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">8. SESGO DE AUTORIDAD ⚠️ CRÍTICO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Creer que la IA siempre tiene razón.</p>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400 mb-2">
+                  <p class="text-xs text-red-800"><strong>⚠️ ALERTA PROFESIONAL:</strong> La IA puede citar leyes derogadas, inventar jurisprudencia o mezclar jurisdicciones. Tu responsabilidad profesional es VERIFICAR CADA CITA en fuentes oficiales.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack Legal</h4>
+          <p class="text-white font-medium text-lg italic">"El contexto es el rey. Jurisdicción clara, materia definida, postura explícita = resultado útil."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+              Ingeniería de Instrucciones para Profesionales de Gestión
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Las técnicas para convertir tu asistente IA en una máquina de productividad administrativa.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. INGENIERÍA DE INSTRUCCIONES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Diseñar órdenes que produzcan exactamente lo que necesitas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Es como crear un procedimiento operativo estándar (SOP) para tu asistente IA. Cuanto mejor el SOP, mejor el resultado.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. ASIGNACIÓN DE ROLES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedirle a la IA que actúe como un rol específico.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Uso en Gestión:</strong> "Actúa como asistente ejecutivo" para correos, "Actúa como analista de datos" para reportes. Cambia el rol según la tarea.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como asistente ejecutivo senior. Recibí estas 10 solicitudes hoy: [LISTAR]. Priorízalas por urgencia, sugiere respuestas rápidas para las simples, y marca las que requieren mi atención directa.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INSTRUCCIÓN DIRECTA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedir algo sin ejemplos.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Uso en Gestión:</strong> Perfecto para tareas rutinarias: "Genera una agenda para la reunión de equipo del lunes con 5 puntos".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. INSTRUCCIÓN CON EJEMPLOS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Mostrar modelos del resultado esperado.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Uso en Gestión:</strong> Muéstrale el formato de reporte que usa tu empresa. "Así hacemos los informes semanales: [EJEMPLO]. Ahora genera el de esta semana con estos datos: [DATOS]".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. DELIMITADORES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Símbolos para separar instrucciones del contenido.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Uso en Gestión:</strong> Cuando pegas datos desordenados: "Extrae la información clave del siguiente texto: --- [PEGAR NOTAS] ---"</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. ITERACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Ajustar y mejorar progresivamente.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Uso en Gestión:</strong> "Más corto", "Más formal", "Agrega columna de responsables", "Ordena por fecha límite". Refina hasta que quede listo para usar.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. TEMPERATURA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Creatividad vs. precisión.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Uso en Gestión:</strong> Para actas y reportes: "Sé preciso y conservador". Para ideas de eventos de equipo: "Sé creativo y propón opciones originales".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-amber-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">8. SESGO DE AUTORIDAD ⚠️</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Confiar ciegamente porque "suena profesional".</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>⚠️ Cuidado:</strong> Si la IA te da cifras o datos, verifica. Antes de enviar un reporte a gerencia, confirma que los números son correctos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"El contexto es el rey. Formato claro, datos precisos, revisión final = trabajo impecable."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+              Ingeniería de Instrucciones para Educadores
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Las técnicas para convertir la IA en tu asistente pedagógico más poderoso.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. INGENIERÍA DE INSTRUCCIONES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Diseñar órdenes que produzcan materiales pedagógicos de calidad.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Es como diseñar una rúbrica de evaluación para la IA. Si la rúbrica es clara, el resultado es exactamente lo que necesitas para tu clase.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. ASIGNACIÓN DE ROLES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedirle a la IA que actúe como un experto específico.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Uso Educativo:</strong> "Actúa como experto en pedagogía Montessori", "Actúa como diseñador instruccional", "Actúa como profesor de [ASIGNATURA] para niños de [EDAD]".</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como especialista en aprendizaje basado en proyectos. Mis estudiantes de [NIVEL] deben aprender [TEMA]. Diseña un proyecto de 2 semanas con entregables semanales, rúbrica de evaluación y momentos de reflexión.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INSTRUCCIÓN DIRECTA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedir sin ejemplos previos.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Uso Educativo:</strong> Para ideas rápidas: "Dame 5 dinámicas de activación para empezar la clase de [TEMA]".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. INSTRUCCIÓN CON EJEMPLOS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Mostrar modelos del formato deseado.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Uso Educativo:</strong> Muéstrale una guía de aprendizaje que funcionó bien. "Usa este formato de guía: [EJEMPLO]. Ahora crea una para el tema de [NUEVO TEMA]".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. DELIMITADORES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Símbolos para separar instrucciones del contenido.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Uso Educativo:</strong> Cuando quieres que analice un texto: "Simplifica el siguiente texto para estudiantes de 8 años: ### [TEXTO COMPLEJO] ###".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. ITERACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Ajustar progresivamente.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Uso Educativo:</strong> "Hazlo más lúdico", "Reduce a 15 minutos", "Añade una variante para estudiantes con dificultades de atención", "Incluye verificación de comprensión".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. TEMPERATURA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Creatividad vs. precisión.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Uso Educativo:</strong> Para evaluaciones estandarizadas: "Sé preciso y objetivo". Para actividades de arte: "Sé muy creativo y propón opciones originales".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-amber-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">8. SESGO DE AUTORIDAD ⚠️</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Confiar ciegamente porque "suena profesional".</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>⚠️ Oportunidad Pedagógica:</strong> Úsalo para enseñar pensamiento crítico. Muestra una respuesta de IA con errores y pide a tus estudiantes que los detecten.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Genera un texto corto sobre [TEMA] con 2-3 errores sutiles pero detectables. Luego dame las respuestas para usar esto como actividad de pensamiento crítico con estudiantes de [NIVEL].</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"El contexto es el rey. Nivel claro, objetivo pedagógico definido = materiales que realmente funcionan en TU aula."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `
     }
   },
   "glosario-interactivo-aplicado": {
