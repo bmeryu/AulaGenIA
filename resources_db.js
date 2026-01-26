@@ -318,26 +318,26 @@ const resourcesDatabase = {
             
             <div class="space-y-3">
               <div class="bg-white rounded-lg p-4 border border-slate-200">
-                <h5 class="font-bold text-slate-800 text-sm mb-2">1. EL PROMPT → El Briefing de Agencia</h5>
-                <p class="text-xs text-slate-600 mb-2">Si le dices a tu agencia "haz algo creativo", fallan. Si entregas la estrategia clara con KPIs, ejecutan perfecto.</p>
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. EL PROMPT → El Briefing Estratégico</h5>
+                <p class="text-xs text-slate-600 mb-2">Si le dices a tu agencia "haz algo creativo", fallan. Si entregas la estrategia clara con KPIs y objetivos, ejecutan perfecto.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-sm">Actúa como un consultor de ventas B2B con 15 años de experiencia. Mi empresa vende [PRODUCTO] a [AUDIENCIA]. Necesito un correo de prospección en frío de máximo 100 palabras que genere curiosidad sin sonar agresivo. Evita clichés como "solución integral".</p>
+                  <p class="text-white text-sm">Actúa como un estratega comercial senior con 15 años de experiencia. Mi empresa vende [PRODUCTO] a [AUDIENCIA]. Necesito una propuesta de valor de alto impacto que diferencie claramente mi oferta de la competencia tradicional. Evita clichés, céntrate en la rentabilidad para el cliente.</p>
                 </div>
               </div>
               
               <div class="bg-white rounded-lg p-4 border border-slate-200">
-                <h5 class="font-bold text-slate-800 text-sm mb-2">2. LLM → El Consultor Senior que Nunca Visitó Clientes</h5>
-                <p class="text-xs text-slate-600 mb-2">Ha leído todos los estudios de mercado del mundo, pero no conoce TU negocio específico. Sabe mucho en general, tú aportas el contexto real.</p>
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. LLM → El Consultor de Escritorio (Sin Calle)</h5>
+                <p class="text-xs text-slate-600 mb-2">Ha leído todos los estudios de mercado del mundo, pero no conoce la realidad operativa de TU negocio. Sabe mucho en general, tú aportas el contexto real del mercado.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-sm">Eres un analista de mercado senior. Mi empresa está en el sector [INDUSTRIA]. Dame 5 tendencias globales 2024-2025 que podrían afectar mi negocio. Para cada una: describe la tendencia, el impacto potencial y una acción recomendada.</p>
+                  <p class="text-white text-sm">Eres un analista de mercado senior. Mi empresa está en el sector [INDUSTRIA]. Dame 5 tendencias globales 2024-2025 que podrían impactar mi modelo de negocio. Para cada una: describe la amenaza y una oportunidad estratégica.</p>
                 </div>
               </div>
               
               <div class="bg-white rounded-lg p-4 border border-slate-200">
-                <h5 class="font-bold text-slate-800 text-sm mb-2">3. TOKENS → Tu Presupuesto de Campaña</h5>
-                <p class="text-xs text-slate-600 mb-2">Cada sílaba cuesta. Si gastas todo el presupuesto en la introducción, no queda para el cierre de venta.</p>
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. TOKENS → Tu Presupuesto de Atención</h5>
+                <p class="text-xs text-slate-600 mb-2">La atención es limitada. Si gastas todo el presupuesto en la introducción, no queda espacio para la propuesta de cierre o la decisión clave.</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
                   <p class="text-white text-sm">Necesito que resumas el siguiente texto en exactamente 50 palabras, manteniendo los 3 puntos clave de valor para el cliente. [PEGAR TEXTO]</p>
@@ -363,11 +363,11 @@ const resourcesDatabase = {
               </div>
               
               <div class="bg-white rounded-lg p-4 border border-red-200">
-                <h5 class="font-bold text-red-800 text-sm mb-2">6. ALUCINACIÓN → El Vendedor Desesperado</h5>
-                <p class="text-xs text-slate-600 mb-2">Inventa cifras de crecimiento solo para que el directorio le sonría. Suena convincente, pero miente. ¡Siempre verifica!</p>
+                <h5 class="font-bold text-red-800 text-sm mb-2">6. ALUCINACIÓN → El Consultor que Inventa para Complacer</h5>
+                <p class="text-xs text-slate-600 mb-2">Inventa datos de mercado para validar tu hipótesis porque quiere darte la razón. Suena convincente, pero puede ser fatal para la estrategia. ¡Verifica!</p>
                 <div class="prompt-block bg-slate-800 rounded-lg p-3 mt-2">
                   <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-                  <p class="text-white text-sm">Dame estadísticas sobre [TEMA/INDUSTRIA]. IMPORTANTE: Para cada dato, indica si es un hecho verificable con fecha/fuente, o si es una estimación tuya. Si no tienes datos confiables, dilo explícitamente.</p>
+                  <p class="text-white text-sm">Dame estadísticas sobre [TEMA/INDUSTRIA]. IMPORTANTE: Para cada dato, indica si es un hecho verificable con fecha/fuente, o si es una estimación. Si no hay datos duros, prefiero que me digas "no hay datos confiables".</p>
                 </div>
               </div>
             </div>
@@ -603,17 +603,17 @@ const resourcesDatabase = {
               <thead class="bg-blue-100">
                 <tr>
                   <th class="text-left p-3 font-semibold text-slate-700 w-1/3">EL MITO</th>
-                  <th class="text-left p-3 font-semibold text-blue-800">LA REALIDAD PARA VENTAS</th>
+                  <th class="text-left p-3 font-semibold text-blue-800">LA REALIDAD PARA NEGOCIOS</th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="border-t border-blue-100 hover:bg-blue-50 transition-colors">
                   <td class="p-4 bg-rose-100 font-medium text-rose-800">1. Solo técnicos pueden usar IA.</td>
-                  <td class="p-4 bg-green-50 text-green-800"><strong>Falso.</strong> Un vendedor que sabe hacer buenas preguntas obtiene mejores resultados de IA que un programador sin conocimiento comercial. Tu expertise en ventas es la clave.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Falso.</strong> Un líder que sabe plantear las preguntas estratégicas correctas obtiene mejores resultados que un técnico sin visión de negocio. Tu criterio comercial es la clave.</td>
                 </tr>
                 <tr class="border-t border-blue-100 hover:bg-blue-50 transition-colors">
                   <td class="p-4 bg-rose-100 font-medium text-rose-800">2. La IA reemplazará mi trabajo.</td>
-                  <td class="p-4 bg-green-50 text-green-800"><strong>Error.</strong> La IA no reemplaza vendedores, los <strong>amplifica</strong>: mismas horas, 3x más prospectos contactados, propuestas personalizadas en minutos.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Error.</strong> La IA no reemplaza a los estrategas, los <strong>amplifica</strong>: mismas horas, 3x más capacidad de análisis, ejecución y cobertura de mercado.</td>
                 </tr>
                 <tr class="border-t border-blue-100 hover:bg-blue-50 transition-colors">
                   <td class="p-4 bg-rose-100 font-medium text-rose-800">3. La IA lo sabe todo.</td>
@@ -621,27 +621,27 @@ const resourcesDatabase = {
                 </tr>
                 <tr class="border-t border-blue-100 hover:bg-blue-50 transition-colors">
                   <td class="p-4 bg-rose-100 font-medium text-rose-800">4. Usar IA es complicado.</td>
-                  <td class="p-4 bg-green-50 text-green-800"><strong>Al contrario.</strong> Generas propuestas, emails de seguimiento y análisis de competencia en minutos. Tus competidores que dudan están perdiendo terreno.</td>
+                  <td class="p-4 bg-green-50 text-green-800"><strong>Al contrario.</strong> Desarrollas planes de negocio, análisis de competencia y estrategias de Go-to-Market en minutos. Quienes dudan están cediendo cuota de mercado.</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Nuevo Rol como Vendedor Potenciado</h3>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Nuevo Rol como Estratega Potenciado</h3>
           <div class="space-y-3">
             <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-blue-200 hover:border-blue-400 transition-colors">
               <span class="text-blue-500 text-xl">✓</span>
               <div>
-                <h4 class="font-bold text-slate-800">IA como tu Asistente de Ventas 24/7</h4>
-                <p class="text-sm text-slate-600">Investiga prospectos, genera emails personalizados, prepara respuestas a objeciones mientras duermes.</p>
+                <h4 class="font-bold text-slate-800">IA como tu Analista de Negocios 24/7</h4>
+                <p class="text-sm text-slate-600">Investiga mercados, analiza competidores, pre-cualifica oportunidades y prepara escenarios mientras tú te enfocas en crecer.</p>
               </div>
             </div>
             <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-blue-200 hover:border-blue-400 transition-colors">
               <span class="text-blue-500 text-xl">✓</span>
               <div>
-                <h4 class="font-bold text-slate-800">Tú Cierras, la IA Prepara</h4>
-                <p class="text-sm text-slate-600">La IA arma la propuesta, tú pones la estrategia de cierre y el relacionamiento humano.</p>
+                <h4 class="font-bold text-slate-800">Tú Decides, la IA Procesa</h4>
+                <p class="text-sm text-slate-600">La IA estructura la operación y los datos, tú pones la visión, el criterio y la decisión estratégica final.</p>
               </div>
             </div>
             <div class="flex items-start gap-3 bg-white rounded-xl p-4 border border-blue-200 hover:border-blue-400 transition-colors">
@@ -654,21 +654,21 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
-          <h4 class="font-bold text-blue-900 mb-3">🎯 Prompts para Ventas</h4>
+          <h4 class="font-bold text-blue-900 mb-3">🎯 Prompts Estratégicos</h4>
           <div class="space-y-3">
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-sm">Dame 3 argumentos para convencer a un cliente escéptico de que la IA mejorará su negocio sin reemplazar a su equipo.</p>
+              <p class="text-white text-sm">Dame 3 argumentos sólidos para convencer a inversionistas o clientes clave de que [NUEVA ESTRATEGIA] aumentará la rentabilidad y reducirá riesgos operativos.</p>
             </div>
             <div class="bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-sm">Soy vendedor B2B. Dame un proceso simple de 3 pasos para usar IA en mi ciclo de ventas diario.</p>
+              <p class="text-white text-sm">Soy Director Comercial. Necesito estructurar un proceso de 3 pasos para integrar IA en la prospección diaria de mi equipo sin perder personalización.</p>
             </div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Ventas</h4>
-          <p class="text-white font-medium text-lg italic">"La IA es tu mejor vendedor junior: incansable, rápido y siempre disponible. Pero tú eres el closer que cierra el trato."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es tu mejor analista junior: incansable, rápido y siempre disponible. Pero tú eres el CEO que toma la decisión final."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
       </article>
@@ -1056,12 +1056,12 @@ const resourcesDatabase = {
         <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200 space-y-4 mt-4">
           <h4 class="font-bold text-blue-900 flex items-center gap-2">
             <span class="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
-            Tu Rol de Copiloto en Ventas
+            Tu Rol de Copiloto en Negocios
           </h4>
-          <p class="text-sm text-slate-700">Como vendedor, tu expertise es conocer al cliente y cerrar tratos. La IA es tu analista, tu redactor y tu investigador. Tú pones la estrategia comercial.</p>
+          <p class="text-sm text-slate-700">Como líder de negocio, tu expertise es la visión y la rentabilidad. La IA es tu analista de mercado y tu estratega operativo. Tú marcas el rumbo, ella traza el mapa.</p>
           <div class="prompt-block bg-slate-800 rounded-lg p-3">
             <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-            <p class="text-white text-sm">Soy vendedor B2B. Mi cliente objetivo es [PERFIL]. Dame una estrategia de 3 pasos para el primer contacto, considerando que no me conoce. Yo decido el tono final.</p>
+            <p class="text-white text-sm">Actúa como estratega de negocios senior. Mi empresa apunta al segmento [PERFIL]. Dame 3 enfoques disruptivos para diferenciar mi propuesta de valor de la competencia tradicional. Céntrate en rentabilidad y autoridad de marca.</p>
           </div>
         </div>
       `,
@@ -1172,7 +1172,7 @@ const resourcesDatabase = {
       </article>
     `,
     segments: {
-      "Negocios & Ventas": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">🎯 Tu Reto de Ventas</h4><p class="text-sm text-slate-700 mb-3">Usa el concepto del megáfono: si tu pitch de ventas es confuso, la IA lo amplificará. Sé claro en tu objetivo.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Actúa como un coach de ventas. Explícame cómo cerrar una venta difícil usando una analogía deportiva."</p></div></div>`,
+      "Negocios & Ventas": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">🎯 Tu Reto de Negocios</h4><p class="text-sm text-slate-700 mb-3">Usa el concepto del megáfono: si tu estrategia de crecimiento es confusa, la IA amplificará el desorden. Sé radicalmente claro en tu visión.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Actúa como consultor de estrategia corporativa. Analiza mi modelo de ingresos actual y detecta 3 fugas de rentabilidad usando la analogía de una 'tubería con fugas'."</p></div></div>`,
       "Legal & Profesional": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">⚖️ Tu Reto Legal</h4><p class="text-sm text-slate-700 mb-3">La IA predice probabilidades, no verdades jurídicas. Tú eres el filtro de validación.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Explica el concepto de 'precedente judicial' usando una analogía de la vida cotidiana."</p></div></div>`,
       "Gestión & Administración": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">📊 Tu Reto de Gestión</h4><p class="text-sm text-slate-700 mb-3">La IA amplifica el orden o el caos. Organiza tus procesos antes de delegarlos.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Explica la metodología Kanban usando una analogía de restaurante."</p></div></div>`,
       "Educación & Capacitación": `<div class="bg-teal-50 rounded-xl p-4 border border-teal-200"><h4 class="font-bold text-teal-800 mb-2">📚 Tu Reto Educativo</h4><p class="text-sm text-slate-700 mb-3">La IA es excelente para crear analogías. Úsala para explicar temas complejos a tus estudiantes.</p><div class="bg-slate-800 rounded-lg p-3 mt-2"><button onclick="copyResourcePrompt(this)" class="float-right btn-brand-sm">Copiar</button><p class="text-white text-sm">"Explica el ciclo del agua a niños de 8 años usando una analogía de parque de diversiones."</p></div></div>`
