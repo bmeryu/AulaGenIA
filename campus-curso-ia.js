@@ -3562,14 +3562,14 @@ document.addEventListener("DOMContentLoaded", () => {
       image: "images/segment_legal.png",
       description: "Abogados, contadores, consultores"
     },
-    "Gestión & Adm.": {
+    "Gestión & Administración": {
       icon: "settings",
       color: "teal",
       badge: "📊",
       image: "images/segment_gestion.png",
       description: "Gerentes, asistentes, coordinadores"
     },
-    "Educación": {
+    "Educación & Capacitación": {
       icon: "school",
       color: "emerald",
       badge: "🎓",
@@ -3587,34 +3587,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const modal = document.createElement('div');
     modal.id = 'profile-selector-modal';
-    modal.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md animate-in fade-in duration-300';
+    modal.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-in fade-in duration-300';
     modal.innerHTML = `
-      <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full p-8 animate-in zoom-in-95 duration-300 overflow-hidden relative">
-        <div class="text-center mb-8 relative z-10">
-          <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Selecciona tu Perfil Profesional</h2>
-          <p class="text-slate-500 text-lg">Personalizaremos los casos y ejemplos según tu área</p>
+      <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-8 animate-in zoom-in-95 duration-300">
+        <div class="text-center mb-8">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-teal-400 to-indigo-500 flex items-center justify-center">
+            <i data-lucide="user-check" class="w-8 h-8 text-white"></i>
+          </div>
+          <h2 class="text-2xl font-extrabold text-slate-900 mb-2">¿Cuál es tu perfil?</h2>
+          <p class="text-slate-500">Personalizaremos los casos según tu área de trabajo</p>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           ${Object.entries(segmentConfig).map(([name, cfg]) => `
             <button onclick="selectUserSegment('${name}')" 
-              class="group relative h-64 rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-${cfg.color}-500 transition-all text-left shadow-sm hover:shadow-xl hover:-translate-y-1">
-              
-              <!-- Background Image with Gradient Overlay -->
-              <div class="absolute inset-0 bg-slate-100">
-                <img src="${cfg.image}" alt="${name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
-              </div>
-              
-              <!-- Content -->
-              <div class="absolute bottom-0 left-0 right-0 p-5 relative z-10">
-                <div class="w-10 h-10 mb-3 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl border border-white/30">
-                  ${cfg.badge}
+              class="group p-6 rounded-2xl border-2 border-slate-200 hover:border-${cfg.color}-400 hover:bg-${cfg.color}-50 transition-all text-left">
+              <div class="flex items-center gap-4 mb-3">
+                <div class="w-12 h-12 rounded-xl bg-${cfg.color}-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <span class="text-2xl">${cfg.badge}</span>
                 </div>
-                <h3 class="font-bold text-white text-lg leading-tight mb-1">${name}</h3>
-                <p class="text-xs text-slate-300 font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
-                  ${cfg.description}
-                </p>
+                <div>
+                  <h3 class="font-bold text-slate-900">${name}</h3>
+                  <p class="text-xs text-slate-500">${cfg.description}</p>
+                </div>
               </div>
             </button>
           `).join('')}
@@ -3867,10 +3861,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // El ordenamiento ya se hace arriba en el bloque isSegmentView
 
     const renderCaseCard = (c) => {
-      const isStarPrompt = c.isStarPrompt === true;
+      // Robust detection for Star Prompt (handles boolean true, string "true", or 1)
+      const isStarPrompt = c.isStarPrompt === true || c.isStarPrompt === 'true' || c.isStarPrompt === 1;
       const categoryColor = segCfg?.categoryColor || 'slate';
 
-      // Estilos diferenciados para Star Prompts
+      // Estilos diferenciados para Star Prompts (Premium Look)
       const cardBorderClass = isStarPrompt
         ? 'border-2 border-amber-400 shadow-md transform hover:-translate-y-1'
         : 'border border-slate-200 hover:border-teal-300 hover:shadow-sm';
@@ -3886,7 +3881,7 @@ document.addEventListener("DOMContentLoaded", () => {
                ${isStarPrompt ? '<span class="inline-flex items-center justify-center p-1 bg-amber-100 text-amber-600 rounded-full"><i data-lucide="star" class="w-4 h-4 fill-current"></i></span>' : `<span class="p-1.5 rounded-lg bg-${categoryColor}-100 text-${categoryColor}-600"><i data-lucide="${segCfg?.icon || 'file-text'}" class="w-4 h-4"></i></span>`}
                <span class="text-xs font-bold uppercase tracking-wider ${isStarPrompt ? 'text-amber-700' : 'text-slate-500'}">${c.industry || 'General'}</span>
             </div>
-            ${isStarPrompt ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold border border-amber-200">Recomendado</span>' : ''}
+            ${isStarPrompt ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold border border-amber-200 flex items-center gap-1"><i data-lucide="award" class="w-3 h-3"></i> Top Pick</span>' : ''}
           </div>
           
           <h4 class="font-bold text-slate-800 mb-2 group-hover:text-teal-600 transition-colors line-clamp-2">${c.title}</h4>
