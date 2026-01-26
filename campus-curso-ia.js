@@ -3686,24 +3686,33 @@ document.addEventListener("DOMContentLoaded", () => {
   let casesData = [];
   async function loadPromptsDatabase() {
     try {
-      if (isLocalDev) {
-        console.log("DEV: Cargando prompts desde archivo local...");
+      // Robust Environment Check: Only use local file if explicitly on localhost/127.0.0.1/file protocol
+      // Netlify (dev--aulagenia.netlify.app) should count as PROD for this purpose
+      if (isLocalDev && window.location.hostname !== 'dev--aulagenia.netlify.app') {
+        console.log("DEV (Local): Cargando prompts desde archivo local...");
         const response = await fetch('./prompts_db.json');
         if (response.ok) {
           casesData = await response.json();
-          console.log("DEV Success: " + casesData.length + " prompts cargados");
+          console.log("DEV Success: " + casesData.length + " prompts cargados localmente");
         } else {
-          console.error("DEV Error: No se pudo cargar prompts_db.json");
+          console.error("DEV Error: No se pudo cargar prompts_db.json local");
         }
       } else {
-        console.log("PROD: Solicitando prompts a Cloud Function...");
+        console.log("CLOUD (Prod/Booster): Solicitando prompts a Cloud Function 'getPromptsData'...");
+        // Ensure Firebase Functions is initialized
+        if (!firebase.functions) {
+          throw new Error("Firebase Functions SDK not loaded");
+        }
+
         const getPrompts = firebase.functions().httpsCallable("getPromptsData");
         const result = await getPrompts();
-        if (result.data.success) {
+
+        if (result.data && result.data.success) {
           casesData = result.data.data;
-          console.log("PROD Success: " + casesData.length + " prompts loaded.");
+          console.log("CLOUD Success: " + casesData.length + " prompts loaded via Cloud Function.");
         } else {
-          console.error("Respuesta invalida:", result.data);
+          console.error("CLOUD Error: Respuesta inválida de Cloud Function", result.data);
+          // Fallback to local if Cloud Function fails logic (optional, but safer to just error out if we trust CF)
         }
       }
       const currentLesson = f(c.currentLessonId);
