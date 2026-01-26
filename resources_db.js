@@ -6120,44 +6120,6 @@ const resourcesDatabase = {
             <p class="text-xl font-bold text-purple-800">= RESULTADO WOW!</p>
           </div>
         </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">Desglose de los 3 Ingredientes</h3>
-          <div class="space-y-4">
-            <div class="bg-purple-50 rounded-xl p-5 border border-purple-200 hover:shadow-md transition-all">
-              <div class="flex items-center gap-3 mb-3">
-                <span style="background-color: #8b5cf6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">1</span>
-                <h4 class="font-bold text-purple-800 text-lg">EL ROL (Identidad)</h4>
-              </div>
-              <p class="text-purple-700 mb-2">Define el experto que necesitas. No es lo mismo un "asistente" que un "Director de Marketing con 20 años de experiencia".</p>
-              <p class="text-sm text-purple-600"><strong>¿Quién es la IA hoy?</strong></p>
-              <div class="bg-slate-800 rounded-lg p-3 mt-2">
-                <p style="color: #ffffff;" class="text-sm italic">Ejemplo: "Actúa como un redactor creativo experto en ventas..."</p>
-              </div>
-            </div>
-            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200 hover:shadow-md transition-all">
-              <div class="flex items-center gap-3 mb-3">
-                <span style="background-color: #3b82f6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">2</span>
-                <h4 class="font-bold text-blue-800 text-lg">EL DETALLE (Tu Contexto)</h4>
-              </div>
-              <p class="text-blue-700 mb-2">Dale los ingredientes de tu realidad: datos, números, situación actual, restricciones y público objetivo.</p>
-              <p class="text-sm text-blue-600"><strong>¿Cuál es tu situación específica?</strong></p>
-              <div class="bg-slate-800 rounded-lg p-3 mt-2">
-                <p style="color: #ffffff;" class="text-sm italic">Ejemplo: "Tengo una zapatería que bajó ventas un 20%, mi público son mujeres de 25-40 años..."</p>
-              </div>
-            </div>
-            <div class="bg-green-50 rounded-xl p-5 border border-green-200 hover:shadow-md transition-all">
-              <div class="flex items-center gap-3 mb-3">
-                <span style="background-color: #10b981; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">3</span>
-                <h4 class="font-bold text-green-800 text-lg">EL PROPÓSITO (Tu Objetivo)</h4>
-              </div>
-              <p class="text-green-700 mb-2">Dile QUÉ quieres lograr y PARA QUÉ. ¿Vender, emocionar, educar, convencer, pedir disculpas?</p>
-              <p class="text-sm text-green-600"><strong>¿Qué resultado esperas obtener?</strong></p>
-              <div class="bg-slate-800 rounded-lg p-3 mt-2">
-                <p style="color: #ffffff;" class="text-sm italic">Ejemplo: "...para lograr que el cliente vuelva a comprar y recomiende mi tienda a sus amigas."</p>
-              </div>
-            </div>
-          </div>
-        </section>
         <section class="bg-amber-50 rounded-xl p-5 border border-amber-200">
           <h4 class="font-bold text-amber-800 mb-2">RECORDATORIO AULAGENIA:</h4>
           <p class="text-amber-700 italic">"Si tu instrucción es vaga, el resultado será mediocre. Si usas la Receta WOW, conviertes a la IA en un socio estratégico."</p>
@@ -6166,11 +6128,38 @@ const resourcesDatabase = {
     segments: {
       "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo WOW para Negocios</h3>
-          <div class="bg-slate-800 rounded-xl p-4">
-            <p class="text-purple-300 mb-2"><strong>1. ROL:</strong> "Actúa como un consultor de ventas experto en cierre de negocios B2B..."</p>
-            <p class="text-blue-300 mb-2"><strong>2. DETALLE:</strong> "Tengo una propuesta para un cliente corporativo. Presupuesto: $50K. Competencia: 2 ofertas similares. El cliente prioriza innovación..."</p>
-            <p class="text-emerald-300"><strong>3. PROPÓSITO:</strong> "...para crear un email de seguimiento que genere urgencia y diferencie mi propuesta."</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Desglose de los 3 Ingredientes</h3>
+          <div class="space-y-4">
+            <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #8b5cf6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">1</span>
+                <h4 class="font-bold text-purple-800 text-lg">EL ROL (Identidad)</h4>
+              </div>
+              <p class="text-purple-700 mb-2">Define el experto que necesitas. No es lo mismo un "asistente" que un "Director Comercial con 15 años cerrando negocios".</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #e9d5ff;" class="text-sm italic">Ejemplo: "Actúa como un consultor de ventas B2B experto en propuestas ganadoras..."</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #3b82f6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">2</span>
+                <h4 class="font-bold text-blue-800 text-lg">EL DETALLE (Tu Contexto)</h4>
+              </div>
+              <p class="text-blue-700 mb-2">Dale los ingredientes de tu realidad: mercado, competencia, presupuesto, cliente objetivo.</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #bfdbfe;" class="text-sm italic">Ejemplo: "Mi cliente es una empresa de tecnología, presupuesto $40K, competimos con 2 proveedores más baratos..."</p>
+              </div>
+            </div>
+            <div class="bg-green-50 rounded-xl p-5 border border-green-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #10b981; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">3</span>
+                <h4 class="font-bold text-green-800 text-lg">EL PROPÓSITO (Tu Objetivo)</h4>
+              </div>
+              <p class="text-green-700 mb-2">Dile QUÉ quieres lograr: ¿cerrar la venta, generar urgencia, diferenciarte?</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #a7f3d0;" class="text-sm italic">Ejemplo: "...para crear una propuesta que justifique el precio premium y cierre esta semana."</p>
+              </div>
+            </div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
@@ -6182,27 +6171,85 @@ const resourcesDatabase = {
       `,
       "Legal & Profesional": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo WOW para Profesionales</h3>
-          <div class="bg-slate-800 rounded-xl p-4">
-            <p class="text-purple-300 mb-2"><strong>1. ROL:</strong> "Actúa como un abogado senior especializado en derecho comercial con 15 años de experiencia..."</p>
-            <p class="text-blue-300 mb-2"><strong>2. DETALLE:</strong> "Tengo un cliente que firmó contrato de distribución exclusiva. La contraparte incumplió plazos de entrega 3 veces en 6 meses..."</p>
-            <p class="text-emerald-300"><strong>3. PROPÓSITO:</strong> "...para redactar una carta formal de apercibimiento que deje constancia del incumplimiento sin romper la relación comercial."</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Desglose de los 3 Ingredientes</h3>
+          <p class="text-sm text-slate-600 mb-4">Aplicable a abogados, contadores, ingenieros, arquitectos y profesionales técnicos.</p>
+          <div class="space-y-4">
+            <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #8b5cf6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">1</span>
+                <h4 class="font-bold text-purple-800 text-lg">EL ROL (Expertise)</h4>
+              </div>
+              <p class="text-purple-700 mb-2">Define la especialización técnica. No es lo mismo un "asistente" que un "Senior de Auditoría con 15 años en IFRS".</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #e9d5ff;" class="text-sm italic">Ejemplo: "Actúa como un abogado corporativo especializado en contratos de distribución..."</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #3b82f6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">2</span>
+                <h4 class="font-bold text-blue-800 text-lg">EL DETALLE (Los Hechos)</h4>
+              </div>
+              <p class="text-blue-700 mb-2">Dale los datos del caso: fechas, montos, partes involucradas, normativa aplicable.</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #bfdbfe;" class="text-sm italic">Ejemplo: "Cliente firmó contrato el 15/03/2024. Contraparte incumplió entregas 3 veces. Jurisdicción: Chile..."</p>
+              </div>
+            </div>
+            <div class="bg-green-50 rounded-xl p-5 border border-green-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #10b981; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">3</span>
+                <h4 class="font-bold text-green-800 text-lg">EL PROPÓSITO (El Entregable)</h4>
+              </div>
+              <p class="text-green-700 mb-2">Define el documento específico: carta, informe, minuta, dictamen.</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #a7f3d0;" class="text-sm italic">Ejemplo: "...para redactar carta de apercibimiento formal que preserve la relación comercial."</p>
+              </div>
+            </div>
           </div>
         </section>
+        <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+          <p class="text-sm text-red-700"><strong>⚠️ Siempre verifica:</strong> Citas normativas, jurisprudencia, cálculos y referencias deben ser validadas antes de usar el documento.</p>
+        </div>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
-          <p class="text-white font-medium text-lg italic">"El ROL define la expertise; el DETALLE contextualiza el caso; el PROPÓSITO garantiza precisión jurídica."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Profesional</h4>
+          <p class="text-white font-medium text-lg italic">"El ROL define la expertise; el DETALLE contextualiza el caso; el PROPÓSITO garantiza precisión técnica."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Receta WOW para Profesionales - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
       "Gestión & Administración": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo WOW para Gestión</h3>
-          <div class="bg-slate-800 rounded-xl p-4">
-            <p class="text-purple-300 mb-2"><strong>1. ROL:</strong> "Actúa como un especialista en comunicación organizacional con experiencia en gestión del cambio..."</p>
-            <p class="text-blue-300 mb-2"><strong>2. DETALLE:</strong> "Implementamos nuevo sistema de gestión. 50 empleados afectados. Resistencia inicial detectada. Lanzamiento en 2 semanas..."</p>
-            <p class="text-emerald-300"><strong>3. PROPÓSITO:</strong> "...para crear un comunicado interno que reduzca la ansiedad y genere expectativa positiva sobre el cambio."</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Desglose de los 3 Ingredientes</h3>
+          <div class="space-y-4">
+            <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #8b5cf6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">1</span>
+                <h4 class="font-bold text-purple-800 text-lg">EL ROL (Autoridad)</h4>
+              </div>
+              <p class="text-purple-700 mb-2">Define el especialista organizacional. No es lo mismo un "asistente" que un "Consultor de Cambio Organizacional".</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #e9d5ff;" class="text-sm italic">Ejemplo: "Actúa como un especialista en comunicación interna con experiencia en gestión del cambio..."</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #3b82f6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">2</span>
+                <h4 class="font-bold text-blue-800 text-lg">EL DETALLE (Tu Realidad)</h4>
+              </div>
+              <p class="text-blue-700 mb-2">Dale el contexto organizacional: número de personas, resistencias, tiempos, recursos disponibles.</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #bfdbfe;" class="text-sm italic">Ejemplo: "Implementamos nuevo sistema. 50 empleados afectados. Resistencia detectada. Lanzamiento en 2 semanas..."</p>
+              </div>
+            </div>
+            <div class="bg-green-50 rounded-xl p-5 border border-green-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #10b981; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">3</span>
+                <h4 class="font-bold text-green-800 text-lg">EL PROPÓSITO (El Resultado)</h4>
+              </div>
+              <p class="text-green-700 mb-2">Define el impacto esperado: comunicado, plan de acción, diagnóstico, reporte.</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #a7f3d0;" class="text-sm italic">Ejemplo: "...para crear un comunicado que reduzca la ansiedad y genere expectativa positiva."</p>
+              </div>
+            </div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
@@ -6214,11 +6261,38 @@ const resourcesDatabase = {
       `,
       "Educación & Capacitación": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo WOW para Educadores</h3>
-          <div class="bg-slate-800 rounded-xl p-4">
-            <p class="text-purple-300 mb-2"><strong>1. ROL:</strong> "Actúa como un pedagogo experto en didáctica activa para adolescentes..."</p>
-            <p class="text-blue-300 mb-2"><strong>2. DETALLE:</strong> "Enseño historia a 3° de secundaria. 30 estudiantes, bajo interés en la materia. Próximo tema: Revolución Industrial..."</p>
-            <p class="text-emerald-300"><strong>3. PROPÓSITO:</strong> "...para diseñar una actividad gamificada de 45 minutos que conecte el tema con su vida diaria."</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Desglose de los 3 Ingredientes</h3>
+          <div class="space-y-4">
+            <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #8b5cf6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">1</span>
+                <h4 class="font-bold text-purple-800 text-lg">EL ROL (Pedagogía)</h4>
+              </div>
+              <p class="text-purple-700 mb-2">Define el experto educativo. No es lo mismo un "asistente" que un "Pedagogo experto en didáctica activa".</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #e9d5ff;" class="text-sm italic">Ejemplo: "Actúa como un experto en metodologías activas para adolescentes..."</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #3b82f6; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">2</span>
+                <h4 class="font-bold text-blue-800 text-lg">EL DETALLE (Tu Aula)</h4>
+              </div>
+              <p class="text-blue-700 mb-2">Dale el contexto real: nivel, número de estudiantes, recursos, tiempo disponible, dificultades.</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #bfdbfe;" class="text-sm italic">Ejemplo: "Enseño historia a 3° de secundaria. 30 estudiantes, bajo interés. Próximo tema: Revolución Industrial..."</p>
+              </div>
+            </div>
+            <div class="bg-green-50 rounded-xl p-5 border border-green-200">
+              <div class="flex items-center gap-3 mb-3">
+                <span style="background-color: #10b981; color: #ffffff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">3</span>
+                <h4 class="font-bold text-green-800 text-lg">EL PROPÓSITO (El Aprendizaje)</h4>
+              </div>
+              <p class="text-green-700 mb-2">Define qué quieres lograr: actividad, evaluación, planificación, material.</p>
+              <div class="bg-slate-800 rounded-lg p-3 mt-2">
+                <p style="color: #a7f3d0;" class="text-sm italic">Ejemplo: "...para diseñar una actividad gamificada de 45 minutos que conecte el tema con su vida diaria."</p>
+              </div>
+            </div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
