@@ -3079,58 +3079,79 @@ const resourcesDatabase = {
       </article>
       `,
       "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">El Método RID para el Ejercicio Jurídico</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border-l-4 border-blue-400 hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">1</span>
+                <h4 class="font-bold text-blue-800">RECONOCER: ¿Dónde pierdes horas?</h4>
+              </div>
+              <p class="text-slate-600 text-sm">Revisa tu carga: búsqueda de jurisprudencia, resúmenes de expedientes, redacción de escritos, cronologías. ¿Qué te quita +30 min?</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border-l-4 border-amber-400 hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-8 h-8 bg-amber-500 text-white rounded-full flex items-center justify-center font-bold">2</span>
+                <h4 class="font-bold text-amber-800">IDENTIFICAR: ¿Cuál es tu nudo?</h4>
+              </div>
+              <p class="text-slate-600 text-sm"><strong>Inercia:</strong> Escrito judicial en blanco. <strong>Fricción:</strong> Leer 500 páginas de expediente. <strong>Vaguedad:</strong> Estrategia procesal poco clara.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border-l-4 border-green-400 hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">3</span>
+                <h4 class="font-bold text-green-800">DEFINIR: Asigna copiloto + validación</h4>
+              </div>
+              <p class="text-slate-600 text-sm">Perplexity [VERIFICAR], Claude [TÚ FIRMAS], ChatGPT [REVISAR]. La responsabilidad profesional no se delega.</p>
+            </div>
+          </div>
+        </section>
         <div class="space-y-4">
           <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
             <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
               <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
-              Mapa de Delegación para el Ejercicio Jurídico
+              Tu Mapa de Delegación Jurídica
             </h4>
-            <p class="text-sm text-slate-700 mb-4">Delega lo mecánico, conserva lo estratégico. Tu firma sigue siendo tuya.</p>
-            
             <div class="overflow-x-auto mb-4">
               <table class="w-full text-xs border-collapse">
                 <thead class="bg-teal-100">
                   <tr>
-                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Tarea Jurídica</th>
+                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Tarea</th>
                     <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">El Nudo</th>
-                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Copiloto + Validación</th>
+                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Copiloto</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="border-b border-slate-200">
                     <td class="p-2 text-slate-700">Buscar jurisprudencia</td>
-                    <td class="p-2 text-slate-600">Fricción: muchas horas de búsqueda</td>
+                    <td class="p-2 text-slate-600">Fricción</td>
                     <td class="p-2 text-teal-700 font-medium">Perplexity [VERIFICAR]</td>
                   </tr>
                   <tr class="border-b border-slate-200">
                     <td class="p-2 text-slate-700">Resumir expedientes</td>
-                    <td class="p-2 text-slate-600">Fricción: lectura extensiva</td>
+                    <td class="p-2 text-slate-600">Fricción</td>
                     <td class="p-2 text-teal-700 font-medium">ChatGPT [REVISAR]</td>
                   </tr>
                   <tr class="border-b border-slate-200">
                     <td class="p-2 text-slate-700">Redactar escritos</td>
-                    <td class="p-2 text-slate-600">Inercia: hoja en blanco</td>
+                    <td class="p-2 text-slate-600">Inercia</td>
                     <td class="p-2 text-teal-700 font-medium">Claude [TÚ FIRMAS]</td>
-                  </tr>
-                  <tr class="border-b border-slate-200">
-                    <td class="p-2 text-slate-700">Crear cronologías</td>
-                    <td class="p-2 text-slate-600">Fricción: ordenar hechos</td>
-                    <td class="p-2 text-teal-700 font-medium">ChatGPT [VALIDAR]</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            
             <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-3">
-              <p class="text-xs text-amber-800"><strong>⚠️ Recordatorio Ético:</strong> La IA puede inventar citas legales. SIEMPRE marca [VERIFICAR] y valida toda referencia legislativa o jurisprudencial antes de usar.</p>
+              <p class="text-xs text-amber-800"><strong>⚠️ Advertencia Ética:</strong> La IA puede inventar citas legales. SIEMPRE verifica toda referencia en fuentes oficiales antes de usar.</p>
             </div>
-            
             <div class="prompt-block bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-sm">Actúa como paralegal senior. Necesito un borrador de [TIPO DE ESCRITO] para un caso de [MATERIA]. Dame la estructura con argumentos. Marca [VERIFICAR] toda cita legal que incluyas.</p>
+              <p class="text-white text-sm">Actúa como paralegal. Necesito borrador de [TIPO ESCRITO] para caso de [MATERIA]. Estructura con argumentos. Marca [VERIFICAR] toda cita legal.</p>
             </div>
           </div>
         </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"Perplexity busca, Claude redacta, TÚ firmas y respondes profesionalmente."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Kit de Delegación - Módulo 2. AulaGenIA 2025.</div>
       </article>
       `,
