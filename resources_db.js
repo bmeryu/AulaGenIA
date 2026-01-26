@@ -4233,103 +4233,129 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">Instrucciones de Julia</h2>
           <p class="text-teal-700 italic">"No inventes la rueda. Para empezar a ganar tiempo hoy mismo, elige el flujo que más se parezca a tu trabajo y replícalo paso a paso. La IA no es para todo, es para lo que más te suma."</p>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">Los 3 Caminos Pro</h3>
-          <div class="space-y-4">
-            <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
-              <h4 class="font-bold text-purple-800 mb-3">🎨 1. El Camino de María (Diseño y Creatividad)</h4>
-              <div class="flex flex-wrap gap-2 items-center mb-3">
-                <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">1. IDEA: ChatGPT</span>
-                <span class="text-purple-400">→</span>
-                <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">2. IMAGEN: Ideogram</span>
-                <span class="text-purple-400">→</span>
-                <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">3. IDIOMA: Google</span>
-              </div>
-              <p class="text-sm text-purple-700">(Borradores y conceptos) → (Diseño visual con texto) → (Traducción para clientes)</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Camino Pro: Estrategia Comercial</h3>
+          <div class="bg-blue-50 rounded-xl p-5 border border-blue-200 mb-4">
+            <h4 class="font-bold text-blue-800 mb-3">💼 El Camino de Carlos (Tu Modelo)</h4>
+            <div class="flex flex-wrap gap-2 items-center mb-3">
+              <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">1. Perplexity: Investigar</span>
+              <span class="text-blue-400">→</span>
+              <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">2. Claude: Propuesta</span>
+              <span class="text-blue-400">→</span>
+              <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">3. Gamma: Presentar</span>
             </div>
-            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
-              <h4 class="font-bold text-blue-800 mb-3">💼 2. El Camino de Carlos (Estrategia y Negocios)</h4>
-              <div class="flex flex-wrap gap-2 items-center mb-3">
-                <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">1. ESTRATEGIA: Gemini</span>
-                <span class="text-blue-400">→</span>
-                <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">2. IMPACTO: Gamma</span>
-                <span class="text-blue-400">→</span>
-                <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">3. VISIÓN: IA Tendencias</span>
-              </div>
-              <p class="text-sm text-blue-700">(Ideas de contenido y blog) → (Presentaciones express) → (Optimización de ventas)</p>
-            </div>
-            <div class="bg-green-50 rounded-xl p-5 border border-green-200">
-              <h4 class="font-bold text-green-800 mb-3">📱 3. El Camino de Luis (Redes Sociales y Gestión)</h4>
-              <div class="flex flex-wrap gap-2 items-center mb-3">
-                <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">1. CREACIÓN: DALL-E 3</span>
-                <span class="text-green-400">→</span>
-                <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">2. MAQUETACIÓN: Canva AI</span>
-                <span class="text-green-400">→</span>
-                <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">3. PUBLICACIÓN: Copiloto RRSS</span>
-              </div>
-              <p class="text-sm text-green-700">(Imágenes originales) → (Gráficos profesionales) → (Gestión y respuestas)</p>
-            </div>
+            <p class="text-sm text-blue-700"><strong>Resultado:</strong> +150% crecimiento sin contratar más personal.</p>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">El Impacto Real: ¿Qué lograron con estos flujos?</h3>
-          <p class="text-slate-600 mb-4">Como vimos en el video, la implementación de estos "Caminos Pro" no solo ahorra tiempo, sino que transforma los números del negocio:</p>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse">
-              <thead class="bg-blue-100">
-                <tr>
-                  <th class="text-left p-3 font-semibold text-blue-800 border-b-2 border-blue-200">Perfil</th>
-                  <th class="text-left p-3 font-semibold text-blue-800 border-b-2 border-blue-200">El Resultado Estratégico</th>
-                  <th class="text-left p-3 font-semibold text-green-700 border-b-2 border-blue-200">Métrica WOW</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-purple-700">María</td>
-                  <td class="p-3 text-slate-600">Logró liberar su agenda de tareas administrativas pesadas para enfocarse 100% en su arte y clientes premium.</td>
-                  <td class="p-3 text-green-700 font-bold bg-green-50">x2 Trabajos/mes</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-blue-700">Carlos</td>
-                  <td class="p-3 text-slate-600">Automatizó el diagnóstico de su negocio y la creación de propuestas, escalando sus ventas sin contratar más personal.</td>
-                  <td class="p-3 text-green-700 font-bold bg-green-50">+150% Crecimiento</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-green-700">Luis</td>
-                  <td class="p-3 text-slate-600">Pasó de pelear con el diseño a dirigir su estrategia visual, logrando una conexión mucho más profunda con su audiencia.</td>
-                  <td class="p-3 text-green-700 font-bold bg-green-50">-70% Tiempo/Post</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Anatomía de las Herramientas Elegidas</h3>
-          <p class="text-slate-600 mb-3">¿Por qué estas y no otras? Julia nos explica la lógica detrás de cada selección:</p>
-          <ul class="text-sm space-y-2">
-            <li class="bg-purple-50 p-3 rounded-lg"><strong class="text-purple-800">Ideogram (Caso María):</strong> Se eligió porque es la mejor IA para incluir texto legible dentro de las imágenes (ideal para logos y carteles).</li>
-            <li class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-800">Gamma (Caso Carlos):</strong> La elección perfecta para presentaciones rápidas que no parecen hechas por una IA, manteniendo un estilo ejecutivo.</li>
-            <li class="bg-green-50 p-3 rounded-lg"><strong class="text-green-800">Canva AI (Caso Luis):</strong> Ideal para quienes no son diseñadores pero necesitan que sus redes sociales se vean profesionales y coherentes.</li>
-          </ul>
-        </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Checklist: Tu Plan de Acción</h3>
-          <p class="text-slate-600 mb-3">Sigue estos pasos para replicar el éxito de los expertos hoy mismo:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tu Plan de Acción</h3>
           <div class="space-y-2">
-            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 1:</strong> Identifica cuál de los 3 perfiles se parece más a tu "Atasco" actual.</span></div>
-            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 2:</strong> Regístrate en la herramienta del "Paso 2" de ese camino (Ideogram, Gamma o Canva).</span></div>
-            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 3:</strong> Ejecuta una tarea real usando la instrucción (prompt) del camino elegido.</span></div>
-            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 4:</strong> Mide el tiempo que te tomó vs. cómo lo hacías antes.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>1.</strong> Usa Perplexity para investigar tu próximo prospecto</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>2.</strong> Redacta propuesta con Claude o ChatGPT</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>3.</strong> Crea slides en Gamma para la reunión</span></div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu visión es el destino. Copia el flujo, pero ponle tu corazón."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"Quien investiga más, cierra más. El flujo Pro no es más trabajo, es trabajo más inteligente."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial para alumnos de AulaGenIA. Información basada en los casos de éxito del Módulo 2.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Caminos de los Expertos - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Camino Pro: Ejercicio Jurídico</h3>
+          <div class="bg-purple-50 rounded-xl p-5 border border-purple-200 mb-4">
+            <h4 class="font-bold text-purple-800 mb-3">⚖️ Flujo Jurídico Optimizado</h4>
+            <div class="flex flex-wrap gap-2 items-center mb-3">
+              <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">1. Perplexity: Jurisprudencia</span>
+              <span class="text-purple-400">→</span>
+              <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">2. Claude: Redacción</span>
+              <span class="text-purple-400">→</span>
+              <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">3. TÚ: Verificación</span>
+            </div>
+            <p class="text-sm text-purple-700"><strong>Resultado:</strong> -60% tiempo en investigación y borradores iniciales.</p>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tu Plan de Acción</h3>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>1.</strong> Busca jurisprudencia relevante con Perplexity [VERIFICAR]</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>2.</strong> Genera borrador de escrito con Claude</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>3.</strong> Valida toda cita legal antes de presentar</span></div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"La IA acelera tu investigación; TÚ validas y firmas. La responsabilidad no se delega."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Caminos de los Expertos - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Camino Pro: Gestión Ejecutiva</h3>
+          <div class="bg-green-50 rounded-xl p-5 border border-green-200 mb-4">
+            <h4 class="font-bold text-green-800 mb-3">📊 Flujo de Productividad Administrativa</h4>
+            <div class="flex flex-wrap gap-2 items-center mb-3">
+              <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">1. ChatGPT: Procesar</span>
+              <span class="text-green-400">→</span>
+              <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">2. Gamma: Visualizar</span>
+              <span class="text-green-400">→</span>
+              <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">3. Gemini: Distribuir</span>
+            </div>
+            <p class="text-sm text-green-700"><strong>Resultado:</strong> -70% tiempo en tareas repetitivas.</p>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tu Plan de Acción</h3>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>1.</strong> Procesa tus notas de reunión con ChatGPT</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>2.</strong> Crea reporte visual en Gamma</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>3.</strong> Distribuye por correo vía Gemini</span></div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Lo que haces igual cada semana, la IA puede hacerlo por ti."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Caminos de los Expertos - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Tu Camino Pro: Diseño Pedagógico</h3>
+          <div class="bg-amber-50 rounded-xl p-5 border border-amber-200 mb-4">
+            <h4 class="font-bold text-amber-800 mb-3">🎓 Flujo Educativo Optimizado</h4>
+            <div class="flex flex-wrap gap-2 items-center mb-3">
+              <span class="bg-amber-200 text-amber-800 px-3 py-1 rounded-full text-sm">1. ChatGPT: Diseñar</span>
+              <span class="text-amber-400">→</span>
+              <span class="bg-amber-200 text-amber-800 px-3 py-1 rounded-full text-sm">2. Gamma: Presentar</span>
+              <span class="text-amber-400">→</span>
+              <span class="bg-amber-200 text-amber-800 px-3 py-1 rounded-full text-sm">3. DALL-E: Ilustrar</span>
+            </div>
+            <p class="text-sm text-amber-700"><strong>Resultado:</strong> x2 materiales de calidad en la mitad del tiempo.</p>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tu Plan de Acción</h3>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>1.</strong> Diseña tu próxima actividad con ChatGPT</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>2.</strong> Crea presentación atractiva en Gamma</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>3.</strong> Genera ilustraciones con DALL-E</span></div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La IA diseña el material; TÚ enciendes la chispa del aprendizaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Caminos de los Expertos - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "test-diagnostico-ruta": {
     meta: {
