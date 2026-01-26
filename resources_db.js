@@ -8286,10 +8286,81 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
           <p class="text-white font-medium text-lg italic">"Un estratega no culpa a la IA cuando falla. Usa los salvavidas para recuperar el control."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 3 - Video 3. AulaGenIA 2025.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">🎯 Cuándo usar cada Salvavidas en Negocios</h3>
+          <div class="space-y-2 text-sm">
+            <div class="bg-green-50 rounded-lg p-3 border border-green-200">
+              <p class="text-green-800"><strong>▶️ CONTINÚA:</strong> La propuesta comercial se cortó a mitad del punto 5. Solo di "Continúa".</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <p class="text-blue-800"><strong>✔️✔️ VALIDA:</strong> Antes de que redacte un email de $100K: "Alto, ¿entendiste que el CEO odia los PDFs largos?"</p>
+            </div>
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-200">
+              <p class="text-amber-800"><strong>🧹 BORRÓN:</strong> El chat tiene 20 versiones de la propuesta y la IA se confundió. Pide resumen y abre chat nuevo.</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Los 3 Salvavidas para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">⚖️ Cuándo usar cada Salvavidas en tu Profesión</h3>
+          <div class="space-y-2 text-sm">
+            <div class="bg-green-50 rounded-lg p-3 border border-green-200">
+              <p class="text-green-800"><strong>▶️ CONTINÚA:</strong> El dictamen técnico se cortó en la sección de fundamentación. Di "Continúa desde la cita de la norma X".</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <p class="text-blue-800"><strong>✔️✔️ VALIDA:</strong> Antes de redactar un informe largo: "Antes de escribir, confirma que entendiste que la jurisdicción es Chile y el cliente es persona jurídica."</p>
+            </div>
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-200">
+              <p class="text-amber-800"><strong>🧹 BORRÓN:</strong> La IA sigue citando normas incorrectas que le diste hace 10 mensajes. Pide resumen de lo acordado y empieza chat limpio.</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Los 3 Salvavidas para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">📊 Cuándo usar cada Salvavidas en Gestión</h3>
+          <div class="space-y-2 text-sm">
+            <div class="bg-green-50 rounded-lg p-3 border border-green-200">
+              <p class="text-green-800"><strong>▶️ CONTINÚA:</strong> El plan de proyecto se detuvo en la Fase 3. Solo di "Continúa".</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <p class="text-blue-800"><strong>✔️✔️ VALIDA:</strong> Antes del comunicado al equipo: "Valida que entendiste que son 200 personas afectadas y el tono debe ser empático, no corporativo."</p>
+            </div>
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-200">
+              <p class="text-amber-800"><strong>🧹 BORRÓN:</strong> Has iterado 15 versiones del reporte. La IA mezcla las instrucciones anteriores. Hora de chat nuevo.</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Los 3 Salvavidas para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">🎓 Cuándo usar cada Salvavidas en Educación</h3>
+          <div class="space-y-2 text-sm">
+            <div class="bg-green-50 rounded-lg p-3 border border-green-200">
+              <p class="text-green-800"><strong>▶️ CONTINÚA:</strong> La planificación de clase se cortó en la actividad de cierre. Di "Continúa".</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <p class="text-blue-800"><strong>✔️✔️ VALIDA:</strong> Antes de la secuencia didáctica: "Confirma que entendiste: 35 alumnos de 14 años, sin acceso a computadoras, solo celulares."</p>
+            </div>
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-200">
+              <p class="text-amber-800"><strong>🧹 BORRÓN:</strong> Le pediste 5 versiones distintas de la actividad y ahora mezcla todo. Poda y empieza limpio.</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Los 3 Salvavidas para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "kit-primeros-auxilios": {
     meta: {
@@ -8348,10 +8419,80 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. Si el copiloto se pierde, tú eres quien tiene la brújula para volver al camino."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial AulaGenIA 2025. Basado en las técnicas de Ingeniería Social de Julia.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-red-800 mb-3">🚨 Escenarios de Urgencia en Negocios</h3>
+          <div class="space-y-3 text-sm">
+            <div class="bg-white rounded-lg p-3 border border-red-200">
+              <p class="text-slate-700"><strong>Urgencia:</strong> La propuesta se cortó antes del cierre y el cliente espera respuesta en 1 hora.</p>
+              <p class="text-red-700"><strong>Acción:</strong> "Continúa exactamente desde donde quedaste con el llamado a la acción final."</p>
+            </div>
+            <div class="bg-white rounded-lg p-3 border border-red-200">
+              <p class="text-slate-700"><strong>Urgencia:</strong> La IA sigue usando el tono equivocado después de 5 correcciones.</p>
+              <p class="text-red-700"><strong>Acción:</strong> Borrón y cuenta nueva. Resume reglas del tono, abre chat nuevo, pega limpio.</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Kit Primeros Auxilios para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-red-800 mb-3">🚨 Escenarios de Urgencia Profesional</h3>
+          <div class="space-y-3 text-sm">
+            <div class="bg-white rounded-lg p-3 border border-red-200">
+              <p class="text-slate-700"><strong>Urgencia:</strong> El dictamen se cortó a mitad de la fundamentación normativa.</p>
+              <p class="text-red-700"><strong>Acción:</strong> "Continúa desde la cita del artículo X de la ley Y."</p>
+            </div>
+            <div class="bg-white rounded-lg p-3 border border-red-200">
+              <p class="text-slate-700"><strong>Urgencia:</strong> La IA sigue mezclando datos de dos clientes distintos.</p>
+              <p class="text-red-700"><strong>Acción:</strong> Chat contaminado. Pide resumen de SOLO este cliente, abre chat nuevo.</p>
+            </div>
+          </div>
+          <div class="bg-red-100 rounded-xl p-3 border border-red-300 mt-3">
+            <p class="text-sm text-red-700"><strong>⚠️ Crítico:</strong> Siempre valida normativas y cálculos antes de usar. Tu firma profesional respalda el documento.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Kit Primeros Auxilios para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-red-800 mb-3">🚨 Escenarios de Urgencia en Gestión</h3>
+          <div class="space-y-3 text-sm">
+            <div class="bg-white rounded-lg p-3 border border-red-200">
+              <p class="text-slate-700"><strong>Urgencia:</strong> El comunicado interno se cortó antes del cierre empático.</p>
+              <p class="text-red-700"><strong>Acción:</strong> "Continúa con el mensaje de cierre que genere tranquilidad."</p>
+            </div>
+            <div class="bg-white rounded-lg p-3 border border-red-200">
+              <p class="text-slate-700"><strong>Urgencia:</strong> Has iterado tanto que la IA mezcla versiones anteriores del plan.</p>
+              <p class="text-red-700"><strong>Acción:</strong> Pide resumen de la versión FINAL acordada, abre chat nuevo, pega solo eso.</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Kit Primeros Auxilios para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-red-800 mb-3">🚨 Escenarios de Urgencia en Educación</h3>
+          <div class="space-y-3 text-sm">
+            <div class="bg-white rounded-lg p-3 border border-red-200">
+              <p class="text-slate-700"><strong>Urgencia:</strong> La secuencia didáctica se cortó antes de la rúbrica de evaluación.</p>
+              <p class="text-red-700"><strong>Acción:</strong> "Continúa con la rúbrica de evaluación para esta actividad."</p>
+            </div>
+            <div class="bg-white rounded-lg p-3 border border-red-200">
+              <p class="text-slate-700"><strong>Urgencia:</strong> La IA sigue generando actividades para el nivel equivocado.</p>
+              <p class="text-red-700"><strong>Acción:</strong> "Valida: ¿entendiste que son alumnos de [NIVEL] con [CARACTERÍSTICAS]?" o chat nuevo.</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Kit Primeros Auxilios para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
 
   // HERRAMIENTA INTERACTIVA: Auditor Modelo AGIA
