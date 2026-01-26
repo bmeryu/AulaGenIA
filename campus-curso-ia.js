@@ -3836,20 +3836,47 @@ document.addEventListener("DOMContentLoaded", () => {
     const segCfg = segment ? segmentConfig[segment] : null;
     const isSegmentView = !!segmentId;
 
+    // Map full segment names to potential legacy keys in JSON (Firebase Data Compatibility)
+    const legacyKeyMap = {
+      "Gestión & Administración": "Gestión & Adm.",
+      "Educación & Capacitación": "Educación"
+    };
+
+    // Helper to get priority safely checking both keys
+    const getSegmentPriority = (caseItem, currentSeg) => {
+      if (!caseItem.prioridadSegmento) return null;
+      const val1 = caseItem.prioridadSegmento[currentSeg];
+      if (val1 !== undefined) return val1;
+      const legacyKey = legacyKeyMap[currentSeg];
+      if (legacyKey) return caseItem.prioridadSegmento[legacyKey];
+      return undefined;
+    };
+
     // Filtrar casos según el tipo de vista
     let filtered;
     if (isSegmentView) {
-      // Vista por segmento: mostrar todos los casos con prioridad para este segmento
-      // Vista por segmento: mostrar todos los casos (si no tiene prioridad, se asume general)
-      filtered = casesData.filter(c => !c.prioridadSegmento || (c.prioridadSegmento && c.prioridadSegmento[segment]));
+      // Vista por segmento: mostrar todos los casos con prioridad para este segmento (o legacy)
+      filtered = casesData.filter(c => {
+        // Incluir si es General (sin prioridadSegmento) O si tiene prioridad para este segmento (o su legacy)
+        return !c.prioridadSegmento || getSegmentPriority(c, segment) !== undefined;
+      });
+
       // Ordenar por prioridad
       filtered.sort((a, b) => {
-        const prioA = a.prioridadSegmento?.[segment] || 99;
-        const prioB = b.prioridadSegmento?.[segment] || 99;
+        const prioA = getSegmentPriority(a, segment) ?? 99; // Usar nullish coalescing para que 0 sea válido
+        const prioB = getSegmentPriority(b, segment) ?? 99;
+
+        // 1. Segment Priority (Low numbers first)
         if (prioA !== prioB) return prioA - prioB;
-        if (a.isStarPrompt && !b.isStarPrompt) return -1;
-        if (!a.isStarPrompt && b.isStarPrompt) return 1;
-        return 0;
+
+        // 2. Star Prompts (Robust Check)
+        const isStarA = a.isStarPrompt === true || a.isStarPrompt === 'true' || a.isStarPrompt === 1;
+        const isStarB = b.isStarPrompt === true || b.isStarPrompt === 'true' || b.isStarPrompt === 1;
+
+        if (isStarA && !isStarB) return -1;
+        if (!isStarA && isStarB) return 1;
+
+        return 0; // Maintain original order otherwise
       });
     } else {
       // Vista por categoría antigua (fallback)
@@ -3858,12 +3885,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (filtered.length === 0) return '<div class="p-8 text-center text-slate-500">Cargando casos... (o no hay casos para este perfil)</div>';
 
-    // El ordenamiento ya se hace arriba en el bloque isSegmentView
+    // Image Source: Use config directly (Single Source of Truth)
+    const headerImage = isSegmentView && segCfg?.image ? segCfg.image : null;
+
+    // Colores de gradiente por segmento
+    const segmentGradients = {
+      'Negocios & Ventas': 'from-indigo-500/10 via-teal-500/5 to-white',
+      'Legal & Profesional': 'from-slate-500/10 via-blue-500/5 to-white',
+      'Gestión & Administración': 'from-teal-500/10 via-coral-500/5 to-white',
+      'Educación & Capacitación': 'from-emerald-500/10 via-yellow-500/5 to-white'
+    };
+    // Fallback for graduates using partial match if needed, but config keys should match now
+    const headerGradient = isSegmentView ? (segmentGradients[segment] || 'from-slate-100 to-white') : 'from-slate-100 to-white';
 
     const renderCaseCard = (c) => {
-      // DEBUG: Trace star prompt values
-      if (c.isStarPrompt) console.log(`[StarDebug] Case "${c.title}" isStarPrompt raw:`, c.isStarPrompt);
-
       // Robust detection for Star Prompt (handles boolean true, string "true", or 1)
       const isStarPrompt = c.isStarPrompt === true || c.isStarPrompt === 'true' || c.isStarPrompt === 1;
       const categoryColor = segCfg?.categoryColor || 'slate';
@@ -3888,7 +3923,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           
           <h4 class="font-bold text-slate-800 mb-2 group-hover:text-teal-600 transition-colors line-clamp-2">${c.title}</h4>
-          <p class="text-sm text-slate-600 line-clamp-3 mb-4">${c.problem || c.description || 'Sin descripción disponible.'}</p>
+          <p class="text-sm text-slate-600 line-clamp-3 mb-4">${c.context || c.problem || c.description || 'Sin descripción disponible.'}</p>
           
           <div class="flex items-center justify-between mt-auto">
              <span class="text-xs font-medium text-slate-400 flex items-center gap-1">
@@ -3904,23 +3939,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const headerTitle = isSegmentView ? segment : categoryId;
     const totalCasesCount = filtered.length;
 
-    // Mapeo de imágenes por segmento
-    const segmentImages = {
-      'Negocios & Ventas': './images/segment_negocios.png',
-      'Legal & Profesional': './images/segment_legal.png',
-      'Gestión & Adm.': './images/segment_gestion.png',
-      'Educación': './images/segment_educacion.png'
-    };
-    const headerImage = isSegmentView && segmentImages[segment] ? segmentImages[segment] : null;
-
-    // Colores de gradiente por segmento
-    const segmentGradients = {
-      'Negocios & Ventas': 'from-indigo-500/10 via-teal-500/5 to-white',
-      'Legal & Profesional': 'from-slate-500/10 via-blue-500/5 to-white',
-      'Gestión & Adm.': 'from-teal-500/10 via-coral-500/5 to-white',
-      'Educación': 'from-emerald-500/10 via-yellow-500/5 to-white'
-    };
-    const headerGradient = isSegmentView ? (segmentGradients[segment] || 'from-slate-100 to-white') : 'from-slate-100 to-white';
+    // Robust featured count
+    const featuredCount = filtered.filter(c => c.isStarPrompt === true || c.isStarPrompt === 'true' || c.isStarPrompt === 1).length;
 
     return `
     <div class="max-w-5xl mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -3952,7 +3972,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </span>
                         <span class="flex items-center gap-1.5">
                             <span class="text-amber-500">⭐</span>
-                            <strong>${filtered.filter(c => c.isStarPrompt).length}</strong> destacados
+                            <strong>${featuredCount}</strong> destacados
                         </span>
                     </div>
                     ` : ''}
