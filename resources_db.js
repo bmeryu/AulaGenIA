@@ -6289,10 +6289,93 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"En AulaGenIA, la IA no es el futuro, tú lo eres."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material de apoyo diseñado para AulaGenIA. ¡Empieza a dirigir a tu copiloto!</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo de Primera Tarea para Negocios</h3>
+          <div class="space-y-3">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <p class="font-bold text-purple-800 mb-1">1. ROL:</p>
+              <p class="text-sm text-purple-700">"Actúa como un consultor de ventas experto en negociación B2B con 15 años de experiencia cerrando contratos corporativos."</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <p class="font-bold text-blue-800 mb-1">2. CONTEXTO:</p>
+              <p class="text-sm text-blue-700">"Tengo una reunión mañana con el director de compras de una empresa mediana. Ya les presenté la propuesta hace 2 semanas. Presupuesto: $30K. Mi competencia ofreció algo similar a $25K."</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <p class="font-bold text-green-800 mb-1">3. META:</p>
+              <p class="text-sm text-green-700">"Para que me ayudes a preparar 3 argumentos de valor que justifiquen mi precio y una estrategia de cierre para mañana."</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Mi Primer Prompt WOW para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo de Primera Tarea para Profesionales</h3>
+          <div class="space-y-3">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <p class="font-bold text-purple-800 mb-1">1. ROL:</p>
+              <p class="text-sm text-purple-700">"Actúa como un abogado especialista en derecho laboral con experiencia en redacción de documentos formales y comunicación con autoridades."</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <p class="font-bold text-blue-800 mb-1">2. CONTEXTO:</p>
+              <p class="text-sm text-blue-700">"Un cliente mediana empresa necesita notificar terminación de contrato a un empleado. Causa: reorganización. 5 años de antigüedad. Quiere evitar conflictos legales."</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <p class="font-bold text-green-800 mb-1">3. META:</p>
+              <p class="text-sm text-green-700">"Para redactar una carta de terminación profesional y respetuosa que cumpla con la normativa y minimice riesgo de demanda."</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Mi Primer Prompt WOW para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo de Primera Tarea para Gestión</h3>
+          <div class="space-y-3">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <p class="font-bold text-purple-800 mb-1">1. ROL:</p>
+              <p class="text-sm text-purple-700">"Actúa como un especialista en comunicación interna con experiencia en gestión del cambio organizacional."</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <p class="font-bold text-blue-800 mb-1">2. CONTEXTO:</p>
+              <p class="text-sm text-blue-700">"Implementamos nuevo horario flexible la próxima semana. 45 empleados afectados. Algunos expresaron dudas. Necesito comunicar los beneficios y las nuevas reglas."</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <p class="font-bold text-green-800 mb-1">3. META:</p>
+              <p class="text-sm text-green-700">"Para crear un comunicado interno que genere entusiasmo por el cambio y aclare las dudas más comunes de forma preventiva."</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Mi Primer Prompt WOW para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo de Primera Tarea para Educadores</h3>
+          <div class="space-y-3">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <p class="font-bold text-purple-800 mb-1">1. ROL:</p>
+              <p class="text-sm text-purple-700">"Actúa como un pedagogo experto en aprendizaje activo y gamificación para adolescentes de 14-16 años."</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <p class="font-bold text-blue-800 mb-1">2. CONTEXTO:</p>
+              <p class="text-sm text-blue-700">"Enseño Geografía a 2° de secundaria. 28 estudiantes. El tema de la próxima clase es 'Cambio Climático'. Tienen bajo interés y se distraen fácilmente."</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <p class="font-bold text-green-800 mb-1">3. META:</p>
+              <p class="text-sm text-green-700">"Para diseñar una actividad interactiva de 40 minutos que los enganche desde el inicio y los haga reflexionar sobre acciones personales."</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Mi Primer Prompt WOW para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "plantilla-prompt-wow": {
     meta: {
