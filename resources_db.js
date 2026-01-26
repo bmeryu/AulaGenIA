@@ -2780,110 +2780,6 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
           <p class="text-teal-700 italic">"Dominar la IA no es saber usar todas las herramientas, sino saber cuál abrir para cada misión. He clasificado estas herramientas por categorías para que dejes de dudar y empieces a ejecutar. ¡Tu tiempo vale oro!"</p>
         </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">Selección Táctica de Herramientas</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse">
-              <thead class="bg-cyan-100">
-                <tr>
-                  <th class="text-left p-3 font-semibold text-cyan-800 border-b-2 border-cyan-200">Herramienta</th>
-                  <th class="text-left p-3 font-semibold text-cyan-800 border-b-2 border-cyan-200">Especialidad (Misión)</th>
-                  <th class="text-left p-3 font-semibold text-cyan-800 border-b-2 border-cyan-200">Costo</th>
-                  <th class="text-left p-3 font-semibold text-cyan-800 border-b-2 border-cyan-200">Acceso</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b border-slate-200 hover:bg-cyan-50 transition-colors">
-                  <td class="p-3 font-bold text-teal-700">ChatGPT</td>
-                  <td class="p-3 text-slate-600">El todoterreno. Ideal para empezar, chatear y razonar sobre cualquier tema.</td>
-                  <td class="p-3 text-slate-500">Gratis/Pago</td>
-                  <td class="p-3"><a href="https://chatgpt.com" target="_blank" class="text-cyan-600 hover:underline">chatgpt.com</a></td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-cyan-50 transition-colors">
-                  <td class="p-3 font-bold text-purple-700">Claude</td>
-                  <td class="p-3 text-slate-600">La mejor pluma. Escritura elegante, larga y con un tono muy humano.</td>
-                  <td class="p-3 text-slate-500">Gratis/Pago</td>
-                  <td class="p-3"><a href="https://claude.ai" target="_blank" class="text-cyan-600 hover:underline">claude.ai</a></td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-cyan-50 transition-colors">
-                  <td class="p-3 font-bold text-blue-700">Perplexity</td>
-                  <td class="p-3 text-slate-600">El detective. Busca información real en internet y te da las fuentes.</td>
-                  <td class="p-3 text-slate-500">Gratis/Pago</td>
-                  <td class="p-3"><a href="https://perplexity.ai" target="_blank" class="text-cyan-600 hover:underline">perplexity.ai</a></td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-cyan-50 transition-colors">
-                  <td class="p-3 font-bold text-red-700">Gemini</td>
-                  <td class="p-3 text-slate-600">Video y Google. Rápido, integrado con Gmail y líder en video con Veo 3.</td>
-                  <td class="p-3 text-slate-500">Gratis/Pago</td>
-                  <td class="p-3"><a href="https://gemini.google.com" target="_blank" class="text-cyan-600 hover:underline">gemini.google.com</a></td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-cyan-50 transition-colors">
-                  <td class="p-3 font-bold text-orange-700">Gamma</td>
-                  <td class="p-3 text-slate-600">El diseñador express. Crea presentaciones y webs completas desde un párrafo.</td>
-                  <td class="p-3 text-slate-500">Gratis/Pago</td>
-                  <td class="p-3"><a href="https://gamma.app" target="_blank" class="text-cyan-600 hover:underline">gamma.app</a></td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-cyan-50 transition-colors">
-                  <td class="p-3 font-bold text-green-700">DALL-E 3</td>
-                  <td class="p-3 text-slate-600">Imágenes fáciles. Genera dibujos e ilustraciones sin salir del chat.</td>
-                  <td class="p-3 text-slate-500">Incluido</td>
-                  <td class="p-3"><a href="https://chatgpt.com" target="_blank" class="text-cyan-600 hover:underline">chatgpt.com</a></td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-cyan-50 transition-colors">
-                  <td class="p-3 font-bold text-pink-700">Midjourney</td>
-                  <td class="p-3 text-slate-600">Fotorrealismo. Calidad visual de nivel cine o fotografía profesional.</td>
-                  <td class="p-3 text-slate-500">Pago</td>
-                  <td class="p-3"><a href="https://midjourney.com" target="_blank" class="text-cyan-600 hover:underline">midjourney.com</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">Manual de Campo: ¿Cuándo activar cada IA?</h3>
-          <p class="text-slate-600 mb-4">Aquí tienes la guía de decisión rápida para que elijas como un profesional en tus tareas diarias:</p>
-          <div class="grid gap-3 md:grid-cols-2">
-            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200 hover:shadow-md transition-all">
-              <h4 class="font-bold text-purple-800 mb-2">1. Misión: Redacción de Alto Impacto</h4>
-              <ul class="text-sm text-purple-700 space-y-1">
-                <li>• <strong>¿Por qué Claude?</strong> Si quieres que el texto parezca escrito por una persona y no por un robot. Es más sofisticado y detallista.</li>
-                <li>• <strong>¿Por qué ChatGPT?</strong> Si necesitas una estructura rápida, una lista de ideas o ayuda con una tarea general de oficina.</li>
-              </ul>
-            </div>
-            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200 hover:shadow-md transition-all">
-              <h4 class="font-bold text-blue-800 mb-2">2. Misión: Veracidad e Investigación</h4>
-              <ul class="text-sm text-blue-700 space-y-1">
-                <li>• <strong>¿Por qué Perplexity?</strong> Porque te entrega el enlace directo a la fuente. Si necesitas un dato para un informe serio, este es tu lugar.</li>
-                <li>• <strong>¿Por qué Gemini?</strong> Si quieres respuestas sobre eventos que están pasando ahora mismo conectadas a tus herramientas de Google.</li>
-              </ul>
-            </div>
-            <div class="bg-red-50 rounded-xl p-4 border border-red-200 hover:shadow-md transition-all">
-              <h4 class="font-bold text-red-800 mb-2">3. Misión: Creación Visual y Video</h4>
-              <ul class="text-sm text-red-700 space-y-1">
-                <li>• <strong>¿Por qué Gemini (Veo 3)?</strong> Es la potencia máxima si tu objetivo es crear clips de video impresionantes con solo una orden.</li>
-                <li>• <strong>¿Por qué Gamma?</strong> Si tienes que exponer una idea y necesitas diapositivas profesionales sin pasar horas en PowerPoint.</li>
-              </ul>
-            </div>
-            <div class="bg-green-50 rounded-xl p-4 border border-green-200 hover:shadow-md transition-all">
-              <h4 class="font-bold text-green-800 mb-2">4. Misión: Arte Digital e Imágenes</h4>
-              <ul class="text-sm text-green-700 space-y-1">
-                <li>• <strong>¿Por qué DALL-E 3?</strong> Porque entiende tus órdenes en español de forma increíble y es muy sencillo de usar.</li>
-                <li>• <strong>¿Por qué Midjourney?</strong> Si buscas resultados que parezcan fotos reales o arte de galería para un proyecto premium.</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Truco Pro AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La mayoría de los expertos usamos Perplexity para investigar, Claude para redactar y Gamma para presentar. ¡Combínalos y multiplica tu productividad por diez!"</p>
-        </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial del curso AulaGenIA. Información actualizada a diciembre de 2025.</div>
-        <div class="flex items-center gap-3 py-2">
-          <div class="flex-1 h-px bg-gradient-to-r from-transparent to-teal-300"></div>
-          <span class="text-xs font-semibold text-teal-600 bg-teal-50 px-3 py-1 rounded-full">Para tu perfil</span>
-          <div class="flex-1 h-px bg-gradient-to-l from-transparent to-teal-300"></div>
-        </div>
-      </article>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -3104,135 +3000,81 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">La Hoja de Ruta del Piloto</h2>
-          <p class="text-amber-700">Delegar no es simplemente "pedir cosas". Para recuperar tu tiempo, debes seguir este proceso que Julia nos enseñó. Usa esta primera parte como referencia y la segunda para pasar a la acción.</p>
+          <p class="text-amber-700 italic">"Delegar no es simplemente 'pedir cosas'. Para recuperar tu tiempo, debes seguir el proceso que Julia nos enseñó: Reconocer la fuga, Identificar el nudo, Definir la acción. ¡Usa esta guía para pasar de la teoría a la acción!"</p>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">PARTE 1: El Método AulaGenIA (La Teoría)</h3>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">El Método RID para Líderes Comerciales</h3>
           <div class="space-y-4">
             <div class="bg-white rounded-xl p-5 border-l-4 border-blue-400 hover:shadow-md transition-all">
               <div class="flex items-center gap-3 mb-2">
                 <span class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">1</span>
-                <h4 class="font-bold text-blue-800">PASO 1: RECONOCER (La Fuga) ⏰</h4>
+                <h4 class="font-bold text-blue-800">RECONOCER: ¿Dónde pierdes tiempo?</h4>
               </div>
-              <p class="text-slate-600">Busca tareas que te quiten más de 30 minutos o sean recurrentes. El objetivo es encontrar dónde estás perdiendo energía vital.</p>
+              <p class="text-slate-600 text-sm">Revisa tu pipeline: ¿investigar prospectos, redactar propuestas, enviar seguimientos? Identifica tareas de +30 min o repetitivas.</p>
             </div>
             <div class="bg-white rounded-xl p-5 border-l-4 border-amber-400 hover:shadow-md transition-all">
               <div class="flex items-center gap-3 mb-2">
                 <span class="w-8 h-8 bg-amber-500 text-white rounded-full flex items-center justify-center font-bold">2</span>
-                <h4 class="font-bold text-amber-800">PASO 2: IDENTIFICAR (El Nudo) 🔍</h4>
+                <h4 class="font-bold text-amber-800">IDENTIFICAR: ¿Cuál es el nudo?</h4>
               </div>
-              <p class="text-slate-600">Entiende por qué la tarea te detiene. ¿Es el miedo a la Hoja en Blanco? ¿Es una Tarea Mecánica y aburrida? ¿O te falta Criterio Experto?</p>
+              <p class="text-slate-600 text-sm"><strong>Inercia:</strong> Propuesta en blanco. <strong>Fricción:</strong> Buscar info del prospecto. <strong>Vaguedad:</strong> No sabes cómo estructurar el pitch.</p>
             </div>
             <div class="bg-white rounded-xl p-5 border-l-4 border-green-400 hover:shadow-md transition-all">
               <div class="flex items-center gap-3 mb-2">
                 <span class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">3</span>
-                <h4 class="font-bold text-green-800">PASO 3: DEFINIR (La Acción) 🚀</h4>
+                <h4 class="font-bold text-green-800">DEFINIR: Asigna el copiloto correcto</h4>
               </div>
-              <p class="text-slate-600">Asigna un copiloto (ChatGPT, Perplexity, etc.) y dale un Rol y Contexto basados en el nudo que identificaste.</p>
+              <p class="text-slate-600 text-sm">Perplexity para investigar, Claude para propuestas premium, ChatGPT para borradores rápidos, Gamma para presentaciones.</p>
             </div>
           </div>
         </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">PARTE 2: Mi Mapa de Delegación (La Acción)</h3>
-          <p class="text-slate-600 mb-4"><strong>Instrucción:</strong> Elige tres tareas de tu semana. Completa las columnas identificando el "nudo" específico de cada una para saber qué pedirle a la IA.</p>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse">
-              <thead class="bg-amber-100">
-                <tr>
-                  <th class="text-left p-3 font-semibold text-amber-800 border-b-2 border-amber-200">1. Tarea (Reconocer)</th>
-                  <th class="text-left p-3 font-semibold text-amber-800 border-b-2 border-amber-200">2. El Nudo (Identificar)</th>
-                  <th class="text-left p-3 font-semibold text-amber-800 border-b-2 border-amber-200">3. Copiloto (Definir)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b border-slate-200 bg-amber-50">
-                  <td class="p-3 text-slate-700"><em>Ejemplo:</em> Responder correos de soporte.</td>
-                  <td class="p-3 text-slate-700">Tarea mecánica: siempre respondo las mismas 5 dudas.</td>
-                  <td class="p-3 text-slate-700">ChatGPT (Rol: Agente de Soporte)</td>
-                </tr>
-                <tr class="border-b border-slate-200">
-                  <td class="p-3"><input type="text" class="w-full p-2 border border-slate-300 rounded" placeholder="Tu tarea..."></td>
-                  <td class="p-3"><input type="text" class="w-full p-2 border border-slate-300 rounded" placeholder="El nudo..."></td>
-                  <td class="p-3"><input type="text" class="w-full p-2 border border-slate-300 rounded" placeholder="Tu copiloto..."></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Recordatorio de "Nudos" Comunes</h3>
-          <div class="grid gap-3 md:grid-cols-3">
-            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
-              <h4 class="font-bold text-purple-800 mb-1">Inercia</h4>
-              <p class="text-sm text-purple-700">No sé cómo empezar el primer borrador.</p>
-            </div>
-            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
-              <h4 class="font-bold text-blue-800 mb-1">Fricción</h4>
-              <p class="text-sm text-blue-700">Sé hacerlo, pero toma mucho tiempo manual.</p>
-            </div>
-            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
-              <h4 class="font-bold text-green-800 mb-1">Vaguedad</h4>
-              <p class="text-sm text-green-700">Tengo la idea, pero necesito que alguien la estructure o critique.</p>
-            </div>
-          </div>
-        </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Desafío AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"No delegues lo que no entiendes. Dirige a la IA para que resuelva el nudo, pero mantén siempre tu criterio en el resultado final."</p>
-        </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial diseñado para AulaGenIA. Edición 2025.</div>
-      </article>
-    `,
-    segments: {
-      "Negocios & Ventas": `
         <div class="space-y-4">
           <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
             <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
               <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
-              Mapa de Delegación para Líderes de Negocio
+              Tu Mapa de Delegación Comercial
             </h4>
-            <p class="text-sm text-slate-700 mb-4">Identifica tus fugaz de tiempo comercial y delégalas estratégicamente.</p>
-            
             <div class="overflow-x-auto mb-4">
               <table class="w-full text-xs border-collapse">
                 <thead class="bg-teal-100">
                   <tr>
-                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Tarea Común</th>
+                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Tarea</th>
                     <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">El Nudo</th>
-                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Copiloto Ideal</th>
+                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Copiloto</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="border-b border-slate-200">
                     <td class="p-2 text-slate-700">Investigar prospectos</td>
-                    <td class="p-2 text-slate-600">Fricción: toma mucho tiempo buscar info</td>
+                    <td class="p-2 text-slate-600">Fricción</td>
                     <td class="p-2 text-teal-700 font-medium">Perplexity</td>
                   </tr>
                   <tr class="border-b border-slate-200">
                     <td class="p-2 text-slate-700">Redactar propuestas</td>
-                    <td class="p-2 text-slate-600">Inercia: hoja en blanco</td>
+                    <td class="p-2 text-slate-600">Inercia</td>
                     <td class="p-2 text-teal-700 font-medium">Claude + Gamma</td>
                   </tr>
                   <tr class="border-b border-slate-200">
                     <td class="p-2 text-slate-700">Enviar seguimientos</td>
-                    <td class="p-2 text-slate-600">Fricción: siempre similar</td>
+                    <td class="p-2 text-slate-600">Fricción</td>
                     <td class="p-2 text-teal-700 font-medium">ChatGPT</td>
-                  </tr>
-                  <tr class="border-b border-slate-200">
-                    <td class="p-2 text-slate-700">Preparar presentaciones</td>
-                    <td class="p-2 text-slate-600">Fricción + Inercia</td>
-                    <td class="p-2 text-teal-700 font-medium">Gamma</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            
             <div class="prompt-block bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-sm">Actúa como mi director comercial. Mi nudo es [inercia/fricción/vaguedad] en la tarea de [TAREA]. Dame el primer paso concreto para delegar esto a la IA correctamente.</p>
+              <p class="text-white text-sm">Actúa como director comercial. Mi nudo es [inercia/fricción/vaguedad] en [TAREA]. Dame el primer paso para delegarla correctamente.</p>
             </div>
           </div>
         </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"No delegues lo que no entiendes. Dirige la IA para que resuelva el nudo, pero el cierre es tuyo."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Kit de Delegación - Módulo 2. AulaGenIA 2025.</div>
       </article>
       `,
