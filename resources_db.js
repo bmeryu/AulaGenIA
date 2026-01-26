@@ -4774,145 +4774,199 @@ const resourcesDatabase = {
           <p class="text-slate-600 mb-4">Selecciona la opción que más se acerque a tu situación actual. Si te sientes identificado con dos opciones, elige la que te genere más estrés hoy. Al final, suma tus respuestas para descubrir tu perfil.</p>
           
           <div class="space-y-6">
-            <!-- Pregunta 1 -->
             <div class="bg-white rounded-xl p-5 border border-slate-200">
               <h4 class="font-bold text-slate-800 mb-3">1. ¿Cuál es el motor principal de tu día a día laboral?</h4>
               <div class="space-y-2">
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200">
-                  <input type="radio" name="q1" class="mt-1" value="A">
-                  <span class="text-sm"><strong class="text-purple-700">A.</strong> Crear contenido visual, redactar textos creativos o diseñar soluciones estéticas.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200">
-                  <input type="radio" name="q1" class="mt-1" value="B">
-                  <span class="text-sm"><strong class="text-blue-700">B.</strong> Tomar decisiones de negocio, analizar números y convencer a clientes o socios.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200">
-                  <input type="radio" name="q1" class="mt-1" value="C">
-                  <span class="text-sm"><strong class="text-green-700">C.</strong> Gestionar redes sociales, procesos internos y asegurar que todo funcione a tiempo.</span>
-                </label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200"><input type="radio" name="q1" class="mt-1" value="A"><span class="text-sm"><strong class="text-purple-700">A.</strong> Crear contenido visual, redactar textos creativos o diseñar soluciones estéticas.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200"><input type="radio" name="q1" class="mt-1" value="B"><span class="text-sm"><strong class="text-blue-700">B.</strong> Tomar decisiones de negocio, analizar números y convencer a clientes o socios.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200"><input type="radio" name="q1" class="mt-1" value="C"><span class="text-sm"><strong class="text-green-700">C.</strong> Gestionar redes sociales, procesos internos y asegurar que todo funcione a tiempo.</span></label>
               </div>
             </div>
             
-            <!-- Pregunta 2 -->
             <div class="bg-white rounded-xl p-5 border border-slate-200">
               <h4 class="font-bold text-slate-800 mb-3">2. Cuando te sientes bloqueado en el trabajo, ¿cuál es el síntoma más común?</h4>
               <div class="space-y-2">
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200">
-                  <input type="radio" name="q2" class="mt-1" value="A">
-                  <span class="text-sm"><strong class="text-purple-700">A.</strong> Me quedo mirando la hoja en blanco sin saber cómo empezar. La inercia creativa me paraliza.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200">
-                  <input type="radio" name="q2" class="mt-1" value="B">
-                  <span class="text-sm"><strong class="text-blue-700">B.</strong> Tengo demasiada información que procesar y me cuesta resumirla en algo claro y presentable.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200">
-                  <input type="radio" name="q2" class="mt-1" value="C">
-                  <span class="text-sm"><strong class="text-green-700">C.</strong> Pierdo horas en tareas repetitivas que sé hacer pero que son mecánicas y aburridas.</span>
-                </label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200"><input type="radio" name="q2" class="mt-1" value="A"><span class="text-sm"><strong class="text-purple-700">A.</strong> Me quedo mirando la hoja en blanco sin saber cómo empezar. La inercia creativa me paraliza.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200"><input type="radio" name="q2" class="mt-1" value="B"><span class="text-sm"><strong class="text-blue-700">B.</strong> Tengo demasiada información que procesar y me cuesta resumirla en algo claro y presentable.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200"><input type="radio" name="q2" class="mt-1" value="C"><span class="text-sm"><strong class="text-green-700">C.</strong> Pierdo horas en tareas repetitivas que sé hacer pero que son mecánicas y aburridas.</span></label>
               </div>
             </div>
             
-            <!-- Pregunta 3 -->
             <div class="bg-white rounded-xl p-5 border border-slate-200">
               <h4 class="font-bold text-slate-800 mb-3">3. Si tuvieras que elegir una sola herramienta de IA para dominar, elegirías una que:</h4>
               <div class="space-y-2">
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200">
-                  <input type="radio" name="q3" class="mt-1" value="A">
-                  <span class="text-sm"><strong class="text-purple-700">A.</strong> Me ayude a generar imágenes, logos y diseños creativos sin depender de un diseñador.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200">
-                  <input type="radio" name="q3" class="mt-1" value="B">
-                  <span class="text-sm"><strong class="text-blue-700">B.</strong> Me genere presentaciones profesionales y reportes automáticos a partir de mis datos.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200">
-                  <input type="radio" name="q3" class="mt-1" value="C">
-                  <span class="text-sm"><strong class="text-green-700">C.</strong> Me permita crear contenido para redes sociales de forma rápida y atractiva.</span>
-                </label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200"><input type="radio" name="q3" class="mt-1" value="A"><span class="text-sm"><strong class="text-purple-700">A.</strong> Me ayude a generar imágenes, logos y diseños creativos sin depender de un diseñador.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200"><input type="radio" name="q3" class="mt-1" value="B"><span class="text-sm"><strong class="text-blue-700">B.</strong> Me genere presentaciones profesionales y reportes automáticos a partir de mis datos.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200"><input type="radio" name="q3" class="mt-1" value="C"><span class="text-sm"><strong class="text-green-700">C.</strong> Me permita crear contenido para redes sociales de forma rápida y atractiva.</span></label>
               </div>
             </div>
             
-            <!-- Pregunta 4 -->
             <div class="bg-white rounded-xl p-5 border border-slate-200">
               <h4 class="font-bold text-slate-800 mb-3">4. ¿Cuál sería tu mayor celebración si la IA te ayudara esta semana?</h4>
               <div class="space-y-2">
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200">
-                  <input type="radio" name="q4" class="mt-1" value="A">
-                  <span class="text-sm"><strong class="text-purple-700">A.</strong> Terminar un proyecto creativo que llevo semanas postergando por falta de inspiración.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200">
-                  <input type="radio" name="q4" class="mt-1" value="B">
-                  <span class="text-sm"><strong class="text-blue-700">B.</strong> Cerrar una venta o presentar una propuesta ganadora con datos claros y convincentes.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200">
-                  <input type="radio" name="q4" class="mt-1" value="C">
-                  <span class="text-sm"><strong class="text-green-700">C.</strong> Tener toda la semana de publicaciones listas y programadas sin estrés de último minuto.</span>
-                </label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200"><input type="radio" name="q4" class="mt-1" value="A"><span class="text-sm"><strong class="text-purple-700">A.</strong> Terminar un proyecto creativo que llevo semanas postergando por falta de inspiración.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200"><input type="radio" name="q4" class="mt-1" value="B"><span class="text-sm"><strong class="text-blue-700">B.</strong> Cerrar una venta o presentar una propuesta ganadora con datos claros y convincentes.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200"><input type="radio" name="q4" class="mt-1" value="C"><span class="text-sm"><strong class="text-green-700">C.</strong> Tener toda la semana de publicaciones listas y programadas sin estrés de último minuto.</span></label>
               </div>
             </div>
             
-            <!-- Pregunta 5 -->
             <div class="bg-white rounded-xl p-5 border border-slate-200">
               <h4 class="font-bold text-slate-800 mb-3">5. ¿Cuál de estas frases describe mejor tu relación con la tecnología?</h4>
               <div class="space-y-2">
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200">
-                  <input type="radio" name="q5" class="mt-1" value="A">
-                  <span class="text-sm"><strong class="text-purple-700">A.</strong> Me encanta explorar y experimentar con lo visual. Soy más artista que técnico.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200">
-                  <input type="radio" name="q5" class="mt-1" value="B">
-                  <span class="text-sm"><strong class="text-blue-700">B.</strong> Soy más pragmático: quiero herramientas que me den resultados medibles rápido.</span>
-                </label>
-                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200">
-                  <input type="radio" name="q5" class="mt-1" value="C">
-                  <span class="text-sm"><strong class="text-green-700">C.</strong> Necesito algo fácil y rápido. No tengo tiempo para curvas de aprendizaje largas.</span>
-                </label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors border border-transparent hover:border-purple-200"><input type="radio" name="q5" class="mt-1" value="A"><span class="text-sm"><strong class="text-purple-700">A.</strong> Me encanta explorar y experimentar con lo visual. Soy más artista que técnico.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors border border-transparent hover:border-blue-200"><input type="radio" name="q5" class="mt-1" value="B"><span class="text-sm"><strong class="text-blue-700">B.</strong> Soy más pragmático: quiero herramientas que me den resultados medibles rápido.</span></label>
+                <label class="flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 cursor-pointer transition-colors border border-transparent hover:border-green-200"><input type="radio" name="q5" class="mt-1" value="C"><span class="text-sm"><strong class="text-green-700">C.</strong> Necesito algo fácil y rápido. No tengo tiempo para curvas de aprendizaje largas.</span></label>
               </div>
             </div>
           </div>
         </section>
-        
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Tus Resultados: Descubre Tu Ruta</h3>
-          <p class="text-slate-600 mb-4">Suma tus respuestas. La letra que más se repita es tu perfil dominante:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Tus Resultados para Negocios</h3>
+          <p class="text-slate-600 mb-4">Suma tus respuestas. La letra que más se repita es tu perfil dominante. Como profesional de negocios, probablemente te identifiques con B (Carlos), pero cualquier resultado es válido:</p>
           
-          <div class="space-y-4">
-            <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
-              <h4 class="font-bold text-purple-800 mb-2">🎨 MAYORÍA DE "A": Ruta María (La Arquitecta Creativa)</h4>
-              <p class="text-sm text-slate-700 mb-3"><strong>Diagnóstico:</strong> Tu problema principal es la inercia creativa. Tienes las ideas, pero te cuesta arrancar y plasmarlas. Tu "Nudo" es la hoja en blanco.</p>
-              <ul class="text-sm text-purple-800 space-y-1">
-                <li>• <strong>Tu Kit Maestro:</strong> ChatGPT (para estructurar ideas) → Ideogram (para logos y diseños con texto) → Claude (para pulir el tono).</li>
-                <li>• <strong>Primer Paso:</strong> Pídele a ChatGPT: "Actúa como mi director creativo y dame 3 conceptos visuales para mi próximo proyecto."</li>
-              </ul>
+          <div class="bg-blue-100 rounded-xl p-5 border-2 border-blue-400 mb-4">
+            <h4 class="font-bold text-blue-800 mb-2">📈 RECOMENDADO: Ruta Carlos (El Estratega de Crecimiento)</h4>
+            <p class="text-sm text-slate-700 mb-3"><strong>Ideal para vendedores y líderes de negocio:</strong> Tu problema es convertir datos en propuestas ganadoras y presentaciones convincentes.</p>
+            <ul class="text-sm text-blue-800 space-y-1">
+              <li>• <strong>Tu Kit Comercial:</strong> Perplexity (investigar prospectos) → ChatGPT (propuestas) → Gamma (presentaciones WOW).</li>
+              <li>• <strong>Primer Paso:</strong> Investiga tu próximo prospecto en Perplexity y pídele a ChatGPT: "Crea 3 enfoques de propuesta para este cliente."</li>
+            </ul>
+          </div>
+          
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-1">🎨 Mayoría A: Ruta María</h4>
+              <p class="text-xs text-slate-700">Si necesitas crear contenido visual para campañas.</p>
+              <p class="text-xs text-purple-700 mt-1">Kit: ChatGPT → Ideogram → Canva</p>
             </div>
-            
-            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
-              <h4 class="font-bold text-blue-800 mb-2">📈 MAYORÍA DE "B": Ruta Carlos (El Estratega de Crecimiento)</h4>
-              <p class="text-sm text-slate-700 mb-3"><strong>Diagnóstico:</strong> Tu problema es el cuello de botella informativo. Tienes los datos, pero te cuesta convertirlos en insights y presentaciones convincentes.</p>
-              <ul class="text-sm text-blue-800 space-y-1">
-                <li>• <strong>Tu Kit Maestro:</strong> Perplexity (para investigar con fuentes) → Gemini (para análisis de documentos) → Gamma (para presentaciones WOW).</li>
-                <li>• <strong>Primer Paso:</strong> Sube tu último reporte a Gemini y pídele: "Identifica 3 oportunidades de negocio que estoy ignorando."</li>
-              </ul>
-            </div>
-            
-            <div class="bg-green-50 rounded-xl p-5 border border-green-200">
-              <h4 class="font-bold text-green-800 mb-2">🔄 MAYORÍA DE "C": Ruta Luis (El Operador de Eficiencia)</h4>
-              <p class="text-sm text-slate-700 mb-3"><strong>Diagnóstico:</strong> Tu problema es la fricción operativa. Sabes qué hacer, pero las tareas mecánicas te consumen. Tu "Nudo" es la repetición.</p>
-              <ul class="text-sm text-green-800 space-y-1">
-                <li>• <strong>Tu Kit Maestro:</strong> DALL-E 3 (para imágenes rápidas) → Canva AI (para diseños profesionales) → ChatGPT (para gestión de respuestas).</li>
-                <li>• <strong>Primer Paso:</strong> Pásale a ChatGPT tus 5 respuestas de correo más frecuentes y pídele: "Crea una matriz de respuesta inteligente."</li>
-              </ul>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">🔄 Mayoría C: Ruta Luis</h4>
+              <p class="text-xs text-slate-700">Si pasas mucho tiempo en redes y correos.</p>
+              <p class="text-xs text-green-700 mt-1">Kit: DALL-E → Canva AI → ChatGPT</p>
             </div>
           </div>
         </section>
-        
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La IA no reemplaza tu talento, reemplaza tu cansancio. Elige tu ruta y vuelve a disfrutar tu trabajo."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"La IA no reemplaza tu talento comercial, reemplaza las horas de preparación. Cierra más, prepara menos."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Test oficial AulaGenIA 2025. Basado en los caminos de éxito del Módulo 2.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Test de Diagnóstico - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Tus Resultados para Profesionales Legales</h3>
+          <p class="text-slate-600 mb-4">Suma tus respuestas. Como profesional del derecho, probablemente te identifiques con B (procesamiento de información), pero aquí están todos los resultados adaptados:</p>
+          
+          <div class="bg-indigo-100 rounded-xl p-5 border-2 border-indigo-400 mb-4">
+            <h4 class="font-bold text-indigo-800 mb-2">⚖️ RECOMENDADO: Ruta del Profesional Legal</h4>
+            <p class="text-sm text-slate-700 mb-3"><strong>Ideal para abogados y profesionales:</strong> Tu problema es procesar expedientes voluminosos y redactar escritos eficientemente.</p>
+            <ul class="text-sm text-indigo-800 space-y-1">
+              <li>• <strong>Tu Kit Jurídico:</strong> Perplexity (investigación con fuentes [VERIFICAR]) → Claude (redacción precisa) → ChatGPT (resúmenes).</li>
+              <li>• <strong>Primer Paso:</strong> Pega un expediente en Claude y pide: "Resume hechos clave, identifica argumentos fuertes y débiles. Marca [VERIFICAR] toda cita."</li>
+            </ul>
+          </div>
+          
+          <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-500 mb-4">
+            <p class="text-xs text-amber-800"><strong>⚠️ Recordatorio Ético:</strong> NUNCA uses citas legales sin verificar en fuentes oficiales. TÚ firmas y respondes profesionalmente.</p>
+          </div>
+          
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-1">🎨 Mayoría A: Contenido Visual</h4>
+              <p class="text-xs text-slate-700">Para presentaciones a clientes o jurados.</p>
+              <p class="text-xs text-purple-700 mt-1">Kit: ChatGPT → Gamma → Canva</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">🔄 Mayoría C: Eficiencia Operativa</h4>
+              <p class="text-xs text-slate-700">Para gestión de comunicaciones y agenda.</p>
+              <p class="text-xs text-green-700 mt-1">Kit: ChatGPT para correos y resúmenes</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"La IA procesa expedientes; TÚ armas la estrategia jurídica y firmas."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Test de Diagnóstico - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Tus Resultados para Gestión</h3>
+          <p class="text-slate-600 mb-4">Suma tus respuestas. Como profesional de gestión, probablemente te identifiques con C (eficiencia operativa), pero cualquier resultado es válido:</p>
+          
+          <div class="bg-green-100 rounded-xl p-5 border-2 border-green-400 mb-4">
+            <h4 class="font-bold text-green-800 mb-2">🔄 RECOMENDADO: Ruta Luis (El Operador de Eficiencia)</h4>
+            <p class="text-sm text-slate-700 mb-3"><strong>Ideal para gestores y administradores:</strong> Tu problema es la fricción operativa. Las tareas mecánicas te consumen tiempo valioso.</p>
+            <ul class="text-sm text-green-800 space-y-1">
+              <li>• <strong>Tu Kit de Eficiencia:</strong> ChatGPT (documentos y correos) → Canva AI (diseños rápidos) → Gamma (reportes ejecutivos).</li>
+              <li>• <strong>Primer Paso:</strong> Pásale a ChatGPT tus 5 correos más frecuentes y pídele: "Crea una matriz de plantillas de respuesta."</li>
+            </ul>
+          </div>
+          
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-1">🎨 Mayoría A: Ruta María</h4>
+              <p class="text-xs text-slate-700">Si necesitas crear material visual institucional.</p>
+              <p class="text-xs text-purple-700 mt-1">Kit: ChatGPT → Ideogram → Canva</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-1">📈 Mayoría B: Ruta Carlos</h4>
+              <p class="text-xs text-slate-700">Si tu rol es más estratégico y analítico.</p>
+              <p class="text-xs text-blue-700 mt-1">Kit: Gemini → Gamma → Perplexity</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"La IA no reemplaza tu rol, reemplaza las tareas repetitivas. Gestiona más, teclea menos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Test de Diagnóstico - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Tus Resultados para Educadores</h3>
+          <p class="text-slate-600 mb-4">Suma tus respuestas. Como educador, probablemente te identifiques con A (creatividad) o C (eficiencia), pero cualquier resultado es válido:</p>
+          
+          <div class="bg-emerald-100 rounded-xl p-5 border-2 border-emerald-400 mb-4">
+            <h4 class="font-bold text-emerald-800 mb-2">🎓 RECOMENDADO: Ruta del Educador (Híbrido A + C)</h4>
+            <p class="text-sm text-slate-700 mb-3"><strong>Ideal para docentes y capacitadores:</strong> Combinas la necesidad de crear material atractivo con la eficiencia operativa.</p>
+            <ul class="text-sm text-emerald-800 space-y-1">
+              <li>• <strong>Tu Kit Docente:</strong> ChatGPT (actividades y contenido) → DALL-E/Ideogram (ilustraciones) → Gamma (presentaciones atractivas).</li>
+              <li>• <strong>Primer Paso:</strong> Pídele a ChatGPT: "Actúa como diseñador instruccional. Diseña una actividad de 30 min para [tu tema] con objetivo, materiales y evaluación."</li>
+            </ul>
+          </div>
+          
+          <div class="bg-emerald-50 rounded-lg p-3 border-l-4 border-emerald-500 mb-4">
+            <p class="text-xs text-emerald-800"><strong>💡 Recordatorio:</strong> La IA genera materiales; TÚ conoces a cada estudiante. Adapta siempre los resultados a tu contexto del aula.</p>
+          </div>
+          
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-1">🎨 Mayoría A: Creatividad</h4>
+              <p class="text-xs text-slate-700">Tu fuerte es el material visual y actividades.</p>
+              <p class="text-xs text-purple-700 mt-1">Kit: ChatGPT → Ideogram → Canva</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">🔄 Mayoría C: Eficiencia</h4>
+              <p class="text-xs text-slate-700">Necesitas optimizar planificación y correcciones.</p>
+              <p class="text-xs text-green-700 mt-1">Kit: ChatGPT para rúbricas y feedback</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La IA prepara materiales; TÚ enciendes la chispa del aprendizaje. Enseña más, prepara menos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Test de Diagnóstico - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "guia-acceso-ideogram": {
     meta: {
