@@ -6840,43 +6840,239 @@ const resourcesDatabase = {
     base_html: `
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
-          <h2 class="text-xl font-bold text-teal-900 mb-2">Vocabulario de la Fórmula AGIA</h2>
-          <p class="text-purple-700">Estos términos te ayudarán a dominar la estructura completa de instrucciones maestras.</p>
+          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
+          <p class="text-teal-700 italic">"La Fórmula AGIA es la evolución de la Receta WOW. Es para cuando necesitas resultados de nivel profesional. Domina estos términos y nunca más te conformarás con respuestas genéricas."</p>
         </section>
-        <section class="space-y-4">
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-purple-800 text-lg mb-2">🎯 Fórmula AGIA</h4>
-            <p class="text-slate-600">La estructura maestra completa de AulaGenIA para crear prompts profesionales: ROL + CONTEXTO + META + RESTRICCIONES + FORMATO. Es la evolución de la Receta WOW para usuarios avanzados.</p>
+    `,
+    segments: {
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+              Vocabulario AGIA para Estrategas Comerciales
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🎯 FÓRMULA AGIA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> ROL + CONTEXTO + META + RESTRICCIONES + FORMATO.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía Comercial:</strong> Es como un RFP (Request for Proposal) perfecto. Mientras más completo sea tu brief, más precisa será la propuesta que recibas. Un RFP vago genera propuestas que no cotizan.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">⛔ RESTRICCIONES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Lo que NO quieres que haga la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía Comercial:</strong> Es definir el out of scope del proyecto. Sin límites claros, el proveedor entrega lo que quiere, no lo que necesitas. "No incluyas opciones de software enterprise" evita propuestas fuera de presupuesto.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">RESTRICCIONES: No uses jerga técnica. No incluyas opciones que superen $[MONTO]. Evita ejemplos de industrias diferentes a la mía.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📋 FORMATO DE SALIDA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cómo quieres recibir la respuesta.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía Comercial:</strong> Es pedir el entregable en el formato que usas. Una estrategia en párrafos largos no sirve para presentar al directorio. Pedir "tabla con columnas: Acción, Responsable, Fecha, KPI" te ahorra horas de reformateo.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📝 VERBOS DE PODER (Negocios)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Palabras de acción que activan respuestas más estratégicas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Tus verbos clave:</strong> PROYECTA, PRIORIZA POR ROI, CUANTIFICA, COMPARA CON COMPETENCIA, IDENTIFICA QUICK WINS, SEGMENTA POR CLIENTE.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">PRIORIZA estas 5 iniciativas por impacto en revenue y facilidad de implementación. PROYECTA el ROI a 6 meses de cada una.</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-red-800 text-lg mb-2">⛔ Restricciones</h4>
-            <p class="text-slate-600">Lo que NO quieres que haga la IA. Definir límites claros evita respuestas genéricas. Ejemplo: "No uses jerga técnica", "No repitas conceptos", "Evita listas de más de 5 puntos".</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-blue-800 text-lg mb-2">📋 Formato de Salida</h4>
-            <p class="text-slate-600">Cómo quieres recibir la respuesta: tabla, lista numerada, párrafos, JSON, etc. Especificar el formato evita tener que reformatear después.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-amber-800 text-lg mb-2">🎩 Rotación de Sombrero</h4>
-            <p class="text-slate-600">Técnica para cambiar el ROL de la IA sin perder el contexto del chat. Ejemplo: "Ahora cambia de Estratega a Redactor y reescribe esto con tono más emocional."</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-green-800 text-lg mb-2">🔗 Ingeniería Social (IA)</h4>
-            <p class="text-slate-600">El arte de usar frases de presión o desafío para activar las capacidades más profundas de la IA. No es manipulación, es persuasión estratégica.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-teal-800 text-lg mb-2">📝 Verbos de Poder</h4>
-            <p class="text-slate-600">Palabras de acción que obligan a la IA a ser más específica: "Desglosa", "Contrasta", "Prioriza", "Critica". Usar verbos fuertes mejora la calidad de las respuestas.</p>
-          </div>
-        </section>
+        </div>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
-          <p class="text-white font-medium text-lg italic">"La Fórmula AGIA no es más larga, es más precisa. Cada elemento reduce la incertidumbre."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"La Fórmula AGIA es tu arma secreta de productividad: mientras tu competencia itera 5 veces, tú obtienes el resultado en la primera."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 3 - Video 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+              Vocabulario AGIA para Profesionales del Derecho
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🎯 FÓRMULA AGIA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> ROL + CONTEXTO + META + RESTRICCIONES + FORMATO.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es como un escrito judicial completo. Tiene partes bien definidas: identificación de partes (ROL), relación de hechos (CONTEXTO), pretensión (META), excepciones (RESTRICCIONES) y formato procesal.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-red-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">⛔ RESTRICCIONES ⚠️</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Lo que NO quieres que haga la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es tu petición en subsidio o los límites de tu mandato. "No cites jurisprudencia extranjera" o "Limítate a la normativa vigente 2024" evita que la IA divague.</p>
+                </div>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400">
+                  <p class="text-xs text-red-800"><strong>⚠️ Crítico:</strong> Siempre incluye: "Marca con [VERIFICAR] cualquier cita de ley, artículo o jurisprudencia".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📋 FORMATO DE SALIDA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cómo quieres el documento.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es especificar el tipo procesal. "Formato de demanda civil" produce algo muy diferente a "memorándum interno de 1 página". Sin formato, la IA escribe en estilo genérico de internet.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">FORMATO: Estructura de escrito judicial con: I. Suma, II. Hechos (numerados), III. Derecho aplicable, IV. Petitorio. Marca cualquier cita con [VERIFICAR].</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📝 VERBOS DE PODER (Legal)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Verbos que activan el razonamiento jurídico.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Tus verbos clave:</strong> FUNDAMENTA, DISTINGUE (casos), CONTRASTA (posiciones doctrinarias), ESTRUCTURA (cronológicamente), IDENTIFICA (lagunas legales), ANALIZA (riesgos procesales).</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack Legal</h4>
+          <p class="text-white font-medium text-lg italic">"La Fórmula AGIA produce borradores listos para tu revisión final, no textos que hay que reescribir desde cero."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 3 - Video 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+              Vocabulario AGIA para Gestores y Administradores
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🎯 FÓRMULA AGIA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> ROL + CONTEXTO + META + RESTRICCIONES + FORMATO.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía de Gestión:</strong> Es como un Project Charter completo. Tiene sponsor (ROL), situación actual (CONTEXTO), objetivo SMART (META), exclusiones (RESTRICCIONES) y entregables esperados (FORMATO).</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">⛔ RESTRICCIONES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Lo que NO quieres que incluya.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía de Gestión:</strong> Es el "out of scope" de tu proyecto. "No propongas cambios que requieran aprobación de directorio" o "Evita soluciones que impliquen contratación" mantiene las propuestas dentro de tu ámbito de decisión.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">RESTRICCIONES: Solo propón acciones que puedo implementar con mi equipo actual. No incluyas soluciones que requieran presupuesto adicional.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📋 FORMATO DE SALIDA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El entregable específico.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía de Gestión:</strong> Es especificar si necesitas un Gantt, una matriz RACI, un tablero Kanban o una lista de tareas. "Dame una tabla con: Actividad, Responsable, Fecha límite, Dependencias" te ahorra crear la plantilla.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📝 VERBOS DE PODER (Gestión)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Verbos que activan respuestas operativas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>📊 Tus verbos clave:</strong> SECUENCIA (tareas), PRIORIZA (por urgencia/impacto), ASIGNA (responsables), ESTIMA (tiempos), IDENTIFICA (cuellos de botella), DOCUMENTA (procedimiento).</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"La Fórmula AGIA convierte tus ideas sueltas en planes de acción estructurados en minutos, no en horas."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 3 - Video 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+              Vocabulario AGIA para Educadores
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🎯 FÓRMULA AGIA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> ROL + CONTEXTO + META + RESTRICCIONES + FORMATO.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Pedagógica:</strong> Es como una planificación de clase completa. Tiene el experto que enseña (ROL), el diagnóstico del grupo (CONTEXTO), el objetivo de aprendizaje (META), lo que NO haremos (RESTRICCIONES) y el material esperado (FORMATO).</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">⛔ RESTRICCIONES</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Lo que NO quieres en el material.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Pedagógica:</strong> Es adaptar al nivel real. "No uses vocabulario técnico", "Evita ejemplos culturalmente ajenos", "No propongas actividades que requieran tecnología" mantiene el material usable en TU aula.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">RESTRICCIONES: Solo actividades que requieran materiales disponibles en el aula. No propongas tareas para casa. Máximo 3 pasos por instrucción.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📋 FORMATO DE SALIDA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El tipo de material que necesitas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Pedagógica:</strong> Es especificar si necesitas guía del docente, ficha del alumno, rúbrica o presentación. "Formato: Guía de 1 página con Inicio (5 min) - Desarrollo (30 min) - Cierre (10 min)" te da material listo para usar.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📝 VERBOS DE PODER (Educación)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Verbos que activan material pedagógico de calidad.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Tus verbos clave:</strong> DISEÑA (actividad), GRADÚA (dificultad), DIFERENCIA (por estilos de aprendizaje), FORMULA (preguntas de reflexión), EVALÚA CON (rúbrica), CONECTA (con la vida cotidiana).</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">DISEÑA una actividad de 20 minutos. GRADÚA en 3 niveles de dificultad. FORMULA 5 preguntas de reflexión que CONECTEN el tema con la vida diaria del estudiante.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La Fórmula AGIA te devuelve las tardes: material de calidad en minutos, no en horas de fin de semana."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 3 - Video 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "arte-persuasion": {
     meta: {
