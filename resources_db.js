@@ -1512,73 +1512,64 @@ const resourcesDatabase = {
       icon: "book",
       color: "emerald",
       module: 1,
-      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf"
+      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf",
+      isUniversal: true
     },
-    base_html: `
-      <article class="space-y-6">
-        <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
-          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
-          <p class="text-teal-700 italic">"¡Felicidades por dar el primer paso! No quiero que las palabras técnicas te frenen. He preparado este glosario con los cimientos básicos que acabamos de ver en el primer video. Léelo antes de ir al siguiente, porque aquí es donde cambia tu mentalidad de 'usuario' a 'experto'. ¡A darle!"</p>
-        </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">🎨 Conceptos Clave del Módulo 1 - Video 1</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse">
-              <thead class="bg-emerald-100">
-                <tr>
-                  <th class="text-left p-3 font-semibold text-emerald-800 border-b-2 border-emerald-200">Término</th>
-                  <th class="text-left p-3 font-semibold text-emerald-800 border-b-2 border-emerald-200">Definición AulaGenIA</th>
-                  <th class="text-left p-3 font-semibold text-amber-700 border-b-2 border-emerald-200">💡 Analogía WOW</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Inteligencia Artificial (IA)</td>
-                  <td class="p-3 text-slate-600">Capacidad de una máquina para realizar tareas que normalmente asociamos con la inteligencia humana (aprender, decidir, crear).</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como un becario infinito que ha leído todo lo que existe en internet y nunca se cansa.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Deep Learning</td>
-                  <td class="p-3 text-slate-600">La tecnología que permite a las máquinas aprender solas imitando las conexiones del cerebro humano. Es el "motor" que hace que la IA sea tan inteligente hoy.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como el sistema de entrenamiento de un atleta: cuantas más repeticiones (datos) hace, mejor se vuelve de forma automática.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">IA Aplicada</td>
-                  <td class="p-3 text-slate-600">El uso estratégico de la herramienta para obtener resultados reales, no solo para "jugar" o hacerle preguntas curiosas.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es la diferencia entre tener un auto de Fórmula 1 estacionado y saber conducirlo para ganar la carrera.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Cerebro Digital</td>
-                  <td class="p-3 text-slate-600">La forma en que la IA procesa información: no es magia, es un sistema que aprende de millones de patrones previos.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Un bibliotecario ultra-veloz que encuentra la respuesta correcta en milésimas de segundo.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Co-piloto Digital</td>
-                  <td class="p-3 text-slate-600">El rol de la IA en tu vida. Ella no conduce el auto (tu negocio), pero te ayuda a llegar más rápido y con menos esfuerzo.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Como el asistente de navegación de tu celular: tú decides el destino, ella te da la mejor ruta.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Efecto de Amplificación</td>
-                  <td class="p-3 text-slate-600">La IA no crea claridad de la nada; amplifica lo que tú eres. Si eres claro, ella te da resultados brillantes. Si eres caótico, amplifica el caos.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es un megáfono: si gritas algo inteligente, todos lo oirán; si gritas tonterías, solo serán tonterías más fuertes.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Revolución Cultural</td>
-                  <td class="p-3 text-slate-600">El cambio histórico de pasar de "tener acceso a la información" (Google) a "saber cómo procesarla" (IA).</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es pasar de tener una biblioteca gigante a tener un asistente que resume los libros para ti.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack (M1-V1)</h4>
-          <p class="text-white font-medium italic">"La IA no piensa por ti, te ayuda a pensar mejor."</p>
-          <p class="text-teal-100 text-sm mt-2">No esperes que la máquina adivine tus deseos. El éxito en este curso depende de tu curiosidad y creatividad. La máquina pone el motor, pero tú pones el volante.</p>
-        </section>
-      </article>
-    `,
-    segments: {}
+    content: {
+      intro: {
+        title: "Mensaje de Julia",
+        text: "\"¡Felicidades por dar el primer paso! No quiero que las palabras técnicas te frenen. He preparado este glosario con los cimientos básicos que acabamos de ver en el primer video. Léelo antes de ir al siguiente, porque aquí es donde cambia tu mentalidad de 'usuario' a 'experto'. ¡A darle!\""
+      },
+      terms: [
+        {
+          term: "Inteligencia Artificial (IA)",
+          definition: "Capacidad de una máquina para realizar tareas que normalmente asociamos con la inteligencia humana (aprender, decidir, crear).",
+          analogy: "Es como un becario infinito que ha leído todo lo que existe en internet y nunca se cansa."
+        },
+        {
+          term: "Deep Learning",
+          definition: "La tecnología que permite a las máquinas aprender solas imitando las conexiones del cerebro humano. Es el 'motor' que hace que la IA sea tan inteligente hoy.",
+          analogy: "Es como el sistema de entrenamiento de un atleta: cuantas más repeticiones (datos) hace, mejor se vuelve de forma automática."
+        },
+        {
+          term: "IA Aplicada",
+          definition: "El uso estratégico de la herramienta para obtener resultados reales, no solo para 'jugar' o hacerle preguntas curiosas.",
+          analogy: "Es la diferencia entre tener un auto de Fórmula 1 estacionado y saber conducirlo para ganar la carrera."
+        },
+        {
+          term: "Cerebro Digital",
+          definition: "La forma en que la IA procesa información: no es magia, es un sistema que aprende de millones de patrones previos.",
+          analogy: "Un bibliotecario ultra-veloz que encuentra la respuesta correcta en milésimas de segundo."
+        },
+        {
+          term: "Co-piloto Digital",
+          definition: "El rol de la IA en tu vida. Ella no conduce el auto (tu negocio), pero te ayuda a llegar más rápido y con menos esfuerzo.",
+          analogy: "Como el asistente de navegación de tu celular: tú decides el destino, ella te da la mejor ruta."
+        },
+        {
+          term: "Efecto de Amplificación",
+          definition: "La IA no crea claridad de la nada; amplifica lo que tú eres. Si eres claro, ella te da resultados brillantes. Si eres caótico, amplifica el caos.",
+          analogy: "Es un megáfono: si gritas algo inteligente, todos lo oirán; si gritas tonterías, solo serán tonterías más fuertes."
+        },
+        {
+          term: "Revolución Cultural",
+          definition: "El cambio histórico de pasar de 'tener acceso a la información' (Google) a 'saber cómo procesarla' (IA).",
+          analogy: "Es pasar de tener una biblioteca gigante a tener un asistente que resume los libros para ti."
+        }
+      ],
+      outro: {
+        title: "⚡ AulaGenIA Hack (M1-V1)",
+        quote: "\"La IA no piensa por ti, te ayuda a pensar mejor.\"",
+        text: "No esperes que la máquina adivine tus deseos. El éxito en este curso depende de tu curiosidad y creatividad. La máquina pone el motor, pero tú pones el volante."
+      }
+    },
+    base_html: null,
+    segments: {
+      "Negocios & Ventas": "",
+      "Legal & Profesional": "",
+      "Gestión & Administración": "",
+      "Educación & Capacitación": ""
+    }
   },
   "glosario-m1v2": {
     meta: {
@@ -1588,73 +1579,64 @@ const resourcesDatabase = {
       icon: "book",
       color: "emerald",
       module: 1,
-      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V2.pdf"
+      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V2.pdf",
+      isUniversal: true
     },
-    base_html: `
-      <article class="space-y-6">
-        <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
-          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
-          <p class="text-teal-700 italic">"¡Bienvenido al segundo video! Aquí aprenderás el lenguaje de la IA de forma sencilla. No te satures con los nombres; usa este glosario como tu brújula para entender cómo funciona la máquina. ¡Seguimos!"</p>
-        </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">🎨 Conceptos Clave del Módulo 1 - Video 2</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse">
-              <thead class="bg-emerald-100">
-                <tr>
-                  <th class="text-left p-3 font-semibold text-emerald-800 border-b-2 border-emerald-200">Término</th>
-                  <th class="text-left p-3 font-semibold text-emerald-800 border-b-2 border-emerald-200">Definición AulaGenIA</th>
-                  <th class="text-left p-3 font-semibold text-amber-700 border-b-2 border-emerald-200">💡 Analogía WOW</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">IA Generativa</td>
-                  <td class="p-3 text-slate-600">Una rama de la inteligencia artificial que no solo analiza datos, sino que crea contenido nuevo (texto, imagen, video) desde cero.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como pasar de tener un reproductor de música a tener a Mozart en vivo listo para componer lo que le pidas.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">LLM (Gran Modelo de Lenguaje)</td>
-                  <td class="p-3 text-slate-600">Los "Cerebros" de texto. Modelos entrenados con trillones de palabras para predecir la siguiente palabra en una frase de forma coherente.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es un autocompletar con esteroides: sabe predecir qué palabra sigue tan bien que parece que está razonando.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Instrucción (Prompt)</td>
-                  <td class="p-3 text-slate-600">La orden o pregunta que le das a la IA. Es el puente entre tu necesidad y lo que la máquina genera.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es el pedido en un restaurante: si pides 'algo rico', el chef se confunde; si pides 'pasta al pesto con poco ajo', el resultado es perfecto.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Alucinación</td>
-                  <td class="p-3 text-slate-600">Cuando la IA inventa información con total seguridad. Sucede porque su prioridad es la coherencia, no siempre la verdad de los hechos.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como un amigo muy seguro de sí mismo que, cuando no sabe la respuesta, te la inventa con una sonrisa para no quedar mal.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Tokens</td>
-                  <td class="p-3 text-slate-600">La unidad mínima que la IA "lee". No entiende palabras completas, sino fragmentos de caracteres o sílabas.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Son las piezas de LEGO que usa la IA para construir sus respuestas. A más piezas, más compleja la construcción.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Ventana de Contexto</td>
-                  <td class="p-3 text-slate-600">La "memoria a corto plazo" de la IA durante una conversación. Determina cuánta información puede recordar antes de empezar a olvidar el inicio.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es el tamaño de la mesa de trabajo: si la mesa es pequeña, tienes que quitar papeles viejos para poner nuevos; si es grande, puedes tener todo a la vista.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Multimodalidad</td>
-                  <td class="p-3 text-slate-600">La capacidad de la IA para procesar diferentes tipos de información (texto, audio, imagen) de forma simultánea.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es un asistente con todos los sentidos: puede leer tu reporte, escuchar tu audio y ver tu boceto, todo a la vez.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack (M1-V2)</h4>
-          <p class="text-white font-medium italic">"La calidad del resultado depende de la claridad de tu instrucción."</p>
-          <p class="text-teal-100 text-sm mt-2">Si la respuesta de la IA no te convence, no es un fallo de la máquina; revisa cómo diste la instrucción. En este nivel, aprender a preguntar a la IA es mucho más importante que saber la respuesta de antemano.</p>
-        </section>
-      </article>
-    `,
-    segments: {}
+    content: {
+      intro: {
+        title: "Mensaje de Julia",
+        text: "\"¡Bienvenido al segundo video! Aquí aprenderás el lenguaje de la IA de forma sencilla. No te satures con los nombres; usa este glosario como tu brújula para entender cómo funciona la máquina. ¡Seguimos!\""
+      },
+      terms: [
+        {
+          term: "IA Generativa",
+          definition: "Una rama de la inteligencia artificial que no solo analiza datos, sino que crea contenido nuevo (texto, imagen, video) desde cero.",
+          analogy: "Es como pasar de tener un reproductor de música a tener a Mozart en vivo listo para componer lo que le pidas."
+        },
+        {
+          term: "LLM (Gran Modelo de Lenguaje)",
+          definition: "Los 'Cerebros' de texto. Modelos entrenados con trillones de palabras para predecir la siguiente palabra en una frase de forma coherente.",
+          analogy: "Es un autocompletar con esteroides: sabe predecir qué palabra sigue tan bien que parece que está razonando."
+        },
+        {
+          term: "Instrucción (Prompt)",
+          definition: "La orden o pregunta que le das a la IA. Es el puente entre tu necesidad y lo que la máquina genera.",
+          analogy: "Es el pedido en un restaurante: si pides 'algo rico', el chef se confunde; si pides 'pasta al pesto con poco ajo', el resultado es perfecto."
+        },
+        {
+          term: "Alucinación",
+          definition: "Cuando la IA inventa información con total seguridad. Sucede porque su prioridad es la coherencia, no siempre la verdad de los hechos.",
+          analogy: "Es como un amigo muy seguro de sí mismo que, cuando no sabe la respuesta, te la inventa con una sonrisa para no quedar mal."
+        },
+        {
+          term: "Tokens",
+          definition: "La unidad mínima que la IA 'lee'. No entiende palabras completas, sino fragmentos de caracteres o sílabas.",
+          analogy: "Son las piezas de LEGO que usa la IA para construir sus respuestas. A más piezas, más compleja la construcción."
+        },
+        {
+          term: "Ventana de Contexto",
+          definition: "La 'memoria a corto plazo' de la IA durante una conversación. Determina cuánta información puede recordar antes de empezar a olvidar el inicio.",
+          analogy: "Es el tamaño de la mesa de trabajo: si la mesa es pequeña, tienes que quitar papeles viejos para poner nuevos; si es grande, puedes tener todo a la vista."
+        },
+        {
+          term: "Multimodalidad",
+          definition: "La capacidad de la IA para procesar diferentes tipos de información (texto, audio, imagen) de forma simultánea.",
+          analogy: "Es un asistente con todos los sentidos: puede leer tu reporte, escuchar tu audio y ver tu boceto, todo a la vez."
+        }
+      ],
+      outro: {
+        title: "⚡ AulaGenIA Hack (M1-V2)",
+        quote: "\"La calidad del resultado depende de la claridad de tu instrucción.\"",
+        text: "Si la respuesta de la IA no te convence, no es un fallo de la máquina; revisa cómo diste la instrucción. En este nivel, aprender a preguntar a la IA es mucho más importante que saber la respuesta de antemano."
+      }
+    },
+    base_html: null,
+    segments: {
+      "Negocios & Ventas": "",
+      "Legal & Profesional": "",
+      "Gestión & Administración": "",
+      "Educación & Capacitación": ""
+    }
   },
   "glosario-m1v3": {
     meta: {
@@ -1664,78 +1646,69 @@ const resourcesDatabase = {
       icon: "book",
       color: "emerald",
       module: 1,
-      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V3.pdf"
+      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V3.pdf",
+      isUniversal: true
     },
-    base_html: `
-      <article class="space-y-6">
-        <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
-          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
-          <p class="text-teal-700 italic">"¡Llegamos al Video 3! Ahora que sabes qué es la IA, vamos a aprender a hablarle. En esta sesión descubriremos cómo diseñar órdenes que realmente funcionen. ¡Saca tu libreta de notas!"</p>
-        </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">🎨 Conceptos Clave del Módulo 1 - Video 3</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse">
-              <thead class="bg-emerald-100">
-                <tr>
-                  <th class="text-left p-3 font-semibold text-emerald-800 border-b-2 border-emerald-200">Término</th>
-                  <th class="text-left p-3 font-semibold text-emerald-800 border-b-2 border-emerald-200">Definición AulaGenIA</th>
-                  <th class="text-left p-3 font-semibold text-amber-700 border-b-2 border-emerald-200">💡 Analogía WOW</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Ingeniería de Instrucciones</td>
-                  <td class="p-3 text-slate-600">La disciplina de diseñar y refinar las órdenes que le damos a la IA para obtener el mejor resultado posible.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como ser un director de orquesta: no tocas el instrumento, pero guías a los músicos para que suenen perfecto.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Asignación de Roles</td>
-                  <td class="p-3 text-slate-600">Técnica de pedirle a la IA que actúe como una personalidad o experto específico (ej: "Actúa como un profesor de historia").</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es ponerle un disfraz profesional a la IA para que su tono y conocimiento se ajusten a lo que necesitas.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Instrucción Directa</td>
-                  <td class="p-3 text-slate-600">Cuando le pides algo a la IA sin darle ejemplos previos, confiando en su conocimiento general.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como pedirle a un desconocido en la calle que te dé la hora: una pregunta rápida, una respuesta directa.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Instrucción con Ejemplos</td>
-                  <td class="p-3 text-slate-600">Darle a la IA uno o varios modelos de cómo quieres que responda antes de hacer la petición final.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como enseñarle a alguien a hacer nudos: primero le muestras dos o tres veces cómo se hace y luego dejas que lo intente.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Delimitadores</td>
-                  <td class="p-3 text-slate-600">Signos de puntuación o símbolos (como comillas, asteriscos o corchetes) que usamos para separar las instrucciones del texto que queremos procesar.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Son las vallas de un jardín: le dicen a la IA exactamente dónde termina una idea y dónde empieza la siguiente.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Iteración</td>
-                  <td class="p-3 text-slate-600">El proceso de repetir, ajustar y mejorar una instrucción basándote en la respuesta anterior de la IA.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como afinar una guitarra: vas ajustando las cuerdas poco a poco hasta que el sonido es perfecto.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Temperatura</td>
-                  <td class="p-3 text-slate-600">Un ajuste (parámetro) que controla qué tan "creativa" o "predecible" es la respuesta de la IA.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es el termostato de la imaginación: si está baja, la IA es seria y lógica; si está alta, se vuelve creativa y arriesgada.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-emerald-50">
-                  <td class="p-3 font-bold text-slate-800">Sesgo de Autoridad</td>
-                  <td class="p-3 text-slate-600">La tendencia humana a creer que lo que dice la IA es verdad absoluta solo porque lo presenta con un lenguaje formal, seguro y profesional.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como creer todo lo que dice alguien con bata blanca, asumiendo que es médico aunque no hayamos visto su título.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack (M1-V3)</h4>
-          <p class="text-white font-medium italic">"El contexto es el rey de la instrucción."</p>
-          <p class="text-teal-100 text-sm mt-2">No asumas que la IA sabe lo que tienes en la cabeza. Cuanto más contexto des (quién eres, para qué lo quieres y qué formato buscas), mejor será el resultado. Recuerda: el éxito está en saber preguntar a la IA con precisión quirúrgica y siempre verificando la información para evitar el sesgo de autoridad.</p>
-        </section>
-      </article>
-    `,
-    segments: {}
+    content: {
+      intro: {
+        title: "Mensaje de Julia",
+        text: "\"¡Llegamos al Video 3! Ahora que sabes qué es la IA, vamos a aprender a hablarle. En esta sesión descubriremos cómo diseñar órdenes que realmente funcionen. ¡Saca tu libreta de notas!\""
+      },
+      terms: [
+        {
+          term: "Ingeniería de Instrucciones",
+          definition: "La disciplina de diseñar y refinar las órdenes que le damos a la IA para obtener el mejor resultado posible.",
+          analogy: "Es como ser un director de orquesta: no tocas el instrumento, pero guías a los músicos para que suenen perfecto."
+        },
+        {
+          term: "Asignación de Roles",
+          definition: "Técnica de pedirle a la IA que actúe como una personalidad o experto específico (ej: 'Actúa como un profesor de historia').",
+          analogy: "Es ponerle un disfraz profesional a la IA para que su tono y conocimiento se ajusten a lo que necesitas."
+        },
+        {
+          term: "Instrucción Directa",
+          definition: "Cuando le pides algo a la IA sin darle ejemplos previos, confiando en su conocimiento general.",
+          analogy: "Es como pedirle a un desconocido en la calle que te dé la hora: una pregunta rápida, una respuesta directa."
+        },
+        {
+          term: "Instrucción con Ejemplos",
+          definition: "Darle a la IA uno o varios modelos de cómo quieres que responda antes de hacer la petición final.",
+          analogy: "Es como enseñarle a alguien a hacer nudos: primero le muestras dos o tres veces cómo se hace y luego dejas que lo intente."
+        },
+        {
+          term: "Delimitadores",
+          definition: "Signos de puntuación o símbolos (como comillas, asteriscos o corchetes) que usamos para separar las instrucciones del texto que queremos procesar.",
+          analogy: "Son las vallas de un jardín: le dicen a la IA exactamente dónde termina una idea y dónde empieza la siguiente."
+        },
+        {
+          term: "Iteración",
+          definition: "El proceso de repetir, ajustar y mejorar una instrucción basándote en la respuesta anterior de la IA.",
+          analogy: "Es como afinar una guitarra: vas ajustando las cuerdas poco a poco hasta que el sonido es perfecto."
+        },
+        {
+          term: "Temperatura",
+          definition: "Un ajuste (parámetro) que controla qué tan 'creativa' o 'predecible' es la respuesta de la IA.",
+          analogy: "Es el termostato de la imaginación: si está baja, la IA es seria y lógica; si está alta, se vuelve creativa y arriesgada."
+        },
+        {
+          term: "Sesgo de Autoridad",
+          definition: "La tendencia humana a creer que lo que dice la IA es verdad absoluta solo porque lo presenta con un lenguaje formal, seguro y profesional.",
+          analogy: "Es como creer todo lo que dice alguien con bata blanca, asumiendo que es médico aunque no hayamos visto su título."
+        }
+      ],
+      outro: {
+        title: "⚡ AulaGenIA Hack (M1-V3)",
+        quote: "\"El contexto es el rey de la instrucción.\"",
+        text: "No asumas que la IA sabe lo que tienes en la cabeza. Cuanto más contexto des (quién eres, para qué lo quieres y qué formato buscas), mejor será el resultado. Recuerda: el éxito está en saber preguntar a la IA con precisión quirúrgica y siempre verificando la información para evitar el sesgo de autoridad."
+      }
+    },
+    base_html: null,
+    segments: {
+      "Negocios & Ventas": "",
+      "Legal & Profesional": "",
+      "Gestión & Administración": "",
+      "Educación & Capacitación": ""
+    }
   },
   "glosario-interactivo-aplicado": {
     meta: {

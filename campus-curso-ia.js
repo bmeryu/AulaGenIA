@@ -39,6 +39,78 @@ document.addEventListener("DOMContentLoaded", () => {
   let originalLessonContent = null;
   let originalLessonTitle = null;
 
+  // Helper function to render glossary carousel from structured data (Robust & Dynamic)
+  window.renderGlossaryFromData = function (content, resourceId) {
+    if (!content || !content.terms) return '';
+
+    // Generate unique ID
+    const carouselId = `glossary-carousel-${resourceId}-${Math.floor(Math.random() * 1000)}`;
+    const terms = content.terms;
+
+    return `
+      <article class="space-y-6">
+        ${content.intro ? `
+        <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
+          <h2 class="text-xl font-bold text-teal-900 mb-2">${content.intro.title || 'Introducción'}</h2>
+          <p class="text-teal-700 italic">${content.intro.text}</p>
+        </section>` : ''}
+        
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">${content.intro?.subtitle || 'Conceptos Clave'}</h3>
+          
+          <div class="glossary-carousel not-prose" id="${carouselId}" data-current="0" data-total="${terms.length}">
+            <!-- Navigation Arrows -->
+            <button class="carousel-nav-btn carousel-nav-prev" onclick="window.carouselNavigate('${carouselId}', -1)" aria-label="Anterior" disabled>
+               <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button class="carousel-nav-btn carousel-nav-next" onclick="window.carouselNavigate('${carouselId}', 1)" aria-label="Siguiente">
+               <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+            
+            <!-- Carousel Wrapper -->
+            <div class="glossary-carousel-wrapper">
+              <div class="glossary-carousel-track">
+                ${terms.map((item, i) => `
+                <div class="glossary-card">
+                  <div class="glossary-card-inner">
+                    <div class="glossary-term">
+                      <span class="glossary-term-number">${i + 1}</span>
+                      <span>${item.term}</span>
+                    </div>
+                    <p class="glossary-definition">${item.definition}</p>
+                    ${item.analogy ? `
+                    <div class="glossary-analogy">
+                      <p class="glossary-analogy-label">💡 Analogía WOW</p>
+                      <p class="glossary-analogy-text">${item.analogy}</p>
+                    </div>` : ''}
+                  </div>
+                </div>
+                `).join('')}
+              </div>
+            </div>
+            
+            <!-- Dots Indicator -->
+            <div class="carousel-dots">
+               ${terms.map((_, i) => `<button class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="window.carouselGoTo('${carouselId}', ${i})" aria-label="Ir al término ${i + 1}"></button>`).join('')}
+            </div>
+            
+            <!-- Counter -->
+             <div class="carousel-counter">
+               <span class="carousel-counter-current">1</span> de ${terms.length} conceptos
+             </div>
+          </div>
+        </section>
+
+        ${content.outro ? `
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">${content.outro.title}</h4>
+          ${content.outro.quote ? `<p class="text-white font-medium italic">${content.outro.quote}</p>` : ''}
+          <p class="text-teal-100 text-sm mt-2">${content.outro.text}</p>
+        </section>` : ''}
+      </article>
+    `;
+  };
+
   // Helper function to get rendered resource HTML combining base + segment
   window.getRenderedResource = function (resourceId, userProfile) {
     if (!window.resourcesDatabase || !window.resourcesDatabase[resourceId]) {
@@ -46,36 +118,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const resource = window.resourcesDatabase[resourceId];
-
-    // Normalize profile name to match segment keys (handle & vs &amp;)
     const normalizedProfile = userProfile.replace(/&amp;/g, '&');
 
-    // Debug logging
-    console.log('getRenderedResource called with:', { resourceId, userProfile, normalizedProfile });
-    console.log('Resource segments available:', Object.keys(resource.segments || {}));
-
-    let segmentHtml = '';
-    if (resource.segments && resource.segments[normalizedProfile]) {
-      segmentHtml = resource.segments[normalizedProfile];
-      console.log('MATCH FOUND for:', normalizedProfile);
-    } else {
-      console.warn('NO MATCH for:', normalizedProfile, '- Using fallback empty or checking mismatch');
-      // Visual Debug for User
-      if (document.getElementById('debug-toast')) document.getElementById('debug-toast').remove();
-      const toast = document.createElement('div');
-      toast.id = 'debug-toast';
-      toast.style = 'position:fixed;top:10px;right:10px;background:red;color:white;padding:10px;z-index:99999;font-size:12px;border-radius:4px;max-width:300px;';
-      toast.innerHTML = `⚠️ Segment Mismatch!<br>Profile: "${normalizedProfile}"<br>Resource wants keys: <br>${Object.keys(resource.segments || {}).join('<br>')}`;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 10000);
+    // MODE A: Structured Data Glossary (Universal or Segmented Data)
+    if (resource.meta?.type === 'glossary' && resource.content) {
+      // En el futuro, aquí podríamos mezclar 'content' base con 'segments[profile]' override
+      return {
+        meta: resource.meta,
+        html: window.renderGlossaryFromData(resource.content, resourceId)
+      };
     }
 
-    console.log('Segment found:', segmentHtml ? 'YES' : 'NO');
-    console.log('base_html exists:', !!resource.base_html, 'length:', (resource.base_html || '').length);
+    // MODE B: Classic HTML String Composition
+    console.log('getRenderedResource (Classic Mode) called with:', { resourceId, userProfile, normalizedProfile });
+
+    let segmentHtml = '';
+
+    // Check if universal resource (skip validation)
+    if (resource.meta?.isUniversal) {
+      // Universal resource - no segment needed
+      console.log('Resource is universal, skipping segment check');
+    } else {
+      // Segmented resource validation
+      if (resource.segments && resource.segments[normalizedProfile]) {
+        segmentHtml = resource.segments[normalizedProfile];
+        console.log('MATCH FOUND for:', normalizedProfile);
+      } else {
+        console.warn('NO MATCH for:', normalizedProfile, '- Using fallback empty or checking mismatch');
+
+        // Visual Debug for User (Only if NOT universal and actually missing key)
+        if (Object.keys(resource.segments || {}).length > 0) {
+          if (document.getElementById('debug-toast')) document.getElementById('debug-toast').remove();
+          const toast = document.createElement('div');
+          toast.id = 'debug-toast';
+          toast.style = 'position:fixed;top:10px;right:10px;background:red;color:white;padding:10px;z-index:99999;font-size:12px;border-radius:4px;max-width:300px;';
+          toast.innerHTML = `⚠️ Segment Mismatch!<br>Profile: "${normalizedProfile}"<br>Resource wants keys: <br>${Object.keys(resource.segments || {}).join('<br>')}`;
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 10000);
+        }
+      }
+    }
 
     return {
       meta: resource.meta,
-      html: resource.base_html + segmentHtml
+      html: (resource.base_html || '') + segmentHtml
     };
   };
 
@@ -484,7 +570,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Generate carousel HTML
       const carouselId = `glossary-carousel-${tableIndex}`;
       const carouselHTML = `
-        <div class="glossary-carousel not-prose" id="${carouselId}" data-current="0" data-total="${terms.length}">
+        <div class="glossary-carousel" id="${carouselId}" data-current="0" data-total="${terms.length}">
           <!-- Navigation Arrows -->
           <button class="carousel-nav-btn carousel-nav-prev" onclick="window.carouselNavigate('${carouselId}', -1)" aria-label="Anterior" disabled>
             <i data-lucide="chevron-left" class="w-5 h-5"></i>
