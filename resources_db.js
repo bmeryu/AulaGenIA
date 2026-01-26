@@ -8026,10 +8026,73 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La calidad del resultado no es un problema de la IA, es un reflejo de la profundidad de tu instrucción estratégica."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material de nivel Pro para el programa AulaGenIA 2025. Repositorio Maestro.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Tu Caso de Alta Fidelidad: Propuesta Comercial</h3>
+          <div class="bg-slate-800 rounded-xl p-4">
+            <p style="color: #e9d5ff;" class="mb-2"><strong>[ROL]:</strong> Director Comercial Senior experto en ventas B2B de alto valor.</p>
+            <p style="color: #bfdbfe;" class="mb-2"><strong>[CONTEXTO]:</strong> Tengo una oportunidad de $80K con una empresa de logística. Competimos con 2 proveedores. El CEO prioriza innovación y tiene reunión de directorio el viernes.</p>
+            <p style="color: #a7f3d0;" class="mb-2"><strong>[META]:</strong> Redacta una propuesta ejecutiva de 1 página que cierre antes del viernes.</p>
+            <p style="color: #fecaca;" class="mb-2"><strong>[RESTRICCIONES]:</strong> No uses jerga técnica. El CEO odia los PDFs largos. Máximo 5 bullets de valor.</p>
+            <p style="color: #fef3c7;"><strong>[INGENIERÍA SOCIAL]:</strong> Esta propuesta define mi comisión del trimestre. Antes de redactar, valida que entendiste la urgencia y critica cualquier debilidad.</p>
+          </div>
+          <div class="prompt-block bg-slate-900 rounded-lg p-3 mt-3">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p style="color: #ffffff;" class="text-sm">Completo listo para pegar en tu IA favorita.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Instrucciones de Alta Fidelidad para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">⚖️ Tu Caso de Alta Fidelidad: Dictamen Técnico</h3>
+          <p class="text-sm text-slate-600 mb-3">Para abogados, contadores, ingenieros, arquitectos y profesionales técnicos.</p>
+          <div class="bg-slate-800 rounded-xl p-4">
+            <p style="color: #e9d5ff;" class="mb-2"><strong>[ROL]:</strong> Auditor Senior certificado con 15 años en normas IFRS/NIF.</p>
+            <p style="color: #bfdbfe;" class="mb-2"><strong>[CONTEXTO]:</strong> Cliente ABC tiene estas transacciones del Q3: [Datos]. Hay inconsistencia en el reconocimiento de ingresos.</p>
+            <p style="color: #a7f3d0;" class="mb-2"><strong>[META]:</strong> Elabora un informe técnico identificando la irregularidad y proponiendo la reclasificación correcta.</p>
+            <p style="color: #fecaca;" class="mb-2"><strong>[RESTRICCIONES]:</strong> Cita las normas específicas (NIC 18, IFRS 15). Marca [VERIFICAR] cualquier dato que no puedas confirmar.</p>
+            <p style="color: #fef3c7;"><strong>[INGENIERÍA SOCIAL]:</strong> Este informe va a la Superintendencia. Mi certificación profesional está en juego. Revisa tu análisis dos veces antes de entregar.</p>
+          </div>
+          <div class="bg-red-50 rounded-xl p-3 border border-red-200 mt-3">
+            <p class="text-sm text-red-700"><strong>⚠️ Siempre valida:</strong> Citas normativas, cálculos y referencias antes de usar el documento.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Instrucciones de Alta Fidelidad para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Tu Caso de Alta Fidelidad: Plan de Cambio</h3>
+          <div class="bg-slate-800 rounded-xl p-4">
+            <p style="color: #e9d5ff;" class="mb-2"><strong>[ROL]:</strong> Consultor de Change Management con experiencia en empresas de +500 empleados.</p>
+            <p style="color: #bfdbfe;" class="mb-2"><strong>[CONTEXTO]:</strong> Implementamos nuevo ERP. 200 empleados afectados. Resistencia de mandos medios. Go-live en 45 días. Presupuesto de comunicación: $5K.</p>
+            <p style="color: #a7f3d0;" class="mb-2"><strong>[META]:</strong> Diseña un plan de gestión del cambio con hitos semanales, mensajes clave y métricas de adopción.</p>
+            <p style="color: #fecaca;" class="mb-2"><strong>[RESTRICCIONES]:</strong> Solo acciones que pueda ejecutar con recursos internos. No propongas consultorías externas adicionales.</p>
+            <p style="color: #fef3c7;"><strong>[INGENIERÍA SOCIAL]:</strong> El CEO me evaluará por el éxito de esta implementación. Cuestiona mi plan inicial y anticipa 3 objeciones que encontraré de los mandos medios.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Instrucciones de Alta Fidelidad para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎓 Tu Caso de Alta Fidelidad: Secuencia Didáctica</h3>
+          <div class="bg-slate-800 rounded-xl p-4">
+            <p style="color: #e9d5ff;" class="mb-2"><strong>[ROL]:</strong> Experto en diseño instruccional con metodologías activas (ABP, Aula Invertida).</p>
+            <p style="color: #bfdbfe;" class="mb-2"><strong>[CONTEXTO]:</strong> Enseño Ciencias a 2° de secundaria. 35 alumnos muy inquietos. Tema: Cambio climático. Tengo 3 sesiones de 45 minutos. Solo materiales básicos (papel, marcadores, celulares).</p>
+            <p style="color: #a7f3d0;" class="mb-2"><strong>[META]:</strong> Diseña una secuencia completa de 3 sesiones con actividades, tiempos, preguntas guía y rúbrica de evaluación.</p>
+            <p style="color: #fecaca;" class="mb-2"><strong>[RESTRICCIONES]:</strong> Máximo 5 minutos de exposición del docente por sesión. Todo lo demás debe ser trabajo activo del alumno.</p>
+            <p style="color: #fef3c7;"><strong>[INGENIERÍA SOCIAL]:</strong> Tengo observación de clase la próxima semana. Necesito que esta secuencia sea perfecta. Antes de diseñar, hazme 3 preguntas sobre mis alumnos que mejorarían el resultado.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Instrucciones de Alta Fidelidad para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "guia-acceso-gemini-image": {
     meta: {
