@@ -7700,10 +7700,126 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. No pidas favores, ¡da órdenes de poder!"</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial de AulaGenIA — Módulo 3. Este diccionario es tu arma secreta para el efecto WOW.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Tus Verbos de Poder Comerciales</h3>
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <span class="font-bold text-blue-800">PROYECTA</span>
+              <p class="text-xs text-blue-600">Estima resultados futuros con datos.</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <span class="font-bold text-blue-800">CUANTIFICA</span>
+              <p class="text-xs text-blue-600">Pon números a los beneficios.</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <span class="font-bold text-blue-800">SEGMENTA</span>
+              <p class="text-xs text-blue-600">Divide por tipo de cliente.</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <span class="font-bold text-blue-800">PRIORIZA POR ROI</span>
+              <p class="text-xs text-blue-600">Ordena por retorno de inversión.</p>
+            </div>
+          </div>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-sm"><strong>Prompt comercial:</strong> ANALIZA estas 5 oportunidades de mercado, CUANTIFICA el potencial de cada una y PRIORÍZALAS por ROI esperado en 6 meses.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Verbos de Poder para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">⚖️ Tus Verbos de Poder Profesionales</h3>
+          <p class="text-sm text-slate-600 mb-4">Para abogados, contadores, ingenieros, arquitectos y profesionales técnicos.</p>
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="bg-purple-50 rounded-lg p-3 border border-purple-200">
+              <span class="font-bold text-purple-800">FUNDAMENTA</span>
+              <p class="text-xs text-purple-600">Respalda con normas/referencias.</p>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-3 border border-purple-200">
+              <span class="font-bold text-purple-800">DISTINGUE</span>
+              <p class="text-xs text-purple-600">Diferencia casos o situaciones.</p>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-3 border border-purple-200">
+              <span class="font-bold text-purple-800">ESTRUCTURA</span>
+              <p class="text-xs text-purple-600">Ordena lógicamente el documento.</p>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-3 border border-purple-200">
+              <span class="font-bold text-purple-800">VALIDA</span>
+              <p class="text-xs text-purple-600">Verifica consistencia técnica.</p>
+            </div>
+          </div>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-sm"><strong>Prompt profesional:</strong> ESTRUCTURA este informe técnico en secciones normativas, FUNDAMENTA cada conclusión con referencias específicas y marca [VERIFICAR] cualquier dato que no puedas confirmar.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Verbos de Poder para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Tus Verbos de Poder de Gestión</h3>
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
+              <span class="font-bold text-emerald-800">SECUENCIA</span>
+              <p class="text-xs text-emerald-600">Ordena tareas paso a paso.</p>
+            </div>
+            <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
+              <span class="font-bold text-emerald-800">ASIGNA</span>
+              <p class="text-xs text-emerald-600">Define responsables claros.</p>
+            </div>
+            <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
+              <span class="font-bold text-emerald-800">ESTIMA</span>
+              <p class="text-xs text-emerald-600">Calcula tiempos y recursos.</p>
+            </div>
+            <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
+              <span class="font-bold text-emerald-800">DOCUMENTA</span>
+              <p class="text-xs text-emerald-600">Registra el procedimiento.</p>
+            </div>
+          </div>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-sm"><strong>Prompt de gestión:</strong> SECUENCIA este proyecto en fases, ASIGNA responsables para cada tarea, ESTIMA duración realista y DOCUMENTA las dependencias entre actividades.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Verbos de Poder para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎓 Tus Verbos de Poder Pedagógicos</h3>
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-200">
+              <span class="font-bold text-amber-800">DISEÑA</span>
+              <p class="text-xs text-amber-600">Crea actividades estructuradas.</p>
+            </div>
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-200">
+              <span class="font-bold text-amber-800">GRADÚA</span>
+              <p class="text-xs text-amber-600">Adapta dificultad por nivel.</p>
+            </div>
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-200">
+              <span class="font-bold text-amber-800">FORMULA</span>
+              <p class="text-xs text-amber-600">Crea preguntas de reflexión.</p>
+            </div>
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-200">
+              <span class="font-bold text-amber-800">CONECTA</span>
+              <p class="text-xs text-amber-600">Vincula con la vida real.</p>
+            </div>
+          </div>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-sm"><strong>Prompt pedagógico:</strong> DISEÑA una actividad de [X] minutos, GRADÚA en 3 niveles de dificultad, FORMULA preguntas de reflexión y CONECTA el tema con situaciones cotidianas del estudiante.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Verbos de Poder para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "instrucciones-alta-fidelidad": {
     meta: {
