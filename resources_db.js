@@ -95,10 +95,56 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Versión Gratuita vs. Plus</h4>
           <p class="text-white font-medium">La versión gratuita es perfecta para empezar. Solo considera Plus ($20/mes) si necesitas respuestas más rápidas o acceso a GPT-4 todo el tiempo.</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Guía oficial de onboarding AulaGenIA. Actualizada a enero 2025.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">🎯 Tu Primera Pregunta de Negocios</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p style="color: #ffffff;" class="text-sm">"Actúa como un consultor comercial. Dame 3 ideas para mejorar la tasa de respuesta de mis emails de ventas."</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía de Acceso a ChatGPT para Negocios. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">⚖️ Tu Primera Pregunta Profesional</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p style="color: #ffffff;" class="text-sm">"Actúa como asistente de redacción. Ayúdame a estructurar un email profesional para comunicar un retraso en la entrega de un informe."</p>
+          </div>
+          <div class="bg-red-50 rounded-xl p-3 border border-red-200 mt-3">
+            <p class="text-sm text-red-700"><strong>⚠️ Nota:</strong> Para temas técnicos o legales complejos, siempre valida la información antes de usarla.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía de Acceso a ChatGPT para Profesionales. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">📊 Tu Primera Pregunta de Gestión</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p style="color: #ffffff;" class="text-sm">"Actúa como un especialista en productividad. Dame una plantilla simple para organizar mi lista de tareas semanales."</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía de Acceso a ChatGPT para Gestión. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">🎓 Tu Primera Pregunta Educativa</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p style="color: #ffffff;" class="text-sm">"Actúa como un pedagogo creativo. Dame una idea de actividad de 10 minutos para captar la atención de alumnos al inicio de clase."</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía de Acceso a ChatGPT para Educación. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "guia-acceso-gemini": {
     meta: {
@@ -185,10 +231,56 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Tip AulaGenIA</h4>
           <p class="text-white font-medium">Gemini es ideal cuando necesitas información actualizada o trabajar con tus archivos de Google Drive.</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Guía oficial de onboarding AulaGenIA. Actualizada a enero 2025.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">🎯 Primer Uso de Gemini para Negocios</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p style="color: #ffffff;" class="text-sm">"Busca las últimas noticias sobre [TU INDUSTRIA] de esta semana. Resume las 3 más importantes para mi negocio."</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía de Acceso a Gemini para Negocios. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">⚖️ Primer Uso de Gemini para Profesionales</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p style="color: #ffffff;" class="text-sm">"Busca las modificaciones normativas recientes en [TU ÁREA] publicadas este mes. Muestra enlaces a las fuentes oficiales."</p>
+          </div>
+          <div class="bg-red-50 rounded-xl p-3 border border-red-200 mt-3">
+            <p class="text-sm text-red-700"><strong>⚠️ Nota:</strong> Gemini busca en internet pero siempre valida en fuentes oficiales.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía de Acceso a Gemini para Profesionales. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">📊 Primer Uso de Gemini para Gestión</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p style="color: #ffffff;" class="text-sm">"Busca las mejores prácticas actuales para implementación de [SISTEMA/PROCESO]. Dame las 5 recomendaciones más recientes."</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía de Acceso a Gemini para Gestión. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">🎓 Primer Uso de Gemini para Educadores</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p style="color: #ffffff;" class="text-sm">"Busca recursos educativos actualizados sobre [TEMA DE CLASE]. Muéstrame videos de YouTube cortos aptos para estudiantes de [NIVEL]."</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía de Acceso a Gemini para Educación. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "guia-acceso-grok": {
     meta: {
