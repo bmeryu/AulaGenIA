@@ -6527,43 +6527,271 @@ const resourcesDatabase = {
     base_html: `
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
-          <h2 class="text-xl font-bold text-teal-900 mb-2">Vocabulario del Arte de Pedir</h2>
-          <p class="text-purple-700">Estos son los términos clave que usarás para convertir tus instrucciones en resultados WOW.</p>
+          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
+          <p class="text-teal-700 italic">"El arte de pedir es el arte de obtener. Estos términos son los bloques fundamentales de la Receta WOW. Domínalos y nunca volverás a obtener respuestas genéricas."</p>
         </section>
-        <section class="space-y-4">
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-purple-800 text-lg mb-2">💬 Prompt (Instrucción)</h4>
-            <p class="text-slate-600">El mensaje o pedido que le escribes a la IA. Es tu forma de comunicarte con el copiloto. Mientras más claro sea tu prompt, mejor será la respuesta.</p>
+    `,
+    segments: {
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+              Vocabulario del Arte de Pedir para Líderes de Negocio
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">💬 PROMPT (Instrucción)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El mensaje que le escribes a la IA. Tu orden de trabajo.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía Comercial:</strong> Es como el brief que le das a tu agencia de publicidad. Si el brief es vago ("hazme algo bonito"), el resultado será mediocre. Si es preciso ("quiero un anuncio que convierta al 3% en este segmento"), obtienes exactamente lo que necesitas.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🎭 ROL (Identidad)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El experto que le pides a la IA que personifique.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía Comercial:</strong> Es contratar especialistas a demanda. Si necesitas un análisis de mercado, no le pides a tu contador; le pides a un analista de BCG. El ROL hace que la IA cambie de "asistente genérico" a "consultor especializado".</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como un Director Comercial con 20 años de experiencia en [TU INDUSTRIA] que ha liderado equipos de ventas en Latam.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📝 CONTEXTO / DETALLE</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Los datos específicos de tu situación: números, restricciones, público.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía Comercial:</strong> Es el dashboard de tu negocio. La IA no puede darte una estrategia de pricing sin saber tu margen, tus competidores y tu posicionamiento. Cuantos más datos, mejor recomendación.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Mi empresa factura $[MONTO]/mensual. Tenemos [N] clientes activos. El ticket promedio es $[VALOR]. La tasa de abandono está en [%]. Mi competencia directa es [NOMBRES].</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">🎯 PROPÓSITO / META</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El resultado específico que esperas obtener.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía Comercial:</strong> Es tu KPI. No le dices a tu equipo "vende más"; le dices "aumenta 15% el revenue en Q2". Sin meta clara, la IA te dará ideas sueltas en vez de un plan de acción.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">✨ EFECTO WOW</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El resultado que supera expectativas cuando combinas ROL + DETALLE + PROPÓSITO.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía Comercial:</strong> Es la diferencia entre una propuesta comercial genérica vs. una que parece hecha por un consultor senior que conoce tu industria. El cliente dice "wow, entendieron exactamente lo que necesito".</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-purple-800 text-lg mb-2">🎭 ROL (Identidad)</h4>
-            <p class="text-slate-600">El personaje o experto que le pides a la IA que personifique. Ejemplo: "Actúa como un chef profesional" o "Eres un abogado experto en contratos". El rol define la perspectiva y el nivel de expertise de la respuesta.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-blue-800 text-lg mb-2">📝 Contexto / Detalle</h4>
-            <p class="text-slate-600">La información específica de tu situación: datos, números, restricciones, público objetivo y cualquier elemento que la IA necesite conocer para darte una respuesta personalizada a tu realidad.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-green-800 text-lg mb-2">🎯 Propósito / Meta</h4>
-            <p class="text-slate-600">El objetivo final que quieres lograr con la respuesta de la IA. ¿Qué acción quieres provocar? ¿Qué resultado esperas? Sin propósito claro, la IA adivina y falla.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-amber-800 text-lg mb-2">✨ Efecto WOW</h4>
-            <p class="text-slate-600">El resultado de alta calidad que supera tus expectativas. Ocurre cuando combinas correctamente ROL + DETALLE + PROPÓSITO en tu instrucción. Es la diferencia entre una respuesta genérica y una respuesta que parece hecha por un experto.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-teal-800 text-lg mb-2">🧱 Prompt Estructurado</h4>
-            <p class="text-slate-600">Una instrucción que sigue un formato ordenado y lógico (la Receta WOW). A diferencia de pedir "hazme algo", un prompt estructurado le dice a la IA QUIÉN debe ser, QUÉ debe hacer y PARA QUÉ.</p>
-          </div>
-        </section>
+        </div>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
-          <p class="text-white font-medium text-lg italic">"Un prompt vago genera una respuesta vaga. Un prompt estructurado genera el Efecto WOW."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"El prompt perfecto es un brief perfecto. Cuanto mejor instruyes a la IA, menos iteraciones necesitas para cerrar el negocio."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 3 - Video 1. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+              Vocabulario del Arte de Pedir para Profesionales del Derecho
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">💬 PROMPT (Instrucción)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El mensaje que le escribes a la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es como la instrucción que le das a tu paralegal. Si dices "busca jurisprudencia sobre arrendamiento", obtendrás miles de resultados irrelevantes. Si dices "busca sentencias donde el arrendatario alegó caso fortuito por pandemia en contratos comerciales 2020-2023", obtienes lo que necesitas.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🎭 ROL (Identidad)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El experto que le pides a la IA que personifique.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es designar un perito. No le pides opinión contable a un médico legista. El ROL "Abogado tributarista senior" produce respuestas muy diferentes a "Abogado penalista de litigación oral".</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como un abogado senior especializado en [ÁREA DEL DERECHO] con 15 años de experiencia en litigación en [JURISDICCIÓN].</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📝 CONTEXTO / DETALLE</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Los hechos específicos del caso.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es la relación de hechos de tu demanda. Sin fechas, montos, partes involucradas y documentos clave, ningún abogado puede darte una opinión seria. La IA tampoco.</p>
+                </div>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400">
+                  <p class="text-xs text-red-800"><strong>⚠️ Advertencia:</strong> NUNCA incluyas datos reales de clientes. Usa casos hipotéticos o anonimiza completamente la información.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">🎯 PROPÓSITO / META</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El resultado específico que esperas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es la pretensión de tu escrito. "Que se declare la nulidad del contrato" es claro; "que me ayudes con este tema" es un escrito rechazado. La IA necesita saber exactamente qué documento, análisis o estrategia esperas recibir.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-red-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">✨ EFECTO WOW ⚠️</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Resultado de alta calidad cuando combinas ROL + DETALLE + PROPÓSITO.</p>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400">
+                  <p class="text-xs text-red-800"><strong>⚠️ Advertencia Legal:</strong> El "WOW" en derecho requiere siempre tu validación. Un borrador brillante puede contener citas inventadas. NUNCA firmes sin verificar artículos, plazos y jurisprudencia mencionada.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack Legal</h4>
+          <p class="text-white font-medium text-lg italic">"El prompt jurídico perfecto es como un escrito bien fundamentado: mientras más preciso el hecho, más precisa la consecuencia legal."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 3 - Video 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+              Vocabulario del Arte de Pedir para Gestores y Administradores
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">💬 PROMPT (Instrucción)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tu orden de trabajo a la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía de Gestión:</strong> Es el ticket de requerimiento que abres en tu sistema. Si solo dices "necesito un reporte", el área de soporte te pedirá 10 aclaraciones. Si describes exactamente qué datos, qué formato y para cuándo, lo obtienes a la primera.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🎭 ROL (Identidad)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El especialista que le pides a la IA que sea.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía de Gestión:</strong> Es asignar el área correcta. Un comunicado de RRHH no se lo encargas a Finanzas. La IA con ROL "Especialista en Comunicación Interna" produce textos muy diferentes a "Analista de Control de Gestión".</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como un Gerente de Operaciones con experiencia en optimización de procesos y gestión del cambio en organizaciones de [TAMAÑO].</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📝 CONTEXTO / DETALLE</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Los datos específicos de tu situación organizacional.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía de Gestión:</strong> Es la información del dashboard de tu área. Sin saber cuántos empleados, qué procesos afectados, plazos y restricciones presupuestarias, la IA te dará recomendaciones genéricas de libro de texto.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">🎯 PROPÓSITO / META</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El entregable específico que esperas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía de Gestión:</strong> Es el deliverable de tu proyecto. "Mejorar la comunicación" es un objetivo vago; "crear un comunicado de 200 palabras que anuncie el nuevo horario y responda las 3 preguntas más frecuentes" es un entregable claro.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">✨ EFECTO WOW</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Resultado que supera expectativas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía de Gestión:</strong> Es cuando presentas un informe y tu jefe dice "esto es exactamente lo que necesitaba, no tengo preguntas". El Efecto WOW ahorra reuniones de aclaración y retrabajos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"El prompt eficiente es un requerimiento eficiente. Mientras menos iteraciones, más tiempo para gestionar lo que realmente importa."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 3 - Video 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+              Vocabulario del Arte de Pedir para Educadores
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">💬 PROMPT (Instrucción)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tu comunicación con la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Pedagógica:</strong> Es como dar instrucciones a tus alumnos para un proyecto. Si dices "hagan algo sobre el medio ambiente", obtienes 30 trabajos distintos. Si dices "infografía de una página sobre reciclaje, con 5 datos estadísticos y 3 acciones concretas", obtienes lo que evaluar.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🎭 ROL (Identidad)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El experto que le pides a la IA que personifique.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Pedagógica:</strong> Es invitar un experto al aula. Un "biólogo marino investigador" explicará los océanos diferente a un "youtuber de ciencia para niños". El ROL adapta el nivel, vocabulario y enfoque.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como un pedagogo experto en didáctica activa y aprendizaje basado en proyectos para estudiantes de [NIVEL] entre [EDADES] años.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📝 CONTEXTO / DETALLE</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La información de tu realidad educativa.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Pedagógica:</strong> Es conocer a tu grupo. Sin saber cuántos alumnos, nivel cognitivo, tiempo disponible, recursos del aula y objetivos del programa, la IA te dará actividades de libro que no funcionan en tu contexto real.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">🎯 PROPÓSITO / META</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El objetivo de aprendizaje específico.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Pedagógica:</strong> Es tu objetivo de aprendizaje. "Que entiendan la fotosíntesis" es vago; "Que puedan explicar el proceso de fotosíntesis usando 3 palabras clave: cloroplasto, luz, glucosa" es evaluable.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Crea una actividad de 30 minutos para que mis alumnos de [NIVEL] puedan [OBJETIVO DE APRENDIZAJE ESPECÍFICO], incluyendo instrucciones paso a paso y criterios de evaluación.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">✨ EFECTO WOW</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Material que supera expectativas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Pedagógica:</strong> Es cuando tus alumnos están tan enganchados que la campana suena y nadie se quiere ir. El Efecto WOW produce material que conecta porque fue diseñado para TU grupo específico, no descargado de internet.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"El prompt pedagógico perfecto es como planificar la mejor clase: mientras más conoces a tu audiencia, más impacto genera tu contenido."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 3 - Video 1. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "fuentes-autoridad-3": {
     meta: {
