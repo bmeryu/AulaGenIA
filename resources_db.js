@@ -6807,25 +6807,136 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
-          <p class="text-teal-700 italic">"La magia no está en la herramienta, sino en cómo le hablas. En este módulo, desbloquearemos el lenguaje de la precisión para que tus instrucciones se conviertan en resultados impecables desde el primer intento."</p>
+          <p class="text-teal-700 italic">"La magia no está en la herramienta, sino en cómo le hablas. Nuestra metodología está basada en las mejores investigaciones de las empresas que crearon estas IAs."</p>
         </section>
         <section>
           <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Ingeniería de Instrucciones y Comunicación Efectiva</h3>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
+          <div class="bg-white rounded-xl p-5 border border-slate-200">
             <h4 class="font-bold text-purple-800 mb-2">Anthropic & OpenAI (2024). Prompt Engineering Guide for Developers and Users</h4>
             <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
-              <p class="text-sm text-amber-800"><strong>💡 Nos basamos en:</strong> Las mejores prácticas de ingeniería de instrucciones de los creadores de ChatGPT y Claude para entregarte nuestra receta de "Rol + Detalle + Propósito". Esta metodología asegura que la IA te entienda a la primera, eliminando cualquier ambigüedad en tus requerimientos.</p>
+              <p class="text-sm text-amber-800"><strong>💡 Nos basamos en:</strong> Las mejores prácticas de ingeniería de instrucciones de los creadores de ChatGPT y Claude para entregarte nuestra receta de "Rol + Detalle + Propósito".</p>
+            </div>
+          </div>
+        </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Aplicación en el Mundo Comercial</h3>
+          <div class="space-y-4">
+            <div class="bg-teal-50 rounded-xl p-4 border border-teal-200">
+              <h4 class="font-bold text-teal-800 mb-2">Lo que dicen los expertos</h4>
+              <p class="text-sm text-teal-700">"Las instrucciones específicas producen resultados específicos. La ambigüedad es el enemigo de la productividad." — Guía de OpenAI</p>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-slate-200">
+              <h4 class="font-bold text-slate-800 mb-2">En tu contexto comercial significa:</h4>
+              <ul class="text-sm text-slate-600 space-y-2">
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Un brief de campaña vago genera creatividades que no convierten</li>
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Una instrucción con datos de mercado genera estrategias accionables</li>
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Mientras más contexto de tu cliente ideal, mejor la propuesta de valor</li>
+              </ul>
+            </div>
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-sm"><strong>Prompt basado en esta fuente:</strong> Usando las mejores prácticas de prompt engineering de OpenAI, actúa como un estratega comercial. Dame 3 formas de mejorar mi tasa de conversión de [X%] a [Y%] en mi proceso de ventas de [PRODUCTO].</p>
             </div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"Un prompt no es una orden, es un puente de contexto. Cuanto más sólido construyas el puente, más lejos llegará el razonamiento de la IA."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"El prompt perfecto es como un pitch perfecto: claro, específico y orientado al cierre."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material exclusivo para alumnos de AulaGenIA - Módulo 3. © 2025 AulaGenIA. Todos los derechos reservados.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad para Negocios - Módulo 3. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">⚖️ Aplicación en la Práctica Profesional</h3>
+          <div class="space-y-4">
+            <div class="bg-teal-50 rounded-xl p-4 border border-teal-200">
+              <h4 class="font-bold text-teal-800 mb-2">Lo que dicen los expertos</h4>
+              <p class="text-sm text-teal-700">"Los modelos de lenguaje reflejan la calidad del input. Una instrucción estructurada produce una respuesta estructurada." — Guía de Anthropic</p>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-slate-200">
+              <h4 class="font-bold text-slate-800 mb-2">En tu contexto jurídico significa:</h4>
+              <ul class="text-sm text-slate-600 space-y-2">
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Un pedido vago ("ayúdame con este caso") genera respuestas genéricas</li>
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Una instrucción con hechos precisos genera análisis fundamentados</li>
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Especificar jurisdicción y materia elimina respuestas irrelevantes</li>
+              </ul>
+            </div>
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">⚠️ Advertencia de las fuentes</h4>
+              <p class="text-sm text-red-700">"Los modelos pueden generar información plausible pero incorrecta. La verificación humana es esencial en contextos de alto riesgo." — OpenAI Safety Guidelines</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es un asistente de redacción, nunca un sustituto de tu criterio profesional."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Aplicación en Gestión Organizacional</h3>
+          <div class="space-y-4">
+            <div class="bg-teal-50 rounded-xl p-4 border border-teal-200">
+              <h4 class="font-bold text-teal-800 mb-2">Lo que dicen los expertos</h4>
+              <p class="text-sm text-teal-700">"La estructura del prompt determina la estructura del output. Pide en el formato que necesitas." — Guía de OpenAI</p>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-slate-200">
+              <h4 class="font-bold text-slate-800 mb-2">En tu contexto de gestión significa:</h4>
+              <ul class="text-sm text-slate-600 space-y-2">
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Pedir "ideas" genera listas genéricas; pedir "plan de acción" genera roadmaps</li>
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Especificar formato (tabla, Gantt, lista) ahorra horas de reformateo</li>
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Dar restricciones de recursos produce propuestas implementables</li>
+              </ul>
+            </div>
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-sm"><strong>Prompt basado en esta fuente:</strong> Siguiendo las mejores prácticas de prompt engineering, actúa como consultor de procesos. Diagrama el flujo actual de [PROCESO] e identifica 3 cuellos de botella con propuestas de mejora.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Pide estructura, recibe estructura. Pide vagüedades, recibe vagüedades."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎓 Aplicación en Contexto Educativo</h3>
+          <div class="space-y-4">
+            <div class="bg-teal-50 rounded-xl p-4 border border-teal-200">
+              <h4 class="font-bold text-teal-800 mb-2">Lo que dicen los expertos</h4>
+              <p class="text-sm text-teal-700">"Los ejemplos concretos en el prompt mejoran dramáticamente la calidad del output. Muestra el formato que esperas." — Guía de Anthropic</p>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-slate-200">
+              <h4 class="font-bold text-slate-800 mb-2">En tu contexto pedagógico significa:</h4>
+              <ul class="text-sm text-slate-600 space-y-2">
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Pedir "una actividad" genera genéricos; pedir "actividad para 3° básico, 30 min, sin tecnología" genera material usable</li>
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Dar ejemplos de actividades anteriores que funcionaron mejora la calidad</li>
+                <li class="flex items-start gap-2"><span class="text-teal-500 font-bold">→</span> Especificar nivel cognitivo y estilo de aprendizaje produce diferenciación real</li>
+              </ul>
+            </div>
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p class="text-white text-sm"><strong>Prompt basado en esta fuente:</strong> Aplicando mejores prácticas de prompt engineering, diseña una actividad de [DURACIÓN] para [NIVEL] sobre [TEMA]. Incluye: objetivo, materiales, instrucciones paso a paso y rúbrica de evaluación.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La IA no conoce a tus alumnos. Mientras más contexto de tu grupo le des, más útil será el material."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "glosario-m3v2": {
     meta: {
