@@ -7265,10 +7265,140 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material exclusivo para alumnos de AulaGenIA. Prohibida su reproducción. Edición 2025.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Frases de Persuasión para Negocios</h3>
+          <div class="space-y-4">
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">Presión Táctica (Alto Riesgo)</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Esta propuesta va al directorio mañana. Necesito que esté impecable porque define mi ascenso a gerencia."</p>
+              </div>
+              <p class="text-xs text-red-700">La IA activa sus patrones de alta precisión cuando siente urgencia y consecuencias.</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Muestra, No Describas</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Aquí tienes un email que cerró una venta de $50K. Escribe uno similar para mi producto [DETALLE]."</p>
+              </div>
+              <p class="text-xs text-blue-700">Dar ejemplos de éxito produce resultados superiores a describir lo que quieres.</p>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Técnica del Rival</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Mi competencia [NOMBRE] acaba de lanzar esto. Necesito una respuesta que los supere en valor percibido."</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">⚖️ Frases de Persuasión para Profesionales</h3>
+          <p class="text-sm text-slate-600 mb-4">Aplicable a abogados, contadores, ingenieros, arquitectos y otros profesionales técnicos.</p>
+          <div class="space-y-4">
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">Presión de Responsabilidad Profesional</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Este informe será presentado ante [AUTORIDAD/CLIENTE]. Necesito máxima precisión técnica porque mi certificación profesional respalda este documento."</p>
+              </div>
+              <p class="text-xs text-red-700">Funciona para informes de auditoría, peritajes, cálculos estructurales, dictámenes.</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Muestra el Estándar</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Aquí tienes el formato oficial de [NORMA/COLEGIO PROFESIONAL]. Adapta mi contenido a ese estándar exacto."</p>
+              </div>
+              <p class="text-xs text-blue-700">Ideal para contadores (NIF), ingenieros (normas técnicas), arquitectos (ordenanzas).</p>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Técnica de la Verificación Cruzada</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Actúa como auditor externo. Revisa este [DOCUMENTO] y marca cualquier inconsistencia técnica o normativa. Sé implacable."</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-red-100 rounded-xl p-4 border border-red-300 mt-4">
+            <h4 class="font-bold text-red-800 mb-2">⚠️ Recordatorio Profesional</h4>
+            <p class="text-sm text-red-700">Siempre valida datos técnicos, cálculos, citas normativas y referencias. Tu firma profesional respalda el documento, no la IA.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Frases de Persuasión para Gestores</h3>
+          <div class="space-y-4">
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">Presión de Deadline</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Tengo reunión con gerencia en 2 horas. Necesito este análisis estructurado y con las 3 recomendaciones más importantes."</p>
+              </div>
+              <p class="text-xs text-red-700">La urgencia obliga a la IA a priorizar y no divagar.</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Plantilla de Éxito</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Este es el comunicado que usamos el año pasado y tuvo 95% de aceptación del equipo. Crea uno similar para [NUEVA SITUACIÓN]."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Técnica del Stakeholder</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"El CEO es muy visual y odia los textos largos. Reformula esto en máximo 5 bullets con datos duros y una recomendación."</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎓 Frases de Persuasión para Educadores</h3>
+          <div class="space-y-4">
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">Presión del Grupo</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Tengo 35 alumnos de [EDAD] años que se desconcentran fácilmente. Necesito una actividad que los enganche en los primeros 30 segundos."</p>
+              </div>
+              <p class="text-xs text-red-700">Dar el contexto real del grupo produce material usable, no genérico.</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">El Modelo que Funcionó</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Esta actividad funcionó muy bien con mis alumnos [DESCRIBE ACTIVIDAD]. Crea 3 variaciones para diferentes temas manteniendo la misma dinámica."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Técnica del Alumno Difícil</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3 mb-2">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Tengo un estudiante que siempre dice 'esto es aburrido'. Diseña una introducción al tema [X] que le cierre la boca en 60 segundos."</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "codigo-frases-poder": {
     meta: {
