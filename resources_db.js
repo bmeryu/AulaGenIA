@@ -5540,74 +5540,177 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">¿Qué es DALL-E 3?</h2>
-          <p class="text-teal-700">DALL-E 3 es el sistema de generación de imágenes de OpenAI. Su mayor ventaja es la <strong>facilidad de uso</strong>: entiende el lenguaje natural perfectamente. No necesitas saber palabras técnicas; puedes pedirle una imagen hablando como si lo hicieras con un amigo. Además, al vivir dentro de ChatGPT, puedes pedirle que corrija detalles de la imagen simplemente conversando.</p>
+          <p class="text-teal-700">DALL-E 3 vive dentro de <strong>ChatGPT</strong>. Entiende español perfectamente y puedes iterar conversacionalmente.</p>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">¿Cómo empiezo? (Acceso Directo)</h3>
-          <p class="text-slate-600 mb-3">DALL-E 3 no tiene una página separada; es una función dentro de tu copiloto habitual.</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">¿Cómo empiezo?</h3>
           <div class="space-y-3">
             <div class="bg-white rounded-xl p-4 border border-slate-200">
-              <h4 class="font-bold text-teal-800 mb-2">1. El camino a través de ChatGPT</h4>
-              <ul class="text-sm text-slate-600 space-y-1">
-                <li>• <strong>Entra a tu cuenta:</strong> Ve a <a href="https://chat.openai.com" target="_blank" class="text-teal-600 hover:underline">chatgpt.com</a> e inicia sesión.</li>
-                <li>• <strong>Simplemente pide:</strong> No busques un botón de "Modo Imagen". Solo escribe: "Dibuja un gato astronauta en Marte estilo acuarela".</li>
-                <li>• <strong>IA Multimodal:</strong> ChatGPT detectará automáticamente que tu meta es visual y activará el motor de DALL-E 3 para entregarte el resultado en el mismo chat.</li>
-              </ul>
+              <h4 class="font-bold text-teal-800 mb-2">Acceso Directo</h4>
+              <p class="text-sm text-slate-600">En <a href="https://chatgpt.com" target="_blank" class="text-teal-600 hover:underline">chatgpt.com</a>, solo escribe: "Dibuja un [tu idea]". ChatGPT activa DALL-E automáticamente.</p>
             </div>
             <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
-              <h4 class="font-bold text-amber-800 mb-2">2. Alternativa: Microsoft Designer (Gratis)</h4>
-              <p class="text-sm text-amber-700">Si agotas tus créditos en ChatGPT, puedes usar DALL-E 3 de forma gratuita y con menos límites en Microsoft Designer (antes Bing Image Creator). Solo necesitas una cuenta de Hotmail o Outlook.</p>
+              <h4 class="font-bold text-amber-800 mb-2">Alternativa Gratuita</h4>
+              <p class="text-sm text-amber-700">Microsoft Designer (antes Bing Image Creator) usa DALL-E 3 gratis con cuenta Hotmail/Outlook.</p>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Límites</h4>
+              <p class="text-sm text-amber-700">Free: 2-3 imágenes/día. Plus: casi ilimitado. Filtros de seguridad estrictos.</p>
             </div>
           </div>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones Estrella para el Alumno AulaGenIA</h3>
-          <p class="text-slate-600 mb-3">DALL-E 3 es el "ilustrador obediente" de tu equipo:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Negocios</h3>
           <div class="grid gap-3 md:grid-cols-2">
-            <div class="bg-teal-50 p-4 rounded-xl border border-teal-200">
-              <h4 class="font-bold text-teal-800 mb-1">✨ Refinamiento Conversacional</h4>
-              <p class="text-sm text-teal-700">Si la imagen no te gusta, no tienes que empezar de cero. Dile: "Ahora haz que el gato sea naranja" o "Ponle más luz al fondo".</p>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-1">✨ Iteración Conversacional</h4>
+              <p class="text-sm text-blue-700">"Hazla más corporativa" o "Cambia el fondo a blanco". Refina sin empezar de cero.</p>
             </div>
-            <div class="bg-teal-50 p-4 rounded-xl border border-teal-200">
-              <h4 class="font-bold text-teal-800 mb-1">🇪🇸 Comprensión del Español</h4>
-              <p class="text-sm text-teal-700">Es, junto a Gemini, la IA que mejor entiende nuestras órdenes en español sin necesidad de traducir al inglés.</p>
-            </div>
-            <div class="bg-teal-50 p-4 rounded-xl border border-teal-200">
-              <h4 class="font-bold text-teal-800 mb-1">✂️ Editor en el Chat</h4>
-              <p class="text-sm text-teal-700">Puedes seleccionar un área de la imagen generada y pedirle cambios específicos solo en esa zona (ej: "Cambia solo las gafas del personaje").</p>
-            </div>
-            <div class="bg-teal-50 p-4 rounded-xl border border-teal-200">
-              <h4 class="font-bold text-teal-800 mb-1">🎨 Consistencia de Estilo</h4>
-              <p class="text-sm text-teal-700">Pídele que mantenga el estilo de una imagen anterior para crear una serie coherente para tus redes sociales.</p>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-1">🇪🇸 Español Perfecto</h4>
+              <p class="text-sm text-blue-700">Describe en español natural. DALL-E entiende mejor que otras IAs.</p>
             </div>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">¿Cuáles son los límites?</h3>
-          <p class="text-slate-600 mb-3">Dependiendo de tu plan en ChatGPT, las reglas cambian:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Trabajo Comercial</h3>
           <ul class="text-sm space-y-2">
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>1. Usuarios Free:</strong> Tienes un número limitado de generaciones diarias (usualmente 2 o 3 imágenes de alta calidad).</li>
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>2. Usuarios Plus (Pago):</strong> Generaciones casi ilimitadas y acceso a herramientas de edición avanzada.</li>
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>3. Seguridad:</strong> DALL-E 3 tiene filtros estrictos. No generará imágenes de personas famosas reales ni contenido violento o protegido por derechos de autor.</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Producto:</strong> "Foto profesional de un reloj de lujo sobre mármol, iluminación dramática, estilo catálogo"</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Equipo:</strong> "Ilustración de equipo de negocios diverso celebrando logros, estilo moderno flat"</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Concepto:</strong> "Visualización abstracta de crecimiento empresarial, tonos azul y dorado, minimalista"</li>
           </ul>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos Pro de AulaGenIA</h3>
-          <p class="text-slate-600 mb-3">Para no desperdiciar tus intentos gratuitos:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Ventas</h3>
           <ul class="text-sm space-y-2">
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Dile el formato:</strong> Especifica si quieres la imagen cuadrada, vertical (para celular) o apaisada (para cine).</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Combina con el Modelo AGIA:</strong> Usa un Rol para ChatGPT antes de pedir la imagen: "Actúa como un fotógrafo profesional de producto y genera una imagen de..."</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Pide variaciones:</strong> Si te gusta una imagen, pide: "Haz 3 variaciones de este mismo concepto pero variando el ángulo de cámara".</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Usa Rol:</strong> "Actúa como fotógrafo de producto y crea una imagen de..."</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Especifica formato:</strong> "Cuadrada para Instagram" o "16:9 para presentación".</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Pide variaciones:</strong> "Dame 3 versiones con diferentes ángulos".</li>
           </ul>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La IA no dibuja lo que tú dices, dibuja lo que tú eres capaz de describir. La precisión en tus palabras es el pincel del futuro."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"DALL-E ilustra tu visión comercial; TÚ la conviertes en ventas."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Documento diseñado para potenciar tu kit visual en AulaGenIA. Información actualizada a diciembre de 2025.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía DALL-E 3 para Negocios - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Profesionales</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">🇪🇸 Español Natural</h4>
+              <p class="text-sm text-indigo-700">Describe en español sin tecnicismos. DALL-E entiende perfectamente.</p>
+            </div>
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">✂️ Edición por Áreas</h4>
+              <p class="text-sm text-indigo-700">Selecciona una zona y pide cambios específicos solo ahí.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Práctica</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Imagen institucional:</strong> "Ilustración elegante de balanza de justicia, estilo profesional, tonos azul marino"</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Portada de documento:</strong> "Diseño abstracto profesional en tonos corporativos para portada de informe legal"</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Concepto visual:</strong> "Representación visual de acuerdo comercial, apretón de manos, estilo moderno"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Profesionales</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-400"><strong>⚠️ Sin datos reales:</strong> DALL-E tiene filtros. No generes nada identificable de clientes.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Estilo sobrio:</strong> Añade "profesional", "elegante", "corporativo" a tus descripciones.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Consistencia:</strong> Pide que mantenga el mismo estilo para crear una serie coherente.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"DALL-E crea tu imagen profesional; TÚ cuidas la confidencialidad."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía DALL-E 3 para Profesionales - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Gestión</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">🇪🇸 Español Natural</h4>
+              <p class="text-sm text-green-700">Describe lo que necesitas como si hablaras con un colega.</p>
+            </div>
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">🔄 Iteración Rápida</h4>
+              <p class="text-sm text-green-700">"Más luminoso", "Añade color verde", "Hazlo más formal".</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Trabajo</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Comunicados:</strong> "Imagen celebratoria para anuncio de logros del equipo, colores corporativos"</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Reportes:</strong> "Ilustración abstracta de datos y gráficos, estilo moderno para portada de reporte"</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Capacitación:</strong> "Imagen de bienvenida para onboarding de empleados, estilo amigable y profesional"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Eficiencia</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Guarda prompts:</strong> Documenta las descripciones que funcionan para reusar.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Define paleta:</strong> Incluye tus colores institucionales en la descripción.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Alternativa gratuita:</strong> Microsoft Designer si agotas créditos en ChatGPT.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"DALL-E crea imágenes institucionales; TÚ mantienes la coherencia visual."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía DALL-E 3 para Gestión - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Educadores</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">🇪🇸 Español Perfecto</h4>
+              <p class="text-sm text-emerald-700">Describe en español natural. Ideal para crear material en tu idioma.</p>
+            </div>
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">✨ Refinamiento</h4>
+              <p class="text-sm text-emerald-700">"Hazlo más colorido", "Añade más detalles" - itera hasta lograr lo que necesitas.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Aula</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Escena histórica:</strong> "Ilustración del descubrimiento de América, estilo libro de texto, colorido y educativo"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Concepto científico:</strong> "Diagrama visual de la fotosíntesis, estilo infantil colorido con flechas claras"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Personaje literario:</strong> "Don Quijote cabalgando hacia molinos de viento, ilustración estilo cuento infantil"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Matemáticas:</strong> "Visualización de las fracciones con pizzas divididas, estilo colorido didáctico"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Docentes</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Usa Rol:</strong> "Actúa como ilustrador de libros infantiles y crea..."</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Adapta estilo:</strong> "Estilo cartoon" para primaria, "realista" para secundaria.</li>
+            <li class="bg-emerald-50 p-3 rounded-lg border-l-4 border-emerald-400"><strong>💡 Alternativa:</strong> Microsoft Designer es gratuito si agotas créditos.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"DALL-E ilustra tus conceptos; TÚ enciendes la imaginación."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía DALL-E 3 para Educación - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "guia-acceso-canva": {
     meta: {
