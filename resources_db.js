@@ -8138,10 +8138,6 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La calidad del resultado no es un problema de la IA, es un reflejo de la profundidad de tu instrucción estratégica."</p>
-        </section>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -8158,6 +8154,10 @@ const resourcesDatabase = {
             <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
             <p style="color: #ffffff;" class="text-sm">Completo listo para pegar en tu IA favorita.</p>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad del resultado no es un problema de la IA, es un reflejo de la profundidad de tu instrucción estratégica."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Instrucciones de Alta Fidelidad para Negocios - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -8177,6 +8177,10 @@ const resourcesDatabase = {
             <p class="text-sm text-red-700"><strong>⚠️ Siempre valida:</strong> Citas normativas, cálculos y referencias antes de usar el documento.</p>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad del resultado no es un problema de la IA, es un reflejo de la profundidad de tu instrucción estratégica."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Instrucciones de Alta Fidelidad para Profesionales - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -8191,6 +8195,10 @@ const resourcesDatabase = {
             <p style="color: #fef3c7;"><strong>[INGENIERÍA SOCIAL]:</strong> El CEO me evaluará por el éxito de esta implementación. Cuestiona mi plan inicial y anticipa 3 objeciones que encontraré de los mandos medios.</p>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad del resultado no es un problema de la IA, es un reflejo de la profundidad de tu instrucción estratégica."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Instrucciones de Alta Fidelidad para Gestión - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -8204,6 +8212,10 @@ const resourcesDatabase = {
             <p style="color: #fecaca;" class="mb-2"><strong>[RESTRICCIONES]:</strong> Máximo 5 minutos de exposición del docente por sesión. Todo lo demás debe ser trabajo activo del alumno.</p>
             <p style="color: #fef3c7;"><strong>[INGENIERÍA SOCIAL]:</strong> Tengo observación de clase la próxima semana. Necesito que esta secuencia sea perfecta. Antes de diseñar, hazme 3 preguntas sobre mis alumnos que mejorarían el resultado.</p>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad del resultado no es un problema de la IA, es un reflejo de la profundidad de tu instrucción estratégica."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Instrucciones de Alta Fidelidad para Educación - Módulo 3. AulaGenIA 2025.</div>
       </article>
