@@ -3156,110 +3156,153 @@ const resourcesDatabase = {
       </article>
       `,
       "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">El Método RID para Gestión</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border-l-4 border-blue-400 hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">1</span>
+                <h4 class="font-bold text-blue-800">RECONOCER: ¿Dónde está tu fuga?</h4>
+              </div>
+              <p class="text-slate-600 text-sm">Actas de reunión, correos repetitivos, reportes, coordinación de agendas. ¿Qué haces igual todas las semanas?</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border-l-4 border-amber-400 hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-8 h-8 bg-amber-500 text-white rounded-full flex items-center justify-center font-bold">2</span>
+                <h4 class="font-bold text-amber-800">IDENTIFICAR: ¿Cuál es tu nudo?</h4>
+              </div>
+              <p class="text-slate-600 text-sm"><strong>Fricción:</strong> Correos con las mismas 5 preguntas. <strong>Inercia:</strong> Reporte en blanco. <strong>Vaguedad:</strong> No sabes cómo presentar los datos.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border-l-4 border-green-400 hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">3</span>
+                <h4 class="font-bold text-green-800">DEFINIR: Asigna el copiloto</h4>
+              </div>
+              <p class="text-slate-600 text-sm">ChatGPT para documentos, Gamma para presentaciones, Gemini para integración con Google Workspace.</p>
+            </div>
+          </div>
+        </section>
         <div class="space-y-4">
           <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
             <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
               <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
-              Mapa de Delegación para Profesionales de Gestión
+              Tu Mapa de Delegación Administrativa
             </h4>
-            <p class="text-sm text-slate-700 mb-4">Automatiza lo repetitivo, libera tiempo para lo estratégico.</p>
-            
             <div class="overflow-x-auto mb-4">
               <table class="w-full text-xs border-collapse">
                 <thead class="bg-teal-100">
                   <tr>
-                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Tarea Administrativa</th>
+                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Tarea</th>
                     <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">El Nudo</th>
-                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Copiloto Ideal</th>
+                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Copiloto</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="border-b border-slate-200">
-                    <td class="p-2 text-slate-700">Redactar actas de reunión</td>
-                    <td class="p-2 text-slate-600">Fricción: siempre igual</td>
+                    <td class="p-2 text-slate-700">Actas de reunión</td>
+                    <td class="p-2 text-slate-600">Fricción</td>
                     <td class="p-2 text-teal-700 font-medium">ChatGPT</td>
                   </tr>
                   <tr class="border-b border-slate-200">
-                    <td class="p-2 text-slate-700">Contestar correos frecuentes</td>
-                    <td class="p-2 text-slate-600">Fricción: repetitivo</td>
+                    <td class="p-2 text-slate-700">Correos frecuentes</td>
+                    <td class="p-2 text-slate-600">Fricción</td>
                     <td class="p-2 text-teal-700 font-medium">ChatGPT (Matriz)</td>
                   </tr>
                   <tr class="border-b border-slate-200">
-                    <td class="p-2 text-slate-700">Crear reportes visuales</td>
-                    <td class="p-2 text-slate-600">Inercia + Fricción</td>
+                    <td class="p-2 text-slate-700">Reportes visuales</td>
+                    <td class="p-2 text-slate-600">Inercia</td>
                     <td class="p-2 text-teal-700 font-medium">Gamma</td>
-                  </tr>
-                  <tr class="border-b border-slate-200">
-                    <td class="p-2 text-slate-700">Coordinar agendas</td>
-                    <td class="p-2 text-slate-600">Fricción: mucho ida y vuelta</td>
-                    <td class="p-2 text-teal-700 font-medium">Gemini + Calendar</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            
             <div class="prompt-block bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-sm">Actúa como asistente ejecutivo senior. Mi tarea con más fricción es [TAREA]. Crea un sistema para delegarla a la IA de forma que yo solo revise el resultado final.</p>
+              <p class="text-white text-sm">Actúa como asistente ejecutivo. Mi tarea con más fricción es [TAREA]. Crea un sistema para delegarla donde yo solo revise el resultado.</p>
             </div>
           </div>
         </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Si lo haces igual todos los días, la IA puede hacerlo por ti. Tu tiempo vale más."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Kit de Delegación - Módulo 2. AulaGenIA 2025.</div>
       </article>
       `,
       "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">El Método RID para Educadores</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border-l-4 border-blue-400 hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">1</span>
+                <h4 class="font-bold text-blue-800">RECONOCER: ¿Dónde pierdes tiempo?</h4>
+              </div>
+              <p class="text-slate-600 text-sm">Planificación de clases, crear ejercicios, retroalimentación a estudiantes, presentaciones. ¿Qué te quita +30 min?</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border-l-4 border-amber-400 hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-8 h-8 bg-amber-500 text-white rounded-full flex items-center justify-center font-bold">2</span>
+                <h4 class="font-bold text-amber-800">IDENTIFICAR: ¿Cuál es tu nudo?</h4>
+              </div>
+              <p class="text-slate-600 text-sm"><strong>Inercia:</strong> Actividad en blanco. <strong>Fricción:</strong> Crear 30 variaciones de ejercicios. <strong>Vaguedad:</strong> No sabes cómo adaptar al nivel.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border-l-4 border-green-400 hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">3</span>
+                <h4 class="font-bold text-green-800">DEFINIR: Asigna el copiloto</h4>
+              </div>
+              <p class="text-slate-600 text-sm">ChatGPT para actividades, Gamma para presentaciones, DALL-E para ilustraciones. TÚ adaptas al contexto de tus estudiantes.</p>
+            </div>
+          </div>
+        </section>
         <div class="space-y-4">
           <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
             <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
               <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
-              Mapa de Delegación para Educadores
+              Tu Mapa de Delegación Docente
             </h4>
-            <p class="text-sm text-slate-700 mb-4">Delega la preparación, conserva la conexión humana con tus estudiantes.</p>
-            
             <div class="overflow-x-auto mb-4">
               <table class="w-full text-xs border-collapse">
                 <thead class="bg-teal-100">
                   <tr>
-                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Tarea Docente</th>
+                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Tarea</th>
                     <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">El Nudo</th>
-                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Copiloto Ideal</th>
+                    <th class="text-left p-2 font-semibold text-teal-800 border-b border-teal-200">Copiloto</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="border-b border-slate-200">
                     <td class="p-2 text-slate-700">Planificar actividades</td>
-                    <td class="p-2 text-slate-600">Inercia: falta de ideas nuevas</td>
+                    <td class="p-2 text-slate-600">Inercia</td>
                     <td class="p-2 text-teal-700 font-medium">ChatGPT</td>
                   </tr>
                   <tr class="border-b border-slate-200">
                     <td class="p-2 text-slate-700">Crear ejercicios</td>
-                    <td class="p-2 text-slate-600">Fricción: variaciones manuales</td>
+                    <td class="p-2 text-slate-600">Fricción</td>
                     <td class="p-2 text-teal-700 font-medium">ChatGPT</td>
                   </tr>
                   <tr class="border-b border-slate-200">
                     <td class="p-2 text-slate-700">Diseñar presentaciones</td>
-                    <td class="p-2 text-slate-600">Fricción + Inercia</td>
+                    <td class="p-2 text-slate-600">Inercia</td>
                     <td class="p-2 text-teal-700 font-medium">Gamma</td>
-                  </tr>
-                  <tr class="border-b border-slate-200">
-                    <td class="p-2 text-slate-700">Redactar retroalimentación</td>
-                    <td class="p-2 text-slate-600">Fricción: muchos estudiantes</td>
-                    <td class="p-2 text-teal-700 font-medium">ChatGPT (plantillas)</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            
             <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400 mb-3">
-              <p class="text-xs text-emerald-800"><strong>💡 Recordatorio Pedagógico:</strong> La IA genera materiales; TÚ conoces a cada estudiante. Adapta siempre los resultados a tu contexto específico.</p>
+              <p class="text-xs text-emerald-800"><strong>💡 Recordatorio Pedagógico:</strong> La IA genera materiales; TÚ conoces a cada estudiante. Adapta siempre los resultados a tu contexto.</p>
             </div>
-            
             <div class="prompt-block bg-slate-800 rounded-lg p-3">
               <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
-              <p class="text-white text-sm">Actúa como diseñador instruccional. Tengo [N] estudiantes de [NIVEL]. Mi tarea que más tiempo consume es [TAREA]. Diseña un sistema para delegarla manteniendo calidad pedagógica.</p>
+              <p class="text-white text-sm">Actúa como diseñador instruccional. Tengo [N] estudiantes de [NIVEL]. Mi tarea que más tiempo consume es [TAREA]. Diseña un sistema para delegarla.</p>
             </div>
           </div>
         </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La IA prepara materiales; TÚ enciendes la chispa del aprendizaje."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Kit de Delegación - Módulo 2. AulaGenIA 2025.</div>
       </article>
       `
