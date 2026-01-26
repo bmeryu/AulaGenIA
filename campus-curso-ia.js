@@ -3707,7 +3707,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       const currentLesson = f(c.currentLessonId);
-      if (currentLesson && currentLesson.lesson.type === 'case_category') {
+      if (currentLesson && (currentLesson.lesson.type === 'case_category' || currentLesson.lesson.type === 'segment_category')) {
         h(c.currentLessonId);
       }
     } catch (error) {
