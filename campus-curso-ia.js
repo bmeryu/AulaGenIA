@@ -3839,7 +3839,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Map full segment names to potential legacy keys in JSON (Firebase Data Compatibility)
     const legacyKeyMap = {
       "Gestión & Administración": "Gestión & Adm.",
-      "Educación & Capacitación": "Educación"
+      "Educación & Capacitación": "Educación",
+      "Negocios & Ventas": "Negocios & Estrategia"
     };
 
     // Helper to get priority safely checking both keys
