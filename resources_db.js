@@ -6451,10 +6451,6 @@ const resourcesDatabase = {
             <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Pregunta de cierre:</strong> ¿Notaste cómo cambió la calidad del texto al usar el Rol y el Contexto?</span></div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"En AulaGenIA, la IA no es el futuro, tú lo eres."</p>
-        </section>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -6474,6 +6470,10 @@ const resourcesDatabase = {
               <p class="text-sm text-green-700">"Para que me ayudes a preparar 3 argumentos de valor que justifiquen mi precio y una estrategia de cierre para mañana."</p>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"En AulaGenIA, la IA no es el futuro, tú lo eres."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Mi Primer Prompt WOW para Negocios - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -6496,6 +6496,10 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"En AulaGenIA, la IA no es el futuro, tú lo eres."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Mi Primer Prompt WOW para Profesionales - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -6517,6 +6521,10 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"En AulaGenIA, la IA no es el futuro, tú lo eres."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Mi Primer Prompt WOW para Gestión - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -6537,6 +6545,10 @@ const resourcesDatabase = {
               <p class="text-sm text-green-700">"Para diseñar una actividad interactiva de 40 minutos que los enganche desde el inicio y los haga reflexionar sobre acciones personales."</p>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"En AulaGenIA, la IA no es el futuro, tú lo eres."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Mi Primer Prompt WOW para Educación - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -6616,10 +6628,6 @@ const resourcesDatabase = {
             <li>• <strong>Sin PROPÓSITO:</strong> "Dame ideas" → ideas que no sirven para tu caso.</li>
           </ul>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La calidad de la respuesta es proporcional a la claridad de tu pedido."</p>
-        </section>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -6632,6 +6640,10 @@ const resourcesDatabase = {
             <li class="bg-blue-50 p-3 rounded-lg">• Respuesta a objeción de precio</li>
             <li class="bg-blue-50 p-3 rounded-lg">• Post promocional para redes</li>
           </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad de la respuesta es proporcional a la claridad de tu pedido."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Plantilla Prompt WOW para Negocios - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -6647,6 +6659,10 @@ const resourcesDatabase = {
             <li class="bg-indigo-50 p-3 rounded-lg">• Estructura de informe técnico</li>
           </ul>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad de la respuesta es proporcional a la claridad de tu pedido."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Plantilla Prompt WOW para Profesionales - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -6661,6 +6677,10 @@ const resourcesDatabase = {
             <li class="bg-green-50 p-3 rounded-lg">• Agenda de capacitación</li>
           </ul>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad de la respuesta es proporcional a la claridad de tu pedido."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Plantilla Prompt WOW para Gestión - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -6674,6 +6694,10 @@ const resourcesDatabase = {
             <li class="bg-emerald-50 p-3 rounded-lg">• Retroalimentación para alumno</li>
             <li class="bg-emerald-50 p-3 rounded-lg">• Quiz de repaso del tema</li>
           </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La calidad de la respuesta es proporcional a la claridad de tu pedido."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Plantilla Prompt WOW para Educación - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -7427,10 +7451,6 @@ const resourcesDatabase = {
           <h4 class="font-bold text-amber-800 mb-2">¡Atención Estudiante!</h4>
           <p class="text-amber-700">Próximamente tendrás acceso a nuestra <strong>Biblioteca Maestra</strong>: más de 100 prompts listos para copiar, pegar y dominar cualquier tarea profesional.</p>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
-          <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
-        </section>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -7461,6 +7481,10 @@ const resourcesDatabase = {
               </div>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Negocios - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -7499,6 +7523,10 @@ const resourcesDatabase = {
             <p class="text-sm text-red-700">Siempre valida datos técnicos, cálculos, citas normativas y referencias. Tu firma profesional respalda el documento, no la IA.</p>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Profesionales - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -7530,6 +7558,10 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Gestión - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -7560,6 +7592,10 @@ const resourcesDatabase = {
               </div>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Educación - Módulo 3. AulaGenIA 2025.</div>
       </article>
