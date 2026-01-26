@@ -8458,10 +8458,6 @@ const resourcesDatabase = {
             <p class="text-slate-600">La técnica de "limpiar" un chat viciado: 1) Pide resumen, 2) Copia solo lo vital, 3) Abre chat nuevo, 4) Pega información limpia. El resultado es una IA con "mente fresca".</p>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
-          <p class="text-white font-medium text-lg italic">"Un estratega no culpa a la IA cuando falla. Usa los salvavidas para recuperar el control."</p>
-        </section>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -8478,6 +8474,10 @@ const resourcesDatabase = {
               <p class="text-amber-800"><strong>🧹 BORRÓN:</strong> El chat tiene 20 versiones de la propuesta y la IA se confundió. Pide resumen y abre chat nuevo.</p>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
+          <p class="text-white font-medium text-lg italic">"Un estratega no culpa a la IA cuando falla. Usa los salvavidas para recuperar el control."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Los 3 Salvavidas para Negocios - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -8497,6 +8497,10 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
+          <p class="text-white font-medium text-lg italic">"Un estratega no culpa a la IA cuando falla. Usa los salvavidas para recuperar el control."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Los 3 Salvavidas para Profesionales - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -8515,6 +8519,10 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
+          <p class="text-white font-medium text-lg italic">"Un estratega no culpa a la IA cuando falla. Usa los salvavidas para recuperar el control."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Los 3 Salvavidas para Gestión - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -8532,6 +8540,10 @@ const resourcesDatabase = {
               <p class="text-amber-800"><strong>🧹 BORRÓN:</strong> Le pediste 5 versiones distintas de la actividad y ahora mezcla todo. Poda y empieza limpio.</p>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
+          <p class="text-white font-medium text-lg italic">"Un estratega no culpa a la IA cuando falla. Usa los salvavidas para recuperar el control."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Los 3 Salvavidas para Educación - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -8591,10 +8603,6 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. Si el copiloto se pierde, tú eres quien tiene la brújula para volver al camino."</p>
-        </section>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -8610,6 +8618,10 @@ const resourcesDatabase = {
               <p class="text-red-700"><strong>Acción:</strong> Borrón y cuenta nueva. Resume reglas del tono, abre chat nuevo, pega limpio.</p>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. Si el copiloto se pierde, tú eres quien tiene la brújula para volver al camino."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Kit Primeros Auxilios para Negocios - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -8631,6 +8643,10 @@ const resourcesDatabase = {
             <p class="text-sm text-red-700"><strong>⚠️ Crítico:</strong> Siempre valida normativas y cálculos antes de usar. Tu firma profesional respalda el documento.</p>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. Si el copiloto se pierde, tú eres quien tiene la brújula para volver al camino."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Kit Primeros Auxilios para Profesionales - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -8648,6 +8664,10 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. Si el copiloto se pierde, tú eres quien tiene la brújula para volver al camino."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Kit Primeros Auxilios para Gestión - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -8664,6 +8684,10 @@ const resourcesDatabase = {
               <p class="text-red-700"><strong>Acción:</strong> "Valida: ¿entendiste que son alumnos de [NIVEL] con [CARACTERÍSTICAS]?" o chat nuevo.</p>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. Si el copiloto se pierde, tú eres quien tiene la brújula para volver al camino."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Kit Primeros Auxilios para Educación - Módulo 3. AulaGenIA 2025.</div>
       </article>
