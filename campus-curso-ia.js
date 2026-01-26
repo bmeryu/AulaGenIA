@@ -39,6 +39,74 @@ document.addEventListener("DOMContentLoaded", () => {
   let originalLessonContent = null;
   let originalLessonTitle = null;
 
+  // --- CAROUSEL LOGIC (Senior Implementation) ---
+
+  // Centralized UI Updater for Carousel
+  window.updateCarouselUI = function (carouselId, newIndex) {
+    const container = document.getElementById(carouselId);
+    if (!container) return;
+
+    const track = container.querySelector('.glossary-carousel-track');
+    const dots = container.querySelectorAll('.carousel-dot');
+    const counter = container.querySelector('.carousel-counter-current');
+    const total = parseInt(container.getAttribute('data-total') || '0');
+
+    // Boundary Checks
+    if (newIndex < 0) newIndex = 0;
+    if (newIndex >= total) newIndex = total - 1;
+
+    // Save State
+    container.setAttribute('data-current', newIndex);
+
+    // 1. Move Track (Hardware Accelerated)
+    if (track) {
+      track.style.transform = `translateX(-${newIndex * 100}%)`;
+    }
+
+    // 2. Update Dots
+    dots.forEach((dot, i) => {
+      if (i === newIndex) {
+        dot.classList.add('active');
+        dot.setAttribute('aria-pressed', 'true');
+      } else {
+        dot.classList.remove('active');
+        dot.setAttribute('aria-pressed', 'false');
+      }
+    });
+
+    // 3. Update Counter
+    if (counter) counter.textContent = newIndex + 1;
+
+    // 4. Manage Button States (Accessibility)
+    const prevBtn = container.querySelector('.carousel-nav-prev');
+    const nextBtn = container.querySelector('.carousel-nav-next');
+
+    if (prevBtn) {
+      prevBtn.disabled = (newIndex === 0);
+      prevBtn.classList.toggle('opacity-50', newIndex === 0);
+      prevBtn.classList.toggle('cursor-not-allowed', newIndex === 0);
+    }
+    if (nextBtn) {
+      nextBtn.disabled = (newIndex === total - 1);
+      nextBtn.classList.toggle('opacity-50', newIndex === total - 1);
+      nextBtn.classList.toggle('cursor-not-allowed', newIndex === total - 1);
+    }
+  };
+
+  // Public API: Relative Navigation
+  window.carouselNavigate = function (carouselId, direction) {
+    const container = document.getElementById(carouselId);
+    if (!container) return;
+
+    const current = parseInt(container.getAttribute('data-current') || '0');
+    window.updateCarouselUI(carouselId, current + direction);
+  };
+
+  // Public API: Direct Navigation
+  window.carouselGoTo = function (carouselId, index) {
+    window.updateCarouselUI(carouselId, index);
+  };
+
   // Helper function to render glossary carousel from structured data (Robust & Dynamic)
   window.renderGlossaryFromData = function (content, resourceId) {
     if (!content || !content.terms) return '';
