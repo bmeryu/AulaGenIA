@@ -8169,10 +8169,80 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Consejo AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"Combina la Receta WOW con una imagen: ROL + IMAGEN + PROPÓSITO = Resultados multimodales increíbles."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Guía de acceso oficial AulaGenIA 2025. Explora el poder de la multimodalidad.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Prompts con Imágenes para Negocios</h3>
+          <div class="space-y-3">
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p style="color: #ffffff;" class="text-sm"><strong>Análisis de Competencia:</strong> Sube una captura de la web de tu competidor y pregunta: "¿Qué elementos de diseño y copy están usando para generar confianza? ¿Qué podría incorporar mi marca?"</p>
+            </div>
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p style="color: #ffffff;" class="text-sm"><strong>Mejora de Packaging:</strong> Sube foto de tu producto y pregunta: "Actúa como un diseñador de envases premium. ¿Qué cambios harías para que se vea más exclusivo?"</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Gemini Image para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">⚖️ Prompts con Imágenes para Profesionales</h3>
+          <div class="space-y-3">
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p style="color: #ffffff;" class="text-sm"><strong>OCR de Documentos:</strong> Sube un contrato escaneado y pregunta: "Extrae el texto completo de este documento. Luego identifica las cláusulas de responsabilidad y penalidades."</p>
+            </div>
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p style="color: #ffffff;" class="text-sm"><strong>Análisis de Estados Financieros:</strong> Sube una imagen de un balance y pregunta: "Identifica los ratios de liquidez y solvencia. ¿Hay alguna señal de alerta?"</p>
+            </div>
+          </div>
+          <div class="bg-red-50 rounded-xl p-3 border border-red-200 mt-3">
+            <p class="text-sm text-red-700"><strong>⚠️ Cuidado:</strong> No subas documentos con datos sensibles de clientes. Usa ejemplos o anonimiza antes.</p>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Gemini Image para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Prompts con Imágenes para Gestión</h3>
+          <div class="space-y-3">
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p style="color: #ffffff;" class="text-sm"><strong>Interpretación de Dashboards:</strong> Sube captura de tu dashboard de KPIs y pregunta: "Explica como un analista qué dicen estos datos. ¿Qué tendencias debo vigilar?"</p>
+            </div>
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p style="color: #ffffff;" class="text-sm"><strong>Diagrama de Procesos:</strong> Sube un diagrama de flujo y pregunta: "Identifica cuellos de botella en este proceso. ¿Dónde podría optimizarse?"</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Gemini Image para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎓 Prompts con Imágenes para Educadores</h3>
+          <div class="space-y-3">
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p style="color: #ffffff;" class="text-sm"><strong>Material Visual:</strong> Sube una infografía de internet y pregunta: "Adapta el contenido de esta imagen para alumnos de [NIVEL]. Crea 3 preguntas de comprensión."</p>
+            </div>
+            <div class="prompt-block bg-slate-800 rounded-lg p-4">
+              <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+              <p style="color: #ffffff;" class="text-sm"><strong>Corrección de Tareas:</strong> Sube foto de un ejercicio resuelto por un alumno y pregunta: "Revisa esta solución paso a paso. Señala los errores y sugiere cómo explicar la correción."</p>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Gemini Image para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "glosario-m3v3": {
     meta: {
