@@ -6452,12 +6452,67 @@ const resourcesDatabase = {
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La calidad de la respuesta es proporcional a la claridad de tu pedido. Un prompt vago = resultado vago."</p>
+          <p class="text-white font-medium text-lg italic">"La calidad de la respuesta es proporcional a la claridad de tu pedido."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial de AulaGenIA. Tu plantilla personal para dominar al copiloto.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tareas Comunes para Practicar</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-blue-50 p-3 rounded-lg">• Email de seguimiento post-reunión</li>
+            <li class="bg-blue-50 p-3 rounded-lg">• Propuesta de valor para cliente nuevo</li>
+            <li class="bg-blue-50 p-3 rounded-lg">• Script de llamada de prospección</li>
+            <li class="bg-blue-50 p-3 rounded-lg">• Respuesta a objeción de precio</li>
+            <li class="bg-blue-50 p-3 rounded-lg">• Post promocional para redes</li>
+          </ul>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Plantilla Prompt WOW para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tareas Comunes para Practicar</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-indigo-50 p-3 rounded-lg">• Carta formal a cliente</li>
+            <li class="bg-indigo-50 p-3 rounded-lg">• Memo interno sobre procedimiento</li>
+            <li class="bg-indigo-50 p-3 rounded-lg">• Resumen ejecutivo de caso</li>
+            <li class="bg-indigo-50 p-3 rounded-lg">• Email a contraparte profesional</li>
+            <li class="bg-indigo-50 p-3 rounded-lg">• Estructura de informe técnico</li>
+          </ul>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Plantilla Prompt WOW para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tareas Comunes para Practicar</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-green-50 p-3 rounded-lg">• Comunicado interno de cambio</li>
+            <li class="bg-green-50 p-3 rounded-lg">• Acta de reunión estructurada</li>
+            <li class="bg-green-50 p-3 rounded-lg">• Email de feedback a equipo</li>
+            <li class="bg-green-50 p-3 rounded-lg">• Descripción de puesto</li>
+            <li class="bg-green-50 p-3 rounded-lg">• Agenda de capacitación</li>
+          </ul>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Plantilla Prompt WOW para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tareas Comunes para Practicar</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-emerald-50 p-3 rounded-lg">• Planificación de clase</li>
+            <li class="bg-emerald-50 p-3 rounded-lg">• Actividad interactiva sobre tema</li>
+            <li class="bg-emerald-50 p-3 rounded-lg">• Rúbrica de evaluación</li>
+            <li class="bg-emerald-50 p-3 rounded-lg">• Retroalimentación para alumno</li>
+            <li class="bg-emerald-50 p-3 rounded-lg">• Quiz de repaso del tema</li>
+          </ul>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Plantilla Prompt WOW para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "glosario-m3v1": {
     meta: {
