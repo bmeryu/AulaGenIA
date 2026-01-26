@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     select.value = localStorage.getItem('userSegment') || 'Negocios & Ventas';
     select.addEventListener('change', (e) => {
       localStorage.setItem('userSegment', e.target.value);
+      localStorage.setItem('devSegmentOverride', 'true'); // Force ignore Firestore
       location.reload();
     });
   }
@@ -5442,9 +5443,16 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
               const userDoc = await t.collection("userProgress").doc(l.uid).get();
               if (userDoc.exists && userDoc.data().userSegment) {
-                currentUserSegment = userDoc.data().userSegment;
-                localStorage.setItem('userSegment', currentUserSegment);
-                console.log("Segment loaded from Firestore:", currentUserSegment);
+                // Check for DEV override
+                const isDevOverride = localStorage.getItem('devSegmentOverride') === 'true';
+                if (isDevOverride) {
+                  console.log("DEV MODE: Ignoring Firestore segment, keeping local:", localStorage.getItem('userSegment'));
+                  currentUserSegment = localStorage.getItem('userSegment');
+                } else {
+                  currentUserSegment = userDoc.data().userSegment;
+                  localStorage.setItem('userSegment', currentUserSegment);
+                  console.log("Segment loaded from Firestore:", currentUserSegment);
+                }
               } else if (!localStorage.getItem('userSegment')) {
                 // No segment saved, show selection modal after a short delay
                 setTimeout(() => {
