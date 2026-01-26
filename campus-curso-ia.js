@@ -51,11 +51,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Debug logging
     console.log('getRenderedResource called with:', { resourceId, userProfile, normalizedProfile });
-    console.log('Available segments:', Object.keys(resource.segments || {}));
+    console.log('Resource segments available:', Object.keys(resource.segments || {}));
 
-    const segmentHtml = resource.segments && resource.segments[normalizedProfile]
-      ? resource.segments[normalizedProfile]
-      : '';
+    let segmentHtml = '';
+    if (resource.segments && resource.segments[normalizedProfile]) {
+      segmentHtml = resource.segments[normalizedProfile];
+      console.log('MATCH FOUND for:', normalizedProfile);
+    } else {
+      console.warn('NO MATCH for:', normalizedProfile, '- Using fallback empty or checking mismatch');
+      // Visual Debug for User
+      if (document.getElementById('debug-toast')) document.getElementById('debug-toast').remove();
+      const toast = document.createElement('div');
+      toast.id = 'debug-toast';
+      toast.style = 'position:fixed;top:10px;right:10px;background:red;color:white;padding:10px;z-index:99999;font-size:12px;border-radius:4px;max-width:300px;';
+      toast.innerHTML = `⚠️ Segment Mismatch!<br>Profile: "${normalizedProfile}"<br>Resource wants keys: <br>${Object.keys(resource.segments || {}).join('<br>')}`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 10000);
+    }
 
     console.log('Segment found:', segmentHtml ? 'YES' : 'NO');
     console.log('base_html exists:', !!resource.base_html, 'length:', (resource.base_html || '').length);
