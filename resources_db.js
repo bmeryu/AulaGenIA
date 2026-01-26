@@ -4982,75 +4982,177 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">¿Qué es Ideogram.ai?</h2>
-          <p class="text-pink-700">Ideogram es una Inteligencia Artificial especializada en generar imágenes de alta calidad. A diferencia de otras herramientas, su "superpoder" es la <strong>Tipografía</strong>: es capaz de escribir texto dentro de las imágenes sin errores. Es el compañero perfecto para crear logos, portadas de libros o posts de redes sociales que necesiten un mensaje claro.</p>
+          <p class="text-pink-700">Ideogram es una Inteligencia Artificial especializada en generar imágenes de alta calidad. A diferencia de otras herramientas, su "superpoder" es la <strong>Tipografía</strong>: es capaz de escribir texto dentro de las imágenes sin errores.</p>
         </section>
         <section>
           <h3 class="text-lg font-bold text-slate-800 mb-4">¿Cómo empiezo? (Paso a Paso)</h3>
-          <p class="text-slate-600 mb-3">Ideogram funciona principalmente a través de su página web y es extremadamente sencillo de configurar.</p>
           <div class="space-y-3">
             <div class="bg-white rounded-xl p-4 border border-slate-200">
-              <h4 class="font-bold text-pink-800 mb-2">1. Registro en la plataforma</h4>
+              <h4 class="font-bold text-pink-800 mb-2">1. Registro</h4>
               <ul class="text-sm text-slate-600 space-y-1">
-                <li>• <strong>La dirección:</strong> Entra en tu navegador a <a href="https://ideogram.ai" target="_blank" class="text-pink-600 hover:underline">ideogram.ai</a>.</li>
-                <li>• <strong>Inicio de sesión:</strong> Haz clic en el botón "Login" o "Sign Up".</li>
-                <li>• <strong>El camino rápido:</strong> Utiliza tu cuenta de Google o Apple. Esto sincronizará tu perfil de forma segura y no tendrás que recordar una contraseña adicional.</li>
-                <li>• <strong>Perfil de usuario:</strong> Elige un nombre de usuario único. Recuerda que, en la versión gratuita, las imágenes que generes son públicas y otros miembros de la comunidad podrán verlas para inspirarse.</li>
+                <li>• <strong>Dirección:</strong> <a href="https://ideogram.ai" target="_blank" class="text-pink-600 hover:underline">ideogram.ai</a></li>
+                <li>• <strong>Camino rápido:</strong> Usa tu cuenta de Google o Apple.</li>
+                <li>• <strong>Nota:</strong> En versión gratuita, las imágenes son públicas.</li>
               </ul>
             </div>
-            <div class="bg-white rounded-xl p-4 border border-slate-200">
-              <h4 class="font-bold text-pink-800 mb-2">2. Uso en dispositivos móviles</h4>
-              <p class="text-sm text-slate-600">Aunque no requiere una instalación pesada, puedes usarlo perfectamente desde el navegador de tu celular (Safari o Chrome). La interfaz es fluida y te permite descargar las imágenes directamente a tu galería.</p>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Límites Versión Gratuita</h4>
+              <p class="text-sm text-amber-700">10-20 generaciones diarias. Cola de espera en horas pico.</p>
             </div>
           </div>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones Estrella para el Alumno AulaGenIA</h3>
-          <p class="text-slate-600 mb-3">Como vimos en el caso de María (Diseñadora), Ideogram te permite saltar la barrera técnica:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones Clave para Negocios</h3>
           <div class="grid gap-3 md:grid-cols-2">
-            <div class="bg-pink-50 p-4 rounded-xl border border-pink-200">
-              <h4 class="font-bold text-pink-800 mb-1">✨ Magic Prompt</h4>
-              <p class="text-sm text-pink-700">Si tu idea es corta, la IA la expande automáticamente para crear un resultado artístico y detallado.</p>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-1">📝 Texto en Imágenes</h4>
+              <p class="text-sm text-blue-700">Pon entre comillas: "PROMOCIÓN 30%" y aparecerá legible. Ideal para banners comerciales.</p>
             </div>
-            <div class="bg-pink-50 p-4 rounded-xl border border-pink-200">
-              <h4 class="font-bold text-pink-800 mb-1">📝 Control de Texto</h4>
-              <p class="text-sm text-pink-700">Solo debes poner entre comillas el texto que quieres que aparezca (ej: "Zapatos Sol").</p>
-            </div>
-            <div class="bg-pink-50 p-4 rounded-xl border border-pink-200">
-              <h4 class="font-bold text-pink-800 mb-1">🔄 Remix</h4>
-              <p class="text-sm text-pink-700">¿Viste una imagen que te gustó? Puedes darle al botón "Remix" para usarla como base y cambiarle solo el texto o el color.</p>
-            </div>
-            <div class="bg-pink-50 p-4 rounded-xl border border-pink-200">
-              <h4 class="font-bold text-pink-800 mb-1">🖼️ Editor de Relación de Aspecto</h4>
-              <p class="text-sm text-pink-700">Elige si quieres una imagen cuadrada (Instagram), vertical (Stories) o alargada (Web) antes de generar.</p>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-1">🖼️ Formatos Comerciales</h4>
+              <p class="text-sm text-blue-700">Cuadrado para Instagram, 16:9 para LinkedIn, vertical para Stories.</p>
             </div>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">¿Cuáles son los límites de la versión gratuita?</h3>
-          <p class="text-slate-600 mb-3">Ideogram ofrece una potencia increíble sin costo, bajo ciertas condiciones:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Trabajo Comercial</h3>
           <ul class="text-sm space-y-2">
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>1. Créditos diarios:</strong> Recibes aproximadamente 10 a 20 generaciones gratuitas al día (estos créditos se reinician cada 24 horas).</li>
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>2. Cola de espera:</strong> En momentos de mucha demanda, tus imágenes pueden tardar un minuto extra en generarse frente a los usuarios de pago.</li>
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>3. Privacidad:</strong> Tus creaciones aparecerán en el muro global de Ideogram.</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Banner promocional:</strong> "Professional banner with text 'SALE 30% OFF' blue corporate style"</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Post LinkedIn:</strong> "Business image with text 'SUCCESS STORIES 2025' professional minimalist"</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Propuesta comercial:</strong> "Corporate icon growth chart gold tones minimalist style"</li>
           </ul>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos Pro de AulaGenIA</h3>
-          <p class="text-slate-600 mb-3">Para que no gastes tus créditos diarios en vano:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Ventas</h3>
           <ul class="text-sm space-y-2">
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Usa comillas:</strong> Siempre que quieras texto, ponlo entre comillas: "Hola Mundo".</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Explora el muro:</strong> Antes de crear desde cero, mira lo que otros han hecho y copia los estilos que te gusten.</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Combínalo:</strong> Genera tu imagen en Ideogram y luego llévala a Canva para terminar tu diseño profesional.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Siempre en inglés:</strong> Los prompts en inglés dan mejores resultados.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Combina con Canva:</strong> Genera en Ideogram, añade tu logo en Canva.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Guarda prompts exitosos:</strong> Reutilízalos para campañas similares.</li>
           </ul>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La IA no reemplaza al diseñador, reemplaza las horas de frustración frente a una hoja en blanco."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"Ideogram crea el visual de impacto; TÚ cierras la venta."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Documento diseñado para el programa AulaGenIA. Información actualizada a diciembre de 2025.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Ideogram para Negocios - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones Clave para Profesionales</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">📝 Texto Legible</h4>
+              <p class="text-sm text-indigo-700">Ideal para portadas de informes y presentaciones con texto claro.</p>
+            </div>
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">🎨 Estilo Sobrio</h4>
+              <p class="text-sm text-indigo-700">Añade "professional", "minimalist", "corporate" para mantener seriedad.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Práctica</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Portada de informe:</strong> "Professional document cover with text 'CASE REPORT' elegant navy blue style"</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Post del estudio:</strong> "Professional image with text 'FREE CONSULTATION' corporate minimalist"</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Ícono presentación:</strong> "Justice scales icon minimalist corporate blue style"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Profesionales</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-400"><strong>⚠️ Sin datos sensibles:</strong> NUNCA incluyas nombres de clientes en prompts. Ideogram es público.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Mantén sobriedad:</strong> Usa "professional", "elegant", "minimalist" en tus prompts.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Consistencia visual:</strong> Define colores institucionales y reúsalos.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"Ideogram crea el visual profesional; TÚ cuidas la confidencialidad."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Ideogram para Profesionales - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones Clave para Gestión</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">📝 Reportes Visuales</h4>
+              <p class="text-sm text-green-700">Crea portadas impactantes para tus informes mensuales.</p>
+            </div>
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">🔄 Plantillas Reutilizables</h4>
+              <p class="text-sm text-green-700">Guarda prompts exitosos para estandarizar documentos.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Trabajo</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Portada reporte:</strong> "Professional report cover with text 'JANUARY 2025 REPORT' corporate blue style"</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Comunicado interno:</strong> "Corporate banner with text 'NEW POLICY' institutional colors modern"</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Onboarding:</strong> "Welcome image with text 'ONBOARDING 2025' friendly professional style"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Eficiencia</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Crea biblioteca de prompts:</strong> Documenta los que funcionan para reusar.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Define colores institucionales:</strong> Mantén coherencia visual en documentos.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Combina con Canva:</strong> Ideogram para imagen base, Canva para ajustes finales.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Ideogram estandariza tu imagen institucional; TÚ diriges la comunicación."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Ideogram para Gestión - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones Clave para Educadores</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">📝 Texto Perfecto</h4>
+              <p class="text-sm text-emerald-700">Ideal para flashcards, carteles y material con texto legible.</p>
+            </div>
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">🎨 Estilos Didácticos</h4>
+              <p class="text-sm text-emerald-700">Usa "cartoon", "colorful", "children friendly" para material infantil.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Aula</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Flashcard vocabulario:</strong> "Educational card with image of tree and text 'TREE' colorful children style"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Portada unidad:</strong> "Colorful cover for fractions unit with text 'FUN MATH' cartoon style"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Diploma:</strong> "School diploma with text 'BEST STUDENT' celebration colorful style"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Reglas del aula:</strong> "Classroom poster with text 'CLASSROOM RULES' friendly illustrated"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Docentes</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Usa inglés + traduce:</strong> Genera en inglés, el texto en español ponlo entre comillas.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Adapta estilos por nivel:</strong> "cartoon" para primaria, "professional" para secundaria.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Material imprimible:</strong> Ideogram es excelente para flashcards y carteles de aula.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"Ideogram crea material visual atractivo; TÚ enciendes el aprendizaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Ideogram para Educación - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "guia-acceso-midjourney": {
     meta: {
