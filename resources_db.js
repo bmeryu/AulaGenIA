@@ -7490,10 +7490,130 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un espejo de tu propia exigencia. Si le pides con timidez, te dará timidez. Si le exiges maestría, te devolverá excelencia."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial AulaGenIA 2025. Tu guía estratégica para liderar al copiloto hacia la excelencia.</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Frases de Poder en Acción: Negocios</h3>
+          <div class="space-y-4">
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">Reproche Táctico aplicado a Ventas</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Esta propuesta comercial es demasiado genérica. Mi cliente es un CEO de industria farmacéutica. Reescríbela con el nivel de personalización que espera alguien de su calibre."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Presión de Éxito para Pitch</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Este pitch va a inversores que ven 100 proyectos al día. Tiene que enganchar en 30 segundos. De esto depende mi ronda de financiamiento."</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Desafío Crítico para Estrategia</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Antes de que presente esta estrategia, critica cada punto como si fueras mi competidor buscando destruirla. ¿Dónde están las fallas?"</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Frases de Poder para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">⚖️ Frases de Poder en Acción: Profesionales</h3>
+          <p class="text-sm text-slate-600 mb-4">Para abogados, contadores, ingenieros, arquitectos y profesionales técnicos.</p>
+          <div class="space-y-4">
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">Reproche Táctico para Documentos Técnicos</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Este informe no tiene el nivel técnico que espera un revisor de [SII/Colegio de Ingenieros/Contraloría]. Eleva la precisión y añade las referencias normativas que respalden cada afirmación."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Presión Profesional</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Este dictamen/presupuesto/cálculo va firmado con mi certificación profesional. No puede tener errores porque mi reputación de [X] años está en juego."</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Desafío de Peer Review</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Actúa como un colega revisor senior de mi área. Revisa este [DOCUMENTO] y marca con [VERIFICAR] cualquier dato, cálculo o normativa que pudiera ser cuestionada en una auditoría."</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Frases de Poder para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📊 Frases de Poder en Acción: Gestión</h3>
+          <div class="space-y-4">
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">Reproche Táctico para Reportes</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Este reporte parece una lista de obviedades. Mi gerente espera insights accionables, no descripciones. Reescríbelo con recomendaciones concretas y priorizadas."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Presión de Impacto Organizacional</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Esta propuesta de mejora de procesos afecta a 200 empleados. Necesito que cada recomendación tenga un estimado de impacto y un plan de implementación paso a paso."</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Desafío de Viabilidad</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Antes de presentar este plan, simula que eres un gerente escéptico con 20 años de experiencia. ¿Qué objeciones tendrías? Anticípalas y prepara respuestas."</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Frases de Poder para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎓 Frases de Poder en Acción: Educación</h3>
+          <div class="space-y-4">
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">Reproche Táctico para Material Didáctico</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Esta actividad parece sacada de un libro de los años 90. Mis alumnos nacieron con TikTok. Hazla dinámica, corta y con ganchos que compitan con sus celulares."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Presión de Impacto Pedagógico</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Esta clase es mi evaluación docente. El observador va a medir participación y evidencia de aprendizaje. Necesito una secuencia impecable de 45 minutos."</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Desafío de Relevancia</h4>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm italic">"Ponte en la mente de un alumno de [EDAD] años que odia estudiar. ¿Esta introducción al tema lo engancharía o lo dormiría? Critica y mejora."</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Frases de Poder para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "diccionario-verbos-poder": {
     meta: {
