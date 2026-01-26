@@ -1508,67 +1508,372 @@ const resourcesDatabase = {
     meta: {
       type: "glossary",
       title: "📖 IA en Servilleta: Glosario de Iniciación",
-      subtitle: "Módulo 1 - Video 1",
+      subtitle: "Módulo 1 - Video 1: Los cimientos que cambian tu mentalidad",
       icon: "book",
       color: "emerald",
       module: 1,
-      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf",
-      isUniversal: true
+      pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M1V1.pdf"
     },
-    content: {
-      intro: {
-        title: "Mensaje de Julia",
-        text: "\"¡Felicidades por dar el primer paso! No quiero que las palabras técnicas te frenen. He preparado este glosario con los cimientos básicos que acabamos de ver en el primer video. Léelo antes de ir al siguiente, porque aquí es donde cambia tu mentalidad de 'usuario' a 'experto'. ¡A darle!\""
-      },
-      terms: [
-        {
-          term: "Inteligencia Artificial (IA)",
-          definition: "Capacidad de una máquina para realizar tareas que normalmente asociamos con la inteligencia humana (aprender, decidir, crear).",
-          analogy: "Es como un becario infinito que ha leído todo lo que existe en internet y nunca se cansa."
-        },
-        {
-          term: "Deep Learning",
-          definition: "La tecnología que permite a las máquinas aprender solas imitando las conexiones del cerebro humano. Es el 'motor' que hace que la IA sea tan inteligente hoy.",
-          analogy: "Es como el sistema de entrenamiento de un atleta: cuantas más repeticiones (datos) hace, mejor se vuelve de forma automática."
-        },
-        {
-          term: "IA Aplicada",
-          definition: "El uso estratégico de la herramienta para obtener resultados reales, no solo para 'jugar' o hacerle preguntas curiosas.",
-          analogy: "Es la diferencia entre tener un auto de Fórmula 1 estacionado y saber conducirlo para ganar la carrera."
-        },
-        {
-          term: "Cerebro Digital",
-          definition: "La forma en que la IA procesa información: no es magia, es un sistema que aprende de millones de patrones previos.",
-          analogy: "Un bibliotecario ultra-veloz que encuentra la respuesta correcta en milésimas de segundo."
-        },
-        {
-          term: "Co-piloto Digital",
-          definition: "El rol de la IA en tu vida. Ella no conduce el auto (tu negocio), pero te ayuda a llegar más rápido y con menos esfuerzo.",
-          analogy: "Como el asistente de navegación de tu celular: tú decides el destino, ella te da la mejor ruta."
-        },
-        {
-          term: "Efecto de Amplificación",
-          definition: "La IA no crea claridad de la nada; amplifica lo que tú eres. Si eres claro, ella te da resultados brillantes. Si eres caótico, amplifica el caos.",
-          analogy: "Es un megáfono: si gritas algo inteligente, todos lo oirán; si gritas tonterías, solo serán tonterías más fuertes."
-        },
-        {
-          term: "Revolución Cultural",
-          definition: "El cambio histórico de pasar de 'tener acceso a la información' (Google) a 'saber cómo procesarla' (IA).",
-          analogy: "Es pasar de tener una biblioteca gigante a tener un asistente que resume los libros para ti."
-        }
-      ],
-      outro: {
-        title: "⚡ AulaGenIA Hack (M1-V1)",
-        quote: "\"La IA no piensa por ti, te ayuda a pensar mejor.\"",
-        text: "No esperes que la máquina adivine tus deseos. El éxito en este curso depende de tu curiosidad y creatividad. La máquina pone el motor, pero tú pones el volante."
-      }
-    },
-    base_html: null,
+    base_html: `
+      <article class="space-y-6">
+        <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
+          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
+          <p class="text-teal-700 italic">"¡Felicidades por dar el primer paso! No quiero que las palabras técnicas te frenen. He preparado este glosario con los cimientos básicos que acabamos de ver en el primer video. Léelo antes de ir al siguiente, porque aquí es donde cambia tu mentalidad de 'usuario' a 'experto'. ¡A darle!"</p>
+        </section>
+    `,
     segments: {
-      "Negocios & Ventas": "",
-      "Legal & Profesional": "",
-      "Gestión & Administración": "",
-      "Educación & Capacitación": ""
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
+            <h4 class="font-bold text-blue-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+              Glosario de Iniciación para Líderes de Negocio
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Cada concepto adaptado a tu realidad estratégica. Incluye analogías empresariales y prompts listos para usar.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. INTELIGENCIA ARTIFICIAL (IA)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Capacidad de una máquina para realizar tareas que normalmente asociamos con la inteligencia humana.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>🎯 Analogía para Negocios:</strong> Es como tener un analista de estrategia senior que trabajó en las 500 mejores empresas del mundo, disponible 24/7 por el costo de un café mensual.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como un consultor de McKinsey con 20 años de experiencia. Explícame cómo la IA puede transformar mi modelo de negocio de [INDUSTRIA] en los próximos 2 años. Dame 3 oportunidades concretas de ROI.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. DEEP LEARNING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tecnología que permite a las máquinas aprender solas imitando las conexiones del cerebro humano.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>🎯 Analogía para Negocios:</strong> Es como un vendedor que aprende de cada cierre exitoso y fallido de toda tu industria simultáneamente. Cuantos más datos de mercado procesa, mejores predicciones de demanda hace.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Explícame en términos de negocio cómo podría usar el aprendizaje automático para predecir qué clientes están en riesgo de abandonar mi servicio. Dame métricas clave a monitorear.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. IA APLICADA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El uso estratégico de la herramienta para obtener resultados reales, no solo experimentar.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>🎯 Analogía para Negocios:</strong> Es la diferencia entre un CEO que tiene un ERP instalado vs. uno que lo usa para tomar decisiones de inversión en tiempo real. El software no vale si no genera ROI.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Soy líder de negocio en [SECTOR]. Dame 5 casos de uso de IA que pueda implementar esta semana para generar impacto inmediato en productividad o ventas. Prioriza por facilidad de implementación.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. CEREBRO DIGITAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Sistema que procesa información aprendiendo de millones de patrones previos.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>🎯 Analogía para Negocios:</strong> Imagina un equipo de Business Intelligence que procesó todos los reportes de tu industria de los últimos 20 años y puede cruzar esa información en segundos para tu próxima decisión de inversión.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. CO-PILOTO DIGITAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El rol de la IA: no conduce tu empresa, pero te ayuda a llegar más rápido.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>🎯 Analogía para Negocios:</strong> Es como tener un CFO virtual que prepara todos los escenarios financieros antes de tu reunión de directorio. Él no toma la decisión de inversión, pero te muestra las opciones optimizadas.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como mi copiloto estratégico. Mi empresa factura [MONTO] al año en [INDUSTRIA]. Dame 3 escenarios de crecimiento para el próximo trimestre con sus riesgos y oportunidades.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. EFECTO DE AMPLIFICACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La IA amplifica lo que tú eres. Si eres claro, da resultados brillantes. Si eres caótico, amplifica el caos.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>🎯 Analogía para Negocios:</strong> Es un megáfono en la sala del directorio: si tu visión estratégica es clara, la IA la proyectará con fuerza. Si tu estrategia es confusa, solo amplificará la confusión a toda la organización.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. REVOLUCIÓN CULTURAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El cambio de "tener acceso a información" (Google) a "saber procesarla" (IA).</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>🎯 Analogía para Negocios:</strong> Es el salto de tener una biblioteca de estudios de mercado a tener un analista senior que los resume, cruza y te da recomendaciones ejecutivas en 30 segundos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"La IA no piensa por ti, te ayuda a escalar tu pensamiento estratégico. El que domina la instrucción, domina la ejecución."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-5 border border-purple-200">
+            <h4 class="font-bold text-purple-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-purple-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+              Glosario de Iniciación para Profesionales del Derecho
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Conceptos fundamentales adaptados al ejercicio jurídico. Incluye analogías legales y prompts para tu práctica diaria.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. INTELIGENCIA ARTIFICIAL (IA)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Capacidad de una máquina para realizar tareas que normalmente asociamos con la inteligencia humana.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400 mb-2">
+                  <p class="text-xs text-purple-800"><strong>⚖️ Analogía Legal:</strong> Es como tener un paralegal que ha leído toda la jurisprudencia existente de todos los países, disponible 24/7, pero que carece por completo de ética profesional o colegiatura.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como asistente legal especializado en derecho [MATERIA] chileno. Dame un resumen ejecutivo de los principios jurídicos aplicables a [SITUACIÓN]. Indica si hay jurisprudencia relevante pero ADVIERTE si no estás seguro de la vigencia.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. DEEP LEARNING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tecnología que permite a las máquinas aprender de patrones previos.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400 mb-2">
+                  <p class="text-xs text-purple-800"><strong>⚖️ Analogía Legal:</strong> Imagina un sistema que aprende de cada sentencia dictada en tu país. Cuantas más resoluciones procesa, mejor detecta patrones en las decisiones judiciales. Pero cuidado: puede confundir correlación con causalidad jurídica.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. IA APLICADA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El uso estratégico de la herramienta para obtener resultados reales.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400 mb-2">
+                  <p class="text-xs text-purple-800"><strong>⚖️ Analogía Legal:</strong> Es la diferencia entre un abogado que tiene acceso a bases de datos jurídicas y uno que las usa estratégicamente para ganar casos. El acceso no gana juicios, el criterio sí.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Soy abogado especialista en [ÁREA]. Dame 5 tareas de mi práctica diaria donde la IA puede ahorrarme horas de trabajo sin comprometer la calidad profesional ni la confidencialidad del cliente.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. CEREBRO DIGITAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Sistema que procesa información aprendiendo de patrones.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400 mb-2">
+                  <p class="text-xs text-purple-800"><strong>⚖️ Analogía Legal:</strong> Como un índice de jurisprudencia viviente que cruza casos similares en milésimas de segundo. Pero recuerda: encuentra patrones textuales, no interpreta la ratio decidendi.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. CO-PILOTO DIGITAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El rol de la IA: asiste pero no decide.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400 mb-2">
+                  <p class="text-xs text-purple-800"><strong>⚖️ Analogía Legal:</strong> Es tu paralegal más eficiente: redacta borradores de escritos, organiza cronologías de hechos, resume expedientes. Pero TÚ firmas, TÚ validas las citas legales, TÚ llevas la toga ante el tribunal.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como mi asistente legal. Prepara un borrador de [DOCUMENTO] para [SITUACIÓN]. Marca con [VERIFICAR] cualquier cita de ley o jurisprudencia. Yo haré la validación final antes de firmar.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-red-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">6. EFECTO DE AMPLIFICACIÓN ⚠️</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La IA amplifica lo que tú eres, incluidos tus errores.</p>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400 mb-2">
+                  <p class="text-xs text-red-800"><strong>⚠️ Advertencia Legal:</strong> Si pides un escrito ambiguo, obtendrás un escrito ambiguo más largo. Si pides una cita de ley sin verificar, puede inventarte un artículo con total seguridad. TU LICENCIA está en juego.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. REVOLUCIÓN CULTURAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El cambio de "tener acceso a la ley" a "saber aplicarla eficientemente".</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400 mb-2">
+                  <p class="text-xs text-purple-800"><strong>⚖️ Analogía Legal:</strong> El abogado del futuro no es quien más códigos tiene, sino quien mejor los aplica con ayuda de herramientas. Antes ganaba el que más leía; ahora gana el que mejor pregunta y valida.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack Legal</h4>
+          <p class="text-white font-medium text-lg italic">"La IA te da velocidad, pero la validación jurídica la pones tú. NUNCA confíes ciegamente en una cita legal de la IA."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+            <h4 class="font-bold text-emerald-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+              Glosario de Iniciación para Profesionales de Gestión
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Conceptos adaptados a la eficiencia operativa. Incluye analogías administrativas y prompts para tu día a día.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. INTELIGENCIA ARTIFICIAL (IA)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Capacidad de una máquina para realizar tareas que normalmente asociamos con la inteligencia humana.</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400 mb-2">
+                  <p class="text-xs text-emerald-800"><strong>📊 Analogía para Gestión:</strong> Es como tener un asistente administrativo que nunca descansa, nunca olvida un deadline, y puede procesar 100 documentos mientras tú revisas uno. Pero no conoce la cultura de tu empresa.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como asistente ejecutivo senior. Tengo estas 15 tareas pendientes: [LISTAR]. Organízalas por prioridad usando la matriz Eisenhower (urgente/importante) y sugiere cuáles podría delegar a la IA.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. DEEP LEARNING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tecnología que permite a las máquinas aprender de patrones.</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400 mb-2">
+                  <p class="text-xs text-emerald-800"><strong>📊 Analogía para Gestión:</strong> Como un sistema de archivo inteligente que aprende cómo clasificas los documentos y empieza a hacerlo solo. Cuantos más documentos procesa, más se adapta a tu metodología.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. IA APLICADA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El uso estratégico para obtener resultados reales.</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400 mb-2">
+                  <p class="text-xs text-emerald-800"><strong>📊 Analogía para Gestión:</strong> Es la diferencia entre tener un software de gestión instalado y realmente usarlo para automatizar reportes, agendar reuniones y organizar información. El valor está en el uso, no en la instalación.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Soy asistente administrativa. Dame 5 tareas repetitivas de mi día que puedo automatizar o acelerar con IA: emails, reportes, organización de datos, agendamiento. Prioriza por ahorro de tiempo.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. CEREBRO DIGITAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Sistema que procesa información aprendiendo de patrones.</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400 mb-2">
+                  <p class="text-xs text-emerald-800"><strong>📊 Analogía para Gestión:</strong> Como una bandeja de entrada inteligente que aprende qué correos son urgentes, cuáles pueden esperar, y cuáles son spam. Procesa en segundos lo que a ti te tomaría horas revisar.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. CO-PILOTO DIGITAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El rol de la IA: asiste pero tú supervisas.</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400 mb-2">
+                  <p class="text-xs text-emerald-800"><strong>📊 Analogía para Gestión:</strong> Es tu practicante más eficiente: redacta el primer borrador de correos, organiza datos en tablas, prepara actas de reuniones. Pero TÚ revisas antes de enviar y añades el toque humano que solo tú conoces.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como mi asistente. Aquí están las notas desordenadas de la reunión de hoy: [PEGAR]. Extrae: (1) Acuerdos tomados, (2) Responsables, (3) Fechas límite, (4) Temas pendientes. Formato: tabla limpia.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. EFECTO DE AMPLIFICACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La IA amplifica lo que tú eres, orden o caos.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>📊 Advertencia para Gestión:</strong> Si le das datos desordenados, obtendrás un desorden más grande y más rápido. Pero si le das información clara, te devuelve reportes impecables en segundos.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. REVOLUCIÓN CULTURAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El cambio de "tener herramientas" a "usarlas estratégicamente".</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400 mb-2">
+                  <p class="text-xs text-emerald-800"><strong>📊 Analogía para Gestión:</strong> El asistente del futuro no es quien más rápido tipea, sino quien mejor sabe instruir a la IA para que tipee por él. Tu valor pasa de "ejecutor" a "supervisor estratégico".</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"La IA reemplaza tareas, no personas. El profesional que domina la IA se vuelve insustituible."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200">
+            <h4 class="font-bold text-amber-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+              Glosario de Iniciación para Educadores
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Conceptos adaptados al aula y la capacitación. Incluye analogías pedagógicas y prompts para tu práctica docente.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. INTELIGENCIA ARTIFICIAL (IA)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Capacidad de una máquina para realizar tareas que normalmente asociamos con la inteligencia humana.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>🎓 Analogía Educativa:</strong> Es como tener un bibliotecario incansable que ha leído todos los libros del mundo, pero que nunca ha dado una clase ni conoce a tus estudiantes. Sabe mucho en general, pero tú aportas el contexto pedagógico.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como pedagogo experto en [ASIGNATURA]. Mis estudiantes de [NIVEL/EDAD] tienen dificultades con [TEMA]. Dame 3 estrategias didácticas diferentes para abordar este contenido, explicando por qué funcionaría cada una.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. DEEP LEARNING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tecnología que permite a las máquinas aprender de patrones.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>🎓 Analogía Educativa:</strong> Imagina un estudiante que puede leer 10.000 ensayos sobre un tema y detectar patrones de argumentación. Aprende "cómo se escribe" pero no comprende el significado profundo. Reconoce formas, no conceptos.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. IA APLICADA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El uso estratégico para obtener resultados reales.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>🎓 Analogía Educativa:</strong> Es la diferencia entre un profesor que tiene acceso a recursos digitales y uno que los usa estratégicamente para personalizar el aprendizaje. El recurso no enseña solo; la pedagogía sí.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Soy docente de [ASIGNATURA] con [N] estudiantes. Dame 5 formas prácticas de usar IA en mi planificación semanal: crear actividades, diseñar evaluaciones, generar retroalimentación. Prioriza por impacto pedagógico.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. CEREBRO DIGITAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Sistema que procesa información aprendiendo de patrones.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>🎓 Analogía Educativa:</strong> Como un enciclopedia viviente que puede cruzar información de todas las materias en segundos. Pero cuidado: sabe los hechos, no entiende el proceso de aprender ni las emociones del estudiante.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. CO-PILOTO DIGITAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El rol de la IA: asiste la planificación, el docente conecta.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>🎓 Analogía Educativa:</strong> Es tu ayudante de cátedra más eficiente: prepara materiales, genera variaciones de ejercicios, sugiere dinámicas. Pero TÚ conoces a Juanito que es tímido, a María que aprende visual, y a Pedro que necesita más apoyo. La conexión humana es tuya.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como mi asistente pedagógico. Tengo 45 minutos de clase sobre [TEMA] para estudiantes de [NIVEL]. Diseña: 5 min intro motivadora, 25 min actividad central participativa, 10 min cierre reflexivo, 5 min evaluación rápida.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. EFECTO DE AMPLIFICACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La IA amplifica lo que tú eres como docente.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>🎓 Analogía Educativa:</strong> Si tu objetivo pedagógico es claro, la IA te dará actividades brillantes. Si tu instrucción es vaga ("hazme algo para la clase"), obtendrás contenido genérico que no conecta con tus estudiantes.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">7. REVOLUCIÓN CULTURAL</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El cambio de "memorizar contenido" a "saber procesarlo".</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>🎓 Analogía Educativa:</strong> Tus estudiantes ya no necesitan memorizar fechas que Google tiene; necesitan saber hacer las preguntas correctas y verificar las respuestas. Tu rol evoluciona de "fuente de datos" a "guía del pensamiento crítico".</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La IA prepara materiales en minutos, pero solo tú puedes encender la chispa del aprendizaje en tus estudiantes."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 1. AulaGenIA 2025.</div>
+      </article>
+      `
     }
   },
   "glosario-m1v2": {
