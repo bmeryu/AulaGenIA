@@ -3912,7 +3912,14 @@ document.addEventListener("DOMContentLoaded", () => {
       filtered = casesData.filter(c => c.category === categoryId);
     }
 
-    if (filtered.length === 0) return '<div class="p-8 text-center text-slate-500">Cargando casos... (o no hay casos para este perfil)</div>';
+    if (filtered.length === 0) {
+      return `<div class="p-8 text-center text-slate-500">
+        <p>No se encontraron casos para: <strong>${segment}</strong></p>
+        <p class="text-xs mt-2">Total de casos cargados: ${casesData.length}</p>
+        <p class="text-xs">Intocados: ${casesData.filter(c => !c.prioridadSegmento).length}</p>
+        <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-indigo-100 rounded">Recargar</button>
+      </div>`;
+    }
 
     // Image Source: Use config directly (Single Source of Truth)
     const headerImage = isSegmentView && segCfg?.image ? segCfg.image : null;
