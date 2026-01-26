@@ -3861,6 +3861,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // El ordenamiento ya se hace arriba en el bloque isSegmentView
 
     const renderCaseCard = (c) => {
+      // DEBUG: Trace star prompt values
+      if (c.isStarPrompt) console.log(`[StarDebug] Case "${c.title}" isStarPrompt raw:`, c.isStarPrompt);
+
       // Robust detection for Star Prompt (handles boolean true, string "true", or 1)
       const isStarPrompt = c.isStarPrompt === true || c.isStarPrompt === 'true' || c.isStarPrompt === 1;
       const categoryColor = segCfg?.categoryColor || 'slate';
