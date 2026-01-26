@@ -6162,14 +6162,73 @@ const resourcesDatabase = {
           <h4 class="font-bold text-amber-800 mb-2">RECORDATORIO AULAGENIA:</h4>
           <p class="text-amber-700 italic">"Si tu instrucción es vaga, el resultado será mediocre. Si usas la Receta WOW, conviertes a la IA en un socio estratégico."</p>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La claridad en tu prompt es la velocidad de tu resultado."</p>
-        </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Documento diseñado para alumnos de AulaGenIA. ¡Guárdalo en tu escritorio!</div>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo WOW para Negocios</h3>
+          <div class="bg-slate-800 rounded-xl p-4">
+            <p class="text-purple-300 mb-2"><strong>1. ROL:</strong> "Actúa como un consultor de ventas experto en cierre de negocios B2B..."</p>
+            <p class="text-blue-300 mb-2"><strong>2. DETALLE:</strong> "Tengo una propuesta para un cliente corporativo. Presupuesto: $50K. Competencia: 2 ofertas similares. El cliente prioriza innovación..."</p>
+            <p class="text-emerald-300"><strong>3. PROPÓSITO:</strong> "...para crear un email de seguimiento que genere urgencia y diferencie mi propuesta."</p>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Ventas</h4>
+          <p class="text-white font-medium text-lg italic">"El ROL define la estrategia; el DETALLE personaliza; el PROPÓSITO cierra la venta."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Receta WOW para Negocios - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo WOW para Profesionales</h3>
+          <div class="bg-slate-800 rounded-xl p-4">
+            <p class="text-purple-300 mb-2"><strong>1. ROL:</strong> "Actúa como un abogado senior especializado en derecho comercial con 15 años de experiencia..."</p>
+            <p class="text-blue-300 mb-2"><strong>2. DETALLE:</strong> "Tengo un cliente que firmó contrato de distribución exclusiva. La contraparte incumplió plazos de entrega 3 veces en 6 meses..."</p>
+            <p class="text-emerald-300"><strong>3. PROPÓSITO:</strong> "...para redactar una carta formal de apercibimiento que deje constancia del incumplimiento sin romper la relación comercial."</p>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"El ROL define la expertise; el DETALLE contextualiza el caso; el PROPÓSITO garantiza precisión jurídica."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Receta WOW para Profesionales - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo WOW para Gestión</h3>
+          <div class="bg-slate-800 rounded-xl p-4">
+            <p class="text-purple-300 mb-2"><strong>1. ROL:</strong> "Actúa como un especialista en comunicación organizacional con experiencia en gestión del cambio..."</p>
+            <p class="text-blue-300 mb-2"><strong>2. DETALLE:</strong> "Implementamos nuevo sistema de gestión. 50 empleados afectados. Resistencia inicial detectada. Lanzamiento en 2 semanas..."</p>
+            <p class="text-emerald-300"><strong>3. PROPÓSITO:</strong> "...para crear un comunicado interno que reduzca la ansiedad y genere expectativa positiva sobre el cambio."</p>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"El ROL aporta autoridad; el DETALLE muestra sensibilidad; el PROPÓSITO alinea al equipo."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Receta WOW para Gestión - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplo WOW para Educadores</h3>
+          <div class="bg-slate-800 rounded-xl p-4">
+            <p class="text-purple-300 mb-2"><strong>1. ROL:</strong> "Actúa como un pedagogo experto en didáctica activa para adolescentes..."</p>
+            <p class="text-blue-300 mb-2"><strong>2. DETALLE:</strong> "Enseño historia a 3° de secundaria. 30 estudiantes, bajo interés en la materia. Próximo tema: Revolución Industrial..."</p>
+            <p class="text-emerald-300"><strong>3. PROPÓSITO:</strong> "...para diseñar una actividad gamificada de 45 minutos que conecte el tema con su vida diaria."</p>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"El ROL define la pedagogía; el DETALLE conoce al estudiante; el PROPÓSITO transforma la clase."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Receta WOW para Educación - Módulo 3. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "mi-primer-prompt-wow": {
     meta: {
