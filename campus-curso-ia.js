@@ -3866,12 +3866,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const foundKey = keys.find(k => {
           const nK = normalize(k);
-          // Match main keywords
-          if (target.includes("negocios") && nK.includes("negocios")) return true;
-          if (target.includes("legal") && nK.includes("legal")) return true;
-          if (target.includes("educacion") && nK.includes("educacion")) return true;
-          if (target.includes("gestion") && nK.includes("gestion")) return true;
-          return false;
+          // Simple inclusion check
+          return nK.includes(target) || target.includes(nK);
         });
 
         if (foundKey) return caseItem.prioridadSegmento[foundKey];
