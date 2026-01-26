@@ -3858,8 +3858,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isSegmentView) {
       // Vista por segmento: mostrar todos los casos con prioridad para este segmento (o legacy)
       filtered = casesData.filter(c => {
-        // Incluir si es General (sin prioridadSegmento) O si tiene prioridad para este segmento (o su legacy)
-        return !c.prioridadSegmento || getSegmentPriority(c, segment) !== undefined;
+        // STRICT MODE: Solo casos con prioridad explicita
+        const priority = getSegmentPriority(c, segment);
+        return priority !== undefined && priority !== null;
       });
 
       // Ordenar por prioridad
