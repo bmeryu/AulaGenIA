@@ -3858,17 +3858,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const renderCaseCard = (c) => {
       const isStarPrompt = c.isStarPrompt === true;
+      const categoryColor = segCfg?.categoryColor || 'slate';
+
+      // Estilos diferenciados para Star Prompts
+      const cardBorderClass = isStarPrompt
+        ? 'border-2 border-amber-400 shadow-md transform hover:-translate-y-1'
+        : 'border border-slate-200 hover:border-teal-300 hover:shadow-sm';
+
+      const cardBgClass = isStarPrompt
+        ? 'bg-gradient-to-br from-amber-50 to-white'
+        : 'bg-white';
 
       return `
-        <div onclick="openCaseDetail(${c.id})" class="bg-white p-5 rounded-2xl border ${isStarPrompt ? 'border-amber-200 bg-gradient-to-br from-amber-50/50 to-white' : 'border-slate-200'} hover:border-teal-400 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer group relative">
-           ${isStarPrompt ? '<span class="absolute -top-2 -right-2 text-lg drop-shadow-sm">⭐</span>' : ''}
-           <h3 class="font-bold text-slate-800 text-sm leading-snug mb-2 group-hover:text-teal-700 transition-colors">${c.title}</h3>
-           <p class="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">"${c.problem || c.description}"</p>
-           <div class="mt-3 flex items-center justify-end">
-              <span class="text-[11px] text-teal-600 font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                Ver caso <i data-lucide="arrow-right" class="w-3 h-3"></i>
-              </span>
-           </div>
+        <div class="case-card group rounded-xl p-4 transition-all duration-300 cursor-pointer ${cardBorderClass} ${cardBgClass}" onclick="window.location.hash='#caso/${c.id}'">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-2">
+               ${isStarPrompt ? '<span class="inline-flex items-center justify-center p-1 bg-amber-100 text-amber-600 rounded-full"><i data-lucide="star" class="w-4 h-4 fill-current"></i></span>' : `<span class="p-1.5 rounded-lg bg-${categoryColor}-100 text-${categoryColor}-600"><i data-lucide="${segCfg?.icon || 'file-text'}" class="w-4 h-4"></i></span>`}
+               <span class="text-xs font-bold uppercase tracking-wider ${isStarPrompt ? 'text-amber-700' : 'text-slate-500'}">${c.industry || 'General'}</span>
+            </div>
+            ${isStarPrompt ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold border border-amber-200">Recomendado</span>' : ''}
+          </div>
+          
+          <h4 class="font-bold text-slate-800 mb-2 group-hover:text-teal-600 transition-colors line-clamp-2">${c.title}</h4>
+          <p class="text-sm text-slate-600 line-clamp-3 mb-4">${c.problem || c.description || 'Sin descripción disponible.'}</p>
+          
+          <div class="flex items-center justify-between mt-auto">
+             <span class="text-xs font-medium text-slate-400 flex items-center gap-1">
+               <i data-lucide="clock" class="w-3 h-3"></i> 2 min
+             </span>
+             <span class="text-teal-600 text-xs font-semibold group-hover:underline">Ver Caso →</span>
+          </div>
         </div>
       `;
     };
