@@ -4346,50 +4346,185 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">Más allá de la tecnología</h2>
           <p class="text-blue-700">En el segundo video de AulaGenIA, Julia nos muestra que la IA no es una herramienta estática, sino un sistema que interactúa con nosotros. Esto genera dudas que no son técnicas, sino de estrategia y confianza. Vamos a resolverlas.</p>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
           <div class="space-y-4">
             <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
-              <h3 class="text-lg font-bold text-blue-800 mb-2">1. Privacidad y Memoria</h3>
-              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si Siri y Alexa "aprenden" de cada charla, ¿guardan mi vida para siempre?</p>
+              <h3 class="text-lg font-bold text-blue-800 mb-2">1. Privacidad y Datos Comerciales</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si uso IA para analizar prospectos, ¿estoy compartiendo datos sensibles de mi empresa?</p>
               <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-400">
-                <p class="text-indigo-800 mb-2"><strong>💡 La analogía:</strong> Imagina que un profesor corrige miles de exámenes. El profesor aprende cuáles son los errores más comunes de todos sus alumnos para explicar mejor al año siguiente, pero no necesita recordar exactamente qué escribió una persona específica para mejorar su método general.</p>
+                <p class="text-indigo-800"><strong>💡 La analogía comercial:</strong> Imagina que contratas a un consultor externo para analizar tu cartera de clientes. El consultor aprende patrones generales del mercado, pero no necesita recordar los números exactos de cada cuenta para mejorar su metodología.</p>
               </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>La realidad:</strong> La IA utiliza las interacciones para volverse más inteligente de forma general (aprendizaje anónimo). <strong>Regla de oro:</strong> nunca compartas datos bancarios o claves privadas en el chat.</p>
+              <p class="text-sm text-slate-600 mt-3"><strong>Regla de oro comercial:</strong> Nunca compartas contraseñas, proyecciones confidenciales o datos financieros exactos de clientes. Usa descripciones genéricas: "empresa de tecnología mediana" en lugar de nombres específicos.</p>
             </div>
             <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
-              <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es un buscador</h3>
-              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si le pregunto lo mismo dos veces, ¿por qué me da respuestas distintas?</p>
+              <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es un CRM</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si le pregunto lo mismo sobre un prospecto dos veces, ¿por qué me da respuestas distintas?</p>
               <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-400">
-                <p class="text-amber-800"><strong>💡 La analogía:</strong> Imagina que le pides a un Chef que te explique cómo hacer una pasta. Si le preguntas hoy, te dará unos tips; si le preguntas mañana, quizás use otras palabras o te dé un ejemplo diferente. El Chef no está leyendo un archivo guardado, está <strong>creando</strong> la respuesta en el momento basada en su conocimiento.</p>
+                <p class="text-amber-800"><strong>💡 La analogía:</strong> Es como pedirle a tu mejor vendedor que te dé ideas para abordar a un cliente difícil. Si le preguntas hoy, te dará un enfoque; mañana, quizás proponga otro ángulo igual de válido. No está leyendo un script, está <strong>razonando</strong> en el momento.</p>
               </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>La razón:</strong> La IA es "generativa". No copia y pega información de internet, sino que calcula sobre la marcha qué palabras combinan mejor para tu pedido actual. <strong>Conclusión:</strong> Esto es una ventaja. Si una respuesta no te gusta, puedes pedirle que lo intente de nuevo y obtendrás una perspectiva fresca.</p>
+              <p class="text-sm text-slate-600 mt-3"><strong>Ventaja comercial:</strong> Si una propuesta no te convence, pídele que lo intente con otro enfoque. Obtendrás perspectivas frescas para cerrar el trato.</p>
             </div>
             <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
-              <h3 class="text-lg font-bold text-blue-800 mb-2">3. La Fatiga de la IA</h3>
-              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> ¿Cuánta información recuerda antes de empezar a perder el hilo?</p>
+              <h3 class="text-lg font-bold text-blue-800 mb-2">3. La Fatiga en Negociaciones Largas</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> ¿Cuánta información de mi pipeline puede retener antes de perder el hilo?</p>
               <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-400">
-                <p class="text-purple-800"><strong>💡 La analogía:</strong> Piensa en la IA como un malabarista. Puede mantener varias pelotas (datos) en el aire al mismo tiempo, pero si le lanzas demasiadas, empezará a dejar caer las primeras que recibió para poder atrapar las nuevas. Esto es lo que Julia llama "Ventana de Contexto".</p>
+                <p class="text-purple-800"><strong>💡 La analogía:</strong> Piensa en la IA como un asesor en una reunión maratónica. Después de 3 horas, empezará a olvidar los primeros puntos discutidos. Esto es la "Ventana de Contexto".</p>
               </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>Estrategia AulaGenIA:</strong> Si sientes que tu copiloto está confundido después de una charla larga, no sigas forzando el chat. <strong>El truco maestro:</strong> Pídele a la IA un resumen detallado de la conversación que incluya todos los requisitos y reglas que le has pedido hasta ahora. Luego, abre un chat nuevo y pega ese resumen. Así, el malabarista empieza de cero con todas las pelotas en su lugar.</p>
+              <p class="text-sm text-slate-600 mt-3"><strong>Truco para ventas:</strong> Si trabajas en una propuesta compleja, pídele un resumen ejecutivo periódico. Abre chat nuevo y pega el resumen para "reiniciar" sin perder contexto.</p>
             </div>
             <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
-              <h3 class="text-lg font-bold text-blue-800 mb-2">4. ¿Es realmente creativa?</h3>
-              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si solo repite patrones, ¿puede crear algo nuevo?</p>
+              <h3 class="text-lg font-bold text-blue-800 mb-2">4. ¿Puede crear propuestas originales?</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si solo repite patrones, ¿puede crear una propuesta realmente diferenciadora?</p>
               <div class="bg-rose-50 rounded-lg p-4 border-l-4 border-rose-400">
-                <p class="text-rose-800"><strong>💡 La analogía:</strong> Imagina a un artista que ha visto todas las puestas de sol de la historia. Cuando pinta una nueva, no está copiando una foto específica, sino que mezcla los colores y las formas que aprendió para crear una imagen que nunca existió.</p>
+                <p class="text-rose-800"><strong>💡 La analogía:</strong> Imagina a un estratega que ha visto miles de negociaciones exitosas. Cuando crea tu propuesta, no copia una anterior, sino que mezcla elementos que funcionaron para crear algo único para tu cliente.</p>
               </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>La respuesta:</strong> La IA no "crea" desde la nada, pero combina la información de formas tan originales que el resultado es totalmente nuevo. <strong>El toque humano:</strong> La chispa de la idea original siempre es tuya. La IA pone los pinceles, pero tú pones la visión y el propósito.</p>
+              <p class="text-sm text-slate-600 mt-3"><strong>Tu rol:</strong> La IA combina patrones de éxito; TÚ aportas el conocimiento de tu cliente y el toque personal que cierra el trato.</p>
             </div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Conclusión AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"Tú diriges, la IA acompaña."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"Tú diriges la estrategia comercial, la IA acelera la ejecución."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Documento diseñado para alumnos de AulaGenIA.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">El Dilema del Copiloto - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">1. Privacidad y Secreto Profesional</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si uso IA para redactar escritos, ¿estoy violando el secreto profesional?</p>
+              <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-400">
+                <p class="text-indigo-800"><strong>💡 La analogía jurídica:</strong> Imagina que tienes un paralegal que aprende de miles de casos para mejorar su técnica, pero no necesita recordar los detalles específicos de tu cliente para ser más eficiente en general.</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Regla ética crítica:</strong> NUNCA compartas nombres reales de clientes, números de expediente ni datos identificables. Usa "demandante", "acusado", datos anonimizados. Tu responsabilidad profesional no se delega.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es jurisprudencia</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si le pregunto por un precedente dos veces, ¿por qué me da citas diferentes?</p>
+              <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-400">
+                <p class="text-amber-800"><strong>💡 La analogía:</strong> Es como pedirle a un colega experimentado que te sugiera argumentos para un caso. Cada vez puede recordar fallos diferentes que conoce. No está consultando una base de datos, está <strong>razonando</strong> sobre lo que sabe.</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Advertencia crítica:</strong> La IA puede inventar citas legales. SIEMPRE marca [VERIFICAR] y valida en fuentes oficiales antes de usar cualquier referencia.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">3. La Fatiga en Expedientes Extensos</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> ¿Cuántas páginas de expediente puede analizar antes de perder el hilo?</p>
+              <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-400">
+                <p class="text-purple-800"><strong>💡 La analogía:</strong> Piensa en la IA como un pasante leyendo un expediente de 500 páginas. Después de cierto punto, empezará a olvidar los primeros hechos para procesar los nuevos. Esto es la "Ventana de Contexto".</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Estrategia jurídica:</strong> Para expedientes largos, divide en secciones. Pide resumen de cada parte. Al final, consolida los resúmenes en un chat nuevo.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">4. ¿Puede crear argumentos originales?</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si solo repite patrones, ¿puede crear una estrategia legal innovadora?</p>
+              <div class="bg-rose-50 rounded-lg p-4 border-l-4 border-rose-400">
+                <p class="text-rose-800"><strong>💡 La analogía:</strong> Imagina a un abogado que ha estudiado miles de casos de éxito. Cuando arma tu estrategia, no copia una demanda anterior, sino que combina técnicas que funcionaron para crear un enfoque único.</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Tu rol irremplazable:</strong> La IA sugiere estructuras argumentales; TÚ aportas la estrategia procesal, el conocimiento del juez y la responsabilidad ética.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"Tú diriges la estrategia jurídica, la IA prepara borradores. TÚ firmas y respondes."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Dilema del Copiloto - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">1. Privacidad y Datos de la Organización</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si uso IA para procesar información interna, ¿estoy exponiendo datos de la empresa?</p>
+              <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-400">
+                <p class="text-indigo-800"><strong>💡 La analogía administrativa:</strong> Imagina que contratas a un asistente temporal que aprende mejores prácticas de organización de cientos de empresas, pero no necesita recordar los detalles específicos de tu presupuesto.</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Regla de oro:</strong> Nunca compartas contraseñas, datos financieros exactos ni información personal de empleados. Usa descripciones genéricas para obtener ayuda.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es una plantilla fija</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si le pido el mismo reporte dos veces, ¿por qué me da formatos diferentes?</p>
+              <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-400">
+                <p class="text-amber-800"><strong>💡 La analogía:</strong> Es como pedirle a tu asistente más creativo que formatee un reporte. Cada vez puede proponer una estructura diferente igual de válida. No está leyendo un archivo guardado, está <strong>creando</strong> en el momento.</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Ventaja:</strong> Si un formato no te gusta, pídele que lo intente de otra manera. Obtendrás opciones frescas para elegir la mejor.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">3. La Fatiga en Proyectos Largos</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> ¿Cuánta información de un proyecto puede retener antes de perder el hilo?</p>
+              <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-400">
+                <p class="text-purple-800"><strong>💡 La analogía:</strong> Piensa en la IA como un asistente en una reunión muy larga. Después de cierto tiempo, empezará a olvidar los primeros puntos para procesar los nuevos. Esto es la "Ventana de Contexto".</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Truco administrativo:</strong> Para proyectos complejos, pídele resúmenes periódicos. Abre chat nuevo pegando el resumen para "reiniciar" sin perder contexto.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">4. ¿Puede crear documentos originales?</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si solo repite patrones, ¿puede crear un reporte realmente útil?</p>
+              <div class="bg-rose-50 rounded-lg p-4 border-l-4 border-rose-400">
+                <p class="text-rose-800"><strong>💡 La analogía:</strong> Imagina a un consultor que ha visto miles de reportes ejecutivos exitosos. Cuando crea el tuyo, no copia uno anterior, sino que combina las mejores prácticas para tu situación específica.</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Tu rol:</strong> La IA estructura y formatea; TÚ validas los datos, aportas el contexto interno y tomas las decisiones.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Tú diriges los procesos, la IA acelera la documentación."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Dilema del Copiloto - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">1. Privacidad y Datos de Estudiantes</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si uso IA para crear materiales, ¿estoy exponiendo información de mis estudiantes?</p>
+              <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-400">
+                <p class="text-indigo-800"><strong>💡 La analogía pedagógica:</strong> Imagina a un colega que aprende técnicas de enseñanza de miles de docentes. El colega mejora su método general, pero no necesita recordar los nombres específicos de tus estudiantes.</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Regla ética docente:</strong> NUNCA compartas nombres reales de estudiantes, calificaciones específicas ni datos personales. Usa "estudiante de 4to grado con dificultades en fracciones" en lugar de identificadores.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es un libro de texto</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si le pido la misma actividad dos veces, ¿por qué me da versiones diferentes?</p>
+              <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-400">
+                <p class="text-amber-800"><strong>💡 La analogía:</strong> Es como pedirle a un colega creativo que te sugiera una actividad para enseñar fracciones. Cada vez puede proponer un enfoque diferente igual de válido. No está leyendo un manual, está <strong>diseñando</strong> en el momento.</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Ventaja pedagógica:</strong> Si una actividad no encaja con tu grupo, pídele alternativas. Obtendrás opciones frescas para distintos estilos de aprendizaje.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">3. La Fatiga en Planificaciones Extensas</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> ¿Cuánto de mi planificación anual puede retener antes de perder el hilo?</p>
+              <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-400">
+                <p class="text-purple-800"><strong>💡 La analogía:</strong> Piensa en la IA como un ayudante planificando un año escolar completo. Después de cierto punto, empezará a olvidar los objetivos del primer trimestre para procesar el tercero. Esto es la "Ventana de Contexto".</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Estrategia docente:</strong> Para planificaciones largas, trabaja por unidad o trimestre. Pide resumen al final de cada bloque y usa ese resumen para el siguiente.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
+              <h3 class="text-lg font-bold text-blue-800 mb-2">4. ¿Puede crear actividades originales?</h3>
+              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si solo repite patrones, ¿puede crear una actividad realmente innovadora?</p>
+              <div class="bg-rose-50 rounded-lg p-4 border-l-4 border-rose-400">
+                <p class="text-rose-800"><strong>💡 La analogía:</strong> Imagina a un diseñador instruccional que ha estudiado miles de actividades exitosas. Cuando crea la tuya, no copia un plan anterior, sino que combina técnicas pedagógicas probadas para tu contexto específico.</p>
+              </div>
+              <p class="text-sm text-slate-600 mt-3"><strong>Tu rol irremplazable:</strong> La IA genera estructuras didácticas; TÚ conoces a tus estudiantes, adaptas al contexto del aula y enciendes la chispa del aprendizaje.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"Tú diriges el aprendizaje, la IA prepara materiales. La conexión humana es tuya."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Dilema del Copiloto - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "caminos-expertos": {
     meta: {
@@ -4407,103 +4542,215 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">Instrucciones de Julia</h2>
           <p class="text-teal-700 italic">"No inventes la rueda. Para empezar a ganar tiempo hoy mismo, elige el flujo que más se parezca a tu trabajo y replícalo paso a paso. La IA no es para todo, es para lo que más te suma."</p>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">Los 3 Caminos Pro</h3>
-          <div class="space-y-4">
-            <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
-              <h4 class="font-bold text-purple-800 mb-3">🎨 1. El Camino de María (Diseño y Creatividad)</h4>
-              <div class="flex flex-wrap gap-2 items-center mb-3">
-                <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">1. IDEA: ChatGPT</span>
-                <span class="text-purple-400">→</span>
-                <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">2. IMAGEN: Ideogram</span>
-                <span class="text-purple-400">→</span>
-                <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">3. IDIOMA: Google</span>
-              </div>
-              <p class="text-sm text-purple-700">(Borradores y conceptos) → (Diseño visual con texto) → (Traducción para clientes)</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Tu Camino Recomendado: El de Carlos (Estrategia y Negocios)</h3>
+          <div class="bg-blue-100 rounded-xl p-5 border-2 border-blue-400 mb-4">
+            <h4 class="font-bold text-blue-800 mb-3">💼 El Camino de Carlos - IDEAL PARA TI</h4>
+            <div class="flex flex-wrap gap-2 items-center mb-3">
+              <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">1. ESTRATEGIA: Gemini</span>
+              <span class="text-blue-400">→</span>
+              <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">2. IMPACTO: Gamma</span>
+              <span class="text-blue-400">→</span>
+              <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">3. VISIÓN: Perplexity</span>
             </div>
-            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
-              <h4 class="font-bold text-blue-800 mb-3">💼 2. El Camino de Carlos (Estrategia y Negocios)</h4>
-              <div class="flex flex-wrap gap-2 items-center mb-3">
-                <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">1. ESTRATEGIA: Gemini</span>
-                <span class="text-blue-400">→</span>
-                <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">2. IMPACTO: Gamma</span>
-                <span class="text-blue-400">→</span>
-                <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">3. VISIÓN: IA Tendencias</span>
-              </div>
-              <p class="text-sm text-blue-700">(Ideas de contenido y blog) → (Presentaciones express) → (Optimización de ventas)</p>
-            </div>
-            <div class="bg-green-50 rounded-xl p-5 border border-green-200">
-              <h4 class="font-bold text-green-800 mb-3">📱 3. El Camino de Luis (Redes Sociales y Gestión)</h4>
-              <div class="flex flex-wrap gap-2 items-center mb-3">
-                <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">1. CREACIÓN: DALL-E 3</span>
-                <span class="text-green-400">→</span>
-                <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">2. MAQUETACIÓN: Canva AI</span>
-                <span class="text-green-400">→</span>
-                <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">3. PUBLICACIÓN: Copiloto RRSS</span>
-              </div>
-              <p class="text-sm text-green-700">(Imágenes originales) → (Gráficos profesionales) → (Gestión y respuestas)</p>
+            <p class="text-sm text-blue-700 mb-3">(Ideas de contenido y estrategia) → (Presentaciones de impacto) → (Investigación de mercado y tendencias)</p>
+            <div class="bg-white rounded-lg p-3 border border-blue-200">
+              <p class="text-sm text-slate-700"><strong>Por qué es para ti:</strong> Carlos automatizó diagnósticos de negocio y propuestas comerciales. Resultado: <strong class="text-green-600">+150% crecimiento</strong> sin contratar más personal.</p>
             </div>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">El Impacto Real: ¿Qué lograron con estos flujos?</h3>
-          <p class="text-slate-600 mb-4">Como vimos en el video, la implementación de estos "Caminos Pro" no solo ahorra tiempo, sino que transforma los números del negocio:</p>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse">
-              <thead class="bg-blue-100">
-                <tr>
-                  <th class="text-left p-3 font-semibold text-blue-800 border-b-2 border-blue-200">Perfil</th>
-                  <th class="text-left p-3 font-semibold text-blue-800 border-b-2 border-blue-200">El Resultado Estratégico</th>
-                  <th class="text-left p-3 font-semibold text-green-700 border-b-2 border-blue-200">Métrica WOW</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-purple-700">María</td>
-                  <td class="p-3 text-slate-600">Logró liberar su agenda de tareas administrativas pesadas para enfocarse 100% en su arte y clientes premium.</td>
-                  <td class="p-3 text-green-700 font-bold bg-green-50">x2 Trabajos/mes</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-blue-700">Carlos</td>
-                  <td class="p-3 text-slate-600">Automatizó el diagnóstico de su negocio y la creación de propuestas, escalando sus ventas sin contratar más personal.</td>
-                  <td class="p-3 text-green-700 font-bold bg-green-50">+150% Crecimiento</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-green-700">Luis</td>
-                  <td class="p-3 text-slate-600">Pasó de pelear con el diseño a dirigir su estrategia visual, logrando una conexión mucho más profunda con su audiencia.</td>
-                  <td class="p-3 text-green-700 font-bold bg-green-50">-70% Tiempo/Post</td>
-                </tr>
-              </tbody>
-            </table>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Otros Caminos Pro (por si necesitas herramientas alternativas)</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">🎨 María (Creatividad)</h4>
+              <p class="text-xs text-purple-700">ChatGPT → Ideogram → Google Translate</p>
+              <p class="text-xs text-slate-600 mt-1">Útil si necesitas crear contenido visual para campañas.</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-2">📱 Luis (Redes y Gestión)</h4>
+              <p class="text-xs text-green-700">DALL-E → Canva AI → Copiloto RRSS</p>
+              <p class="text-xs text-slate-600 mt-1">Útil si manejas redes sociales del negocio.</p>
+            </div>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Anatomía de las Herramientas Elegidas</h3>
-          <p class="text-slate-600 mb-3">¿Por qué estas y no otras? Julia nos explica la lógica detrás de cada selección:</p>
-          <ul class="text-sm space-y-2">
-            <li class="bg-purple-50 p-3 rounded-lg"><strong class="text-purple-800">Ideogram (Caso María):</strong> Se eligió porque es la mejor IA para incluir texto legible dentro de las imágenes (ideal para logos y carteles).</li>
-            <li class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-800">Gamma (Caso Carlos):</strong> La elección perfecta para presentaciones rápidas que no parecen hechas por una IA, manteniendo un estilo ejecutivo.</li>
-            <li class="bg-green-50 p-3 rounded-lg"><strong class="text-green-800">Canva AI (Caso Luis):</strong> Ideal para quienes no son diseñadores pero necesitan que sus redes sociales se vean profesionales y coherentes.</li>
-          </ul>
-        </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Checklist: Tu Plan de Acción</h3>
-          <p class="text-slate-600 mb-3">Sigue estos pasos para replicar el éxito de los expertos hoy mismo:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tu Plan de Acción Comercial</h3>
           <div class="space-y-2">
-            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 1:</strong> Identifica cuál de los 3 perfiles se parece más a tu "Atasco" actual.</span></div>
-            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 2:</strong> Regístrate en la herramienta del "Paso 2" de ese camino (Ideogram, Gamma o Canva).</span></div>
-            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 3:</strong> Ejecuta una tarea real usando la instrucción (prompt) del camino elegido.</span></div>
-            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 4:</strong> Mide el tiempo que te tomó vs. cómo lo hacías antes.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 1:</strong> Regístrate en Gamma (gamma.app) para presentaciones rápidas.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 2:</strong> Usa ChatGPT para crear el contenido de tu próxima propuesta comercial.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 3:</strong> Pega el contenido en Gamma y genera la presentación en 5 minutos.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 4:</strong> Mide cuánto tiempo te ahorró vs. PowerPoint tradicional.</span></div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu visión es el destino. Copia el flujo, pero ponle tu corazón."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"La IA pone el motor comercial, pero tu visión estratégica es el destino."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial para alumnos de AulaGenIA. Información basada en los casos de éxito del Módulo 2.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Aprende de los Expertos - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Tu Camino Recomendado: Híbrido Carlos + María</h3>
+          <div class="bg-indigo-100 rounded-xl p-5 border-2 border-indigo-400 mb-4">
+            <h4 class="font-bold text-indigo-800 mb-3">⚖️ El Camino del Profesional Legal - IDEAL PARA TI</h4>
+            <div class="flex flex-wrap gap-2 items-center mb-3">
+              <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-sm font-bold">1. INVESTIGACIÓN: Perplexity</span>
+              <span class="text-indigo-400">→</span>
+              <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-sm font-bold">2. REDACCIÓN: Claude</span>
+              <span class="text-indigo-400">→</span>
+              <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-sm font-bold">3. PRESENTACIÓN: Gamma</span>
+            </div>
+            <p class="text-sm text-indigo-700 mb-3">(Búsqueda de fuentes y contexto) → (Borradores de escritos [VERIFICAR]) → (Presentaciones para clientes)</p>
+            <div class="bg-white rounded-lg p-3 border border-indigo-200">
+              <p class="text-sm text-slate-700"><strong>Adaptación jurídica:</strong> Combina la estrategia de Carlos con la precisión documental de Claude. Siempre marca [VERIFICAR] toda cita legal.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Los 3 Caminos Originales del Video</h3>
+          <div class="grid gap-3 md:grid-cols-3">
+            <div class="bg-purple-50 rounded-xl p-3 border border-purple-200">
+              <h4 class="font-bold text-purple-800 text-sm mb-1">🎨 María</h4>
+              <p class="text-xs text-purple-700">ChatGPT → Ideogram → Google</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-3 border border-blue-200">
+              <h4 class="font-bold text-blue-800 text-sm mb-1">💼 Carlos</h4>
+              <p class="text-xs text-blue-700">Gemini → Gamma → Perplexity</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-3 border border-green-200">
+              <h4 class="font-bold text-green-800 text-sm mb-1">📱 Luis</h4>
+              <p class="text-xs text-green-700">DALL-E → Canva → Copiloto</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tu Plan de Acción Jurídico</h3>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 1:</strong> Usa Perplexity para investigación inicial de un caso.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 2:</strong> Redacta borrador con Claude, marcando [VERIFICAR] citas.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 3:</strong> VERIFICA todas las referencias en fuentes oficiales.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 4:</strong> Si necesitas presentar a cliente, usa Gamma para ejecutivos.</span></div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"La IA investiga y redacta borradores; TÚ verificas, firmas y respondes."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Aprende de los Expertos - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Tu Camino Recomendado: El de Luis (Gestión y Contenido)</h3>
+          <div class="bg-green-100 rounded-xl p-5 border-2 border-green-400 mb-4">
+            <h4 class="font-bold text-green-800 mb-3">📱 El Camino de Luis - IDEAL PARA TI</h4>
+            <div class="flex flex-wrap gap-2 items-center mb-3">
+              <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">1. CONTENIDO: ChatGPT</span>
+              <span class="text-green-400">→</span>
+              <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">2. DISEÑO: Canva AI</span>
+              <span class="text-green-400">→</span>
+              <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">3. PRESENTACIÓN: Gamma</span>
+            </div>
+            <p class="text-sm text-green-700 mb-3">(Documentos y comunicados) → (Gráficos profesionales) → (Reportes ejecutivos)</p>
+            <div class="bg-white rounded-lg p-3 border border-green-200">
+              <p class="text-sm text-slate-700"><strong>Por qué es para ti:</strong> Luis pasó de pelear con el diseño a dirigir su estrategia. Resultado: <strong class="text-green-600">-70% tiempo</strong> en cada entregable.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Otros Caminos Pro</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">🎨 María (Creatividad)</h4>
+              <p class="text-xs text-purple-700">ChatGPT → Ideogram → Google</p>
+              <p class="text-xs text-slate-600 mt-1">Útil si necesitas crear material visual institucional.</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">💼 Carlos (Estrategia)</h4>
+              <p class="text-xs text-blue-700">Gemini → Gamma → Perplexity</p>
+              <p class="text-xs text-slate-600 mt-1">Útil para reportes estratégicos y análisis.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tu Plan de Acción Administrativo</h3>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 1:</strong> Regístrate en Canva (canva.com) para diseños rápidos.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 2:</strong> Usa ChatGPT para crear el contenido de tu próximo reporte.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 3:</strong> Usa Canva AI para darle diseño profesional en minutos.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 4:</strong> Mide cuánto tiempo te ahorró vs. tu método anterior.</span></div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"La IA hace el trabajo repetitivo; TÚ diriges la estrategia organizacional."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Aprende de los Expertos - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎯 Tu Camino Recomendado: Híbrido María + Luis</h3>
+          <div class="bg-emerald-100 rounded-xl p-5 border-2 border-emerald-400 mb-4">
+            <h4 class="font-bold text-emerald-800 mb-3">🎓 El Camino del Educador - IDEAL PARA TI</h4>
+            <div class="flex flex-wrap gap-2 items-center mb-3">
+              <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-bold">1. DISEÑO: ChatGPT</span>
+              <span class="text-emerald-400">→</span>
+              <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-bold">2. VISUAL: DALL-E/Canva</span>
+              <span class="text-emerald-400">→</span>
+              <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-bold">3. PRESENTACIÓN: Gamma</span>
+            </div>
+            <p class="text-sm text-emerald-700 mb-3">(Actividades y contenido) → (Ilustraciones didácticas) → (Presentaciones atractivas)</p>
+            <div class="bg-white rounded-lg p-3 border border-emerald-200">
+              <p class="text-sm text-slate-700"><strong>Adaptación pedagógica:</strong> Combina la creatividad de María con la eficiencia de Luis. Ideal para crear material didáctico atractivo que conecte con tus estudiantes.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Los 3 Caminos Originales del Video</h3>
+          <div class="grid gap-3 md:grid-cols-3">
+            <div class="bg-purple-50 rounded-xl p-3 border border-purple-200">
+              <h4 class="font-bold text-purple-800 text-sm mb-1">🎨 María (Creatividad)</h4>
+              <p class="text-xs text-purple-700">ChatGPT → Ideogram → Google</p>
+              <p class="text-xs text-slate-600 mt-1">x2 trabajos/mes</p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-3 border border-blue-200">
+              <h4 class="font-bold text-blue-800 text-sm mb-1">💼 Carlos (Estrategia)</h4>
+              <p class="text-xs text-blue-700">Gemini → Gamma → Perplexity</p>
+              <p class="text-xs text-slate-600 mt-1">+150% crecimiento</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-3 border border-green-200">
+              <h4 class="font-bold text-green-800 text-sm mb-1">📱 Luis (Gestión)</h4>
+              <p class="text-xs text-green-700">DALL-E → Canva → Copiloto</p>
+              <p class="text-xs text-slate-600 mt-1">-70% tiempo/post</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Tu Plan de Acción Docente</h3>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 1:</strong> Usa ChatGPT para diseñar tu próxima actividad de clase.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 2:</strong> Genera ilustraciones didácticas con DALL-E o Ideogram.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 3:</strong> Arma presentación atractiva en Gamma para tu clase.</span></div>
+            <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm"><strong>Paso 4:</strong> Adapta TODO al contexto específico de tus estudiantes.</span></div>
+          </div>
+        </section>
+        <div class="bg-emerald-50 rounded-lg p-3 border-l-4 border-emerald-500 mb-4">
+          <p class="text-xs text-emerald-800"><strong>💡 Recordatorio:</strong> La IA genera materiales; TÚ conoces a cada estudiante. Adapta siempre los resultados a tu contexto del aula.</p>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La IA prepara materiales atractivos; TÚ enciendes la chispa del aprendizaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Aprende de los Expertos - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "test-diagnostico-ruta": {
     meta: {
