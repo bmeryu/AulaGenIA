@@ -2991,143 +2991,657 @@ const resourcesDatabase = {
     meta: {
       type: "glossary",
       title: "📖 Glosario: Uso Estratégico de la IA",
-      subtitle: "Vocabulario del Salto de Principiante a Pro - Módulo 2: Video 1",
+      subtitle: "Módulo 2 - Video 1: Del Principiante al Pro",
       icon: "book",
-      color: "blue",
+      color: "emerald",
       module: 2,
       pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M2V1.pdf"
     },
     base_html: `
       <article class="space-y-6">
-        <section class="bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl p-6 border border-blue-200">
-          <h2 class="text-xl font-bold text-blue-900 mb-2">Mensaje de Julia</h2>
-          <p class="text-blue-700 italic">"¡Bienvenido al Módulo 2! Aquí pasamos de la teoría a la acción. Este glosario te prepara para entender las técnicas que transforman una pregunta suelta en una instrucción poderosa. Domina estos términos y empezarás a ver resultados WOW."</p>
+        <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
+          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
+          <p class="text-teal-700 italic">"¡Bienvenido al Módulo 2! Aquí pasamos de la teoría a la acción. Este glosario te prepara para entender las técnicas que transforman una pregunta suelta en una instrucción poderosa. Domina estos términos y empezarás a ver resultados WOW."</p>
         </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">🎨 Conceptos Clave del Módulo 2 - Video 1</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse">
-              <thead class="bg-blue-100">
-                <tr>
-                  <th class="text-left p-3 font-semibold text-blue-800 border-b-2 border-blue-200">Término</th>
-                  <th class="text-left p-3 font-semibold text-blue-800 border-b-2 border-blue-200">Definición AulaGenIA</th>
-                  <th class="text-left p-3 font-semibold text-amber-700 border-b-2 border-blue-200">💡 Analogía WOW</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Prompt Engineering</td>
-                  <td class="p-3 text-slate-600">El arte y la ciencia de diseñar instrucciones efectivas para la IA. No es solo "preguntar bien", es estructurar tu pedido para obtener el máximo resultado.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como ser un director de cine: no actúas tú, pero das instrucciones tan precisas que el actor (la IA) interpreta exactamente tu visión.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Rol / Identidad</td>
-                  <td class="p-3 text-slate-600">El personaje experto que le asignas a la IA al inicio de tu instrucción. Define su tono, conocimiento y perspectiva.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como contratar un consultor: "Actúa como un experto en marketing B2B" vs. "Actúa como un abogado". Cambia el personaje, cambia el resultado.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Ingredientes (Contexto)</td>
-                  <td class="p-3 text-slate-600">La información de fondo que le das a la IA para que entienda tu situación: quién eres, para quién es el trabajo, qué reglas debe seguir.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Si le pides a un chef que cocine sin darle los ingredientes, improvisará cualquier cosa. Si le das los ingredientes y las restricciones dietéticas, el plato será perfecto.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Iteración</td>
-                  <td class="p-3 text-slate-600">El proceso de ir refinando una respuesta a través de varias rondas de preguntas. No te conformes con la primera respuesta.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como esculpir: el primer golpe no hace la estatua. Cada ajuste ("hazlo más corto", "agrega un ejemplo") va moldeando el resultado hacia tu visión.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Few-Shot Learning</td>
-                  <td class="p-3 text-slate-600">Darle a la IA uno o más ejemplos de lo que quieres antes de pedirle que genere. Le enseñas el formato y el tono con un modelo.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como mostrarle al nuevo empleado cómo se hizo la tarea anterior: "Mira este correo pasado, hazme uno igual pero para este cliente."</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Chain-of-Thought</td>
-                  <td class="p-3 text-slate-600">Técnica de pedirle a la IA que explique su razonamiento paso a paso antes de dar la conclusión. Mejora la precisión en problemas complejos.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como pedirle a un alumno que muestre el procedimiento en un examen de matemáticas: ver los pasos permite corregir errores antes de llegar al resultado final.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack (M2-V1)</h4>
-          <p class="text-white font-medium italic">"El Principiante lanza una pregunta suelta. El Pro diseña una instrucción con Rol, Ingredientes y Formato."</p>
-          <p class="text-teal-100 text-sm mt-2">Deja de preguntarle a la IA como si fuera Google. Empieza a darle instrucciones como si fuera tu empleado más inteligente.</p>
-        </section>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+              Técnicas Avanzadas para Líderes de Negocio
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Las 6 técnicas que separan al ejecutivo que "usa ChatGPT" del que lo convierte en su ventaja competitiva.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. PROMPT ENGINEERING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El arte de diseñar instrucciones que extraigan el máximo resultado de la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es como redactar un brief perfecto para una agencia: si el brief es vago, el resultado será genérico. Si el brief es quirúrgico, el resultado será exactamente lo que necesitas.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como Director de Estrategia Comercial. Analiza este pitch de ventas y dame 3 mejoras concretas para incrementar la tasa de cierre: [PEGAR PITCH]</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. ROL / IDENTIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El personaje experto que asignas a la IA para obtener respuestas especializadas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es contratar al consultor perfecto para cada reunión. "Actúa como CFO" te da análisis financiero; "Actúa como Director de Ventas" te da tácticas comerciales.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como un negociador experto con 20 años en deals B2B. Mi cliente pide 30% de descuento. Dame 3 contrapropuestas que protejan mi margen sin perder el cliente.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INGREDIENTES (CONTEXTO)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La información de fondo que le das a la IA para que entienda tu situación específica.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Si mandas a tu equipo sin contexto del cliente, improvisarán. Si les das el historial, presupuesto y objeciones previas, cerrarán la venta.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. ITERACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Refinar la respuesta en varias rondas hasta obtener exactamente lo que necesitas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Ninguna propuesta comercial sale perfecta a la primera. Iteras: "Más agresivo en pricing", "Añade caso de éxito", "Acorta el resumen ejecutivo".</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. FEW-SHOT LEARNING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Mostrar ejemplos para que la IA entienda el formato y tono que quieres.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Cuando entrenas a un vendedor nuevo, le muestras tus mejores correos de cierre. L IA igual: "Así escribimos a clientes VIP, ahora hazme uno para [NUEVO CLIENTE]".</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Aquí hay 2 ejemplos de correos de seguimiento exitosos de mi empresa: [EJEMPLO 1] [EJEMPLO 2]. Crea 3 variaciones para el prospecto [NOMBRE] manteniendo el mismo estilo y estructura.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. CHAIN-OF-THOUGHT</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedirle a la IA que muestre su razonamiento paso a paso.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Cuando pides que te muestren los números detrás de una recomendación, validas la lógica. "Explícame paso a paso cómo llegaste a sugerir ese precio".</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"El Principiante lanza una pregunta suelta. El Pro diseña una instrucción con Rol, Contexto y Formato definidos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+              Técnicas Avanzadas para el Ejercicio Jurídico
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Las 6 técnicas que convierten la IA en tu paralegal más eficiente, manteniendo siempre tu criterio profesional.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. PROMPT ENGINEERING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Diseñar instrucciones precisas para obtener respuestas útiles.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es como redactar una cláusula contractual: sin ambigüedad, con términos precisos. Una instrucción vaga genera respuestas vagas igual que un contrato mal redactado genera litigios.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como abogado especialista en [MATERIA]. Analiza esta cláusula y dame 3 riesgos legales que debo considerar. Marca [VERIFICAR] si citas legislación específica: [PEGAR CLÁUSULA]</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. ROL / IDENTIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Asignar una especialidad jurídica específica a la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> No le pides consejo tributario a un penalista. "Actúa como abogado laboralista chileno" te da un enfoque diferente a "Actúa como abogado corporativo M&A".</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como abogado penalista con experiencia en tribunales chilenos. En un caso de [DELITO], la fiscalía argumenta [X]. Dame 3 líneas de defensa sólidas. Marca [VERIFICAR] toda cita legal.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INGREDIENTES (CONTEXTO)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Información de fondo para contextualizar el caso.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Sin hechos del caso, la IA dará teoría general. Con los hechos, puede darte estrategia aplicable. Es como la diferencia entre leer doctrina y ejercer.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. ITERACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Refinar la respuesta en múltiples rondas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Un escrito judicial se perfecciona en borradores. "Más formal", "Añade fundamento constitucional", "Reduce a 3 páginas". Cada iteración afina el argumento.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. FEW-SHOT LEARNING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Mostrar ejemplos del formato deseado.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> El estilo de tu estudio tiene reglas. Muéstrale 2 minutas previas y di: "Usa esta estructura para el nuevo caso". Resultados consistentes con tu marca.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. CHAIN-OF-THOUGHT</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedir razonamiento paso a paso.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es pedir que te muestre el iter lógico. "Explica tu razonamiento jurídico" = puedes detectar errores antes de que lleguen al escrito final.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack Legal</h4>
+          <p class="text-white font-medium text-lg italic">"El abogado promedio pregunta. El abogado Pro diseña instrucciones con Rol, Jurisdicción y Materia definidos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+              Técnicas Avanzadas para Profesionales de Gestión
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Las 6 técnicas que multiplican tu productividad y te convierten en el profesional indispensable de tu equipo.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. PROMPT ENGINEERING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Diseñar instrucciones claras para obtener resultados útiles.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Es como escribir un memo interno perfecto: si el memo es confuso, obtienes preguntas. Si el memo es claro, obtienes acción inmediata.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como asistente ejecutivo senior. Tengo estas 15 tareas pendientes: [LISTAR]. Priorízalas con matriz Eisenhower y sugiere cuáles puedo delegar o automatizar.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. ROL / IDENTIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Asignar un rol específico a la IA según la tarea.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> "Actúa como organizador de eventos" para logística, "Actúa como analista de datos" para reportes. Cambia el rol, cambia la perspectiva.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como coordinador de proyectos experto en metodologías ágiles. Aquí está el estado de mis proyectos: [LISTAR]. Identifica cuellos de botella y sugiere acciones para esta semana.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INGREDIENTES (CONTEXTO)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Dar información de fondo para respuestas útiles.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Si quieres un acta de reunión perfecta, dale el contexto: asistentes, objetivos, decisiones tomadas. Sin contexto, obtienes un template genérico.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. ITERACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Refinar en varias rondas hasta el resultado perfecto.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> "Más corto", "Añade columna de responsables", "Ordena por fecha límite". Cada iteración perfecciona el entregable hasta dejarlo listo para enviar.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. FEW-SHOT LEARNING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Mostrar ejemplos del formato que usas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Tu empresa tiene formatos estándar. Pégale el formato de reporte anterior y di: "Genera el de esta semana con estos datos". Consistencia garantizada.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. CHAIN-OF-THOUGHT</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedir razonamiento paso a paso.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> "Explícame cómo llegaste a esa priorización" = puedes validar la lógica antes de presentar a tu jefe o equipo.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"El Principiante copia y pega. El Pro diseña instrucciones que producen resultados listos para usar."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+              Técnicas Avanzadas para Educadores
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Las 6 técnicas que convierten a la IA en tu asistente pedagógico más poderoso. Diseña materiales WOW.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. PROMPT ENGINEERING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Diseñar instrucciones que produzcan materiales pedagógicos de calidad.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Es como diseñar una rúbrica de evaluación para la IA. Si la rúbrica es clara (nivel, objetivo, formato), el resultado será exactamente lo que necesitas para tu clase.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como diseñador instruccional experto en [METODOLOGÍA]. Mis estudiantes de [NIVEL] deben aprender [TEMA]. Diseña una actividad de 30 minutos con objetivo, materiales y verificación de aprendizaje.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. ROL / IDENTIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Asignar un rol pedagógico específico a la IA.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> "Actúa como experto en pedagogía Montessori" vs. "Actúa como coach de aprendizaje adulto". Cada rol genera enfoques diferentes para los mismos contenidos.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como especialista en gamificación educativa. Transforma este contenido teórico en una actividad con puntos, niveles y recompensas para estudiantes de [NIVEL]: [CONTENIDO]</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. INGREDIENTES (CONTEXTO)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Información de fondo sobre tus estudiantes y contexto.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Sin contexto de tus alumnos, obtienes actividades genéricas. Con contexto ("30 estudiantes, 9 años, zona rural, sin internet"), obtienes materiales aplicables.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. ITERACIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Refinar hasta que funcione para TU aula.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> "Hazlo más lúdico", "Reduce a 15 minutos", "Añade variante para estudiantes con dificultades de atención". Cada iteración adapta el material a tu realidad.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. FEW-SHOT LEARNING</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Mostrar ejemplos del formato que quieres.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Muéstrale una guía de aprendizaje que funcionó: "Usa este formato para el tema de [NUEVO TEMA]". Obtienes consistencia en todos tus materiales.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. CHAIN-OF-THOUGHT</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Pedir razonamiento paso a paso.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> "Explica la progresión pedagógica" = validas que la secuencia didáctica tenga sentido antes de usarla en clase.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Diseña una secuencia de 5 actividades para enseñar [TEMA]. Explica paso a paso la progresión pedagógica y por qué cada actividad prepara para la siguiente.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"El docente promedio pide 'una actividad'. El docente Pro diseña instrucciones con Nivel, Objetivo y Metodología definidos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "glosario-m2v2": {
     meta: {
       type: "glossary",
       title: "📖 Glosario: La Aplicación Práctica",
-      subtitle: "Vocabulario de Flujos de Trabajo y Delegación - Módulo 2: Video 2",
+      subtitle: "Módulo 2 - Video 2: Flujos de Trabajo y Delegación",
       icon: "book",
-      color: "blue",
+      color: "emerald",
       module: 2,
       pdfFallback: "gs://aulagenia.firebasestorage.app/Glosario-M2V2.pdf"
     },
     base_html: `
       <article class="space-y-6">
-        <section class="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl p-6 border border-blue-200">
-          <h2 class="text-xl font-bold text-blue-900 mb-2">Mensaje de Julia</h2>
-          <p class="text-blue-700 italic">"En el segundo video del Módulo 2 aprendimos a copiar los caminos de éxito de María, Carlos y Luis. Este glosario te prepara para entender la lógica detrás de cada decisión. ¡Son las palabras clave para pensar como un Pro de la IA!"</p>
+        <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
+          <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
+          <p class="text-teal-700 italic">"En el segundo video del Módulo 2 aprendimos a copiar los caminos de éxito de María, Carlos y Luis. Este glosario te prepara para entender la lógica detrás de cada decisión. ¡Son las palabras clave para pensar como un Pro de la IA!"</p>
         </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">🎨 Conceptos Clave del Módulo 2 - Video 2</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse">
-              <thead class="bg-blue-100">
-                <tr>
-                  <th class="text-left p-3 font-semibold text-blue-800 border-b-2 border-blue-200">Término</th>
-                  <th class="text-left p-3 font-semibold text-blue-800 border-b-2 border-blue-200">Definición AulaGenIA</th>
-                  <th class="text-left p-3 font-semibold text-amber-700 border-b-2 border-blue-200">💡 Analogía WOW</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Flujo de Trabajo IA</td>
-                  <td class="p-3 text-slate-600">Una secuencia de pasos usando diferentes herramientas de IA encadenadas para resolver una tarea compleja. Cada herramienta tiene un rol específico en la cadena.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como una línea de producción en una fábrica: cada estación (herramienta) hace una tarea específica, y el producto pasa de una a otra hasta estar terminado.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">El Nudo</td>
-                  <td class="p-3 text-slate-600">El problema específico que te detiene en una tarea. Puede ser "inercia" (no sabes cómo empezar), "fricción" (tareas mecánicas) o "vaguedad" (tienes la idea pero no la estructura).</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es el cuello de botella de tu día: el punto exacto donde se atora tu productividad. Identificar el nudo es la mitad de la solución.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Delegación Inteligente</td>
-                  <td class="p-3 text-slate-600">El acto consciente de asignar tareas a la IA basándote en sus fortalezas específicas, no solo por comodidad. Es saber QUÉ delegar y A QUIÉN (qué herramienta).</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como un director técnico de fútbol: no pones al arquero de delantero. Cada jugador (herramienta) juega en la posición donde rinde mejor.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Especialización de Herramientas</td>
-                  <td class="p-3 text-slate-600">El principio de que cada herramienta de IA tiene un "superpoder" particular. No existe la IA perfecta para todo; lo Pro es saber combinarlas.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como la caja de herramientas de un carpintero: el martillo es para clavar, la sierra para cortar. Usarías el martillo para cortar, pero el resultado sería un desastre.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Fricción</td>
-                  <td class="p-3 text-slate-600">La resistencia que genera una tarea repetitiva, mecánica o que consume mucho tiempo manual. Es el enemigo oculto de la productividad.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como un auto con las ruedas semi-ponchadas: todavía avanza, pero gasta el triple de energía y va mucho más lento de lo que debería.</td>
-                </tr>
-                <tr class="border-b border-slate-200 hover:bg-blue-50">
-                  <td class="p-3 font-bold text-slate-800">Escalabilidad</td>
-                  <td class="p-3 text-slate-600">La capacidad de multiplicar tus resultados sin multiplicar tu esfuerzo. Es lo que logras cuando automatizas tareas con IA.</td>
-                  <td class="p-3 text-amber-700 bg-amber-50">Es como tener un molde para galletas: una vez que lo tienes, puedes hacer 100 galletas iguales con el mismo esfuerzo que harías 5 a mano.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack (M2-V2)</h4>
-          <p class="text-white font-medium italic">"No elijas herramientas por moda. Elige herramientas por misión."</p>
-          <p class="text-teal-100 text-sm mt-2">Ideogram para logos con texto, Gamma para presentaciones rápidas, Canva AI para diseño en masa. Cada herramienta tiene su lugar en tu arsenal.</p>
-        </section>
-      </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎯</span>
+              Productividad para Líderes de Negocio
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Los 6 conceptos que te darán ventaja competitiva delegando inteligentemente a la IA.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. FLUJO DE TRABAJO IA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Secuencia de pasos usando varias herramientas de IA encadenadas para resolver tareas complejas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es tu línea de producción digital: Perplexity investiga al prospecto → ChatGPT redacta la propuesta → Gamma la convierte en presentación ejecutiva. Cada herramienta tiene un rol especializado.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Necesito crear una propuesta para el cliente [NOMBRE]. Paso 1: Investiga su industria y competencia. Paso 2: Dame 3 oportunidades de negocio. Paso 3: Sugiere estructura de propuesta.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. EL NUDO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El problema específico que detiene tu productividad: inercia, fricción o vaguedad.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es el cuello de botella de tu pipeline. ¿Tienes 50 prospectos pero no sabes cómo priorizarlos? (vaguedad). ¿Pasas horas en reportes manuales? (fricción). ¿La propuesta está en blanco? (inercia).</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. DELEGACIÓN INTELIGENTE</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Asignar tareas a la IA según sus fortalezas específicas, no por comodidad.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> No usas a tu mejor vendedor para archivar documentos. Claude para propuestas elegantes, Perplexity para inteligencia de mercado, ChatGPT para análisis rápidos.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como consultor de productividad. Estas son mis 10 tareas semanales: [LISTAR]. ¿Cuáles puedo delegar a IA? ¿Qué herramienta específica usaría para cada una?</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. ESPECIALIZACIÓN DE HERRAMIENTAS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cada herramienta de IA tiene un superpoder particular. El Pro sabe combinarlas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Tu equipo de ventas tiene especialistas: el que cierra, el que prospecta, el que retiene. Las IAs igual: Perplexity (investigación), Claude (redacción), Gamma (presentaciones).</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. FRICCIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La resistencia que generan tareas repetitivas que consumen tiempo manual.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Es el costo oculto de tu operación. Cada hora en reportes manuales es una hora menos vendiendo. La fricción mata la escalabilidad de tu negocio.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. ESCALABILIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Multiplicar resultados sin multiplicar esfuerzo. El santo grial de la productividad.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎯 Analogía para Negocios:</strong> Creas un template de propuesta con IA. Antes hacías 3 propuestas semanales. Ahora haces 15 en el mismo tiempo. Tu facturación se multiplica, tu esfuerzo no.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Dame un sistema para generar propuestas comerciales 5x más rápido. Identifica los elementos que se repiten y crea un flujo de trabajo usando IA para escalar mi producción.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"No elijas herramientas por moda. Elige herramientas por misión."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">⚖️</span>
+              Productividad para el Ejercicio Jurídico
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Los 6 conceptos que transformarán tu práctica legal sin comprometer la calidad profesional.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. FLUJO DE TRABAJO IA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Secuencia de pasos usando varias herramientas de IA para casos complejos.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Es tu proceso de due diligence digital: ChatGPT resume el expediente → Perplexity busca jurisprudencia comparable → Claude redacta el primer borrador del escrito. Cada herramienta aporta su especialidad.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Caso: [MATERIA]. Paso 1: Resume los hechos clave del expediente. Paso 2: Identifica los 3 argumentos principales de la contraparte. Paso 3: Sugiere líneas de defensa. Marca [VERIFICAR] toda cita.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. EL NUDO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El problema específico que detiene tu productividad jurídica.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> ¿Tienes 500 páginas de documentos sin revisar? (fricción). ¿El escrito está en blanco hace días? (inercia). ¿Tienes los hechos pero no la estrategia? (vaguedad).</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. DELEGACIÓN INTELIGENTE</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Asignar tareas a la IA según su especialidad, no por conveniencia.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> No le pides a tu pasante que alegue en estrados. La IA resume expedientes y redacta borradores; TÚ validas, firmas y argumentas. La responsabilidad profesional no se delega.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Actúa como consultor de productividad legal. Lista estas tareas de mi semana: [LISTAR]. ¿Cuáles puedo delegar a IA manteniendo estándares éticos? ¿Qué debo revisar siempre personalmente?</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. ESPECIALIZACIÓN DE HERRAMIENTAS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cada IA tiene su superpoder. El Pro las combina estratégicamente.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Claude redacta con elegancia; ChatGPT estructura argumentos; Perplexity busca fuentes. Ninguna reemplaza tu criterio jurídico, pero juntas aceleran tu trabajo.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. FRICCIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tareas repetitivas que consumen horas billables sin agregar valor.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Cada hora transcribiendo minutas o resumiendo expedientes es una hora menos en estrategia de casos. La fricción reduce tu rentabilidad por caso.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. ESCALABILIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Multiplicar resultados sin multiplicar esfuerzo.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Legal:</strong> Creas templates de contratos comunes con IA. Antes hacías 5 contratos por semana. Ahora haces 20 con la misma calidad. Tu capacidad de atención de clientes crece sin contratar más personal.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack Legal</h4>
+          <p class="text-white font-medium text-lg italic">"La IA acelera tu trabajo; la responsabilidad profesional sigue siendo tuya."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+              Productividad para Profesionales de Gestión
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Los 6 conceptos que convertirán tu día a día en una máquina de eficiencia.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. FLUJO DE TRABAJO IA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Secuencia de pasos usando varias IAs para tareas administrativas complejas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Es tu cadena de producción administrativa: ChatGPT procesa las notas de reunión → extrae tareas y responsables → Canva crea el informe visual → correo listo para enviar en 10 minutos.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Aquí están mis notas de la reunión: [PEGAR]. Paso 1: Extrae acuerdos y responsables. Paso 2: Lista las fechas límite. Paso 3: Redacta el correo de seguimiento para el equipo.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. EL NUDO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El problema específico que frena tu productividad diaria.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> ¿Tienes 200 correos sin contestar? (fricción). ¿El reporte mensual está en blanco? (inercia). ¿Tienes datos pero no sabes qué concluir? (vaguedad). Identifica tu nudo y desatascate.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. DELEGACIÓN INTELIGENTE</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Asignar tareas a la IA según sus fortalezas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> La IA redacta el primer borrador del acta, pero TÚ agregas los matices políticos que solo conoces tú. Delega lo mecánico, conserva lo estratégico.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Mis tareas repetitivas son: [LISTAR]. Para cada una, dime: 1) ¿Puede hacerla la IA? 2) ¿Qué herramienta usar? 3) ¿Qué parte debo supervisar yo siempre?</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. ESPECIALIZACIÓN DE HERRAMIENTAS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cada IA tiene su superpoder. Úsalas estratégicamente.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Excel para cálculos, Word para documentos. Las IAs igual: ChatGPT para textos, Canva AI para diseño, Gamma para presentaciones. No uses un martillo para atornillar.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. FRICCIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tareas repetitivas que te drenan energía sin agregar valor.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Contestar 30 correos similares por día es fricción pura. Crear una "matriz de respuestas inteligentes" con IA elimina esa fricción de tu día a día.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. ESCALABILIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Hacer más con el mismo esfuerzo.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>📊 Analogía para Gestión:</strong> Antes hacías 5 actas de reunión por semana. Con un flujo de IA, haces 15. Tu valor pasa de "ejecutor" a "supervisor de calidad". Eso es escalabilidad.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Si lo haces igual todos los días, probablemente la IA puede hacerlo por ti."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-200">
+            <h4 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm">🎓</span>
+              Productividad para Educadores
+            </h4>
+            <p class="text-sm text-slate-700 mb-4">Los 6 conceptos que liberarán tu tiempo para lo que importa: conectar con tus estudiantes.</p>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">1. FLUJO DE TRABAJO IA</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Secuencia de pasos usando varias IAs para preparar materiales.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Es tu línea de producción pedagógica: ChatGPT diseña la actividad → genera variaciones por nivel → Canva crea el material visual → listo para la clase en 30 minutos.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Tema: [TEMA]. Paso 1: Diseña una actividad de 20 minutos. Paso 2: Crea 3 variaciones: básica, intermedia, avanzada. Paso 3: Dame 5 preguntas de verificación de aprendizaje.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">2. EL NUDO</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El problema específico que frena tu planificación.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> ¿Tienes 150 tareas por calificar? (fricción). ¿La guía de aprendizaje está en blanco? (inercia). ¿Tienes el contenido pero no sabes cómo hacerlo interesante? (vaguedad).</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">3. DELEGACIÓN INTELIGENTE</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Delegar a la IA lo mecánico, conservar lo pedagógico.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> La IA genera ejercicios, rúbricas y actividades. TÚ conoces a Juanito que es visual y a María que necesita más apoyo. La conexión humana no se delega.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Estas son mis tareas docentes semanales: [LISTAR]. ¿Cuáles puedo delegar a IA sin perder calidad pedagógica? ¿Cuáles requieren siempre mi criterio profesional?</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">4. ESPECIALIZACIÓN DE HERRAMIENTAS</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cada IA tiene su especialidad pedagógica.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> ChatGPT para diseño instruccional, Canva AI para materiales visuales, Gamma para presentaciones. Combínalas según la actividad que necesites crear.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">5. FRICCIÓN</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tareas repetitivas que te roban tiempo de calidad.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Cada hora redactando retroalimentación individual es una hora menos preparando actividades innovadoras. Automatiza la fricción, invierte en pedagogía.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-slate-800 text-sm mb-2">6. ESCALABILIDAD</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Multiplicar tu impacto sin multiplicar tu agotamiento.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400 mb-2">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Educativa:</strong> Antes creabas 2 actividades diferenciadas por semana. Con flujos de IA, creas 10. Atiendes mejor a la diversidad de tu aula sin trabajar más horas.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">Diseña un sistema para crear materiales diferenciados 5x más rápido. Tengo [N] estudiantes con niveles distintos. Dame un flujo de trabajo con IA para atender la diversidad.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚡ AulaGenIA Hack para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La IA prepara materiales; tú enciendes la chispa del aprendizaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "fuentes-autoridad-2": {
     meta: {
