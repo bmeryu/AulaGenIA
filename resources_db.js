@@ -7652,10 +7652,6 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La IA es un espejo de tu propia exigencia. Si le pides con timidez, te dará timidez. Si le exiges maestría, te devolverá excelencia."</p>
-        </section>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -7684,6 +7680,10 @@ const resourcesDatabase = {
               </div>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es un espejo de tu propia exigencia. Si le pides con timidez, te dará timidez. Si le exiges maestría, te devolverá excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Frases de Poder para Negocios - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -7716,6 +7716,10 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es un espejo de tu propia exigencia. Si le pides con timidez, te dará timidez. Si le exiges maestría, te devolverá excelencia."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Frases de Poder para Profesionales - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -7746,6 +7750,10 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es un espejo de tu propia exigencia. Si le pides con timidez, te dará timidez. Si le exiges maestría, te devolverá excelencia."</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Frases de Poder para Gestión - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -7775,6 +7783,10 @@ const resourcesDatabase = {
               </div>
             </div>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA es un espejo de tu propia exigencia. Si le pides con timidez, te dará timidez. Si le exiges maestría, te devolverá excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Frases de Poder para Educación - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -7862,10 +7874,6 @@ const resourcesDatabase = {
             </table>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. No pidas favores, ¡da órdenes de poder!"</p>
-        </section>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -7893,6 +7901,10 @@ const resourcesDatabase = {
             <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
             <p class="text-white text-sm"><strong>Prompt comercial:</strong> ANALIZA estas 5 oportunidades de mercado, CUANTIFICA el potencial de cada una y PRIORÍZALAS por ROI esperado en 6 meses.</p>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. No pidas favores, ¡da órdenes de poder!"</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Verbos de Poder para Negocios - Módulo 3. AulaGenIA 2025.</div>
       </article>
@@ -7924,6 +7936,10 @@ const resourcesDatabase = {
             <p class="text-white text-sm"><strong>Prompt profesional:</strong> ESTRUCTURA este informe técnico en secciones normativas, FUNDAMENTA cada conclusión con referencias específicas y marca [VERIFICAR] cualquier dato que no puedas confirmar.</p>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. No pidas favores, ¡da órdenes de poder!"</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Verbos de Poder para Profesionales - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -7953,6 +7969,10 @@ const resourcesDatabase = {
             <p class="text-white text-sm"><strong>Prompt de gestión:</strong> SECUENCIA este proyecto en fases, ASIGNA responsables para cada tarea, ESTIMA duración realista y DOCUMENTA las dependencias entre actividades.</p>
           </div>
         </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. No pidas favores, ¡da órdenes de poder!"</p>
+        </section>
         <div class="text-center text-xs text-slate-500 pt-2">Verbos de Poder para Gestión - Módulo 3. AulaGenIA 2025.</div>
       </article>
       `,
@@ -7981,6 +8001,10 @@ const resourcesDatabase = {
             <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
             <p class="text-white text-sm"><strong>Prompt pedagógico:</strong> DISEÑA una actividad de [X] minutos, GRADÚA en 3 niveles de dificultad, FORMULA preguntas de reflexión y CONECTA el tema con situaciones cotidianas del estudiante.</p>
           </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
+          <p class="text-white font-medium text-lg italic">"La IA pone el motor, pero tu claridad pone el destino. No pidas favores, ¡da órdenes de poder!"</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Verbos de Poder para Educación - Módulo 3. AulaGenIA 2025.</div>
       </article>
