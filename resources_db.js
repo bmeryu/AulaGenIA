@@ -5168,65 +5168,177 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">¿Qué es Midjourney?</h2>
-          <p class="text-purple-700">Midjourney es considerada la IA más potente del mundo para crear imágenes. Mientras que otras IAs hacen dibujos "correctos", Midjourney crea <strong>obras de arte, fotografías realistas y escenas de cine</strong>. Es la herramienta favorita de los directores creativos. A diferencia de ChatGPT, vive dentro de una plataforma llamada Discord.</p>
+          <p class="text-purple-700">Midjourney es la IA más potente para crear <strong>obras de arte, fotografías realistas y escenas de cine</strong>. Vive dentro de Discord.</p>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">¿Cómo empiezo? (El Flujo de Acceso)</h3>
-          <p class="text-slate-600 mb-3">Acceder a Midjourney requiere dos "llaves": una cuenta en Discord y una suscripción.</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">¿Cómo empiezo?</h3>
           <div class="space-y-3">
             <div class="bg-white rounded-xl p-4 border border-slate-200">
-              <h4 class="font-bold text-purple-800 mb-2">1. Crear tu cuenta en Discord</h4>
-              <p class="text-sm text-slate-600">Discord es un chat (parecido a WhatsApp o Slack) donde vive Midjourney. Entra a <a href="https://discord.com" target="_blank" class="text-purple-600 hover:underline">discord.com</a> y regístrate. Descarga la aplicación en tu computadora o celular para que sea más estable.</p>
+              <h4 class="font-bold text-purple-800 mb-2">1. Crear cuenta en Discord</h4>
+              <p class="text-sm text-slate-600">Ve a <a href="https://discord.com" target="_blank" class="text-purple-600 hover:underline">discord.com</a> y regístrate.</p>
             </div>
             <div class="bg-white rounded-xl p-4 border border-slate-200">
-              <h4 class="font-bold text-purple-800 mb-2">2. Unirse al servidor de Midjourney</h4>
-              <p class="text-sm text-slate-600">Una vez en Discord, ve a <a href="https://midjourney.com" target="_blank" class="text-purple-600 hover:underline">midjourney.com</a> y haz clic en "Join the Beta". Esto te llevará a Discord. Acepta la invitación para entrar al servidor oficial de la IA.</p>
+              <h4 class="font-bold text-purple-800 mb-2">2. Unirse a Midjourney</h4>
+              <p class="text-sm text-slate-600">Ve a <a href="https://midjourney.com" target="_blank" class="text-purple-600 hover:underline">midjourney.com</a> y haz clic en "Join the Beta".</p>
             </div>
             <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
-              <h4 class="font-bold text-amber-800 mb-2">3. Activación y Planes (Importante)</h4>
-              <p class="text-sm text-amber-700"><strong>Nota AulaGenIA:</strong> Midjourney es una herramienta de pago (aprox. $10 USD al mes). Dentro de Discord, busca cualquier canal que diga #newbies y escribe el comando: <code class="bg-slate-800 text-white px-2 py-1 rounded">/subscribe</code>. La IA te enviará un enlace privado para que elijas tu plan.</p>
+              <h4 class="font-bold text-amber-800 mb-2">⚠️ Herramienta de Pago</h4>
+              <p class="text-sm text-amber-700">Midjourney cuesta ~$10 USD/mes. Escribe <code class="bg-slate-800 text-white px-2 py-1 rounded">/subscribe</code> en Discord para activar.</p>
             </div>
           </div>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones Estrella para el Alumno AulaGenIA</h3>
-          <p class="text-slate-600 mb-3">Midjourney no usa botones, usa "hechizos" (comandos):</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Comandos Clave para Negocios</h3>
           <div class="grid gap-3 md:grid-cols-2">
-            <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
-              <h4 class="font-bold text-purple-800 mb-1">✨ /imagine</h4>
-              <p class="text-sm text-purple-700">Es el comando principal. Escribes <code>/imagine prompt:</code> seguido de tu idea para empezar a crear.</p>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-1">✨ /imagine</h4>
+              <p class="text-sm text-blue-700"><code>/imagine prompt:</code> + tu descripción detallada.</p>
             </div>
-            <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
-              <h4 class="font-bold text-purple-800 mb-1">🖼️ Parámetro de Aspecto (--ar)</h4>
-              <p class="text-sm text-purple-700">Si quieres una imagen para Instagram o cine, añade al final <code>--ar 9:16</code> o <code>--ar 16:9</code>.</p>
-            </div>
-            <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
-              <h4 class="font-bold text-purple-800 mb-1">👁️ Veredicto Visual (U y V)</h4>
-              <p class="text-sm text-purple-700">La IA te dará 4 opciones. El botón U (Upscale) agranda la que te gustó, y el botón V (Variation) crea versiones parecidas.</p>
-            </div>
-            <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
-              <h4 class="font-bold text-purple-800 mb-1">💻 Uso en la Web</h4>
-              <p class="text-sm text-purple-700">En 2025, si ya has generado imágenes en Discord, puedes usar su nueva página web oficial (midjourney.com/imagine) que es mucho más amigable.</p>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-1">🖼️ --ar 16:9</h4>
+              <p class="text-sm text-blue-700">Formato panorámico para presentaciones y LinkedIn.</p>
             </div>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos Pro de AulaGenIA</h3>
-          <p class="text-slate-600 mb-3">Para no desperdiciar tus horas de generación:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para Marketing y Ventas</h3>
           <ul class="text-sm space-y-2">
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Escribe en Inglés:</strong> Aunque entiende algo de español, los mejores resultados fotográficos salen con órdenes en inglés. (Usa ChatGPT para traducir tus prompts).</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Sé descriptivo:</strong> En lugar de "un perro", escribe "un Golden Retriever corriendo en un bosque soleado, estilo fotografía National Geographic".</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Limpia tu galería:</strong> Puedes ver todas tus creaciones organizadas entrando a tu perfil en la web de Midjourney.</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Hero de landing:</strong> "professional business team celebrating success, modern office, corporate photography, soft lighting --ar 16:9"</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Producto premium:</strong> "luxury watch on marble surface, product photography, dramatic lighting, high end feel"</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Concepto abstracto:</strong> "abstract visualization of business growth, blue and gold, corporate style, minimalist"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Resultados Comerciales</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Siempre inglés:</strong> Los mejores resultados salen con prompts en inglés.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Añade estilo:</strong> "corporate photography", "professional", "high end" mejoran resultados.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Usa variaciones:</strong> Botón V genera alternativas de una imagen que te gustó.</li>
           </ul>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La tecnología pone los pinceles, pero tu imaginación pone la obra. En Midjourney, el límite no es la IA, es tu capacidad de observar el detalle."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"Midjourney crea el visual premium; TÚ lo conviertes en ventas."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Documento diseñado para potenciar tu kit de herramientas en AulaGenIA. Información actualizada a diciembre de 2025.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Midjourney para Negocios - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Comandos para Profesionales</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">✨ /imagine</h4>
+              <p class="text-sm text-indigo-700">El comando principal para generar imágenes.</p>
+            </div>
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">🖼️ Estilos Sobrios</h4>
+              <p class="text-sm text-indigo-700">Añade "professional", "elegant", "minimalist" al prompt.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para Práctica Profesional</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Portada institucional:</strong> "professional law office interior, modern elegant, natural lighting, corporate photography"</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Concepto justicia:</strong> "scales of justice on marble pedestal, dramatic lighting, professional photography, navy blue tones"</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Imagen corporativa:</strong> "professional handshake, business meeting, elegant office, soft natural light"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Profesionales</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-400"><strong>⚠️ Sin datos reales:</strong> NUNCA uses nombres de clientes o casos en prompts.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Mantén elegancia:</strong> Usa "elegant", "professional", "sophisticated" en prompts.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Coherencia visual:</strong> Guarda prompts que funcionan para mantener consistencia.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"Midjourney crea imagen institucional premium; TÚ cuidas la confidencialidad."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Midjourney para Profesionales - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Comandos para Gestión</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">✨ /imagine</h4>
+              <p class="text-sm text-green-700"><code>/imagine prompt:</code> + descripción de lo que necesitas.</p>
+            </div>
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">🖼️ --ar</h4>
+              <p class="text-sm text-green-700">1:1 para Instagram, 16:9 para presentaciones, 9:16 para móvil.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Trabajo</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Portada de reporte:</strong> "abstract data visualization, corporate blue gradient, modern minimalist, professional design --ar 16:9"</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Imagen institucional:</strong> "modern office teamwork, diverse professionals, natural lighting, corporate photography"</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Comunicado interno:</strong> "professional celebration, achievement concept, confetti, corporate colors, positive energy"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Eficiencia</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Crea biblioteca:</strong> Guarda prompts exitosos en un documento para reusar.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Define colores:</strong> Añade tus colores institucionales al prompt para coherencia.</li>
+            <li class="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-400"><strong>Considera alternativas:</strong> Si el presupuesto es limitado, usa Ideogram (gratuito).</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Midjourney eleva tu imagen institucional; TÚ diriges la comunicación."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Midjourney para Gestión - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Comandos para Educadores</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">✨ /imagine</h4>
+              <p class="text-sm text-emerald-700">El comando mágico: <code>/imagine prompt:</code> + tu idea.</p>
+            </div>
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">🎨 Estilos Didácticos</h4>
+              <p class="text-sm text-emerald-700">Añade "illustration", "cartoon", "educational" para material escolar.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Ejemplos para tu Aula</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Ilustración histórica:</strong> "ancient roman market scene, educational illustration, colorful, detailed, children book style"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Concepto científico:</strong> "water cycle diagram, educational illustration, colorful arrows, cartoon style, clear labels"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Escena literaria:</strong> "Don Quixote and windmills, illustration, dramatic sky, storybook style"</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Matemáticas visuales:</strong> "geometric shapes floating in space, colorful, 3D visualization, educational"</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Docentes</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-emerald-50 p-3 rounded-lg border-l-4 border-emerald-400"><strong>💡 Alternativa gratuita:</strong> Para presupuestos limitados, Ideogram es gratuito y excelente para texto.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Adapta estilos:</strong> "cartoon" para primaria, "realistic" para secundaria.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Crea consistencia:</strong> Usa el mismo estilo en toda una unidad didáctica.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"Midjourney ilustra conceptos complejos; TÚ enciendes la curiosidad."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Midjourney para Educación - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "guia-acceso-gamma": {
     meta: {
