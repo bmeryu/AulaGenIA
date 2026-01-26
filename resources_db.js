@@ -3978,39 +3978,91 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
-          <p class="text-teal-700 italic">"La productividad no es simplemente hacer más cosas, sino hacer las cosas correctas con menos esfuerzo. En este módulo nos apoyamos en los arquitectos de la economía moderna para que tu tiempo trabaje para ti, y no al revés."</p>
+          <p class="text-teal-700 italic">"La productividad no es simplemente hacer más cosas, sino hacer las cosas correctas con menos esfuerzo. En este módulo nos apoyamos en los arquitectos de la economía moderna para que tu tiempo trabaje para ti."</p>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Productividad y Razonamiento Profundo</h3>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Fuentes Aplicadas a Negocios</h3>
           <div class="space-y-4">
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-blue-300 transition-colors">
-              <h4 class="font-bold text-blue-800 mb-2">McKinsey Global Institute (2023). The economic potential of generative AI</h4>
-              <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
-                <p class="text-sm text-amber-800"><strong>💡 Nos basamos en:</strong> Los datos de impacto económico de esta consultora global para proyectar tu ahorro de tiempo de hasta 10 horas semanales y la reducción drástica de costos en tus procesos operativos.</p>
-              </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">McKinsey: Impacto Económico de la IA Generativa</h4>
+              <p class="text-sm text-slate-600"><strong>Aplicación comercial:</strong> Hasta 10 horas semanales de ahorro en tareas como investigación de mercado, propuestas y seguimiento de clientes.</p>
             </div>
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-blue-300 transition-colors">
-              <h4 class="font-bold text-blue-800 mb-2">Satya Nadella (2023). Microsoft Ignite Keynote: IA como el Copiloto del mundo</h4>
-              <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
-                <p class="text-sm text-amber-800"><strong>💡 Nos basamos en:</strong> La visión de Microsoft de que la IA no viene a reemplazarte, sino a actuar como un "Copiloto" que te devuelve el control absoluto de tu agenda y tus prioridades.</p>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-blue-300 transition-colors">
-              <h4 class="font-bold text-blue-800 mb-2">OpenAI (2023). The age of AI has begun. OpenAI Blog</h4>
-              <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
-                <p class="text-sm text-amber-800"><strong>💡 Nos basamos en:</strong> Los estándares de Sam Altman sobre cómo pasar del uso superficial de un "chat" al razonamiento profundo para resolver problemas complejos de negocio en el mundo real.</p>
-              </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">Satya Nadella: El Copiloto del Mundo</h4>
+              <p class="text-sm text-slate-600"><strong>Aplicación comercial:</strong> Tu copiloto de ventas que investiga, redacta propuestas y prepara presentaciones mientras tú te enfocas en cerrar.</p>
             </div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"El ahorro de tiempo es el dividendo de la inteligencia. No busques solo rapidez, busca profundidad en el razonamiento para ganar libertad."</p>
+          <p class="text-white font-medium text-lg italic">"El ahorro de tiempo es el dividendo de la inteligencia."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material exclusivo para alumnos de AulaGenIA - Módulo 2. © 2025 AulaGenIA. Todos los derechos reservados.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Fuentes Aplicadas al Ejercicio Jurídico</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">McKinsey: Impacto Económico de la IA Generativa</h4>
+              <p class="text-sm text-slate-600"><strong>Aplicación jurídica:</strong> Reducción de hasta 60% en tiempo de investigación legal y redacción de borradores iniciales.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">OpenAI: Razonamiento Profundo</h4>
+              <p class="text-sm text-slate-600"><strong>Aplicación jurídica:</strong> Del uso superficial (buscar) al razonamiento profundo (estructurar argumentos). SIEMPRE verificar citas legales.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <p class="text-white font-medium text-lg italic">"La IA acelera la investigación; la validación es siempre tuya."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Fuentes Aplicadas a Gestión</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">McKinsey: Impacto Económico de la IA Generativa</h4>
+              <p class="text-sm text-slate-600"><strong>Aplicación administrativa:</strong> Hasta 70% de reducción en tareas repetitivas como actas, correos y reportes.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">Satya Nadella: El Copiloto del Mundo</h4>
+              <p class="text-sm text-slate-600"><strong>Aplicación administrativa:</strong> Tu asistente ejecutivo que procesa, organiza y comunica mientras tú tomas decisiones estratégicas.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <p class="text-white font-medium text-lg italic">"Lo que haces igual cada semana, la IA puede hacerlo por ti."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Fuentes Aplicadas a Educación</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">McKinsey: Impacto Económico de la IA Generativa</h4>
+              <p class="text-sm text-slate-600"><strong>Aplicación educativa:</strong> Hasta x2 en producción de materiales didácticos de calidad en la mitad del tiempo.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">OpenAI: El Co-Diseñador Pedagógico</h4>
+              <p class="text-sm text-slate-600"><strong>Aplicación educativa:</strong> Del ChatGPT como "buscador" al copiloto que diseña actividades, ejercicios y evaluaciones adaptadas.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <p class="text-white font-medium text-lg italic">"La IA diseña materiales; TÚ enciendes la chispa del aprendizaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "salto-principiante-pro": {
     meta: {
@@ -4170,52 +4222,91 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">Más allá de la tecnología</h2>
-          <p class="text-blue-700">En el segundo video de AulaGenIA, Julia nos muestra que la IA no es una herramienta estática, sino un sistema que interactúa con nosotros. Esto genera dudas que no son técnicas, sino de estrategia y confianza. Vamos a resolverlas.</p>
+          <p class="text-blue-700 italic">"La IA no es una herramienta estática, sino un sistema que interactúa contigo. Esto genera dudas que no son técnicas, sino de estrategia y confianza. Vamos a resolverlas."</p>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Dilemas del Copiloto para Negocios</h3>
           <div class="space-y-4">
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
-              <h3 class="text-lg font-bold text-blue-800 mb-2">1. Privacidad y Memoria</h3>
-              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si Siri y Alexa "aprenden" de cada charla, ¿guardan mi vida para siempre?</p>
-              <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-400">
-                <p class="text-indigo-800 mb-2"><strong>💡 La analogía:</strong> Imagina que un profesor corrige miles de exámenes. El profesor aprende cuáles son los errores más comunes de todos sus alumnos para explicar mejor al año siguiente, pero no necesita recordar exactamente qué escribió una persona específica para mejorar su método general.</p>
-              </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>La realidad:</strong> La IA utiliza las interacciones para volverse más inteligente de forma general (aprendizaje anónimo). <strong>Regla de oro:</strong> nunca compartas datos bancarios o claves privadas en el chat.</p>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">🔒 Privacidad de Datos Comerciales</h4>
+              <p class="text-sm text-slate-600"><strong>Regla de oro:</strong> Nunca compartas datos financieros sensibles, precios confidenciales o información de clientes en el chat público. Usa versiones empresariales si manejas datos sensibles.</p>
             </div>
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
-              <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es un buscador</h3>
-              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si le pregunto lo mismo dos veces, ¿por qué me da respuestas distintas?</p>
-              <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-400">
-                <p class="text-amber-800"><strong>💡 La analogía:</strong> Imagina que le pides a un Chef que te explique cómo hacer una pasta. Si le preguntas hoy, te dará unos tips; si le preguntas mañana, quizás use otras palabras o te dé un ejemplo diferente. El Chef no está leyendo un archivo guardado, está <strong>creando</strong> la respuesta en el momento basada en su conocimiento.</p>
-              </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>La razón:</strong> La IA es "generativa". No copia y pega información de internet, sino que calcula sobre la marcha qué palabras combinan mejor para tu pedido actual. <strong>Conclusión:</strong> Esto es una ventaja. Si una respuesta no te gusta, puedes pedirle que lo intente de nuevo y obtendrás una perspectiva fresca.</p>
-            </div>
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
-              <h3 class="text-lg font-bold text-blue-800 mb-2">3. La Fatiga de la IA</h3>
-              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> ¿Cuánta información recuerda antes de empezar a perder el hilo?</p>
-              <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-400">
-                <p class="text-purple-800"><strong>💡 La analogía:</strong> Piensa en la IA como un malabarista. Puede mantener varias pelotas (datos) en el aire al mismo tiempo, pero si le lanzas demasiadas, empezará a dejar caer las primeras que recibió para poder atrapar las nuevas. Esto es lo que Julia llama "Ventana de Contexto".</p>
-              </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>Estrategia AulaGenIA:</strong> Si sientes que tu copiloto está confundido después de una charla larga, no sigas forzando el chat. <strong>El truco maestro:</strong> Pídele a la IA un resumen detallado de la conversación que incluya todos los requisitos y reglas que le has pedido hasta ahora. Luego, abre un chat nuevo y pega ese resumen. Así, el malabarista empieza de cero con todas las pelotas en su lugar.</p>
-            </div>
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
-              <h3 class="text-lg font-bold text-blue-800 mb-2">4. ¿Es realmente creativa?</h3>
-              <p class="text-sm text-slate-600 mb-3"><strong>Pregunta:</strong> Si solo repite patrones, ¿puede crear algo nuevo?</p>
-              <div class="bg-rose-50 rounded-lg p-4 border-l-4 border-rose-400">
-                <p class="text-rose-800"><strong>💡 La analogía:</strong> Imagina a un artista que ha visto todas las puestas de sol de la historia. Cuando pinta una nueva, no está copiando una foto específica, sino que mezcla los colores y las formas que aprendió para crear una imagen que nunca existió.</p>
-              </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>La respuesta:</strong> La IA no "crea" desde la nada, pero combina la información de formas tan originales que el resultado es totalmente nuevo. <strong>El toque humano:</strong> La chispa de la idea original siempre es tuya. La IA pone los pinceles, pero tú pones la visión y el propósito.</p>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">🧠 La Fatiga del Copiloto</h4>
+              <p class="text-sm text-slate-600"><strong>Estrategia comercial:</strong> En negociaciones largas, pide un resumen antes de que la IA pierda contexto. Abre chat nuevo con el resumen para propuestas complejas.</p>
             </div>
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Conclusión AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"Tú diriges, la IA acompaña."</p>
+          <p class="text-white font-medium text-lg italic">"Tú diriges las ventas, la IA te asiste con la investigación y redacción."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Documento diseñado para alumnos de AulaGenIA.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">El Dilema del Copiloto - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Dilemas del Copiloto para Abogados</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">🔒 Confidencialidad Profesional</h4>
+              <p class="text-sm text-slate-600"><strong>CRÍTICO:</strong> Nunca subas documentos de casos reales con datos de clientes a ChatGPT público. Anonimiza siempre. Considera versiones empresariales para ejercicio profesional.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">⚠️ Alucinaciones Legales</h4>
+              <p class="text-sm text-slate-600"><strong>La IA inventa citas:</strong> SIEMPRE marca [VERIFICAR] toda jurisprudencia y artículos de ley. La responsabilidad profesional es tuya, no de la IA.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <p class="text-white font-medium text-lg italic">"La IA redacta borradores; TÚ verificas, validas y firmas."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Dilema del Copiloto - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Dilemas del Copiloto para Gestión</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">🧠 La Ventana de Contexto</h4>
+              <p class="text-sm text-slate-600"><strong>Para proyectos largos:</strong> La IA pierde información en conversaciones extensas. Pide un resumen de acuerdos antes de cerrar reuniones largas y abre chat nuevo con ese contexto.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">📋 Respuestas Variables</h4>
+              <p class="text-sm text-slate-600"><strong>Es una ventaja:</strong> Si un acta no te gusta, pide que la reescriba. La IA genera creativamente, no copia. Cada intento es una perspectiva fresca.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <p class="text-white font-medium text-lg italic">"Tú estructuras el proceso, la IA lo ejecuta."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Dilema del Copiloto - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Dilemas del Copiloto para Educadores</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">🎨 ¿Es Realmente Creativa?</h4>
+              <p class="text-sm text-slate-600"><strong>La chispa es tuya:</strong> La IA combina aprendizajes para crear materiales nuevos, pero tú pones la visión pedagógica. Ella genera, tú adaptas a tus estudiantes.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200">
+              <h4 class="font-bold text-blue-800 mb-2">📚 Precisión del Contenido</h4>
+              <p class="text-sm text-slate-600"><strong>Revisa siempre:</strong> La IA puede equivocarse en datos históricos o científicos. Valida todo material antes de usarlo en clase.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <p class="text-white font-medium text-lg italic">"La IA prepara materiales; TÚ enciendes la chispa del aprendizaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Dilema del Copiloto - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "caminos-expertos": {
     meta: {
