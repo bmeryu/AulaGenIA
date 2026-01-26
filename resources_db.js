@@ -1194,34 +1194,10 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">Mensaje de Julia</h2>
           <p class="text-teal-700 italic">"En AulaGenIA no enseñamos opiniones, enseñamos evidencia. Este curso se apoya en los pilares técnicos y estratégicos que están definiendo el futuro. Si quieres ser un experto, primero debes conocer a quienes crearon las reglas del juego."</p>
         </section>
-        <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Los Cimientos de la Revolución</h3>
-          <div class="space-y-4">
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
-              <h4 class="font-bold text-emerald-800 mb-2">Microsoft (2024). Work Trend Index Annual Report: IA en el trabajo</h4>
-              <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
-                <p class="text-sm text-amber-800"><strong>💡 Nos basamos en:</strong> Las estadísticas globales sobre la brecha de habilidades digitales para asegurar que el 1,5% de uso efectivo que enseñamos sea tu ventaja competitiva real.</p>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
-              <h4 class="font-bold text-emerald-800 mb-2">Association for Computing Machinery (ACM). (2018). A.M. Turing Award: Geoffrey Hinton</h4>
-              <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
-                <p class="text-sm text-amber-800"><strong>💡 Nos basamos en:</strong> La visión de Geoffrey Hinton (el "Padrino de la IA") sobre la capacidad de las máquinas para aprender y razonar de forma autónoma.</p>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
-              <h4 class="font-bold text-emerald-800 mb-2">Ng, A. (2017). Artificial Intelligence is the New Electricity. Stanford University</h4>
-              <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
-                <p class="text-sm text-amber-800"><strong>💡 Nos basamos en:</strong> La filosofía del cofundador de Google Brain, Andrew Ng, quien sostiene que la IA no es un lujo, sino una herramienta básica de supervivencia profesional hoy.</p>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
-              <h4 class="font-bold text-emerald-800 mb-2">Vaswani, A., et al. (2017). Attention Is All You Need. NIPS Proceedings</h4>
-              <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
-                <p class="text-sm text-amber-800"><strong>💡 Nos basamos en:</strong> La investigación original que creó la arquitectura de los modelos actuales (como ChatGPT y Gemini) para explicarte conceptos como LLM y Tokens con precisión técnica.</p>
-              </div>
-            </div>
-          </div>
+        <section class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6 border border-slate-200 mb-6">
+          <p class="text-slate-600 text-sm">
+            Esta sección está personalizada para tu perfil profesional. Hemos filtrado las fuentes y reportes que tienen impacto directo en tu área.
+          </p>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
@@ -1230,7 +1206,96 @@ const resourcesDatabase = {
         <div class="text-center text-xs text-slate-500 pt-2">Material exclusivo para alumnos de AulaGenIA - Módulo 1. © 2025 AulaGenIA. Todos los derechos reservados.</div>
       </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Los Cimientos para tu Estrategia de Negocio</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">Microsoft (2024). Work Trend Index Annual Report: IA en el trabajo</h4>
+              <div class="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-400">
+                <p class="text-sm text-blue-800"><strong>🎯 Impacto en Negocios:</strong> Este reporte confirma que el 75% de los empleados ya usa IA, pero sin estrategia. Tu ventaja competitiva como líder es pasar del "uso casual" a la implementación corporativa estructurada.</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">Ng, A. (2017). Artificial Intelligence is the New Electricity. Stanford University</h4>
+              <div class="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-400">
+                <p class="text-sm text-blue-800"><strong>🎯 Impacto en Negocios:</strong> Andrew Ng compara la IA con la electricidad. No es una "tecnología más", es un insumo básico. Quien no electrificó su fábrica en el siglo XX, quebró. Lo mismo pasará con quien no integre IA hoy.</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">McKinsey & Company (2023). The Economic Potential of Generative AI</h4>
+              <div class="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-400">
+                <p class="text-sm text-blue-800"><strong>🎯 Impacto en Negocios:</strong> McKinsey estima que la IA agregará trillones de dólares a la economía global. Tu objetivo no es "saber de tecnología", sino capturar una parte de ese valor para tu empresa.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Fundamentos para la Práctica Profesional</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">Association for Computing Machinery (ACM). (2018). Eficiencia Algorítmica</h4>
+              <div class="bg-purple-50 rounded-lg p-3 border-l-4 border-purple-400">
+                <p class="text-sm text-purple-800"><strong>⚖️ Impacto Legal:</strong> Entender cómo los algoritmos priorizan la eficiencia sobre la verdad es clave para tu rol. La IA no tiene ética ni concepto de justicia, solo busca patrones matemáticos.</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">Microsoft (2024). Work Trend Index: La Nueva Productividad</h4>
+              <div class="bg-purple-50 rounded-lg p-3 border-l-4 border-purple-400">
+                <p class="text-sm text-purple-800"><strong>⚖️ Impacto Legal:</strong> El mercado ya no paga por "horas de redacción", paga por criterio y estrategia. La IA automatiza la redacción de contratos; tu valor está en la revisión y la estrategia jurídica.</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">Vaswani, A. (2017). Attention Is All You Need (El origen de los Transformers)</h4>
+              <div class="bg-purple-50 rounded-lg p-3 border-l-4 border-purple-400">
+                <p class="text-sm text-purple-800"><strong>⚖️ Impacto Legal:</strong> Este paper define cómo la IA "presta atención" al contexto. Entender esto es vital para saber por qué un modelo puede "olvidar" una cláusula en un documento muy largo.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Referencias para la Eficiencia Operativa</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">Microsoft (2024). Work Trend Index: Delegar a la IA</h4>
+              <div class="bg-emerald-50 rounded-lg p-3 border-l-4 border-emerald-400">
+                <p class="text-sm text-emerald-800"><strong>📊 Impacto en Gestión:</strong> El reporte indica que la principal barrera no es la tecnología, sino el miedo a "parecer flojo". La realidad es que quien delega lo operativo a la IA tiene más tiempo para lo estratégico.</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">Ng, A. (2017). IA como la Nueva Electricidad</h4>
+              <div class="bg-emerald-50 rounded-lg p-3 border-l-4 border-emerald-400">
+                <p class="text-sm text-emerald-800"><strong>📊 Impacto en Gestión:</strong> Así como hoy no imaginas una oficina sin luz eléctrica, pronto será impensable gestionar procesos sin IA. Es la herramienta que ilumina los datos oscuros de tu organización.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">📚 Evidencia para la Innovación Educativa</h3>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">UNESCO (2023). Guía de inicio rápido de ChatGPT e IA en la educación superior</h4>
+              <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
+                <p class="text-sm text-amber-800"><strong>🎓 Impacto Educativo:</strong> La UNESCO recomienda no prohibir, sino integrar. El enfoque es usar la IA para fomentar el pensamiento crítico, pidiendo a los alumnos que verifiquen y mejoren lo que la máquina genera.</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
+              <h4 class="font-bold text-emerald-800 mb-2">Vaswani, A. (2017). Attention Is All You Need</h4>
+              <div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400">
+                <p class="text-sm text-amber-800"><strong>🎓 Impacto Educativo:</strong> Comprender cómo "aprenden" las máquinas (patrones, no significados) es fundamental para explicar a tus estudiantes por qué la IA no sustituye el estudio, solo acelera la producción.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      `
+    }
   },
   "listado-verificacion-m1": {
     meta: {
