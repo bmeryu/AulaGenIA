@@ -781,7 +781,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Negocios</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA para Negocios</h4>
           <p class="text-white font-medium text-lg italic">"La IA es tu mejor analista junior: incansable, rápido y siempre disponible. Pero tú eres el CEO que toma la decisión final."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -859,7 +859,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro Legal</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA Legal</h4>
           <p class="text-white font-medium text-lg italic">"La IA es tu paralegal más rápido del mundo, pero sin título ni ética profesional. Tú firmas, tú verificas, tú respondes."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -937,7 +937,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Gestión</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA para Gestión</h4>
           <p class="text-white font-medium text-lg italic">"La IA hace en minutos lo que antes tomaba horas. Tu valor ahora está en el criterio, no en el tipeo."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -1015,7 +1015,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro para Educación</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA para Educación</h4>
           <p class="text-white font-medium text-lg italic">"La IA prepara materiales en minutos, pero solo tú puedes encender la chispa del aprendizaje en tus estudiantes."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -1159,7 +1159,7 @@ const resourcesDatabase = {
         </section>
         
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">La Regla de Oro</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">La M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"El Copiloto no necesita saber cómo funciona el motor. Solo necesita saber a dónde quiere llegar y comunicarse claramente con su copiloto de IA."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Infografía oficial del Módulo 1. AulaGenIA 2025.</div>
@@ -4471,7 +4471,7 @@ const resourcesDatabase = {
               <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-400">
                 <p class="text-indigo-800"><strong>💡 La analogía comercial:</strong> Imagina que contratas a un consultor externo para analizar tu cartera de clientes. El consultor aprende patrones generales del mercado, pero no necesita recordar los números exactos de cada cuenta para mejorar su metodología.</p>
               </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>Regla de oro comercial:</strong> Nunca compartas contraseñas, proyecciones confidenciales o datos financieros exactos de clientes. Usa descripciones genéricas: "empresa de tecnología mediana" en lugar de nombres específicos.</p>
+              <p class="text-sm text-slate-600 mt-3"><strong>M�xima AulaGenIA comercial:</strong> Nunca compartas contraseñas, proyecciones confidenciales o datos financieros exactos de clientes. Usa descripciones genéricas: "empresa de tecnología mediana" en lugar de nombres específicos.</p>
             </div>
             <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
               <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es un CRM</h3>
@@ -4559,7 +4559,7 @@ const resourcesDatabase = {
               <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-400">
                 <p class="text-indigo-800"><strong>💡 La analogía administrativa:</strong> Imagina que contratas a un asistente temporal que aprende mejores prácticas de organización de cientos de empresas, pero no necesita recordar los detalles específicos de tu presupuesto.</p>
               </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>Regla de oro:</strong> Nunca compartas contraseñas, datos financieros exactos ni información personal de empleados. Usa descripciones genéricas para obtener ayuda.</p>
+              <p class="text-sm text-slate-600 mt-3"><strong>M�xima AulaGenIA:</strong> Nunca compartas contraseñas, datos financieros exactos ni información personal de empleados. Usa descripciones genéricas para obtener ayuda.</p>
             </div>
             <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
               <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es una plantilla fija</h3>
@@ -7505,7 +7505,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Negocios - Módulo 3. AulaGenIA 2025.</div>
@@ -7546,7 +7546,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Profesionales - Módulo 3. AulaGenIA 2025.</div>
@@ -7581,7 +7581,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Gestión - Módulo 3. AulaGenIA 2025.</div>
@@ -7616,7 +7616,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Regla de Oro</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Educación - Módulo 3. AulaGenIA 2025.</div>
@@ -7689,7 +7689,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">Regla de Oro: Cómo aplicar la Persuasión</h3>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">M�xima AulaGenIA: Cómo aplicar la Persuasión</h3>
           <p class="text-slate-600 mb-3">La efectividad de estas frases radica en el contraste y la autoridad del piloto:</p>
           <div class="space-y-2">
             <div class="flex items-start gap-3 bg-white p-3 rounded-lg border border-slate-200">
@@ -8888,7 +8888,7 @@ const resourcesDatabase = {
     base_html: `
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
-          <h2 class="text-xl font-bold text-teal-900 mb-2">La Regla de Oro del Arquitecto</h2>
+          <h2 class="text-xl font-bold text-teal-900 mb-2">La M�xima AulaGenIA del Arquitecto</h2>
           <p class="text-teal-700 italic">"Imagina que la IA tiene una mesa de trabajo pequeña. Si intentas construir todo un edificio de golpe, las piezas se mezclan y el resultado es pobre. Para tener éxito, construimos por partes: primero el Plano Maestro, luego Ladrillo a Ladrillo y al final el Cemento que genera La Construcción."</p>
         </section>
         <section>
