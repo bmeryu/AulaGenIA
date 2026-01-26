@@ -5726,72 +5726,177 @@ const resourcesDatabase = {
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 border border-teal-200">
           <h2 class="text-xl font-bold text-teal-900 mb-2">¿Qué es Canva?</h2>
-          <p class="text-blue-700">Canva es la plataforma líder de diseño para personas que no son diseñadores profesionales. Es el lugar donde "armas" todo: presentaciones, logos, volantes o videos. Su gran valor hoy es el <strong>Estudio Mágico</strong>, un conjunto de herramientas de Inteligencia Artificial que te ayudan a crear diseños desde cero solo describiendo lo que quieres.</p>
+          <p class="text-blue-700">Canva es la plataforma líder de diseño para no-diseñadores. Su <strong>Estudio Mágico</strong> incluye IA para crear diseños describiendo lo que quieres.</p>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">¿Cómo empiezo? (Paso a Paso)</h3>
-          <p class="text-slate-600 mb-3">Canva es gratuito y funciona perfectamente tanto en la computadora como en el celular.</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">¿Cómo empiezo?</h3>
           <div class="space-y-3">
             <div class="bg-white rounded-xl p-4 border border-slate-200">
-              <h4 class="font-bold text-blue-800 mb-2">1. Registro y Acceso</h4>
-              <ul class="text-sm text-slate-600 space-y-1">
-                <li>• <strong>La dirección:</strong> Entra en tu navegador a <a href="https://canva.com" target="_blank" class="text-blue-600 hover:underline">canva.com</a>.</li>
-                <li>• <strong>Crear cuenta:</strong> Haz clic en "Regístrate gratis".</li>
-                <li>• <strong>Sincronización segura:</strong> Usa tu cuenta de Google para entrar al instante. Esto te permitirá ver tus diseños en cualquier dispositivo.</li>
-              </ul>
+              <h4 class="font-bold text-blue-800 mb-2">Registro</h4>
+              <p class="text-sm text-slate-600">Ve a <a href="https://canva.com" target="_blank" class="text-blue-600 hover:underline">canva.com</a> → "Regístrate gratis" → Usa tu Google para sincronizar.</p>
             </div>
             <div class="bg-white rounded-xl p-4 border border-slate-200">
-              <h4 class="font-bold text-blue-800 mb-2">2. Explorando el Estudio Mágico</h4>
-              <p class="text-sm text-slate-600">En la barra lateral izquierda, busca el icono de una estrella brillante llamada "Estudio Mágico". Allí es donde vive el cerebro de IA de Canva que usaremos en el curso.</p>
+              <h4 class="font-bold text-blue-800 mb-2">Estudio Mágico</h4>
+              <p class="text-sm text-slate-600">En la barra izquierda, busca el icono de estrella "Estudio Mágico" - ahí vive la IA de Canva.</p>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Planes</h4>
+              <p class="text-sm text-amber-700">Free: Miles de plantillas + IA básica. Pro: Quitar fondos + IA avanzada.</p>
             </div>
           </div>
         </section>
+    `,
+    segments: {
+      "Negocios & Ventas": `
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones Estrella para el Alumno AulaGenIA</h3>
-          <p class="text-slate-600 mb-3">Canva es el "ensamblador" de todas tus creaciones anteriores:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Negocios</h3>
           <div class="grid gap-3 md:grid-cols-2">
             <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
               <h4 class="font-bold text-blue-800 mb-1">✨ Diseño Mágico</h4>
-              <p class="text-sm text-blue-700">Escribe qué quieres hacer (ej: "Un post para mi curso de cocina") y la IA elegirá colores e imágenes por ti.</p>
-            </div>
-            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
-              <h4 class="font-bold text-blue-800 mb-1">⌨️ Escritura Mágica</h4>
-              <p class="text-sm text-blue-700">Copia tus borradores de ChatGPT y pídele a Canva que les dé un tono más "profesional" directamente en el diseño.</p>
-            </div>
-            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
-              <h4 class="font-bold text-blue-800 mb-1">🖼️ Multimedia Mágica</h4>
-              <p class="text-sm text-blue-700">Si no encuentras la foto perfecta, descríbela y la IA la dibujará en segundos.</p>
+              <p class="text-sm text-blue-700">Escribe "post promocional de mi producto" y la IA diseña por ti.</p>
             </div>
             <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
               <h4 class="font-bold text-blue-800 mb-1">🔄 Redimensión Mágica</h4>
-              <p class="text-sm text-blue-700">Convierte una presentación en un post de Instagram o en un documento con un solo clic.</p>
+              <p class="text-sm text-blue-700">Convierte una presentación en post de Instagram con un clic.</p>
             </div>
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">¿Gratis o Pro?</h3>
-          <p class="text-slate-600 mb-3">Canva ofrece muchísimo valor sin pagar, pero hay diferencias:</p>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Usos para tu Trabajo Comercial</h3>
           <ul class="text-sm space-y-2">
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>1. Canva Free:</strong> Acceso a miles de plantillas y funciones de IA básicas. Es perfecto para empezar el curso.</li>
-            <li class="bg-amber-50 p-3 rounded-lg"><strong>2. Canva Pro (Pago):</strong> Incluye el quitado de fondos de fotos con un clic y acceso total al Estudio Mágico avanzado.</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Post de producto:</strong> Combina imágenes de Ideogram/Midjourney con plantillas de Canva.</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Propuestas:</strong> Usa plantillas de presentación y personaliza con tu branding.</li>
+            <li class="bg-blue-50 p-3 rounded-lg"><strong>Material de ventas:</strong> Flyers, catálogos, tarjetas de presentación en minutos.</li>
           </ul>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos Pro de AulaGenIA</h3>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Ventas</h3>
           <ul class="text-sm space-y-2">
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Usa tus propias fotos:</strong> Combina las imágenes que generaste en Midjourney o DALL-E con las plantillas de Canva.</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Mantén tus colores:</strong> Elige una paleta de colores y úsala siempre para que tu marca se vea profesional.</li>
-            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Menos es más:</strong> No satures el diseño. Usa los espacios en blanco para que el mensaje se entienda rápido.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Define tu paleta:</strong> Elige 2-3 colores de marca y úsalos siempre.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Kit de marca:</strong> Guarda tu logo, colores y fuentes para aplicar en un clic.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Menos es más:</strong> Usa espacios en blanco para que el mensaje destaque.</li>
           </ul>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"La IA te da la velocidad, pero Canva te da la belleza. Un estratega sabe que la forma en que presentas una idea es tan importante como la idea misma."</p>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"Canva da forma profesional a tu propuesta; TÚ cierras el negocio."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Documento diseñado para el programa AulaGenIA. Información actualizada a diciembre de 2025.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Canva para Negocios - Módulo 2. AulaGenIA 2025.</div>
       </article>
-    `,
-    segments: {}
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Profesionales</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">📄 Plantillas Profesionales</h4>
+              <p class="text-sm text-indigo-700">Miles de diseños sobrios listos para personalizar.</p>
+            </div>
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+              <h4 class="font-bold text-indigo-800 mb-1">⌨️ Escritura Mágica</h4>
+              <p class="text-sm text-indigo-700">Refina el tono de tus textos directamente en el diseño.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Usos para tu Práctica</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Presentaciones para clientes:</strong> Usa plantillas profesionales y añade tu branding.</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Material institucional:</strong> Tarjetas, membretes, firmas de correo.</li>
+            <li class="bg-indigo-50 p-3 rounded-lg"><strong>Infografías de servicios:</strong> Explica tus áreas de práctica visualmente.</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Profesionales</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Sobriedad:</strong> Elige plantillas minimalistas y colores oscuros.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Consistencia:</strong> Usa las mismas fuentes y colores en todo tu material.</li>
+            <li class="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-400"><strong>⚠️ Revisa siempre:</strong> Canva genera, TÚ validas antes de compartir.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
+          <p class="text-white font-medium text-lg italic">"Canva presenta tu imagen institucional; TÚ garantizas la excelencia."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Canva para Profesionales - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Gestión</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">✨ Diseño Mágico</h4>
+              <p class="text-sm text-green-700">Describe "comunicado de nueva política" y obtén diseños listos.</p>
+            </div>
+            <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+              <h4 class="font-bold text-green-800 mb-1">📁 Carpetas de Marca</h4>
+              <p class="text-sm text-green-700">Organiza plantillas por tipo de documento para reusar.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Usos para tu Trabajo</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Comunicados internos:</strong> Anuncios, políticas, celebraciones con diseño profesional.</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Reportes visuales:</strong> Transforma datos en infografías atractivas.</li>
+            <li class="bg-green-50 p-3 rounded-lg"><strong>Onboarding:</strong> Material de bienvenida para nuevos empleados.</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Eficiencia</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Kit de marca institucional:</strong> Logo + colores + fuentes guardados para aplicar rápido.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Plantillas reutilizables:</strong> Crea una vez, usa muchas veces.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Colaboración:</strong> Comparte diseños con tu equipo para edición conjunta.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Canva estandariza tu comunicación visual; TÚ lideras el mensaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Canva para Gestión - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Funciones para Educadores</h3>
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">🎓 Plantillas Educativas</h4>
+              <p class="text-sm text-emerald-700">Miles de diseños para aula: presentaciones, posters, diplomas.</p>
+            </div>
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+              <h4 class="font-bold text-emerald-800 mb-1">🖼️ Multimedia Mágica</h4>
+              <p class="text-sm text-emerald-700">Genera imágenes describiendo lo que necesitas para tu clase.</p>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Usos para tu Aula</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Presentaciones:</strong> Material de clase atractivo con plantillas coloridas.</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Infografías:</strong> Explica conceptos complejos de forma visual.</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Diplomas y reconocimientos:</strong> Personaliza plantillas para tus alumnos.</li>
+            <li class="bg-emerald-50 p-3 rounded-lg"><strong>Material imprimible:</strong> Flashcards, posters, hojas de trabajo.</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">Consejos para Docentes</h3>
+          <ul class="text-sm space-y-2">
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Canva for Education:</strong> Plan gratuito para docentes con funciones premium.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Combina herramientas:</strong> Genera en DALL-E o Ideogram, arma en Canva.</li>
+            <li class="bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400"><strong>Enseña a tus alumnos:</strong> Canva es ideal para proyectos estudiantiles.</li>
+          </ul>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"Canva transforma ideas en material visual; TÚ enciendes el aprendizaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Guía Canva para Educación - Módulo 2. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "checklist-complejidad": {
     meta: {
