@@ -484,7 +484,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Generate carousel HTML
       const carouselId = `glossary-carousel-${tableIndex}`;
       const carouselHTML = `
-        <div class="glossary-carousel" id="${carouselId}" data-current="0" data-total="${terms.length}">
+        <div class="glossary-carousel not-prose" id="${carouselId}" data-current="0" data-total="${terms.length}">
           <!-- Navigation Arrows -->
           <button class="carousel-nav-btn carousel-nav-prev" onclick="window.carouselNavigate('${carouselId}', -1)" aria-label="Anterior" disabled>
             <i data-lucide="chevron-left" class="w-5 h-5"></i>
