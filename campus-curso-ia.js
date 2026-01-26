@@ -3909,12 +3909,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (filtered.length === 0) {
+      // DEBUG EXTENDIDO
+      const debugExample = casesData[0];
+      const examplePriority = debugExample ? JSON.stringify(debugExample.prioridadSegmento) : 'N/A';
+      const debugDump = casesData.slice(0, 3).map(c => `${c.id}: ${JSON.stringify(c.prioridadSegmento)}`).join('\n');
+
       return `<div class="p-8 text-center text-slate-500">
-        <p>No se encontraron casos para: <strong>${segment}</strong></p>
-        <p class="text-xs mt-2">Total de casos cargados: ${casesData.length}</p>
-        <p class="text-xs">Intocados: ${casesData.filter(c => !c.prioridadSegmento).length}</p>
-        <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-indigo-100 rounded">Recargar</button>
-      </div>`;
+          <p class="text-lg text-red-500 font-bold">Diagnóstico de Datos:</p>
+          <div class="text-left text-xs bg-slate-100 p-4 rounded mt-4 font-mono overflow-auto max-h-64">
+             <p><strong>Segmento buscado:</strong> "${segment}"</p>
+             <p><strong>Total Casos:</strong> ${casesData.length}</p>
+             <p><strong>Intocados:</strong> ${casesData.filter(c => !c.prioridadSegmento).length}</p>
+             <p><strong>Keys del Segmento (Ejemplo):</strong> ${examplePriority}</p>
+             <hr class="my-2">
+             <p><strong>Muestra de Datos (Primeros 3):</strong></p>
+             <pre>${debugDump}</pre>
+          </div>
+          <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-indigo-100 rounded">Recargar</button>
+        </div>`;
     }
 
     // Image Source: Use config directly (Single Source of Truth)
