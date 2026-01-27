@@ -4532,6 +4532,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tooltip.style.top = 'auto';
           } else {
             // En desktop: posicionamiento inteligente
+            tooltip.style.position = 'fixed'; // Asegurar position fixed
             let top, left;
             const tooltipWidth = 400;
             const margin = 20;
@@ -4542,6 +4543,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 left = rect.right + margin;
                 if (left + tooltipWidth > window.innerWidth) {
                   left = rect.left - tooltipWidth - margin;
+                }
+                break;
+              case 'left':
+                top = Math.max(20, rect.top + (rect.height / 2) - 140);
+                left = rect.left - tooltipWidth - margin;
+                if (left < 10) {
+                  left = rect.right + margin;
                 }
                 break;
               case 'top':
@@ -4557,9 +4565,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
-            // Ajustar límites
+            // Ajustar límites para garantizar visibilidad
             if (left < 10) left = 10;
+            if (left + tooltipWidth > window.innerWidth - 10) left = window.innerWidth - tooltipWidth - 10;
             if (top < 10) top = 10;
+            if (top > window.innerHeight - 300) top = window.innerHeight - 300;
 
             tooltip.style.top = top + 'px';
             tooltip.style.left = left + 'px';
