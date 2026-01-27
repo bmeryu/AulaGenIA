@@ -2721,9 +2721,9 @@ const resourcesDatabase = {
   "glosario-interactivo-aplicado": {
     meta: {
       type: "interactive",
-      title: "🎮 Glosario Interactivo Aplicado",
-      subtitle: "Experiencia gamificada: Los 6 Pilares + Simulador de Casos",
-      icon: "gamepad-2",
+      title: "📖 Glosario Interactivo Aplicado",
+      subtitle: "Los 6 Pilares de la IA + Simulador de Casos",
+      icon: "book-open",
       color: "cyan",
       module: 1
     },
@@ -8757,9 +8757,9 @@ const resourcesDatabase = {
   "auditor-agia": {
     meta: {
       type: "interactive",
-      title: "🎮 Auditor Modelo AGIA",
+      title: "🔍 Auditor Modelo AGIA",
       subtitle: "Entrena tu criterio para crear instrucciones maestras",
-      icon: "wand-2",
+      icon: "search-check",
       color: "teal",
       module: 3
     },

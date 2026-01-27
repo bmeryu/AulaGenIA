@@ -3996,23 +3996,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (filtered.length === 0) {
-      // DEBUG EXTENDIDO
-      const debugExample = casesData[0];
-      const examplePriority = debugExample ? JSON.stringify(debugExample.prioridadSegmento) : 'N/A';
-      const debugDump = casesData.slice(0, 3).map(c => `${c.id}: ${JSON.stringify(c.prioridadSegmento)}`).join('\n');
-
-      return `<div class="p-8 text-center text-slate-500">
-          <p class="text-lg text-red-500 font-bold">Diagnóstico de Datos:</p>
-          <div class="text-left text-xs bg-slate-100 p-4 rounded mt-4 font-mono overflow-auto max-h-64">
-             <p><strong>Segmento buscado:</strong> "${segment}"</p>
-             <p><strong>Total Casos:</strong> ${casesData.length}</p>
-             <p><strong>Intocados:</strong> ${casesData.filter(c => !c.prioridadSegmento).length}</p>
-             <p><strong>Keys del Segmento (Ejemplo):</strong> ${examplePriority}</p>
-             <hr class="my-2">
-             <p><strong>Muestra de Datos (Primeros 3):</strong></p>
-             <pre>${debugDump}</pre>
+      // Elegant loading state instead of debug info
+      return `<div class="max-w-md mx-auto py-16 text-center animate-in fade-in duration-500">
+          <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-lg animate-pulse">
+            <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
           </div>
-          <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-indigo-100 rounded">Recargar</button>
+          <h3 class="text-xl font-bold text-slate-800 mb-2">Cargando casos...</h3>
+          <p class="text-slate-500 text-sm mb-6">Preparando contenido personalizado para <strong>${segment}</strong></p>
+          <div class="flex justify-center gap-1">
+            <div class="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+            <div class="w-2 h-2 bg-teal-500 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+            <div class="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+          </div>
         </div>`;
     }
 
@@ -4048,7 +4043,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="flex items-start justify-between mb-3">
             <div class="flex items-center gap-2">
                ${isStarPrompt ? '<span class="inline-flex items-center justify-center p-1 bg-amber-100 text-amber-600 rounded-full"><i data-lucide="star" class="w-4 h-4 fill-current"></i></span>' : `<span class="p-1.5 rounded-lg bg-${categoryColor}-100 text-${categoryColor}-600"><i data-lucide="${segCfg?.icon || 'file-text'}" class="w-4 h-4"></i></span>`}
-               <span class="text-xs font-bold uppercase tracking-wider ${isStarPrompt ? 'text-amber-700' : 'text-slate-500'}">${c.industry || 'General'}</span>
+               <span class="text-xs font-bold uppercase tracking-wider ${isStarPrompt ? 'text-amber-700' : 'text-slate-500'}">${c.category || ''}</span>
             </div>
             ${isStarPrompt ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold border border-amber-200 flex items-center gap-1"><i data-lucide="award" class="w-3 h-3"></i> Top Pick</span>' : ''}
           </div>
