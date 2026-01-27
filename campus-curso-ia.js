@@ -4225,6 +4225,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const tourSeen = localStorage.getItem('courseTourSeen');
     if (tourSeen) return;
 
+    // NO ejecutar el tour si estamos viendo un caso del Módulo 5
+    const hash = window.location.hash;
+    if (hash.startsWith('#caso/') || hash.startsWith('#segmento/')) {
+      console.log('Tour skipped: viewing a case or segment');
+      return;
+    }
+
     // Función para verificar que el contenido esté listo
     function checkContentReady(attempts = 0) {
       const sidebar = document.getElementById('course-sidebar');
@@ -4303,7 +4310,7 @@ document.addEventListener("DOMContentLoaded", () => {
           position: 'bottom'
         },
         {
-          id: 'modules-container',
+          selector: '#modules-container > details:last-of-type',
           name: '🎯 Módulo 5: Casos Aplicados',
           desc: 'Este es tu <strong>recurso más valioso</strong>.<br><br>Contiene <strong>Instrucciones Maestras</strong> listas para usar con ChatGPT, Gemini o Claude.<br><br>Son soluciones probadas a problemas reales de tu área profesional.',
           position: 'right'
@@ -4475,7 +4482,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         currentStep = index;
         const stepData = courseSections[index];
-        const section = document.getElementById(stepData.id);
+        // Soportar tanto id como selector CSS
+        const section = stepData.id
+          ? document.getElementById(stepData.id)
+          : document.querySelector(stepData.selector);
 
         if (!section) {
           showStep(index + 1);
