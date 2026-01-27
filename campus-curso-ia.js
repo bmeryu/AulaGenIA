@@ -4314,15 +4314,21 @@ document.addEventListener("DOMContentLoaded", () => {
           position: 'bottom'
         },
         {
-          selector: '#modules-container > .accordion-item:last-of-type',
+          selector: '#modules-container > .accordion-item:nth-last-of-type(2)',
           name: '🎯 Módulo 5: Casos Aplicados',
           desc: 'Este es tu <strong>recurso más valioso</strong>.<br><br>Contiene <strong>Instrucciones Maestras</strong> listas para usar con ChatGPT, Gemini o Claude.<br><br>Son soluciones probadas a problemas reales de tu área profesional.',
           position: 'right'
         },
         {
+          selector: '#modules-container > .accordion-item:last-of-type',
+          name: '🎓 Final del Camino: Certificación',
+          desc: '¡Tu meta final!<br><br>Completa todos los módulos y el <strong>examen final</strong> para obtener tu <strong>certificado oficial</strong> de IA Aplicada.',
+          position: 'right'
+        },
+        {
           id: 'navigation-buttons',
-          name: '🎓 Tu Camino al Certificado',
-          desc: '¡Estás a un paso de tu certificación!<br><br>• <strong>Marca cada lección</strong> como completada<br>• Alcanza el <strong>100%</strong> de progreso<br>• <strong>Obtén tu certificado</strong> oficial de IA Aplicada',
+          name: '✅ Avanza Paso a Paso',
+          desc: 'Después de cada lección:<br>• Haz click en <strong>"Marcar como completada"</strong><br>• Tu progreso se guarda automáticamente<br>• ¡Cada paso te acerca al certificado!',
           position: 'top'
         }
       ];
