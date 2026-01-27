@@ -4107,6 +4107,93 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         </header>
         
+        <!-- INTRO EDUCATIVA MÓDULO 5 - Colapsable -->
+        ${isSegmentView ? `
+        <div class="mb-6 bg-gradient-to-r from-teal-50 to-emerald-50 rounded-2xl border border-teal-200/60 overflow-hidden">
+            <button onclick="this.parentElement.classList.toggle('expanded'); this.querySelector('.chevron').classList.toggle('rotate-180')" 
+                    class="w-full p-4 flex items-center justify-between text-left hover:bg-teal-50/50 transition-colors">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center">
+                        <i data-lucide="lightbulb" class="w-5 h-5 text-teal-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">¿Qué son los Casos Aplicados?</h3>
+                        <p class="text-xs text-slate-500">Guía rápida para sacar el máximo provecho</p>
+                    </div>
+                </div>
+                <i data-lucide="chevron-down" class="chevron w-5 h-5 text-teal-500 transition-transform duration-300"></i>
+            </button>
+            
+            <div class="intro-content px-4 pb-4 hidden">
+                <div class="bg-white rounded-xl p-5 border border-teal-100 space-y-4">
+                    
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+                            <span class="text-lg">🎯</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Tu biblioteca de prompts lista para usar</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Cada "caso" es un <strong>prompt profesional listo para copiar y pegar</strong> en ChatGPT, Gemini o Claude. 
+                                Están organizados por situaciones reales que enfrentas en tu día a día.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center flex-shrink-0">
+                            <span class="text-lg">⭐</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Los "Top Pick" son imperdibles</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Los casos marcados con estrella son nuestros <strong>prompts más efectivos</strong> para tu perfil. 
+                                Empieza por ellos si tienes poco tiempo.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                            <span class="text-lg">📋</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Cada caso tiene 4 secciones clave</h4>
+                            <ul class="text-xs text-slate-600 leading-relaxed space-y-1 mt-2">
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="target" class="w-3 h-3 text-amber-500"></i>
+                                    <strong>El Desafío:</strong> El problema que resuelve este prompt
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="sparkles" class="w-3 h-3 text-teal-500"></i>
+                                    <strong>Prompt Maestro:</strong> El texto listo para copiar y usar
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="lightbulb" class="w-3 h-3 text-purple-500"></i>
+                                    <strong>¿Por qué funciona?:</strong> La técnica detrás del prompt
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="list-checks" class="w-3 h-3 text-emerald-500"></i>
+                                    <strong>Ajuste Fino:</strong> Tips para personalizar el resultado
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <style>
+            .expanded .intro-content { display: block !important; }
+            .intro-content { animation: slideDown 0.3s ease-out; }
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        </style>
+        ` : ''}
+        
         ${filtered.length === 0 ? `
           <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
             <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center">
@@ -4238,24 +4325,44 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- Main Content -->
             <div class="space-y-6">
                 
-                <!-- El Desafío - SIMPLIFIED -->
+                <!-- El Desafío - CON TOOLTIP EDUCATIVO -->
                 <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-3 flex items-center gap-2">
-                        <i data-lucide="target" class="w-4 h-4 text-amber-500"></i>
-                        El Desafío
-                    </h2>
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
+                            <i data-lucide="target" class="w-4 h-4 text-amber-500"></i>
+                            El Desafío
+                        </h2>
+                        <span class="group relative">
+                            <i data-lucide="info" class="w-4 h-4 text-slate-300 hover:text-teal-500 cursor-help transition-colors"></i>
+                            <div class="absolute right-0 bottom-full mb-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 shadow-xl">
+                                <strong class="block text-teal-300 mb-1">¿Qué es esto?</strong>
+                                Describe el problema o situación que este prompt ayuda a resolver. Identifica si coincide con lo que necesitas.
+                                <div class="absolute bottom-0 right-4 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800"></div>
+                            </div>
+                        </span>
+                    </div>
                     <p class="text-slate-700 leading-relaxed">
                         "${c.problem || c.description}"
                     </p>
                 </section>
 
-                <!-- Prompt Maestro - SIMPLIFIED -->
+                <!-- Prompt Maestro - CON TOOLTIP EDUCATIVO -->
                 <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="sparkles" class="w-4 h-4 text-teal-500"></i>
-                            La Solución (Prompt Maestro)
-                        </h2>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-teal-500"></i>
+                                La Solución (Prompt Maestro)
+                            </h2>
+                            <span class="group relative">
+                                <i data-lucide="info" class="w-4 h-4 text-slate-300 hover:text-teal-500 cursor-help transition-colors"></i>
+                                <div class="absolute left-0 bottom-full mb-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 shadow-xl">
+                                    <strong class="block text-teal-300 mb-1">⭐ La acción clave</strong>
+                                    Este es el prompt listo para usar. Cópialo y pégalo directamente en ChatGPT, Gemini o Claude. Solo reemplaza los datos entre corchetes con tu información.
+                                    <div class="absolute bottom-0 left-4 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800"></div>
+                                </div>
+                            </span>
+                        </div>
                         <button onclick="copyPromptText(\`${decryptPrompt(c.agiaPromptTagged).replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-teal-100 text-slate-600 hover:text-teal-700 text-xs font-medium rounded-lg transition-colors">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                             Copiar Prompt
@@ -4267,12 +4374,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 </section>
                 
                 ${(c.fineTuning && c.fineTuning.length > 0) ? `
-                <!-- Ajuste Fino - SIMPLIFIED -->
+                <!-- Ajuste Fino - CON TOOLTIP EDUCATIVO -->
                 <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2">
-                        <i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i>
-                        Ajuste Fino & Calidad
-                    </h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
+                            <i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i>
+                            Ajuste Fino & Calidad
+                        </h2>
+                        <span class="group relative">
+                            <i data-lucide="info" class="w-4 h-4 text-slate-300 hover:text-teal-500 cursor-help transition-colors"></i>
+                            <div class="absolute right-0 bottom-full mb-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 shadow-xl">
+                                <strong class="block text-emerald-300 mb-1">Personaliza tu resultado</strong>
+                                Estos son tips para refinar la respuesta de la IA. Úsalos si el resultado inicial no es exactamente lo que necesitas.
+                                <div class="absolute bottom-0 right-4 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800"></div>
+                            </div>
+                        </span>
+                    </div>
                     <ul class="space-y-2">
                         ${c.fineTuning.map(item => `
                         <li class="flex items-start gap-3 py-2 border-b border-slate-100 last:border-0">
@@ -4284,12 +4401,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 ` : ''}
 
                 ${c.suggestedAI ? `
-                <!-- Herramientas IA - SIMPLIFIED -->
+                <!-- Herramientas IA - CON TOOLTIP EDUCATIVO -->
                 <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2">
-                        <i data-lucide="bot" class="w-4 h-4 text-indigo-500"></i>
-                        Herramientas Recomendadas
-                    </h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
+                            <i data-lucide="bot" class="w-4 h-4 text-indigo-500"></i>
+                            Herramientas Recomendadas
+                        </h2>
+                        <span class="group relative">
+                            <i data-lucide="info" class="w-4 h-4 text-slate-300 hover:text-teal-500 cursor-help transition-colors"></i>
+                            <div class="absolute right-0 bottom-full mb-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 shadow-xl">
+                                <strong class="block text-indigo-300 mb-1">Un click, listo para usar</strong>
+                                Al hacer click, se copia automáticamente el prompt y se abre la herramienta. Solo pega (Ctrl+V) y presiona Enter.
+                                <div class="absolute bottom-0 right-4 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800"></div>
+                            </div>
+                        </span>
+                    </div>
                     ${(function () {
           const aiText = (c.suggestedAI || '').toLowerCase();
           const tools = [];
@@ -4325,14 +4452,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 </section>
                 ` : ''}
 
-                <!-- Insights - SIMPLIFIED -->
+                <!-- Insights - CON TOOLTIPS EDUCATIVOS -->
                 <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     ${c.solutionPlus ? `
                     <div class="sm:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-3 flex items-center gap-2">
-                            <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
-                            ¿Por qué funciona?
-                        </h3>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
+                                <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
+                                ¿Por qué funciona?
+                            </h3>
+                            <span class="group relative">
+                                <i data-lucide="info" class="w-4 h-4 text-slate-300 hover:text-teal-500 cursor-help transition-colors"></i>
+                                <div class="absolute right-0 bottom-full mb-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 shadow-xl">
+                                    <strong class="block text-amber-300 mb-1">Aprende el 'por qué'</strong>
+                                    Explica la técnica de prompting utilizada. Entender esto te ayudará a crear tus propios prompts en el futuro.
+                                    <div class="absolute bottom-0 right-4 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800"></div>
+                                </div>
+                            </span>
+                        </div>
                         <p class="text-slate-700 leading-relaxed">${c.solutionPlus}</p>
                     </div>` : ''}
 
