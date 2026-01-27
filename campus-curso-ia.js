@@ -3850,53 +3850,79 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentViewingSegment = null;
 
   // Tour guiado de tooltips - se muestra la primera vez que se abre un caso
+  // Para volver a ver el tour: localStorage.removeItem('caseTourSeen')
   function runTooltipTour() {
     const tourSeen = localStorage.getItem('caseTourSeen');
     if (tourSeen) return; // Ya vio el tour
 
     // IDs de las secciones con tooltips (en orden)
     const tooltipSections = [
-      { id: 'case-section-desafio', name: 'El Desafío' },
-      { id: 'case-section-instruccion', name: 'Instrucción Maestra' },
-      { id: 'case-section-porque', name: 'Por qué Funciona' },
-      { id: 'case-section-ajuste', name: 'Ajuste Fino' }
+      { id: 'case-section-desafio', name: 'El Desafío', desc: 'El problema que este caso resuelve' },
+      { id: 'case-section-instruccion', name: 'Instrucción Maestra', desc: 'El mensaje listo para copiar y usar' },
+      { id: 'case-section-porque', name: '¿Por qué Funciona?', desc: 'La técnica detrás de la instrucción' },
+      { id: 'case-section-ajuste', name: 'Ajuste Fino', desc: 'Tips para personalizar el resultado' }
     ];
 
     let currentStep = 0;
+
+    // Crear overlay
     const tourOverlay = document.createElement('div');
     tourOverlay.id = 'tooltip-tour-overlay';
     tourOverlay.innerHTML = `
       <style>
         #tooltip-tour-overlay {
           position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.4); z-index: 9998;
+          background: rgba(0,0,0,0.5); z-index: 9998;
           transition: opacity 0.3s ease;
+          cursor: pointer;
         }
         .tour-highlight {
           position: relative; z-index: 9999 !important;
-          box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.5), 0 0 20px rgba(20, 184, 166, 0.3) !important;
+          box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.6), 0 0 30px rgba(20, 184, 166, 0.4) !important;
           border-radius: 16px;
+          background: white !important;
         }
         .tour-tooltip {
           position: fixed; z-index: 10000;
-          background: #0f172a; color: white; padding: 12px 16px;
-          border-radius: 12px; font-size: 13px; max-width: 280px;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-          animation: tourPulse 0.4s ease;
+          background: #0f172a; color: white; padding: 16px 20px;
+          border-radius: 12px; font-size: 14px; max-width: 320px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+          animation: tourPulse 0.3s ease;
         }
         .tour-tooltip::after {
-          content: ''; position: absolute; bottom: -6px; left: 20px;
-          border-left: 6px solid transparent; border-right: 6px solid transparent;
-          border-top: 6px solid #0f172a;
+          content: ''; position: absolute; bottom: -8px; left: 24px;
+          border-left: 8px solid transparent; border-right: 8px solid transparent;
+          border-top: 8px solid #0f172a;
         }
-        .tour-tooltip strong { color: #5eead4; }
-        .tour-progress { display: flex; gap: 4px; margin-top: 8px; }
-        .tour-dot { width: 6px; height: 6px; background: #475569; border-radius: 50%; }
-        .tour-dot.active { background: #5eead4; }
-        @keyframes tourPulse { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tour-tooltip h4 { color: #5eead4; font-size: 16px; margin: 0 0 4px 0; }
+        .tour-tooltip p { color: #94a3b8; font-size: 13px; margin: 0 0 12px 0; }
+        .tour-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+        .tour-progress { display: flex; gap: 6px; }
+        .tour-dot { width: 8px; height: 8px; background: #334155; border-radius: 50%; transition: all 0.2s; }
+        .tour-dot.active { background: #5eead4; transform: scale(1.2); }
+        .tour-dot.done { background: #14b8a6; }
+        .tour-btn { 
+          background: #14b8a6; color: white; border: none; 
+          padding: 8px 16px; border-radius: 8px; font-size: 13px; 
+          font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .tour-btn:hover { background: #0d9488; transform: scale(1.02); }
+        .tour-skip { color: #64748b; font-size: 12px; cursor: pointer; }
+        .tour-skip:hover { color: #94a3b8; }
+        .tour-hint { color: #64748b; font-size: 11px; margin-top: 8px; text-align: center; }
+        @keyframes tourPulse { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       </style>
     `;
     document.body.appendChild(tourOverlay);
+
+    function endTour() {
+      document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+      document.querySelectorAll('.tour-tooltip').forEach(el => el.remove());
+      tourOverlay.style.opacity = '0';
+      setTimeout(() => tourOverlay.remove(), 300);
+      localStorage.setItem('caseTourSeen', 'true');
+      document.removeEventListener('keydown', handleKeyPress);
+    }
 
     function showStep(index) {
       // Limpiar paso anterior
@@ -3904,45 +3930,72 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll('.tour-tooltip').forEach(el => el.remove());
 
       if (index >= tooltipSections.length) {
-        // Tour completado
-        tourOverlay.style.opacity = '0';
-        setTimeout(() => {
-          tourOverlay.remove();
-          localStorage.setItem('caseTourSeen', 'true');
-        }, 300);
+        endTour();
         return;
       }
 
+      currentStep = index;
       const section = document.getElementById(tooltipSections[index].id);
+
       if (!section) {
         // Skip to next if section not found
-        setTimeout(() => showStep(index + 1), 200);
+        showStep(index + 1);
         return;
       }
 
       section.classList.add('tour-highlight');
       section.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-      const rect = section.getBoundingClientRect();
-      const tooltip = document.createElement('div');
-      tooltip.className = 'tour-tooltip';
-      tooltip.innerHTML = `
-          <strong>${tooltipSections[index].name}</strong><br>
-          <span style="color: #94a3b8; font-size: 12px;">Pasa el cursor sobre ⓘ para más info</span>
-          <div class="tour-progress">
-            ${tooltipSections.map((_, i) => `<div class="tour-dot ${i === index ? 'active' : ''}"></div>`).join('')}
-          </div>
-        `;
-      tooltip.style.top = (rect.top - 60) + 'px';
-      tooltip.style.left = (rect.left + 20) + 'px';
-      document.body.appendChild(tooltip);
+      // Esperar a que termine el scroll
+      setTimeout(() => {
+        const rect = section.getBoundingClientRect();
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tour-tooltip';
 
-      // Siguiente paso después de 1.8s
-      setTimeout(() => showStep(index + 1), 1800);
+        const isLast = index === tooltipSections.length - 1;
+        tooltip.innerHTML = `
+          <h4>${index + 1}. ${tooltipSections[index].name}</h4>
+          <p>${tooltipSections[index].desc}</p>
+          <div class="tour-footer">
+            <div class="tour-progress">
+              ${tooltipSections.map((_, i) => `<div class="tour-dot ${i < index ? 'done' : ''} ${i === index ? 'active' : ''}"></div>`).join('')}
+            </div>
+            <button class="tour-btn" id="tour-next-btn">${isLast ? '¡Entendido!' : 'Siguiente →'}</button>
+          </div>
+          <div class="tour-hint">Click, espacio o Enter para continuar</div>
+        `;
+
+        // Posicionar tooltip
+        let top = rect.top - tooltip.offsetHeight - 20;
+        if (top < 10) top = rect.bottom + 20;
+        tooltip.style.top = Math.max(10, rect.top - 120) + 'px';
+        tooltip.style.left = Math.max(10, rect.left) + 'px';
+
+        document.body.appendChild(tooltip);
+
+        // Event listener para el botón
+        document.getElementById('tour-next-btn').addEventListener('click', (e) => {
+          e.stopPropagation();
+          showStep(index + 1);
+        });
+      }, 400);
     }
 
+    // Event listeners para avanzar
+    function handleKeyPress(e) {
+      if (e.code === 'Space' || e.code === 'Enter') {
+        e.preventDefault();
+        showStep(currentStep + 1);
+      } else if (e.code === 'Escape') {
+        endTour();
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+    tourOverlay.addEventListener('click', () => showStep(currentStep + 1));
+
     // Iniciar tour después de un pequeño delay
-    setTimeout(() => showStep(0), 800);
+    setTimeout(() => showStep(0), 600);
   }
 
   window.openCaseDetail = function (caseId) {
