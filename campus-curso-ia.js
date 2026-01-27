@@ -3778,8 +3778,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <button onclick="selectUserSegment('${name}')" 
               class="group p-6 rounded-2xl border-2 border-slate-200 hover:border-${cfg.color}-400 hover:bg-${cfg.color}-50 transition-all text-left">
               <div class="flex items-center gap-4 mb-3">
-                <div class="w-12 h-12 rounded-xl bg-${cfg.color}-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <span class="text-2xl">${cfg.badge}</span>
+                <div class="w-14 h-14 rounded-xl overflow-hidden group-hover:scale-110 transition-transform">
+                  <img src="${cfg.image}" alt="${name}" class="w-full h-full object-contain">
                 </div>
                 <div>
                   <h3 class="font-bold text-slate-900">${name}</h3>
