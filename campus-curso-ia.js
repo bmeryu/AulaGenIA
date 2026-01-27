@@ -954,8 +954,15 @@ document.addEventListener("DOMContentLoaded", () => {
           position: relative;
           background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
           border-radius: 1.5rem;
-          padding: 1.5rem;
+          padding: 1.25rem;
           overflow: hidden;
+          min-height: 450px;
+        }
+        @media (min-width: 768px) {
+          .glosario-integrated {
+            padding: 2rem;
+            min-height: 550px;
+          }
         }
         
         /* Animated aurora blobs */
@@ -1012,13 +1019,27 @@ document.addEventListener("DOMContentLoaded", () => {
           background: rgba(15, 23, 42, 0.6);
           backdrop-filter: blur(24px);
           -webkit-backdrop-filter: blur(24px);
-          border-radius: 1.5rem;
-          padding: 2.5rem;
+          border-radius: 1.25rem;
+          padding: 1.25rem;
           border: 1px solid rgba(255, 255, 255, 0.1);
           box-shadow: 
             0 0 0 1px rgba(255,255,255,0.05) inset,
             0 25px 50px -12px rgba(0, 0, 0, 0.5),
             0 0 100px -20px rgba(20, 184, 166, 0.15);
+        }
+        @media (min-width: 768px) {
+          .glosario-integrated .gi-card {
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+          }
+        }
+        .glosario-integrated .gi-card h1 {
+          font-size: 1.25rem;
+        }
+        @media (min-width: 768px) {
+          .glosario-integrated .gi-card h1 {
+            font-size: 1.75rem;
+          }
         }
 
         /* Text colors for dark mode */
@@ -2411,28 +2432,109 @@ document.addEventListener("DOMContentLoaded", () => {
       { icon: '🎨', text: 'Diseñar imágenes' }
     ];
 
-    // Inyectar estilos - Estilo AulaGenIA (teal)
+    // Inyectar estilos - Dark Premium (igual al Simulador)
     const injectRadarStyles = () => {
       if (document.getElementById('radar-integrated-styles')) return;
       const style = document.createElement('style');
       style.id = 'radar-integrated-styles';
       style.textContent = `
-        .radar-integrated { position: relative; background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%); border-radius: 1.5rem; padding: 1.5rem; overflow: hidden; min-height: 400px; }
-        @media (min-width: 768px) { .radar-integrated { padding: 2rem; min-height: 500px; } }
-        .radar-integrated::before { content: ''; position: absolute; top: -20%; right: -10%; width: 40%; height: 40%; background: radial-gradient(ellipse, rgba(20, 184, 166, 0.15) 0%, transparent 70%); filter: blur(40px); pointer-events: none; }
-        .radar-integrated .radar-card { position: relative; z-index: 1; background: white; backdrop-filter: blur(24px); border-radius: 1.5rem; padding: 1.5rem; border: 2px solid rgba(20, 184, 166, 0.2); color: #0f172a; box-shadow: 0 10px 40px -10px rgba(20, 184, 166, 0.2); }
-        @media (min-width: 768px) { .radar-integrated .radar-card { padding: 2rem; } }
-        .radar-integrated h1, .radar-integrated h2, .radar-integrated h3 { color: #0f172a; }
-        .radar-integrated h1 { font-size: 1.5rem; }
+        /* Container - Dark premium base */
+        .radar-integrated {
+          position: relative;
+          background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+          border-radius: 1.5rem;
+          padding: 1.25rem;
+          overflow: hidden;
+          min-height: 450px;
+        }
+        @media (min-width: 768px) {
+          .radar-integrated { padding: 2rem; min-height: 550px; }
+        }
+        /* Aurora effects */
+        .radar-integrated::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -25%;
+          width: 80%;
+          height: 80%;
+          background: radial-gradient(ellipse, rgba(20, 184, 166, 0.25) 0%, transparent 70%);
+          filter: blur(60px);
+          animation: radarAurora1 12s ease-in-out infinite alternate;
+          pointer-events: none;
+        }
+        .radar-integrated::after {
+          content: '';
+          position: absolute;
+          bottom: -40%;
+          right: -20%;
+          width: 70%;
+          height: 70%;
+          background: radial-gradient(ellipse, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+          filter: blur(60px);
+          animation: radarAurora2 15s ease-in-out infinite alternate;
+          pointer-events: none;
+        }
+        @keyframes radarAurora1 {
+          0% { transform: translate(0, 0); opacity: 0.3; }
+          100% { transform: translate(50px, 30px); opacity: 0.5; }
+        }
+        @keyframes radarAurora2 {
+          0% { transform: translate(0, 0); opacity: 0.25; }
+          100% { transform: translate(-40px, -20px); opacity: 0.45; }
+        }
+        /* Main card - Frosted glass dark */
+        .radar-integrated .radar-card {
+          position: relative;
+          z-index: 1;
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(24px);
+          border-radius: 1.25rem;
+          padding: 1.25rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #e2e8f0;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        @media (min-width: 768px) {
+          .radar-integrated .radar-card { border-radius: 1.5rem; padding: 2rem; }
+        }
+        .radar-integrated h1, .radar-integrated h2, .radar-integrated h3 { color: #f1f5f9; }
+        .radar-integrated h1 { font-size: 1.25rem; }
         @media (min-width: 768px) { .radar-integrated h1 { font-size: 1.75rem; } }
-        .radar-integrated .btn-radar { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; border: none; box-shadow: 0 4px 15px -3px rgba(20, 184, 166, 0.4); transition: all 0.3s; padding: 0.75rem 1.5rem; font-size: 1rem; font-weight: 600; border-radius: 0.75rem; min-height: 48px; }
+        .radar-integrated p { color: #94a3b8; }
+        .radar-integrated label { color: #cbd5e1; }
+        /* Button - Teal gradient */
+        .radar-integrated .btn-radar {
+          background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+          color: white;
+          border: none;
+          box-shadow: 0 0 30px -5px rgba(20, 184, 166, 0.5);
+          transition: all 0.3s;
+          padding: 0.75rem 1.5rem;
+          font-size: 1rem;
+          font-weight: 600;
+          border-radius: 0.75rem;
+          min-height: 48px;
+        }
         @media (min-width: 768px) { .radar-integrated .btn-radar { padding: 1rem 2rem; font-size: 1.1rem; } }
-        .radar-integrated .btn-radar:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -5px rgba(20, 184, 166, 0.5); }
-        .radar-integrated input[type="text"], .radar-integrated input[type="number"] { background: #f8fafc; border: 2px solid #e2e8f0; color: #0f172a; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1rem; min-height: 48px; }
-        .radar-integrated input[type="text"]:focus, .radar-integrated input[type="number"]:focus { border-color: #14b8a6; box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1); outline: none; }
+        .radar-integrated .btn-radar:hover { transform: translateY(-2px); box-shadow: 0 0 50px -5px rgba(20, 184, 166, 0.6); }
+        /* Inputs - Dark style */
+        .radar-integrated input[type="text"], .radar-integrated input[type="number"] {
+          background: rgba(30, 41, 59, 0.8);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #f1f5f9;
+          border-radius: 0.75rem;
+          padding: 0.75rem 1rem;
+          font-size: 1rem;
+          min-height: 48px;
+        }
+        .radar-integrated input[type="text"]:focus, .radar-integrated input[type="number"]:focus {
+          border-color: rgba(20, 184, 166, 0.5);
+          box-shadow: 0 0 20px -5px rgba(20, 184, 166, 0.3);
+          outline: none;
+        }
+        .radar-integrated input::placeholder { color: #64748b; }
         .radar-integrated .fade-in { animation: radarFadeIn 0.4s ease-out; }
-        .radar-integrated p, .radar-integrated label { font-size: 0.95rem; }
-        @media (min-width: 768px) { .radar-integrated p, .radar-integrated label { font-size: 1rem; } }
         @keyframes radarFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
       `;
       document.head.appendChild(style);
