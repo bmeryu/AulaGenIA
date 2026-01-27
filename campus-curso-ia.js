@@ -4243,11 +4243,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const lessonReady = lessonContainer && lessonContainer.innerHTML.trim().length > 50;
       const modulesReady = moduleContainer && moduleContainer.children.length > 0;
 
-      console.log(`[Tour] Attempt ${attempts}: sidebar=${sidebarReady}, lesson=${lessonReady}, modules=${modulesReady}`);
 
       if (sidebarReady && lessonReady && modulesReady) {
         // Todo listo, iniciar tour
-        console.log('[Tour] All ready, starting tour UI');
         startTourUI();
       } else if (attempts < 15) {
         // Reintentar hasta 15 veces (4.5s total)
@@ -4259,7 +4257,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    console.log('[Tour] runCourseTour called, checking content...');
     // Iniciar verificación después de un delay inicial
     setTimeout(() => checkContentReady(), 1500);
 
@@ -4496,10 +4493,8 @@ document.addEventListener("DOMContentLoaded", () => {
           ? document.getElementById(stepData.id)
           : document.querySelector(stepData.selector);
 
-        console.log(`[Tour] showStep(${index}): looking for ${stepData.id || stepData.selector}, found:`, !!section);
 
         if (!section) {
-          console.warn(`[Tour] Step ${index} skipped - element not found`);
           showStep(index + 1);
           return;
         }
@@ -4563,10 +4558,8 @@ document.addEventListener("DOMContentLoaded", () => {
               case 'right':
                 top = Math.max(20, rect.top + (rect.height / 2) - 140);
                 left = rect.right + margin;
-                console.log(`[Tour] Position right: rect.right=${rect.right}, left=${left}, window.innerWidth=${window.innerWidth}`);
                 if (left + tooltipWidth > window.innerWidth) {
                   left = rect.left - tooltipWidth - margin;
-                  console.log(`[Tour] Overflow detected, moved to left: ${left}`);
                 }
                 break;
               case 'left':
