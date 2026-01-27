@@ -4500,13 +4500,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         section.classList.add('course-tour-highlight');
 
-        // Scroll más agresivo para asegurar visibilidad
+        const isMobile = window.innerWidth < 768;
+
+        // En mobile, hacer scroll para que el elemento quede arriba, dejando espacio para tooltip
+        // En desktop, centrar el elemento
         const rect = section.getBoundingClientRect();
         const isOffscreen = rect.top < 0 || rect.bottom > window.innerHeight;
-        section.scrollIntoView({
-          behavior: 'smooth',
-          block: isOffscreen ? 'start' : 'center'
-        });
+
+        if (isMobile) {
+          // Mobile: scroll para que el elemento quede en la parte superior, dejando 200px abajo para tooltip
+          const targetScrollY = window.scrollY + rect.top - 80;
+          window.scrollTo({ top: Math.max(0, targetScrollY), behavior: 'smooth' });
+        } else {
+          section.scrollIntoView({
+            behavior: 'smooth',
+            block: isOffscreen ? 'start' : 'center'
+          });
+        }
 
         // Esperar a que el scroll termine (más tiempo si offscreen)
         setTimeout(() => {
