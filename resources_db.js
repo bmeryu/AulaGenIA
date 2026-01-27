@@ -9857,11 +9857,6 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"No permitas que la IA se maree con su propia memoria. Divide tu meta de 10k en 90 días de ladrillos perfectos y el algoritmo no tendrá más opción que mostrarte."</p>
-        </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Documento de Aplicación Real AulaGenIA 2025. Tu éxito es nuestra métrica.</div>
       </article>
     `,
     segments: {
