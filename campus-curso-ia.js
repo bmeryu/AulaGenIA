@@ -2407,24 +2407,28 @@ document.addEventListener("DOMContentLoaded", () => {
       { icon: '🎨', text: 'Diseñar imágenes' }
     ];
 
-    // Inyectar estilos
+    // Inyectar estilos - Estilo AulaGenIA (teal)
     const injectRadarStyles = () => {
       if (document.getElementById('radar-integrated-styles')) return;
       const style = document.createElement('style');
       style.id = 'radar-integrated-styles';
       style.textContent = `
-        .radar-integrated { position: relative; background: linear-gradient(180deg, #020617 0%, #0f172a 50%, #020617 100%); border-radius: 1.5rem; padding: 1.5rem; overflow: hidden; }
-        .radar-integrated::before { content: ''; position: absolute; top: -40%; left: -20%; width: 60%; height: 60%; background: radial-gradient(ellipse, rgba(245, 158, 11, 0.12) 0%, transparent 70%); filter: blur(60px); pointer-events: none; animation: radarAurora1 15s ease-in-out infinite alternate; }
-        .radar-integrated::after { content: ''; position: absolute; bottom: -30%; right: -15%; width: 50%; height: 50%; background: radial-gradient(ellipse, rgba(239, 68, 68, 0.1) 0%, transparent 70%); filter: blur(60px); pointer-events: none; animation: radarAurora2 12s ease-in-out infinite alternate; }
-        @keyframes radarAurora1 { 0% { transform: translate(0,0); } 100% { transform: translate(40px,20px); } }
-        @keyframes radarAurora2 { 0% { transform: translate(0,0); } 100% { transform: translate(-30px,-15px); } }
-        .radar-integrated .radar-card { position: relative; z-index: 1; background: rgba(15,23,42,0.7); backdrop-filter: blur(24px); border-radius: 1.5rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.08); color: #e2e8f0; }
-        .radar-integrated h1, .radar-integrated h2, .radar-integrated h3 { color: #f1f5f9; }
-        .radar-integrated .btn-radar { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); border: none; box-shadow: 0 0 25px -5px rgba(245,158,11,0.4); transition: all 0.3s; }
-        .radar-integrated .btn-radar:hover { transform: translateY(-2px); box-shadow: 0 0 40px -5px rgba(245,158,11,0.5); }
-        .radar-integrated input[type="text"], .radar-integrated input[type="number"] { background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.1); color: #f1f5f9; }
-        .radar-integrated input[type="text"]:focus, .radar-integrated input[type="number"]:focus { border-color: rgba(245,158,11,0.5); box-shadow: 0 0 20px -5px rgba(245,158,11,0.3); }
+        .radar-integrated { position: relative; background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%); border-radius: 1.5rem; padding: 1.5rem; overflow: hidden; min-height: 400px; }
+        @media (min-width: 768px) { .radar-integrated { padding: 2rem; min-height: 500px; } }
+        .radar-integrated::before { content: ''; position: absolute; top: -20%; right: -10%; width: 40%; height: 40%; background: radial-gradient(ellipse, rgba(20, 184, 166, 0.15) 0%, transparent 70%); filter: blur(40px); pointer-events: none; }
+        .radar-integrated .radar-card { position: relative; z-index: 1; background: white; backdrop-filter: blur(24px); border-radius: 1.5rem; padding: 1.5rem; border: 2px solid rgba(20, 184, 166, 0.2); color: #0f172a; box-shadow: 0 10px 40px -10px rgba(20, 184, 166, 0.2); }
+        @media (min-width: 768px) { .radar-integrated .radar-card { padding: 2rem; } }
+        .radar-integrated h1, .radar-integrated h2, .radar-integrated h3 { color: #0f172a; }
+        .radar-integrated h1 { font-size: 1.5rem; }
+        @media (min-width: 768px) { .radar-integrated h1 { font-size: 1.75rem; } }
+        .radar-integrated .btn-radar { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; border: none; box-shadow: 0 4px 15px -3px rgba(20, 184, 166, 0.4); transition: all 0.3s; padding: 0.75rem 1.5rem; font-size: 1rem; font-weight: 600; border-radius: 0.75rem; min-height: 48px; }
+        @media (min-width: 768px) { .radar-integrated .btn-radar { padding: 1rem 2rem; font-size: 1.1rem; } }
+        .radar-integrated .btn-radar:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -5px rgba(20, 184, 166, 0.5); }
+        .radar-integrated input[type="text"], .radar-integrated input[type="number"] { background: #f8fafc; border: 2px solid #e2e8f0; color: #0f172a; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1rem; min-height: 48px; }
+        .radar-integrated input[type="text"]:focus, .radar-integrated input[type="number"]:focus { border-color: #14b8a6; box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1); outline: none; }
         .radar-integrated .fade-in { animation: radarFadeIn 0.4s ease-out; }
+        .radar-integrated p, .radar-integrated label { font-size: 0.95rem; }
+        @media (min-width: 768px) { .radar-integrated p, .radar-integrated label { font-size: 1rem; } }
         @keyframes radarFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
       `;
       document.head.appendChild(style);
@@ -3850,146 +3854,53 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentViewingSegment = null;
 
   // Tour guiado de tooltips - se muestra la primera vez que se abre un caso
-  // Para volver a ver el tour: localStorage.removeItem('caseTourSeen')
   function runTooltipTour() {
     const tourSeen = localStorage.getItem('caseTourSeen');
     if (tourSeen) return; // Ya vio el tour
 
     // IDs de las secciones con tooltips (en orden)
     const tooltipSections = [
-      { id: 'case-section-desafio', name: 'El Desafío', desc: 'El problema que este caso resuelve' },
-      { id: 'case-section-instruccion', name: 'Instrucción Maestra', desc: 'El mensaje listo para copiar y usar' },
-      { id: 'case-section-ajuste', name: 'Ajuste Fino', desc: 'Tips para personalizar el resultado' },
-      { id: 'case-section-porque', name: '¿Por qué Funciona?', desc: 'La técnica detrás de la instrucción' },
-      { id: 'case-section-estrategia', name: 'Estrategia', desc: 'Enfoque recomendado para aplicar' },
-      { id: 'case-section-validacion', name: 'Validación', desc: 'Cómo verificar que el resultado es correcto' },
-      { id: 'case-section-matriz', name: 'Matriz de Adaptación', desc: 'Cómo adaptar a otros contextos' },
-      { id: 'case-action-buttons', name: '¡Y hay más!', desc: '← → Navega entre casos | 📎 Copia el link | 🖨️ Imprime (Ctrl+P)' }
+      { id: 'case-section-desafio', name: 'El Desafío' },
+      { id: 'case-section-instruccion', name: 'Instrucción Maestra' },
+      { id: 'case-section-porque', name: 'Por qué Funciona' },
+      { id: 'case-section-ajuste', name: 'Ajuste Fino' }
     ];
 
     let currentStep = 0;
-
-    // Crear overlay
     const tourOverlay = document.createElement('div');
     tourOverlay.id = 'tooltip-tour-overlay';
-    const isMobile = window.innerWidth < 768;
     tourOverlay.innerHTML = `
       <style>
         #tooltip-tour-overlay {
           position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.6); z-index: 9998;
+          background: rgba(0,0,0,0.4); z-index: 9998;
           transition: opacity 0.3s ease;
-          cursor: pointer;
         }
         .tour-highlight {
           position: relative; z-index: 9999 !important;
-          box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.7), 0 0 20px rgba(20, 184, 166, 0.4) !important;
-          border-radius: 12px;
-          background: white !important;
+          box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.5), 0 0 20px rgba(20, 184, 166, 0.3) !important;
+          border-radius: 16px;
         }
         .tour-tooltip {
           position: fixed; z-index: 10000;
-          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-          color: white;
-          border-radius: 16px;
-          box-shadow: 0 15px 50px rgba(0,0,0,0.5);
-          animation: tourPulse 0.3s ease;
-          border: 1px solid rgba(94, 234, 212, 0.2);
-          /* Mobile first */
-          padding: 16px 18px;
-          font-size: 13px;
-          max-width: calc(100vw - 24px);
-          left: 12px !important;
-          right: 12px !important;
-          width: auto !important;
+          background: #0f172a; color: white; padding: 12px 16px;
+          border-radius: 12px; font-size: 13px; max-width: 280px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+          animation: tourPulse 0.4s ease;
         }
-        @media (min-width: 768px) {
-          .tour-tooltip {
-            padding: 20px 24px;
-            font-size: 14px;
-            max-width: 360px;
-            left: auto !important;
-            right: auto !important;
-            width: max-content;
-          }
+        .tour-tooltip::after {
+          content: ''; position: absolute; bottom: -6px; left: 20px;
+          border-left: 6px solid transparent; border-right: 6px solid transparent;
+          border-top: 6px solid #0f172a;
         }
-        .tour-tooltip h4 { 
-          color: #5eead4; 
-          font-size: 15px; 
-          margin: 0 0 6px 0; 
-          font-weight: 700;
-        }
-        @media (min-width: 768px) {
-          .tour-tooltip h4 { font-size: 17px; }
-        }
-        .tour-tooltip p { 
-          color: #cbd5e1; 
-          font-size: 12px; 
-          margin: 0 0 14px 0; 
-          line-height: 1.5;
-        }
-        @media (min-width: 768px) {
-          .tour-tooltip p { font-size: 13px; margin: 0 0 16px 0; }
-        }
-        .tour-footer { 
-          display: flex; 
-          justify-content: space-between; 
-          align-items: center; 
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-        .tour-progress { display: flex; gap: 5px; flex-wrap: wrap; }
-        .tour-dot { 
-          width: 10px; height: 10px; 
-          background: #334155; border-radius: 50%; 
-          transition: all 0.2s; 
-        }
-        .tour-dot.active { background: #5eead4; transform: scale(1.3); box-shadow: 0 0 8px rgba(94, 234, 212, 0.5); }
-        .tour-dot.done { background: #14b8a6; }
-        .tour-btn { 
-          background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-          color: white; border: none; 
-          padding: 10px 18px; border-radius: 10px; 
-          font-size: 13px; font-weight: 600; 
-          cursor: pointer; transition: all 0.2s;
-          min-height: 44px; /* Touch friendly */
-          box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
-        }
-        .tour-btn:hover, .tour-btn:active { 
-          background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-          transform: scale(1.02); 
-        }
-        .tour-skip { 
-          color: #64748b; font-size: 12px; cursor: pointer; 
-          padding: 8px 0; min-height: 44px; display: flex; align-items: center;
-        }
-        .tour-skip:hover { color: #94a3b8; }
-        .tour-hint { 
-          color: #64748b; font-size: 10px; margin-top: 10px; text-align: center; 
-          display: none;
-        }
-        @media (min-width: 768px) {
-          .tour-hint { display: block; font-size: 11px; }
-        }
-        .tour-step-count { 
-          color: #94a3b8; font-size: 11px; margin-bottom: 6px; display: block; 
-        }
-        @keyframes tourPulse { 
-          from { opacity: 0; transform: translateY(10px) scale(0.95); } 
-          to { opacity: 1; transform: translateY(0) scale(1); } 
-        }
+        .tour-tooltip strong { color: #5eead4; }
+        .tour-progress { display: flex; gap: 4px; margin-top: 8px; }
+        .tour-dot { width: 6px; height: 6px; background: #475569; border-radius: 50%; }
+        .tour-dot.active { background: #5eead4; }
+        @keyframes tourPulse { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
       </style>
     `;
     document.body.appendChild(tourOverlay);
-
-    function endTour() {
-      document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
-      document.querySelectorAll('.tour-tooltip').forEach(el => el.remove());
-      tourOverlay.style.opacity = '0';
-      setTimeout(() => tourOverlay.remove(), 300);
-      localStorage.setItem('caseTourSeen', 'true');
-      document.removeEventListener('keydown', handleKeyPress);
-    }
 
     function showStep(index) {
       // Limpiar paso anterior
@@ -3997,400 +3908,50 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll('.tour-tooltip').forEach(el => el.remove());
 
       if (index >= tooltipSections.length) {
-        endTour();
+        // Tour completado
+        tourOverlay.style.opacity = '0';
+        setTimeout(() => {
+          tourOverlay.remove();
+          localStorage.setItem('caseTourSeen', 'true');
+        }, 300);
         return;
       }
 
-      currentStep = index;
       const section = document.getElementById(tooltipSections[index].id);
-
       if (!section) {
         // Skip to next if section not found
-        showStep(index + 1);
+        setTimeout(() => showStep(index + 1), 200);
         return;
       }
-
       section.classList.add('tour-highlight');
       section.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-      // Esperar a que termine el scroll
-      setTimeout(() => {
-        const rect = section.getBoundingClientRect();
-        const tooltip = document.createElement('div');
-        tooltip.className = 'tour-tooltip';
-        const isMobile = window.innerWidth < 768;
-
-        const isLast = index === tooltipSections.length - 1;
-        tooltip.innerHTML = `
-          <span class="tour-step-count">Paso ${index + 1} de ${tooltipSections.length}</span>
-          <h4>${tooltipSections[index].name}</h4>
-          <p>${tooltipSections[index].desc}</p>
-          <div class="tour-footer">
-            <span class="tour-skip" onclick="event.stopPropagation();">Saltar</span>
-            <div class="tour-progress">
-              ${tooltipSections.map((_, i) => `<div class="tour-dot ${i < index ? 'done' : ''} ${i === index ? 'active' : ''}"></div>`).join('')}
-            </div>
-            <button class="tour-btn" id="tour-next-btn">${isLast ? '¡Listo!' : 'Siguiente →'}</button>
+      const rect = section.getBoundingClientRect();
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tour-tooltip';
+      tooltip.innerHTML = `
+          <strong>${tooltipSections[index].name}</strong><br>
+          <span style="color: #94a3b8; font-size: 12px;">Pasa el cursor sobre ⓘ para más info</span>
+          <div class="tour-progress">
+            ${tooltipSections.map((_, i) => `<div class="tour-dot ${i === index ? 'active' : ''}"></div>`).join('')}
           </div>
-          <div class="tour-hint">Click, espacio o Enter para continuar • Esc para saltar</div>
         `;
-
-        // Posicionamiento responsive
-        if (isMobile) {
-          // En mobile: tooltip fijo abajo
-          tooltip.style.position = 'fixed';
-          tooltip.style.bottom = '20px';
-          tooltip.style.top = 'auto';
-        } else {
-          // En desktop: arriba del elemento
-          let top = rect.top - 140;
-          if (top < 10) top = rect.bottom + 20;
-          if (top + 200 > window.innerHeight) top = window.innerHeight - 220;
-          tooltip.style.top = Math.max(10, top) + 'px';
-          tooltip.style.left = Math.max(10, Math.min(rect.left, window.innerWidth - 380)) + 'px';
-        }
-
-        document.body.appendChild(tooltip);
-
-        // Event listeners
-        document.getElementById('tour-next-btn').addEventListener('click', (e) => {
-          e.stopPropagation();
-          showStep(index + 1);
-        });
-
-        // Skip button
-        tooltip.querySelector('.tour-skip').addEventListener('click', () => endTour());
-      }, 400);
+      tooltip.style.top = (rect.top - 60) + 'px';
+      tooltip.style.left = (rect.left + 20) + 'px';
+      document.body.appendChild(tooltip);
     }
 
-    // Event listeners para avanzar
-    function handleKeyPress(e) {
-      if (e.code === 'Space' || e.code === 'Enter') {
-        e.preventDefault();
-        showStep(currentStep + 1);
-      } else if (e.code === 'Escape') {
-        endTour();
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyPress);
-    tourOverlay.addEventListener('click', () => showStep(currentStep + 1));
-
-    // Iniciar tour después de un pequeño delay
-    setTimeout(() => showStep(0), 600);
+    // Siguiente paso después de 1.8s
+    setTimeout(() => showStep(index + 1), 1800);
   }
 
-  // ========== TOUR DE INTRODUCCIÓN AL CURSO ==========
-  // Se muestra la primera vez que alguien entra al curso
-  // Para volver a ver: localStorage.removeItem('courseTourSeen')
-  function runCourseTour() {
-    const tourSeen = localStorage.getItem('courseTourSeen');
-    if (tourSeen) return;
+  // Iniciar tour después de un pequeño delay
+  setTimeout(() => showStep(0), 800);
+}
 
-    // Esperar a que el contenido esté cargado
-    setTimeout(() => {
-      const courseSections = [
-        {
-          id: 'course-sidebar',
-          name: '📊 Tu Panel de Navegación',
-          desc: 'Este es tu centro de control. Aquí ves:<br>• <strong>Tu progreso</strong> hacia el certificado<br>• <strong>Todos los módulos</strong> del curso<br>• <strong>Cada lección</strong> - haz click para navegar',
-          position: 'right'
-        },
-        {
-          id: 'lesson-material-container',
-          name: '🎬 Área de Video y Contenido',
-          desc: 'Aquí encontrarás:<br>• <strong>Videos</strong> con las lecciones<br>• <strong>Quizzes</strong> para evaluar lo aprendido<br>• <strong>Material interactivo</strong> según el módulo',
-          position: 'bottom'
-        },
-        {
-          id: 'tabs-navigation-container',
-          name: '📑 Pestañas de Recursos',
-          desc: '<strong>Clases:</strong> El video actual<br><strong>Materiales:</strong> Material interactivo y recursos<br><strong>Notas:</strong> Tu bloc personal (se guarda automático)<br><strong>Tareas:</strong> Checklist y subir archivos<br><strong>Soporte:</strong> Contacta a tu tutor',
-          position: 'bottom'
-        },
-        {
-          id: 'modules-container',
-          name: '🎯 Módulo 5: Casos Aplicados',
-          desc: 'Este es tu <strong>recurso más valioso</strong>.<br><br>Contiene <strong>Instrucciones Maestras</strong> listas para usar con ChatGPT, Gemini o Claude.<br><br>Son soluciones probadas a problemas reales de tu área profesional.',
-          position: 'right'
-        },
-        {
-          id: 'main-action-btn',
-          name: '✅ Marca tu Progreso',
-          desc: 'Después de ver cada lección, presiona este botón para:<br>• <strong>Registrar tu avance</strong><br>• <strong>Desbloquear</strong> la siguiente lección<br>• <strong>Acercarte</strong> al certificado',
-          position: 'top'
-        }
-      ];
-
-      let currentStep = 0;
-
-      const tourOverlay = document.createElement('div');
-      tourOverlay.id = 'course-tour-overlay';
-      tourOverlay.innerHTML = `
-        <style>
-          #course-tour-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.65); z-index: 9998;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-          }
-          .course-tour-highlight {
-            position: relative; z-index: 9999 !important;
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.7), 0 0 25px rgba(20, 184, 166, 0.4) !important;
-            border-radius: 12px;
-            background: white !important;
-          }
-          .course-tour-tooltip {
-            position: fixed; z-index: 10000;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-            color: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            animation: courseTourPulse 0.4s ease;
-            border: 1px solid rgba(94, 234, 212, 0.2);
-            /* Mobile first */
-            padding: 18px 20px;
-            font-size: 13px;
-            max-width: calc(100vw - 24px);
-            left: 12px !important;
-            right: 12px !important;
-            width: auto !important;
-          }
-          @media (min-width: 768px) {
-            .course-tour-tooltip {
-              padding: 24px 28px;
-              font-size: 14px;
-              max-width: 400px;
-              left: auto !important;
-              right: auto !important;
-              width: max-content;
-            }
-          }
-          .course-tour-tooltip h4 { 
-            color: #5eead4; 
-            font-size: 16px; 
-            margin: 0 0 10px 0; 
-            font-weight: 700;
-          }
-          @media (min-width: 768px) {
-            .course-tour-tooltip h4 { font-size: 20px; margin: 0 0 12px 0; }
-          }
-          .course-tour-tooltip p { 
-            color: #e2e8f0; 
-            font-size: 12px; 
-            margin: 0 0 16px 0; 
-            line-height: 1.6; 
-          }
-          @media (min-width: 768px) {
-            .course-tour-tooltip p { font-size: 14px; margin: 0 0 20px 0; line-height: 1.7; }
-          }
-          .course-tour-tooltip p strong { color: #5eead4; }
-          .course-tour-footer { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            gap: 12px;
-            flex-wrap: wrap;
-          }
-          .course-tour-progress { display: flex; gap: 6px; flex-wrap: wrap; }
-          .course-tour-dot { 
-            width: 10px; height: 10px; 
-            background: #334155; border-radius: 50%; 
-            transition: all 0.3s; 
-          }
-          @media (min-width: 768px) {
-            .course-tour-dot { width: 12px; height: 12px; }
-            .course-tour-progress { gap: 8px; }
-          }
-          .course-tour-dot.active { 
-            background: #5eead4; 
-            transform: scale(1.3); 
-            box-shadow: 0 0 8px rgba(94, 234, 212, 0.5); 
-          }
-          .course-tour-dot.done { background: #14b8a6; }
-          .course-tour-btn { 
-            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); 
-            color: white; border: none; 
-            padding: 12px 20px; border-radius: 10px; 
-            font-size: 14px; font-weight: 700; 
-            cursor: pointer; transition: all 0.2s;
-            min-height: 48px; /* Touch friendly */
-            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
-          }
-          @media (min-width: 768px) {
-            .course-tour-btn { padding: 12px 24px; font-size: 15px; }
-          }
-          .course-tour-btn:hover, .course-tour-btn:active { 
-            transform: scale(1.03); 
-            box-shadow: 0 6px 18px rgba(20, 184, 166, 0.5); 
-          }
-          .course-tour-hint { 
-            color: #64748b; font-size: 10px; margin-top: 12px; text-align: center;
-            display: none;
-          }
-          @media (min-width: 768px) {
-            .course-tour-hint { display: block; font-size: 11px; margin-top: 16px; }
-          }
-          .course-tour-skip { 
-            color: #64748b; font-size: 12px; cursor: pointer; 
-            text-decoration: underline;
-            padding: 8px 0; min-height: 44px; 
-            display: flex; align-items: center;
-          }
-          .course-tour-skip:hover { color: #94a3b8; }
-          .course-tour-step-count { 
-            color: #94a3b8; font-size: 11px; margin-bottom: 6px; 
-            display: block; opacity: 0.8;
-          }
-          @keyframes courseTourPulse { 
-            from { opacity: 0; transform: translateY(12px) scale(0.95); } 
-            to { opacity: 1; transform: translateY(0) scale(1); } 
-          }
-        </style>
-      `;
-      document.body.appendChild(tourOverlay);
-
-      function endTour() {
-        document.querySelectorAll('.course-tour-highlight').forEach(el => el.classList.remove('course-tour-highlight'));
-        document.querySelectorAll('.course-tour-tooltip').forEach(el => el.remove());
-        tourOverlay.style.opacity = '0';
-        setTimeout(() => tourOverlay.remove(), 300);
-        localStorage.setItem('courseTourSeen', 'true');
-        document.removeEventListener('keydown', handleKeyPress);
-      }
-
-      function showStep(index) {
-        document.querySelectorAll('.course-tour-highlight').forEach(el => el.classList.remove('course-tour-highlight'));
-        document.querySelectorAll('.course-tour-tooltip').forEach(el => el.remove());
-
-        if (index >= courseSections.length) {
-          endTour();
-          return;
-        }
-
-        currentStep = index;
-        const stepData = courseSections[index];
-        const section = document.getElementById(stepData.id);
-
-        if (!section) {
-          showStep(index + 1);
-          return;
-        }
-
-        section.classList.add('course-tour-highlight');
-        section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        setTimeout(() => {
-          const rect = section.getBoundingClientRect();
-          const tooltip = document.createElement('div');
-          tooltip.className = 'course-tour-tooltip';
-          const isMobile = window.innerWidth < 768;
-
-          const isLast = index === courseSections.length - 1;
-          tooltip.innerHTML = `
-            <span class="course-tour-step-count">Paso ${index + 1} de ${courseSections.length}</span>
-            <h4>${stepData.name}</h4>
-            <p>${stepData.desc}</p>
-            <div class="course-tour-footer">
-              <span class="course-tour-skip" id="course-tour-skip-btn">Saltar</span>
-              <div class="course-tour-progress">
-                ${courseSections.map((_, i) => `<div class="course-tour-dot ${i < index ? 'done' : ''} ${i === index ? 'active' : ''}"></div>`).join('')}
-              </div>
-              <button class="course-tour-btn" id="course-tour-next-btn">${isLast ? '¡Comenzar! 🚀' : 'Siguiente →'}</button>
-            </div>
-            <div class="course-tour-hint">Click, Espacio o Enter • Esc para saltar</div>
-          `;
-
-          // Posicionamiento responsive
-          if (isMobile) {
-            // En mobile: tooltip fijo abajo
-            tooltip.style.position = 'fixed';
-            tooltip.style.bottom = '16px';
-            tooltip.style.top = 'auto';
-          } else {
-            // En desktop: posicionamiento inteligente
-            let top, left;
-            const tooltipWidth = 400;
-            const margin = 20;
-
-            switch (stepData.position) {
-              case 'right':
-                top = Math.max(20, rect.top + (rect.height / 2) - 140);
-                left = rect.right + margin;
-                if (left + tooltipWidth > window.innerWidth) {
-                  left = rect.left - tooltipWidth - margin;
-                }
-                break;
-              case 'top':
-                top = rect.top - 200;
-                left = Math.min(rect.left, window.innerWidth - tooltipWidth - 20);
-                break;
-              case 'bottom':
-              default:
-                top = rect.bottom + margin;
-                left = Math.min(rect.left, window.innerWidth - tooltipWidth - 20);
-                if (top + 250 > window.innerHeight) {
-                  top = rect.top - 220;
-                }
-            }
-
-            // Ajustar límites
-            if (left < 10) left = 10;
-            if (top < 10) top = 10;
-
-            tooltip.style.top = top + 'px';
-            tooltip.style.left = left + 'px';
-          }
-
-          document.body.appendChild(tooltip);
-
-          // Event listeners
-          document.getElementById('course-tour-next-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            showStep(index + 1);
-          });
-
-          document.getElementById('course-tour-skip-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            endTour();
-          });
-        }, 500);
-      }
-
-      function handleKeyPress(e) {
-        if (e.code === 'Space' || e.code === 'Enter') {
-          e.preventDefault();
-          showStep(currentStep + 1);
-        } else if (e.code === 'Escape') {
-          endTour();
-        }
-      }
-
-      document.addEventListener('keydown', handleKeyPress);
-      tourOverlay.addEventListener('click', () => showStep(currentStep + 1));
-
-      setTimeout(() => showStep(0), 1000);
-    }, 2000); // Esperar más para que cargue todo el contenido
-  }
-
-  // Exponer función para llamarla al cargar el curso
-  window.runCourseTour = runCourseTour;
-
-
-  window.openCaseDetail = function (caseId, forceRender = false) {
+  window.openCaseDetail = function (caseId) {
     const cCase = casesData.find(c => c.id === caseId);
     if (!cCase) return;
-
-    // Si el hash ya es el mismo, forzar re-render
-    const currentHash = window.location.hash;
-    const targetHash = `#caso/${caseId}`;
-
-    if (currentHash === targetHash && !forceRender) {
-      // Hash ya es igual, forzar re-render directamente
-      window.openCaseDetail(caseId, true);
-      return;
-    }
-
     // Update URL hash for deep linking
     window.location.hash = `caso/${caseId}`;
     const container = document.getElementById("lesson-material-container");
@@ -4410,136 +3971,136 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  window.backToCategory = function () {
-    // Restore segment hash when going back
-    if (currentViewingSegment) {
-      window.location.hash = `segmento/${encodeURIComponent(currentViewingSegment)}`;
-    } else {
-      window.location.hash = '';
-    }
-    b();
-  };
+window.backToCategory = function () {
+  // Restore segment hash when going back
+  if (currentViewingSegment) {
+    window.location.hash = `segmento/${encodeURIComponent(currentViewingSegment)}`;
+  } else {
+    window.location.hash = '';
+  }
+  b();
+};
 
-  // Open segment view with hash
-  window.openSegmentView = function (segmentName) {
-    currentViewingSegment = segmentName;
-    window.location.hash = `segmento/${encodeURIComponent(segmentName)}`;
-  };
+// Open segment view with hash
+window.openSegmentView = function (segmentName) {
+  currentViewingSegment = segmentName;
+  window.location.hash = `segmento/${encodeURIComponent(segmentName)}`;
+};
 
-  // Copy case URL to clipboard
-  window.copyCaseUrl = function (caseId) {
-    const url = `${window.location.origin}${window.location.pathname}#caso/${caseId}`;
-    navigator.clipboard.writeText(url).then(() => {
-      // Show toast notification
-      const toast = document.createElement('div');
-      toast.className = 'fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-in fade-in slide-in-from-bottom-4';
-      toast.innerHTML = '<i data-lucide="check" class="inline w-4 h-4 mr-2"></i>URL copiada';
-      document.body.appendChild(toast);
-      lucide.createIcons();
-      setTimeout(() => toast.remove(), 2000);
-    });
-  };
-
-  // Print case
-  window.printCase = function () {
-    window.print();
-  };
-
-  // Handle hash routing on page load and hash change
-  window.addEventListener('hashchange', function () {
-    const hash = window.location.hash;
-    if (hash.startsWith('#caso/')) {
-      const caseId = parseInt(hash.replace('#caso/', ''));
-      if (caseId) window.openCaseDetail(caseId);
-    } else if (hash.startsWith('#segmento/')) {
-      const segmentName = decodeURIComponent(hash.replace('#segmento/', ''));
-      currentViewingSegment = segmentName;
-      // Trigger segment view refresh if needed
-    }
+// Copy case URL to clipboard
+window.copyCaseUrl = function (caseId) {
+  const url = `${window.location.origin}${window.location.pathname}#caso/${caseId}`;
+  navigator.clipboard.writeText(url).then(() => {
+    // Show toast notification
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-in fade-in slide-in-from-bottom-4';
+    toast.innerHTML = '<i data-lucide="check" class="inline w-4 h-4 mr-2"></i>URL copiada';
+    document.body.appendChild(toast);
+    lucide.createIcons();
+    setTimeout(() => toast.remove(), 2000);
   });
+};
+
+// Print case
+window.printCase = function () {
+  window.print();
+};
+
+// Handle hash routing on page load and hash change
+window.addEventListener('hashchange', function () {
+  const hash = window.location.hash;
+  if (hash.startsWith('#caso/')) {
+    const caseId = parseInt(hash.replace('#caso/', ''));
+    if (caseId) window.openCaseDetail(caseId);
+  } else if (hash.startsWith('#segmento/')) {
+    const segmentName = decodeURIComponent(hash.replace('#segmento/', ''));
+    currentViewingSegment = segmentName;
+    // Trigger segment view refresh if needed
+  }
+});
 
 
-  function renderCaseListHTML(categoryId, segmentId = null) {
-    // Si viene un segmentId, usarlo; sino usar segmento actual del usuario
-    const segment = segmentId || currentUserSegment;
-    const segCfg = segment ? segmentConfig[segment] : null;
-    const isSegmentView = !!segmentId;
+function renderCaseListHTML(categoryId, segmentId = null) {
+  // Si viene un segmentId, usarlo; sino usar segmento actual del usuario
+  const segment = segmentId || currentUserSegment;
+  const segCfg = segment ? segmentConfig[segment] : null;
+  const isSegmentView = !!segmentId;
 
-    // Map full segment names to potential legacy keys in JSON (Firebase Data Compatibility)
-    const legacyKeyMap = {
-      "Gestión & Administración": "Gestión & Adm.",
-      "Educación & Capacitación": "Educación",
-      "Negocios & Ventas": "Negocios & Estrategia"
-    };
+  // Map full segment names to potential legacy keys in JSON (Firebase Data Compatibility)
+  const legacyKeyMap = {
+    "Gestión & Administración": "Gestión & Adm.",
+    "Educación & Capacitación": "Educación",
+    "Negocios & Ventas": "Negocios & Estrategia"
+  };
 
-    // Helper to get priority safely checking both keys and fuzzy match
-    const getSegmentPriority = (caseItem, currentSeg) => {
-      if (!caseItem.prioridadSegmento) return null;
+  // Helper to get priority safely checking both keys and fuzzy match
+  const getSegmentPriority = (caseItem, currentSeg) => {
+    if (!caseItem.prioridadSegmento) return null;
 
-      // 1. Direct Match
-      let val = caseItem.prioridadSegmento[currentSeg];
+    // 1. Direct Match
+    let val = caseItem.prioridadSegmento[currentSeg];
+    if (val !== undefined) return val;
+
+    // 2. Legacy Map Match
+    const legacyKey = legacyKeyMap[currentSeg];
+    if (legacyKey) {
+      val = caseItem.prioridadSegmento[legacyKey];
       if (val !== undefined) return val;
-
-      // 2. Legacy Map Match
-      const legacyKey = legacyKeyMap[currentSeg];
-      if (legacyKey) {
-        val = caseItem.prioridadSegmento[legacyKey];
-        if (val !== undefined) return val;
-      }
-
-      // 3. Fuzzy/Robust Match (Emergency Fallback)
-      try {
-        const normalize = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
-        const target = normalize(currentSeg);
-        const keys = Object.keys(caseItem.prioridadSegmento);
-
-        const foundKey = keys.find(k => {
-          const nK = normalize(k);
-          // Simple inclusion check
-          return nK.includes(target) || target.includes(nK);
-        });
-
-        if (foundKey) return caseItem.prioridadSegmento[foundKey];
-      } catch (e) { console.error("Fuzzy match error", e); }
-
-      return undefined;
-    };
-
-    // Filtrar casos según el tipo de vista
-    let filtered;
-    if (isSegmentView) {
-      // Vista por segmento: mostrar todos los casos con prioridad para este segmento (o legacy)
-      filtered = casesData.filter(c => {
-        // STRICT MODE: Solo casos con prioridad explicita
-        const priority = getSegmentPriority(c, segment);
-        return priority !== undefined && priority !== null;
-      });
-
-      // Ordenar por prioridad
-      filtered.sort((a, b) => {
-        const prioA = getSegmentPriority(a, segment) ?? 99; // Usar nullish coalescing para que 0 sea válido
-        const prioB = getSegmentPriority(b, segment) ?? 99;
-
-        // 1. Segment Priority (Low numbers first)
-        if (prioA !== prioB) return prioA - prioB;
-
-        // 2. Star Prompts (Robust Check)
-        const isStarA = a.isStarPrompt === true || a.isStarPrompt === 'true' || a.isStarPrompt === 1;
-        const isStarB = b.isStarPrompt === true || b.isStarPrompt === 'true' || b.isStarPrompt === 1;
-
-        if (isStarA && !isStarB) return -1;
-        if (!isStarA && isStarB) return 1;
-
-        return 0; // Maintain original order otherwise
-      });
-    } else {
-      // Vista por categoría antigua (fallback)
-      filtered = casesData.filter(c => c.category === categoryId);
     }
 
-    if (filtered.length === 0) {
-      // Elegant loading state instead of debug info
-      return `<div class="max-w-md mx-auto py-16 text-center animate-in fade-in duration-500">
+    // 3. Fuzzy/Robust Match (Emergency Fallback)
+    try {
+      const normalize = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const target = normalize(currentSeg);
+      const keys = Object.keys(caseItem.prioridadSegmento);
+
+      const foundKey = keys.find(k => {
+        const nK = normalize(k);
+        // Simple inclusion check
+        return nK.includes(target) || target.includes(nK);
+      });
+
+      if (foundKey) return caseItem.prioridadSegmento[foundKey];
+    } catch (e) { console.error("Fuzzy match error", e); }
+
+    return undefined;
+  };
+
+  // Filtrar casos según el tipo de vista
+  let filtered;
+  if (isSegmentView) {
+    // Vista por segmento: mostrar todos los casos con prioridad para este segmento (o legacy)
+    filtered = casesData.filter(c => {
+      // STRICT MODE: Solo casos con prioridad explicita
+      const priority = getSegmentPriority(c, segment);
+      return priority !== undefined && priority !== null;
+    });
+
+    // Ordenar por prioridad
+    filtered.sort((a, b) => {
+      const prioA = getSegmentPriority(a, segment) ?? 99; // Usar nullish coalescing para que 0 sea válido
+      const prioB = getSegmentPriority(b, segment) ?? 99;
+
+      // 1. Segment Priority (Low numbers first)
+      if (prioA !== prioB) return prioA - prioB;
+
+      // 2. Star Prompts (Robust Check)
+      const isStarA = a.isStarPrompt === true || a.isStarPrompt === 'true' || a.isStarPrompt === 1;
+      const isStarB = b.isStarPrompt === true || b.isStarPrompt === 'true' || b.isStarPrompt === 1;
+
+      if (isStarA && !isStarB) return -1;
+      if (!isStarA && isStarB) return 1;
+
+      return 0; // Maintain original order otherwise
+    });
+  } else {
+    // Vista por categoría antigua (fallback)
+    filtered = casesData.filter(c => c.category === categoryId);
+  }
+
+  if (filtered.length === 0) {
+    // Elegant loading state instead of debug info
+    return `<div class="max-w-md mx-auto py-16 text-center animate-in fade-in duration-500">
           <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-lg animate-pulse">
             <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
           </div>
@@ -4551,36 +4112,36 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
           </div>
         </div>`;
-    }
+  }
 
-    // Image Source: Use config directly (Single Source of Truth)
-    const headerImage = isSegmentView && segCfg?.image ? segCfg.image : null;
+  // Image Source: Use config directly (Single Source of Truth)
+  const headerImage = isSegmentView && segCfg?.image ? segCfg.image : null;
 
-    // Colores de gradiente por segmento
-    const segmentGradients = {
-      'Negocios & Ventas': 'from-indigo-500/10 via-teal-500/5 to-white',
-      'Legal & Profesional': 'from-slate-500/10 via-blue-500/5 to-white',
-      'Gestión & Administración': 'from-teal-500/10 via-coral-500/5 to-white',
-      'Educación & Capacitación': 'from-emerald-500/10 via-yellow-500/5 to-white'
-    };
-    // Fallback for graduates using partial match if needed, but config keys should match now
-    const headerGradient = isSegmentView ? (segmentGradients[segment] || 'from-slate-100 to-white') : 'from-slate-100 to-white';
+  // Colores de gradiente por segmento
+  const segmentGradients = {
+    'Negocios & Ventas': 'from-indigo-500/10 via-teal-500/5 to-white',
+    'Legal & Profesional': 'from-slate-500/10 via-blue-500/5 to-white',
+    'Gestión & Administración': 'from-teal-500/10 via-coral-500/5 to-white',
+    'Educación & Capacitación': 'from-emerald-500/10 via-yellow-500/5 to-white'
+  };
+  // Fallback for graduates using partial match if needed, but config keys should match now
+  const headerGradient = isSegmentView ? (segmentGradients[segment] || 'from-slate-100 to-white') : 'from-slate-100 to-white';
 
-    const renderCaseCard = (c) => {
-      // Robust detection for Star Prompt (handles boolean true, string "true", or 1)
-      const isStarPrompt = c.isStarPrompt === true || c.isStarPrompt === 'true' || c.isStarPrompt === 1;
-      const categoryColor = segCfg?.categoryColor || 'slate';
+  const renderCaseCard = (c) => {
+    // Robust detection for Star Prompt (handles boolean true, string "true", or 1)
+    const isStarPrompt = c.isStarPrompt === true || c.isStarPrompt === 'true' || c.isStarPrompt === 1;
+    const categoryColor = segCfg?.categoryColor || 'slate';
 
-      // Estilos diferenciados para Star Prompts (Premium Look)
-      const cardBorderClass = isStarPrompt
-        ? 'border-2 border-amber-400 shadow-md transform hover:-translate-y-1'
-        : 'border border-slate-200 hover:border-teal-300 hover:shadow-sm';
+    // Estilos diferenciados para Star Prompts (Premium Look)
+    const cardBorderClass = isStarPrompt
+      ? 'border-2 border-amber-400 shadow-md transform hover:-translate-y-1'
+      : 'border border-slate-200 hover:border-teal-300 hover:shadow-sm';
 
-      const cardBgClass = isStarPrompt
-        ? 'bg-gradient-to-br from-amber-50 to-white'
-        : 'bg-white';
+    const cardBgClass = isStarPrompt
+      ? 'bg-gradient-to-br from-amber-50 to-white'
+      : 'bg-white';
 
-      return `
+    return `
         <div class="case-card group rounded-xl p-4 transition-all duration-300 cursor-pointer ${cardBorderClass} ${cardBgClass}" onclick="window.location.hash='#caso/${c.id}'">
           <div class="flex items-start justify-between mb-3">
             <div class="flex items-center gap-2">
@@ -4601,16 +4162,16 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
       `;
-    };
+  };
 
-    // Título del header: usar segmento si es vista por segmento
-    const headerTitle = isSegmentView ? segment : categoryId;
-    const totalCasesCount = filtered.length;
+  // Título del header: usar segmento si es vista por segmento
+  const headerTitle = isSegmentView ? segment : categoryId;
+  const totalCasesCount = filtered.length;
 
-    // Robust featured count
-    const featuredCount = filtered.filter(c => c.isStarPrompt === true || c.isStarPrompt === 'true' || c.isStarPrompt === 1).length;
+  // Robust featured count
+  const featuredCount = filtered.filter(c => c.isStarPrompt === true || c.isStarPrompt === 'true' || c.isStarPrompt === 1).length;
 
-    return `
+  return `
     <div class="max-w-5xl mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <!-- HERO HEADER PREMIUM - BALANCED LAYOUT -->
         <header class="mb-8 bg-gradient-to-r ${headerGradient} rounded-2xl p-6 border border-slate-200/60 shadow-sm">
@@ -4629,8 +4190,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">${headerTitle}</h1>
                     <p class="text-slate-500 text-sm mb-3">
                         ${isSegmentView
-        ? segCfg?.description || 'Casos especializados para tu perfil'
-        : 'Selecciona un caso práctico para comenzar.'}
+      ? segCfg?.description || 'Casos especializados para tu perfil'
+      : 'Selecciona un caso práctico para comenzar.'}
                     </p>
                     ${isSegmentView ? `
                     <div class="flex items-center gap-4 text-sm text-slate-600">
@@ -4778,32 +4339,32 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `}
     </div>`;
+}
+
+window.switchViewTab = function (tab) {
+  currentViewTab = tab;
+  const currentLesson = f(c.currentLessonId);
+  if (currentLesson && currentLesson.lesson.type === 'case_category') {
+    h(c.currentLessonId);
   }
+};
 
-  window.switchViewTab = function (tab) {
-    currentViewTab = tab;
-    const currentLesson = f(c.currentLessonId);
-    if (currentLesson && currentLesson.lesson.type === 'case_category') {
-      h(c.currentLessonId);
+
+function renderCaseDetailHTML(c) {
+  // Logic for Navigation
+  const categoryCases = casesData.filter(item => item.category === c.category);
+  // FIXED: Ensure ID comparison is type-safe
+  const currentIndex = categoryCases.findIndex(item => Number(item.id) === Number(c.id));
+  const prevCase = currentIndex > 0 ? categoryCases[currentIndex - 1] : null;
+  const nextCase = currentIndex !== -1 && currentIndex < categoryCases.length - 1 ? categoryCases[currentIndex + 1] : null;
+
+  // Helper: Compact Navigation Button
+  const renderNavBtn = (targetCase, type) => {
+    if (!targetCase) {
+      return `<div class="hidden md:block flex-1"></div>`;
     }
-  };
-
-
-  function renderCaseDetailHTML(c) {
-    // Logic for Navigation
-    const categoryCases = casesData.filter(item => item.category === c.category);
-    // FIXED: Ensure ID comparison is type-safe
-    const currentIndex = categoryCases.findIndex(item => Number(item.id) === Number(c.id));
-    const prevCase = currentIndex > 0 ? categoryCases[currentIndex - 1] : null;
-    const nextCase = currentIndex !== -1 && currentIndex < categoryCases.length - 1 ? categoryCases[currentIndex + 1] : null;
-
-    // Helper: Compact Navigation Button
-    const renderNavBtn = (targetCase, type) => {
-      if (!targetCase) {
-        return `<div class="hidden md:block flex-1"></div>`;
-      }
-      const isPrev = type === 'prev';
-      return `
+    const isPrev = type === 'prev';
+    return `
         <button onclick="openCaseDetail(${targetCase.id})" 
           class="group flex-1 flex items-center ${isPrev ? 'justify-start text-left' : 'justify-end text-right'} 
                  p-3 md:p-4 rounded-xl border border-slate-200 bg-white hover:border-teal-300 hover:shadow-md transition-all">
@@ -4831,19 +4392,19 @@ document.addEventListener("DOMContentLoaded", () => {
            
         </button>
       `;
-    };
+  };
 
-    // Mapeo de segmentos a imágenes (detectar segmento desde prioridadSegmento)
-    const detectedSegment = c.prioridadSegmento ? Object.keys(c.prioridadSegmento)[0] : null;
-    const segmentImageMap = {
-      'Negocios & Ventas': './images/segment_negocios.png',
-      'Legal & Profesional': './images/segment_legal.png',
-      'Gestión & Adm.': './images/segment_gestion.png',
-      'Educación': './images/segment_educacion.png'
-    };
-    const headerImage = detectedSegment ? segmentImageMap[detectedSegment] : null;
+  // Mapeo de segmentos a imágenes (detectar segmento desde prioridadSegmento)
+  const detectedSegment = c.prioridadSegmento ? Object.keys(c.prioridadSegmento)[0] : null;
+  const segmentImageMap = {
+    'Negocios & Ventas': './images/segment_negocios.png',
+    'Legal & Profesional': './images/segment_legal.png',
+    'Gestión & Adm.': './images/segment_gestion.png',
+    'Educación': './images/segment_educacion.png'
+  };
+  const headerImage = detectedSegment ? segmentImageMap[detectedSegment] : null;
 
-    return `
+  return `
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-10 animate-in fade-in slide-in-from-bottom-8 duration-500">
             
             <!-- HEADER PREMIUM CON IMAGEN DEL SEGMENTO -->
@@ -4855,7 +4416,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </button>
                     
                     <!-- Action Buttons -->
-                    <div id="case-action-buttons" class="flex items-center gap-2">
+                    <div class="flex items-center gap-2">
                         ${prevCase ? `<button onclick="openCaseDetail(${prevCase.id})" class="p-2 rounded-lg bg-white border border-slate-200 hover:border-teal-300 hover:bg-teal-50 transition-colors" title="Caso anterior"><i data-lucide="chevron-left" class="w-4 h-4 text-slate-600"></i></button>` : ''}
                         ${nextCase ? `<button onclick="openCaseDetail(${nextCase.id})" class="p-2 rounded-lg bg-white border border-slate-200 hover:border-teal-300 hover:bg-teal-50 transition-colors" title="Caso siguiente"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-600"></i></button>` : ''}
                         <button onclick="copyCaseUrl(${c.id})" class="p-2 rounded-lg bg-white border border-slate-200 hover:border-teal-300 hover:bg-teal-50 transition-colors" title="Copiar URL">
@@ -4942,7 +4503,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 ${(c.fineTuning && c.fineTuning.length > 0) ? `
                 <!-- Ajuste Fino - CON TOOLTIP EDUCATIVO -->
-                <section id="case-section-ajuste" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
                             <i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i>
@@ -4985,27 +4546,27 @@ document.addEventListener("DOMContentLoaded", () => {
                         </span>
                     </div>
                     ${(function () {
-          const aiText = (c.suggestedAI || '').toLowerCase();
-          const tools = [];
-          // Small SVG icons for each AI
-          const icons = {
-            ChatGPT: '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="#10a37f"><path d="M22.28 9.82c.34-1.14.35-2.35.04-3.5a6.35 6.35 0 0 0-2.77-3.01 6.4 6.4 0 0 0-7.56.77 6.32 6.32 0 0 0-7.56.77A6.36 6.36 0 0 0 2.72 7c-1.05.42-1.95 1.13-2.62 2.04a6.4 6.4 0 0 0 1.34 8.48 6.4 6.4 0 0 0-.04 3.5 6.35 6.35 0 0 0 2.77 3.01 6.4 6.4 0 0 0 7.56-.77 6.4 6.4 0 0 0 7.56-.77A6.36 6.36 0 0 0 21.34 20c1.05-.42 1.95-1.13 2.62-2.04a6.4 6.4 0 0 0-1.34-8.48l-.34.34z"/></svg>',
-            Claude: '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="#d97757"><path d="M12 2L2 12l10 10 10-10L12 2zm0 4l6 6-6 6-6-6 6-6z"/></svg>',
-            Gemini: '<svg class="w-4 h-4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#e8ebfa"/><path d="M12 4.4c.32 3.25 2.9 5.97 6.2 6.47-.02.03-.02.07 0 .1-3.3.5-5.88 3.23-6.2 6.48-.02-.03-.05-.03-.07 0-.32-3.25-2.9-5.97-6.2-6.47.02-.03.02-.07 0-.1 3.3-.5 5.88-3.23 6.2-6.48.01.01.04.01.07 0z" fill="url(#gemGrad)"/><defs><linearGradient id="gemGrad" x1="6" x2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#4E7CCF"/><stop offset="1" stop-color="#D5616D"/></linearGradient></defs></svg>'
-          };
-          if (aiText.includes('chatgpt') || aiText.includes('gpt') || aiText.includes('openai')) {
-            tools.push({ name: 'ChatGPT', url: 'https://chat.openai.com', icon: icons.ChatGPT });
-          }
-          if (aiText.includes('claude') || aiText.includes('anthropic')) {
-            tools.push({ name: 'Claude', url: 'https://claude.ai', icon: icons.Claude });
-          }
-          if (aiText.includes('gemini') || aiText.includes('google') || aiText.includes('bard')) {
-            tools.push({ name: 'Gemini', url: 'https://gemini.google.com', icon: icons.Gemini });
-          }
-          if (tools.length === 0) {
-            tools.push({ name: 'ChatGPT', url: 'https://chat.openai.com', icon: icons.ChatGPT });
-          }
-          return `
+        const aiText = (c.suggestedAI || '').toLowerCase();
+        const tools = [];
+        // Small SVG icons for each AI
+        const icons = {
+          ChatGPT: '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="#10a37f"><path d="M22.28 9.82c.34-1.14.35-2.35.04-3.5a6.35 6.35 0 0 0-2.77-3.01 6.4 6.4 0 0 0-7.56.77 6.32 6.32 0 0 0-7.56.77A6.36 6.36 0 0 0 2.72 7c-1.05.42-1.95 1.13-2.62 2.04a6.4 6.4 0 0 0 1.34 8.48 6.4 6.4 0 0 0-.04 3.5 6.35 6.35 0 0 0 2.77 3.01 6.4 6.4 0 0 0 7.56-.77 6.4 6.4 0 0 0 7.56-.77A6.36 6.36 0 0 0 21.34 20c1.05-.42 1.95-1.13 2.62-2.04a6.4 6.4 0 0 0-1.34-8.48l-.34.34z"/></svg>',
+          Claude: '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="#d97757"><path d="M12 2L2 12l10 10 10-10L12 2zm0 4l6 6-6 6-6-6 6-6z"/></svg>',
+          Gemini: '<svg class="w-4 h-4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#e8ebfa"/><path d="M12 4.4c.32 3.25 2.9 5.97 6.2 6.47-.02.03-.02.07 0 .1-3.3.5-5.88 3.23-6.2 6.48-.02-.03-.05-.03-.07 0-.32-3.25-2.9-5.97-6.2-6.47.02-.03.02-.07 0-.1 3.3-.5 5.88-3.23 6.2-6.48.01.01.04.01.07 0z" fill="url(#gemGrad)"/><defs><linearGradient id="gemGrad" x1="6" x2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#4E7CCF"/><stop offset="1" stop-color="#D5616D"/></linearGradient></defs></svg>'
+        };
+        if (aiText.includes('chatgpt') || aiText.includes('gpt') || aiText.includes('openai')) {
+          tools.push({ name: 'ChatGPT', url: 'https://chat.openai.com', icon: icons.ChatGPT });
+        }
+        if (aiText.includes('claude') || aiText.includes('anthropic')) {
+          tools.push({ name: 'Claude', url: 'https://claude.ai', icon: icons.Claude });
+        }
+        if (aiText.includes('gemini') || aiText.includes('google') || aiText.includes('bard')) {
+          tools.push({ name: 'Gemini', url: 'https://gemini.google.com', icon: icons.Gemini });
+        }
+        if (tools.length === 0) {
+          tools.push({ name: 'ChatGPT', url: 'https://chat.openai.com', icon: icons.ChatGPT });
+        }
+        return `
             <div class="flex flex-wrap gap-2">
                 ${tools.map(t => `
                 <button onclick="copyAndOpenAI(${c.id}, '${t.url}')" class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-xl transition-colors">
@@ -5015,14 +4576,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 `).join('')}
             </div>
           `;
-        })()}
+      })()}
                 </section>
                 ` : ''}
 
                 <!-- Insights - CON TOOLTIPS EDUCATIVOS -->
                 <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     ${c.solutionPlus ? `
-                    <div id="case-section-porque" class="sm:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <div class="sm:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
                                 <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
@@ -5040,7 +4601,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <p class="text-slate-700 leading-relaxed">${c.solutionPlus}</p>
                     </div>` : ''}
 
-                    <div id="case-section-estrategia" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
                         <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-2 flex items-center gap-2">
                             <i data-lucide="compass" class="w-4 h-4 text-teal-500"></i>
                             Estrategia
@@ -5048,7 +4609,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <p class="text-slate-600 text-sm">${c.exampleTip || "Sigue la estructura maestra."}</p>
                     </div>
 
-                    <div id="case-section-validacion" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
                         <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-2 flex items-center gap-2">
                             <i data-lucide="check-circle" class="w-4 h-4 text-blue-500"></i>
                             Validación
@@ -5059,7 +4620,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 ${c.verticalMatrix && c.verticalMatrix.length > 0 ? `
                 <!-- Adaptation Matrix -->
-                <section id="case-section-matriz" class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                <section class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
                     <div class="px-5 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center gap-2">
                         <i data-lucide="git-branch" class="w-4 h-4 text-slate-400"></i>
                         <h3 class="font-semibold text-slate-800 text-sm">Matriz de Adaptación</h3>
@@ -5089,7 +4650,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <!-- Navigation Footer -->
-            <nav id="case-navigation-footer" class="mt-12 pt-8 border-t border-slate-200/80">
+            <nav class="mt-12 pt-8 border-t border-slate-200/80">
                 <p class="text-xs text-slate-400 font-medium mb-5 text-center">Navegar entre casos</p>
                 <div class="flex flex-col sm:flex-row items-stretch gap-4 w-full">
                     ${renderNavBtn(prevCase, 'prev')}
@@ -5099,228 +4660,228 @@ document.addEventListener("DOMContentLoaded", () => {
 
         </div>
     `;
+}
+
+window.copyPromptText = function (text) {
+  navigator.clipboard.writeText(text);
+  A("¡Prompt copiado al portapapeles!");
+};
+
+window.copyAndOpenAI = function (caseId, targetUrl) {
+  const cCase = casesData.find(c => c.id === caseId);
+  if (!cCase) return;
+  const prompt = decryptPrompt(cCase.agiaPromptTagged);
+  navigator.clipboard.writeText(prompt);
+  A("¡Prompt copiado! Abriendo IA...");
+
+  let url = targetUrl;
+  if (!url) {
+    // Fallback logic if no specific URL provided (legacy behavior)
+    const aiName = (cCase.suggestedAI || '').toLowerCase();
+    url = '#';
+    if (aiName.includes('chatgpt') || aiName.includes('gpt') || aiName.includes('openai')) url = 'https://chat.openai.com';
+    else if (aiName.includes('claude') || aiName.includes('anthropic')) url = 'https://claude.ai';
+    else if (aiName.includes('gemini') || aiName.includes('google') || aiName.includes('bard')) url = 'https://gemini.google.com';
   }
 
-  window.copyPromptText = function (text) {
-    navigator.clipboard.writeText(text);
-    A("¡Prompt copiado al portapapeles!");
-  };
+  setTimeout(() => window.open(url, '_blank'), 300);
+};
 
-  window.copyAndOpenAI = function (caseId, targetUrl) {
-    const cCase = casesData.find(c => c.id === caseId);
-    if (!cCase) return;
-    const prompt = decryptPrompt(cCase.agiaPromptTagged);
-    navigator.clipboard.writeText(prompt);
-    A("¡Prompt copiado! Abriendo IA...");
-
-    let url = targetUrl;
-    if (!url) {
-      // Fallback logic if no specific URL provided (legacy behavior)
-      const aiName = (cCase.suggestedAI || '').toLowerCase();
-      url = '#';
-      if (aiName.includes('chatgpt') || aiName.includes('gpt') || aiName.includes('openai')) url = 'https://chat.openai.com';
-      else if (aiName.includes('claude') || aiName.includes('anthropic')) url = 'https://claude.ai';
-      else if (aiName.includes('gemini') || aiName.includes('google') || aiName.includes('bard')) url = 'https://gemini.google.com';
-    }
-
-    setTimeout(() => window.open(url, '_blank'), 300);
-  };
-
-  // --- AGIA MÓDULO 5 END ---
-  const n =
-    r === "ia-aplicada-starter"
-      ? { ...essentialData, title: "IA Aplicada · Starter" }
-      : essentialData;
-  if (!n) return void console.error("Curso no encontrado");
-  const i = n.modules.flatMap((e) => e.lessons);
-  let l = null,
-    c = {
-      completedLessons: [],
-      currentLessonId: i.length > 0 ? i[0].id : null,
-      unlockedBadges: [],
-    },
-    d = null,
-    u = null,
-    p = !1;
-  const m = {
-    userName: document.getElementById("user-name"),
-    userAvatar: document.getElementById("user-avatar"),
-    userProfile: document.getElementById("user-profile-container"),
-    logoutButton: document.getElementById("logout-button"),
-    courseTitle: document.getElementById("course-title"),
-    progressBar: document.getElementById("progress-bar"),
-    progressText: document.getElementById("progress-text"),
-    modulesContainer: document.getElementById("modules-container"),
-    lessonTitle: document.getElementById("lesson-title"),
-    lessonMaterialContainer: document.getElementById(
-      "lesson-material-container",
-    ),
-    navigationButtons: document.getElementById("navigation-buttons"),
-    prevBtn: document.getElementById("prev-lesson-btn"),
-    mainActionBtn: document.getElementById("main-action-btn"),
-    toast: document.getElementById("toast-notification"),
-    toastMessage: document.getElementById("toast-message"),
-    badgeToast: document.getElementById("badge-toast"),
-    badgeMessage: document.getElementById("badge-message"),
-    completionModalOverlay: document.getElementById("completion-modal-overlay"),
-    completionModal: document.getElementById("completion-modal"),
-    modalUserName: document.getElementById("modal-user-name"),
-    modalCourseName: document.getElementById("modal-course-name"),
-    certificateLink: document.getElementById("certificate-link"),
-    reviewCourseBtn: document.getElementById("review-course-btn"),
-    closeModalBtn: document.getElementById("close-modal-btn"),
-    learningTabs: document.getElementById("learning-tabs"),
-    notesTextarea: document.getElementById("notes-textarea"),
-    notesSaveStatus: document.getElementById("notes-save-status"),
-    resourceFileInput: document.getElementById("resource-file-input"),
-    uploadResourcesBtn: document.getElementById("upload-resources-btn"),
-    uploadProgress: document.getElementById("upload-progress"),
-    resourcesList: document.getElementById("resources-list"),
-    userResourceList: document.getElementById("user-resource-list"),
-    taskInput: document.getElementById("task-input"),
-    addTaskBtn: document.getElementById("add-task-btn"),
-    taskList: document.getElementById("task-list"),
-    tabMaterialPanel: document.getElementById("tab-material"),
-    integratedResourcesArea: document.getElementById(
-      "integrated-resources-container",
-    ),
-    pdfModalOverlay: document.getElementById("pdf-modal-overlay"),
-    pdfModal: document.getElementById("pdf-modal"),
-    pdfModalContent: document.getElementById("pdf-modal-content"),
-    pdfModalTitle: document.getElementById("pdf-modal-title"),
-    pdfModalCloseBtn: document.getElementById("pdf-modal-close-btn"),
-    pdfIframe: document.getElementById("pdf-iframe"),
-    supportForm: document.getElementById("support-form"),
-    supportSubmitBtn: document.getElementById("support-submit-btn"),
-    supportBtnText: document.getElementById("support-btn-text"),
-    supportSpinner: document.getElementById("support-spinner"),
-    supportFormStatus: document.getElementById("support-form-status"),
-    sidebar: document.getElementById("course-sidebar"),
-    sidebarToggle: document.getElementById("sidebar-toggle-desktop"),
-    tabsNavContainer: document.getElementById("tabs-navigation-container"),
-  };
-  function g() {
-    // Exclude segment_category from completion check
-    const completableLessons = i.filter(l => l.type !== "segment_category");
-    if (0 === completableLessons.length) return !1;
-    return new Set(c.completedLessons).size >= completableLessons.length;
+// --- AGIA MÓDULO 5 END ---
+const n =
+  r === "ia-aplicada-starter"
+    ? { ...essentialData, title: "IA Aplicada · Starter" }
+    : essentialData;
+if (!n) return void console.error("Curso no encontrado");
+const i = n.modules.flatMap((e) => e.lessons);
+let l = null,
+  c = {
+    completedLessons: [],
+    currentLessonId: i.length > 0 ? i[0].id : null,
+    unlockedBadges: [],
+  },
+  d = null,
+  u = null,
+  p = !1;
+const m = {
+  userName: document.getElementById("user-name"),
+  userAvatar: document.getElementById("user-avatar"),
+  userProfile: document.getElementById("user-profile-container"),
+  logoutButton: document.getElementById("logout-button"),
+  courseTitle: document.getElementById("course-title"),
+  progressBar: document.getElementById("progress-bar"),
+  progressText: document.getElementById("progress-text"),
+  modulesContainer: document.getElementById("modules-container"),
+  lessonTitle: document.getElementById("lesson-title"),
+  lessonMaterialContainer: document.getElementById(
+    "lesson-material-container",
+  ),
+  navigationButtons: document.getElementById("navigation-buttons"),
+  prevBtn: document.getElementById("prev-lesson-btn"),
+  mainActionBtn: document.getElementById("main-action-btn"),
+  toast: document.getElementById("toast-notification"),
+  toastMessage: document.getElementById("toast-message"),
+  badgeToast: document.getElementById("badge-toast"),
+  badgeMessage: document.getElementById("badge-message"),
+  completionModalOverlay: document.getElementById("completion-modal-overlay"),
+  completionModal: document.getElementById("completion-modal"),
+  modalUserName: document.getElementById("modal-user-name"),
+  modalCourseName: document.getElementById("modal-course-name"),
+  certificateLink: document.getElementById("certificate-link"),
+  reviewCourseBtn: document.getElementById("review-course-btn"),
+  closeModalBtn: document.getElementById("close-modal-btn"),
+  learningTabs: document.getElementById("learning-tabs"),
+  notesTextarea: document.getElementById("notes-textarea"),
+  notesSaveStatus: document.getElementById("notes-save-status"),
+  resourceFileInput: document.getElementById("resource-file-input"),
+  uploadResourcesBtn: document.getElementById("upload-resources-btn"),
+  uploadProgress: document.getElementById("upload-progress"),
+  resourcesList: document.getElementById("resources-list"),
+  userResourceList: document.getElementById("user-resource-list"),
+  taskInput: document.getElementById("task-input"),
+  addTaskBtn: document.getElementById("add-task-btn"),
+  taskList: document.getElementById("task-list"),
+  tabMaterialPanel: document.getElementById("tab-material"),
+  integratedResourcesArea: document.getElementById(
+    "integrated-resources-container",
+  ),
+  pdfModalOverlay: document.getElementById("pdf-modal-overlay"),
+  pdfModal: document.getElementById("pdf-modal"),
+  pdfModalContent: document.getElementById("pdf-modal-content"),
+  pdfModalTitle: document.getElementById("pdf-modal-title"),
+  pdfModalCloseBtn: document.getElementById("pdf-modal-close-btn"),
+  pdfIframe: document.getElementById("pdf-iframe"),
+  supportForm: document.getElementById("support-form"),
+  supportSubmitBtn: document.getElementById("support-submit-btn"),
+  supportBtnText: document.getElementById("support-btn-text"),
+  supportSpinner: document.getElementById("support-spinner"),
+  supportFormStatus: document.getElementById("support-form-status"),
+  sidebar: document.getElementById("course-sidebar"),
+  sidebarToggle: document.getElementById("sidebar-toggle-desktop"),
+  tabsNavContainer: document.getElementById("tabs-navigation-container"),
+};
+function g() {
+  // Exclude segment_category from completion check
+  const completableLessons = i.filter(l => l.type !== "segment_category");
+  if (0 === completableLessons.length) return !1;
+  return new Set(c.completedLessons).size >= completableLessons.length;
+}
+function f(e) {
+  for (let a = 0; a < n.modules.length; a++) {
+    const t = n.modules[a],
+      s = t.lessons.findIndex((a) => a.id === e);
+    if (-1 !== s) return { lesson: t.lessons[s], moduleIndex: a, module: t };
   }
-  function f(e) {
-    for (let a = 0; a < n.modules.length; a++) {
-      const t = n.modules[a],
-        s = t.lessons.findIndex((a) => a.id === e);
-      if (-1 !== s) return { lesson: t.lessons[s], moduleIndex: a, module: t };
-    }
-    return null;
-  }
-  function b() {
-    (!c.currentLessonId && i.length > 0 && (c.currentLessonId = i[0].id),
-      (m.courseTitle.textContent = n.title),
-      (function () {
-        if (!m.modulesContainer) return;
+  return null;
+}
+function b() {
+  (!c.currentLessonId && i.length > 0 && (c.currentLessonId = i[0].id),
+    (m.courseTitle.textContent = n.title),
+    (function () {
+      if (!m.modulesContainer) return;
 
-        // Preserve sidebar scroll position
-        const previousScrollTop = m.modulesContainer.scrollTop;
+      // Preserve sidebar scroll position
+      const previousScrollTop = m.modulesContainer.scrollTop;
 
-        // Render Sidebar Content
-        m.modulesContainer.innerHTML = n.modules
-          .map((e, a) => {
-            const t = e.lessons
-              .map((e) => {
-                const a = c.completedLessons.includes(e.id),
-                  t = c.currentLessonId === e.id;
-                let s = "text-gray-600 hover:bg-slate-50",
-                  o = a
-                    ? "check-circle-2"
-                    : "quiz" === e.type
-                      ? "edit-3"
-                      : "video" === e.type
-                        ? "play"
-                        : "file-text",
-                  r = a
-                    ? "text-green-500"
-                    : "quiz" === e.type
-                      ? "text-amber-500"
-                      : "video" === e.type
-                        ? "text-teal-500"
-                        : "text-slate-400";
-                t &&
-                  ((s = "bg-teal-50 text-teal-700 font-semibold"),
-                    (o =
-                      "video" === e.type
-                        ? "play-circle"
-                        : "quiz" === e.type
-                          ? "help-circle"
-                          : "file-text"),
-                    (r = "text-teal-600"));
-                const n =
-                  { video: "video", resource: "book-open", quiz: "edit-3", case_category: "folder", segment_category: "briefcase" }[
-                  e.type
-                  ] || "file";
-                // Special styling for user's segment category
-                const userSegmentClass = e.isUserSegment ? "bg-gradient-to-r from-teal-50 to-emerald-50 border-l-2 border-teal-500" : "";
-                // Use image thumbnail for segment categories
-                const iconHtml = e.segmentImage
-                  ? `<img src="${e.segmentImage}" alt="" class="h-6 w-6 mr-3 flex-shrink-0 rounded object-cover">`
-                  : `<i data-lucide="${o}" class="h-4 w-4 mr-3 flex-shrink-0 ${r}"></i>`;
-                return `<li class="lesson-item ${userSegmentClass}" data-lesson-id="${e.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${s}">${iconHtml}<span class="flex-1 text-[11px] whitespace-normal leading-tight">${e.title}</span><i data-lucide="${n}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
-              })
-              .join(""),
-              s = "chevron-down";
-            return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide text-gray-800">${e.title}</span><i data-lucide="${s}" class="h-4 w-4 transition-transform text-gray-400"></i></button><div class="accordion-content open"><ul class="py-1 space-y-0.5">${t}</ul></div></div>`;
-          })
-          .join("");
+      // Render Sidebar Content
+      m.modulesContainer.innerHTML = n.modules
+        .map((e, a) => {
+          const t = e.lessons
+            .map((e) => {
+              const a = c.completedLessons.includes(e.id),
+                t = c.currentLessonId === e.id;
+              let s = "text-gray-600 hover:bg-slate-50",
+                o = a
+                  ? "check-circle-2"
+                  : "quiz" === e.type
+                    ? "edit-3"
+                    : "video" === e.type
+                      ? "play"
+                      : "file-text",
+                r = a
+                  ? "text-green-500"
+                  : "quiz" === e.type
+                    ? "text-amber-500"
+                    : "video" === e.type
+                      ? "text-teal-500"
+                      : "text-slate-400";
+              t &&
+                ((s = "bg-teal-50 text-teal-700 font-semibold"),
+                  (o =
+                    "video" === e.type
+                      ? "play-circle"
+                      : "quiz" === e.type
+                        ? "help-circle"
+                        : "file-text"),
+                  (r = "text-teal-600"));
+              const n =
+                { video: "video", resource: "book-open", quiz: "edit-3", case_category: "folder", segment_category: "briefcase" }[
+                e.type
+                ] || "file";
+              // Special styling for user's segment category
+              const userSegmentClass = e.isUserSegment ? "bg-gradient-to-r from-teal-50 to-emerald-50 border-l-2 border-teal-500" : "";
+              // Use image thumbnail for segment categories
+              const iconHtml = e.segmentImage
+                ? `<img src="${e.segmentImage}" alt="" class="h-6 w-6 mr-3 flex-shrink-0 rounded object-cover">`
+                : `<i data-lucide="${o}" class="h-4 w-4 mr-3 flex-shrink-0 ${r}"></i>`;
+              return `<li class="lesson-item ${userSegmentClass}" data-lesson-id="${e.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${s}">${iconHtml}<span class="flex-1 text-[11px] whitespace-normal leading-tight">${e.title}</span><i data-lucide="${n}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
+            })
+            .join(""),
+            s = "chevron-down";
+          return `<div class="accordion-item"><button class="accordion-header w-full flex justify-between items-center p-3 rounded-md hover:bg-slate-50 text-left"><span class="font-semibold text-xs tracking-wide text-gray-800">${e.title}</span><i data-lucide="${s}" class="h-4 w-4 transition-transform text-gray-400"></i></button><div class="accordion-content open"><ul class="py-1 space-y-0.5">${t}</ul></div></div>`;
+        })
+        .join("");
 
-        // Restore sidebar scroll position
-        m.modulesContainer.scrollTop = previousScrollTop;
+      // Restore sidebar scroll position
+      m.modulesContainer.scrollTop = previousScrollTop;
 
-        // Attach Listeners
-        m.modulesContainer
-          .querySelectorAll(".lesson-item a")
-          .forEach((e) => {
-            e.addEventListener("click", (e) => {
-              e.preventDefault();
-              const a = e.currentTarget.closest(".lesson-item");
-              if (a) {
-                h(a.dataset.lessonId);
-              }
+      // Attach Listeners
+      m.modulesContainer
+        .querySelectorAll(".lesson-item a")
+        .forEach((e) => {
+          e.addEventListener("click", (e) => {
+            e.preventDefault();
+            const a = e.currentTarget.closest(".lesson-item");
+            if (a) {
+              h(a.dataset.lessonId);
+            }
+          });
+        });
+
+      m.modulesContainer
+        .querySelectorAll(".accordion-item")
+        .forEach((e) => {
+          const a = e.querySelector(".accordion-header");
+          a &&
+            a.addEventListener("click", () => {
+              const e = a.nextElementSibling,
+                t = a.querySelector("i"),
+                s = e.classList.toggle("open");
+              t &&
+                "chevron-down" === t.getAttribute("data-lucide") &&
+                (t.style.transform = s
+                  ? "rotate(180deg)"
+                  : "rotate(0deg)");
             });
-          });
-
-        m.modulesContainer
-          .querySelectorAll(".accordion-item")
-          .forEach((e) => {
-            const a = e.querySelector(".accordion-header");
-            a &&
-              a.addEventListener("click", () => {
-                const e = a.nextElementSibling,
-                  t = a.querySelector("i"),
-                  s = e.classList.toggle("open");
-                t &&
-                  "chevron-down" === t.getAttribute("data-lucide") &&
-                  (t.style.transform = s
-                    ? "rotate(180deg)"
-                    : "rotate(0deg)");
-              });
-          });
-      })());
-    const e = f(c.currentLessonId);
-    (e &&
-      ((m.lessonTitle.textContent = e.lesson.title),
-        (function (e) {
-          let a = "";
-          u && (u.pause(), (u = null));
-          if (window.currentQuizHandler) {
-            const e = document.getElementById("check-quiz-btn");
-            e && e.removeEventListener("click", window.currentQuizHandler);
-          }
-          m.tabsNavContainer &&
-            ("quiz" === e.type || "taller" === e.type
-              ? (m.tabsNavContainer.classList.add("hidden"), F("tab-clases"))
-              : m.tabsNavContainer.classList.remove("hidden"));
-          switch (e.type) {
-            case "taller":
-              a = `
+        });
+    })());
+  const e = f(c.currentLessonId);
+  (e &&
+    ((m.lessonTitle.textContent = e.lesson.title),
+      (function (e) {
+        let a = "";
+        u && (u.pause(), (u = null));
+        if (window.currentQuizHandler) {
+          const e = document.getElementById("check-quiz-btn");
+          e && e.removeEventListener("click", window.currentQuizHandler);
+        }
+        m.tabsNavContainer &&
+          ("quiz" === e.type || "taller" === e.type
+            ? (m.tabsNavContainer.classList.add("hidden"), F("tab-clases"))
+            : m.tabsNavContainer.classList.remove("hidden"));
+        switch (e.type) {
+          case "taller":
+            a = `
                 <div id="radar-automatizacion-container" class="radar-integrated">
                   <div class="radar-card">
                     <div class="text-center py-8">
@@ -5329,46 +4890,46 @@ document.addEventListener("DOMContentLoaded", () => {
                   </div>
                 </div>
               `;
-              setTimeout(() => {
-                if (window.initRadarAutomatizacion) {
-                  window.initRadarAutomatizacion();
-                }
-              }, 100);
-              break;
-            case "video":
-              // Support for segmented intro videos by user profile
-              let videoUrlToUse = e.videoUrl;
-              let transcriptionUrlToUse = e.transcriptionUrl;
-              if (e.segmentedVideoUrls) {
-                const userSegment = localStorage.getItem('userSegment') || 'Negocios & Ventas';
-                const segmentMap = {
-                  'Negocios & Ventas': 'NG',
-                  'Legal & Profesional': 'LG',
-                  'Gestión & Administración': 'ADM',
-                  'Gestión & Adm.': 'ADM',
-                  'Educación & Capacitación': 'ED',
-                  'Educación': 'ED'
-                };
-                const segmentKey = segmentMap[userSegment] || 'NG';
-                videoUrlToUse = e.segmentedVideoUrls[segmentKey] || e.videoUrl;
-                if (e.segmentedTranscriptionUrls) {
-                  transcriptionUrlToUse = e.segmentedTranscriptionUrls[segmentKey] || e.transcriptionUrl;
-                }
-                // Override the lesson object so the video loader function uses the correct URLs
-                e.videoUrl = videoUrlToUse;
-                e.transcriptionUrl = transcriptionUrlToUse;
+            setTimeout(() => {
+              if (window.initRadarAutomatizacion) {
+                window.initRadarAutomatizacion();
               }
-              a = videoUrlToUse
-                ? `<div class="flex flex-col gap-4 mt-8">\n                                <div class="video-wrapper-optimized">\n                                    <video id="course-video" controls>\n                                        <source id="course-video-source" data-src="${videoUrlToUse || ""}" type="video/mp4">\n                                        ${transcriptionUrlToUse ? '<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>' : ""}\n                                        Tu navegador no soporta el elemento de video.\n                                    </video>\n                                </div>\n                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-[1200px] mx-auto w-full">\n                                ${transcriptionUrlToUse ? '\n                                    <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="captions" class="h-5 w-5"></i>\n                                        <span>Desactivar Subtítulos</span>\n                                    </button>\n                                    <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="download" class="h-5 w-5"></i>\n                                        <span>Descargar Transcripción</span>\n                                    </button>\n                                ' : '\n                                    <div class="sm:col-span-2">\n                                        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled>\n                                            <i data-lucide="captions-off" class="h-5 w-5"></i>\n                                            <span>Subtítulos No Disponibles</span>\n                                        </button>\n                                    </div>\n                                '}\n                                </div>\n                            </div>`
-                : '<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>';
-              break;
-            case "resource":
-              // Dynamic resource rendering from resources_db.js
-              if (e.resourceId && window.resourcesDatabase && window.resourcesDatabase[e.resourceId]) {
-                const userProfile = localStorage.getItem('userSegment') || 'Negocios & Ventas';
-                const resourceData = window.getRenderedResource(e.resourceId, userProfile);
-                if (resourceData) {
-                  a = `
+            }, 100);
+            break;
+          case "video":
+            // Support for segmented intro videos by user profile
+            let videoUrlToUse = e.videoUrl;
+            let transcriptionUrlToUse = e.transcriptionUrl;
+            if (e.segmentedVideoUrls) {
+              const userSegment = localStorage.getItem('userSegment') || 'Negocios & Ventas';
+              const segmentMap = {
+                'Negocios & Ventas': 'NG',
+                'Legal & Profesional': 'LG',
+                'Gestión & Administración': 'ADM',
+                'Gestión & Adm.': 'ADM',
+                'Educación & Capacitación': 'ED',
+                'Educación': 'ED'
+              };
+              const segmentKey = segmentMap[userSegment] || 'NG';
+              videoUrlToUse = e.segmentedVideoUrls[segmentKey] || e.videoUrl;
+              if (e.segmentedTranscriptionUrls) {
+                transcriptionUrlToUse = e.segmentedTranscriptionUrls[segmentKey] || e.transcriptionUrl;
+              }
+              // Override the lesson object so the video loader function uses the correct URLs
+              e.videoUrl = videoUrlToUse;
+              e.transcriptionUrl = transcriptionUrlToUse;
+            }
+            a = videoUrlToUse
+              ? `<div class="flex flex-col gap-4 mt-8">\n                                <div class="video-wrapper-optimized">\n                                    <video id="course-video" controls>\n                                        <source id="course-video-source" data-src="${videoUrlToUse || ""}" type="video/mp4">\n                                        ${transcriptionUrlToUse ? '<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>' : ""}\n                                        Tu navegador no soporta el elemento de video.\n                                    </video>\n                                </div>\n                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-[1200px] mx-auto w-full">\n                                ${transcriptionUrlToUse ? '\n                                    <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="captions" class="h-5 w-5"></i>\n                                        <span>Desactivar Subtítulos</span>\n                                    </button>\n                                    <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="download" class="h-5 w-5"></i>\n                                        <span>Descargar Transcripción</span>\n                                    </button>\n                                ' : '\n                                    <div class="sm:col-span-2">\n                                        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled>\n                                            <i data-lucide="captions-off" class="h-5 w-5"></i>\n                                            <span>Subtítulos No Disponibles</span>\n                                        </button>\n                                    </div>\n                                '}\n                                </div>\n                            </div>`
+              : '<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>';
+            break;
+          case "resource":
+            // Dynamic resource rendering from resources_db.js
+            if (e.resourceId && window.resourcesDatabase && window.resourcesDatabase[e.resourceId]) {
+              const userProfile = localStorage.getItem('userSegment') || 'Negocios & Ventas';
+              const resourceData = window.getRenderedResource(e.resourceId, userProfile);
+              if (resourceData) {
+                a = `
                   <div class="max-w-4xl mx-auto">
                     <div class="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-t-2xl p-4 border border-b-0 border-teal-200 flex items-center justify-between">
                       <div class="flex items-center gap-3">
@@ -5390,1175 +4951,1152 @@ document.addEventListener("DOMContentLoaded", () => {
                       ${resourceData.html}
                     </div>
                   </div>`;
-                } else {
-                  a = '<div class="bg-white p-12 border border-slate-200 rounded-xl text-center text-slate-500"><i data-lucide="alert-circle" class="h-12 w-12 mx-auto mb-4 text-amber-500"></i><p>No se pudo cargar el recurso.</p></div>';
-                }
               } else {
-                a =
-                  '<div class="bg-white p-12 border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 text-center">\n                            <i data-lucide="library-big" class="h-16 w-16 text-teal-500 mb-4"></i>\n                            <h3 class="text-xl font-bold text-gray-900">Lección de Consulta</h3>\n                            <p class="mt-2 text-gray-600 max-w-md">Esta lección se compone de recursos teóricos que puedes consultar en la pestaña "Materiales".</p>\n                        </div>';
-              }
-              break;
-            case "quiz": {
-              if (!e.questions || 0 === e.questions.length) {
-                a =
-                  '<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>';
-                break;
-              }
-              const t = c.completedLessons.includes(e.id);
-              let s = e.questions
-                .map((a, s) => {
-                  const o = a.options
-                    .map((o, r) => {
-                      if (t) {
-                        return `<div class="${r === a.correctAnswer ? "quiz-option correct" : "quiz-option opacity-60"} border-2 p-4 rounded-lg cursor-default">${o}</div>`;
-                      }
-                      return `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${r}" data-question-id="${`quiz-${e.id}-q-${s}`}">${o}</div>`;
-                    })
-                    .join(""),
-                    r = a.tip
-                      ? `\n                                <div class="mt-2">\n                                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-teal-600 font-bold flex items-center gap-1 hover:text-teal-700 transition-colors">\n                                        <i data-lucide="lightbulb" class="h-3.5 w-3.5"></i> ¿Necesitas una pista?\n                                    </button>\n                                    <p class="hidden text-[11px] text-slate-500 mt-2 italic bg-teal-50 p-2 rounded-lg border border-teal-100 leading-relaxed shadow-sm">\n                                        ${a.tip}\n                                    </p>\n                                </div>`
-                      : "";
-                  return `<div class="space-y-4 mb-8 p-4 bg-white rounded-xl border border-slate-200 shadow-sm" ${t ? "" : `id="quiz-${e.id}-q-${s}"`}>\n                                        <h3 class="text-lg font-bold text-slate-800">${s + 1}. ${a.text}</h3>\n                                        <div class="space-y-2.5">${o}</div>\n                                        ${r}\n                                    </div>`;
-                })
-                .join("");
-              if (t) {
-                a = `${s}<p class="text-sm text-slate-500 mt-4 font-semibold text-center p-4 bg-slate-100 rounded-md">${"Ya has completado este quiz. Puedes revisar las respuestas correctas."}</p>`;
-              } else
-                a = `<div id="quiz-container" class="max-w-3xl mx-auto">${s}<div class="flex justify-center mt-6"><button id="check-quiz-btn" class="bg-slate-900 text-white font-bold px-10 py-4 rounded-full hover:bg-slate-800 transition-all shadow-lg hover:scale-105">Verificar Respuestas</button></div></div>`;
-              break;
-            }
-            case "segment_category":
-              // Nueva vista por segmentos (4 perfiles principales)
-              a = renderCaseListHTML(null, e.segmentId);
-              // Adding version badge
-              const segBadge = '<div style="position:fixed;bottom:10px;right:10px;background:black;color:white;padding:5px;font-size:10px;opacity:0.6;z-index:9999">v2.0.31-SEG</div>';
-              a += segBadge;
-              break;
-            case "case_category":
-              const catCases = casesData.filter(item => item.category === e.categoryId);
-              // FIXED: Always show list first ("Index of Cases")
-              a = renderCaseListHTML(e.categoryId);
-              // Adding version badge
-              const vBadge = '<div style="position:fixed;bottom:10px;right:10px;background:black;color:white;padding:5px;font-size:10px;opacity:0.6;z-index:9999">v2.0.30-R</div>';
-              a += vBadge;
-              break;
-            default:
-              a = "<p>Tipo de lección no reconocido.</p>";
-          }
-          const t = document.getElementById("lesson-material-container");
-          t && (t.innerHTML = a);
-
-          if (e.type !== 'case_category') {
-            if (window.innerWidth >= 1024) {
-              const contentContainer = document.getElementById("lesson-content");
-              if (contentContainer) {
-                contentContainer.scrollTo({ top: 0, behavior: 'auto' });
+                a = '<div class="bg-white p-12 border border-slate-200 rounded-xl text-center text-slate-500"><i data-lucide="alert-circle" class="h-12 w-12 mx-auto mb-4 text-amber-500"></i><p>No se pudo cargar el recurso.</p></div>';
               }
             } else {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              a =
+                '<div class="bg-white p-12 border border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-600 text-center">\n                            <i data-lucide="library-big" class="h-16 w-16 text-teal-500 mb-4"></i>\n                            <h3 class="text-xl font-bold text-gray-900">Lección de Consulta</h3>\n                            <p class="mt-2 text-gray-600 max-w-md">Esta lección se compone de recursos teóricos que puedes consultar en la pestaña "Materiales".</p>\n                        </div>';
             }
-          }
-          if (
-            ((async function (e) {
-              if (!m.resourcesList || !m.integratedResourcesArea) return;
-              const a = f(e.id);
-              if (!a || !a.module) return;
-
-              // Render interactive resources for this module
-              if (window.renderInteractiveResources) {
-                window.renderInteractiveResources(a.moduleIndex);
-              }
-              // PDFs hidden - now using interactive resources from resources_db.js
-              m.integratedResourcesArea.classList.add("hidden");
-              lucide.createIcons();
-            })(e),
-              "quiz" === e.type && e.questions && e.questions.length > 0)
-          ) {
-            if (!c.completedLessons.includes(e.id)) {
-              const a = document.getElementById("tab-clases");
-              a.querySelectorAll(".quiz-option").forEach((e) => {
-                e.addEventListener("click", () => {
-                  const t = e.dataset.questionId;
-                  (a
-                    .querySelectorAll(`.quiz-option[data-question-id="${t}"]`)
-                    .forEach((e) => e.classList.remove("selected")),
-                    e.classList.add("selected"));
-                });
-              });
-              const t = document.getElementById("check-quiz-btn");
-              t &&
-                ((window.currentQuizHandler = () =>
-                  (async function (e) {
-                    const a = e.questions.length;
-                    let t = 0,
-                      s = !0;
-                    for (let a = 0; a < e.questions.length; a++) {
-                      const t = `quiz-${e.id}-q-${a}`;
-                      if (
-                        !document
-                          .getElementById(t)
-                          .querySelector(".quiz-option.selected")
-                      ) {
-                        s = !1;
-                        break;
-                      }
+            break;
+          case "quiz": {
+            if (!e.questions || 0 === e.questions.length) {
+              a =
+                '<p class="text-center text-slate-500">Este quiz no tiene preguntas configuradas.</p>';
+              break;
+            }
+            const t = c.completedLessons.includes(e.id);
+            let s = e.questions
+              .map((a, s) => {
+                const o = a.options
+                  .map((o, r) => {
+                    if (t) {
+                      return `<div class="${r === a.correctAnswer ? "quiz-option correct" : "quiz-option opacity-60"} border-2 p-4 rounded-lg cursor-default">${o}</div>`;
                     }
-                    if (!s)
-                      return void A("Por favor, responde todas las preguntas.");
-                    const o = await Promise.all(
-                      e.questions.map(async (a, t) => {
-                        const s = `quiz-${e.id}-q-${t}`,
-                          o = document.getElementById(s),
-                          r = o.querySelector(".quiz-option.selected"),
-                          n = parseInt(r.dataset.index);
-                        return {
-                          questionContainer: o,
-                          selectedOption: r,
-                          isCorrect: (await y(n)) === a.correctAnswerHash,
-                          correctHash: a.correctAnswerHash,
-                        };
+                    return `<div class="quiz-option border-2 border-slate-300 p-4 rounded-lg cursor-pointer hover:bg-slate-100" data-index="${r}" data-question-id="${`quiz-${e.id}-q-${s}`}">${o}</div>`;
+                  })
+                  .join(""),
+                  r = a.tip
+                    ? `\n                                <div class="mt-2">\n                                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-teal-600 font-bold flex items-center gap-1 hover:text-teal-700 transition-colors">\n                                        <i data-lucide="lightbulb" class="h-3.5 w-3.5"></i> ¿Necesitas una pista?\n                                    </button>\n                                    <p class="hidden text-[11px] text-slate-500 mt-2 italic bg-teal-50 p-2 rounded-lg border border-teal-100 leading-relaxed shadow-sm">\n                                        ${a.tip}\n                                    </p>\n                                </div>`
+                    : "";
+                return `<div class="space-y-4 mb-8 p-4 bg-white rounded-xl border border-slate-200 shadow-sm" ${t ? "" : `id="quiz-${e.id}-q-${s}"`}>\n                                        <h3 class="text-lg font-bold text-slate-800">${s + 1}. ${a.text}</h3>\n                                        <div class="space-y-2.5">${o}</div>\n                                        ${r}\n                                    </div>`;
+              })
+              .join("");
+            if (t) {
+              a = `${s}<p class="text-sm text-slate-500 mt-4 font-semibold text-center p-4 bg-slate-100 rounded-md">${"Ya has completado este quiz. Puedes revisar las respuestas correctas."}</p>`;
+            } else
+              a = `<div id="quiz-container" class="max-w-3xl mx-auto">${s}<div class="flex justify-center mt-6"><button id="check-quiz-btn" class="bg-slate-900 text-white font-bold px-10 py-4 rounded-full hover:bg-slate-800 transition-all shadow-lg hover:scale-105">Verificar Respuestas</button></div></div>`;
+            break;
+          }
+          case "segment_category":
+            // Nueva vista por segmentos (4 perfiles principales)
+            a = renderCaseListHTML(null, e.segmentId);
+            // Adding version badge
+            const segBadge = '<div style="position:fixed;bottom:10px;right:10px;background:black;color:white;padding:5px;font-size:10px;opacity:0.6;z-index:9999">v2.0.31-SEG</div>';
+            a += segBadge;
+            break;
+          case "case_category":
+            const catCases = casesData.filter(item => item.category === e.categoryId);
+            // FIXED: Always show list first ("Index of Cases")
+            a = renderCaseListHTML(e.categoryId);
+            // Adding version badge
+            const vBadge = '<div style="position:fixed;bottom:10px;right:10px;background:black;color:white;padding:5px;font-size:10px;opacity:0.6;z-index:9999">v2.0.30-R</div>';
+            a += vBadge;
+            break;
+          default:
+            a = "<p>Tipo de lección no reconocido.</p>";
+        }
+        const t = document.getElementById("lesson-material-container");
+        t && (t.innerHTML = a);
+
+        if (e.type !== 'case_category') {
+          if (window.innerWidth >= 1024) {
+            const contentContainer = document.getElementById("lesson-content");
+            if (contentContainer) {
+              contentContainer.scrollTo({ top: 0, behavior: 'auto' });
+            }
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }
+        if (
+          ((async function (e) {
+            if (!m.resourcesList || !m.integratedResourcesArea) return;
+            const a = f(e.id);
+            if (!a || !a.module) return;
+
+            // Render interactive resources for this module
+            if (window.renderInteractiveResources) {
+              window.renderInteractiveResources(a.moduleIndex);
+            }
+            // PDFs hidden - now using interactive resources from resources_db.js
+            m.integratedResourcesArea.classList.add("hidden");
+            lucide.createIcons();
+          })(e),
+            "quiz" === e.type && e.questions && e.questions.length > 0)
+        ) {
+          if (!c.completedLessons.includes(e.id)) {
+            const a = document.getElementById("tab-clases");
+            a.querySelectorAll(".quiz-option").forEach((e) => {
+              e.addEventListener("click", () => {
+                const t = e.dataset.questionId;
+                (a
+                  .querySelectorAll(`.quiz-option[data-question-id="${t}"]`)
+                  .forEach((e) => e.classList.remove("selected")),
+                  e.classList.add("selected"));
+              });
+            });
+            const t = document.getElementById("check-quiz-btn");
+            t &&
+              ((window.currentQuizHandler = () =>
+                (async function (e) {
+                  const a = e.questions.length;
+                  let t = 0,
+                    s = !0;
+                  for (let a = 0; a < e.questions.length; a++) {
+                    const t = `quiz-${e.id}-q-${a}`;
+                    if (
+                      !document
+                        .getElementById(t)
+                        .querySelector(".quiz-option.selected")
+                    ) {
+                      s = !1;
+                      break;
+                    }
+                  }
+                  if (!s)
+                    return void A("Por favor, responde todas las preguntas.");
+                  const o = await Promise.all(
+                    e.questions.map(async (a, t) => {
+                      const s = `quiz-${e.id}-q-${t}`,
+                        o = document.getElementById(s),
+                        r = o.querySelector(".quiz-option.selected"),
+                        n = parseInt(r.dataset.index);
+                      return {
+                        questionContainer: o,
+                        selectedOption: r,
+                        isCorrect: (await y(n)) === a.correctAnswerHash,
+                        correctHash: a.correctAnswerHash,
+                      };
+                    }),
+                  );
+                  for (const e of o) {
+                    const {
+                      questionContainer: a,
+                      selectedOption: s,
+                      isCorrect: o,
+                      correctHash: r,
+                    } = e;
+                    if (
+                      (a.querySelectorAll(".quiz-option").forEach((e) => {
+                        ((e.style.pointerEvents = "none"),
+                          e.classList.remove("selected"));
                       }),
-                    );
-                    for (const e of o) {
-                      const {
-                        questionContainer: a,
-                        selectedOption: s,
-                        isCorrect: o,
-                        correctHash: r,
-                      } = e;
-                      if (
-                        (a.querySelectorAll(".quiz-option").forEach((e) => {
-                          ((e.style.pointerEvents = "none"),
-                            e.classList.remove("selected"));
-                        }),
-                          o)
-                      )
-                        (s.classList.add("correct"), t++);
-                      else {
-                        s.classList.add("incorrect");
-                        for (let e = 0; e < 4; e++) {
-                          if ((await y(e)) === r) {
-                            a.querySelector(`[data-index="${e}"]`)?.classList.add(
-                              "correct",
-                            );
-                            break;
-                          }
+                        o)
+                    )
+                      (s.classList.add("correct"), t++);
+                    else {
+                      s.classList.add("incorrect");
+                      for (let e = 0; e < 4; e++) {
+                        if ((await y(e)) === r) {
+                          a.querySelector(`[data-index="${e}"]`)?.classList.add(
+                            "correct",
+                          );
+                          break;
                         }
                       }
                     }
-                    if (t === a)
-                      (A("¡Todas las respuestas son correctas!"),
-                        c.completedLessons.includes(e.id) ||
-                        ((c.completedLessons = [
-                          ...new Set([...c.completedLessons, e.id]),
-                        ]),
-                          await I(),
-                          E(e.id),
-                          b()),
-                        v());
-                    else {
-                      A(`Revisa tus respuestas. ${t} de ${a} son correctas.`);
-                      const e = document.querySelector(".quiz-option.incorrect");
-                      if (e) {
-                        const a = e.closest(".space-y-4.mb-8");
-                        a &&
-                          a.scrollIntoView({
-                            behavior: "smooth",
-                            block: "center",
-                          });
-                      }
-                      setTimeout(() => {
-                        document.querySelectorAll(".quiz-option").forEach((e) => {
-                          (e.classList.remove("incorrect", "correct"),
-                            (e.style.pointerEvents = "auto"));
+                  }
+                  if (t === a)
+                    (A("¡Todas las respuestas son correctas!"),
+                      c.completedLessons.includes(e.id) ||
+                      ((c.completedLessons = [
+                        ...new Set([...c.completedLessons, e.id]),
+                      ]),
+                        await I(),
+                        E(e.id),
+                        b()),
+                      v());
+                  else {
+                    A(`Revisa tus respuestas. ${t} de ${a} son correctas.`);
+                    const e = document.querySelector(".quiz-option.incorrect");
+                    if (e) {
+                      const a = e.closest(".space-y-4.mb-8");
+                      a &&
+                        a.scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
                         });
-                      }, 5e3);
                     }
-                  })(e)),
-                  t.addEventListener("click", window.currentQuizHandler));
-            }
+                    setTimeout(() => {
+                      document.querySelectorAll(".quiz-option").forEach((e) => {
+                        (e.classList.remove("incorrect", "correct"),
+                          (e.style.pointerEvents = "auto"));
+                      });
+                    }, 5e3);
+                  }
+                })(e)),
+                t.addEventListener("click", window.currentQuizHandler));
           }
-          const o = document.getElementById("course-video");
-          o &&
-            ((u = o),
-              (o.onended = async () => {
-                c.completedLessons.includes(e.id) ||
-                  (c.completedLessons.push(e.id),
-                    await I(),
-                    x(),
-                    b(),
-                    A("¡Lección completada al ver el video!"));
-              }));
-          const r = document.getElementById("toggle-subtitles-btn");
-          r &&
-            o &&
-            r.addEventListener("click", () => {
-              if (!o.textTracks || 0 === o.textTracks.length) return;
-              const e = o.textTracks[0],
-                a = r.querySelector("span"),
-                t = r.querySelector("i"),
-                s = "showing" === e.mode;
-              ((e.mode = s ? "hidden" : "showing"),
-                "showing" === e.mode
-                  ? (a && (a.textContent = "Desactivar Subtítulos"),
-                    t && t.setAttribute("data-lucide", "captions"))
-                  : (a && (a.textContent = "Activar Subtítulos"),
-                    t && t.setAttribute("data-lucide", "captions-off")),
-                lucide.createIcons());
-            });
-          const n = document.getElementById("transcription-button");
-          n &&
-            e.transcriptionUrl &&
-            n.addEventListener("click", () =>
-              (async function (e, a) {
-                if (!e) return void A("No hay transcripción disponible.");
-                const t = document.getElementById("transcription-button"),
-                  o = t ? t.querySelector("span") : null,
-                  r = o ? o.textContent : "";
-                o && (o.textContent = "Preparando...");
-                t && (t.disabled = !0);
-                try {
-                  const t = await X(s, e),
-                    o = await fetch(t);
-                  if (!o.ok) throw new Error("Respuesta de red no fue OK");
-                  const r = (await o.text())
-                    .split(/\r?\n/)
-                    .filter(
-                      (e) => !/^\d+$/.test(e.trim()) && !e.includes("--\x3e"),
-                    )
-                    .join("\n")
-                    .replace(/(\n\s*){2,}/g, "\n\n")
-                    .trim(),
-                    n = new Blob([r], { type: "text/plain;charset=utf-8" }),
-                    i = document.createElement("a");
-                  i.href = URL.createObjectURL(n);
-                  const l = a.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-                  ((i.download = `transcripcion_${l}.txt`),
-                    document.body.appendChild(i),
-                    i.click(),
-                    document.body.removeChild(i),
-                    URL.revokeObjectURL(i.href),
-                    A("Descarga iniciada."));
-                } catch (e) {
-                  (console.error("Error al descargar transcripción:", e),
-                    A("No se pudo descargar."));
-                } finally {
-                  (o && (o.textContent = r), t && (t.disabled = !1));
-                }
-              })(e.transcriptionUrl, e.title),
-            );
-          (async () => {
-            if (o)
-              try {
-                await (async function ({
-                  storage: e,
-                  videoEl: a,
-                  videoSrc: t,
-                  srtOrVttSrc: s,
-                }) {
-                  const o = a.querySelector("#course-video-source"),
-                    r = await X(e, t);
-                  o && r && (o.src = r);
-                  const n = a.querySelector("#caption-track");
-                  if (!n || !s) return void a.load();
-                  const i = await X(e, s);
-                  if (!i) return void a.load();
-                  if (/(\.srt)(\?|$)/i.test(i)) {
-                    const e = await fetch(i),
-                      a = await e.text();
-                    n.src = URL.createObjectURL(
-                      new Blob([Y(a)], { type: "text/vtt" }),
-                    );
-                  } else n.src = i;
-                  n.default = !0;
-                  const [l] = a.textTracks;
-                  l && (l.mode = "showing");
-                  a.load();
-                })({
-                  storage: s,
-                  videoEl: o,
-                  videoSrc: (e && e.videoUrl) || "",
-                  srtOrVttSrc: (e && e.transcriptionUrl) || "",
-                });
-              } catch (e) {
-                console.error("No se pudieron adjuntar medios/subtítulos:", e);
-              } finally {
-                Z();
-              }
-          })();
-        })(e.lesson),
-        m.prevBtn &&
-        (m.prevBtn.disabled = 0 === i.findIndex((a) => a.id === e.lesson.id))),
-      x(),
-      (function () {
-        if (!m.navigationButtons || !m.mainActionBtn) return;
-        m.navigationButtons.classList.remove("hidden");
-        const e = i.find((e) => e.id === c.currentLessonId);
-        if (!e) return;
-        // Hide complete button for segment categories (M5) - they are navigation, not lessons
-        if (e.type === "segment_category") {
-          m.mainActionBtn.classList.add("hidden");
-          return;
         }
-        m.mainActionBtn.classList.remove("hidden");
-        if (c.completedLessons.includes(e.id))
-          return (
-            (m.mainActionBtn.textContent = "Lección completada �S"),
-            (m.mainActionBtn.disabled = !0),
-            m.mainActionBtn.classList.replace("bg-teal-500", "bg-slate-400"),
-            void m.mainActionBtn.classList.remove("hover:bg-teal-600")
+        const o = document.getElementById("course-video");
+        o &&
+          ((u = o),
+            (o.onended = async () => {
+              c.completedLessons.includes(e.id) ||
+                (c.completedLessons.push(e.id),
+                  await I(),
+                  x(),
+                  b(),
+                  A("¡Lección completada al ver el video!"));
+            }));
+        const r = document.getElementById("toggle-subtitles-btn");
+        r &&
+          o &&
+          r.addEventListener("click", () => {
+            if (!o.textTracks || 0 === o.textTracks.length) return;
+            const e = o.textTracks[0],
+              a = r.querySelector("span"),
+              t = r.querySelector("i"),
+              s = "showing" === e.mode;
+            ((e.mode = s ? "hidden" : "showing"),
+              "showing" === e.mode
+                ? (a && (a.textContent = "Desactivar Subtítulos"),
+                  t && t.setAttribute("data-lucide", "captions"))
+                : (a && (a.textContent = "Activar Subtítulos"),
+                  t && t.setAttribute("data-lucide", "captions-off")),
+              lucide.createIcons());
+          });
+        const n = document.getElementById("transcription-button");
+        n &&
+          e.transcriptionUrl &&
+          n.addEventListener("click", () =>
+            (async function (e, a) {
+              if (!e) return void A("No hay transcripción disponible.");
+              const t = document.getElementById("transcription-button"),
+                o = t ? t.querySelector("span") : null,
+                r = o ? o.textContent : "";
+              o && (o.textContent = "Preparando...");
+              t && (t.disabled = !0);
+              try {
+                const t = await X(s, e),
+                  o = await fetch(t);
+                if (!o.ok) throw new Error("Respuesta de red no fue OK");
+                const r = (await o.text())
+                  .split(/\r?\n/)
+                  .filter(
+                    (e) => !/^\d+$/.test(e.trim()) && !e.includes("--\x3e"),
+                  )
+                  .join("\n")
+                  .replace(/(\n\s*){2,}/g, "\n\n")
+                  .trim(),
+                  n = new Blob([r], { type: "text/plain;charset=utf-8" }),
+                  i = document.createElement("a");
+                i.href = URL.createObjectURL(n);
+                const l = a.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+                ((i.download = `transcripcion_${l}.txt`),
+                  document.body.appendChild(i),
+                  i.click(),
+                  document.body.removeChild(i),
+                  URL.revokeObjectURL(i.href),
+                  A("Descarga iniciada."));
+              } catch (e) {
+                (console.error("Error al descargar transcripción:", e),
+                  A("No se pudo descargar."));
+              } finally {
+                (o && (o.textContent = r), t && (t.disabled = !1));
+              }
+            })(e.transcriptionUrl, e.title),
           );
-        ((m.mainActionBtn.disabled = "quiz" === e.type),
-          (m.mainActionBtn.textContent = "Marcar como completada"),
-          m.mainActionBtn.classList.replace("bg-slate-400", "bg-teal-500"),
-          m.mainActionBtn.classList.add("hover:bg-teal-600"));
-      })(),
-      lucide.createIcons(),
-      Z());
-  }
-  async function v() {
-    const e = i.findIndex((e) => e.id === c.currentLessonId);
-    e < i.length - 1
-      ? (A("¡Excelente! Cargando siguiente lección..."),
-        setTimeout(() => {
-          h(i[e + 1].id);
-        }, 1500))
-      : p || (await L(), (p = !0));
-  }
-  async function y(e) {
-    const a = new TextEncoder().encode("AGIA-SEC-" + e),
-      t = await crypto.subtle.digest("SHA-256", a);
-    return Array.from(new Uint8Array(t))
-      .map((e) => e.toString(16).padStart(2, "0"))
-      .join("");
-  }
-  function x() {
-    // Exclude segment_category from progress calculation (M5 categories are navigation, not lessons)
-    const completableLessons = i.filter(l => l.type !== "segment_category");
-    const completedCount = c.completedLessons.filter(id =>
-      completableLessons.some(l => l.id === id)
-    ).length;
-    const a = completableLessons.length > 0 ? Math.round((completedCount / completableLessons.length) * 100) : 0;
-    (m.progressBar && (m.progressBar.style.width = `${a}%`),
-      m.progressText && (m.progressText.textContent = `${a}%`));
-  }
-  async function h(e) {
-    // Limpiar hash de caso al cambiar de lección
-    if (window.location.hash.startsWith('#caso/')) {
-      window.location.hash = '';
-    }
-    f(e) && ((c = { ...c, currentLessonId: e }), await I(), b(), Q());
-  }
-  async function I() {
-    if (l)
-      try {
-        const e = t.collection("userProgress").doc(l.uid);
-        await e.set({ [r]: c }, { merge: !0 });
-      } catch (e) {
-        console.error("Error al guardar el progreso:", e);
-      }
-  }
-  function A(e, a = "generic") {
-    const t = "badge" === a ? m.badgeToast : m.toast,
-      s = "badge" === a ? m.badgeMessage : m.toastMessage;
-    t &&
-      s &&
-      ((s.textContent = e),
-        t.classList.add("show"),
-        setTimeout(() => t.classList.remove("show"), 4e3));
-  }
-  function E(e) {
-    const a = f(e);
-    if (!a || !a.module.badge) return;
-    if (e !== a.module.lessons[a.module.lessons.length - 1].id) return;
-    a.module.lessons
-      .map((e) => e.id)
-      .every((e) => c.completedLessons.includes(e)) &&
-      (c.unlockedBadges.includes(a.module.badge) ||
-        (c.unlockedBadges.push(a.module.badge),
-          I(),
-          A(`Has ganado la insignia: "${a.module.badge}"`, "badge")));
-  }
-  async function L() {
-    if (m.completionModal && m.completionModalOverlay) {
-      if (
-        (m.modalUserName && (m.modalUserName.textContent = l ? l.name : ""),
-          m.modalCourseName && (m.modalCourseName.textContent = n.title),
-          n.hasCertificate && m.certificateLink)
-      ) {
-        const e = await (async function () {
-          if (!l || !n.hasCertificate) return null;
-          const e = `${l.uid}_${r}`,
-            a = "undefined" != typeof __app_id ? __app_id : "aulagenia-app",
-            s = t
-              .collection("artifacts")
-              .doc(a)
-              .collection("public")
-              .doc("data")
-              .collection("certificates")
-              .doc(e);
-          try {
-            return (
-              (await s.get()).exists ||
-              (await s.set({
-                userId: l.uid,
-                userName: l.name,
-                courseId: r,
-                courseName: n.title,
-                issuedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                appId: a,
-              })),
-              e
-            );
-          } catch (e) {
-            return (
-              console.error(
-                "Error creating or checking certificate record:",
-                e,
-              ),
-              null
-            );
-          }
+        (async () => {
+          if (o)
+            try {
+              await (async function ({
+                storage: e,
+                videoEl: a,
+                videoSrc: t,
+                srtOrVttSrc: s,
+              }) {
+                const o = a.querySelector("#course-video-source"),
+                  r = await X(e, t);
+                o && r && (o.src = r);
+                const n = a.querySelector("#caption-track");
+                if (!n || !s) return void a.load();
+                const i = await X(e, s);
+                if (!i) return void a.load();
+                if (/(\.srt)(\?|$)/i.test(i)) {
+                  const e = await fetch(i),
+                    a = await e.text();
+                  n.src = URL.createObjectURL(
+                    new Blob([Y(a)], { type: "text/vtt" }),
+                  );
+                } else n.src = i;
+                n.default = !0;
+                const [l] = a.textTracks;
+                l && (l.mode = "showing");
+                a.load();
+              })({
+                storage: s,
+                videoEl: o,
+                videoSrc: (e && e.videoUrl) || "",
+                srtOrVttSrc: (e && e.transcriptionUrl) || "",
+              });
+            } catch (e) {
+              console.error("No se pudieron adjuntar medios/subtítulos:", e);
+            } finally {
+              Z();
+            }
         })();
-        e
-          ? ((m.certificateLink.href = `./portal-certificacion.html?id=${e}`),
-            m.certificateLink.classList.remove("hidden"),
-            m.certificateLink.classList.add("flex"))
-          : (m.certificateLink.classList.add("hidden"),
-            m.certificateLink.classList.remove("flex"));
-      } else
-        m.certificateLink &&
-          (m.certificateLink.classList.add("hidden"),
-            m.certificateLink.classList.remove("flex"));
-      (m.completionModalOverlay.classList.remove("hidden"),
-        m.completionModal.classList.remove("hidden"),
-        setTimeout(() => {
-          (m.completionModalOverlay.classList.add("opacity-100"),
-            m.completionModal.classList.add("show"));
-        }, 10));
-    }
-  }
-  (m.sidebarToggle &&
-    m.sidebar &&
-    m.sidebarToggle.addEventListener("click", () => {
-      m.sidebar.classList.toggle("collapsed");
-      const e = document.getElementById("toggle-icon");
-      (m.sidebar.classList.contains("collapsed")
-        ? (e.setAttribute("data-lucide", "panel-left-open"),
-          (m.sidebarToggle.title = "Mostrar menú"))
-        : (e.setAttribute("data-lucide", "panel-left-close"),
-          (m.sidebarToggle.title = "Ocultar menú")),
-        lucide.createIcons());
-    }),
-    m.mainActionBtn &&
-    m.mainActionBtn.addEventListener("click", async () => {
-      const e = c.currentLessonId;
-      if (!c.completedLessons.includes(e)) {
-        ((c = {
-          ...c,
-          completedLessons: [...new Set([...c.completedLessons, e])],
-        }),
-          await I(),
-          E(e),
-          b());
-        const a = i.findIndex((a) => a.id === e) === i.length - 1;
-        g() || a ? p || (await L(), (p = !0)) : v();
+      })(e.lesson),
+      m.prevBtn &&
+      (m.prevBtn.disabled = 0 === i.findIndex((a) => a.id === e.lesson.id))),
+    x(),
+    (function () {
+      if (!m.navigationButtons || !m.mainActionBtn) return;
+      m.navigationButtons.classList.remove("hidden");
+      const e = i.find((e) => e.id === c.currentLessonId);
+      if (!e) return;
+      // Hide complete button for segment categories (M5) - they are navigation, not lessons
+      if (e.type === "segment_category") {
+        m.mainActionBtn.classList.add("hidden");
+        return;
       }
-    }),
-    m.prevBtn &&
-    m.prevBtn.addEventListener("click", () => {
-      const e = i.findIndex((e) => e.id === c.currentLessonId);
-      e > 0 && h(i[e - 1].id);
-    }),
-    m.closeModalBtn &&
-    m.closeModalBtn.addEventListener(
-      "click",
-      () => (window.location.href = `${o}/campus.html`),
-    ),
-    m.reviewCourseBtn &&
-    m.reviewCourseBtn.addEventListener("click", function () {
-      if (!m.completionModal || !m.completionModalOverlay) return;
-      (m.completionModalOverlay.classList.remove("opacity-100"),
-        m.completionModal.classList.remove("show"));
-      const e = m.completionModal.querySelector("div");
-      (e && e.classList.add("scale-95", "opacity-0"),
-        setTimeout(() => {
-          (m.completionModal.classList.add("hidden"),
-            m.completionModalOverlay.classList.add("hidden"),
-            e && e.classList.remove("scale-95", "opacity-0"));
-        }, 300));
-    }));
-  const w = document.getElementById("profile-modal-overlay"),
-    q = document.getElementById("profile-modal"),
-    B = document.getElementById("avatar-button"),
-    C = document.getElementById("cancel-profile-btn"),
-    M = document.getElementById("close-profile-modal-btn"),
-    T = document.getElementById("profile-form"),
-    k = document.getElementById("profile-name-input"),
-    S = document.getElementById("profile-rut-input"),
-    O = document.getElementById("profile-email-input"),
-    P = document.getElementById("profile-job-input"),
-    D = document.getElementById("profile-country-select"),
-    U = document.getElementById("profile-gender-select"),
-    $ = document.getElementById("profile-birthdate-input"),
-    R = document.getElementById("form-status"),
-    G = document.getElementById("save-profile-btn"),
-    z = document.getElementById("save-btn-text"),
-    V = document.getElementById("save-spinner");
-  function N() {
-    if (!w || !q) return;
-    const e = q.querySelector("div.bg-white");
+      m.mainActionBtn.classList.remove("hidden");
+      if (c.completedLessons.includes(e.id))
+        return (
+          (m.mainActionBtn.textContent = "Lección completada �S"),
+          (m.mainActionBtn.disabled = !0),
+          m.mainActionBtn.classList.replace("bg-teal-500", "bg-slate-400"),
+          void m.mainActionBtn.classList.remove("hover:bg-teal-600")
+        );
+      ((m.mainActionBtn.disabled = "quiz" === e.type),
+        (m.mainActionBtn.textContent = "Marcar como completada"),
+        m.mainActionBtn.classList.replace("bg-slate-400", "bg-teal-500"),
+        m.mainActionBtn.classList.add("hover:bg-teal-600"));
+    })(),
+    lucide.createIcons(),
+    Z());
+}
+async function v() {
+  const e = i.findIndex((e) => e.id === c.currentLessonId);
+  e < i.length - 1
+    ? (A("¡Excelente! Cargando siguiente lección..."),
+      setTimeout(() => {
+        h(i[e + 1].id);
+      }, 1500))
+    : p || (await L(), (p = !0));
+}
+async function y(e) {
+  const a = new TextEncoder().encode("AGIA-SEC-" + e),
+    t = await crypto.subtle.digest("SHA-256", a);
+  return Array.from(new Uint8Array(t))
+    .map((e) => e.toString(16).padStart(2, "0"))
+    .join("");
+}
+function x() {
+  // Exclude segment_category from progress calculation (M5 categories are navigation, not lessons)
+  const completableLessons = i.filter(l => l.type !== "segment_category");
+  const completedCount = c.completedLessons.filter(id =>
+    completableLessons.some(l => l.id === id)
+  ).length;
+  const a = completableLessons.length > 0 ? Math.round((completedCount / completableLessons.length) * 100) : 0;
+  (m.progressBar && (m.progressBar.style.width = `${a}%`),
+    m.progressText && (m.progressText.textContent = `${a}%`));
+}
+async function h(e) {
+  f(e) && ((c = { ...c, currentLessonId: e }), await I(), b(), Q());
+}
+async function I() {
+  if (l)
+    try {
+      const e = t.collection("userProgress").doc(l.uid);
+      await e.set({ [r]: c }, { merge: !0 });
+    } catch (e) {
+      console.error("Error al guardar el progreso:", e);
+    }
+}
+function A(e, a = "generic") {
+  const t = "badge" === a ? m.badgeToast : m.toast,
+    s = "badge" === a ? m.badgeMessage : m.toastMessage;
+  t &&
+    s &&
+    ((s.textContent = e),
+      t.classList.add("show"),
+      setTimeout(() => t.classList.remove("show"), 4e3));
+}
+function E(e) {
+  const a = f(e);
+  if (!a || !a.module.badge) return;
+  if (e !== a.module.lessons[a.module.lessons.length - 1].id) return;
+  a.module.lessons
+    .map((e) => e.id)
+    .every((e) => c.completedLessons.includes(e)) &&
+    (c.unlockedBadges.includes(a.module.badge) ||
+      (c.unlockedBadges.push(a.module.badge),
+        I(),
+        A(`Has ganado la insignia: "${a.module.badge}"`, "badge")));
+}
+async function L() {
+  if (m.completionModal && m.completionModalOverlay) {
+    if (
+      (m.modalUserName && (m.modalUserName.textContent = l ? l.name : ""),
+        m.modalCourseName && (m.modalCourseName.textContent = n.title),
+        n.hasCertificate && m.certificateLink)
+    ) {
+      const e = await (async function () {
+        if (!l || !n.hasCertificate) return null;
+        const e = `${l.uid}_${r}`,
+          a = "undefined" != typeof __app_id ? __app_id : "aulagenia-app",
+          s = t
+            .collection("artifacts")
+            .doc(a)
+            .collection("public")
+            .doc("data")
+            .collection("certificates")
+            .doc(e);
+        try {
+          return (
+            (await s.get()).exists ||
+            (await s.set({
+              userId: l.uid,
+              userName: l.name,
+              courseId: r,
+              courseName: n.title,
+              issuedAt: firebase.firestore.FieldValue.serverTimestamp(),
+              appId: a,
+            })),
+            e
+          );
+        } catch (e) {
+          return (
+            console.error(
+              "Error creating or checking certificate record:",
+              e,
+            ),
+            null
+          );
+        }
+      })();
+      e
+        ? ((m.certificateLink.href = `./portal-certificacion.html?id=${e}`),
+          m.certificateLink.classList.remove("hidden"),
+          m.certificateLink.classList.add("flex"))
+        : (m.certificateLink.classList.add("hidden"),
+          m.certificateLink.classList.remove("flex"));
+    } else
+      m.certificateLink &&
+        (m.certificateLink.classList.add("hidden"),
+          m.certificateLink.classList.remove("flex"));
+    (m.completionModalOverlay.classList.remove("hidden"),
+      m.completionModal.classList.remove("hidden"),
+      setTimeout(() => {
+        (m.completionModalOverlay.classList.add("opacity-100"),
+          m.completionModal.classList.add("show"));
+      }, 10));
+  }
+}
+(m.sidebarToggle &&
+  m.sidebar &&
+  m.sidebarToggle.addEventListener("click", () => {
+    m.sidebar.classList.toggle("collapsed");
+    const e = document.getElementById("toggle-icon");
+    (m.sidebar.classList.contains("collapsed")
+      ? (e.setAttribute("data-lucide", "panel-left-open"),
+        (m.sidebarToggle.title = "Mostrar menú"))
+      : (e.setAttribute("data-lucide", "panel-left-close"),
+        (m.sidebarToggle.title = "Ocultar menú")),
+      lucide.createIcons());
+  }),
+  m.mainActionBtn &&
+  m.mainActionBtn.addEventListener("click", async () => {
+    const e = c.currentLessonId;
+    if (!c.completedLessons.includes(e)) {
+      ((c = {
+        ...c,
+        completedLessons: [...new Set([...c.completedLessons, e])],
+      }),
+        await I(),
+        E(e),
+        b());
+      const a = i.findIndex((a) => a.id === e) === i.length - 1;
+      g() || a ? p || (await L(), (p = !0)) : v();
+    }
+  }),
+  m.prevBtn &&
+  m.prevBtn.addEventListener("click", () => {
+    const e = i.findIndex((e) => e.id === c.currentLessonId);
+    e > 0 && h(i[e - 1].id);
+  }),
+  m.closeModalBtn &&
+  m.closeModalBtn.addEventListener(
+    "click",
+    () => (window.location.href = `${o}/campus.html`),
+  ),
+  m.reviewCourseBtn &&
+  m.reviewCourseBtn.addEventListener("click", function () {
+    if (!m.completionModal || !m.completionModalOverlay) return;
+    (m.completionModalOverlay.classList.remove("opacity-100"),
+      m.completionModal.classList.remove("show"));
+    const e = m.completionModal.querySelector("div");
     (e && e.classList.add("scale-95", "opacity-0"),
       setTimeout(() => {
-        (w.classList.add("hidden"),
-          q.classList.add("hidden"),
+        (m.completionModal.classList.add("hidden"),
+          m.completionModalOverlay.classList.add("hidden"),
           e && e.classList.remove("scale-95", "opacity-0"));
       }, 300));
-  }
-  function j(e, a, t = "") {
-    const s =
-      document.getElementById(`profile-${e}-input`) ||
-      document.getElementById(`profile-${e}-select`),
-      o = document.getElementById(`${e}-error`),
-      r = document.getElementById(`${e}-status-icon`);
-    s &&
-      (s.classList.remove("form-input-error", "form-input-success"),
-        o && (o.textContent = ""),
-        r && (r.innerHTML = ""),
-        "error" === a
-          ? (s.classList.add("form-input-error"),
-            o && (o.textContent = t),
-            r &&
-            (r.innerHTML =
-              '<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>'))
-          : "success" === a &&
-          (s.classList.add("form-input-success"),
-            r &&
-            (r.innerHTML =
-              '<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>')),
-        r &&
-        r.innerHTML &&
-        lucide.createIcons({ nodes: [r.querySelector("i")] }));
-  }
-  function H() {
-    const e =
-      k.value.trim().length < 3 || !k.value.includes(" ")
-        ? (j("name", "error", "Ingresa tu nombre y apellido completo."), !1)
-        : (j("name", "success"), !0),
-      a =
-        "" === D.value
-          ? (j("country", "error", "Selecciona tu país de residencia."), !1)
-          : (j("country", "success"), !0),
-      t = (function () {
-        if ("CL" === D.value) {
-          if (
-            !(function (e) {
-              const a = (e = e
-                .replace(/\./g, "")
-                .replace(/-/g, "")
-                .trim()
-                .toLowerCase()).slice(0, -1);
-              let t = e.slice(-1);
-              if (!/^[0-9]+[0-9kK]{1}$/.test(e)) return !1;
-              let s = 0,
-                o = 2;
-              for (let e = a.length - 1; e >= 0; e--)
-                ((s += a.charAt(e) * o), o < 7 ? o++ : (o = 2));
-              const r = 11 - (s % 11);
-              return t === (11 === r ? "0" : 10 === r ? "k" : r.toString());
-            })(S.value)
-          )
-            return (j("rut", "error", "El RUT ingresado no es válido."), !1);
-          j("rut", "success");
-        } else j("rut", "neutral");
-        return !0;
-      })(),
-      s = e && a && ("CL" !== D.value || t);
-    G && (G.disabled = !s);
-  }
-  function F(e) {
-    m.learningTabs &&
-      (m.learningTabs.querySelectorAll(".ltab").forEach((a) => {
-        const t = a.dataset.tab === e;
-        (a.classList.toggle("active", t),
-          a.classList.toggle("text-teal-600", t),
-          a.classList.toggle("border-teal-500", t),
-          a.classList.toggle("text-slate-500", !t),
-          a.classList.toggle("border-transparent", !t));
-      }),
-        m.learningTabs
-          .querySelectorAll(".ltab-panel")
-          .forEach((a) => a.classList.toggle("hidden", a.id !== e)));
-  }
-  function Q() {
-    if (!l) return;
-    const e = c.currentLessonId;
-    (!(async function (e) {
-      if (!l || !m.notesTextarea || !m.notesSaveStatus) return;
-      m.notesTextarea.value = "";
-      const a = t.collection("userNotes").doc(`${l.uid}_${r}_${e}`);
+  }));
+const w = document.getElementById("profile-modal-overlay"),
+  q = document.getElementById("profile-modal"),
+  B = document.getElementById("avatar-button"),
+  C = document.getElementById("cancel-profile-btn"),
+  M = document.getElementById("close-profile-modal-btn"),
+  T = document.getElementById("profile-form"),
+  k = document.getElementById("profile-name-input"),
+  S = document.getElementById("profile-rut-input"),
+  O = document.getElementById("profile-email-input"),
+  P = document.getElementById("profile-job-input"),
+  D = document.getElementById("profile-country-select"),
+  U = document.getElementById("profile-gender-select"),
+  $ = document.getElementById("profile-birthdate-input"),
+  R = document.getElementById("form-status"),
+  G = document.getElementById("save-profile-btn"),
+  z = document.getElementById("save-btn-text"),
+  V = document.getElementById("save-spinner");
+function N() {
+  if (!w || !q) return;
+  const e = q.querySelector("div.bg-white");
+  (e && e.classList.add("scale-95", "opacity-0"),
+    setTimeout(() => {
+      (w.classList.add("hidden"),
+        q.classList.add("hidden"),
+        e && e.classList.remove("scale-95", "opacity-0"));
+    }, 300));
+}
+function j(e, a, t = "") {
+  const s =
+    document.getElementById(`profile-${e}-input`) ||
+    document.getElementById(`profile-${e}-select`),
+    o = document.getElementById(`${e}-error`),
+    r = document.getElementById(`${e}-status-icon`);
+  s &&
+    (s.classList.remove("form-input-error", "form-input-success"),
+      o && (o.textContent = ""),
+      r && (r.innerHTML = ""),
+      "error" === a
+        ? (s.classList.add("form-input-error"),
+          o && (o.textContent = t),
+          r &&
+          (r.innerHTML =
+            '<i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i>'))
+        : "success" === a &&
+        (s.classList.add("form-input-success"),
+          r &&
+          (r.innerHTML =
+            '<i data-lucide="check-circle" class="h-5 w-5 text-green-500"></i>')),
+      r &&
+      r.innerHTML &&
+      lucide.createIcons({ nodes: [r.querySelector("i")] }));
+}
+function H() {
+  const e =
+    k.value.trim().length < 3 || !k.value.includes(" ")
+      ? (j("name", "error", "Ingresa tu nombre y apellido completo."), !1)
+      : (j("name", "success"), !0),
+    a =
+      "" === D.value
+        ? (j("country", "error", "Selecciona tu país de residencia."), !1)
+        : (j("country", "success"), !0),
+    t = (function () {
+      if ("CL" === D.value) {
+        if (
+          !(function (e) {
+            const a = (e = e
+              .replace(/\./g, "")
+              .replace(/-/g, "")
+              .trim()
+              .toLowerCase()).slice(0, -1);
+            let t = e.slice(-1);
+            if (!/^[0-9]+[0-9kK]{1}$/.test(e)) return !1;
+            let s = 0,
+              o = 2;
+            for (let e = a.length - 1; e >= 0; e--)
+              ((s += a.charAt(e) * o), o < 7 ? o++ : (o = 2));
+            const r = 11 - (s % 11);
+            return t === (11 === r ? "0" : 10 === r ? "k" : r.toString());
+          })(S.value)
+        )
+          return (j("rut", "error", "El RUT ingresado no es válido."), !1);
+        j("rut", "success");
+      } else j("rut", "neutral");
+      return !0;
+    })(),
+    s = e && a && ("CL" !== D.value || t);
+  G && (G.disabled = !s);
+}
+function F(e) {
+  m.learningTabs &&
+    (m.learningTabs.querySelectorAll(".ltab").forEach((a) => {
+      const t = a.dataset.tab === e;
+      (a.classList.toggle("active", t),
+        a.classList.toggle("text-teal-600", t),
+        a.classList.toggle("border-teal-500", t),
+        a.classList.toggle("text-slate-500", !t),
+        a.classList.toggle("border-transparent", !t));
+    }),
+      m.learningTabs
+        .querySelectorAll(".ltab-panel")
+        .forEach((a) => a.classList.toggle("hidden", a.id !== e)));
+}
+function Q() {
+  if (!l) return;
+  const e = c.currentLessonId;
+  (!(async function (e) {
+    if (!l || !m.notesTextarea || !m.notesSaveStatus) return;
+    m.notesTextarea.value = "";
+    const a = t.collection("userNotes").doc(`${l.uid}_${r}_${e}`);
+    try {
+      const e = await a.get();
+      (e.exists && (m.notesTextarea.value = e.data().content || ""),
+        (m.notesSaveStatus.textContent = "Sin cambios"));
+    } catch (e) {
+      if (e.code === 'permission-denied') {
+        console.warn("Notas no inicializadas o acceso restringido (asumiendo vacío due to legacy rules).");
+        m.notesSaveStatus.textContent = "Sin cambios";
+      } else {
+        console.error("Error al cargar las notas:", e);
+        m.notesSaveStatus.textContent = "Error al cargar";
+      }
+    }
+  })(e),
+    (async function (e) {
+      if (!l || !m.userResourceList) return;
+      m.userResourceList.innerHTML =
+        '<li><p class="p-3 text-sm text-slate-500">Cargando tus archivos...</p></li>';
       try {
-        const e = await a.get();
-        (e.exists && (m.notesTextarea.value = e.data().content || ""),
-          (m.notesSaveStatus.textContent = "Sin cambios"));
+        const a = await t
+          .collection("userResources")
+          .where("uid", "==", l.uid)
+          .where("courseId", "==", r)
+          .where("lessonId", "==", e)
+          .get();
+        if (a.empty)
+          return void (m.userResourceList.innerHTML =
+            '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos aún.</p></li>');
+        const s = a.docs.sort(
+          (e, a) =>
+            (a.data().createdAt?.toDate() || 0) -
+            (e.data().createdAt?.toDate() || 0),
+        );
+        ((m.userResourceList.innerHTML = ""), s.forEach((e) => W(e)));
       } catch (e) {
         if (e.code === 'permission-denied') {
-          console.warn("Notas no inicializadas o acceso restringido (asumiendo vacío due to legacy rules).");
-          m.notesSaveStatus.textContent = "Sin cambios";
+          console.warn("Recursos no inicializados o acceso restringido (asumiendo vacío).");
+          m.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos aún.</p></li>';
         } else {
-          console.error("Error al cargar las notas:", e);
-          m.notesSaveStatus.textContent = "Error al cargar";
+          console.error("Error listando recursos:", e);
+          m.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos.</p></li>';
         }
       }
     })(e),
-      (async function (e) {
-        if (!l || !m.userResourceList) return;
-        m.userResourceList.innerHTML =
-          '<li><p class="p-3 text-sm text-slate-500">Cargando tus archivos...</p></li>';
-        try {
-          const a = await t
-            .collection("userResources")
-            .where("uid", "==", l.uid)
-            .where("courseId", "==", r)
-            .where("lessonId", "==", e)
-            .get();
-          if (a.empty)
-            return void (m.userResourceList.innerHTML =
-              '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos aún.</p></li>');
-          const s = a.docs.sort(
-            (e, a) =>
-              (a.data().createdAt?.toDate() || 0) -
-              (e.data().createdAt?.toDate() || 0),
-          );
-          ((m.userResourceList.innerHTML = ""), s.forEach((e) => W(e)));
-        } catch (e) {
-          if (e.code === 'permission-denied') {
-            console.warn("Recursos no inicializados o acceso restringido (asumiendo vacío).");
-            m.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-slate-500 italic">No has subido archivos aún.</p></li>';
-          } else {
-            console.error("Error listando recursos:", e);
-            m.userResourceList.innerHTML = '<li><p class="p-3 text-sm text-red-500">Error al cargar archivos.</p></li>';
-          }
-        }
-      })(e),
-      (async function (e) {
-        if (!l || !m.taskList) return;
-        const a = `${l.uid}_${r}_${e}`;
-        m.taskList.innerHTML = "";
-        const s = f(e),
-          o = s?.module?.practiceTasks || [];
-        try {
-          const e = t.collection("userTasks").doc(a),
-            s = await e.get();
-          let r = [];
-          (s.exists && (r = s.data().items || []),
-            o.length > 0 && 0 === r.length
-              ? (await e.set(
-                { uid: l.uid, items: o.map((e) => ({ ...e })) },
-                { merge: !0 },
-              ),
-                o.forEach((a) => K(a, e)))
-              : r.length > 0 && r.forEach((a) => K(a, e)));
-        } catch (e) {
-          if (e.code === 'permission-denied') {
-            console.warn("Tareas no inicializadas o acceso restringido (asumiendo vacío).");
-          } else {
-            console.error("Error cargando tareas:", e);
-          }
-        }
-      })(e),
-      F("tab-clases"));
-  }
-  function _() {
-    m.pdfModal &&
-      m.pdfModalOverlay &&
-      m.pdfModalContent &&
-      m.pdfIframe &&
-      (m.pdfModalOverlay.classList.remove("opacity-100"),
-        m.pdfModalContent.classList.add("scale-95", "opacity-0"),
-        setTimeout(() => {
-          (m.pdfModal.classList.add("hidden"),
-            m.pdfModalOverlay.classList.add("hidden"),
-            (m.pdfIframe.src = ""));
-        }, 300));
-  }
-  function W(e) {
-    const a = e.data(),
-      t = document.createElement("li");
-    ((t.className = "px-4 py-3 flex items-center justify-between"),
-      (t.innerHTML = `<div class="min-w-0 flex-1"><p class="text-sm font-medium text-slate-900 truncate">${a.name}</p><p class="text-xs text-slate-500 truncate">${a.contentType || ""} - ${Math.round(a.size / 1024)} KB</p></div><div class="flex items-center gap-3"><a href="${a.downloadURL}" target="_blank" class="text-teal-700 text-sm font-semibold hover:underline">Abrir</a><button class="delete-resource-btn text-red-600 text-sm font-semibold hover:underline">Eliminar</button></div>`),
-      t
-        .querySelector(".delete-resource-btn")
-        .addEventListener("click", async () => {
-          if (confirm(`¿Seguro que quieres eliminar "${a.name}"?`))
-            try {
-              (await s.ref(a.storagePath).delete(),
-                await e.ref.delete(),
-                t.remove(),
-                A("Archivo eliminado."));
-            } catch (e) {
-              (console.error("Error eliminando:", e),
-                A("No se pudo eliminar."));
-            }
-        }),
-      m.userResourceList.prepend(t));
-  }
-  function K(e, a) {
-    const t = document.createElement("li");
-    ((t.className =
-      "bg-white border border-slate-200 rounded-lg p-3 flex items-center justify-between group"),
-      (t.innerHTML = `<label class="flex-1 flex items-center gap-3 cursor-pointer"><input type="checkbox" class="task-toggle h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500" ${e.done ? "checked" : ""}/><span class="text-sm ${e.done ? "line-through text-slate-400" : "text-slate-800"}">${e.text}</span></label><button class="task-delete text-slate-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="h-4 w-4"></i></button>`));
-    const s = t.querySelector(".task-toggle");
-    (s.addEventListener("change", async () => {
-      const o = await a.get(),
-        r = (o.exists && o.data().items) || [],
-        n = r.findIndex((a) => a.text === e.text);
-      n > -1 &&
-        ((r[n].done = s.checked), await a.set({ items: r }, { merge: !0 }));
-      const i = t.querySelector("span");
-      i &&
-        (i.classList.toggle("line-through", s.checked),
-          i.classList.toggle("text-slate-400", s.checked));
-    }),
-      t.querySelector(".task-delete").addEventListener("click", async () => {
-        const s = ((await a.get()).data().items || []).filter(
-          (a) => a.text !== e.text,
-        );
-        (await a.set({ items: s }, { merge: !0 }), t.remove());
-      }),
-      m.taskList.append(t),
-      lucide.createIcons());
-  }
-  async function J() {
-    if (!l || !m.taskInput) return;
-    const e = m.taskInput.value.trim();
-    if (!e) return;
-    const a = c.currentLessonId,
-      s = `${l.uid}_${r}_${a}`,
-      o = { text: e, done: !1 };
-    try {
-      const e = t.collection("userTasks").doc(s);
-      (await e.set(
-        { uid: l.uid, items: firebase.firestore.FieldValue.arrayUnion(o) },
-        { merge: !0 },
-      ),
-        K(o, e),
-        (m.taskInput.value = ""));
-    } catch (e) {
-      console.error("Error agregando tarea:", e);
-    }
-  }
-  function Y(e) {
-    return (
-      "WEBVTT\n\n" +
-      e
-        .replace(/\r+/g, "")
-        .replace(/^\s*\d+\s*$/gm, "")
-        .replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, "$1:$2:$3.$4")
-        .trim()
-    );
-  }
-  async function X(e, a) {
-    if (!a) return null;
-    try {
-      const t = e.refFromURL(a);
-      return await t.getDownloadURL();
-    } catch (e) {
-      if (/^https?:\/\//i.test(a)) return a;
-      throw e;
-    }
-  }
-  function Z() {
-    g() &&
-      document
-        .querySelectorAll(
-          'button[id*="encuesta"], .btn-encuesta, a[href*="encuesta"]',
-        )
-        .forEach((e) =>
-          (function (e) {
-            if (!e) return;
-            (e.setAttribute("aria-disabled", "true"),
-              e.setAttribute("tabindex", "-1"),
-              e.classList.add("opacity-60", "cursor-not-allowed"),
-              "BUTTON" === e.tagName && (e.disabled = !0),
-              e.addEventListener(
-                "click",
-                (e) => (e.preventDefault(), e.stopImmediatePropagation(), !1),
-                !0,
-              ));
-          })(e),
-        );
-  }
-  (B &&
-    B.addEventListener("click", () =>
-      (async function () {
-        if (!(T && O && w && q)) return;
-        T.reset();
-        const e = a.currentUser;
-        if (!e) return;
-        O.value = e.email || "";
-        const s = t.collection("users").doc(e.uid);
-        try {
-          const a = await s.get(),
-            t = a.exists ? a.data() : {},
-            o = !0 === t.profileCompleted;
-          (k && (k.value = o ? t.displayName || "" : e.displayName || ""),
-            S && (S.value = t.rut || ""),
-            P && (P.value = t.jobTitle || ""),
-            D && (D.value = t.country || ""),
-            U && (U.value = t.gender || ""),
-            $ && ($.value = t.birthdate || ""));
-        } catch (e) {
-          console.error("Error al cargar datos del perfil:", e);
-        }
-        (H(),
-          R.classList.add("hidden"),
-          w.classList.remove("hidden"),
-          q.classList.remove("hidden"),
-          setTimeout(() => {
-            const e = q.querySelector("div.bg-white");
-            e && e.classList.remove("scale-95", "opacity-0");
-          }, 10));
-      })(),
-    ),
-    C && C.addEventListener("click", N),
-    M && M.addEventListener("click", N),
-    w &&
-    w.addEventListener("click", (e) => {
-      e.target === w && N();
-    }),
-    k && k.addEventListener("input", H),
-    S && S.addEventListener("input", H),
-    D && D.addEventListener("change", H),
-    T &&
-    T.addEventListener("submit", async (e) => {
-      if ((e.preventDefault(), H(), G && G.disabled))
-        return void (
-          R &&
-          ((R.className =
-            "text-center p-3 rounded-lg bg-yellow-100 text-yellow-700"),
-            (R.textContent = "Por favor, corrige los campos marcados en rojo."),
-            R.classList.remove("hidden"))
-        );
-      (G && (G.disabled = !0),
-        z && (z.textContent = "Guardando..."),
-        V && V.classList.remove("hidden"),
-        R && R.classList.add("hidden"));
-      const s = a.currentUser,
-        o = k ? k.value.trim() : "",
-        r = t.collection("users").doc(s.uid);
+    (async function (e) {
+      if (!l || !m.taskList) return;
+      const a = `${l.uid}_${r}_${e}`;
+      m.taskList.innerHTML = "";
+      const s = f(e),
+        o = s?.module?.practiceTasks || [];
       try {
-        (o &&
-          s &&
-          o !== s.displayName &&
-          (await s.updateProfile({ displayName: o })),
-          await r.set(
-            {
-              displayName: o,
-              email: s.email,
-              rut: S ? S.value.trim() : "",
-              jobTitle: P ? P.value.trim() : "",
-              country: D ? D.value : "",
-              gender: U ? U.value : "",
-              birthdate: $ ? $.value : "",
-              profileCompleted: !0,
-            },
-            { merge: !0 },
-          ),
-          m.userName && (m.userName.textContent = o),
-          R &&
-          ((R.className =
-            "text-center p-3 rounded-lg bg-green-100 text-green-700"),
-            (R.textContent = "¡Perfil actualizado con éxito!"),
-            R.classList.remove("hidden")),
-          A("¡Perfil actualizado con éxito!"),
-          setTimeout(N, 1500));
+        const e = t.collection("userTasks").doc(a),
+          s = await e.get();
+        let r = [];
+        (s.exists && (r = s.data().items || []),
+          o.length > 0 && 0 === r.length
+            ? (await e.set(
+              { uid: l.uid, items: o.map((e) => ({ ...e })) },
+              { merge: !0 },
+            ),
+              o.forEach((a) => K(a, e)))
+            : r.length > 0 && r.forEach((a) => K(a, e)));
       } catch (e) {
-        (console.error("Error al guardar perfil:", e),
-          R &&
-          ((R.className =
-            "text-center p-3 rounded-lg bg-red-100 text-red-700"),
-            (R.textContent =
-              "Hubo un error al guardar. Inténtalo de nuevo."),
-            R.classList.remove("hidden")));
-      } finally {
-        (z && (z.textContent = "Guardar Cambios"),
-          V && V.classList.add("hidden"));
-      }
-    }),
-    m.learningTabs &&
-    m.learningTabs.addEventListener("click", (e) => {
-      const a = e.target.closest(".ltab");
-      a && F(a.dataset.tab);
-    }),
-    m.notesTextarea &&
-    m.notesTextarea.addEventListener("input", () => {
-      m.notesSaveStatus &&
-        ((m.notesSaveStatus.textContent = "Editando..."),
-          clearTimeout(d),
-          (d = setTimeout(
-            () =>
-              (async function (e) {
-                if (!l || !m.notesTextarea || !m.notesSaveStatus) return;
-                m.notesSaveStatus.textContent = "Guardando...";
-                const a = t.collection("userNotes").doc(`${l.uid}_${r}_${e}`);
-                try {
-                  (await a.set(
-                    {
-                      uid: l.uid,
-                      content: m.notesTextarea.value,
-                      lastUpdated:
-                        firebase.firestore.FieldValue.serverTimestamp(),
-                    },
-                    { merge: !0 },
-                  ),
-                    (m.notesSaveStatus.textContent = "Guardado"));
-                } catch (e) {
-                  (console.error("Error al guardar las notas:", e),
-                    (m.notesSaveStatus.textContent = "Error al cargar"));
-                } finally {
-                  setTimeout(() => {
-                    "Guardado" === m.notesSaveStatus.textContent &&
-                      (m.notesSaveStatus.textContent = "Sin cambios");
-                  }, 2e3);
-                }
-              })(c.currentLessonId),
-            1500,
-          )));
-    }),
-    m.tabMaterialPanel &&
-    m.tabMaterialPanel.addEventListener("click", (e) => {
-      const a = e.target.closest(".resource-item[data-pdf-url]");
-      a &&
-        (function (e, a) {
-          if (
-            !(
-              m.pdfModal &&
-              m.pdfModalOverlay &&
-              m.pdfModalContent &&
-              m.pdfIframe
-            )
-          )
-            return;
-          m.pdfModalTitle && (m.pdfModalTitle.textContent = a);
-          const t = `https://docs.google.com/gview?url=${encodeURIComponent(e)}&embedded=true`;
-          ((m.pdfIframe.src = t),
-            m.pdfModal.classList.remove("hidden"),
-            m.pdfModalOverlay.classList.remove("hidden"),
-            setTimeout(() => {
-              (m.pdfModalOverlay.classList.add("opacity-100"),
-                m.pdfModalContent.classList.remove("scale-95", "opacity-0"));
-            }, 10));
-        })(a.dataset.pdfUrl, a.dataset.pdfTitle);
-    }),
-    m.pdfModalCloseBtn && m.pdfModalCloseBtn.addEventListener("click", _),
-    m.pdfModalOverlay && m.pdfModalOverlay.addEventListener("click", _),
-    m.resourceFileInput &&
-    m.resourceFileInput.addEventListener("change", () => {
-      m.uploadResourcesBtn &&
-        (m.uploadResourcesBtn.disabled =
-          0 === m.resourceFileInput.files.length);
-    }),
-    m.uploadResourcesBtn &&
-    m.uploadResourcesBtn.addEventListener("click", async () => {
-      const e = m.resourceFileInput ? m.resourceFileInput.files : null;
-      if (!e || !e.length || !l) return;
-      const a = c.currentLessonId;
-      m.uploadProgress.classList.remove("hidden");
-      for (const o of e) {
-        m.uploadProgress.textContent = `Subiendo ${o.name}...`;
-        const e = `user_uploads/${l.uid}/${r}/${a}/${Date.now()}_${o.name}`,
-          n = s.ref(e);
-        try {
-          const s = await n.put(o),
-            i = await s.ref.getDownloadURL(),
-            c = await t.collection("userResources").add({
-              uid: l.uid,
-              courseId: r,
-              lessonId: a,
-              name: o.name,
-              size: o.size,
-              contentType: o.type,
-              storagePath: e,
-              downloadURL: i,
-              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            }),
-            d = await c.get();
-          (m.userResourceList.querySelector("p.text-slate-500") &&
-            (m.userResourceList.innerHTML = ""),
-            W(d));
-        } catch (e) {
-          return (
-            console.error("Error en subida:", e),
-            void (m.uploadProgress.textContent = `Error al subir ${o.name}.`)
-          );
+        if (e.code === 'permission-denied') {
+          console.warn("Tareas no inicializadas o acceso restringido (asumiendo vacío).");
+        } else {
+          console.error("Error cargando tareas:", e);
         }
       }
-      ((m.uploadProgress.textContent = "¡Archivos subidos!"),
-        m.resourceFileInput && (m.resourceFileInput.value = ""),
-        m.uploadResourcesBtn && (m.uploadResourcesBtn.disabled = !0),
-        setTimeout(
-          () => m.uploadProgress && m.uploadProgress.classList.add("hidden"),
-          3e3,
-        ));
+    })(e),
+    F("tab-clases"));
+}
+function _() {
+  m.pdfModal &&
+    m.pdfModalOverlay &&
+    m.pdfModalContent &&
+    m.pdfIframe &&
+    (m.pdfModalOverlay.classList.remove("opacity-100"),
+      m.pdfModalContent.classList.add("scale-95", "opacity-0"),
+      setTimeout(() => {
+        (m.pdfModal.classList.add("hidden"),
+          m.pdfModalOverlay.classList.add("hidden"),
+          (m.pdfIframe.src = ""));
+      }, 300));
+}
+function W(e) {
+  const a = e.data(),
+    t = document.createElement("li");
+  ((t.className = "px-4 py-3 flex items-center justify-between"),
+    (t.innerHTML = `<div class="min-w-0 flex-1"><p class="text-sm font-medium text-slate-900 truncate">${a.name}</p><p class="text-xs text-slate-500 truncate">${a.contentType || ""} - ${Math.round(a.size / 1024)} KB</p></div><div class="flex items-center gap-3"><a href="${a.downloadURL}" target="_blank" class="text-teal-700 text-sm font-semibold hover:underline">Abrir</a><button class="delete-resource-btn text-red-600 text-sm font-semibold hover:underline">Eliminar</button></div>`),
+    t
+      .querySelector(".delete-resource-btn")
+      .addEventListener("click", async () => {
+        if (confirm(`¿Seguro que quieres eliminar "${a.name}"?`))
+          try {
+            (await s.ref(a.storagePath).delete(),
+              await e.ref.delete(),
+              t.remove(),
+              A("Archivo eliminado."));
+          } catch (e) {
+            (console.error("Error eliminando:", e),
+              A("No se pudo eliminar."));
+          }
+      }),
+    m.userResourceList.prepend(t));
+}
+function K(e, a) {
+  const t = document.createElement("li");
+  ((t.className =
+    "bg-white border border-slate-200 rounded-lg p-3 flex items-center justify-between group"),
+    (t.innerHTML = `<label class="flex-1 flex items-center gap-3 cursor-pointer"><input type="checkbox" class="task-toggle h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500" ${e.done ? "checked" : ""}/><span class="text-sm ${e.done ? "line-through text-slate-400" : "text-slate-800"}">${e.text}</span></label><button class="task-delete text-slate-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="h-4 w-4"></i></button>`));
+  const s = t.querySelector(".task-toggle");
+  (s.addEventListener("change", async () => {
+    const o = await a.get(),
+      r = (o.exists && o.data().items) || [],
+      n = r.findIndex((a) => a.text === e.text);
+    n > -1 &&
+      ((r[n].done = s.checked), await a.set({ items: r }, { merge: !0 }));
+    const i = t.querySelector("span");
+    i &&
+      (i.classList.toggle("line-through", s.checked),
+        i.classList.toggle("text-slate-400", s.checked));
+  }),
+    t.querySelector(".task-delete").addEventListener("click", async () => {
+      const s = ((await a.get()).data().items || []).filter(
+        (a) => a.text !== e.text,
+      );
+      (await a.set({ items: s }, { merge: !0 }), t.remove());
     }),
-    m.addTaskBtn && m.addTaskBtn.addEventListener("click", J),
-    m.taskInput &&
-    m.taskInput.addEventListener("keydown", (e) => {
-      "Enter" === e.key && (e.preventDefault(), J());
-    }),
-    m.supportForm &&
-    m.supportForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const t = new FormData(m.supportForm),
-        s = f(c.currentLessonId),
-        o = {
-          email: a.currentUser.email,
-          curso: n.title,
-          fecha: new Date().toLocaleString("es-CL"),
-          asunto: t.get("subject"),
-          mensaje: t.get("message"),
-          leccion: s ? s.lesson.title : "N/A",
-          nombreAlumno: l ? l.name : "",
-        };
-      (m.supportSubmitBtn && (m.supportSubmitBtn.disabled = !0),
-        m.supportBtnText && (m.supportBtnText.textContent = "Enviando..."),
-        m.supportSpinner && m.supportSpinner.classList.remove("hidden"));
+    m.taskList.append(t),
+    lucide.createIcons());
+}
+async function J() {
+  if (!l || !m.taskInput) return;
+  const e = m.taskInput.value.trim();
+  if (!e) return;
+  const a = c.currentLessonId,
+    s = `${l.uid}_${r}_${a}`,
+    o = { text: e, done: !1 };
+  try {
+    const e = t.collection("userTasks").doc(s);
+    (await e.set(
+      { uid: l.uid, items: firebase.firestore.FieldValue.arrayUnion(o) },
+      { merge: !0 },
+    ),
+      K(o, e),
+      (m.taskInput.value = ""));
+  } catch (e) {
+    console.error("Error agregando tarea:", e);
+  }
+}
+function Y(e) {
+  return (
+    "WEBVTT\n\n" +
+    e
+      .replace(/\r+/g, "")
+      .replace(/^\s*\d+\s*$/gm, "")
+      .replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, "$1:$2:$3.$4")
+      .trim()
+  );
+}
+async function X(e, a) {
+  if (!a) return null;
+  try {
+    const t = e.refFromURL(a);
+    return await t.getDownloadURL();
+  } catch (e) {
+    if (/^https?:\/\//i.test(a)) return a;
+    throw e;
+  }
+}
+function Z() {
+  g() &&
+    document
+      .querySelectorAll(
+        'button[id*="encuesta"], .btn-encuesta, a[href*="encuesta"]',
+      )
+      .forEach((e) =>
+        (function (e) {
+          if (!e) return;
+          (e.setAttribute("aria-disabled", "true"),
+            e.setAttribute("tabindex", "-1"),
+            e.classList.add("opacity-60", "cursor-not-allowed"),
+            "BUTTON" === e.tagName && (e.disabled = !0),
+            e.addEventListener(
+              "click",
+              (e) => (e.preventDefault(), e.stopImmediatePropagation(), !1),
+              !0,
+            ));
+        })(e),
+      );
+}
+(B &&
+  B.addEventListener("click", () =>
+    (async function () {
+      if (!(T && O && w && q)) return;
+      T.reset();
+      const e = a.currentUser;
+      if (!e) return;
+      O.value = e.email || "";
+      const s = t.collection("users").doc(e.uid);
       try {
+        const a = await s.get(),
+          t = a.exists ? a.data() : {},
+          o = !0 === t.profileCompleted;
+        (k && (k.value = o ? t.displayName || "" : e.displayName || ""),
+          S && (S.value = t.rut || ""),
+          P && (P.value = t.jobTitle || ""),
+          D && (D.value = t.country || ""),
+          U && (U.value = t.gender || ""),
+          $ && ($.value = t.birthdate || ""));
+      } catch (e) {
+        console.error("Error al cargar datos del perfil:", e);
+      }
+      (H(),
+        R.classList.add("hidden"),
+        w.classList.remove("hidden"),
+        q.classList.remove("hidden"),
+        setTimeout(() => {
+          const e = q.querySelector("div.bg-white");
+          e && e.classList.remove("scale-95", "opacity-0");
+        }, 10));
+    })(),
+  ),
+  C && C.addEventListener("click", N),
+  M && M.addEventListener("click", N),
+  w &&
+  w.addEventListener("click", (e) => {
+    e.target === w && N();
+  }),
+  k && k.addEventListener("input", H),
+  S && S.addEventListener("input", H),
+  D && D.addEventListener("change", H),
+  T &&
+  T.addEventListener("submit", async (e) => {
+    if ((e.preventDefault(), H(), G && G.disabled))
+      return void (
+        R &&
+        ((R.className =
+          "text-center p-3 rounded-lg bg-yellow-100 text-yellow-700"),
+          (R.textContent = "Por favor, corrige los campos marcados en rojo."),
+          R.classList.remove("hidden"))
+      );
+    (G && (G.disabled = !0),
+      z && (z.textContent = "Guardando..."),
+      V && V.classList.remove("hidden"),
+      R && R.classList.add("hidden"));
+    const s = a.currentUser,
+      o = k ? k.value.trim() : "",
+      r = t.collection("users").doc(s.uid);
+    try {
+      (o &&
+        s &&
+        o !== s.displayName &&
+        (await s.updateProfile({ displayName: o })),
+        await r.set(
+          {
+            displayName: o,
+            email: s.email,
+            rut: S ? S.value.trim() : "",
+            jobTitle: P ? P.value.trim() : "",
+            country: D ? D.value : "",
+            gender: U ? U.value : "",
+            birthdate: $ ? $.value : "",
+            profileCompleted: !0,
+          },
+          { merge: !0 },
+        ),
+        m.userName && (m.userName.textContent = o),
+        R &&
+        ((R.className =
+          "text-center p-3 rounded-lg bg-green-100 text-green-700"),
+          (R.textContent = "¡Perfil actualizado con éxito!"),
+          R.classList.remove("hidden")),
+        A("¡Perfil actualizado con éxito!"),
+        setTimeout(N, 1500));
+    } catch (e) {
+      (console.error("Error al guardar perfil:", e),
+        R &&
+        ((R.className =
+          "text-center p-3 rounded-lg bg-red-100 text-red-700"),
+          (R.textContent =
+            "Hubo un error al guardar. Inténtalo de nuevo."),
+          R.classList.remove("hidden")));
+    } finally {
+      (z && (z.textContent = "Guardar Cambios"),
+        V && V.classList.add("hidden"));
+    }
+  }),
+  m.learningTabs &&
+  m.learningTabs.addEventListener("click", (e) => {
+    const a = e.target.closest(".ltab");
+    a && F(a.dataset.tab);
+  }),
+  m.notesTextarea &&
+  m.notesTextarea.addEventListener("input", () => {
+    m.notesSaveStatus &&
+      ((m.notesSaveStatus.textContent = "Editando..."),
+        clearTimeout(d),
+        (d = setTimeout(
+          () =>
+            (async function (e) {
+              if (!l || !m.notesTextarea || !m.notesSaveStatus) return;
+              m.notesSaveStatus.textContent = "Guardando...";
+              const a = t.collection("userNotes").doc(`${l.uid}_${r}_${e}`);
+              try {
+                (await a.set(
+                  {
+                    uid: l.uid,
+                    content: m.notesTextarea.value,
+                    lastUpdated:
+                      firebase.firestore.FieldValue.serverTimestamp(),
+                  },
+                  { merge: !0 },
+                ),
+                  (m.notesSaveStatus.textContent = "Guardado"));
+              } catch (e) {
+                (console.error("Error al guardar las notas:", e),
+                  (m.notesSaveStatus.textContent = "Error al cargar"));
+              } finally {
+                setTimeout(() => {
+                  "Guardado" === m.notesSaveStatus.textContent &&
+                    (m.notesSaveStatus.textContent = "Sin cambios");
+                }, 2e3);
+              }
+            })(c.currentLessonId),
+          1500,
+        )));
+  }),
+  m.tabMaterialPanel &&
+  m.tabMaterialPanel.addEventListener("click", (e) => {
+    const a = e.target.closest(".resource-item[data-pdf-url]");
+    a &&
+      (function (e, a) {
         if (
           !(
-            await fetch("https://muna.auto.hostybee.com/webhook/soporte", {
-              method: "POST",
-              body: JSON.stringify(o),
-              headers: { "Content-Type": "application/json" },
-            })
-          ).ok
+            m.pdfModal &&
+            m.pdfModalOverlay &&
+            m.pdfModalContent &&
+            m.pdfIframe
+          )
         )
-          throw new Error("Error en el envío");
-        ((m.supportFormStatus.innerHTML =
-          '<p class="text-green-600 font-semibold">¡Consulta enviada!</p>'),
-          m.supportForm.reset());
+          return;
+        m.pdfModalTitle && (m.pdfModalTitle.textContent = a);
+        const t = `https://docs.google.com/gview?url=${encodeURIComponent(e)}&embedded=true`;
+        ((m.pdfIframe.src = t),
+          m.pdfModal.classList.remove("hidden"),
+          m.pdfModalOverlay.classList.remove("hidden"),
+          setTimeout(() => {
+            (m.pdfModalOverlay.classList.add("opacity-100"),
+              m.pdfModalContent.classList.remove("scale-95", "opacity-0"));
+          }, 10));
+      })(a.dataset.pdfUrl, a.dataset.pdfTitle);
+  }),
+  m.pdfModalCloseBtn && m.pdfModalCloseBtn.addEventListener("click", _),
+  m.pdfModalOverlay && m.pdfModalOverlay.addEventListener("click", _),
+  m.resourceFileInput &&
+  m.resourceFileInput.addEventListener("change", () => {
+    m.uploadResourcesBtn &&
+      (m.uploadResourcesBtn.disabled =
+        0 === m.resourceFileInput.files.length);
+  }),
+  m.uploadResourcesBtn &&
+  m.uploadResourcesBtn.addEventListener("click", async () => {
+    const e = m.resourceFileInput ? m.resourceFileInput.files : null;
+    if (!e || !e.length || !l) return;
+    const a = c.currentLessonId;
+    m.uploadProgress.classList.remove("hidden");
+    for (const o of e) {
+      m.uploadProgress.textContent = `Subiendo ${o.name}...`;
+      const e = `user_uploads/${l.uid}/${r}/${a}/${Date.now()}_${o.name}`,
+        n = s.ref(e);
+      try {
+        const s = await n.put(o),
+          i = await s.ref.getDownloadURL(),
+          c = await t.collection("userResources").add({
+            uid: l.uid,
+            courseId: r,
+            lessonId: a,
+            name: o.name,
+            size: o.size,
+            contentType: o.type,
+            storagePath: e,
+            downloadURL: i,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          }),
+          d = await c.get();
+        (m.userResourceList.querySelector("p.text-slate-500") &&
+          (m.userResourceList.innerHTML = ""),
+          W(d));
       } catch (e) {
-        m.supportFormStatus.innerHTML =
-          '<p class="text-red-600 font-semibold">Error al enviar. Intenta más tarde.</p>';
-      } finally {
-        (m.supportSubmitBtn && (m.supportSubmitBtn.disabled = !1),
-          m.supportBtnText &&
-          (m.supportBtnText.textContent = "Enviar Consulta"),
-          m.supportSpinner && m.supportSpinner.classList.add("hidden"));
+        return (
+          console.error("Error en subida:", e),
+          void (m.uploadProgress.textContent = `Error al subir ${o.name}.`)
+        );
       }
-    }),
-    m.logoutButton &&
-    m.logoutButton.addEventListener("click", () =>
-      a.signOut().then(() => (window.location.href = `${o}/index.html`)),
-    ),
-    a.onAuthStateChanged((e) => {
-      // --- LOCALHOST BYPASS ---
-      const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "";
-      console.log("Auth Check - Hostname:", window.location.hostname, "Protocol:", window.location.protocol, "isLocal:", isLocal);
-      if (!e && isLocal) {
-        console.warn("⚠️ MODO LOCAL DETECTADO: Usando usuario mock para desarrollo.");
-        e = {
-          uid: "local_dev_user_123",
-          displayName: "Desarrollador Local",
-          email: "dev@localhost",
-          photoURL: null
-        };
-      }
-      // -------------------------
+    }
+    ((m.uploadProgress.textContent = "¡Archivos subidos!"),
+      m.resourceFileInput && (m.resourceFileInput.value = ""),
+      m.uploadResourcesBtn && (m.uploadResourcesBtn.disabled = !0),
+      setTimeout(
+        () => m.uploadProgress && m.uploadProgress.classList.add("hidden"),
+        3e3,
+      ));
+  }),
+  m.addTaskBtn && m.addTaskBtn.addEventListener("click", J),
+  m.taskInput &&
+  m.taskInput.addEventListener("keydown", (e) => {
+    "Enter" === e.key && (e.preventDefault(), J());
+  }),
+  m.supportForm &&
+  m.supportForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const t = new FormData(m.supportForm),
+      s = f(c.currentLessonId),
+      o = {
+        email: a.currentUser.email,
+        curso: n.title,
+        fecha: new Date().toLocaleString("es-CL"),
+        asunto: t.get("subject"),
+        mensaje: t.get("message"),
+        leccion: s ? s.lesson.title : "N/A",
+        nombreAlumno: l ? l.name : "",
+      };
+    (m.supportSubmitBtn && (m.supportSubmitBtn.disabled = !0),
+      m.supportBtnText && (m.supportBtnText.textContent = "Enviando..."),
+      m.supportSpinner && m.supportSpinner.classList.remove("hidden"));
+    try {
+      if (
+        !(
+          await fetch("https://muna.auto.hostybee.com/webhook/soporte", {
+            method: "POST",
+            body: JSON.stringify(o),
+            headers: { "Content-Type": "application/json" },
+          })
+        ).ok
+      )
+        throw new Error("Error en el envío");
+      ((m.supportFormStatus.innerHTML =
+        '<p class="text-green-600 font-semibold">¡Consulta enviada!</p>'),
+        m.supportForm.reset());
+    } catch (e) {
+      m.supportFormStatus.innerHTML =
+        '<p class="text-red-600 font-semibold">Error al enviar. Intenta más tarde.</p>';
+    } finally {
+      (m.supportSubmitBtn && (m.supportSubmitBtn.disabled = !1),
+        m.supportBtnText &&
+        (m.supportBtnText.textContent = "Enviar Consulta"),
+        m.supportSpinner && m.supportSpinner.classList.add("hidden"));
+    }
+  }),
+  m.logoutButton &&
+  m.logoutButton.addEventListener("click", () =>
+    a.signOut().then(() => (window.location.href = `${o}/index.html`)),
+  ),
+  a.onAuthStateChanged((e) => {
+    // --- LOCALHOST BYPASS ---
+    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "";
+    console.log("Auth Check - Hostname:", window.location.hostname, "Protocol:", window.location.protocol, "isLocal:", isLocal);
+    if (!e && isLocal) {
+      console.warn("⚠️ MODO LOCAL DETECTADO: Usando usuario mock para desarrollo.");
+      e = {
+        uid: "local_dev_user_123",
+        displayName: "Desarrollador Local",
+        email: "dev@localhost",
+        photoURL: null
+      };
+    }
+    // -------------------------
 
-      e
-        ? ((l = { uid: e.uid, name: e.displayName || "Alumno" }),
-          m.userName && (m.userName.textContent = l.name),
-          m.userAvatar &&
-          (m.userAvatar.src =
-            e.photoURL ||
-            `https://placehold.co/100x100/14b8a6/FFFFFF?text=${l.name.charAt(0).toUpperCase()}`),
-          m.userProfile &&
-          (m.userProfile.classList.remove("hidden"),
-            m.userProfile.classList.add("flex")),
-          (async function () {
-            const e = t.collection("userProgress").doc(l.uid);
-            try {
-              const a = await e.get();
-              if (a.exists) {
-                const e = a.data()[r];
-                e &&
-                  (c = {
-                    completedLessons: Array.isArray(e.completedLessons)
-                      ? e.completedLessons
-                      : [],
-                    currentLessonId: i.some((a) => a.id === e.currentLessonId)
-                      ? e.currentLessonId
-                      : i[0].id,
-                    unlockedBadges: Array.isArray(e.unlockedBadges)
-                      ? e.unlockedBadges
-                      : [],
-                  });
-              }
-            } catch (e) {
-              console.error("Error al cargar el progreso.", e);
+    e
+      ? ((l = { uid: e.uid, name: e.displayName || "Alumno" }),
+        m.userName && (m.userName.textContent = l.name),
+        m.userAvatar &&
+        (m.userAvatar.src =
+          e.photoURL ||
+          `https://placehold.co/100x100/14b8a6/FFFFFF?text=${l.name.charAt(0).toUpperCase()}`),
+        m.userProfile &&
+        (m.userProfile.classList.remove("hidden"),
+          m.userProfile.classList.add("flex")),
+        (async function () {
+          const e = t.collection("userProgress").doc(l.uid);
+          try {
+            const a = await e.get();
+            if (a.exists) {
+              const e = a.data()[r];
+              e &&
+                (c = {
+                  completedLessons: Array.isArray(e.completedLessons)
+                    ? e.completedLessons
+                    : [],
+                  currentLessonId: i.some((a) => a.id === e.currentLessonId)
+                    ? e.currentLessonId
+                    : i[0].id,
+                  unlockedBadges: Array.isArray(e.unlockedBadges)
+                    ? e.unlockedBadges
+                    : [],
+                });
             }
+          } catch (e) {
+            console.error("Error al cargar el progreso.", e);
+          }
 
-            // Load user segment from Firestore
-            try {
-              const userDoc = await t.collection("userProgress").doc(l.uid).get();
-              if (userDoc.exists && userDoc.data().userSegment) {
-                // Check for DEV override
-                const isDevOverride = localStorage.getItem('devSegmentOverride') === 'true';
-                if (isDevOverride) {
-                  console.log("DEV MODE: Ignoring Firestore segment, keeping local:", localStorage.getItem('userSegment'));
-                  currentUserSegment = localStorage.getItem('userSegment');
-                } else {
-                  currentUserSegment = userDoc.data().userSegment;
-                  localStorage.setItem('userSegment', currentUserSegment);
-                  console.log("Segment loaded from Firestore:", currentUserSegment);
-                }
-              } else if (!localStorage.getItem('userSegment')) {
-                // No segment saved, show selection modal after a short delay
-                setTimeout(() => {
-                  const modal = document.getElementById('segment-selection-modal');
-                  if (modal) {
-                    modal.classList.remove('hidden');
-                    lucide.createIcons();
-                  }
-                }, 1500);
-              }
-            } catch (segErr) {
-              console.error("Error loading segment:", segErr);
-            }
-
-            (b(), Q());
-            // Check for hash routing on load - with retry logic
-            function tryOpenCaseFromHash(attempts = 0) {
-              const hash = window.location.hash;
-              if (hash.startsWith('#caso/')) {
-                const caseId = parseInt(hash.replace('#caso/', ''));
-                if (caseId) {
-                  // Verificar que casesData esté cargado
-                  if (typeof casesData !== 'undefined' && casesData.length > 0) {
-                    const caseExists = casesData.find(c => c.id === caseId);
-                    if (caseExists) {
-                      window.openCaseDetail(caseId, true);
-                      return;
-                    }
-                  }
-                  // Si no está listo, reintentar hasta 10 veces
-                  if (attempts < 10) {
-                    setTimeout(() => tryOpenCaseFromHash(attempts + 1), 300);
-                  } else {
-                    console.warn('Could not load case from hash after retries');
-                  }
-                }
+          // Load user segment from Firestore
+          try {
+            const userDoc = await t.collection("userProgress").doc(l.uid).get();
+            if (userDoc.exists && userDoc.data().userSegment) {
+              // Check for DEV override
+              const isDevOverride = localStorage.getItem('devSegmentOverride') === 'true';
+              if (isDevOverride) {
+                console.log("DEV MODE: Ignoring Firestore segment, keeping local:", localStorage.getItem('userSegment'));
+                currentUserSegment = localStorage.getItem('userSegment');
               } else {
-                // No hash de caso, mostrar tour del curso si es primera vez
-                if (window.runCourseTour) window.runCourseTour();
+                currentUserSegment = userDoc.data().userSegment;
+                localStorage.setItem('userSegment', currentUserSegment);
+                console.log("Segment loaded from Firestore:", currentUserSegment);
               }
+            } else if (!localStorage.getItem('userSegment')) {
+              // No segment saved, show selection modal after a short delay
+              setTimeout(() => {
+                const modal = document.getElementById('segment-selection-modal');
+                if (modal) {
+                  modal.classList.remove('hidden');
+                  lucide.createIcons();
+                }
+              }, 1500);
             }
-            setTimeout(() => tryOpenCaseFromHash(), 200);
-          })())
-        : (window.location.href = `${o}/acceso.html?redirect=${encodeURIComponent(window.location.href)}`);
-    }),
-    window.lucide && window.lucide.createIcons());
+          } catch (segErr) {
+            console.error("Error loading segment:", segErr);
+          }
+
+          (b(), Q());
+          // Check for hash routing on load
+          setTimeout(() => {
+            const hash = window.location.hash;
+            if (hash.startsWith('#caso/')) {
+              const caseId = parseInt(hash.replace('#caso/', ''));
+              if (caseId) window.openCaseDetail(caseId);
+            }
+          }, 100);
+        })())
+      : (window.location.href = `${o}/acceso.html?redirect=${encodeURIComponent(window.location.href)}`);
+  }),
+  window.lucide && window.lucide.createIcons());
 
 });
