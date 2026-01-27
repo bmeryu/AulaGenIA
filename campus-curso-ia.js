@@ -3849,6 +3849,98 @@ document.addEventListener("DOMContentLoaded", () => {
   // Track current segment for hash routing
   let currentViewingSegment = null;
 
+  // Tour guiado de tooltips - se muestra la primera vez que se abre un caso
+  function runTooltipTour() {
+    const tourSeen = localStorage.getItem('caseTourSeen');
+    if (tourSeen) return; // Ya vio el tour
+
+    // IDs de las secciones con tooltips (en orden)
+    const tooltipSections = [
+      { selector: 'section:has(h2:has(i[data-lucide="target"]))', name: 'El Desafío' },
+      { selector: 'section:has(h2:has(i[data-lucide="sparkles"]))', name: 'Instrucción Maestra' },
+      { selector: 'section:has(h3:has(i[data-lucide="lightbulb"]))', name: 'Por qué Funciona' },
+      { selector: 'section:has(h2:has(i[data-lucide="list-checks"]))', name: 'Ajuste Fino' }
+    ];
+
+    let currentStep = 0;
+    const tourOverlay = document.createElement('div');
+    tourOverlay.id = 'tooltip-tour-overlay';
+    tourOverlay.innerHTML = `
+      <style>
+        #tooltip-tour-overlay {
+          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0,0,0,0.4); z-index: 9998;
+          transition: opacity 0.3s ease;
+        }
+        .tour-highlight {
+          position: relative; z-index: 9999 !important;
+          box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.5), 0 0 20px rgba(20, 184, 166, 0.3) !important;
+          border-radius: 16px;
+        }
+        .tour-tooltip {
+          position: fixed; z-index: 10000;
+          background: #0f172a; color: white; padding: 12px 16px;
+          border-radius: 12px; font-size: 13px; max-width: 280px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+          animation: tourPulse 0.4s ease;
+        }
+        .tour-tooltip::after {
+          content: ''; position: absolute; bottom: -6px; left: 20px;
+          border-left: 6px solid transparent; border-right: 6px solid transparent;
+          border-top: 6px solid #0f172a;
+        }
+        .tour-tooltip strong { color: #5eead4; }
+        .tour-progress { display: flex; gap: 4px; margin-top: 8px; }
+        .tour-dot { width: 6px; height: 6px; background: #475569; border-radius: 50%; }
+        .tour-dot.active { background: #5eead4; }
+        @keyframes tourPulse { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      </style>
+    `;
+    document.body.appendChild(tourOverlay);
+
+    function showStep(index) {
+      // Limpiar paso anterior
+      document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+      document.querySelectorAll('.tour-tooltip').forEach(el => el.remove());
+
+      if (index >= tooltipSections.length) {
+        // Tour completado
+        tourOverlay.style.opacity = '0';
+        setTimeout(() => {
+          tourOverlay.remove();
+          localStorage.setItem('caseTourSeen', 'true');
+        }, 300);
+        return;
+      }
+
+      const section = document.querySelector(tooltipSections[index].selector);
+      if (section) {
+        section.classList.add('tour-highlight');
+        section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        const rect = section.getBoundingClientRect();
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tour-tooltip';
+        tooltip.innerHTML = `
+          <strong>${tooltipSections[index].name}</strong><br>
+          <span style="color: #94a3b8; font-size: 12px;">Pasa el cursor sobre ⓘ para más info</span>
+          <div class="tour-progress">
+            ${tooltipSections.map((_, i) => `<div class="tour-dot ${i === index ? 'active' : ''}"></div>`).join('')}
+          </div>
+        `;
+        tooltip.style.top = (rect.top - 60) + 'px';
+        tooltip.style.left = (rect.left + 20) + 'px';
+        document.body.appendChild(tooltip);
+      }
+
+      // Siguiente paso después de 1.8s
+      setTimeout(() => showStep(index + 1), 1800);
+    }
+
+    // Iniciar tour después de un pequeño delay
+    setTimeout(() => showStep(0), 800);
+  }
+
   window.openCaseDetail = function (caseId) {
     const cCase = casesData.find(c => c.id === caseId);
     if (!cCase) return;
@@ -3858,6 +3950,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (container) {
       container.innerHTML = renderCaseDetailHTML(cCase);
       lucide.createIcons();
+      // Ejecutar tour guiado de tooltips
+      setTimeout(() => runTooltipTour(), 500);
     }
     if (window.innerWidth >= 1024) {
       const contentContainer = document.getElementById("lesson-content");
@@ -4125,12 +4219,12 @@ document.addEventListener("DOMContentLoaded", () => {
             </button>
             
             <div class="intro-content px-5 pb-5 hidden">
-                <div class="bg-white rounded-xl p-6 border border-slate-100 shadow-inner space-y-5">
+                <div class="bg-white rounded-xl p-6 border border-slate-100 space-y-6">
                     
                     <!-- Qué son los Casos -->
                     <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0 shadow">
-                            <i data-lucide="target" class="w-5 h-5 text-white"></i>
+                        <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="target" class="w-5 h-5 text-slate-600"></i>
                         </div>
                         <div>
                             <h4 class="font-bold text-slate-800 mb-1">¿Qué es un Caso Aplicado?</h4>
@@ -4143,65 +4237,56 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     <!-- El valor de los Top Pick -->
                     <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-300 to-yellow-500 flex items-center justify-center flex-shrink-0 shadow">
-                            <i data-lucide="award" class="w-5 h-5 text-white"></i>
+                        <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="award" class="w-5 h-5 text-amber-600"></i>
                         </div>
                         <div>
                             <h4 class="font-bold text-slate-800 mb-1">Los <span class="text-amber-600">⭐ Top Pick</span> van primero</h4>
                             <p class="text-sm text-slate-600 leading-relaxed">
-                                Nuestro equipo ha seleccionado los casos con <strong>mayor impacto demostrado</strong> para tu perfil específico. 
-                                Si tienes poco tiempo, estos son los que generarán resultados visibles desde el primer uso. 
-                                <span class="text-teal-600 font-medium">Son el 20% que te dará el 80% de los resultados.</span>
+                                Casos seleccionados por <strong>mayor impacto demostrado</strong> para tu perfil. 
+                                Si tienes poco tiempo, estos generarán resultados visibles desde el primer uso.
                             </p>
                         </div>
                     </div>
                     
                     <!-- Cómo está estructurado cada caso -->
                     <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center flex-shrink-0 shadow">
-                            <i data-lucide="layout-list" class="w-5 h-5 text-white"></i>
+                        <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="layout-list" class="w-5 h-5 text-slate-600"></i>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 mb-2">Anatomía de un Caso: Las 4 Secciones Clave</h4>
-                            <div class="space-y-2.5">
-                                <div class="flex items-start gap-3 p-2.5 bg-amber-50 rounded-lg border border-amber-100">
-                                    <i data-lucide="target" class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-slate-800 mb-3">Anatomía de un Caso</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="flex items-start gap-2.5 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                    <i data-lucide="target" class="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0"></i>
                                     <div class="text-sm">
-                                        <strong class="text-amber-800">El Desafío</strong>
-                                        <span class="text-slate-600"> — La situación o problema específico que este caso resuelve. Revísalo para confirmar que aplica a lo que necesitas.</span>
+                                        <strong class="text-slate-700 block">El Desafío</strong>
+                                        <span class="text-slate-500 text-xs">El problema que este caso resuelve</span>
                                     </div>
                                 </div>
-                                <div class="flex items-start gap-3 p-2.5 bg-teal-50 rounded-lg border border-teal-100">
-                                    <i data-lucide="sparkles" class="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0"></i>
+                                <div class="flex items-start gap-2.5 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0"></i>
                                     <div class="text-sm">
-                                        <strong class="text-teal-800">La Instrucción Maestra</strong>
-                                        <span class="text-slate-600"> — El mensaje optimizado para la IA, diseñado con técnicas avanzadas de prompting. Cópialo, personaliza los datos entre [corchetes], y úsalo.</span>
+                                        <strong class="text-slate-700 block">La Instrucción Maestra</strong>
+                                        <span class="text-slate-500 text-xs">El mensaje listo para copiar y usar</span>
                                     </div>
                                 </div>
-                                <div class="flex items-start gap-3 p-2.5 bg-purple-50 rounded-lg border border-purple-100">
-                                    <i data-lucide="lightbulb" class="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0"></i>
+                                <div class="flex items-start gap-2.5 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                    <i data-lucide="lightbulb" class="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0"></i>
                                     <div class="text-sm">
-                                        <strong class="text-purple-800">¿Por qué Funciona?</strong>
-                                        <span class="text-slate-600"> — La ciencia detrás del caso. Entiende las técnicas usadas para que puedas adaptarlas y crear tus propias instrucciones en el futuro.</span>
+                                        <strong class="text-slate-700 block">¿Por qué Funciona?</strong>
+                                        <span class="text-slate-500 text-xs">La técnica detrás del caso</span>
                                     </div>
                                 </div>
-                                <div class="flex items-start gap-3 p-2.5 bg-emerald-50 rounded-lg border border-emerald-100">
-                                    <i data-lucide="sliders" class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0"></i>
+                                <div class="flex items-start gap-2.5 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                    <i data-lucide="sliders" class="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0"></i>
                                     <div class="text-sm">
-                                        <strong class="text-emerald-800">Ajuste Fino</strong>
-                                        <span class="text-slate-600"> — Tips de experto para refinar el resultado. Si la primera respuesta no es perfecta, aquí tienes las palancas para optimizarla.</span>
+                                        <strong class="text-slate-700 block">Ajuste Fino</strong>
+                                        <span class="text-slate-500 text-xs">Tips para refinar el resultado</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Call to action -->
-                    <div class="pt-3 border-t border-slate-100">
-                        <p class="text-center text-sm text-slate-500">
-                            <i data-lucide="info" class="w-4 h-4 inline-block mr-1 text-teal-500"></i>
-                            <strong class="text-slate-700">Pro tip:</strong> Dentro de cada caso, pasa el cursor sobre el ícono <span class="inline-flex items-center justify-center w-5 h-5 bg-slate-100 rounded-full text-slate-400 text-xs">ⓘ</span> de cada sección para ver más detalles.
-                        </p>
                     </div>
                     
                 </div>
@@ -4214,6 +4299,17 @@ document.addEventListener("DOMContentLoaded", () => {
             @keyframes slideDown {
                 from { opacity: 0; transform: translateY(-10px); }
                 to { opacity: 1; transform: translateY(0); }
+            }
+            /* Print Styles - Solo el caso, sin sidebar */
+            @media print {
+                #sidebar, .sidebar, [data-sidebar], nav, .navigation-buttons,
+                button:not(.print-visible), .no-print { display: none !important; }
+                body, html { background: white !important; }
+                .lesson-content, #lesson-content, main { 
+                    width: 100% !important; 
+                    margin: 0 !important; 
+                    padding: 20px !important;
+                }
             }
         </style>
         ` : ''}
