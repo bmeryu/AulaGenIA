@@ -4001,7 +4001,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { id: 'case-section-estrategia', name: 'Estrategia', desc: 'Enfoque recomendado para aplicar' },
       { id: 'case-section-validacion', name: 'Validación', desc: 'Cómo verificar que el resultado es correcto' },
       { id: 'case-section-matriz', name: 'Matriz de Adaptación', desc: 'Cómo adaptar a otros contextos' },
-      { id: 'case-action-buttons', name: '¡Y hay más!', desc: '← → Navega entre casos | 📎 Copia el link | 🖨️ Imprime' }
+      { id: 'case-header-actions', name: '¡Y hay más!', desc: '← → Navega entre casos | 📎 Copia el link | 🖨️ Imprime' }
     ];
 
     let currentStep = 0;
@@ -5076,7 +5076,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </button>
                     
                     <!-- Action Buttons -->
-                    <div class="flex items-center gap-2">
+                    <div id="case-header-actions" class="flex items-center gap-2">
                         ${prevCase ? `<button onclick="openCaseDetail(${prevCase.id})" class="p-2 rounded-lg bg-white border border-slate-200 hover:border-teal-300 hover:bg-teal-50 transition-colors" title="Caso anterior"><i data-lucide="chevron-left" class="w-4 h-4 text-slate-600"></i></button>` : ''}
                         ${nextCase ? `<button onclick="openCaseDetail(${nextCase.id})" class="p-2 rounded-lg bg-white border border-slate-200 hover:border-teal-300 hover:bg-teal-50 transition-colors" title="Caso siguiente"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-600"></i></button>` : ''}
                         <button onclick="copyCaseUrl(${c.id})" class="p-2 rounded-lg bg-white border border-slate-200 hover:border-teal-300 hover:bg-teal-50 transition-colors" title="Copiar URL">
