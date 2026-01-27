@@ -2773,6 +2773,24 @@ document.addEventListener("DOMContentLoaded", () => {
         ],
         lessons: [
           {
+            id: "1-intro",
+            title: "🎬 Bienvenido a tu Copiloto IA",
+            type: "video",
+            segmentedVideoUrls: {
+              NG: "gs://aulagenia.firebasestorage.app/NG-Modulo1-Intro.mp4",
+              LG: "gs://aulagenia.firebasestorage.app/LG-Modulo1-Intro.mp4",
+              ADM: "gs://aulagenia.firebasestorage.app/ADM-Modulo1-Intro.mp4",
+              ED: "gs://aulagenia.firebasestorage.app/ED-Modulo1-Intro.mp4"
+            },
+            segmentedTranscriptionUrls: {
+              NG: "gs://aulagenia.firebasestorage.app/NG-Modulo1-Intro-caption.srt",
+              LG: "gs://aulagenia.firebasestorage.app/LG-Modulo1-Intro-caption.srt",
+              ADM: "gs://aulagenia.firebasestorage.app/ADM-Modulo1-Intro-caption.srt",
+              ED: "gs://aulagenia.firebasestorage.app/ED-Modulo1-Intro-caption.srt"
+            },
+            resources: [],
+          },
+          {
             id: "1-1",
             title:
               'Qué es la Inteligencia Artificial y por qué es tu nuevo "Copiloto"',
@@ -2939,6 +2957,24 @@ document.addEventListener("DOMContentLoaded", () => {
           },
         ],
         lessons: [
+          {
+            id: "2-intro",
+            title: "🎬 El Salto al Nivel Pro",
+            type: "video",
+            segmentedVideoUrls: {
+              NG: "gs://aulagenia.firebasestorage.app/NG-Modulo2-Intro.mp4",
+              LG: "gs://aulagenia.firebasestorage.app/LG-Modulo2-Intro.mp4",
+              ADM: "gs://aulagenia.firebasestorage.app/ADM-Modulo2-Intro.mp4",
+              ED: "gs://aulagenia.firebasestorage.app/ED-Modulo2-Intro.mp4"
+            },
+            segmentedTranscriptionUrls: {
+              NG: "gs://aulagenia.firebasestorage.app/NG-Modulo2-Intro-caption.srt",
+              LG: "gs://aulagenia.firebasestorage.app/LG-Modulo2-Intro-caption.srt",
+              ADM: "gs://aulagenia.firebasestorage.app/ADM-Modulo2-Intro-caption.srt",
+              ED: "gs://aulagenia.firebasestorage.app/ED-Modulo2-Intro-caption.srt"
+            },
+            resources: [],
+          },
           {
             id: "2-1",
             title: "Del Uso Superficial al Estratégico",
@@ -3131,6 +3167,24 @@ document.addEventListener("DOMContentLoaded", () => {
           },
         ],
         lessons: [
+          {
+            id: "3-intro",
+            title: "🎬 Domina las Instrucciones Maestras",
+            type: "video",
+            segmentedVideoUrls: {
+              NG: "gs://aulagenia.firebasestorage.app/NG-Modulo3-Intro.mp4",
+              LG: "gs://aulagenia.firebasestorage.app/LG-Modulo3-Intro.mp4",
+              ADM: "gs://aulagenia.firebasestorage.app/ADM-Modulo3-Intro.mp4",
+              ED: "gs://aulagenia.firebasestorage.app/ED-Modulo3-Intro.mp4"
+            },
+            segmentedTranscriptionUrls: {
+              NG: "gs://aulagenia.firebasestorage.app/NG-Modulo3-Intro-caption.srt",
+              LG: "gs://aulagenia.firebasestorage.app/LG-Modulo3-Intro-caption.srt",
+              ADM: "gs://aulagenia.firebasestorage.app/ADM-Modulo3-Intro-caption.srt",
+              ED: "gs://aulagenia.firebasestorage.app/ED-Modulo3-Intro-caption.srt"
+            },
+            resources: [],
+          },
           {
             id: "3-1",
             title: "La Receta WOW: El Arte de Pedir",
@@ -3326,6 +3380,24 @@ document.addEventListener("DOMContentLoaded", () => {
           },
         ],
         lessons: [
+          {
+            id: "4-intro",
+            title: "🎬 Conviértete en Arquitecto de Ideas",
+            type: "video",
+            segmentedVideoUrls: {
+              NG: "gs://aulagenia.firebasestorage.app/NG-Modulo4-Intro.mp4",
+              LG: "gs://aulagenia.firebasestorage.app/LG-Modulo4-Intro.mp4",
+              ADM: "gs://aulagenia.firebasestorage.app/ADM-Modulo4-Intro.mp4",
+              ED: "gs://aulagenia.firebasestorage.app/ED-Modulo4-Intro.mp4"
+            },
+            segmentedTranscriptionUrls: {
+              NG: "gs://aulagenia.firebasestorage.app/NG-Modulo4-Intro-caption.srt",
+              LG: "gs://aulagenia.firebasestorage.app/LG-Modulo4-Intro-caption.srt",
+              ADM: "gs://aulagenia.firebasestorage.app/ADM-Modulo4-Intro-caption.srt",
+              ED: "gs://aulagenia.firebasestorage.app/ED-Modulo4-Intro-caption.srt"
+            },
+            resources: [],
+          },
           {
             id: "4-1",
             title: "Intro al Arquitecto de Ideas",
@@ -4541,8 +4613,27 @@ document.addEventListener("DOMContentLoaded", () => {
               }, 100);
               break;
             case "video":
-              a = e.videoUrl
-                ? `<div class="flex flex-col gap-4 mt-8">\n                                <div class="video-wrapper-optimized">\n                                    <video id="course-video" controls>\n                                        <source id="course-video-source" data-src="${e.videoUrl || ""}" type="video/mp4">\n                                        ${e.transcriptionUrl ? '<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>' : ""}\n                                        Tu navegador no soporta el elemento de video.\n                                    </video>\n                                </div>\n                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-[1200px] mx-auto w-full">\n                                ${e.transcriptionUrl ? '\n                                    <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="captions" class="h-5 w-5"></i>\n                                        <span>Desactivar Subtítulos</span>\n                                    </button>\n                                    <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="download" class="h-5 w-5"></i>\n                                        <span>Descargar Transcripción</span>\n                                    </button>\n                                ' : '\n                                    <div class="sm:col-span-2">\n                                        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled>\n                                            <i data-lucide="captions-off" class="h-5 w-5"></i>\n                                            <span>Subtítulos No Disponibles</span>\n                                        </button>\n                                    </div>\n                                '}\n                                </div>\n                            </div>`
+              // Support for segmented intro videos by user profile
+              let videoUrlToUse = e.videoUrl;
+              let transcriptionUrlToUse = e.transcriptionUrl;
+              if (e.segmentedVideoUrls) {
+                const userSegment = localStorage.getItem('userSegment') || 'Negocios & Ventas';
+                const segmentMap = {
+                  'Negocios & Ventas': 'NG',
+                  'Legal & Profesional': 'LG',
+                  'Gestión & Administración': 'ADM',
+                  'Gestión & Adm.': 'ADM',
+                  'Educación & Capacitación': 'ED',
+                  'Educación': 'ED'
+                };
+                const segmentKey = segmentMap[userSegment] || 'NG';
+                videoUrlToUse = e.segmentedVideoUrls[segmentKey] || e.videoUrl;
+                if (e.segmentedTranscriptionUrls) {
+                  transcriptionUrlToUse = e.segmentedTranscriptionUrls[segmentKey] || e.transcriptionUrl;
+                }
+              }
+              a = videoUrlToUse
+                ? `<div class="flex flex-col gap-4 mt-8">\n                                <div class="video-wrapper-optimized">\n                                    <video id="course-video" controls>\n                                        <source id="course-video-source" data-src="${videoUrlToUse || ""}" type="video/mp4">\n                                        ${transcriptionUrlToUse ? '<track id="caption-track" kind="subtitles" srclang="es" label="Español" default>' : ""}\n                                        Tu navegador no soporta el elemento de video.\n                                    </video>\n                                </div>\n                                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-[1200px] mx-auto w-full">\n                                ${transcriptionUrlToUse ? '\n                                    <button id="toggle-subtitles-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="captions" class="h-5 w-5"></i>\n                                        <span>Desactivar Subtítulos</span>\n                                    </button>\n                                    <button id="transcription-button" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors">\n                                        <i data-lucide="download" class="h-5 w-5"></i>\n                                        <span>Descargar Transcripción</span>\n                                    </button>\n                                ' : '\n                                    <div class="sm:col-span-2">\n                                        <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-200 text-slate-400 rounded-lg font-semibold cursor-not-allowed" disabled>\n                                            <i data-lucide="captions-off" class="h-5 w-5"></i>\n                                            <span>Subtítulos No Disponibles</span>\n                                        </button>\n                                    </div>\n                                '}\n                                </div>\n                            </div>`
                 : '<div class="aspect-w-16 aspect-h-9"><div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center text-white"><i data-lucide="play-circle" class="h-20 w-20 text-slate-500"></i><p class="absolute">Contenido del video</p></div></div>';
               break;
             case "resource":
