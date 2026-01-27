@@ -3856,10 +3856,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // IDs de las secciones con tooltips (en orden)
     const tooltipSections = [
-      { selector: 'section:has(h2:has(i[data-lucide="target"]))', name: 'El Desafío' },
-      { selector: 'section:has(h2:has(i[data-lucide="sparkles"]))', name: 'Instrucción Maestra' },
-      { selector: 'section:has(h3:has(i[data-lucide="lightbulb"]))', name: 'Por qué Funciona' },
-      { selector: 'section:has(h2:has(i[data-lucide="list-checks"]))', name: 'Ajuste Fino' }
+      { id: 'case-section-desafio', name: 'El Desafío' },
+      { id: 'case-section-instruccion', name: 'Instrucción Maestra' },
+      { id: 'case-section-porque', name: 'Por qué Funciona' },
+      { id: 'case-section-ajuste', name: 'Ajuste Fino' }
     ];
 
     let currentStep = 0;
@@ -3913,25 +3913,29 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const section = document.querySelector(tooltipSections[index].selector);
-      if (section) {
-        section.classList.add('tour-highlight');
-        section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const section = document.getElementById(tooltipSections[index].id);
+      if (!section) {
+        // Skip to next if section not found
+        setTimeout(() => showStep(index + 1), 200);
+        return;
+      }
 
-        const rect = section.getBoundingClientRect();
-        const tooltip = document.createElement('div');
-        tooltip.className = 'tour-tooltip';
-        tooltip.innerHTML = `
+      section.classList.add('tour-highlight');
+      section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      const rect = section.getBoundingClientRect();
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tour-tooltip';
+      tooltip.innerHTML = `
           <strong>${tooltipSections[index].name}</strong><br>
           <span style="color: #94a3b8; font-size: 12px;">Pasa el cursor sobre ⓘ para más info</span>
           <div class="tour-progress">
             ${tooltipSections.map((_, i) => `<div class="tour-dot ${i === index ? 'active' : ''}"></div>`).join('')}
           </div>
         `;
-        tooltip.style.top = (rect.top - 60) + 'px';
-        tooltip.style.left = (rect.left + 20) + 'px';
-        document.body.appendChild(tooltip);
-      }
+      tooltip.style.top = (rect.top - 60) + 'px';
+      tooltip.style.left = (rect.left + 20) + 'px';
+      document.body.appendChild(tooltip);
 
       // Siguiente paso después de 1.8s
       setTimeout(() => showStep(index + 1), 1800);
@@ -4446,7 +4450,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="space-y-6">
                 
                 <!-- El Desafío - CON TOOLTIP EDUCATIVO -->
-                <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <section id="case-section-desafio" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                     <div class="flex items-center justify-between mb-3">
                         <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
                             <i data-lucide="target" class="w-4 h-4 text-amber-500"></i>
@@ -4466,8 +4470,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     </p>
                 </section>
 
-                <!-- Prompt Maestro - CON TOOLTIP EDUCATIVO -->
-                <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <!-- Instrucción Maestra - CON TOOLTIP EDUCATIVO -->
+                <section id="case-section-instruccion" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
                             <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
@@ -4495,7 +4499,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 ${(c.fineTuning && c.fineTuning.length > 0) ? `
                 <!-- Ajuste Fino - CON TOOLTIP EDUCATIVO -->
-                <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <section id="case-section-ajuste" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
                             <i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i>
@@ -4575,7 +4579,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <!-- Insights - CON TOOLTIPS EDUCATIVOS -->
                 <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     ${c.solutionPlus ? `
-                    <div class="sm:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <div id="case-section-porque" class="sm:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
                                 <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
