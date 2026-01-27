@@ -4349,9 +4349,8 @@ document.addEventListener("DOMContentLoaded", () => {
             isolation: isolate;
             transform: translateZ(0);
           }
-          /* Asegurar que padres no bloqueen el z-index */
-          .course-tour-highlight,
-          .course-tour-highlight * {
+          /* Asegurar que padres no bloqueen el z-index (pero no en media elements) */
+          .course-tour-highlight *:not(img):not(video):not(canvas):not(iframe) {
             overflow: visible !important;
           }
           .course-tour-tooltip {
