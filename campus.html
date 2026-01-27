@@ -1049,6 +1049,26 @@
                         });
                     }
 
+                    function unlockCasesCard() {
+                        const casesActions = document.getElementById("cases-actions");
+                        if (casesActions) {
+                            casesActions.innerHTML = `
+                                <a href="campus-curso-ia.html#modulo5" 
+                                   class="block text-center bg-teal-600 hover:bg-teal-700 text-white font-black py-3 px-5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 mb-3 border border-teal-500">
+                                    🎯 Descubre tus Casos Aplicados
+                                </a>
+                                <a href="https://firebasestorage.googleapis.com/v0/b/aulagenia.appspot.com/o/resources%2F100-prompts-maestros.pdf?alt=media" target="_blank"
+                                   class="block w-full text-center bg-white border-2 border-slate-200 hover:border-teal-500 text-slate-600 hover:text-teal-600 font-bold py-3 px-5 rounded-xl transition-all">
+                                    📥 Descargar PDF con todos los casos
+                                </a>
+                            `;
+                            const casesCard = document.getElementById("cases-card");
+                            if (casesCard) {
+                                casesCard.classList.remove("border-teal-200");
+                                casesCard.classList.add("border-teal-400", "ring-4", "ring-teal-50");
+                            }
+                        }
+                    }
 
                     function setupLockedCard(card, title, buttonText, onClickAction) {
                         const tag = card.querySelector(".tag");
@@ -1214,7 +1234,7 @@
                         }
                         n.logEvent('file_download', {
                             file_extension: 'pdf',
-                            file_name: 'Maestro_Prompts_100_AGIA',
+                            file_name: 'Casos_Aplicados_AGIA',
                             link_url: window.location.href
                         });
                         try {
@@ -1269,10 +1289,10 @@
                             }
                             doc.setTextColor(...textDark);
                             doc.setFontSize(36); doc.setFont('helvetica', 'bold');
-                            doc.text('Maestro Prompts', pw / 2, textStartY, { align: 'center' });
+                            doc.text('Casos Aplicados', pw / 2, textStartY, { align: 'center' });
                             doc.setFontSize(14); doc.setFont('helvetica', 'normal');
                             doc.setTextColor(...textGray);
-                            doc.text('100 Prompts Optimizados - Colección AGIA', pw / 2, textStartY + 12, { align: 'center' });
+                            doc.text('150+ Instrucciones Maestras - Módulo 5 AGIA', pw / 2, textStartY + 12, { align: 'center' });
                             doc.setFillColor(...yellow); doc.roundedRect(pw / 2 - 35, textStartY + 22, 70, 10, 3, 3, 'F');
                             doc.setTextColor(...textDark); doc.setFontSize(9); doc.setFont('helvetica', 'bold');
                             doc.text('EXCLUSIVE PREMIUM ACCESS', pw / 2, textStartY + 28.5, { align: 'center' });
@@ -1287,7 +1307,7 @@
                             doc.text('Generado el ' + new Date().toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' }), pw / 2, userInfoY + 12, { align: 'center' });
                             doc.setFontSize(10); doc.setTextColor(100, 100, 100); doc.setFont('helvetica', 'normal');
                             const descY = userInfoY + 35;
-                            doc.text(doc.splitTextToSize('Esta colección contiene 100 prompts optimizados con la metodología AGIA. Cada prompt diseñado para maximizar respuestas de ChatGPT, Claude, Gemini.', mw - 20), m + 10, descY);
+                            doc.text(doc.splitTextToSize('Esta colección contiene más de 150 casos aplicados con la metodología AGIA. Instrucciones Maestras listas para usar con ChatGPT, Claude o Gemini.', mw - 20), m + 10, descY);
                             doc.setFontSize(8); doc.setTextColor(120, 120, 120); doc.setFont('helvetica', 'italic');
                             const disclaimer = doc.splitTextToSize('Importante: Los resultados generados por IA pueden contener errores o imprecisiones. Siempre revise y valide la información antes de utilizarla en contextos críticos.', mw - 20);
                             doc.text(disclaimer, pw / 2, ph - 25, { align: 'center', maxWidth: mw - 20 });
@@ -1297,17 +1317,32 @@
                             doc.setFillColor(245, 247, 250); doc.rect(0, 0, pw, 25, 'F');
                             doc.setTextColor(...dark); doc.setFontSize(18); doc.setFont('helvetica', 'bold');
                             doc.text('Índice de Contenidos', m, 18); cy = 35;
-                            const cats = {}; casesData.forEach(p => { if (!cats[p.category]) cats[p.category] = []; cats[p.category].push(p); });
+                            // Agrupar por segmentos (prioridadSegmento) en lugar de categorías
+                            const segments = {};
+                            casesData.forEach(p => {
+                                if (p.prioridadSegmento) {
+                                    Object.keys(p.prioridadSegmento).forEach(seg => {
+                                        if (!segments[seg]) segments[seg] = [];
+                                        if (!segments[seg].find(x => x.id === p.id)) {
+                                            segments[seg].push(p);
+                                        }
+                                    });
+                                } else if (p.category) {
+                                    // Fallback a categoría si no tiene segmento
+                                    if (!segments[p.category]) segments[p.category] = [];
+                                    segments[p.category].push(p);
+                                }
+                            });
                             doc.setFontSize(10); doc.setFont('helvetica', 'normal');
-                            Object.keys(cats).forEach((cat, idx) => {
+                            Object.keys(segments).forEach((seg, idx) => {
                                 if (cy > ph - 30) { doc.addPage(); cy = m; }
                                 doc.setTextColor(...teal); doc.setFont('helvetica', 'bold');
-                                doc.text((idx + 1) + '. ' + cat, m, cy); cy += 6;
+                                doc.text((idx + 1) + '. ' + seg, m, cy); cy += 6;
                                 doc.setTextColor(80, 80, 80); doc.setFont('helvetica', 'normal');
-                                cats[cat].forEach((p, idx) => {
+                                segments[seg].forEach((p, subIdx) => {
                                     if (cy > ph - 20) { doc.addPage(); cy = m; }
-                                    const promptNum = casesData.findIndex(prompt => prompt.id === p.id) + 1;
-                                    doc.text('   - Prompt #' + promptNum + ': ' + p.title, m + 5, cy); cy += 5;
+                                    const caseNum = casesData.findIndex(c => c.id === p.id) + 1;
+                                    doc.text('   - Caso #' + caseNum + ': ' + p.title, m + 5, cy); cy += 5;
                                 });
                                 cy += 3;
                             });
@@ -1315,16 +1350,18 @@
                                 const p = casesData[i]; doc.addPage(); cy = m;
                                 doc.setFillColor(...teal); doc.rect(0, 0, pw, 15, 'F');
                                 doc.setFontSize(10); doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold');
-                                doc.text('PROMPT #' + (i + 1), m, 10);
+                                doc.text('CASO #' + (i + 1), m, 10);
                                 doc.text((i + 1) + '/' + casesData.length, pw - m, 10, { align: 'right' }); cy = 25;
                                 doc.setFontSize(16); doc.setFont('helvetica', 'bold'); doc.setTextColor(...dark);
                                 const tl = doc.splitTextToSize(p.title, mw); doc.text(tl, m, cy); cy += tl.length * 7 + 3;
-                                doc.setFillColor(250, 250, 250); doc.roundedRect(m, cy, 60, 8, 2, 2, 'F');
+                                // Mostrar segmento en lugar de categoría
+                                const segmentName = p.prioridadSegmento ? Object.keys(p.prioridadSegmento)[0] : p.category;
+                                doc.setFillColor(250, 250, 250); doc.roundedRect(m, cy, 80, 8, 2, 2, 'F');
                                 doc.setFontSize(8); doc.setTextColor(...teal); doc.setFont('helvetica', 'bold');
-                                doc.text(p.category, m + 2, cy + 5.5);
+                                doc.text(segmentName || 'General', m + 2, cy + 5.5);
                                 const ts = p.metadata && p.metadata.score ? Math.round(p.metadata.score / 5) + ' min' : '15 min';
-                                doc.setFillColor(255, 250, 230); doc.roundedRect(m + 65, cy, 30, 8, 2, 2, 'F');
-                                doc.setTextColor(180, 140, 0); doc.text(ts, m + 67, cy + 5.5); cy += 13;
+                                doc.setFillColor(255, 250, 230); doc.roundedRect(m + 85, cy, 30, 8, 2, 2, 'F');
+                                doc.setTextColor(180, 140, 0); doc.text(ts, m + 87, cy + 5.5); cy += 13;
                                 if (p.problem) {
                                     doc.setFontSize(9); doc.setFont('helvetica', 'italic'); doc.setTextColor(100, 100, 100);
                                     const pl = doc.splitTextToSize(p.problem, mw); doc.text(pl, m, cy); cy += pl.length * 4 + 6;
@@ -1353,7 +1390,7 @@
                                         doc.addPage(); cy = m + 10;
                                         doc.setFillColor(250, 250, 250); doc.rect(0, 0, pw, 8, 'F');
                                         doc.setFontSize(8); doc.setTextColor(100, 100, 100); doc.setFont('helvetica', 'italic');
-                                        doc.text('Prompt #' + (i + 1) + ' (continuacion)', m, 6);
+                                        doc.text('Caso #' + (i + 1) + ' (continuacion)', m, 6);
                                     }
                                     doc.text(promptLines[li], m, cy); cy += 3.5;
                                 }
@@ -1395,13 +1432,13 @@
                             doc.setTextColor(255, 255, 255); doc.setFontSize(28); doc.setFont('helvetica', 'bold');
                             doc.text('¡Gracias!', pw / 2, 80, { align: 'center' });
                             doc.setFontSize(12); doc.setFont('helvetica', 'normal');
-                            doc.text(doc.splitTextToSize('Esperamos que estos 100 prompts optimizados te ayuden a aprovechar al máximo la inteligencia artificial.', mw - 40), pw / 2, 100, { align: 'center' });
+                            doc.text(doc.splitTextToSize('Esperamos que estos 150+ casos aplicados te ayuden a aprovechar al máximo la inteligencia artificial.', mw - 40), pw / 2, 100, { align: 'center' });
                             doc.setFontSize(14); doc.setFont('helvetica', 'bold');
                             doc.text('¿Necesitas ayuda?', pw / 2, 130, { align: 'center' });
                             doc.setFontSize(11); doc.setFont('helvetica', 'normal');
                             doc.text('Contáctanos en: contacto@aulagenia.cl', pw / 2, 145, { align: 'center' });
                             doc.text('Visítanos en: aulagenia.cl', pw / 2, 155, { align: 'center' });
-                            doc.save('Maestro_Prompts_100_AGIA_' + new Date().toISOString().split('T')[0] + '.pdf');
+                            doc.save('Casos_Aplicados_AGIA_' + new Date().toISOString().split('T')[0] + '.pdf');
                             console.log('PDF descargado exitosamente');
                         } catch (e) {
                             console.error('Error PDF:', e);

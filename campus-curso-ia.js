@@ -6806,6 +6806,35 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.warn('Could not load case from hash after retries');
                   }
                 }
+              } else if (hash === '#modulo5' || hash === '#casos') {
+                // Navegar al Módulo 5: Casos Aplicados
+                const modulesContainer = document.getElementById('modules-container');
+                if (modulesContainer) {
+                  // Encontrar el Módulo 5 (penúltimo acordeón - Casos Aplicados)
+                  const accordions = modulesContainer.querySelectorAll('.accordion-item');
+                  const module5Index = accordions.length - 2; // Penúltimo módulo
+
+                  if (accordions[module5Index]) {
+                    // Expandir el acordeón
+                    const accordionBtn = accordions[module5Index].querySelector('button, .accordion-header');
+                    const accordionContent = accordions[module5Index].querySelector('.accordion-content');
+
+                    if (accordionContent) {
+                      accordionContent.classList.add('open');
+                      // Expandir el ícono si existe
+                      const arrow = accordions[module5Index].querySelector('.arrow-down');
+                      if (arrow) arrow.style.transform = 'rotate(180deg)';
+                    }
+
+                    // Scroll al módulo
+                    setTimeout(() => {
+                      accordions[module5Index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+
+                    // Limpiar el hash para no interferir con navegación futura
+                    history.replaceState(null, '', window.location.pathname);
+                  }
+                }
               } else {
                 // No hash de caso, mostrar tour del curso si es primera vez
                 if (window.runCourseTour) window.runCourseTour();
