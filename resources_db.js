@@ -1,4 +1,4 @@
-/**
+﻿/**
  * AulaGenIA Interactive Resources Database
  * Contenido dinamico segmentado por perfil de usuario
  * Version: 2.1 (Full Cuadrature)
@@ -6019,7 +6019,7 @@ const resourcesDatabase = {
       subtitle: "Mapa de Decisión para elegir tu estrategia IA - Módulo 4: Video 1",
       icon: "check-square",
       color: "blue",
-      module: 2,
+      module: 4,
       pdfFallback: "gs://aulagenia.firebasestorage.app/Herramienta-Checklist-de-Complejidad.pdf"
     },
     base_html: `
@@ -6079,7 +6079,7 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Ventas</h4>
           <p class="text-white font-medium text-lg italic">"Cierra ventas con tareas rápidas; construye imperios con proyectos estratégicos."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Negocios - Módulo 2. AulaGenIA 2025.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Negocios - Módulo 4. AulaGenIA 2025.</div>
       </article>
       `,
       "Legal & Profesional": `
@@ -6110,7 +6110,7 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima Legal</h4>
           <p class="text-white font-medium text-lg italic">"Resuelve lo urgente con tareas; construye lo trascendente con proyectos."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Profesionales - Módulo 2. AulaGenIA 2025.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Profesionales - Módulo 4. AulaGenIA 2025.</div>
       </article>
       `,
       "Gestión & Administración": `
@@ -6141,7 +6141,7 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Gestión</h4>
           <p class="text-white font-medium text-lg italic">"Administra lo operativo con tareas; transforma con proyectos."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Gestión - Módulo 2. AulaGenIA 2025.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Gestión - Módulo 4. AulaGenIA 2025.</div>
       </article>
       `,
       "Educación & Capacitación": `
@@ -6172,7 +6172,7 @@ const resourcesDatabase = {
           <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima para Educadores</h4>
           <p class="text-white font-medium text-lg italic">"Enseña lo puntual con tareas; construye aprendizaje profundo con proyectos."</p>
         </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Educación - Módulo 2. AulaGenIA 2025.</div>
+        <div class="text-center text-xs text-slate-500 pt-2">Checklist Complejidad para Educación - Módulo 4. AulaGenIA 2025.</div>
       </article>
       `
     }
@@ -8824,12 +8824,7 @@ const resourcesDatabase = {
             <p class="text-slate-600">La técnica de abrir un chat nuevo cuando el actual tiene demasiados mensajes (+10). Pides un resumen, cierras, abres chat fresco y pegas el resumen para continuar con IA al 100%.</p>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Recuerda</h4>
-          <p class="text-white font-medium text-lg italic">"Un Arquitecto no construye todo de golpe. Primero diseña el plano, luego pone ladrillo a ladrillo."</p>
-        </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 4 - Video 1. AulaGenIA 2025.</div>
-      </article>
+        </article>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -9150,12 +9145,7 @@ const resourcesDatabase = {
             </div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"El Arquitecto no solo diseña los planos, supervisa la construcción. La IA es tu herramienta de obra, pero tu ética es el cimiento que sostiene toda la estructura."</p>
-        </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material exclusivo para alumnos de AulaGenIA - Módulo 4. © 2025 AulaGenIA. Todos los derechos reservados.</div>
-      </article>
+        </article>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -9371,12 +9361,7 @@ const resourcesDatabase = {
             <div class="flex items-start gap-2 bg-white p-3 rounded-lg border border-slate-200"><input type="checkbox" class="checkbox-custom"><span class="text-sm">¿He validado cada material antes de avanzar? (No pongas cemento sobre ladrillos defectuosos; corrige antes de seguir).</span></div>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA</h4>
-          <p class="text-white font-medium text-lg italic">"No permitas que la IA se maree con su propia memoria. Un estratega sabe cuándo cerrar una puerta para abrir la siguiente con más fuerza."</p>
-        </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Material oficial AulaGenIA 2025. Construyendo resultados nivel WOW.</div>
-      </article>
+        </article>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -9542,12 +9527,7 @@ const resourcesDatabase = {
             <p class="text-slate-600">Optimización de tu contenido para que el algoritmo lo muestre a más personas. Incluye uso de palabras clave en texto, hashtags estratégicos y ganchos diseñados para retención.</p>
           </div>
         </section>
-        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">¡Felicitaciones!</h4>
-          <p class="text-white font-medium text-lg italic">"Has completado el vocabulario de AulaGenIA. Ahora eres un Arquitecto de Ideas certificado."</p>
-        </section>
-        <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 4 - Video 2. AulaGenIA 2025.</div>
-      </article>
+        </article>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -10151,3 +10131,5 @@ const resourcesDatabase = {
 if (typeof window !== 'undefined') {
   window.resourcesDatabase = resourcesDatabase;
 }
+
+
