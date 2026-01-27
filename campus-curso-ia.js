@@ -4147,7 +4147,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <i data-lucide="award" class="w-5 h-5 text-white"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-slate-800 mb-1">Los <span class="text-amber-600">⭐ Top Pick</span> son oro puro</h4>
+                            <h4 class="font-bold text-slate-800 mb-1">Los <span class="text-amber-600">⭐ Top Pick</span> van primero</h4>
                             <p class="text-sm text-slate-600 leading-relaxed">
                                 Nuestro equipo ha seleccionado los casos con <strong>mayor impacto demostrado</strong> para tu perfil específico. 
                                 Si tienes poco tiempo, estos son los que generarán resultados visibles desde el primer uso. 
