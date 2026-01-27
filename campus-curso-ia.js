@@ -3859,8 +3859,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const tooltipSections = [
       { id: 'case-section-desafio', name: 'El Desafío', desc: 'El problema que este caso resuelve' },
       { id: 'case-section-instruccion', name: 'Instrucción Maestra', desc: 'El mensaje listo para copiar y usar' },
+      { id: 'case-section-ajuste', name: 'Ajuste Fino', desc: 'Tips para personalizar el resultado' },
       { id: 'case-section-porque', name: '¿Por qué Funciona?', desc: 'La técnica detrás de la instrucción' },
-      { id: 'case-section-ajuste', name: 'Ajuste Fino', desc: 'Tips para personalizar el resultado' }
+      { id: 'case-section-estrategia', name: 'Estrategia', desc: 'Enfoque recomendado para aplicar' },
+      { id: 'case-section-validacion', name: 'Validación', desc: 'Cómo verificar que el resultado es correcto' },
+      { id: 'case-section-matriz', name: 'Matriz de Adaptación', desc: 'Cómo adaptar a otros contextos' }
     ];
 
     let currentStep = 0;
@@ -4650,7 +4653,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <p class="text-slate-700 leading-relaxed">${c.solutionPlus}</p>
                     </div>` : ''}
 
-                    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                    <div id="case-section-estrategia" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
                         <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-2 flex items-center gap-2">
                             <i data-lucide="compass" class="w-4 h-4 text-teal-500"></i>
                             Estrategia
@@ -4658,7 +4661,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <p class="text-slate-600 text-sm">${c.exampleTip || "Sigue la estructura maestra."}</p>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                    <div id="case-section-validacion" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
                         <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-2 flex items-center gap-2">
                             <i data-lucide="check-circle" class="w-4 h-4 text-blue-500"></i>
                             Validación
@@ -4669,7 +4672,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 ${c.verticalMatrix && c.verticalMatrix.length > 0 ? `
                 <!-- Adaptation Matrix -->
-                <section class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                <section id="case-section-matriz" class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
                     <div class="px-5 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center gap-2">
                         <i data-lucide="git-branch" class="w-4 h-4 text-slate-400"></i>
                         <h3 class="font-semibold text-slate-800 text-sm">Matriz de Adaptación</h3>
