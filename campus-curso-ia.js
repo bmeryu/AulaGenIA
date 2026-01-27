@@ -4109,75 +4109,99 @@ document.addEventListener("DOMContentLoaded", () => {
         
         <!-- INTRO EDUCATIVA MÓDULO 5 - Colapsable -->
         ${isSegmentView ? `
-        <div class="mb-6 bg-gradient-to-r from-teal-50 to-emerald-50 rounded-2xl border border-teal-200/60 overflow-hidden">
+        <div class="mb-6 bg-gradient-to-br from-slate-50 via-teal-50/30 to-emerald-50/50 rounded-2xl border border-teal-200/60 overflow-hidden shadow-sm">
             <button onclick="this.parentElement.classList.toggle('expanded'); this.querySelector('.chevron').classList.toggle('rotate-180')" 
-                    class="w-full p-4 flex items-center justify-between text-left hover:bg-teal-50/50 transition-colors">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center">
-                        <i data-lucide="lightbulb" class="w-5 h-5 text-teal-600"></i>
+                    class="w-full p-5 flex items-center justify-between text-left hover:bg-white/50 transition-colors">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shadow-md">
+                        <i data-lucide="rocket" class="w-6 h-6 text-white"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-800 text-sm">¿Qué son los Casos Aplicados?</h3>
-                        <p class="text-xs text-slate-500">Guía rápida para sacar el máximo provecho</p>
+                        <h3 class="font-bold text-slate-800">¡Bienvenido a tu Biblioteca de Soluciones!</h3>
+                        <p class="text-sm text-slate-500">Descubre cómo aprovechar cada Caso Aplicado al máximo</p>
                     </div>
                 </div>
                 <i data-lucide="chevron-down" class="chevron w-5 h-5 text-teal-500 transition-transform duration-300"></i>
             </button>
             
-            <div class="intro-content px-4 pb-4 hidden">
-                <div class="bg-white rounded-xl p-5 border border-teal-100 space-y-4">
+            <div class="intro-content px-5 pb-5 hidden">
+                <div class="bg-white rounded-xl p-6 border border-slate-100 shadow-inner space-y-5">
                     
-                    <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
-                            <span class="text-lg">🎯</span>
+                    <!-- Qué son los Casos -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0 shadow">
+                            <i data-lucide="target" class="w-5 h-5 text-white"></i>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Tu biblioteca de prompts lista para usar</h4>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Cada "caso" es un <strong>prompt profesional listo para copiar y pegar</strong> en ChatGPT, Gemini o Claude. 
-                                Están organizados por situaciones reales que enfrentas en tu día a día.
+                            <h4 class="font-bold text-slate-800 mb-1">¿Qué es un Caso Aplicado?</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                No es simplemente un texto para copiar y pegar. <strong class="text-slate-800">Cada caso es una solución probada a un desafío real</strong> que enfrentan profesionales como tú todos los días. 
+                                Incluye la <strong>Instrucción Maestra</strong> (el mensaje optimizado para la IA), pero también la estrategia detrás, los ajustes recomendados y la explicación de por qué funciona.
                             </p>
                         </div>
                     </div>
                     
-                    <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center flex-shrink-0">
-                            <span class="text-lg">⭐</span>
+                    <!-- El valor de los Top Pick -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-300 to-yellow-500 flex items-center justify-center flex-shrink-0 shadow">
+                            <i data-lucide="award" class="w-5 h-5 text-white"></i>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Los "Top Pick" son imperdibles</h4>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Los casos marcados con estrella son nuestros <strong>prompts más efectivos</strong> para tu perfil. 
-                                Empieza por ellos si tienes poco tiempo.
+                            <h4 class="font-bold text-slate-800 mb-1">Los <span class="text-amber-600">⭐ Top Pick</span> son oro puro</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Nuestro equipo ha seleccionado los casos con <strong>mayor impacto demostrado</strong> para tu perfil específico. 
+                                Si tienes poco tiempo, estos son los que generarán resultados visibles desde el primer uso. 
+                                <span class="text-teal-600 font-medium">Son el 20% que te dará el 80% de los resultados.</span>
                             </p>
                         </div>
                     </div>
                     
-                    <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                            <span class="text-lg">📋</span>
+                    <!-- Cómo está estructurado cada caso -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center flex-shrink-0 shadow">
+                            <i data-lucide="layout-list" class="w-5 h-5 text-white"></i>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Cada caso tiene 4 secciones clave</h4>
-                            <ul class="text-xs text-slate-600 leading-relaxed space-y-1 mt-2">
-                                <li class="flex items-center gap-2">
-                                    <i data-lucide="target" class="w-3 h-3 text-amber-500"></i>
-                                    <strong>El Desafío:</strong> El problema que resuelve este prompt
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i data-lucide="sparkles" class="w-3 h-3 text-teal-500"></i>
-                                    <strong>Prompt Maestro:</strong> El texto listo para copiar y usar
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i data-lucide="lightbulb" class="w-3 h-3 text-purple-500"></i>
-                                    <strong>¿Por qué funciona?:</strong> La técnica detrás del prompt
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i data-lucide="list-checks" class="w-3 h-3 text-emerald-500"></i>
-                                    <strong>Ajuste Fino:</strong> Tips para personalizar el resultado
-                                </li>
-                            </ul>
+                            <h4 class="font-bold text-slate-800 mb-2">Anatomía de un Caso: Las 4 Secciones Clave</h4>
+                            <div class="space-y-2.5">
+                                <div class="flex items-start gap-3 p-2.5 bg-amber-50 rounded-lg border border-amber-100">
+                                    <i data-lucide="target" class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i>
+                                    <div class="text-sm">
+                                        <strong class="text-amber-800">El Desafío</strong>
+                                        <span class="text-slate-600"> — La situación o problema específico que este caso resuelve. Revísalo para confirmar que aplica a lo que necesitas.</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 p-2.5 bg-teal-50 rounded-lg border border-teal-100">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0"></i>
+                                    <div class="text-sm">
+                                        <strong class="text-teal-800">La Instrucción Maestra</strong>
+                                        <span class="text-slate-600"> — El mensaje optimizado para la IA, diseñado con técnicas avanzadas de prompting. Cópialo, personaliza los datos entre [corchetes], y úsalo.</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 p-2.5 bg-purple-50 rounded-lg border border-purple-100">
+                                    <i data-lucide="lightbulb" class="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0"></i>
+                                    <div class="text-sm">
+                                        <strong class="text-purple-800">¿Por qué Funciona?</strong>
+                                        <span class="text-slate-600"> — La ciencia detrás del caso. Entiende las técnicas usadas para que puedas adaptarlas y crear tus propias instrucciones en el futuro.</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 p-2.5 bg-emerald-50 rounded-lg border border-emerald-100">
+                                    <i data-lucide="sliders" class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0"></i>
+                                    <div class="text-sm">
+                                        <strong class="text-emerald-800">Ajuste Fino</strong>
+                                        <span class="text-slate-600"> — Tips de experto para refinar el resultado. Si la primera respuesta no es perfecta, aquí tienes las palancas para optimizarla.</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    
+                    <!-- Call to action -->
+                    <div class="pt-3 border-t border-slate-100">
+                        <p class="text-center text-sm text-slate-500">
+                            <i data-lucide="info" class="w-4 h-4 inline-block mr-1 text-teal-500"></i>
+                            <strong class="text-slate-700">Pro tip:</strong> Dentro de cada caso, pasa el cursor sobre el ícono <span class="inline-flex items-center justify-center w-5 h-5 bg-slate-100 rounded-full text-slate-400 text-xs">ⓘ</span> de cada sección para ver más detalles.
+                        </p>
                     </div>
                     
                 </div>
@@ -4335,8 +4359,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="group relative">
                             <i data-lucide="info" class="w-4 h-4 text-slate-300 hover:text-teal-500 cursor-help transition-colors"></i>
                             <div class="absolute right-0 bottom-full mb-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 shadow-xl">
-                                <strong class="block text-teal-300 mb-1">¿Qué es esto?</strong>
-                                Describe el problema o situación que este prompt ayuda a resolver. Identifica si coincide con lo que necesitas.
+                                <strong class="block text-amber-300 mb-1">El punto de partida</strong>
+                                Aquí encontrarás la situación real que este caso resuelve. Léelo primero para confirmar que aplica a tu necesidad actual.
                                 <div class="absolute bottom-0 right-4 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800"></div>
                             </div>
                         </span>
@@ -4352,20 +4376,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="flex items-center gap-2">
                             <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
                                 <i data-lucide="sparkles" class="w-4 h-4 text-teal-500"></i>
-                                La Solución (Prompt Maestro)
+                                La Instrucción Maestra
                             </h2>
                             <span class="group relative">
                                 <i data-lucide="info" class="w-4 h-4 text-slate-300 hover:text-teal-500 cursor-help transition-colors"></i>
                                 <div class="absolute left-0 bottom-full mb-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 shadow-xl">
-                                    <strong class="block text-teal-300 mb-1">⭐ La acción clave</strong>
-                                    Este es el prompt listo para usar. Cópialo y pégalo directamente en ChatGPT, Gemini o Claude. Solo reemplaza los datos entre corchetes con tu información.
+                                    <strong class="block text-teal-300 mb-1">⭐ El corazón del caso</strong>
+                                    Esta es la instrucción optimizada para la IA, diseñada con técnicas profesionales de prompting. Cópiala, reemplaza los datos en [corchetes] con tu información, y pégala en ChatGPT, Gemini o Claude.
                                     <div class="absolute bottom-0 left-4 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800"></div>
                                 </div>
                             </span>
                         </div>
                         <button onclick="copyPromptText(\`${decryptPrompt(c.agiaPromptTagged).replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-teal-100 text-slate-600 hover:text-teal-700 text-xs font-medium rounded-lg transition-colors">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                            Copiar Prompt
+                            Copiar Instrucción
                         </button>
                     </div>
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
@@ -4464,8 +4488,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="group relative">
                                 <i data-lucide="info" class="w-4 h-4 text-slate-300 hover:text-teal-500 cursor-help transition-colors"></i>
                                 <div class="absolute right-0 bottom-full mb-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 shadow-xl">
-                                    <strong class="block text-amber-300 mb-1">Aprende el 'por qué'</strong>
-                                    Explica la técnica de prompting utilizada. Entender esto te ayudará a crear tus propios prompts en el futuro.
+                                    <strong class="block text-amber-300 mb-1">Tu diferenciador</strong>
+                                    Aquí descubrirás la ciencia detrás del caso: las técnicas avanzadas de prompting que hacen que esta instrucción genere resultados superiores. Domina esto y podrás diseñar tus propias Instrucciones Maestras.
                                     <div class="absolute bottom-0 right-4 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800"></div>
                                 </div>
                             </span>
