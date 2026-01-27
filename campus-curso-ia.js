@@ -3863,7 +3863,8 @@ document.addEventListener("DOMContentLoaded", () => {
       { id: 'case-section-porque', name: '¿Por qué Funciona?', desc: 'La técnica detrás de la instrucción' },
       { id: 'case-section-estrategia', name: 'Estrategia', desc: 'Enfoque recomendado para aplicar' },
       { id: 'case-section-validacion', name: 'Validación', desc: 'Cómo verificar que el resultado es correcto' },
-      { id: 'case-section-matriz', name: 'Matriz de Adaptación', desc: 'Cómo adaptar a otros contextos' }
+      { id: 'case-section-matriz', name: 'Matriz de Adaptación', desc: 'Cómo adaptar a otros contextos' },
+      { id: 'case-navigation-footer', name: '¡Y hay más!', desc: '← → Navega entre casos | 📎 Guarda el link | 🖨️ Imprime (Ctrl+P)' }
     ];
 
     let currentStep = 0;
@@ -4001,9 +4002,20 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => showStep(0), 600);
   }
 
-  window.openCaseDetail = function (caseId) {
+  window.openCaseDetail = function (caseId, forceRender = false) {
     const cCase = casesData.find(c => c.id === caseId);
     if (!cCase) return;
+
+    // Si el hash ya es el mismo, forzar re-render
+    const currentHash = window.location.hash;
+    const targetHash = `#caso/${caseId}`;
+
+    if (currentHash === targetHash && !forceRender) {
+      // Hash ya es igual, forzar re-render directamente
+      window.openCaseDetail(caseId, true);
+      return;
+    }
+
     // Update URL hash for deep linking
     window.location.hash = `caso/${caseId}`;
     const container = document.getElementById("lesson-material-container");
@@ -4702,7 +4714,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <!-- Navigation Footer -->
-            <nav class="mt-12 pt-8 border-t border-slate-200/80">
+            <nav id="case-navigation-footer" class="mt-12 pt-8 border-t border-slate-200/80">
                 <p class="text-xs text-slate-400 font-medium mb-5 text-center">Navegar entre casos</p>
                 <div class="flex flex-col sm:flex-row items-stretch gap-4 w-full">
                     ${renderNavBtn(prevCase, 'prev')}
