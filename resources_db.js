@@ -781,7 +781,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA para Negocios</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA para Negocios</h4>
           <p class="text-white font-medium text-lg italic">"La IA es tu mejor analista junior: incansable, rápido y siempre disponible. Pero tú eres el CEO que toma la decisión final."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -859,7 +859,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA Legal</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA Legal</h4>
           <p class="text-white font-medium text-lg italic">"La IA es tu paralegal más rápido del mundo, pero sin título ni ética profesional. Tú firmas, tú verificas, tú respondes."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -937,7 +937,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA para Gestión</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA para Gestión</h4>
           <p class="text-white font-medium text-lg italic">"La IA hace en minutos lo que antes tomaba horas. Tu valor ahora está en el criterio, no en el tipeo."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -1015,7 +1015,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA para Educación</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA para Educación</h4>
           <p class="text-white font-medium text-lg italic">"La IA prepara materiales en minutos, pero solo tú puedes encender la chispa del aprendizaje en tus estudiantes."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Documento para el programa AulaGenIA 2025.</div>
@@ -1159,7 +1159,7 @@ const resourcesDatabase = {
         </section>
         
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">La M�xima AulaGenIA</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">La M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"El Copiloto no necesita saber cómo funciona el motor. Solo necesita saber a dónde quiere llegar y comunicarse claramente con su copiloto de IA."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Infografía oficial del Módulo 1. AulaGenIA 2025.</div>
@@ -4471,7 +4471,7 @@ const resourcesDatabase = {
               <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-400">
                 <p class="text-indigo-800"><strong>💡 La analogía comercial:</strong> Imagina que contratas a un consultor externo para analizar tu cartera de clientes. El consultor aprende patrones generales del mercado, pero no necesita recordar los números exactos de cada cuenta para mejorar su metodología.</p>
               </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>M�xima AulaGenIA comercial:</strong> Nunca compartas contraseñas, proyecciones confidenciales o datos financieros exactos de clientes. Usa descripciones genéricas: "empresa de tecnología mediana" en lugar de nombres específicos.</p>
+              <p class="text-sm text-slate-600 mt-3"><strong>M�xima AulaGenIA comercial:</strong> Nunca compartas contraseñas, proyecciones confidenciales o datos financieros exactos de clientes. Usa descripciones genéricas: "empresa de tecnología mediana" en lugar de nombres específicos.</p>
             </div>
             <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
               <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es un CRM</h3>
@@ -4559,7 +4559,7 @@ const resourcesDatabase = {
               <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-400">
                 <p class="text-indigo-800"><strong>💡 La analogía administrativa:</strong> Imagina que contratas a un asistente temporal que aprende mejores prácticas de organización de cientos de empresas, pero no necesita recordar los detalles específicos de tu presupuesto.</p>
               </div>
-              <p class="text-sm text-slate-600 mt-3"><strong>M�xima AulaGenIA:</strong> Nunca compartas contraseñas, datos financieros exactos ni información personal de empleados. Usa descripciones genéricas para obtener ayuda.</p>
+              <p class="text-sm text-slate-600 mt-3"><strong>M�xima AulaGenIA:</strong> Nunca compartas contraseñas, datos financieros exactos ni información personal de empleados. Usa descripciones genéricas para obtener ayuda.</p>
             </div>
             <div class="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-md transition-all">
               <h3 class="text-lg font-bold text-blue-800 mb-2">2. La IA no es una plantilla fija</h3>
@@ -7505,7 +7505,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Negocios - Módulo 3. AulaGenIA 2025.</div>
@@ -7546,7 +7546,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Profesionales - Módulo 3. AulaGenIA 2025.</div>
@@ -7581,7 +7581,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Gestión - Módulo 3. AulaGenIA 2025.</div>
@@ -7616,7 +7616,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
-          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">M�xima AulaGenIA</h4>
           <p class="text-white font-medium text-lg italic">"La IA es un imitador experto de tu propia claridad. Si le pides excelencia con firmeza, te dará excelencia."</p>
         </section>
         <div class="text-center text-xs text-slate-500 pt-2">Arte de la Persuasión para Educación - Módulo 3. AulaGenIA 2025.</div>
@@ -7689,7 +7689,7 @@ const resourcesDatabase = {
           </div>
         </section>
         <section>
-          <h3 class="text-lg font-bold text-slate-800 mb-4">M�xima AulaGenIA: Cómo aplicar la Persuasión</h3>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">M�xima AulaGenIA: Cómo aplicar la Persuasión</h3>
           <p class="text-slate-600 mb-3">La efectividad de estas frases radica en el contraste y la autoridad del piloto:</p>
           <div class="space-y-2">
             <div class="flex items-start gap-3 bg-white p-3 rounded-lg border border-slate-200">
@@ -8831,7 +8831,291 @@ const resourcesDatabase = {
         <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 4 - Video 1. AulaGenIA 2025.</div>
       </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+            <h4 class="font-bold text-emerald-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-content text-sm">🏗️</span>
+              Vocabulario del Arquitecto para Líderes de Negocios
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-emerald-800 text-sm mb-2">🏛️ Arquitecto de Ideas</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El nivel experto de interacción con IA para proyectos complejos.</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400">
+                  <p class="text-xs text-emerald-800"><strong>💼 Analogía de Negocios:</strong> Es como ser el CEO que no hace todo personalmente, pero diseña la estrategia, supervisa cada fase y asegura que cada departamento aporte al objetivo final. No pides "un plan de negocios", construyes la empresa pieza por pieza.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📐 Plano Maestro</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El índice estructurado de tu proyecto antes de desarrollar contenido.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>💼 Analogía de Negocios:</strong> Es tu business plan ejecutivo. Antes de ejecutar, defines las fases: análisis de mercado, propuesta de valor, canales de venta, proyecciones. Le pides a la IA el mapa completo SIN desarrollar cada sección.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">"Actúa como un consultor estratégico senior. Mi proyecto es [DESCRIPCIÓN]. Diseña el PLANO MAESTRO con índice detallado y reglas globales. NO desarrolles contenido aún."</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">🧱 Ladrillo</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cada pieza individual que desarrollas con máxima profundidad.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400">
+                  <p class="text-xs text-amber-800"><strong>💼 Analogía de Negocios:</strong> Es cada pitch deck, cada propuesta comercial. No mezclas todo en una reunión caótica; cierras una fase antes de abrir la siguiente. Un ladrillo perfecto = entregable que el directorio aprueba sin correcciones.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🔗 Cemento</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La fase de unión final que conecta todos los ladrillos.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400">
+                  <p class="text-xs text-purple-800"><strong>💼 Analogía de Negocios:</strong> Es el executive summary que une todas las secciones. Las transiciones que conectan la propuesta de valor con el modelo de ingresos. Con cemento tienes una presentación que cierra inversiones.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📓 Bitácora de Obra</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tu documento externo donde guardas resultados aprobados.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>💼 Analogía de Negocios:</strong> Es tu CRM de conocimiento. Guardas cada versión aprobada, cada decisión estratégica. Cuando abras chat nuevo, pegas el resumen y la IA retoma.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">🚀 Salto de Ventana</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Técnica de abrir chat nuevo cuando el actual tiene +10 mensajes.</p>
+                <div class="bg-green-50 rounded p-3 border-l-4 border-green-400">
+                  <p class="text-xs text-green-800"><strong>💼 Analogía de Negocios:</strong> Es cerrar una reunión y abrir la siguiente con agenda fresca. El Salto de Ventana es tu "reset" estratégico: resumen ejecutivo + chat limpio = decisiones más rápidas.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">💡 Máxima AulaGenIA para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"El empresario exitoso no construye todo de golpe. Diseña el mapa, construye por fases y delega inteligentemente. La IA es tu equipo de 100 personas, pero tú eres el CEO."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario Arquitectura de Ideas para Negocios - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+            <h4 class="font-bold text-emerald-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-content text-sm">🏗️</span>
+              Vocabulario del Arquitecto para Profesionales
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-emerald-800 text-sm mb-2">🏛️ Arquitecto de Ideas</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El nivel experto de interacción con IA para proyectos técnicos complejos.</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400">
+                  <p class="text-xs text-emerald-800"><strong>⚖️ Analogía Profesional:</strong> Es como el socio senior que dirige un caso complejo, un proyecto de auditoría o una obra de ingeniería. No ejecutas todo; diseñas la estrategia, asignas tareas y supervisas entregables. La IA es tu equipo de asociados con especialidades infinitas.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📐 Plano Maestro</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El índice estructurado del proyecto antes de ejecutar.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>⚖️ Analogía Profesional:</strong> Es el cronograma del caso o proyecto. Para un abogado: teoría del caso, pruebas, estrategia procesal. Para un contador: fases de auditoría. Para un arquitecto: anteproyecto antes de los planos ejecutivos.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">"Actúa como un [PROFESIÓN] senior con 20 años de experiencia. Mi proyecto es [DESCRIPCIÓN]. Diseña el PLANO MAESTRO con índice de secciones técnicas y metodología. NO desarrolles contenido aún."</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">🧱 Ladrillo</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cada pieza individual del proyecto.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>⚖️ Analogía Profesional:</strong> Es cada dictamen legal, cada capítulo del informe de auditoría, cada especificación técnica. Un entregable que cumple el estándar profesional.</p>
+                </div>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400">
+                  <p class="text-xs text-red-800"><strong>⚠️ Advertencia:</strong> Cada Ladrillo requiere TU validación técnica. Verifica citas, normas y referencias antes de firmar cualquier documento.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🔗 Cemento</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La fase de unión final.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400">
+                  <p class="text-xs text-purple-800"><strong>⚖️ Analogía Profesional:</strong> Es el resumen ejecutivo del dictamen, la carta de presentación del informe. Con Cemento tienes un entregable profesional coherente.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📓 Bitácora de Obra</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tu documento externo donde guardas resultados aprobados.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>⚖️ Analogía Profesional:</strong> Es tu expediente digital del caso. Guardas cada versión aprobada, cada decisión metodológica.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">🚀 Salto de Ventana</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Técnica de abrir chat nuevo cada +10 mensajes.</p>
+                <div class="bg-green-50 rounded p-3 border-l-4 border-green-400">
+                  <p class="text-xs text-green-800"><strong>⚖️ Analogía Profesional:</strong> Es como separar las audiencias de un juicio: cada etapa limpia sin contaminación. Evita que la IA "mezcle" información de secciones previas.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚖️ Máxima AulaGenIA para Profesionales</h4>
+          <p class="text-white font-medium text-lg italic">"El profesional experto no improvisa: metodología, validación y firma. La IA acelera la ejecución, pero tu criterio técnico y ético es intransferible."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario Arquitectura de Ideas para Profesionales - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+            <h4 class="font-bold text-emerald-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-content text-sm">🏗️</span>
+              Vocabulario del Arquitecto para Gestores
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-emerald-800 text-sm mb-2">🏛️ Arquitecto de Ideas</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El nivel experto de interacción con IA.</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400">
+                  <p class="text-xs text-emerald-800"><strong>🔧 Analogía de Gestión:</strong> Es el gerente de proyectos que diseña el cronograma, asigna recursos y valida entregables. La IA es tu equipo multidisciplinario virtual.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📐 Plano Maestro</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El índice estructurado del proyecto.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>🔧 Analogía de Gestión:</strong> Es tu WBS (Work Breakdown Structure) o Gantt inicial. Desglosas el proyecto en fases, hitos y dependencias ANTES de asignar tareas.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">"Actúa como Project Manager certificado PMP. Mi proyecto es [DESCRIPCIÓN]. Diseña el PLANO MAESTRO con WBS, fases, hitos y dependencias. NO desarrolles los entregables aún."</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">🧱 Ladrillo</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cada entregable individual del proyecto.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400">
+                  <p class="text-xs text-amber-800"><strong>🔧 Analogía de Gestión:</strong> Es cada paquete de trabajo del WBS: el procedimiento documentado, el comunicado interno, el reporte de avance. Un Ladrillo terminado = entregable que pasa control de calidad.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🔗 Cemento</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La fase de integración.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400">
+                  <p class="text-xs text-purple-800"><strong>🔧 Analogía de Gestión:</strong> Es el informe ejecutivo de cierre, el dashboard que integra KPIs. Con Cemento tienes un sistema coherente que cualquier stakeholder entiende.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📓 Bitácora de Obra</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tu repositorio de versiones aprobadas.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🔧 Analogía de Gestión:</strong> Es tu repositorio de lecciones aprendidas y plantillas probadas. Cuando inicies nuevo proyecto, pegas tu Bitácora y la IA adapta.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">🚀 Salto de Ventana</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cambiar de chat cada +10 mensajes.</p>
+                <div class="bg-green-50 rounded p-3 border-l-4 border-green-400">
+                  <p class="text-xs text-green-800"><strong>🔧 Analogía de Gestión:</strong> Es el kick-off de cada nueva fase. Cierras con resumen ejecutivo, abres nueva instancia y continúas con foco total.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">🔧 Máxima AulaGenIA para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"El gestor efectivo planifica antes de ejecutar. Plano primero, Ladrillos después, Cemento al final. Así se entregan proyectos sin retrabajos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario Arquitectura de Ideas para Gestión - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+            <h4 class="font-bold text-emerald-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-content text-sm">🏗️</span>
+              Vocabulario del Arquitecto para Educadores
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-emerald-800 text-sm mb-2">🏛️ Arquitecto de Ideas</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El nivel experto de interacción con IA para diseñar experiencias de aprendizaje.</p>
+                <div class="bg-emerald-50 rounded p-3 border-l-4 border-emerald-400">
+                  <p class="text-xs text-emerald-800"><strong>🎓 Analogía Pedagógica:</strong> Es diseñar un curso completo, no solo una clase. Piensas en objetivos globales, secuencias unidades y planificas evaluaciones. La IA es tu equipo de diseño instruccional.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">📐 Plano Maestro</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El diseño curricular antes de desarrollar materiales.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400 mb-2">
+                  <p class="text-xs text-blue-800"><strong>🎓 Analogía Pedagógica:</strong> Es tu syllabus o planificación anual. Defines objetivos por unidad, tiempo asignado, criterios de evaluación. La IA te da el mapa curricular para validar ANTES de crear actividades.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">"Actúa como diseñador instruccional experto en [NIVEL/METODOLOGÍA]. Mi curso es sobre [TEMA] para [PERFIL]. Diseña el PLANO MAESTRO con unidades y objetivos. NO desarrolles las actividades aún."</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">🧱 Ladrillo</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cada unidad o actividad individual.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400">
+                  <p class="text-xs text-amber-800"><strong>🎓 Analogía Pedagógica:</strong> Es cada planificación de clase, cada guía de trabajo, cada rúbrica. Un Ladrillo terminado = material que puedes usar mañana sin modificaciones.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🔗 Cemento</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Las transiciones entre unidades.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400">
+                  <p class="text-xs text-purple-800"><strong>🎓 Analogía Pedagógica:</strong> Son las actividades de apertura, los cierres que anticipan la siguiente unidad, las evaluaciones integradoras. Con Cemento tienes un viaje de aprendizaje coherente.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-teal-800 text-sm mb-2">📓 Bitácora de Obra</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tu repositorio de materiales pedagógicos.</p>
+                <div class="bg-teal-50 rounded p-3 border-l-4 border-teal-400">
+                  <p class="text-xs text-teal-800"><strong>🎓 Analogía Pedagógica:</strong> Es tu portafolio docente digital. Guardas cada planificación que funcionó, cada rúbrica probada. Tu banco de recursos listos para adaptar.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">🚀 Salto de Ventana</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Cambiar de chat cada +10 mensajes.</p>
+                <div class="bg-green-50 rounded p-3 border-l-4 border-green-400">
+                  <p class="text-xs text-green-800"><strong>🎓 Analogía Pedagógica:</strong> Es cerrar una unidad y abrir la siguiente con objetivos frescos. Cada unidad merece un chat limpio para máxima coherencia pedagógica.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">🎓 Máxima AulaGenIA para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"El docente Arquitecto diseña experiencias, no solo clases. Primero el mapa curricular, luego cada actividad, finalmente las conexiones que transforman contenido en aprendizaje."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario Arquitectura de Ideas para Educación - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "fuentes-autoridad-4": {
     meta: {
@@ -8873,7 +9157,108 @@ const resourcesDatabase = {
         <div class="text-center text-xs text-slate-500 pt-2">Material exclusivo para alumnos de AulaGenIA - Módulo 4. © 2025 AulaGenIA. Todos los derechos reservados.</div>
       </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">💼 Aplicación para Líderes de Negocios</h3>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Chain-of-Thought para Estrategia Comercial</h4>
+              <p class="text-sm text-blue-700 mb-3">La técnica de "Cadena de Pensamiento" de Google Research te permite construir estrategias de negocio paso a paso, sin que la IA se abrume con la complejidad de un plan completo.</p>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm">"Vamos a pensar paso a paso: Primero, analiza mi mercado objetivo. Segundo, identifica 3 oportunidades de diferenciación. Tercero, propón una estrategia de pricing. NO avances al siguiente paso sin que yo apruebe el anterior."</p>
+              </div>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">IA Centrada en el Humano: El CEO Dirige</h4>
+              <p class="text-sm text-purple-700">El principio de Shneiderman es claro: la IA potencia, tú decides. En negocios, esto significa que la IA puede analizar datos, pero tú defines la visión, los valores y los límites éticos del negocio. Un algoritmo no conoce tu cultura empresarial.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"La IA puede proyectar escenarios financieros, pero solo tú conoces el ADN de tu empresa. Úsala como consultora, gobiérnala como CEO."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad para Negocios - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">⚖️ Aplicación para Profesionales</h3>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Chain-of-Thought para Análisis Técnico</h4>
+              <p class="text-sm text-blue-700 mb-3">La metodología de Google Research para dividir problemas complejos es ideal para dictámenes, auditorías o proyectos técnicos. Cada fase se valida antes de avanzar.</p>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm">"Vamos a analizar este caso paso a paso: Primero, identifica los hechos relevantes. Segundo, enumera las normas aplicables. Tercero, analiza precedentes. Cuarto, propón conclusiones. Espera mi validación en cada paso."</p>
+              </div>
+            </div>
+            <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+              <h4 class="font-bold text-red-800 mb-2">⚠️ IA Centrada en el Humano: Tu Firma, Tu Responsabilidad</h4>
+              <p class="text-sm text-red-700">Para profesiones reguladas (abogados, contadores, ingenieros, arquitectos), el principio de Shneiderman es crítico: la IA puede sugerir, pero TÚ firmas. Nunca delegues la validación de citas, normas o cálculos técnicos a un sistema que puede alucinar referencias.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Profesionales</h4>
+          <p class="text-white font-medium text-lg italic">"Tu colegiatura profesional no la tiene la IA. Ella procesa, tú validas. Ella sugiere, tú decides. Ella borra el historial, tú asumes la responsabilidad."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad para Profesionales - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🔧 Aplicación para Gestores</h3>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Chain-of-Thought para Gestión de Proyectos</h4>
+              <p class="text-sm text-blue-700 mb-3">La técnica de cadena de pensamiento es perfecta para gestión: desglosas un proyecto complejo en fases, cada una con su entregable validado antes de avanzar.</p>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm">"Pensemos paso a paso en este proyecto: Paso 1, define el alcance y stakeholders. Paso 2, identifica riesgos críticos. Paso 3, propón el cronograma con hitos. No avances sin mi aprobación en cada fase."</p>
+              </div>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">IA Centrada en el Humano: El Gestor Como Director</h4>
+              <p class="text-sm text-purple-700">El principio de Shneiderman en gestión: la IA puede automatizar tareas repetitivas y analizar datos, pero las decisiones sobre personas, recursos y prioridades estratégicas requieren tu juicio humano y conocimiento del contexto organizacional.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"La IA puede optimizar procesos, pero no conoce la cultura de tu equipo. Úsala para agilizar, dirige tú para transformar."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad para Gestión - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎓 Aplicación para Educadores</h3>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Chain-of-Thought para Diseño Instruccional</h4>
+              <p class="text-sm text-blue-700 mb-3">La metodología de Google Research para el pensamiento paso a paso es perfecta para diseñar cursos: primero los objetivos, luego las actividades, después las evaluaciones.</p>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm">"Diseñemos esta unidad paso a paso: Primero, define los objetivos de aprendizaje según taxonomía de Bloom. Segundo, propón 3 actividades alineadas. Tercero, diseña la evaluación formativa. Espera mi feedback en cada paso."</p>
+              </div>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">IA Centrada en el Humano: El Docente Como Guía</h4>
+              <p class="text-sm text-purple-700">Oxford lo confirma: la IA puede generar materiales, pero solo tú conoces a tus estudiantes. Sus miedos, sus intereses, sus contextos familiares. El diseño instruccional que transforma usa datos de la IA, pero se construye con tu empatía pedagógica.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"La IA puede crear mil actividades, pero solo tú sabes cuál encenderá la chispa en tu aula. La tecnología amplifica, la pedagogía transforma."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Fuentes de Autoridad para Educación - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "mapa-arquitecto": {
     meta: {
@@ -8888,7 +9273,7 @@ const resourcesDatabase = {
     base_html: `
       <article class="space-y-6">
         <section class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 border border-emerald-200">
-          <h2 class="text-xl font-bold text-teal-900 mb-2">La M�xima AulaGenIA del Arquitecto</h2>
+          <h2 class="text-xl font-bold text-teal-900 mb-2">La M�xima AulaGenIA del Arquitecto</h2>
           <p class="text-teal-700 italic">"Imagina que la IA tiene una mesa de trabajo pequeña. Si intentas construir todo un edificio de golpe, las piezas se mezclan y el resultado es pobre. Para tener éxito, construimos por partes: primero el Plano Maestro, luego Ladrillo a Ladrillo y al final el Cemento que genera La Construcción."</p>
         </section>
         <section>
@@ -8993,7 +9378,127 @@ const resourcesDatabase = {
         <div class="text-center text-xs text-slate-500 pt-2">Material oficial AulaGenIA 2025. Construyendo resultados nivel WOW.</div>
       </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">💼 El Mapa del Arquitecto para Líderes de Negocios</h3>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Fase 1: El Plano Estratégico</h4>
+              <p class="text-sm text-blue-700 mb-3">Antes de ejecutar cualquier estrategia comercial, necesitas el mapa completo. El Plano te da visibilidad total del proyecto sin gastar recursos en desarrollo prematuro.</p>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm">"Actúa como consultor de strategy. Diseña el PLANO MAESTRO de mi lanzamiento de producto incluyendo: 1) Análisis de mercado, 2) Propuesta de valor, 3) Canales de distribución, 4) Modelo de pricing, 5) Go-to-market. SOLO el índice, no desarrolles contenido."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Fase 2: Los Ladrillos de Ejecución</h4>
+              <p class="text-sm text-amber-700">Una vez aprobado el plano, desarrollas cada sección por separado. Un pitch deck perfecto, un one-pager de propuesta de valor, un modelo financiero. Cada ladrillo se cierra antes de abrir el siguiente.</p>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">Fase 3: El Cemento que Cierra Tratos</h4>
+              <p class="text-sm text-purple-700">Finalmente, las transiciones que unen todo: el executive summary, las frases de apertura para reuniones, los argumentos de cierre. El Cemento convierte documentos sueltos en una narrativa que convence inversionistas y clientes.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"El CEO que construye sin plano termina con una empresa que parece improvisada. Primero el mapa, luego la ejecución. Así se construyen imperios."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Mapa del Arquitecto para Negocios - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">⚖️ El Mapa del Arquitecto para Profesionales</h3>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Fase 1: El Plano del Caso/Proyecto</h4>
+              <p class="text-sm text-blue-700 mb-3">Todo caso complejo o proyecto técnico necesita un índice metodológico antes de ejecutar. El Plano define secciones, responsables y criterios de validación.</p>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm">"Actúa como [PROFESIÓN] senior. Diseña el PLANO MAESTRO de mi [TIPO DE PROYECTO] incluyendo: 1) Análisis preliminar, 2) Marco normativo/técnico, 3) Desarrollo por secciones, 4) Validaciones requeridas, 5) Entregable final. SOLO estructura, sin desarrollar."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Fase 2: Los Ladrillos Técnicos</h4>
+              <p class="text-sm text-amber-700 mb-2">Cada capítulo del informe, cada sección del dictamen, cada partida del presupuesto técnico se desarrolla por separado. Un Ladrillo = un entregable validable.</p>
+              <div class="bg-red-50 rounded p-3 border-l-4 border-red-400">
+                <p class="text-xs text-red-800"><strong>⚠️ Recuerda:</strong> Verifica SIEMPRE citas, normas y referencias antes de incorporar cualquier Ladrillo a tu documento final.</p>
+              </div>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">Fase 3: El Cemento Profesional</h4>
+              <p class="text-sm text-purple-700">El resumen ejecutivo, la carta de presentación, las conclusiones que integran todos los análisis. El Cemento convierte un expediente técnico en un documento que comunica valor profesional.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Profesionales</h4>
+          <p class="text-white font-medium text-lg italic">"Un dictamen sin estructura es un dictamen rechazable. El método del Arquitecto: primero el índice, luego cada sección, siempre con validación técnica."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Mapa del Arquitecto para Profesionales - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🔧 El Mapa del Arquitecto para Gestores</h3>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Fase 1: El WBS como Plano Maestro</h4>
+              <p class="text-sm text-blue-700 mb-3">El Work Breakdown Structure es tu Plano. Desglosas el proyecto en paquetes de trabajo antes de asignar recursos o fechas.</p>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm">"Actúa como Project Manager PMP. Diseña el WBS (Plano Maestro) de mi proyecto de [DESCRIPCIÓN] con: 1) Fase de inicio, 2) Planificación, 3) Ejecución por áreas, 4) Control y monitoreo, 5) Cierre. SOLO estructura con paquetes de trabajo."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Fase 2: Los Ladrillos Operativos</h4>
+              <p class="text-sm text-amber-700">Cada paquete de trabajo se desarrolla individualmente: el procedimiento, el comunicado, el reporte de avance, la minuta. Un Ladrillo cerrado = un item marcado como "Done" en tu sistema de gestión.</p>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">Fase 3: El Cemento de Integración</h4>
+              <p class="text-sm text-purple-700">Los informes ejecutivos, los dashboards consolidados, las reuniones de sincronización. El Cemento asegura que todos los stakeholders vean un proyecto coherente, no una colección de documentos aislados.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Gestionar sin WBS es navegar sin mapa. El Arquitecto de Gestión primero estructura, después ejecuta, siempre integra."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Mapa del Arquitecto para Gestión - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎓 El Mapa del Arquitecto para Educadores</h3>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Fase 1: El Syllabus como Plano Maestro</h4>
+              <p class="text-sm text-blue-700 mb-3">Tu planificación curricular es el Plano. Define objetivos de aprendizaje, progresión de unidades y criterios de evaluación ANTES de crear materiales.</p>
+              <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                <p class="text-white text-sm">"Actúa como diseñador instruccional. Diseña el PLANO MAESTRO de mi curso de [TEMA] para [NIVEL] con: 1) Objetivos generales, 2) Unidades temáticas, 3) Progresión de complejidad, 4) Tipos de evaluación, 5) Recursos requeridos. SOLO la estructura."</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Fase 2: Los Ladrillos Pedagógicos</h4>
+              <p class="text-sm text-amber-700">Cada planificación de clase, cada guía de trabajo, cada rúbrica es un Ladrillo. Lo desarrollas en profundidad, lo validas pedagógicamente, lo guardas en tu portafolio antes de seguir con la siguiente unidad.</p>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+              <h4 class="font-bold text-purple-800 mb-2">Fase 3: El Cemento del Aprendizaje</h4>
+              <p class="text-sm text-purple-700">Las actividades de apertura que conectan con la clase anterior, los cierres metacognitivos, las evaluaciones integradoras. El Cemento transforma unidades aisladas en un viaje de aprendizaje significativo.</p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"El docente que improvisa enseña contenidos. El Arquitecto de Aprendizaje diseña experiencias que transforman. Primero el mapa curricular, después cada clase."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">El Mapa del Arquitecto para Educación - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "glosario-m4v2": {
     meta: {
@@ -9044,7 +9549,256 @@ const resourcesDatabase = {
         <div class="text-center text-xs text-slate-500 pt-2">Glosario oficial del Módulo 4 - Video 2. AulaGenIA 2025.</div>
       </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+            <h4 class="font-bold text-emerald-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">📈</span>
+              Vocabulario de Crecimiento para Líderes de Negocios
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">🎯 Diferenciador Injusto</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tu ventaja competitiva única que nadie puede copiar fácilmente.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400">
+                  <p class="text-xs text-blue-800"><strong>💼 Aplicación de Negocios:</strong> Es tu "moat" o foso competitivo. ¿Tienes patentes, relaciones exclusivas, conocimiento propietario, una marca que genera confianza inmediata? La IA te ayuda a identificarlo analizando tu sector y encontrando el ángulo donde tu competencia no puede alcanzarte.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">🪝 Hook (Gancho)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Los primeros 3 segundos que capturan la atención.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>💼 Aplicación de Negocios:</strong> Es el "elevator pitch" de tu contenido digital. En el mundo del scroll infinito, tienes 3 segundos para que un potencial cliente se detenga. La IA puede generarte docenas de hooks para testear cuál convierte mejor.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">"Actúa como copywriter de respuesta directa. Mi producto es [DESCRIPCIÓN]. Genera 10 hooks diferentes de máximo 10 palabras cada uno, optimizados para detener el scroll en LinkedIn/Instagram."</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">📢 CTA (Call To Action)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La instrucción clara de qué hacer después.</p>
+                <div class="bg-green-50 rounded p-3 border-l-4 border-green-400">
+                  <p class="text-xs text-green-800"><strong>💼 Aplicación de Negocios:</strong> Es la diferencia entre contenido que entretiene y contenido que vende. Sin un CTA claro ("Agenda tu demo", "Descarga el whitepaper", "Reserva tu cupo"), pierdes el momento de conversión. La IA puede optimizar tus CTAs según la etapa del funnel.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🏭 Fábrica de Contenido</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Sistema repetible de creación de contenido.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400">
+                  <p class="text-xs text-purple-800"><strong>💼 Aplicación de Negocios:</strong> En lugar de improvisar cada post, diseñas 3-5 formatos probados que la IA puede replicar con variaciones infinitas. Ejemplo: "Caso de cliente + Problema + Solución + Resultado" es un formato que puedes usar 100 veces cambiando solo el cliente.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">📊 Auditoría de Métricas</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Análisis periódico de qué "Ladrillos" funcionaron mejor.</p>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400">
+                  <p class="text-xs text-red-800"><strong>💼 Aplicación de Negocios:</strong> Es tu reunión semanal con los KPIs. Identificas patrones de éxito (qué formato, hook, horario funcionó mejor), replicas lo ganador y eliminas lo que no convierte. La IA puede procesar tus datos y sugerirte hipótesis de optimización.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">🏆 Máxima AulaGenIA para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"El empresario moderno no solo vende productos, construye audiencias. Con estos conceptos, tu marca personal y comercial se vuelven máquinas de generación de oportunidades."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario Estrategia de Crecimiento para Negocios - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+            <h4 class="font-bold text-emerald-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">📈</span>
+              Vocabulario de Crecimiento para Profesionales
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">🎯 Diferenciador Injusto</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tu ventaja competitiva única en el mercado profesional.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400">
+                  <p class="text-xs text-blue-800"><strong>⚖️ Aplicación Profesional:</strong> Es tu especialización o expertise único. ¿Eres el único abogado en tu ciudad experto en criptoactivos? ¿El arquitecto que se especializa en sustentabilidad para industrias? ¿El contador con certificaciones internacionales? La IA te ayuda a posicionar tu nicho.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">🪝 Hook (Gancho)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La frase que captura atención de potenciales clientes.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>⚖️ Aplicación Profesional:</strong> Es el título de tu artículo en LinkedIn, el asunto de tu newsletter a clientes. "3 errores fiscales que pueden costarte multas millonarias" es un hook que atrae al empresario correcto. La IA te genera variaciones para diferentes audiencias.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">"Actúa como especialista en marketing para profesionales. Soy [PROFESIÓN] especializado en [ÁREA]. Genera 10 hooks para publicaciones de LinkedIn que posicionen mi autoridad sin ser sensacionalista."</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">📢 CTA (Call To Action)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La invitación a tomar acción.</p>
+                <div class="bg-green-50 rounded p-3 border-l-4 border-green-400">
+                  <p class="text-xs text-green-800"><strong>⚖️ Aplicación Profesional:</strong> En servicios profesionales, el CTA suele ser más sutil: "Agenda una consulta inicial", "Descarga mi guía gratuita sobre [tema]", "Escríbeme para revisar tu situación". Convierte lectores en prospectos calificados.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🏭 Fábrica de Contenido</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Sistema repetible de creación de contenido profesional.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400">
+                  <p class="text-xs text-purple-800"><strong>⚖️ Aplicación Profesional:</strong> Formatos probados: "Caso de estudio anonimizado", "Cambio normativo + Impacto + Recomendación", "Mito vs Realidad en [tu área]". Son plantillas que la IA puede replicar adaptando el tema técnico de cada semana.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">📊 Auditoría de Métricas</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Análisis de qué contenido genera más consultas.</p>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400">
+                  <p class="text-xs text-red-800"><strong>⚖️ Aplicación Profesional:</strong> ¿Qué publicación te trajo más mensajes de potenciales clientes? ¿Qué tema generó más comentarios de empresarios? Esa auditoría define tu estrategia de contenido para el próximo mes.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">⚖️ Máxima AulaGenIA para Profesionales</h4>
+          <p class="text-white font-medium text-lg italic">"El profesional que solo espera referencias está en riesgo. El que construye autoridad en línea atrae a los clientes ideales antes de que busquen en Google."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario Estrategia de Crecimiento para Profesionales - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+            <h4 class="font-bold text-emerald-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">📈</span>
+              Vocabulario de Crecimiento para Gestores
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">🎯 Diferenciador Injusto</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La ventaja competitiva de tu área o proyecto.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400">
+                  <p class="text-xs text-blue-800"><strong>🔧 Aplicación de Gestión:</strong> ¿Qué hace tu equipo mejor que cualquier otro? ¿Tienes procesos más eficientes, conocimiento institucional único, o una cultura de innovación? La IA te ayuda a identificar y comunicar ese diferenciador a la dirección.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">🪝 Hook (Gancho)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> El inicio que captura atención.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>🔧 Aplicación de Gestión:</strong> Es la primera línea de tu comunicado interno, el título de tu presentación al directorio. "Este proceso nos cuesta 40 horas semanales que podríamos automatizar" es un hook que abre puertas presupuestarias.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">"Actúa como consultor de comunicación organizacional. Necesito presentar [PROYECTO/INICIATIVA] a la gerencia. Genera 5 hooks de apertura que destaquen el impacto en eficiencia o ahorro."</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">📢 CTA (Call To Action)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La instrucción de siguiente paso.</p>
+                <div class="bg-green-50 rounded p-3 border-l-4 border-green-400">
+                  <p class="text-xs text-green-800"><strong>🔧 Aplicación de Gestión:</strong> En comunicados internos: "Responde este formulario antes del viernes", "Agenda una reunión si tienes dudas". En presentaciones: "Aprobemos el piloto para Q2". Sin CTA claro, las iniciativas quedan en el limbo.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🏭 Fábrica de Contenido</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Sistema repetible de comunicación.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400">
+                  <p class="text-xs text-purple-800"><strong>🔧 Aplicación de Gestión:</strong> Plantillas para cada tipo de comunicado: reporte semanal, anuncio de cambio, solicitud de recursos, informe de proyecto. La IA te ayuda a mantener consistencia y ahorrar tiempo en redacción.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">📊 Auditoría de Métricas</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Análisis de qué comunicaciones generan acción.</p>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400">
+                  <p class="text-xs text-red-800"><strong>🔧 Aplicación de Gestión:</strong> ¿Qué formato de reporte tu jefe lee completo? ¿Qué tipo de comunicado genera más respuestas del equipo? Optimiza tu comunicación basándote en datos, no en intuición.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">🔧 Máxima AulaGenIA para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"El gestor efectivo no solo administra procesos, comunica valor. Estos conceptos te ayudan a vender tus ideas internamente con la misma profesionalidad que un marketero vende productos."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario Estrategia de Crecimiento para Gestión - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <div class="space-y-4">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200">
+            <h4 class="font-bold text-emerald-900 mb-3 flex items-center gap-2">
+              <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">📈</span>
+              Vocabulario de Crecimiento para Educadores
+            </h4>
+            
+            <div class="space-y-4">
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-blue-800 text-sm mb-2">🎯 Diferenciador Injusto</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Tu propuesta pedagógica única.</p>
+                <div class="bg-blue-50 rounded p-3 border-l-4 border-blue-400">
+                  <p class="text-xs text-blue-800"><strong>🎓 Aplicación Pedagógica:</strong> ¿Usas metodología innovadora, tienes experiencia en contextos difíciles, o dominas una combinación única de tecnología y pedagogía? La IA te ayuda a articular qué te hace diferente para posicionarte como referente en tu comunidad educativa.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-amber-800 text-sm mb-2">🪝 Hook (Gancho)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La apertura que captura atención.</p>
+                <div class="bg-amber-50 rounded p-3 border-l-4 border-amber-400 mb-2">
+                  <p class="text-xs text-amber-800"><strong>🎓 Aplicación Pedagógica:</strong> Es la pregunta provocadora al inicio de la clase, el título del taller que llena cupos, el tema de tu blog docente. "¿Por qué tus estudiantes olvidan todo después del examen?" es un hook que atrae colegas curiosos.</p>
+                </div>
+                <div class="prompt-block bg-slate-800 rounded-lg p-3">
+                  <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+                  <p class="text-white text-sm">"Actúa como experto en marketing educativo. Soy docente de [ÁREA/NIVEL]. Genera 10 hooks para artículos de blog o talleres que posicionen mi expertise pedagógico."</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-green-800 text-sm mb-2">📢 CTA (Call To Action)</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> La invitación a la acción siguiente.</p>
+                <div class="bg-green-50 rounded p-3 border-l-4 border-green-400">
+                  <p class="text-xs text-green-800"><strong>🎓 Aplicación Pedagógica:</strong> En redes: "Sígueme para más estrategias de aula". En talleres: "Descarga la planificación modelo". En clases: "Completa esta reflexión en tu bitácora". El CTA convierte consumidores pasivos en participantes activos.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-purple-800 text-sm mb-2">🏭 Fábrica de Contenido</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Sistema repetible de creación de materiales.</p>
+                <div class="bg-purple-50 rounded p-3 border-l-4 border-purple-400">
+                  <p class="text-xs text-purple-800"><strong>🎓 Aplicación Pedagógica:</strong> Formatos que funcionan: "Mito pedagógico + Evidencia + Estrategia práctica", "Herramienta de la semana + Tutorial paso a paso", "Caso de aula + Reflexión". La IA te ayuda a producir contenido consistente sin agotar tu creatividad.</p>
+                </div>
+              </div>
+              
+              <div class="bg-white rounded-lg p-4 border border-slate-200">
+                <h5 class="font-bold text-red-800 text-sm mb-2">📊 Auditoría de Métricas</h5>
+                <p class="text-xs text-slate-600 mb-2"><strong>Definición:</strong> Análisis de qué contenido genera más impacto.</p>
+                <div class="bg-red-50 rounded p-3 border-l-4 border-red-400">
+                  <p class="text-xs text-red-800"><strong>🎓 Aplicación Pedagógica:</strong> ¿Qué publicación compartieron más colegas? ¿Qué taller llenó cupos más rápido? ¿Qué recurso descargaron más? Esa información define tu próximo contenido y posiciona tu marca docente.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">🎓 Máxima AulaGenIA para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"El docente del siglo XXI no solo enseña en el aula, construye comunidad. Tu marca pedagógica abre puertas a publicaciones, conferencias y colaboraciones que multiplican tu impacto."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Glosario Estrategia de Crecimiento para Educación - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   },
   "caso-practico-0-10k": {
     meta: {
@@ -9184,7 +9938,212 @@ const resourcesDatabase = {
         <div class="text-center text-xs text-slate-500 pt-2">Documento de Aplicación Real AulaGenIA 2025. Tu éxito es nuestra métrica.</div>
       </article>
     `,
-    segments: {}
+    segments: {
+      "Negocios & Ventas": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">💼 Tu Hoja de Ruta: Marca de Negocios 0 a 10K</h3>
+          <p class="text-slate-600 mb-4">Este plan está adaptado para emprendedores, dueños de negocios y profesionales comerciales que quieren construir una audiencia que genere oportunidades de negocio.</p>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Mes 1: Cimentación de Autoridad Comercial</h4>
+              <ul class="text-sm text-blue-700 space-y-1">
+                <li>• Definir tu Diferenciador Injusto en el mercado</li>
+                <li>• Crear tu "Propuesta de Valor en 10 segundos"</li>
+                <li>• Publicar 12 Ladrillos de contenido de alta autoridad</li>
+                <li>• Meta: 500-1,000 seguidores de tu mercado objetivo</li>
+              </ul>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Mes 2: Momentum y Conversión</h4>
+              <ul class="text-sm text-amber-700 space-y-1">
+                <li>• Iterar formatos según métricas (¿qué hooks funcionan?)</li>
+                <li>• Activar CTA hacia lead magnets (guías, webinars, demos)</li>
+                <li>• Iniciar colaboraciones con cuentas complementarias</li>
+                <li>• Meta: 3,000-5,000 seguidores + primeros leads calificados</li>
+              </ul>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-2">Mes 3: Escala y Monetización</h4>
+              <ul class="text-sm text-green-700 space-y-1">
+                <li>• Lanzar oferta o servicio al segmento cultivado</li>
+                <li>• Activar testimonios y casos de éxito como contenido</li>
+                <li>• Considerar ads para amplificar contenido ganador</li>
+                <li>• Meta: 10,000 seguidores + ROI medible en clientes/ventas</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="mt-6">
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Prompt AGIA para tu Plan de Crecimiento</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-sm mb-2"><strong>Rol:</strong> Actúa como estratega de growth marketing para B2B/servicios profesionales.</p>
+            <p class="text-white text-sm mb-2"><strong>Contexto:</strong> Tengo un negocio de [DESCRIPCIÓN], mi audiencia ideal es [PERFIL], y mi diferenciador es [VENTAJA ÚNICA].</p>
+            <p class="text-white text-sm mb-2"><strong>Meta:</strong> Dame el PLANO MAESTRO de contenido para llegar a 10K seguidores en 90 días en [PLATAFORMA].</p>
+            <p class="text-white text-sm"><strong>Restricción:</strong> Incluye los 5 pilares, cronograma mensual y 3 formatos de contenido repetibles.</p>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center mt-6">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Negocios</h4>
+          <p class="text-white font-medium text-lg italic">"10K seguidores no es vanidad cuando cada uno puede convertirse en cliente. Construye una audiencia que necesita lo que vendes, el ROI vendrá solo."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Hoja de Ruta 0 a 10K para Negocios - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Legal & Profesional": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">⚖️ Tu Hoja de Ruta: Marca Profesional 0 a 10K</h3>
+          <p class="text-slate-600 mb-4">Este plan está adaptado para abogados, contadores, ingenieros, arquitectos y otros profesionales que quieren posicionarse como referentes en su especialidad.</p>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Mes 1: Cimentación de Autoridad Técnica</h4>
+              <ul class="text-sm text-blue-700 space-y-1">
+                <li>• Definir tu nicho de especialización (Diferenciador Injusto)</li>
+                <li>• Crear tu "discurso de ascensor" profesional</li>
+                <li>• Publicar 12 Ladrillos de contenido educativo sobre tu área</li>
+                <li>• Meta: 500-1,000 seguidores del sector empresarial</li>
+              </ul>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Mes 2: Posicionamiento y Networking</h4>
+              <ul class="text-sm text-amber-700 space-y-1">
+                <li>• Iterar formatos (¿casos de estudio o tips prácticos?)</li>
+                <li>• Ofrecer contenido descargable (checklist, guías)</li>
+                <li>• Participar en conversaciones de tu industria</li>
+                <li>• Meta: 3,000-5,000 seguidores + primeras consultas</li>
+              </ul>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-2">Mes 3: Autoridad y Conversión</h4>
+              <ul class="text-sm text-green-700 space-y-1">
+                <li>• Publicar testimonios de clientes (con permiso)</li>
+                <li>• Ofrecer webinars o sesiones de consulta gratuitas limitadas</li>
+                <li>• Consolidar tu posicionamiento como experto del nicho</li>
+                <li>• Meta: 10,000 seguidores + pipeline de consultas cualificadas</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="mt-6">
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Prompt AGIA para tu Plan de Crecimiento</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-sm mb-2"><strong>Rol:</strong> Actúa como estratega de marca personal para profesionales de servicios.</p>
+            <p class="text-white text-sm mb-2"><strong>Contexto:</strong> Soy [PROFESIÓN] especializado en [ÁREA TÉCNICA], mi cliente ideal es [PERFIL EMPRESARIAL].</p>
+            <p class="text-white text-sm mb-2"><strong>Meta:</strong> Dame el PLANO MAESTRO de contenido para posicionarme como referente y llegar a 10K en LinkedIn en 90 días.</p>
+            <p class="text-white text-sm"><strong>Restricción:</strong> El contenido debe ser profesional pero accesible, evitando tecnicismos excesivos.</p>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center mt-6">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Profesionales</h4>
+          <p class="text-white font-medium text-lg italic">"El profesional que solo vive de referencias está a un cliente de la crisis. Construye tu marca personal y los clientes te buscarán a ti, no a tu competencia."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Hoja de Ruta 0 a 10K para Profesionales - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Gestión & Administración": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🔧 Tu Hoja de Ruta: Perfil de Liderazgo 0 a 10K</h3>
+          <p class="text-slate-600 mb-4">Este plan está adaptado para gerentes, coordinadores y líderes organizacionales que quieren posicionarse como referentes en gestión e innovación.</p>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Mes 1: Establecer Voz de Liderazgo</h4>
+              <ul class="text-sm text-blue-700 space-y-1">
+                <li>• Definir tu ángulo único (gestión del cambio, innovación, equipos remotos, etc.)</li>
+                <li>• Crear perfil optimizado que refleje tu experiencia</li>
+                <li>• Publicar 12 reflexiones de liderazgo basadas en tu experiencia real</li>
+                <li>• Meta: 500-1,000 seguidores de tu industria/sector</li>
+              </ul>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Mes 2: Construir Comunidad Profesional</h4>
+              <ul class="text-sm text-amber-700 space-y-1">
+                <li>• Compartir casos de gestión (anonimizados) y lecciones aprendidas</li>
+                <li>• Participar activamente en grupos de tu industria</li>
+                <li>• Conectar estratégicamente con otros líderes</li>
+                <li>• Meta: 3,000-5,000 seguidores + invitaciones a paneles/podcasts</li>
+              </ul>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-2">Mes 3: Consolidar Autoridad Sectorial</h4>
+              <ul class="text-sm text-green-700 space-y-1">
+                <li>• Publicar artículos largos o casos de estudio detallados</li>
+                <li>• Ofrecer mentoría, charlas o consultoría lateral</li>
+                <li>• Ser reconocido como "la voz" de tu especialidad de gestión</li>
+                <li>• Meta: 10,000 seguidores + oportunidades de desarrollo profesional</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="mt-6">
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Prompt AGIA para tu Plan de Crecimiento</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-sm mb-2"><strong>Rol:</strong> Actúa como coach de marca personal para ejecutivos y líderes organizacionales.</p>
+            <p class="text-white text-sm mb-2"><strong>Contexto:</strong> Soy [ROL] en [INDUSTRIA], con [X] años de experiencia en [ESPECIALIDAD DE GESTIÓN].</p>
+            <p class="text-white text-sm mb-2"><strong>Meta:</strong> Dame el PLANO MAESTRO de contenido para posicionarme como líder de opinión y llegar a 10K en LinkedIn en 90 días.</p>
+            <p class="text-white text-sm"><strong>Restricción:</strong> El contenido debe equilibrar autoridad con accesibilidad, mostrando resultados sin ser promocional.</p>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center mt-6">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Gestión</h4>
+          <p class="text-white font-medium text-lg italic">"Tu próxima oportunidad de carrera puede venir de alguien que leyó tu post de LinkedIn. La marca personal del gestor abre puertas que el currículum tradicional ya no puede."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Hoja de Ruta 0 a 10K para Gestión - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `,
+      "Educación & Capacitación": `
+        <section>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">🎓 Tu Hoja de Ruta: Marca Docente 0 a 10K</h3>
+          <p class="text-slate-600 mb-4">Este plan está adaptado para docentes, formadores y capacitadores que quieren multiplicar su impacto educativo a través de una comunidad digital.</p>
+          <div class="space-y-4">
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+              <h4 class="font-bold text-blue-800 mb-2">Mes 1: Establecer Tu Voz Pedagógica</h4>
+              <ul class="text-sm text-blue-700 space-y-1">
+                <li>• Definir tu nicho educativo (nivel, asignatura, metodología)</li>
+                <li>• Crear perfil que refleje tu filosofía de enseñanza</li>
+                <li>• Publicar 12 recursos prácticos o reflexiones de aula</li>
+                <li>• Meta: 500-1,000 seguidores docentes de tu área</li>
+              </ul>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <h4 class="font-bold text-amber-800 mb-2">Mes 2: Construir Comunidad Docente</h4>
+              <ul class="text-sm text-amber-700 space-y-1">
+                <li>• Compartir planificaciones, rúbricas y actividades descargables</li>
+                <li>• Interactuar en grupos de educadores de tu especialidad</li>
+                <li>• Iniciar colaboraciones con otros docentes innovadores</li>
+                <li>• Meta: 3,000-5,000 seguidores + primeras invitaciones a talleres</li>
+              </ul>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+              <h4 class="font-bold text-green-800 mb-2">Mes 3: Escalar Impacto Educativo</h4>
+              <ul class="text-sm text-green-700 space-y-1">
+                <li>• Ofrecer talleres virtuales o presenciales</li>
+                <li>• Publicar guías completas o mini-cursos</li>
+                <li>• Posicionarte como referente en tu comunidad educativa</li>
+                <li>• Meta: 10,000 seguidores + ingresos por capacitación/consultoría</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="mt-6">
+          <h3 class="text-lg font-bold text-slate-800 mb-4">Prompt AGIA para tu Plan de Crecimiento</h3>
+          <div class="prompt-block bg-slate-800 rounded-lg p-4">
+            <button onclick="copyResourcePrompt(this)" class="float-right text-xs bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 rounded transition-colors"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i>Copiar</button>
+            <p class="text-white text-sm mb-2"><strong>Rol:</strong> Actúa como estratega de marca personal para profesionales de la educación.</p>
+            <p class="text-white text-sm mb-2"><strong>Contexto:</strong> Soy docente de [NIVEL/ASIGNATURA], especializado en [METODOLOGÍA/ENFOQUE], mi audiencia ideal son [PERFIL DOCENTE].</p>
+            <p class="text-white text-sm mb-2"><strong>Meta:</strong> Dame el PLANO MAESTRO de contenido para posicionarme como referente pedagógico y llegar a 10K en [PLATAFORMA] en 90 días.</p>
+            <p class="text-white text-sm"><strong>Restricción:</strong> El contenido debe ser práctico, aplicable en el aula y respetuoso de la realidad docente latinoamericana.</p>
+          </div>
+        </section>
+        <section class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl p-6 text-center mt-6">
+          <h4 class="text-teal-100 text-sm uppercase tracking-wide mb-2">Máxima AulaGenIA para Educadores</h4>
+          <p class="text-white font-medium text-lg italic">"Tu aula tiene 30 estudiantes, tu comunidad digital puede tener 10,000 colegas. Multiplica tu impacto: cada recurso que compartes transforma aulas que nunca visitarás."</p>
+        </section>
+        <div class="text-center text-xs text-slate-500 pt-2">Hoja de Ruta 0 a 10K para Educación - Módulo 4. AulaGenIA 2025.</div>
+      </article>
+      `
+    }
   }
 };
 
