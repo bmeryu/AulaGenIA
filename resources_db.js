@@ -2750,7 +2750,7 @@ const resourcesDatabase = {
       subtitle: "Identifica tu punto de partida estratégico en AulaGenIA - Módulo 2",
       icon: "clipboard-list",
       color: "orange",
-      module: 1,
+      module: 2,
       pdfFallback: "gs://aulagenia.firebasestorage.app/Test-Diagnostico.pdf"
     },
     base_html: `

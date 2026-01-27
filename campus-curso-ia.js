@@ -4745,33 +4745,8 @@ document.addEventListener("DOMContentLoaded", () => {
               if (window.renderInteractiveResources) {
                 window.renderInteractiveResources(a.moduleIndex);
               }
-              const t = a.module.lessons.flatMap((e) => e.resources || []),
-                o = Array.from(new Map(t.map((e) => [e.name, e])).values());
-              if (o.length > 0) {
-                (m.integratedResourcesArea.classList.remove("hidden"),
-                  (m.resourcesList.innerHTML =
-                    '<div class="col-span-full py-5"><p class="text-gray-500 animate-pulse">Cargando recursos del módulo...</p></div>'));
-                const e = await Promise.all(
-                  o.map(async (e) => {
-                    let a = e.url;
-                    if (e.url.startsWith("gs://"))
-                      try {
-                        a = await X(s, e.url);
-                      } catch (a) {
-                        console.error("Error resolviendo recurso:", e.name, a);
-                      }
-                    const t = !e.external && a.toLowerCase().includes(".pdf"),
-                      o = e.external
-                        ? "link"
-                        : t
-                          ? "file-text"
-                          : "download-cloud",
-                      r = t ? "button" : "a";
-                    return `<${r} ${t ? `data-pdf-url="${a}" data-pdf-title="${e.name}"` : `href="${a}"`} ${e.external ? 'target="_blank" rel="noopener noreferrer"' : t ? "" : "download"} class="resource-item flex items-center p-4 bg-white border border-gray-200 rounded-xl hover:bg-slate-50 hover:border-teal-500 transition-all duration-200 group text-left">\n                                    <div class="bg-teal-50 p-2 rounded-lg mr-4 group-hover:bg-teal-100 transition-colors"><i data-lucide="${o}" class="h-6 w-6 text-teal-600"></i></div>\n                                    <span class="flex-1 font-medium text-gray-700 group-hover:text-teal-700 truncate">${e.name}</span>\n                                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-transform transform group-hover:translate-x-1"></i>\n                                </${r}>`;
-                  }),
-                );
-                m.resourcesList.innerHTML = e.join("");
-              } else m.integratedResourcesArea.classList.add("hidden");
+              // PDFs hidden - now using interactive resources from resources_db.js
+              m.integratedResourcesArea.classList.add("hidden");
               lucide.createIcons();
             })(e),
               "quiz" === e.type && e.questions && e.questions.length > 0)
