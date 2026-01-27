@@ -4253,7 +4253,37 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => checkContentReady(), 1500);
 
     function startTourUI() {
-      const courseSections = [
+      const isMobile = window.innerWidth < 768;
+
+      // Pasos diferentes para mobile vs desktop
+      const courseSections = isMobile ? [
+        // MOBILE: El sidebar está abajo, empezamos por el contenido visible
+        {
+          id: 'lesson-material-container',
+          name: '🎬 Tu Área de Aprendizaje',
+          desc: 'Aquí encontrarás:<br>• <strong>Videos</strong> de cada lección<br>• <strong>Casos prácticos</strong> del Módulo 5<br>• <strong>Quizzes</strong> para evaluar lo aprendido',
+          position: 'bottom'
+        },
+        {
+          id: 'tabs-navigation-container',
+          name: '📑 Pestañas de Recursos',
+          desc: '<strong>Clases:</strong> El contenido actual<br><strong>Materiales:</strong> PDFs descargables<br><strong>Notas:</strong> Tu bloc personal<br><strong>Tareas:</strong> Checklist y archivos',
+          position: 'bottom'
+        },
+        {
+          id: 'navigation-buttons',
+          name: '⬅️ ➡️ Navegación',
+          desc: 'Usa estos botones para:<br>• Ir a la <strong>lección anterior</strong><br>• <strong>Marcar como completada</strong> y avanzar',
+          position: 'top'
+        },
+        {
+          id: 'course-sidebar',
+          name: '📊 Tu Panel (Desliza abajo)',
+          desc: 'Al final de la página encontrarás:<br>• <strong>Tu progreso</strong> hacia el certificado<br>• <strong>Todos los módulos</strong> del curso<br>• El <strong>Módulo 5</strong> con casos aplicados',
+          position: 'top'
+        }
+      ] : [
+        // DESKTOP: Layout tradicional con sidebar a la izquierda
         {
           id: 'course-sidebar',
           name: '📊 Tu Panel de Navegación',
@@ -4264,12 +4294,12 @@ document.addEventListener("DOMContentLoaded", () => {
           id: 'lesson-material-container',
           name: '🎬 Área de Video y Contenido',
           desc: 'Aquí encontrarás:<br>• <strong>Videos</strong> con las lecciones<br>• <strong>Quizzes</strong> para evaluar lo aprendido<br>• <strong>Material interactivo</strong> según el módulo',
-          position: 'bottom'
+          position: 'left'
         },
         {
           id: 'tabs-navigation-container',
           name: '📑 Pestañas de Recursos',
-          desc: '<strong>Clases:</strong> El video actual<br><strong>Materiales:</strong> PDFs y recursos descargables<br><strong>Notas:</strong> Tu bloc personal (se guarda automático)<br><strong>Tareas:</strong> Checklist y subir archivos<br><strong>Soporte:</strong> Contacta a tu tutor',
+          desc: '<strong>Clases:</strong> El video actual<br><strong>Materiales:</strong> PDFs y recursos descargables<br><strong>Notas:</strong> Tu bloc personal (se guarda automático)<br><strong>Tareas:</strong> Checklist y subir archivos',
           position: 'bottom'
         },
         {
@@ -4279,9 +4309,9 @@ document.addEventListener("DOMContentLoaded", () => {
           position: 'right'
         },
         {
-          id: 'main-action-btn',
-          name: '✅ Marca tu Progreso',
-          desc: 'Después de ver cada lección, presiona este botón para:<br>• <strong>Registrar tu avance</strong><br>• <strong>Desbloquear</strong> la siguiente lección<br>• <strong>Acercarte</strong> al certificado',
+          id: 'navigation-buttons',
+          name: '✅ Navegación y Progreso',
+          desc: 'Después de ver cada lección:<br>• <strong>Lección Anterior:</strong> Vuelve a repasar<br>• <strong>Marcar como completada:</strong> Avanza y desbloquea la siguiente',
           position: 'top'
         }
       ];
@@ -4299,10 +4329,19 @@ document.addEventListener("DOMContentLoaded", () => {
             cursor: pointer;
           }
           .course-tour-highlight {
-            position: relative; z-index: 9999 !important;
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.7), 0 0 25px rgba(20, 184, 166, 0.4) !important;
+            position: relative !important;
+            z-index: 9999 !important;
+            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.8), 0 0 0 8px rgba(20, 184, 166, 0.3), 0 0 40px rgba(20, 184, 166, 0.5) !important;
             border-radius: 12px;
             background: white !important;
+            /* Forzar nuevo stacking context */
+            isolation: isolate;
+            transform: translateZ(0);
+          }
+          /* Asegurar que padres no bloqueen el z-index */
+          .course-tour-highlight,
+          .course-tour-highlight * {
+            overflow: visible !important;
           }
           .course-tour-tooltip {
             position: fixed; z-index: 10000;
@@ -4444,8 +4483,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         section.classList.add('course-tour-highlight');
-        section.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
+        // Scroll más agresivo para asegurar visibilidad
+        const rect = section.getBoundingClientRect();
+        const isOffscreen = rect.top < 0 || rect.bottom > window.innerHeight;
+        section.scrollIntoView({
+          behavior: 'smooth',
+          block: isOffscreen ? 'start' : 'center'
+        });
+
+        // Esperar a que el scroll termine (más tiempo si offscreen)
         setTimeout(() => {
           const rect = section.getBoundingClientRect();
           const tooltip = document.createElement('div');
@@ -4520,7 +4567,7 @@ document.addEventListener("DOMContentLoaded", () => {
             e.stopPropagation();
             endTour();
           });
-        }, 500);
+        }, 700); // Dar tiempo al scroll de completarse
       }
 
       function handleKeyPress(e) {
