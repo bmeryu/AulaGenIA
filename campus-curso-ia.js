@@ -4105,7 +4105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           id: 'tabs-navigation-container',
           name: '📑 Pestañas de Recursos',
-          desc: '<strong>Clases:</strong> El video actual<br><strong>Materiales:</strong> PDFs y recursos descargables<br><strong>Notas:</strong> Tu bloc personal (se guarda automático)<br><strong>Tareas:</strong> Checklist y subir archivos<br><strong>Soporte:</strong> Contacta a tu tutor',
+          desc: '<strong>Clases:</strong> El video actual<br><strong>Materiales:</strong> Material interactivo y recursos<br><strong>Notas:</strong> Tu bloc personal (se guarda automático)<br><strong>Tareas:</strong> Checklist y subir archivos<br><strong>Soporte:</strong> Contacta a tu tutor',
           position: 'bottom'
         },
         {
@@ -5743,6 +5743,10 @@ document.addEventListener("DOMContentLoaded", () => {
       m.progressText && (m.progressText.textContent = `${a}%`));
   }
   async function h(e) {
+    // Limpiar hash de caso al cambiar de lección
+    if (window.location.hash.startsWith('#caso/')) {
+      window.location.hash = '';
+    }
     f(e) && ((c = { ...c, currentLessonId: e }), await I(), b(), Q());
   }
   async function I() {
