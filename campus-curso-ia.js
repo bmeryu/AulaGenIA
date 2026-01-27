@@ -4314,7 +4314,7 @@ document.addEventListener("DOMContentLoaded", () => {
           position: 'bottom'
         },
         {
-          selector: '#modules-container > details:last-of-type',
+          selector: '#modules-container > .accordion-item:last-of-type',
           name: '🎯 Módulo 5: Casos Aplicados',
           desc: 'Este es tu <strong>recurso más valioso</strong>.<br><br>Contiene <strong>Instrucciones Maestras</strong> listas para usar con ChatGPT, Gemini o Claude.<br><br>Son soluciones probadas a problemas reales de tu área profesional.',
           position: 'right'
