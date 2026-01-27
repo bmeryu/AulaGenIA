@@ -6374,17 +6374,33 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             (b(), Q());
-            // Check for hash routing on load
-            setTimeout(() => {
+            // Check for hash routing on load - with retry logic
+            function tryOpenCaseFromHash(attempts = 0) {
               const hash = window.location.hash;
               if (hash.startsWith('#caso/')) {
                 const caseId = parseInt(hash.replace('#caso/', ''));
-                if (caseId) window.openCaseDetail(caseId);
+                if (caseId) {
+                  // Verificar que casesData esté cargado
+                  if (typeof casesData !== 'undefined' && casesData.length > 0) {
+                    const caseExists = casesData.find(c => c.id === caseId);
+                    if (caseExists) {
+                      window.openCaseDetail(caseId, true);
+                      return;
+                    }
+                  }
+                  // Si no está listo, reintentar hasta 10 veces
+                  if (attempts < 10) {
+                    setTimeout(() => tryOpenCaseFromHash(attempts + 1), 300);
+                  } else {
+                    console.warn('Could not load case from hash after retries');
+                  }
+                }
               } else {
                 // No hash de caso, mostrar tour del curso si es primera vez
                 if (window.runCourseTour) window.runCourseTour();
               }
-            }, 100);
+            }
+            setTimeout(() => tryOpenCaseFromHash(), 200);
           })())
         : (window.location.href = `${o}/acceso.html?redirect=${encodeURIComponent(window.location.href)}`);
     }),
