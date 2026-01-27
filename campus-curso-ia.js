@@ -3087,12 +3087,6 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
           },
           {
-            id: "2-taller",
-            title: "Aplicación: Radar de Automatización",
-            type: "taller",
-            resources: [],
-          },
-          {
             id: "q-2",
             title: "Test: Módulo 2",
             type: "quiz",
