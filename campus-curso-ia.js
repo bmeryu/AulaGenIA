@@ -3861,6 +3861,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show toast
     A(`¡Perfil actualizado a ${segment}!`);
+
+    // Trigger course tour after segment selection (first time only)
+    setTimeout(() => {
+      if (window.runCourseTour) window.runCourseTour();
+    }, 500);
   };
 
   window.showProfileSelectorModal = showProfileSelectorModal;
@@ -6458,8 +6463,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const caseId = parseInt(hash.replace('#caso/', ''));
                 if (caseId) window.openCaseDetail(caseId);
               } else {
-                // No case hash, show course tour if first visit
-                if (window.runCourseTour) window.runCourseTour();
+                // No case hash, show course tour if first visit AND segment already selected
+                const hasSegment = localStorage.getItem('userSegment') || currentUserSegment;
+                if (hasSegment && window.runCourseTour) {
+                  window.runCourseTour();
+                }
               }
             }, 100);
           })())
