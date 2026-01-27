@@ -4243,19 +4243,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const lessonReady = lessonContainer && lessonContainer.innerHTML.trim().length > 50;
       const modulesReady = moduleContainer && moduleContainer.children.length > 0;
 
+      console.log(`[Tour] Attempt ${attempts}: sidebar=${sidebarReady}, lesson=${lessonReady}, modules=${modulesReady}`);
+
       if (sidebarReady && lessonReady && modulesReady) {
         // Todo listo, iniciar tour
+        console.log('[Tour] All ready, starting tour UI');
         startTourUI();
       } else if (attempts < 15) {
         // Reintentar hasta 15 veces (4.5s total)
         setTimeout(() => checkContentReady(attempts + 1), 300);
       } else {
         // Timeout: iniciar tour de todos modos pero con advertencia
-        console.warn('Tour started before all content was ready');
+        console.warn('[Tour] Started before all content was ready');
         startTourUI();
       }
     }
 
+    console.log('[Tour] runCourseTour called, checking content...');
     // Iniciar verificación después de un delay inicial
     setTimeout(() => checkContentReady(), 1500);
 
@@ -4487,7 +4491,10 @@ document.addEventListener("DOMContentLoaded", () => {
           ? document.getElementById(stepData.id)
           : document.querySelector(stepData.selector);
 
+        console.log(`[Tour] showStep(${index}): looking for ${stepData.id || stepData.selector}, found:`, !!section);
+
         if (!section) {
+          console.warn(`[Tour] Step ${index} skipped - element not found`);
           showStep(index + 1);
           return;
         }
