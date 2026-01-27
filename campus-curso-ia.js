@@ -5974,7 +5974,16 @@ document.addEventListener("DOMContentLoaded", () => {
       m.progressText && (m.progressText.textContent = `${a}%`));
   }
   async function h(e) {
-    f(e) && ((c = { ...c, currentLessonId: e }), await I(), b(), Q());
+    if (f(e)) {
+      // Limpiar hash de caso/segmento si existe para evitar mezcla de estados
+      if (window.location.hash.startsWith('#caso/') || window.location.hash.startsWith('#segmento/')) {
+        history.replaceState(null, '', window.location.pathname);
+      }
+      c = { ...c, currentLessonId: e };
+      await I();
+      b();
+      Q();
+    }
   }
   async function I() {
     if (l)
