@@ -4496,8 +4496,10 @@ document.addEventListener("DOMContentLoaded", () => {
     tabsNavContainer: document.getElementById("tabs-navigation-container"),
   };
   function g() {
-    if (0 === i.length) return !1;
-    return new Set(c.completedLessons).size >= i.length;
+    // Exclude segment_category from completion check
+    const completableLessons = i.filter(l => l.type !== "segment_category");
+    if (0 === completableLessons.length) return !1;
+    return new Set(c.completedLessons).size >= completableLessons.length;
   }
   function f(e) {
     for (let a = 0; a < n.modules.length; a++) {
@@ -4989,6 +4991,12 @@ document.addEventListener("DOMContentLoaded", () => {
         m.navigationButtons.classList.remove("hidden");
         const e = i.find((e) => e.id === c.currentLessonId);
         if (!e) return;
+        // Hide complete button for segment categories (M5) - they are navigation, not lessons
+        if (e.type === "segment_category") {
+          m.mainActionBtn.classList.add("hidden");
+          return;
+        }
+        m.mainActionBtn.classList.remove("hidden");
         if (c.completedLessons.includes(e.id))
           return (
             (m.mainActionBtn.textContent = "Lección completada �S"),
@@ -5021,8 +5029,12 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
   function x() {
-    const e = new Set(c.completedLessons).size,
-      a = i.length > 0 ? Math.round((e / i.length) * 100) : 0;
+    // Exclude segment_category from progress calculation (M5 categories are navigation, not lessons)
+    const completableLessons = i.filter(l => l.type !== "segment_category");
+    const completedCount = c.completedLessons.filter(id =>
+      completableLessons.some(l => l.id === id)
+    ).length;
+    const a = completableLessons.length > 0 ? Math.round((completedCount / completableLessons.length) * 100) : 0;
     (m.progressBar && (m.progressBar.style.width = `${a}%`),
       m.progressText && (m.progressText.textContent = `${a}%`));
   }
