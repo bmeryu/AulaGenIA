@@ -6182,7 +6182,7 @@ const resourcesDatabase = {
   "simulador-tiempo": {
     meta: {
       type: "interactive",
-      title: "🎮 Simulador de Recuperación de Tiempo",
+      title: "⏱️ Simulador de Recuperación de Tiempo",
       subtitle: "Calcula cuántas horas puedes recuperar con IA",
       icon: "clock",
       color: "purple",

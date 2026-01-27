@@ -3742,15 +3742,30 @@ document.addEventListener("DOMContentLoaded", () => {
     lessons: []
   };
 
-  Object.entries(segmentConfig).forEach(([name, cfg]) => {
+  // Get user segment to personalize Module 5
+  const userSegmentForM5 = localStorage.getItem('userSegment') || 'Negocios & Ventas';
+
+  // Create lessons with user's segment first and marked as "isUserSegment"
+  const segmentEntries = Object.entries(segmentConfig);
+  const userSegmentEntry = segmentEntries.find(([name]) => name === userSegmentForM5);
+  const otherSegmentEntries = segmentEntries.filter(([name]) => name !== userSegmentForM5);
+
+  // Reorder: user's segment first
+  const orderedEntries = userSegmentEntry
+    ? [userSegmentEntry, ...otherSegmentEntries]
+    : segmentEntries;
+
+  orderedEntries.forEach(([name, cfg]) => {
+    const isUserSegment = name === userSegmentForM5;
     module5.lessons.push({
       id: 'seg-' + name.replace(/\s+/g, '-').toLowerCase().replace(/[^\w-]/g, ''),
-      title: name,
+      title: isUserSegment ? `⭐ ${name}` : name,
       type: "segment_category",
       segmentId: name,
       icon: cfg.icon,
       badge: cfg.badge,
       categoryColor: cfg.color,
+      isUserSegment: isUserSegment,
       resources: []
     });
   });
@@ -4537,10 +4552,12 @@ document.addEventListener("DOMContentLoaded", () => {
                           : "file-text"),
                     (r = "text-teal-600"));
                 const n =
-                  { video: "video", resource: "book-open", quiz: "edit-3", case_category: "folder" }[
+                  { video: "video", resource: "book-open", quiz: "edit-3", case_category: "folder", segment_category: "briefcase" }[
                   e.type
                   ] || "file";
-                return `<li class="lesson-item" data-lesson-id="${e.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${s}"><i data-lucide="${o}" class="h-4 w-4 mr-3 flex-shrink-0 ${r}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${e.title}</span><i data-lucide="${n}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
+                // Special styling for user's segment category
+                const userSegmentClass = e.isUserSegment ? "bg-gradient-to-r from-teal-50 to-emerald-50 border-l-2 border-teal-500" : "";
+                return `<li class="lesson-item ${userSegmentClass}" data-lesson-id="${e.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${s}"><i data-lucide="${o}" class="h-4 w-4 mr-3 flex-shrink-0 ${r}"></i><span class="flex-1 text-[11px] whitespace-normal leading-tight">${e.title}</span><i data-lucide="${n}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
               })
               .join(""),
               s = "chevron-down";
