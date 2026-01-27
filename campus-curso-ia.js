@@ -3991,11 +3991,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const tourSeen = localStorage.getItem('courseTourSeen');
     if (tourSeen) return;
 
-    // Don't run course tour if viewing Module 5 (cases) - UI doesn't display properly
-    const currentLesson = c.currentLessonId ? f(c.currentLessonId) : null;
-    if (currentLesson && (currentLesson.lesson.type === 'case_category' || currentLesson.lesson.type === 'segment_category')) {
-      return;
-    }
+    // Note: We allow the tour to run even in Module 5 views
+    // The showStep function already handles missing elements by skipping them
 
     setTimeout(() => {
       const courseSections = [
@@ -4356,6 +4353,10 @@ document.addEventListener("DOMContentLoaded", () => {
     tourOverlay.addEventListener('click', () => showStep(currentStep + 1));
     setTimeout(() => showStep(0), 600);
   }
+
+  // Expose to window for manual trigger from console
+  window.runTooltipTour = runTooltipTour;
+  window.runCaseTour = runTooltipTour; // Alias for consistency
 
   window.openCaseDetail = function (caseId) {
     const cCase = casesData.find(c => c.id === caseId);
