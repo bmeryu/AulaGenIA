@@ -4557,8 +4557,10 @@ document.addEventListener("DOMContentLoaded", () => {
               case 'right':
                 top = Math.max(20, rect.top + (rect.height / 2) - 140);
                 left = rect.right + margin;
+                console.log(`[Tour] Position right: rect.right=${rect.right}, left=${left}, window.innerWidth=${window.innerWidth}`);
                 if (left + tooltipWidth > window.innerWidth) {
                   left = rect.left - tooltipWidth - margin;
+                  console.log(`[Tour] Overflow detected, moved to left: ${left}`);
                 }
                 break;
               case 'left':
