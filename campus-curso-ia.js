@@ -4225,8 +4225,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const tourSeen = localStorage.getItem('courseTourSeen');
     if (tourSeen) return;
 
-    // Esperar a que el contenido esté cargado
-    setTimeout(() => {
+    // Función para verificar que el contenido esté listo
+    function checkContentReady(attempts = 0) {
+      const sidebar = document.getElementById('course-sidebar');
+      const lessonContainer = document.getElementById('lesson-material-container');
+      const moduleContainer = document.getElementById('modules-container');
+
+      // Verificar que los elementos existan y tengan contenido
+      const sidebarReady = sidebar && sidebar.offsetHeight > 100;
+      const lessonReady = lessonContainer && lessonContainer.innerHTML.trim().length > 50;
+      const modulesReady = moduleContainer && moduleContainer.children.length > 0;
+
+      if (sidebarReady && lessonReady && modulesReady) {
+        // Todo listo, iniciar tour
+        startTourUI();
+      } else if (attempts < 15) {
+        // Reintentar hasta 15 veces (4.5s total)
+        setTimeout(() => checkContentReady(attempts + 1), 300);
+      } else {
+        // Timeout: iniciar tour de todos modos pero con advertencia
+        console.warn('Tour started before all content was ready');
+        startTourUI();
+      }
+    }
+
+    // Iniciar verificación después de un delay inicial
+    setTimeout(() => checkContentReady(), 1500);
+
+    function startTourUI() {
       const courseSections = [
         {
           id: 'course-sidebar',
@@ -4442,7 +4468,12 @@ document.addEventListener("DOMContentLoaded", () => {
           `;
 
           // Posicionamiento responsive
-          if (!isMobile) {
+          if (isMobile) {
+            // En mobile: tooltip fijo en la parte inferior para mejor UX táctil
+            tooltip.style.position = 'fixed';
+            tooltip.style.bottom = '16px';
+            tooltip.style.top = 'auto';
+          } else {
             // En desktop: posicionamiento inteligente
             let top, left;
             const tooltipWidth = 400;
@@ -4505,7 +4536,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tourOverlay.addEventListener('click', () => showStep(currentStep + 1));
 
       setTimeout(() => showStep(0), 1000);
-    }, 2000); // Esperar más para que cargue todo el contenido
+    }
   }
 
   // Exponer funciones para trigger manual desde consola
