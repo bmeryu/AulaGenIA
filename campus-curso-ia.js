@@ -3991,6 +3991,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const tourSeen = localStorage.getItem('courseTourSeen');
     if (tourSeen) return;
 
+    // Don't run course tour if viewing Module 5 (cases) - UI doesn't display properly
+    const currentLesson = c.currentLessonId ? f(c.currentLessonId) : null;
+    if (currentLesson && (currentLesson.lesson.type === 'case_category' || currentLesson.lesson.type === 'segment_category')) {
+      return;
+    }
+
     setTimeout(() => {
       const courseSections = [
         {
