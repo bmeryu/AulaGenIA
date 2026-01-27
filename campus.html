@@ -1016,8 +1016,18 @@
                                     courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
                                     const userSet = new Set(progressData.completedLessons);
                                     let count = 0;
-                                    userSet.forEach(lId => { if (validSet.has(lId)) count++; });
+                                    const notMatching = [];
+                                    userSet.forEach(lId => {
+                                        if (validSet.has(lId)) count++;
+                                        else notMatching.push(lId);
+                                    });
                                     completed = count;
+                                    // DEBUG: Mostrar discrepancias de IDs
+                                    console.log('[CAMPUS DEBUG] courseId:', courseId);
+                                    console.log('[CAMPUS DEBUG] validSet (from config):', [...validSet]);
+                                    console.log('[CAMPUS DEBUG] userSet (from Firestore):', [...userSet]);
+                                    console.log('[CAMPUS DEBUG] NOT matching (in Firestore but NOT in validSet):', notMatching);
+                                    console.log('[CAMPUS DEBUG] matched count:', count, '/ total:', courseConfig.totalLessons);
                                 }
                             }
 
@@ -1175,8 +1185,16 @@
                                     courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
                                     const userSet = new Set(progressData.completedLessons);
                                     let count = 0;
-                                    userSet.forEach(lId => { if (validSet.has(lId)) count++; });
+                                    const notMatching = [];
+                                    userSet.forEach(lId => {
+                                        if (validSet.has(lId)) count++;
+                                        else notMatching.push(lId);
+                                    });
                                     completed = count;
+                                    // DEBUG: Mostrar discrepancias de IDs (función 2)
+                                    console.log('[CAMPUS DEBUG 2] courseId:', courseId);
+                                    console.log('[CAMPUS DEBUG 2] NOT matching:', notMatching);
+                                    console.log('[CAMPUS DEBUG 2] matched:', count, '/', courseConfig.totalLessons);
                                 }
                             }
 
