@@ -8798,33 +8798,6 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">Vocabulario del Arquitecto de Ideas</h2>
           <p class="text-emerald-700">Estos términos te ayudarán a entender la metodología para construir proyectos complejos con IA.</p>
         </section>
-        <section class="space-y-4">
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-emerald-300 transition-colors">
-            <h4 class="font-bold text-emerald-800 text-lg mb-2">🏗️ Arquitecto de Ideas</h4>
-            <p class="text-slate-600">El nivel experto de interacción con IA. No solo pides cosas, sino que diseñas sistemas completos. Piensas en grande, divides en partes y supervisas la construcción paso a paso.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-blue-300 transition-colors">
-            <h4 class="font-bold text-blue-800 text-lg mb-2">🗺️ Plano Maestro</h4>
-            <p class="text-slate-600">El primer paso de cualquier proyecto grande. Es el ÍNDICE + TONO + REGLAS globales. Le pides a la IA que estructure todo el proyecto SIN desarrollar el contenido todavía.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-amber-300 transition-colors">
-            <h4 class="font-bold text-amber-800 text-lg mb-2">🧱 Ladrillo</h4>
-            <p class="text-slate-600">Cada pieza individual del proyecto. Desarrollas UN solo punto del Plano Maestro a la vez, con máxima profundidad y manteniendo la identidad definida en el Plano.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-purple-800 text-lg mb-2">🧪 Cemento</h4>
-            <p class="text-slate-600">La fase de unión final. Cuando ya tienes todos los Ladrillos aprobados, le pides a la IA que los conecte con introducciones, transiciones y conclusiones coherentes.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-teal-300 transition-colors">
-            <h4 class="font-bold text-teal-800 text-lg mb-2">📓 Bitácora de Obra</h4>
-            <p class="text-slate-600">Tu documento externo (Word, Docs, Notion) donde guardas los resultados aprobados y los resúmenes de identidad. Es tu registro para no perder el trabajo cuando saltas entre chats.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-green-300 transition-colors">
-            <h4 class="font-bold text-green-800 text-lg mb-2">🚀 Salto de Ventana</h4>
-            <p class="text-slate-600">La técnica de abrir un chat nuevo cuando el actual tiene demasiados mensajes (+10). Pides un resumen, cierras, abres chat fresco y pegas el resumen para continuar con IA al 100%.</p>
-          </div>
-        </section>
-        </article>
     `,
     segments: {
       "Negocios & Ventas": `
@@ -9501,33 +9474,6 @@ const resourcesDatabase = {
           <h2 class="text-xl font-bold text-teal-900 mb-2">Términos Finales para tu Certificación</h2>
           <p class="text-emerald-700">Estos conceptos te preparan para aplicar todo lo aprendido en proyectos reales de crecimiento.</p>
         </section>
-        <section class="space-y-4">
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-blue-300 transition-colors">
-            <h4 class="font-bold text-blue-800 text-lg mb-2">✨ Diferenciador Injusto</h4>
-            <p class="text-slate-600">Tu ventaja competitiva única que nadie más puede copiar fácilmente. La IA te ayuda a descubrirlo analizando tu sector y encontrando el ángulo donde nadie más está hablando.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-amber-300 transition-colors">
-            <h4 class="font-bold text-amber-800 text-lg mb-2">🎣 Hook (Gancho)</h4>
-            <p class="text-slate-600">Los primeros 3 segundos de tu contenido que capturan la atención. Un hook fuerte determina si el usuario sigue viendo o hace scroll. La IA puede generar docenas de hooks para testear.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-green-300 transition-colors">
-            <h4 class="font-bold text-green-800 text-lg mb-2">📢 CTA (Call To Action)</h4>
-            <p class="text-slate-600">La instrucción clara que le das al usuario sobre qué hacer después de ver tu contenido: "Sígueme", "Comenta", "Guarda esto". Sin CTA, el contenido no convierte.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-purple-300 transition-colors">
-            <h4 class="font-bold text-purple-800 text-lg mb-2">🏭 Fábrica de Contenido</h4>
-            <p class="text-slate-600">Sistema repetible de creación de contenido. En lugar de inventar cada post desde cero, diseñas 3-5 formatos/series que la IA puede clonar infinitamente con variaciones.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-red-300 transition-colors">
-            <h4 class="font-bold text-red-800 text-lg mb-2">📊 Auditoría de Métricas</h4>
-            <p class="text-slate-600">El análisis periódico de qué "Ladrillos" funcionaron mejor. Identificas patrones de éxito (formato, hora, tema) y los replicas. Descartas lo que no funcionó.</p>
-          </div>
-          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-teal-300 transition-colors">
-            <h4 class="font-bold text-teal-800 text-lg mb-2">🎯 SEO Visual</h4>
-            <p class="text-slate-600">Optimización de tu contenido para que el algoritmo lo muestre a más personas. Incluye uso de palabras clave en texto, hashtags estratégicos y ganchos diseñados para retención.</p>
-          </div>
-        </section>
-        </article>
     `,
     segments: {
       "Negocios & Ventas": `
