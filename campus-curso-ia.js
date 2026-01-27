@@ -570,19 +570,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isInteractiveTool) {
         return `
           <button onclick="window.openResourceViewer('${resource.id}')"
-            class="group relative flex items-center gap-3 p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl border-2 border-teal-400 hover:border-teal-300 shadow-lg hover:shadow-teal-500/30 transition-all text-left w-full overflow-hidden">
+            class="group relative flex items-center gap-3 p-4 rounded-xl border-2 border-teal-400 hover:border-teal-300 shadow-lg hover:shadow-teal-500/30 transition-all text-left w-full overflow-hidden"
+            style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
             <!-- Glow effect -->
-            <div class="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-indigo-500/10 opacity-50"></div>
+            <div class="absolute inset-0 opacity-50" style="background: linear-gradient(135deg, rgba(20,184,166,0.1) 0%, rgba(99,102,241,0.1) 100%);"></div>
             <!-- Tool badge -->
-            <div class="absolute top-2 right-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
+            <div class="absolute top-2 right-2 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide" style="background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);">
               🛠️ Tool
             </div>
-            <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500/30 to-indigo-500/30 flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0 border border-teal-500/30">
-              <i data-lucide="${resource.meta.icon || 'zap'}" class="w-6 h-6 text-teal-400"></i>
+            <div class="relative w-12 h-12 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0" style="background: linear-gradient(135deg, rgba(20,184,166,0.3) 0%, rgba(99,102,241,0.3) 100%); border: 1px solid rgba(20,184,166,0.3);">
+              <i data-lucide="${resource.meta.icon || 'zap'}" class="w-6 h-6" style="color: #5eead4;"></i>
             </div>
             <div class="relative">
-              <h4 class="font-bold text-white text-sm">${resource.meta.title}</h4>
-              <p class="text-xs text-teal-300/80">${resource.meta.subtitle || ''}</p>
+              <h4 class="font-bold text-sm" style="color: #f1f5f9;">${resource.meta.title}</h4>
+              <p class="text-xs" style="color: rgba(94,234,212,0.8);">${resource.meta.subtitle || ''}</p>
             </div>
           </button>
         `;
