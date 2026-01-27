@@ -4032,46 +4032,63 @@ document.addEventListener("DOMContentLoaded", () => {
         <style>
           #course-tour-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5); z-index: 9998;
+            background: rgba(0,0,0,0.6); z-index: 9998;
             transition: opacity 0.3s ease;
           }
           .course-tour-highlight {
             position: relative; z-index: 9999 !important;
             box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.6), 0 0 30px rgba(20, 184, 166, 0.4) !important;
-            border-radius: 16px;
+            border-radius: 12px;
           }
+          /* Mobile-first base styles */
           .course-tour-tooltip {
-            position: fixed; z-index: 10000;
+            position: fixed !important; z-index: 10000;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white; padding: 20px 24px; border-radius: 16px;
-            font-size: 14px; max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            color: white; padding: 16px 18px; border-radius: 16px;
+            font-size: 14px;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
             animation: courseTourPulse 0.4s ease;
+            /* Mobile: fixed bottom sheet */
+            bottom: 0 !important; top: auto !important;
+            left: 0 !important; right: 0 !important;
+            border-radius: 20px 20px 0 0;
+            max-width: 100%;
           }
-          .course-tour-tooltip h4 { color: #5eead4; font-size: 18px; margin-bottom: 8px; }
-          .course-tour-tooltip p { color: #cbd5e1; line-height: 1.5; }
+          .course-tour-tooltip h4 { color: #5eead4; font-size: 16px; margin-bottom: 6px; }
+          .course-tour-tooltip p { color: #cbd5e1; line-height: 1.5; font-size: 13px; }
           .course-tour-tooltip strong { color: #f1f5f9; }
-          .course-tour-step-count { color: #64748b; font-size: 12px; margin-bottom: 4px; display: block; }
-          .course-tour-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; gap: 16px; }
-          .course-tour-skip { color: #64748b; cursor: pointer; font-size: 13px; }
-          .course-tour-skip:hover { color: #94a3b8; text-decoration: underline; }
+          .course-tour-step-count { color: #64748b; font-size: 11px; margin-bottom: 4px; display: block; }
+          .course-tour-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; gap: 12px; flex-wrap: wrap; }
+          .course-tour-skip { color: #64748b; cursor: pointer; font-size: 13px; padding: 8px; }
+          .course-tour-skip:hover { color: #94a3b8; }
           .course-tour-progress { display: flex; gap: 6px; }
           .course-tour-dot { width: 8px; height: 8px; background: #475569; border-radius: 50%; }
           .course-tour-dot.done { background: #14b8a6; }
           .course-tour-dot.active { background: #5eead4; box-shadow: 0 0 8px rgba(94, 234, 212, 0.5); }
           .course-tour-btn {
             background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-            color: white; border: none; padding: 12px 24px;
-            border-radius: 10px; font-weight: 600; cursor: pointer;
-            min-height: 48px; transition: all 0.3s;
+            color: white; border: none; padding: 14px 24px;
+            border-radius: 12px; font-weight: 600; cursor: pointer;
+            min-height: 50px; transition: all 0.3s; font-size: 15px;
+            flex: 1; max-width: 200px;
           }
-          .course-tour-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(20,184,166,0.4); }
-          @keyframes courseTourPulse { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-          @media (max-width: 767px) {
+          .course-tour-btn:active { transform: scale(0.98); }
+          @keyframes courseTourPulse { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+          
+          /* Desktop: floating tooltip */
+          @media (min-width: 768px) {
             .course-tour-tooltip {
-              position: fixed !important; bottom: 16px !important; top: auto !important;
-              left: 12px !important; right: 12px !important; max-width: none;
+              position: fixed !important;
+              bottom: auto !important; top: auto;
+              left: auto !important; right: auto !important;
+              border-radius: 16px;
+              max-width: 400px;
+              padding: 20px 24px;
+              box-shadow: 0 20px 60px rgba(0,0,0,0.4);
             }
+            .course-tour-tooltip h4 { font-size: 18px; margin-bottom: 8px; }
+            .course-tour-tooltip p { font-size: 14px; }
+            .course-tour-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(20,184,166,0.4); }
           }
         </style>
       `;
@@ -4201,43 +4218,58 @@ document.addEventListener("DOMContentLoaded", () => {
       <style>
         #tooltip-tour-overlay {
           position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.5); z-index: 9998;
+          background: rgba(0,0,0,0.6); z-index: 9998;
           transition: opacity 0.3s ease;
         }
         .tour-highlight {
           position: relative; z-index: 9999 !important;
           box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.6), 0 0 25px rgba(20, 184, 166, 0.4) !important;
-          border-radius: 16px;
+          border-radius: 12px;
         }
+        /* Mobile-first base styles */
         .tour-tooltip {
-          position: fixed; z-index: 10000;
+          position: fixed !important; z-index: 10000;
           background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-          color: white; padding: 16px 20px; border-radius: 14px;
-          font-size: 14px; max-width: 320px;
-          box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+          color: white; padding: 16px 18px;
+          font-size: 14px;
+          box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
           animation: tourPulse 0.4s ease;
+          /* Mobile: fixed bottom sheet */
+          bottom: 0 !important; top: auto !important;
+          left: 0 !important; right: 0 !important;
+          border-radius: 20px 20px 0 0;
+          max-width: 100%;
         }
-        .tour-tooltip h4 { color: #5eead4; font-size: 16px; margin-bottom: 6px; }
-        .tour-tooltip p { color: #94a3b8; font-size: 13px; margin-bottom: 12px; }
-        .tour-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-        .tour-progress { display: flex; gap: 5px; }
+        .tour-tooltip h4 { color: #5eead4; font-size: 15px; margin-bottom: 4px; }
+        .tour-tooltip p { color: #94a3b8; font-size: 13px; margin-bottom: 10px; }
+        .tour-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .tour-progress { display: flex; gap: 5px; flex-wrap: wrap; }
         .tour-dot { width: 7px; height: 7px; background: #475569; border-radius: 50%; }
         .tour-dot.done { background: #14b8a6; }
         .tour-dot.active { background: #5eead4; box-shadow: 0 0 6px rgba(94, 234, 212, 0.5); }
         .tour-btn {
           background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-          color: white; border: none; padding: 10px 18px;
-          border-radius: 8px; font-weight: 600; font-size: 13px;
-          cursor: pointer; min-height: 44px; transition: all 0.3s;
+          color: white; border: none; padding: 12px 20px;
+          border-radius: 10px; font-weight: 600; font-size: 14px;
+          cursor: pointer; min-height: 48px; transition: all 0.3s;
         }
-        .tour-btn:hover { transform: translateY(-2px); }
+        .tour-btn:active { transform: scale(0.98); }
         .tour-hint { color: #64748b; font-size: 11px; text-align: center; margin-top: 8px; }
-        @keyframes tourPulse { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 767px) {
+        @keyframes tourPulse { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Desktop: floating tooltip */
+        @media (min-width: 768px) {
           .tour-tooltip {
-            position: fixed !important; bottom: 16px !important; top: auto !important;
-            left: 12px !important; right: 12px !important; max-width: none;
+            position: fixed !important;
+            bottom: auto !important; top: auto;
+            left: auto !important; right: auto !important;
+            border-radius: 14px;
+            max-width: 340px;
+            padding: 18px 22px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
           }
+          .tour-tooltip h4 { font-size: 16px; margin-bottom: 6px; }
+          .tour-btn:hover { transform: translateY(-2px); }
         }
       </style>
     `;
@@ -4873,7 +4905,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 ${(c.fineTuning && c.fineTuning.length > 0) ? `
                 <!-- Ajuste Fino - CON TOOLTIP EDUCATIVO -->
-                <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <section id="case-section-ajuste" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
                             <i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i>
@@ -4953,7 +4985,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <!-- Insights - CON TOOLTIPS EDUCATIVOS -->
                 <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     ${c.solutionPlus ? `
-                    <div class="sm:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <div id="case-section-porque" class="sm:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2">
                                 <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
@@ -4971,7 +5003,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <p class="text-slate-700 leading-relaxed">${c.solutionPlus}</p>
                     </div>` : ''}
 
-                    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                    <div id="case-section-estrategia" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
                         <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-2 flex items-center gap-2">
                             <i data-lucide="compass" class="w-4 h-4 text-teal-500"></i>
                             Estrategia
@@ -4979,7 +5011,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <p class="text-slate-600 text-sm">${c.exampleTip || "Sigue la estructura maestra."}</p>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                    <div id="case-section-validacion" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
                         <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-2 flex items-center gap-2">
                             <i data-lucide="check-circle" class="w-4 h-4 text-blue-500"></i>
                             Validación
@@ -4990,7 +5022,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 ${c.verticalMatrix && c.verticalMatrix.length > 0 ? `
                 <!-- Adaptation Matrix -->
-                <section class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                <section id="case-section-matriz" class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
                     <div class="px-5 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center gap-2">
                         <i data-lucide="git-branch" class="w-4 h-4 text-slate-400"></i>
                         <h3 class="font-semibold text-slate-800 text-sm">Matriz de Adaptación</h3>
@@ -5020,7 +5052,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <!-- Navigation Footer -->
-            <nav class="mt-12 pt-8 border-t border-slate-200/80">
+            <nav id="case-action-buttons" class="mt-12 pt-8 border-t border-slate-200/80">
                 <p class="text-xs text-slate-400 font-medium mb-5 text-center">Navegar entre casos</p>
                 <div class="flex flex-col sm:flex-row items-stretch gap-4 w-full">
                     ${renderNavBtn(prevCase, 'prev')}
