@@ -4589,8 +4589,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (top < 10) top = 10;
             if (top > window.innerHeight - 300) top = window.innerHeight - 300;
 
-            tooltip.style.top = top + 'px';
-            tooltip.style.left = left + 'px';
+            // Usar setProperty para sobrescribir CSS !important
+            tooltip.style.setProperty('top', top + 'px', 'important');
+            tooltip.style.setProperty('left', left + 'px', 'important');
+            tooltip.style.setProperty('right', 'auto', 'important');
+            tooltip.style.setProperty('bottom', 'auto', 'important');
           }
 
           document.body.appendChild(tooltip);
