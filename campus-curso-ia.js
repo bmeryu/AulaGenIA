@@ -3872,49 +3872,112 @@ document.addEventListener("DOMContentLoaded", () => {
     // Crear overlay
     const tourOverlay = document.createElement('div');
     tourOverlay.id = 'tooltip-tour-overlay';
+    const isMobile = window.innerWidth < 768;
     tourOverlay.innerHTML = `
       <style>
         #tooltip-tour-overlay {
           position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.5); z-index: 9998;
+          background: rgba(0,0,0,0.6); z-index: 9998;
           transition: opacity 0.3s ease;
           cursor: pointer;
         }
         .tour-highlight {
           position: relative; z-index: 9999 !important;
-          box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.6), 0 0 30px rgba(20, 184, 166, 0.4) !important;
-          border-radius: 16px;
+          box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.7), 0 0 20px rgba(20, 184, 166, 0.4) !important;
+          border-radius: 12px;
           background: white !important;
         }
         .tour-tooltip {
           position: fixed; z-index: 10000;
-          background: #0f172a; color: white; padding: 16px 20px;
-          border-radius: 12px; font-size: 14px; max-width: 320px;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          color: white;
+          border-radius: 16px;
+          box-shadow: 0 15px 50px rgba(0,0,0,0.5);
           animation: tourPulse 0.3s ease;
+          border: 1px solid rgba(94, 234, 212, 0.2);
+          /* Mobile first */
+          padding: 16px 18px;
+          font-size: 13px;
+          max-width: calc(100vw - 24px);
+          left: 12px !important;
+          right: 12px !important;
+          width: auto !important;
         }
-        .tour-tooltip::after {
-          content: ''; position: absolute; bottom: -8px; left: 24px;
-          border-left: 8px solid transparent; border-right: 8px solid transparent;
-          border-top: 8px solid #0f172a;
+        @media (min-width: 768px) {
+          .tour-tooltip {
+            padding: 20px 24px;
+            font-size: 14px;
+            max-width: 360px;
+            left: auto !important;
+            right: auto !important;
+            width: max-content;
+          }
         }
-        .tour-tooltip h4 { color: #5eead4; font-size: 16px; margin: 0 0 4px 0; }
-        .tour-tooltip p { color: #94a3b8; font-size: 13px; margin: 0 0 12px 0; }
-        .tour-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
-        .tour-progress { display: flex; gap: 6px; }
-        .tour-dot { width: 8px; height: 8px; background: #334155; border-radius: 50%; transition: all 0.2s; }
-        .tour-dot.active { background: #5eead4; transform: scale(1.2); }
+        .tour-tooltip h4 { 
+          color: #5eead4; 
+          font-size: 15px; 
+          margin: 0 0 6px 0; 
+          font-weight: 700;
+        }
+        @media (min-width: 768px) {
+          .tour-tooltip h4 { font-size: 17px; }
+        }
+        .tour-tooltip p { 
+          color: #cbd5e1; 
+          font-size: 12px; 
+          margin: 0 0 14px 0; 
+          line-height: 1.5;
+        }
+        @media (min-width: 768px) {
+          .tour-tooltip p { font-size: 13px; margin: 0 0 16px 0; }
+        }
+        .tour-footer { 
+          display: flex; 
+          justify-content: space-between; 
+          align-items: center; 
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .tour-progress { display: flex; gap: 5px; flex-wrap: wrap; }
+        .tour-dot { 
+          width: 10px; height: 10px; 
+          background: #334155; border-radius: 50%; 
+          transition: all 0.2s; 
+        }
+        .tour-dot.active { background: #5eead4; transform: scale(1.3); box-shadow: 0 0 8px rgba(94, 234, 212, 0.5); }
         .tour-dot.done { background: #14b8a6; }
         .tour-btn { 
-          background: #14b8a6; color: white; border: none; 
-          padding: 8px 16px; border-radius: 8px; font-size: 13px; 
-          font-weight: 600; cursor: pointer; transition: all 0.2s;
+          background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+          color: white; border: none; 
+          padding: 10px 18px; border-radius: 10px; 
+          font-size: 13px; font-weight: 600; 
+          cursor: pointer; transition: all 0.2s;
+          min-height: 44px; /* Touch friendly */
+          box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
         }
-        .tour-btn:hover { background: #0d9488; transform: scale(1.02); }
-        .tour-skip { color: #64748b; font-size: 12px; cursor: pointer; }
+        .tour-btn:hover, .tour-btn:active { 
+          background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+          transform: scale(1.02); 
+        }
+        .tour-skip { 
+          color: #64748b; font-size: 12px; cursor: pointer; 
+          padding: 8px 0; min-height: 44px; display: flex; align-items: center;
+        }
         .tour-skip:hover { color: #94a3b8; }
-        .tour-hint { color: #64748b; font-size: 11px; margin-top: 8px; text-align: center; }
-        @keyframes tourPulse { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .tour-hint { 
+          color: #64748b; font-size: 10px; margin-top: 10px; text-align: center; 
+          display: none;
+        }
+        @media (min-width: 768px) {
+          .tour-hint { display: block; font-size: 11px; }
+        }
+        .tour-step-count { 
+          color: #94a3b8; font-size: 11px; margin-bottom: 6px; display: block; 
+        }
+        @keyframes tourPulse { 
+          from { opacity: 0; transform: translateY(10px) scale(0.95); } 
+          to { opacity: 1; transform: translateY(0) scale(1); } 
+        }
       </style>
     `;
     document.body.appendChild(tourOverlay);
@@ -3955,33 +4018,48 @@ document.addEventListener("DOMContentLoaded", () => {
         const rect = section.getBoundingClientRect();
         const tooltip = document.createElement('div');
         tooltip.className = 'tour-tooltip';
+        const isMobile = window.innerWidth < 768;
 
         const isLast = index === tooltipSections.length - 1;
         tooltip.innerHTML = `
-          <h4>${index + 1}. ${tooltipSections[index].name}</h4>
+          <span class="tour-step-count">Paso ${index + 1} de ${tooltipSections.length}</span>
+          <h4>${tooltipSections[index].name}</h4>
           <p>${tooltipSections[index].desc}</p>
           <div class="tour-footer">
+            <span class="tour-skip" onclick="event.stopPropagation();">Saltar</span>
             <div class="tour-progress">
               ${tooltipSections.map((_, i) => `<div class="tour-dot ${i < index ? 'done' : ''} ${i === index ? 'active' : ''}"></div>`).join('')}
             </div>
-            <button class="tour-btn" id="tour-next-btn">${isLast ? '¡Entendido!' : 'Siguiente →'}</button>
+            <button class="tour-btn" id="tour-next-btn">${isLast ? '¡Listo!' : 'Siguiente →'}</button>
           </div>
-          <div class="tour-hint">Click, espacio o Enter para continuar</div>
+          <div class="tour-hint">Click, espacio o Enter para continuar • Esc para saltar</div>
         `;
 
-        // Posicionar tooltip
-        let top = rect.top - tooltip.offsetHeight - 20;
-        if (top < 10) top = rect.bottom + 20;
-        tooltip.style.top = Math.max(10, rect.top - 120) + 'px';
-        tooltip.style.left = Math.max(10, rect.left) + 'px';
+        // Posicionamiento responsive
+        if (isMobile) {
+          // En mobile: tooltip fijo abajo
+          tooltip.style.position = 'fixed';
+          tooltip.style.bottom = '20px';
+          tooltip.style.top = 'auto';
+        } else {
+          // En desktop: arriba del elemento
+          let top = rect.top - 140;
+          if (top < 10) top = rect.bottom + 20;
+          if (top + 200 > window.innerHeight) top = window.innerHeight - 220;
+          tooltip.style.top = Math.max(10, top) + 'px';
+          tooltip.style.left = Math.max(10, Math.min(rect.left, window.innerWidth - 380)) + 'px';
+        }
 
         document.body.appendChild(tooltip);
 
-        // Event listener para el botón
+        // Event listeners
         document.getElementById('tour-next-btn').addEventListener('click', (e) => {
           e.stopPropagation();
           showStep(index + 1);
         });
+
+        // Skip button
+        tooltip.querySelector('.tour-skip').addEventListener('click', () => endTour());
       }, 400);
     }
 
@@ -4052,59 +4130,120 @@ document.addEventListener("DOMContentLoaded", () => {
         <style>
           #course-tour-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6); z-index: 9998;
+            background: rgba(0,0,0,0.65); z-index: 9998;
             transition: opacity 0.3s ease;
             cursor: pointer;
           }
           .course-tour-highlight {
             position: relative; z-index: 9999 !important;
-            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.7), 0 0 40px rgba(20, 184, 166, 0.5) !important;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.7), 0 0 25px rgba(20, 184, 166, 0.4) !important;
             border-radius: 12px;
             background: white !important;
           }
           .course-tour-tooltip {
             position: fixed; z-index: 10000;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-            color: white; padding: 24px 28px;
-            border-radius: 20px; font-size: 14px; max-width: 380px;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             animation: courseTourPulse 0.4s ease;
             border: 1px solid rgba(94, 234, 212, 0.2);
+            /* Mobile first */
+            padding: 18px 20px;
+            font-size: 13px;
+            max-width: calc(100vw - 24px);
+            left: 12px !important;
+            right: 12px !important;
+            width: auto !important;
+          }
+          @media (min-width: 768px) {
+            .course-tour-tooltip {
+              padding: 24px 28px;
+              font-size: 14px;
+              max-width: 400px;
+              left: auto !important;
+              right: auto !important;
+              width: max-content;
+            }
           }
           .course-tour-tooltip h4 { 
-            color: #5eead4; font-size: 20px; margin: 0 0 12px 0; 
+            color: #5eead4; 
+            font-size: 16px; 
+            margin: 0 0 10px 0; 
             font-weight: 700;
           }
+          @media (min-width: 768px) {
+            .course-tour-tooltip h4 { font-size: 20px; margin: 0 0 12px 0; }
+          }
           .course-tour-tooltip p { 
-            color: #e2e8f0; font-size: 14px; margin: 0 0 20px 0; 
-            line-height: 1.7; 
+            color: #e2e8f0; 
+            font-size: 12px; 
+            margin: 0 0 16px 0; 
+            line-height: 1.6; 
+          }
+          @media (min-width: 768px) {
+            .course-tour-tooltip p { font-size: 14px; margin: 0 0 20px 0; line-height: 1.7; }
           }
           .course-tour-tooltip p strong { color: #5eead4; }
-          .course-tour-footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-          .course-tour-progress { display: flex; gap: 8px; }
-          .course-tour-dot { width: 12px; height: 12px; background: #334155; border-radius: 50%; transition: all 0.3s; }
-          .course-tour-dot.active { background: #5eead4; transform: scale(1.4); box-shadow: 0 0 10px rgba(94, 234, 212, 0.5); }
+          .course-tour-footer { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 12px;
+            flex-wrap: wrap;
+          }
+          .course-tour-progress { display: flex; gap: 6px; flex-wrap: wrap; }
+          .course-tour-dot { 
+            width: 10px; height: 10px; 
+            background: #334155; border-radius: 50%; 
+            transition: all 0.3s; 
+          }
+          @media (min-width: 768px) {
+            .course-tour-dot { width: 12px; height: 12px; }
+            .course-tour-progress { gap: 8px; }
+          }
+          .course-tour-dot.active { 
+            background: #5eead4; 
+            transform: scale(1.3); 
+            box-shadow: 0 0 8px rgba(94, 234, 212, 0.5); 
+          }
           .course-tour-dot.done { background: #14b8a6; }
           .course-tour-btn { 
             background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); 
             color: white; border: none; 
-            padding: 12px 24px; border-radius: 12px; font-size: 15px; 
-            font-weight: 700; cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+            padding: 12px 20px; border-radius: 10px; 
+            font-size: 14px; font-weight: 700; 
+            cursor: pointer; transition: all 0.2s;
+            min-height: 48px; /* Touch friendly */
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
           }
-          .course-tour-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(20, 184, 166, 0.5); }
-          .course-tour-hint { color: #64748b; font-size: 11px; margin-top: 16px; text-align: center; }
+          @media (min-width: 768px) {
+            .course-tour-btn { padding: 12px 24px; font-size: 15px; }
+          }
+          .course-tour-btn:hover, .course-tour-btn:active { 
+            transform: scale(1.03); 
+            box-shadow: 0 6px 18px rgba(20, 184, 166, 0.5); 
+          }
+          .course-tour-hint { 
+            color: #64748b; font-size: 10px; margin-top: 12px; text-align: center;
+            display: none;
+          }
+          @media (min-width: 768px) {
+            .course-tour-hint { display: block; font-size: 11px; margin-top: 16px; }
+          }
           .course-tour-skip { 
             color: #64748b; font-size: 12px; cursor: pointer; 
-            text-decoration: underline; margin-right: auto;
+            text-decoration: underline;
+            padding: 8px 0; min-height: 44px; 
+            display: flex; align-items: center;
           }
           .course-tour-skip:hover { color: #94a3b8; }
           .course-tour-step-count { 
-            color: #94a3b8; font-size: 12px; margin-bottom: 8px; 
+            color: #94a3b8; font-size: 11px; margin-bottom: 6px; 
             display: block; opacity: 0.8;
           }
           @keyframes courseTourPulse { 
-            from { opacity: 0; transform: translateY(15px) scale(0.9); } 
+            from { opacity: 0; transform: translateY(12px) scale(0.95); } 
             to { opacity: 1; transform: translateY(0) scale(1); } 
           }
         </style>
@@ -4145,6 +4284,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const rect = section.getBoundingClientRect();
           const tooltip = document.createElement('div');
           tooltip.className = 'course-tour-tooltip';
+          const isMobile = window.innerWidth < 768;
 
           const isLast = index === courseSections.length - 1;
           tooltip.innerHTML = `
@@ -4152,56 +4292,67 @@ document.addEventListener("DOMContentLoaded", () => {
             <h4>${stepData.name}</h4>
             <p>${stepData.desc}</p>
             <div class="course-tour-footer">
-              <span class="course-tour-skip" onclick="event.stopPropagation(); endTour();">Saltar tour</span>
+              <span class="course-tour-skip" id="course-tour-skip-btn">Saltar</span>
               <div class="course-tour-progress">
                 ${courseSections.map((_, i) => `<div class="course-tour-dot ${i < index ? 'done' : ''} ${i === index ? 'active' : ''}"></div>`).join('')}
               </div>
               <button class="course-tour-btn" id="course-tour-next-btn">${isLast ? '¡Comenzar! 🚀' : 'Siguiente →'}</button>
             </div>
-            <div class="course-tour-hint">Click en cualquier lugar, Espacio o Enter para continuar • Esc para saltar</div>
+            <div class="course-tour-hint">Click, Espacio o Enter • Esc para saltar</div>
           `;
 
-          // Posicionamiento inteligente según la preferencia
-          let top, left;
-          const tooltipWidth = 380;
-          const tooltipHeight = 280; // Approximate height, will be adjusted by content
-          const margin = 20;
+          // Posicionamiento responsive
+          if (isMobile) {
+            // En mobile: tooltip fijo abajo
+            tooltip.style.position = 'fixed';
+            tooltip.style.bottom = '16px';
+            tooltip.style.top = 'auto';
+          } else {
+            // En desktop: posicionamiento inteligente
+            let top, left;
+            const tooltipWidth = 400;
+            const margin = 20;
 
-          switch (stepData.position) {
-            case 'right':
-              top = rect.top + (rect.height / 2) - (tooltip.offsetHeight / 2); // Use tooltip.offsetHeight after it's rendered
-              left = rect.right + margin;
-              if (left + tooltipWidth > window.innerWidth) {
-                left = rect.left - tooltipWidth - margin;
-              }
-              break;
-            case 'top':
-              top = rect.top - tooltip.offsetHeight - margin;
-              left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-              break;
-            case 'bottom':
-            default:
-              top = rect.bottom + margin;
-              left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-              if (top + tooltip.offsetHeight > window.innerHeight) {
-                top = rect.top - tooltip.offsetHeight - margin;
-              }
+            switch (stepData.position) {
+              case 'right':
+                top = Math.max(20, rect.top + (rect.height / 2) - 140);
+                left = rect.right + margin;
+                if (left + tooltipWidth > window.innerWidth) {
+                  left = rect.left - tooltipWidth - margin;
+                }
+                break;
+              case 'top':
+                top = rect.top - 200;
+                left = Math.min(rect.left, window.innerWidth - tooltipWidth - 20);
+                break;
+              case 'bottom':
+              default:
+                top = rect.bottom + margin;
+                left = Math.min(rect.left, window.innerWidth - tooltipWidth - 20);
+                if (top + 250 > window.innerHeight) {
+                  top = rect.top - 220;
+                }
+            }
+
+            // Ajustar límites
+            if (left < 10) left = 10;
+            if (top < 10) top = 10;
+
+            tooltip.style.top = top + 'px';
+            tooltip.style.left = left + 'px';
           }
-
-          // Adjust if it goes off-screen
-          if (left < 10) left = 10;
-          if (left + tooltipWidth > window.innerWidth - 10) left = window.innerWidth - tooltipWidth - 10;
-          if (top < 10) top = 10;
-          if (top + tooltip.offsetHeight > window.innerHeight - 10) top = window.innerHeight - tooltip.offsetHeight - 10;
-
-          tooltip.style.top = top + 'px';
-          tooltip.style.left = left + 'px';
 
           document.body.appendChild(tooltip);
 
+          // Event listeners
           document.getElementById('course-tour-next-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             showStep(index + 1);
+          });
+
+          document.getElementById('course-tour-skip-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            endTour();
           });
         }, 500);
       }
