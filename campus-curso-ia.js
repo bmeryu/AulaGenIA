@@ -421,6 +421,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (document.getElementById('auditor-agia-container') && window.initAuditorAGIA) {
           window.initAuditorAGIA();
         }
+        // Initialize Radar de Automatización if container exists (Módulo 2)
+        if (document.getElementById('radar-automatizacion-container') && window.initRadarAutomatizacion) {
+          window.initRadarAutomatizacion();
+        }
       }, 300);
     }
   };
