@@ -4012,10 +4012,36 @@ document.addEventListener("DOMContentLoaded", () => {
     // Esperar a que el contenido esté cargado
     setTimeout(() => {
       const courseSections = [
-        { id: 'course-sidebar', name: 'Tu Panel de Progreso', desc: 'Aquí ves tu avance, los módulos y puedes navegar entre lecciones' },
-        { id: 'lesson-material-container', name: 'Área de Contenido', desc: 'Aquí se muestran los videos, material y los Casos Aplicados del Módulo 5' },
-        { id: 'tabs-navigation-container', name: 'Pestañas del Curso', desc: 'Clases | Materiales | Notas personales | Tareas | Soporte con tutores' },
-        { id: 'main-action-btn', name: 'Botón de Acción', desc: 'Marca cada lección como completada para desbloquear tu certificado' }
+        {
+          id: 'course-sidebar',
+          name: '📊 Tu Panel de Navegación',
+          desc: 'Este es tu centro de control. Aquí ves:<br>• <strong>Tu progreso</strong> hacia el certificado<br>• <strong>Todos los módulos</strong> del curso<br>• <strong>Cada lección</strong> - haz click para navegar',
+          position: 'right'
+        },
+        {
+          id: 'lesson-material-container',
+          name: '🎬 Área de Video y Contenido',
+          desc: 'Aquí encontrarás:<br>• <strong>Videos</strong> con las lecciones<br>• <strong>Quizzes</strong> para evaluar lo aprendido<br>• <strong>Material interactivo</strong> según el módulo',
+          position: 'bottom'
+        },
+        {
+          id: 'tabs-navigation-container',
+          name: '📑 Pestañas de Recursos',
+          desc: '<strong>Clases:</strong> El video actual<br><strong>Materiales:</strong> PDFs y recursos descargables<br><strong>Notas:</strong> Tu bloc personal (se guarda automático)<br><strong>Tareas:</strong> Checklist y subir archivos<br><strong>Soporte:</strong> Contacta a tu tutor',
+          position: 'bottom'
+        },
+        {
+          id: 'modules-container',
+          name: '🎯 Módulo 5: Casos Aplicados',
+          desc: 'Este es tu <strong>recurso más valioso</strong>.<br><br>Contiene <strong>Instrucciones Maestras</strong> listas para usar con ChatGPT, Gemini o Claude.<br><br>Son soluciones probadas a problemas reales de tu área profesional.',
+          position: 'right'
+        },
+        {
+          id: 'main-action-btn',
+          name: '✅ Marca tu Progreso',
+          desc: 'Después de ver cada lección, presiona este botón para:<br>• <strong>Registrar tu avance</strong><br>• <strong>Desbloquear</strong> la siguiente lección<br>• <strong>Acercarte</strong> al certificado',
+          position: 'top'
+        }
       ];
 
       let currentStep = 0;
@@ -4026,44 +4052,61 @@ document.addEventListener("DOMContentLoaded", () => {
         <style>
           #course-tour-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5); z-index: 9998;
+            background: rgba(0,0,0,0.6); z-index: 9998;
             transition: opacity 0.3s ease;
             cursor: pointer;
           }
           .course-tour-highlight {
             position: relative; z-index: 9999 !important;
-            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.6), 0 0 30px rgba(20, 184, 166, 0.4) !important;
+            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.7), 0 0 40px rgba(20, 184, 166, 0.5) !important;
             border-radius: 12px;
             background: white !important;
           }
           .course-tour-tooltip {
             position: fixed; z-index: 10000;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-            color: white; padding: 20px 24px;
-            border-radius: 16px; font-size: 14px; max-width: 340px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            animation: courseTourPulse 0.3s ease;
+            color: white; padding: 24px 28px;
+            border-radius: 20px; font-size: 14px; max-width: 380px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            animation: courseTourPulse 0.4s ease;
+            border: 1px solid rgba(94, 234, 212, 0.2);
           }
           .course-tour-tooltip h4 { 
-            color: #5eead4; font-size: 18px; margin: 0 0 8px 0; 
-            display: flex; align-items: center; gap: 8px;
+            color: #5eead4; font-size: 20px; margin: 0 0 12px 0; 
+            font-weight: 700;
           }
-          .course-tour-tooltip h4::before { content: '✨'; }
-          .course-tour-tooltip p { color: #cbd5e1; font-size: 14px; margin: 0 0 16px 0; line-height: 1.5; }
-          .course-tour-footer { display: flex; justify-content: space-between; align-items: center; }
-          .course-tour-progress { display: flex; gap: 6px; }
-          .course-tour-dot { width: 10px; height: 10px; background: #334155; border-radius: 50%; transition: all 0.2s; }
-          .course-tour-dot.active { background: #5eead4; transform: scale(1.3); }
+          .course-tour-tooltip p { 
+            color: #e2e8f0; font-size: 14px; margin: 0 0 20px 0; 
+            line-height: 1.7; 
+          }
+          .course-tour-tooltip p strong { color: #5eead4; }
+          .course-tour-footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+          .course-tour-progress { display: flex; gap: 8px; }
+          .course-tour-dot { width: 12px; height: 12px; background: #334155; border-radius: 50%; transition: all 0.3s; }
+          .course-tour-dot.active { background: #5eead4; transform: scale(1.4); box-shadow: 0 0 10px rgba(94, 234, 212, 0.5); }
           .course-tour-dot.done { background: #14b8a6; }
           .course-tour-btn { 
             background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); 
             color: white; border: none; 
-            padding: 10px 20px; border-radius: 10px; font-size: 14px; 
-            font-weight: 600; cursor: pointer; transition: all 0.2s;
+            padding: 12px 24px; border-radius: 12px; font-size: 15px; 
+            font-weight: 700; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
           }
-          .course-tour-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4); }
-          .course-tour-hint { color: #64748b; font-size: 12px; margin-top: 12px; text-align: center; }
-          @keyframes courseTourPulse { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+          .course-tour-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(20, 184, 166, 0.5); }
+          .course-tour-hint { color: #64748b; font-size: 11px; margin-top: 16px; text-align: center; }
+          .course-tour-skip { 
+            color: #64748b; font-size: 12px; cursor: pointer; 
+            text-decoration: underline; margin-right: auto;
+          }
+          .course-tour-skip:hover { color: #94a3b8; }
+          .course-tour-step-count { 
+            color: #94a3b8; font-size: 12px; margin-bottom: 8px; 
+            display: block; opacity: 0.8;
+          }
+          @keyframes courseTourPulse { 
+            from { opacity: 0; transform: translateY(15px) scale(0.9); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
+          }
         </style>
       `;
       document.body.appendChild(tourOverlay);
@@ -4087,7 +4130,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         currentStep = index;
-        const section = document.getElementById(courseSections[index].id);
+        const stepData = courseSections[index];
+        const section = document.getElementById(stepData.id);
 
         if (!section) {
           showStep(index + 1);
@@ -4104,28 +4148,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const isLast = index === courseSections.length - 1;
           tooltip.innerHTML = `
-            <h4>${courseSections[index].name}</h4>
-            <p>${courseSections[index].desc}</p>
+            <span class="course-tour-step-count">Paso ${index + 1} de ${courseSections.length}</span>
+            <h4>${stepData.name}</h4>
+            <p>${stepData.desc}</p>
             <div class="course-tour-footer">
+              <span class="course-tour-skip" onclick="event.stopPropagation(); endTour();">Saltar tour</span>
               <div class="course-tour-progress">
                 ${courseSections.map((_, i) => `<div class="course-tour-dot ${i < index ? 'done' : ''} ${i === index ? 'active' : ''}"></div>`).join('')}
               </div>
-              <button class="course-tour-btn" id="course-tour-next-btn">${isLast ? '¡Comenzar!' : 'Siguiente →'}</button>
+              <button class="course-tour-btn" id="course-tour-next-btn">${isLast ? '¡Comenzar! 🚀' : 'Siguiente →'}</button>
             </div>
-            <div class="course-tour-hint">Click, espacio o Enter para continuar</div>
+            <div class="course-tour-hint">Click en cualquier lugar, Espacio o Enter para continuar • Esc para saltar</div>
           `;
 
-          // Posicionar tooltip
-          let top = rect.bottom + 15;
-          let left = rect.left;
+          // Posicionamiento inteligente según la preferencia
+          let top, left;
+          const tooltipWidth = 380;
+          const tooltipHeight = 280; // Approximate height, will be adjusted by content
+          const margin = 20;
 
-          // Ajustar si sale de la pantalla
-          if (top + 200 > window.innerHeight) top = rect.top - 180;
-          if (left + 340 > window.innerWidth) left = window.innerWidth - 360;
+          switch (stepData.position) {
+            case 'right':
+              top = rect.top + (rect.height / 2) - (tooltip.offsetHeight / 2); // Use tooltip.offsetHeight after it's rendered
+              left = rect.right + margin;
+              if (left + tooltipWidth > window.innerWidth) {
+                left = rect.left - tooltipWidth - margin;
+              }
+              break;
+            case 'top':
+              top = rect.top - tooltip.offsetHeight - margin;
+              left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+              break;
+            case 'bottom':
+            default:
+              top = rect.bottom + margin;
+              left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+              if (top + tooltip.offsetHeight > window.innerHeight) {
+                top = rect.top - tooltip.offsetHeight - margin;
+              }
+          }
+
+          // Adjust if it goes off-screen
           if (left < 10) left = 10;
+          if (left + tooltipWidth > window.innerWidth - 10) left = window.innerWidth - tooltipWidth - 10;
+          if (top < 10) top = 10;
+          if (top + tooltip.offsetHeight > window.innerHeight - 10) top = window.innerHeight - tooltip.offsetHeight - 10;
 
-          tooltip.style.top = Math.max(10, top) + 'px';
-          tooltip.style.left = Math.max(10, left) + 'px';
+          tooltip.style.top = top + 'px';
+          tooltip.style.left = left + 'px';
 
           document.body.appendChild(tooltip);
 
@@ -4133,7 +4203,7 @@ document.addEventListener("DOMContentLoaded", () => {
             e.stopPropagation();
             showStep(index + 1);
           });
-        }, 400);
+        }, 500);
       }
 
       function handleKeyPress(e) {
@@ -4148,8 +4218,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.addEventListener('keydown', handleKeyPress);
       tourOverlay.addEventListener('click', () => showStep(currentStep + 1));
 
-      setTimeout(() => showStep(0), 800);
-    }, 1500); // Esperar a que cargue el contenido del curso
+      setTimeout(() => showStep(0), 1000);
+    }, 2000); // Esperar más para que cargue todo el contenido
   }
 
   // Exponer función para llamarla al cargar el curso
