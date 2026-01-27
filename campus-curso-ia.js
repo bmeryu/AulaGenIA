@@ -4043,7 +4043,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="flex items-start justify-between mb-3">
             <div class="flex items-center gap-2">
                ${isStarPrompt ? '<span class="inline-flex items-center justify-center p-1 bg-amber-100 text-amber-600 rounded-full"><i data-lucide="star" class="w-4 h-4 fill-current"></i></span>' : `<span class="p-1.5 rounded-lg bg-${categoryColor}-100 text-${categoryColor}-600"><i data-lucide="${segCfg?.icon || 'file-text'}" class="w-4 h-4"></i></span>`}
-               <span class="text-xs font-bold uppercase tracking-wider ${isStarPrompt ? 'text-amber-700' : 'text-slate-500'}">${c.category || ''}</span>
+               <span class="text-xs font-bold uppercase tracking-wider ${isStarPrompt ? 'text-amber-700' : 'text-slate-500'}">${segment}</span>
             </div>
             ${isStarPrompt ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold border border-amber-200 flex items-center gap-1"><i data-lucide="award" class="w-3 h-3"></i> Top Pick</span>' : ''}
           </div>
