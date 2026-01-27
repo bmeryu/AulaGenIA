@@ -564,6 +564,31 @@ document.addEventListener("DOMContentLoaded", () => {
     // Generate HTML for resource buttons
     const resourceButtons = moduleResources.map(resource => {
       const colors = getColorClasses(resource.meta.color);
+      const isInteractiveTool = resource.meta.type === 'interactive';
+
+      // Special styling for interactive tools
+      if (isInteractiveTool) {
+        return `
+          <button onclick="window.openResourceViewer('${resource.id}')"
+            class="group relative flex items-center gap-3 p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl border-2 border-teal-400 hover:border-teal-300 shadow-lg hover:shadow-teal-500/30 transition-all text-left w-full overflow-hidden">
+            <!-- Glow effect -->
+            <div class="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-indigo-500/10 opacity-50"></div>
+            <!-- Tool badge -->
+            <div class="absolute top-2 right-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
+              🛠️ Tool
+            </div>
+            <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500/30 to-indigo-500/30 flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0 border border-teal-500/30">
+              <i data-lucide="${resource.meta.icon || 'zap'}" class="w-6 h-6 text-teal-400"></i>
+            </div>
+            <div class="relative">
+              <h4 class="font-bold text-white text-sm">${resource.meta.title}</h4>
+              <p class="text-xs text-teal-300/80">${resource.meta.subtitle || ''}</p>
+            </div>
+          </button>
+        `;
+      }
+
+      // Standard resource button
       return `
         <button onclick="window.openResourceViewer('${resource.id}')"
           class="group flex items-center gap-3 p-4 bg-white rounded-xl border-2 border-teal-100 hover:${colors.border} hover:shadow-lg transition-all text-left w-full">
