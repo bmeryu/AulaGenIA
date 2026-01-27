@@ -4002,6 +4002,160 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => showStep(0), 600);
   }
 
+  // ========== TOUR DE INTRODUCCIÓN AL CURSO ==========
+  // Se muestra la primera vez que alguien entra al curso
+  // Para volver a ver: localStorage.removeItem('courseTourSeen')
+  function runCourseTour() {
+    const tourSeen = localStorage.getItem('courseTourSeen');
+    if (tourSeen) return;
+
+    // Esperar a que el contenido esté cargado
+    setTimeout(() => {
+      const courseSections = [
+        { id: 'course-sidebar', name: 'Tu Panel de Progreso', desc: 'Aquí ves tu avance, los módulos y puedes navegar entre lecciones' },
+        { id: 'lesson-material-container', name: 'Área de Contenido', desc: 'Aquí se muestran los videos, material y los Casos Aplicados del Módulo 5' },
+        { id: 'tabs-navigation-container', name: 'Pestañas del Curso', desc: 'Clases | Materiales | Notas personales | Tareas | Soporte con tutores' },
+        { id: 'main-action-btn', name: 'Botón de Acción', desc: 'Marca cada lección como completada para desbloquear tu certificado' }
+      ];
+
+      let currentStep = 0;
+
+      const tourOverlay = document.createElement('div');
+      tourOverlay.id = 'course-tour-overlay';
+      tourOverlay.innerHTML = `
+        <style>
+          #course-tour-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5); z-index: 9998;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+          }
+          .course-tour-highlight {
+            position: relative; z-index: 9999 !important;
+            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.6), 0 0 30px rgba(20, 184, 166, 0.4) !important;
+            border-radius: 12px;
+            background: white !important;
+          }
+          .course-tour-tooltip {
+            position: fixed; z-index: 10000;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+            color: white; padding: 20px 24px;
+            border-radius: 16px; font-size: 14px; max-width: 340px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: courseTourPulse 0.3s ease;
+          }
+          .course-tour-tooltip h4 { 
+            color: #5eead4; font-size: 18px; margin: 0 0 8px 0; 
+            display: flex; align-items: center; gap: 8px;
+          }
+          .course-tour-tooltip h4::before { content: '✨'; }
+          .course-tour-tooltip p { color: #cbd5e1; font-size: 14px; margin: 0 0 16px 0; line-height: 1.5; }
+          .course-tour-footer { display: flex; justify-content: space-between; align-items: center; }
+          .course-tour-progress { display: flex; gap: 6px; }
+          .course-tour-dot { width: 10px; height: 10px; background: #334155; border-radius: 50%; transition: all 0.2s; }
+          .course-tour-dot.active { background: #5eead4; transform: scale(1.3); }
+          .course-tour-dot.done { background: #14b8a6; }
+          .course-tour-btn { 
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); 
+            color: white; border: none; 
+            padding: 10px 20px; border-radius: 10px; font-size: 14px; 
+            font-weight: 600; cursor: pointer; transition: all 0.2s;
+          }
+          .course-tour-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4); }
+          .course-tour-hint { color: #64748b; font-size: 12px; margin-top: 12px; text-align: center; }
+          @keyframes courseTourPulse { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        </style>
+      `;
+      document.body.appendChild(tourOverlay);
+
+      function endTour() {
+        document.querySelectorAll('.course-tour-highlight').forEach(el => el.classList.remove('course-tour-highlight'));
+        document.querySelectorAll('.course-tour-tooltip').forEach(el => el.remove());
+        tourOverlay.style.opacity = '0';
+        setTimeout(() => tourOverlay.remove(), 300);
+        localStorage.setItem('courseTourSeen', 'true');
+        document.removeEventListener('keydown', handleKeyPress);
+      }
+
+      function showStep(index) {
+        document.querySelectorAll('.course-tour-highlight').forEach(el => el.classList.remove('course-tour-highlight'));
+        document.querySelectorAll('.course-tour-tooltip').forEach(el => el.remove());
+
+        if (index >= courseSections.length) {
+          endTour();
+          return;
+        }
+
+        currentStep = index;
+        const section = document.getElementById(courseSections[index].id);
+
+        if (!section) {
+          showStep(index + 1);
+          return;
+        }
+
+        section.classList.add('course-tour-highlight');
+        section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        setTimeout(() => {
+          const rect = section.getBoundingClientRect();
+          const tooltip = document.createElement('div');
+          tooltip.className = 'course-tour-tooltip';
+
+          const isLast = index === courseSections.length - 1;
+          tooltip.innerHTML = `
+            <h4>${courseSections[index].name}</h4>
+            <p>${courseSections[index].desc}</p>
+            <div class="course-tour-footer">
+              <div class="course-tour-progress">
+                ${courseSections.map((_, i) => `<div class="course-tour-dot ${i < index ? 'done' : ''} ${i === index ? 'active' : ''}"></div>`).join('')}
+              </div>
+              <button class="course-tour-btn" id="course-tour-next-btn">${isLast ? '¡Comenzar!' : 'Siguiente →'}</button>
+            </div>
+            <div class="course-tour-hint">Click, espacio o Enter para continuar</div>
+          `;
+
+          // Posicionar tooltip
+          let top = rect.bottom + 15;
+          let left = rect.left;
+
+          // Ajustar si sale de la pantalla
+          if (top + 200 > window.innerHeight) top = rect.top - 180;
+          if (left + 340 > window.innerWidth) left = window.innerWidth - 360;
+          if (left < 10) left = 10;
+
+          tooltip.style.top = Math.max(10, top) + 'px';
+          tooltip.style.left = Math.max(10, left) + 'px';
+
+          document.body.appendChild(tooltip);
+
+          document.getElementById('course-tour-next-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            showStep(index + 1);
+          });
+        }, 400);
+      }
+
+      function handleKeyPress(e) {
+        if (e.code === 'Space' || e.code === 'Enter') {
+          e.preventDefault();
+          showStep(currentStep + 1);
+        } else if (e.code === 'Escape') {
+          endTour();
+        }
+      }
+
+      document.addEventListener('keydown', handleKeyPress);
+      tourOverlay.addEventListener('click', () => showStep(currentStep + 1));
+
+      setTimeout(() => showStep(0), 800);
+    }, 1500); // Esperar a que cargue el contenido del curso
+  }
+
+  // Exponer función para llamarla al cargar el curso
+  window.runCourseTour = runCourseTour;
+
+
   window.openCaseDetail = function (caseId, forceRender = false) {
     const cCase = casesData.find(c => c.id === caseId);
     if (!cCase) return;
@@ -6156,6 +6310,9 @@ document.addEventListener("DOMContentLoaded", () => {
               if (hash.startsWith('#caso/')) {
                 const caseId = parseInt(hash.replace('#caso/', ''));
                 if (caseId) window.openCaseDetail(caseId);
+              } else {
+                // No hash de caso, mostrar tour del curso si es primera vez
+                if (window.runCourseTour) window.runCourseTour();
               }
             }, 100);
           })())
