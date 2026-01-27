@@ -4321,8 +4321,8 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         {
           id: 'navigation-buttons',
-          name: '✅ Navegación y Progreso',
-          desc: 'Después de ver cada lección:<br>• <strong>Lección Anterior:</strong> Vuelve a repasar<br>• <strong>Marcar como completada:</strong> Avanza y desbloquea la siguiente',
+          name: '🎓 Tu Camino al Certificado',
+          desc: '¡Estás a un paso de tu certificación!<br><br>• <strong>Marca cada lección</strong> como completada<br>• Alcanza el <strong>100%</strong> de progreso<br>• <strong>Obtén tu certificado</strong> oficial de IA Aplicada',
           position: 'top'
         }
       ];
