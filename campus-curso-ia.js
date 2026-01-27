@@ -6457,6 +6457,9 @@ document.addEventListener("DOMContentLoaded", () => {
               if (hash.startsWith('#caso/')) {
                 const caseId = parseInt(hash.replace('#caso/', ''));
                 if (caseId) window.openCaseDetail(caseId);
+              } else {
+                // No case hash, show course tour if first visit
+                if (window.runCourseTour) window.runCourseTour();
               }
             }, 100);
           })())
