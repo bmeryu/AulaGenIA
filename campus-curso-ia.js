@@ -5522,7 +5522,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const userSegmentClass = e.isUserSegment ? "bg-gradient-to-r from-teal-50 to-emerald-50 border-l-2 border-teal-500" : "";
                 // Use image thumbnail for segment categories
                 const iconHtml = e.segmentImage
-                  ? `<img src="${e.segmentImage}" alt="" class="h-6 w-6 mr-3 flex-shrink-0 rounded object-cover">`
+                  ? `<img src="${e.segmentImage}" alt="" class="h-10 w-10 mr-3 flex-shrink-0 rounded object-contain bg-white/50">`
                   : `<i data-lucide="${o}" class="h-4 w-4 mr-3 flex-shrink-0 ${r}"></i>`;
                 return `<li class="lesson-item ${userSegmentClass}" data-lesson-id="${e.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${s}">${iconHtml}<span class="flex-1 text-[11px] whitespace-normal leading-tight">${e.title}</span><i data-lucide="${n}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
               })
