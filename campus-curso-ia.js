@@ -3804,7 +3804,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <button onclick="selectUserSegment('${name}')" 
               class="group p-6 rounded-2xl border-2 border-slate-200 hover:border-${cfg.color}-400 hover:bg-${cfg.color}-50 transition-all text-left">
               <div class="flex items-center gap-4 mb-3">
-                <div class="w-14 h-14 rounded-xl overflow-hidden group-hover:scale-110 transition-transform">
+                <div class="w-20 h-20 rounded-xl overflow-hidden group-hover:scale-110 transition-transform flex-shrink-0">
                   <img src="${cfg.image}" alt="${name}" class="w-full h-full object-contain">
                 </div>
                 <div>
@@ -5522,7 +5522,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const userSegmentClass = e.isUserSegment ? "bg-gradient-to-r from-teal-50 to-emerald-50 border-l-2 border-teal-500" : "";
                 // Use image thumbnail for segment categories
                 const iconHtml = e.segmentImage
-                  ? `<img src="${e.segmentImage}" alt="" class="h-9 w-9 mr-3 flex-shrink-0 rounded object-contain">`
+                  ? `<img src="${e.segmentImage}" alt="" class="h-6 w-6 mr-3 flex-shrink-0 rounded object-cover">`
                   : `<i data-lucide="${o}" class="h-4 w-4 mr-3 flex-shrink-0 ${r}"></i>`;
                 return `<li class="lesson-item ${userSegmentClass}" data-lesson-id="${e.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${s}">${iconHtml}<span class="flex-1 text-[11px] whitespace-normal leading-tight">${e.title}</span><i data-lucide="${n}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
               })
