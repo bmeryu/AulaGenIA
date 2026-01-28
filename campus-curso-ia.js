@@ -3871,6 +3871,16 @@ document.addEventListener("DOMContentLoaded", () => {
   window.showProfileSelectorModal = showProfileSelectorModal;
   window.closeProfileModal = closeProfileModal;
 
+  // ============================================
+  // AUTO-TRIGGER: Show segment selector for new users
+  // ============================================
+  if (!localStorage.getItem('userSegment')) {
+    // Small delay to ensure DOM is fully ready
+    setTimeout(() => {
+      showProfileSelectorModal();
+    }, 800);
+  }
+
   const module5 = {
     title: "Módulo 5: Casos Aplicados",
     badge: "Maestro de Casos",
