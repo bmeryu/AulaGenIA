@@ -72,7 +72,7 @@ function getEmailTemplateStarter({ name, email, resetLink }) {
                 <tr>
                     <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🗺️</span></td>
                     <td>
-                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de Transformación: Fases 1-4</strong>
+                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de Transformación: Fases 1-5</strong>
                         <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquí</a></span>
                     </td>
                 </tr>
@@ -85,10 +85,10 @@ function getEmailTemplateStarter({ name, email, resetLink }) {
                 <tr>
                     <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
                     <td>
-                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
-                        <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini.</div>
+                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+150 Casos Aplicados</strong>
+                        <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Tu biblioteca de instrucciones lista para copiar y pegar en ChatGPT, Claude y Gemini.</div>
                         <div style="font-size: 13px;">
-                            <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a la Herramienta</a><br>
+                            <a href="https://aulagenia.cl/campus-curso-ia.html?course=ia-aplicada-starter#modulo-5" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a los Casos</a><br>
                             <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
                         </div>
                     </td>
@@ -182,7 +182,7 @@ function getEmailTemplatePRO({ name, email, resetLink }) {
                 <tr>
                     <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">🗺️</span></td>
                     <td>
-                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de Transformación: Fases 1-4</strong>
+                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">Tu Ruta de Transformación: Fases 1-5</strong>
                         <span style="color: #64748b; font-size: 14px;">El camino paso a paso. <a href="https://aulagenia.cl/campus.html" style="color: #0d9488;">Ingresa al Campus aquí</a></span>
                     </td>
                 </tr>
@@ -195,10 +195,10 @@ function getEmailTemplatePRO({ name, email, resetLink }) {
                 <tr>
                     <td style="width: 30px; vertical-align: top;"><span style="font-size: 20px;">✅</span></td>
                     <td>
-                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+100 Instrucciones Maestras</strong>
-                        <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Copia y pega fórmulas probadas para ChatGPT, Claude y Gemini.</div>
+                        <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+150 Casos Aplicados</strong>
+                        <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Tu biblioteca de instrucciones lista para copiar y pegar en ChatGPT, Claude y Gemini.</div>
                         <div style="font-size: 13px;">
-                            <a href="https://aulagenia.cl/maestro-prompts-app.html" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a la Herramienta</a><br>
+                            <a href="https://aulagenia.cl/campus-curso-ia.html?course=ia-aplicada-starter#modulo-5" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a los Casos</a><br>
                             <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
                         </div>
                     </td>
