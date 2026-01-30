@@ -6809,9 +6809,9 @@ document.addEventListener("DOMContentLoaded", () => {
                       return;
                     }
                   }
-                  // Si no está listo, reintentar hasta 10 veces
-                  if (attempts < 10) {
-                    setTimeout(() => tryOpenCaseFromHash(attempts + 1), 300);
+                  // Si no está listo, reintentar hasta 20 veces (10 segundos total)
+                  if (attempts < 20) {
+                    setTimeout(() => tryOpenCaseFromHash(attempts + 1), 500);
                   } else {
                     console.warn('Could not load case from hash after retries');
                   }
