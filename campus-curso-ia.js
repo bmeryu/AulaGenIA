@@ -6794,8 +6794,16 @@ document.addEventListener("DOMContentLoaded", () => {
               console.error("Error loading segment:", segErr);
             }
 
-            (b(), Q());
             // Check for hash routing on load - with retry logic
+            const initialHash = window.location.hash;
+            const hasDeepLink = initialHash.startsWith('#caso/') || initialHash.startsWith('#segmento/');
+
+            // Función para renderizar UI por defecto
+            function renderDefaultUI() {
+              (b(), Q());
+              if (window.runCourseTour) window.runCourseTour();
+            }
+
             function tryOpenCaseFromHash(attempts = 0) {
               const hash = window.location.hash;
               if (hash.startsWith('#caso/')) {
@@ -6805,6 +6813,10 @@ document.addEventListener("DOMContentLoaded", () => {
                   if (typeof casesData !== 'undefined' && casesData.length > 0) {
                     const caseExists = casesData.find(c => c.id === caseId);
                     if (caseExists) {
+                      // Primero renderizar UI base si no se ha hecho
+                      if (!document.getElementById('lesson-material-container')?.innerHTML) {
+                        (b(), Q());
+                      }
                       window.openCaseDetail(caseId, true);
                       return;
                     }
@@ -6814,10 +6826,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     setTimeout(() => tryOpenCaseFromHash(attempts + 1), 500);
                   } else {
                     console.warn('Could not load case from hash after retries');
+                    renderDefaultUI();
                   }
                 }
               } else if (hash === '#modulo5' || hash === '#casos') {
                 // Navegar al Módulo 5: Casos Aplicados
+                renderDefaultUI();
                 const modulesContainer = document.getElementById('modules-container');
                 if (modulesContainer) {
                   // Encontrar el Módulo 5 (penúltimo acordeón - Casos Aplicados)
@@ -6846,11 +6860,17 @@ document.addEventListener("DOMContentLoaded", () => {
                   }
                 }
               } else {
-                // No hash de caso, mostrar tour del curso si es primera vez
-                if (window.runCourseTour) window.runCourseTour();
+                // No hash de caso, renderizar vista por defecto
+                renderDefaultUI();
               }
             }
-            setTimeout(() => tryOpenCaseFromHash(), 200);
+
+            // Si hay deep link, intentar cargarlo; sino renderizar por defecto
+            if (hasDeepLink) {
+              setTimeout(() => tryOpenCaseFromHash(), 200);
+            } else {
+              renderDefaultUI();
+            }
           })())
         : (window.location.href = `${o}/acceso.html?redirect=${encodeURIComponent(window.location.href)}`);
     }),
