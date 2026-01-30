@@ -3873,13 +3873,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ============================================
   // AUTO-TRIGGER: Show segment selector for new users
+  // NOTA: Movido a después de verificar Firestore (línea ~6794)
+  // para evitar mostrar modal si ya hay segmento guardado en la nube
   // ============================================
-  if (!localStorage.getItem('userSegment')) {
-    // Small delay to ensure DOM is fully ready
-    setTimeout(() => {
-      showProfileSelectorModal();
-    }, 800);
-  }
 
   const module5 = {
     title: "Módulo 5: Casos Aplicados",
@@ -4234,6 +4230,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function runCourseTour() {
     const tourSeen = localStorage.getItem('courseTourSeen');
     if (tourSeen) return;
+
+    // NO ejecutar el tour si hay modal de segmentación visible
+    const segmentModal = document.getElementById('segment-selection-modal');
+    if (segmentModal && !segmentModal.classList.contains('hidden')) {
+      console.log('Tour skipped: segment selection modal is open');
+      return;
+    }
 
     // NO ejecutar el tour si estamos viendo un caso del Módulo 5
     const hash = window.location.hash;
@@ -6812,7 +6815,12 @@ document.addEventListener("DOMContentLoaded", () => {
             // Función para renderizar UI por defecto
             function renderDefaultUI() {
               (b(), Q());
-              if (window.runCourseTour) window.runCourseTour();
+              // Solo ejecutar tour si NO hay modal de segmentación visible
+              const segmentModal = document.getElementById('segment-selection-modal');
+              const isModalVisible = segmentModal && !segmentModal.classList.contains('hidden');
+              if (window.runCourseTour && !isModalVisible) {
+                window.runCourseTour();
+              }
             }
 
             function tryOpenCaseFromHash(attempts = 0) {
