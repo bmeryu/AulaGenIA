@@ -4641,14 +4641,17 @@ document.addEventListener("DOMContentLoaded", () => {
   window.runTooltipTour = runTooltipTour;
   window.runCaseTour = runTooltipTour; // Alias
 
-  window.openCaseDetail = function (caseId, forceRender = false) {
+  window.openCaseDetail = function (caseId, forceRender = false, retryCount = 0) {
     const cCase = casesData.find(c => c.id === caseId);
-    if (!cCase) return;
+    if (!cCase) {
+      console.warn('[openCaseDetail] Case not found:', caseId);
+      return;
+    }
 
     // Robustness: If hash is already the same, force re-render
     const targetHash = `#caso/${caseId}`;
     if (window.location.hash === targetHash && !forceRender) {
-      window.openCaseDetail(caseId, true);
+      window.openCaseDetail(caseId, true, retryCount);
       return;
     }
 
@@ -4656,10 +4659,18 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.hash = `caso/${caseId}`;
     const container = document.getElementById("lesson-material-container");
     if (container) {
+      console.log('[openCaseDetail] Rendering case:', caseId);
       container.innerHTML = renderCaseDetailHTML(cCase);
       lucide.createIcons();
       // Ejecutar tour guiado de tooltips
       setTimeout(() => runTooltipTour(), 500);
+    } else if (retryCount < 10) {
+      // Contenedor no existe aún, reintentar
+      console.log('[openCaseDetail] Container not ready, retry:', retryCount + 1);
+      setTimeout(() => window.openCaseDetail(caseId, true, retryCount + 1), 200);
+      return;
+    } else {
+      console.error('[openCaseDetail] Container never became available');
     }
     if (window.innerWidth >= 1024) {
       const contentContainer = document.getElementById("lesson-content");
