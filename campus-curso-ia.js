@@ -6813,11 +6813,12 @@ document.addEventListener("DOMContentLoaded", () => {
                   if (typeof casesData !== 'undefined' && casesData.length > 0) {
                     const caseExists = casesData.find(c => c.id === caseId);
                     if (caseExists) {
-                      // Primero renderizar UI base si no se ha hecho
-                      if (!document.getElementById('lesson-material-container')?.innerHTML) {
-                        (b(), Q());
-                      }
-                      window.openCaseDetail(caseId, true);
+                      // SIEMPRE renderizar UI base primero para crear el contenedor
+                      (b(), Q());
+                      // Dar tiempo al DOM para estabilizarse, luego abrir el caso
+                      setTimeout(() => {
+                        window.openCaseDetail(caseId, true);
+                      }, 100);
                       return;
                     }
                   }
