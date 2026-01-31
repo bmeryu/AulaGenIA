@@ -6783,6 +6783,12 @@ document.addEventListener("DOMContentLoaded", () => {
             // Load user segment from Firestore
             try {
               const userDoc = await t.collection("userProgress").doc(l.uid).get();
+              console.log("[Segment] Checking Firestore for user:", l.uid);
+              console.log("[Segment] Document exists:", userDoc.exists);
+              if (userDoc.exists) {
+                console.log("[Segment] Document data:", userDoc.data());
+              }
+
               if (userDoc.exists && userDoc.data().userSegment) {
                 // Check for DEV override
                 const isDevOverride = localStorage.getItem('devSegmentOverride') === 'true';
@@ -6792,17 +6798,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                   currentUserSegment = userDoc.data().userSegment;
                   localStorage.setItem('userSegment', currentUserSegment);
-                  console.log("Segment loaded from Firestore:", currentUserSegment);
+                  console.log("[Segment] Loaded from Firestore:", currentUserSegment);
                 }
               } else if (!localStorage.getItem('userSegment')) {
-                // No segment saved, show selection modal after a short delay
+                // No segment saved anywhere, show selection modal
+                console.log("[Segment] No segment found - showing modal");
                 setTimeout(() => {
-                  const modal = document.getElementById('segment-selection-modal');
-                  if (modal) {
-                    modal.classList.remove('hidden');
-                    lucide.createIcons();
+                  if (window.showProfileSelectorModal) {
+                    window.showProfileSelectorModal();
                   }
                 }, 1500);
+              } else {
+                // Has localStorage but not Firestore - use localStorage
+                currentUserSegment = localStorage.getItem('userSegment');
+                console.log("[Segment] Using localStorage (not in Firestore):", currentUserSegment);
               }
             } catch (segErr) {
               console.error("Error loading segment:", segErr);
