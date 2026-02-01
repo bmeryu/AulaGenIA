@@ -4001,6 +4001,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // IDs de las secciones con tooltips (en orden)
     const tooltipSections = [
+      { id: 'case-section-titulo', name: 'Tu Caso Aplicado', desc: 'El título y contexto del caso que estás explorando' },
       { id: 'case-section-desafio', name: 'El Desafío', desc: 'El problema que este caso resuelve' },
       { id: 'case-section-instruccion', name: 'Instrucción Maestra', desc: 'El mensaje listo para copiar y usar' },
       { id: 'case-section-ajuste', name: 'Ajuste Fino', desc: 'Tips para personalizar el resultado' },
@@ -5124,7 +5125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-10 animate-in fade-in slide-in-from-bottom-8 duration-500">
             
             <!-- HEADER PREMIUM CON IMAGEN DEL SEGMENTO -->
-            <header class="mb-8 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <header id="case-section-titulo" class="mb-8 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
                 <div class="flex items-center justify-between mb-5">
                     <button onclick="backToCategory()" class="inline-flex items-center gap-2 text-slate-500 hover:text-teal-600 transition-colors text-sm font-medium">
                         <i data-lucide="arrow-left" class="w-4 h-4"></i>
