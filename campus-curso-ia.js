@@ -5498,10 +5498,13 @@ document.addEventListener("DOMContentLoaded", () => {
     tabsNavContainer: document.getElementById("tabs-navigation-container"),
   };
   function g() {
-    // Exclude segment_category from completion check
-    const completableLessons = i.filter(l => l.type !== "segment_category");
-    if (0 === completableLessons.length) return !1;
-    return new Set(c.completedLessons).size >= completableLessons.length;
+    // Solo contar módulos 0-5 para completitud (excluir Módulo 5 - Casos Aplicados)
+    const progressModules = n.modules.slice(0, 6);
+    const validLessonIds = new Set();
+    progressModules.forEach(mod => mod.lessons.forEach(l => validLessonIds.add(l.id)));
+    if (0 === validLessonIds.size) return !1;
+    const completedValid = c.completedLessons.filter(id => validLessonIds.has(id)).length;
+    return completedValid >= validLessonIds.size;
   }
   function f(e) {
     for (let a = 0; a < n.modules.length; a++) {
@@ -6031,12 +6034,15 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
   function x() {
-    // Exclude segment_category from progress calculation (M5 categories are navigation, not lessons)
-    const completableLessons = i.filter(l => l.type !== "segment_category");
-    const completedCount = c.completedLessons.filter(id =>
-      completableLessons.some(l => l.id === id)
-    ).length;
-    const a = completableLessons.length > 0 ? Math.round((completedCount / completableLessons.length) * 100) : 0;
+    // Solo contar lecciones de módulos 0-4 (Bienvenida, M1, M2, M3, M4, Final)
+    // Módulo 5 (Casos Aplicados) NO cuenta para el progreso
+    const progressModules = n.modules.slice(0, 6); // Solo primeros 6 módulos (índice 0-5)
+    const validLessonIds = new Set();
+    progressModules.forEach(mod => mod.lessons.forEach(l => validLessonIds.add(l.id)));
+
+    const completedCount = c.completedLessons.filter(id => validLessonIds.has(id)).length;
+    const total = validLessonIds.size;
+    const a = total > 0 ? Math.round((completedCount / total) * 100) : 0;
     (m.progressBar && (m.progressBar.style.width = `${a}%`),
       m.progressText && (m.progressText.textContent = `${a}%`));
   }
