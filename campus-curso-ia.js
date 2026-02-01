@@ -4374,12 +4374,12 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           .course-tour-tooltip {
             position: fixed; z-index: 10000;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+            background: #0f172a; /* Fondo sólido opaco */
             color: white;
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
             animation: courseTourPulse 0.4s ease;
-            border: 1px solid rgba(94, 234, 212, 0.2);
+            border: 2px solid rgba(94, 234, 212, 0.4);
             /* Mobile first - fixed bottom */
             padding: 18px 20px;
             font-size: 13px;
@@ -4388,6 +4388,9 @@ document.addEventListener("DOMContentLoaded", () => {
             right: 12px !important;
             width: auto !important;
             max-width: calc(100vw - 24px);
+            /* Asegurar que tape todo el contenido detrás */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
           }
           @media (min-width: 768px) {
             .course-tour-tooltip {
