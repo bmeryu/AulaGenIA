@@ -4231,10 +4231,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const tourSeen = localStorage.getItem('courseTourSeen');
     if (tourSeen) return;
 
-    // NO ejecutar el tour si hay modal de segmentación visible
+    // NO ejecutar el tour si hay modal de segmentación visible (HTML o JS-created)
     const segmentModal = document.getElementById('segment-selection-modal');
-    if (segmentModal && !segmentModal.classList.contains('hidden')) {
-      console.log('Tour skipped: segment selection modal is open');
+    const profileModal = document.getElementById('profile-selector-modal');
+    if ((segmentModal && !segmentModal.classList.contains('hidden')) || profileModal) {
+      console.log('Tour skipped: segment/profile selection modal is open');
       return;
     }
 
