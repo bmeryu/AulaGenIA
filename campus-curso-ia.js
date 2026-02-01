@@ -6825,6 +6825,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Función para renderizar UI por defecto
             function renderDefaultUI() {
+              // Si el tour NO ha sido visto, empezar en la primera lección para un onboarding coherente
+              const tourNotSeen = !localStorage.getItem('courseTourSeen');
+              if (tourNotSeen && c.currentLessonId && c.currentLessonId.startsWith('seg-')) {
+                console.log('[Onboarding] Tour not seen, resetting to first lesson instead of Module 5');
+                c.currentLessonId = i[0].id; // Reset a primera lección
+              }
               (b(), Q());
               // Solo ejecutar tour si NO hay modal de segmentación visible
               const segmentModal = document.getElementById('segment-selection-modal');
