@@ -1166,35 +1166,37 @@
                         progressRef.onSnapshot(snap => {
                             let completed = 0;
                             const courseConfig = u[courseId];
-                            const total = courseConfig ? courseConfig.totalLessons : 0;
 
                             if (snap.exists && courseConfig) {
                                 const progressData = snap.data()[courseId];
+                                // Build valid lesson set from modules - count dynamically
+                                const validSet = new Set();
+                                courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
+                                const total = validSet.size; // Conteo dinámico, no hardcodeado
+
                                 if (progressData && Array.isArray(progressData.completedLessons)) {
-                                    const validSet = new Set();
-                                    courseConfig.modules.forEach(m => m.lessons.forEach(l => validSet.add(l.id)));
                                     const userSet = new Set(progressData.completedLessons);
                                     let count = 0;
                                     userSet.forEach(lId => { if (validSet.has(lId)) count++; });
                                     completed = count;
                                 }
-                            }
 
-                            const percent = total > 0 ? Math.min(Math.round(completed / total * 100), 100) : 0;
+                                const percent = total > 0 ? Math.min(Math.round(completed / total * 100), 100) : 0;
 
-                            percentEl.textContent = `${percent}%`;
-                            fill.style.width = `${percent}%`;
+                                percentEl.textContent = `${percent}%`;
+                                fill.style.width = `${percent}%`;
 
-                            if (percent >= 100) {
-                                tag.textContent = "Completado";
-                                tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full";
-                                fill.style.backgroundColor = "var(--brand-green)";
-                                footer.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${linkProps}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
-                                lucide.createIcons();
-                            } else {
-                                tag.textContent = "En progreso";
-                                tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full";
-                                fill.style.backgroundColor = "var(--brand-teal)";
+                                if (percent >= 100) {
+                                    tag.textContent = "Completado";
+                                    tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-1 rounded-full";
+                                    fill.style.backgroundColor = "var(--brand-green)";
+                                    footer.innerHTML = `<div class="space-y-3"><a href="portal-certificacion.html" class="flex items-center justify-center gap-2 w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-5 rounded-lg transition-colors"><i data-lucide="award" class="h-5 w-5"></i><span>Ver Certificado</span></a><a href="${linkProps}" class="block text-sm text-gray-500 hover:text-teal-600 font-semibold transition-colors text-center">Repasar Curso</a></div>`;
+                                    lucide.createIcons();
+                                } else {
+                                    tag.textContent = "En progreso";
+                                    tag.className = "tag inline-block text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-100 px-2 py-1 rounded-full";
+                                    fill.style.backgroundColor = "var(--brand-teal)";
+                                }
                             }
                         });
                     }
