@@ -6800,18 +6800,16 @@ document.addEventListener("DOMContentLoaded", () => {
                   localStorage.setItem('userSegment', currentUserSegment);
                   console.log("[Segment] Loaded from Firestore:", currentUserSegment);
                 }
-              } else if (!localStorage.getItem('userSegment')) {
-                // No segment saved anywhere, show selection modal
-                console.log("[Segment] No segment found - showing modal");
+              } else {
+                // Firestore is authoritative: if no segment in Firestore, clear localStorage and show modal
+                console.log("[Segment] No segment in Firestore - clearing localStorage and showing modal");
+                localStorage.removeItem('userSegment');
+                currentUserSegment = null;
                 setTimeout(() => {
                   if (window.showProfileSelectorModal) {
                     window.showProfileSelectorModal();
                   }
                 }, 1500);
-              } else {
-                // Has localStorage but not Firestore - use localStorage
-                currentUserSegment = localStorage.getItem('userSegment');
-                console.log("[Segment] Using localStorage (not in Firestore):", currentUserSegment);
               }
             } catch (segErr) {
               console.error("Error loading segment:", segErr);
