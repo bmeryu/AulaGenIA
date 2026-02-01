@@ -4229,9 +4229,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // Se muestra la primera vez que alguien entra al curso
   // Para volver a ver: localStorage.removeItem('courseTourSeen')
   // ===================================================================
+  let tourIsRunning = false; // Bandera para evitar múltiples ejecuciones
+
   function runCourseTour() {
     const tourSeen = localStorage.getItem('courseTourSeen');
     if (tourSeen) return;
+
+    // Evitar múltiples ejecuciones simultáneas
+    if (tourIsRunning) {
+      console.log('Tour skipped: already running');
+      return;
+    }
 
     // NO ejecutar el tour si hay modal de segmentación visible o pendiente
     const segmentModal = document.getElementById('segment-selection-modal');
@@ -4247,6 +4255,14 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log('Tour skipped: viewing a case or segment');
       return;
     }
+
+    // Limpiar cualquier tour previo que haya quedado pegado
+    document.querySelectorAll('.course-tour-highlight').forEach(el => el.classList.remove('course-tour-highlight'));
+    document.querySelectorAll('.course-tour-tooltip').forEach(el => el.remove());
+    const oldOverlay = document.getElementById('course-tour-overlay');
+    if (oldOverlay) oldOverlay.remove();
+
+    tourIsRunning = true; // Marcar que está corriendo
 
     // Función para verificar que el contenido esté listo
     function checkContentReady(attempts = 0) {
@@ -4494,6 +4510,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => tourOverlay.remove(), 300);
         localStorage.setItem('courseTourSeen', 'true');
         document.removeEventListener('keydown', handleKeyPress);
+        tourIsRunning = false; // Permitir futuras ejecuciones si se resetea localStorage
       }
 
       function showStep(index) {
