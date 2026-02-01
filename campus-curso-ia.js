@@ -3782,6 +3782,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentUserSegment = localStorage.getItem('userSegment') || null;
   let currentViewTab = 'forYou'; // 'forYou' o 'explore'
+  let pendingSegmentModal = false; // Flag to prevent tour while modal is pending
 
   function showProfileSelectorModal() {
     const existingModal = document.getElementById('profile-selector-modal');
@@ -4231,11 +4232,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const tourSeen = localStorage.getItem('courseTourSeen');
     if (tourSeen) return;
 
-    // NO ejecutar el tour si hay modal de segmentación visible (HTML o JS-created)
+    // NO ejecutar el tour si hay modal de segmentación visible o pendiente
     const segmentModal = document.getElementById('segment-selection-modal');
     const profileModal = document.getElementById('profile-selector-modal');
-    if ((segmentModal && !segmentModal.classList.contains('hidden')) || profileModal) {
-      console.log('Tour skipped: segment/profile selection modal is open');
+    if ((segmentModal && !segmentModal.classList.contains('hidden')) || profileModal || pendingSegmentModal) {
+      console.log('Tour skipped: segment/profile selection modal is open or pending');
       return;
     }
 
@@ -6806,10 +6807,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("[Segment] No segment in Firestore - clearing localStorage and showing modal");
                 localStorage.removeItem('userSegment');
                 currentUserSegment = null;
+                pendingSegmentModal = true; // Set flag BEFORE timeout to prevent tour
                 setTimeout(() => {
                   if (window.showProfileSelectorModal) {
                     window.showProfileSelectorModal();
                   }
+                  pendingSegmentModal = false; // Clear flag after modal is shown
                 }, 1500);
               }
             } catch (segErr) {
