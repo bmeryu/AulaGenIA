@@ -3782,6 +3782,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentUserSegment = localStorage.getItem('userSegment') || null;
   let currentViewTab = 'forYou'; // 'forYou' o 'explore'
+  let pendingSegmentModal = false; // Flag to prevent tour while modal is pending
 
   function showProfileSelectorModal() {
     const existingModal = document.getElementById('profile-selector-modal');
@@ -3804,7 +3805,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <button onclick="selectUserSegment('${name}')" 
               class="group p-6 rounded-2xl border-2 border-slate-200 hover:border-${cfg.color}-400 hover:bg-${cfg.color}-50 transition-all text-left">
               <div class="flex items-center gap-4 mb-3">
-                <div class="w-14 h-14 rounded-xl overflow-hidden group-hover:scale-110 transition-transform">
+                <div class="w-20 h-20 rounded-xl overflow-hidden group-hover:scale-110 transition-transform flex-shrink-0">
                   <img src="${cfg.image}" alt="${name}" class="w-full h-full object-contain">
                 </div>
                 <div>
@@ -3873,13 +3874,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ============================================
   // AUTO-TRIGGER: Show segment selector for new users
+  // NOTA: Movido a después de verificar Firestore (línea ~6794)
+  // para evitar mostrar modal si ya hay segmento guardado en la nube
   // ============================================
-  if (!localStorage.getItem('userSegment')) {
-    // Small delay to ensure DOM is fully ready
-    setTimeout(() => {
-      showProfileSelectorModal();
-    }, 800);
-  }
 
   const module5 = {
     title: "Módulo 5: Casos Aplicados",
@@ -4004,6 +4001,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // IDs de las secciones con tooltips (en orden)
     const tooltipSections = [
+      { id: 'case-section-titulo', name: 'Tu Caso Aplicado', desc: 'El título y contexto del caso que estás explorando' },
       { id: 'case-section-desafio', name: 'El Desafío', desc: 'El problema que este caso resuelve' },
       { id: 'case-section-instruccion', name: 'Instrucción Maestra', desc: 'El mensaje listo para copiar y usar' },
       { id: 'case-section-ajuste', name: 'Ajuste Fino', desc: 'Tips para personalizar el resultado' },
@@ -4231,9 +4229,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Se muestra la primera vez que alguien entra al curso
   // Para volver a ver: localStorage.removeItem('courseTourSeen')
   // ===================================================================
+  let tourIsRunning = false; // Bandera para evitar múltiples ejecuciones
+
   function runCourseTour() {
     const tourSeen = localStorage.getItem('courseTourSeen');
     if (tourSeen) return;
+
+    // Evitar múltiples ejecuciones simultáneas
+    if (tourIsRunning) {
+      console.log('Tour skipped: already running');
+      return;
+    }
+
+    // NO ejecutar el tour si hay modal de segmentación visible o pendiente
+    const segmentModal = document.getElementById('segment-selection-modal');
+    const profileModal = document.getElementById('profile-selector-modal');
+    if ((segmentModal && !segmentModal.classList.contains('hidden')) || profileModal || pendingSegmentModal) {
+      console.log('Tour skipped: segment/profile selection modal is open or pending');
+      return;
+    }
 
     // NO ejecutar el tour si estamos viendo un caso del Módulo 5
     const hash = window.location.hash;
@@ -4241,6 +4255,14 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log('Tour skipped: viewing a case or segment');
       return;
     }
+
+    // Limpiar cualquier tour previo que haya quedado pegado
+    document.querySelectorAll('.course-tour-highlight').forEach(el => el.classList.remove('course-tour-highlight'));
+    document.querySelectorAll('.course-tour-tooltip').forEach(el => el.remove());
+    const oldOverlay = document.getElementById('course-tour-overlay');
+    if (oldOverlay) oldOverlay.remove();
+
+    tourIsRunning = true; // Marcar que está corriendo
 
     // Función para verificar que el contenido esté listo
     function checkContentReady(attempts = 0) {
@@ -4368,12 +4390,12 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           .course-tour-tooltip {
             position: fixed; z-index: 10000;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+            background: #0f172a; /* Fondo sólido opaco */
             color: white;
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
             animation: courseTourPulse 0.4s ease;
-            border: 1px solid rgba(94, 234, 212, 0.2);
+            border: 2px solid rgba(94, 234, 212, 0.4);
             /* Mobile first - fixed bottom */
             padding: 18px 20px;
             font-size: 13px;
@@ -4382,6 +4404,9 @@ document.addEventListener("DOMContentLoaded", () => {
             right: 12px !important;
             width: auto !important;
             max-width: calc(100vw - 24px);
+            /* Asegurar que tape todo el contenido detrás */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
           }
           @media (min-width: 768px) {
             .course-tour-tooltip {
@@ -4485,6 +4510,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => tourOverlay.remove(), 300);
         localStorage.setItem('courseTourSeen', 'true');
         document.removeEventListener('keydown', handleKeyPress);
+        tourIsRunning = false; // Permitir futuras ejecuciones si se resetea localStorage
       }
 
       function showStep(index) {
@@ -4641,14 +4667,17 @@ document.addEventListener("DOMContentLoaded", () => {
   window.runTooltipTour = runTooltipTour;
   window.runCaseTour = runTooltipTour; // Alias
 
-  window.openCaseDetail = function (caseId, forceRender = false) {
+  window.openCaseDetail = function (caseId, forceRender = false, retryCount = 0) {
     const cCase = casesData.find(c => c.id === caseId);
-    if (!cCase) return;
+    if (!cCase) {
+      console.warn('[openCaseDetail] Case not found:', caseId);
+      return;
+    }
 
     // Robustness: If hash is already the same, force re-render
     const targetHash = `#caso/${caseId}`;
     if (window.location.hash === targetHash && !forceRender) {
-      window.openCaseDetail(caseId, true);
+      window.openCaseDetail(caseId, true, retryCount);
       return;
     }
 
@@ -4656,10 +4685,18 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.hash = `caso/${caseId}`;
     const container = document.getElementById("lesson-material-container");
     if (container) {
+      console.log('[openCaseDetail] Rendering case:', caseId);
       container.innerHTML = renderCaseDetailHTML(cCase);
       lucide.createIcons();
       // Ejecutar tour guiado de tooltips
       setTimeout(() => runTooltipTour(), 500);
+    } else if (retryCount < 10) {
+      // Contenedor no existe aún, reintentar
+      console.log('[openCaseDetail] Container not ready, retry:', retryCount + 1);
+      setTimeout(() => window.openCaseDetail(caseId, true, retryCount + 1), 200);
+      return;
+    } else {
+      console.error('[openCaseDetail] Container never became available');
     }
     if (window.innerWidth >= 1024) {
       const contentContainer = document.getElementById("lesson-content");
@@ -5108,7 +5145,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-10 animate-in fade-in slide-in-from-bottom-8 duration-500">
             
             <!-- HEADER PREMIUM CON IMAGEN DEL SEGMENTO -->
-            <header class="mb-8 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <header id="case-section-titulo" class="mb-8 bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
                 <div class="flex items-center justify-between mb-5">
                     <button onclick="backToCategory()" class="inline-flex items-center gap-2 text-slate-500 hover:text-teal-600 transition-colors text-sm font-medium">
                         <i data-lucide="arrow-left" class="w-4 h-4"></i>
@@ -5461,10 +5498,13 @@ document.addEventListener("DOMContentLoaded", () => {
     tabsNavContainer: document.getElementById("tabs-navigation-container"),
   };
   function g() {
-    // Exclude segment_category from completion check
-    const completableLessons = i.filter(l => l.type !== "segment_category");
-    if (0 === completableLessons.length) return !1;
-    return new Set(c.completedLessons).size >= completableLessons.length;
+    // Solo contar módulos 0-5 para completitud (excluir Módulo 5 - Casos Aplicados)
+    const progressModules = n.modules.slice(0, 6);
+    const validLessonIds = new Set();
+    progressModules.forEach(mod => mod.lessons.forEach(l => validLessonIds.add(l.id)));
+    if (0 === validLessonIds.size) return !1;
+    const completedValid = c.completedLessons.filter(id => validLessonIds.has(id)).length;
+    return completedValid >= validLessonIds.size;
   }
   function f(e) {
     for (let a = 0; a < n.modules.length; a++) {
@@ -5522,7 +5562,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const userSegmentClass = e.isUserSegment ? "bg-gradient-to-r from-teal-50 to-emerald-50 border-l-2 border-teal-500" : "";
                 // Use image thumbnail for segment categories
                 const iconHtml = e.segmentImage
-                  ? `<img src="${e.segmentImage}" alt="" class="h-6 w-6 mr-3 flex-shrink-0 rounded object-cover">`
+                  ? `<img src="${e.segmentImage}" alt="" class="h-10 w-10 mr-3 flex-shrink-0 rounded object-contain bg-white/50">`
                   : `<i data-lucide="${o}" class="h-4 w-4 mr-3 flex-shrink-0 ${r}"></i>`;
                 return `<li class="lesson-item ${userSegmentClass}" data-lesson-id="${e.id}"><a href="#" class="flex items-center px-4 py-2 ml-2 rounded-md transition-colors ${s}">${iconHtml}<span class="flex-1 text-[11px] whitespace-normal leading-tight">${e.title}</span><i data-lucide="${n}" class="h-3.5 w-3.5 ml-2 opacity-30"></i></a></li>`;
               })
@@ -5994,12 +6034,15 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
   function x() {
-    // Exclude segment_category from progress calculation (M5 categories are navigation, not lessons)
-    const completableLessons = i.filter(l => l.type !== "segment_category");
-    const completedCount = c.completedLessons.filter(id =>
-      completableLessons.some(l => l.id === id)
-    ).length;
-    const a = completableLessons.length > 0 ? Math.round((completedCount / completableLessons.length) * 100) : 0;
+    // Solo contar lecciones de módulos 0-4 (Bienvenida, M1, M2, M3, M4, Final)
+    // Módulo 5 (Casos Aplicados) NO cuenta para el progreso
+    const progressModules = n.modules.slice(0, 6); // Solo primeros 6 módulos (índice 0-5)
+    const validLessonIds = new Set();
+    progressModules.forEach(mod => mod.lessons.forEach(l => validLessonIds.add(l.id)));
+
+    const completedCount = c.completedLessons.filter(id => validLessonIds.has(id)).length;
+    const total = validLessonIds.size;
+    const a = total > 0 ? Math.round((completedCount / total) * 100) : 0;
     (m.progressBar && (m.progressBar.style.width = `${a}%`),
       m.progressText && (m.progressText.textContent = `${a}%`));
   }
@@ -6769,6 +6812,12 @@ document.addEventListener("DOMContentLoaded", () => {
             // Load user segment from Firestore
             try {
               const userDoc = await t.collection("userProgress").doc(l.uid).get();
+              console.log("[Segment] Checking Firestore for user:", l.uid);
+              console.log("[Segment] Document exists:", userDoc.exists);
+              if (userDoc.exists) {
+                console.log("[Segment] Document data:", userDoc.data());
+              }
+
               if (userDoc.exists && userDoc.data().userSegment) {
                 // Check for DEV override
                 const isDevOverride = localStorage.getItem('devSegmentOverride') === 'true';
@@ -6778,24 +6827,46 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                   currentUserSegment = userDoc.data().userSegment;
                   localStorage.setItem('userSegment', currentUserSegment);
-                  console.log("Segment loaded from Firestore:", currentUserSegment);
+                  console.log("[Segment] Loaded from Firestore:", currentUserSegment);
                 }
-              } else if (!localStorage.getItem('userSegment')) {
-                // No segment saved, show selection modal after a short delay
+              } else {
+                // Firestore is authoritative: if no segment in Firestore, clear localStorage and show modal
+                console.log("[Segment] No segment in Firestore - clearing localStorage and showing modal");
+                localStorage.removeItem('userSegment');
+                currentUserSegment = null;
+                pendingSegmentModal = true; // Set flag BEFORE timeout to prevent tour
                 setTimeout(() => {
-                  const modal = document.getElementById('segment-selection-modal');
-                  if (modal) {
-                    modal.classList.remove('hidden');
-                    lucide.createIcons();
+                  if (window.showProfileSelectorModal) {
+                    window.showProfileSelectorModal();
                   }
+                  pendingSegmentModal = false; // Clear flag after modal is shown
                 }, 1500);
               }
             } catch (segErr) {
               console.error("Error loading segment:", segErr);
             }
 
-            (b(), Q());
             // Check for hash routing on load - with retry logic
+            const initialHash = window.location.hash;
+            const hasDeepLink = initialHash.startsWith('#caso/') || initialHash.startsWith('#segmento/');
+
+            // Función para renderizar UI por defecto
+            function renderDefaultUI() {
+              // Si el tour NO ha sido visto, empezar en la primera lección para un onboarding coherente
+              const tourNotSeen = !localStorage.getItem('courseTourSeen');
+              if (tourNotSeen && c.currentLessonId && c.currentLessonId.startsWith('seg-')) {
+                console.log('[Onboarding] Tour not seen, resetting to first lesson instead of Module 5');
+                c.currentLessonId = i[0].id; // Reset a primera lección
+              }
+              (b(), Q());
+              // Solo ejecutar tour si NO hay modal de segmentación visible
+              const segmentModal = document.getElementById('segment-selection-modal');
+              const isModalVisible = segmentModal && !segmentModal.classList.contains('hidden');
+              if (window.runCourseTour && !isModalVisible) {
+                window.runCourseTour();
+              }
+            }
+
             function tryOpenCaseFromHash(attempts = 0) {
               const hash = window.location.hash;
               if (hash.startsWith('#caso/')) {
@@ -6805,19 +6876,26 @@ document.addEventListener("DOMContentLoaded", () => {
                   if (typeof casesData !== 'undefined' && casesData.length > 0) {
                     const caseExists = casesData.find(c => c.id === caseId);
                     if (caseExists) {
-                      window.openCaseDetail(caseId, true);
+                      // SIEMPRE renderizar UI base primero para crear el contenedor
+                      (b(), Q());
+                      // Dar tiempo al DOM para estabilizarse, luego abrir el caso
+                      setTimeout(() => {
+                        window.openCaseDetail(caseId, true);
+                      }, 100);
                       return;
                     }
                   }
-                  // Si no está listo, reintentar hasta 10 veces
-                  if (attempts < 10) {
-                    setTimeout(() => tryOpenCaseFromHash(attempts + 1), 300);
+                  // Si no está listo, reintentar hasta 20 veces (10 segundos total)
+                  if (attempts < 20) {
+                    setTimeout(() => tryOpenCaseFromHash(attempts + 1), 500);
                   } else {
                     console.warn('Could not load case from hash after retries');
+                    renderDefaultUI();
                   }
                 }
               } else if (hash === '#modulo5' || hash === '#casos') {
                 // Navegar al Módulo 5: Casos Aplicados
+                renderDefaultUI();
                 const modulesContainer = document.getElementById('modules-container');
                 if (modulesContainer) {
                   // Encontrar el Módulo 5 (penúltimo acordeón - Casos Aplicados)
@@ -6846,11 +6924,17 @@ document.addEventListener("DOMContentLoaded", () => {
                   }
                 }
               } else {
-                // No hash de caso, mostrar tour del curso si es primera vez
-                if (window.runCourseTour) window.runCourseTour();
+                // No hash de caso, renderizar vista por defecto
+                renderDefaultUI();
               }
             }
-            setTimeout(() => tryOpenCaseFromHash(), 200);
+
+            // Si hay deep link, intentar cargarlo; sino renderizar por defecto
+            if (hasDeepLink) {
+              setTimeout(() => tryOpenCaseFromHash(), 200);
+            } else {
+              renderDefaultUI();
+            }
           })())
         : (window.location.href = `${o}/acceso.html?redirect=${encodeURIComponent(window.location.href)}`);
     }),
