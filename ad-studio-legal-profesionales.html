@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ad Studio Educacion - Meta Safe Zones</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
-    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
     <style>
         /* RESET & SETUP */
@@ -1741,31 +1739,33 @@
         }
         document.addEventListener('DOMContentLoaded', init);
 
-        // --- SISTEMA DE GRABACIÓN V2026.2.14-F (FFmpeg Auto-Crop) ---
+        // --- SISTEMA DE GRABACIÓN V2026.2.14-G (ESM Module) ---
         let mediaRecorder = null;
         let recordedChunks = [];
         let isRecording = false;
         let screenStream = null;
+        let ffmpegInstance = null;
         let ffmpegLoaded = false;
-        let ffmpeg = null;
 
-        // Inicializar FFmpeg
-        async function initFFmpeg() {
+        async function loadFFmpeg() {
             if (ffmpegLoaded) return true;
             try {
-                // Acceder a los globales correctos
-                const FFmpegLib = window.FFmpeg;
-                if (!FFmpegLib) throw new Error('FFmpeg library not loaded');
+                document.getElementById('recordBtn').innerHTML = '⏳ Cargando FFmpeg...';
 
-                ffmpeg = new FFmpegLib.FFmpeg();
-                ffmpeg.on('log', ({ message }) => console.log('[FFMPEG]', message));
-                ffmpeg.on('progress', ({ progress }) => {
+                // Import ESM modules dynamically
+                const { FFmpeg } = await import('https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');
+                const { toBlobURL } = await import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js');
+
+                ffmpegInstance = new FFmpeg();
+                ffmpegInstance.on('log', ({ message }) => console.log('[FFMPEG]', message));
+                ffmpegInstance.on('progress', ({ progress }) => {
                     document.getElementById('recordBtn').innerHTML = `⏳ ${Math.round(progress * 100)}%`;
                 });
 
-                await ffmpeg.load({
-                    coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
-                    wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm'
+                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+                await ffmpegInstance.load({
+                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
                 });
 
                 ffmpegLoaded = true;
@@ -1773,6 +1773,7 @@
                 return true;
             } catch (e) {
                 console.error('[FFMPEG] Error cargando:', e);
+                document.getElementById('recordBtn').innerHTML = '🔴 Grabar';
                 return false;
             }
         }
@@ -1786,8 +1787,8 @@
         }
 
         async function startRecording() {
-            // Pre-cargar FFmpeg mientras el usuario selecciona la pestaña
-            initFFmpeg();
+            // Pre-cargar FFmpeg en paralelo
+            const ffmpegPromise = loadFFmpeg();
 
             try {
                 screenStream = await navigator.mediaDevices.getDisplayMedia({
@@ -1814,17 +1815,19 @@
 
                     const rawBlob = new Blob(recordedChunks, { type: 'video/webm' });
 
-                    // Intentar recortar con FFmpeg
+                    // Esperar a que FFmpeg termine de cargar
+                    const ffmpegReady = await ffmpegPromise;
+
                     let finalBlob = rawBlob;
-                    if (ffmpegLoaded && ffmpeg) {
+                    if (ffmpegReady && ffmpegInstance) {
                         try {
                             finalBlob = await cropVideoToPhoneFrame(rawBlob);
                         } catch (e) {
                             console.error('[FFMPEG] Error recortando:', e);
-                            alert('Error al recortar. Se descargará el video completo.');
+                            alert('Error al recortar. Descargando video completo.');
                         }
                     } else {
-                        alert('FFmpeg no cargó. Se descargará el video sin recortar.');
+                        alert('FFmpeg no disponible. Descargando video completo.');
                     }
 
                     const a = document.createElement('a');
@@ -1851,14 +1854,13 @@
             } catch (e) {
                 console.error('[RECORD] Error:', e);
                 alert('Grabación cancelada');
+                document.getElementById('recordBtn').innerHTML = '🔴 Grabar';
             }
         }
 
         async function cropVideoToPhoneFrame(inputBlob) {
-            // Convertir blob a Uint8Array
             const inputData = new Uint8Array(await inputBlob.arrayBuffer());
-            // Escribir archivo de entrada
-            await ffmpeg.writeFile('input.webm', inputData);
+            await ffmpegInstance.writeFile('input.webm', inputData);
 
             // Obtener dimensiones del video grabado
             const videoTrack = screenStream?.getVideoTracks()[0];
@@ -1866,7 +1868,7 @@
             const srcW = settings.width || 1920;
             const srcH = settings.height || 1080;
 
-            // Calcular posición del phone-frame centrado (375x667 en pantalla de srcW x srcH)
+            // Calcular posición del phone-frame centrado
             const phoneW = 375;
             const phoneH = 667;
             const cropX = Math.floor((srcW - phoneW) / 2);
@@ -1874,20 +1876,16 @@
 
             console.log(`[FFMPEG] Recortando: ${srcW}x${srcH} -> ${phoneW}x${phoneH} desde (${cropX},${cropY})`);
 
-            // Ejecutar ffmpeg para recortar
-            await ffmpeg.exec([
+            await ffmpegInstance.exec([
                 '-i', 'input.webm',
                 '-vf', `crop=${phoneW}:${phoneH}:${cropX}:${cropY}`,
                 '-c:a', 'copy',
                 'output.webm'
             ]);
 
-            // Leer archivo de salida
-            const data = await ffmpeg.readFile('output.webm');
-
-            // Limpiar
-            await ffmpeg.deleteFile('input.webm');
-            await ffmpeg.deleteFile('output.webm');
+            const data = await ffmpegInstance.readFile('output.webm');
+            await ffmpegInstance.deleteFile('input.webm');
+            await ffmpegInstance.deleteFile('output.webm');
 
             return new Blob([data.buffer], { type: 'video/webm' });
         }
