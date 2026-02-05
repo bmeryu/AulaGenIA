@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ad Studio Educacion - Meta Safe Zones</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
     <style>
         /* RESET & SETUP */
@@ -123,7 +125,7 @@
             overflow: hidden;
             z-index: 100;
             box-shadow: 0 4px 20px rgba(0, 212, 161, 0.5);
-            background: #000;
+            background: transparent;
             display: none;
         }
 
@@ -728,7 +730,7 @@
             <div style="font-size:11px;color:#00d4a1;margin-bottom:6px;font-weight:bold;">VIDEOS DEMO:</div>
             <div class="speed-control">
                 <label>1.mp4 - Vel: <span id="demoVel0">3</span>x | Zoom: <span id="demoZoom0">140</span>%</label>
-                <input type="range" min="50" max="300" value="300" id="demo0Vel"
+                <input type="range" min="50" max="500" value="300" id="demo0Vel"
                     oninput="setVideoConfig('demo',0,'speed',this.value/100)" style="width:48%;cursor:pointer;">
                 <input type="range" min="50" max="200" value="140" id="demo0Zoom"
                     oninput="setVideoConfig('demo',0,'zoom',this.value)" style="width:48%;cursor:pointer;">
@@ -749,7 +751,7 @@
             </div>
             <div class="speed-control" style="margin-top:8px;">
                 <label>2.mp4 - Vel: <span id="demoVel1">2</span>x | Zoom: <span id="demoZoom1">50</span>%</label>
-                <input type="range" min="50" max="300" value="200" id="demo1Vel"
+                <input type="range" min="50" max="500" value="200" id="demo1Vel"
                     oninput="setVideoConfig('demo',1,'speed',this.value/100)" style="width:48%;cursor:pointer;">
                 <input type="range" min="30" max="200" value="50" id="demo1Zoom"
                     oninput="setVideoConfig('demo',1,'zoom',this.value)" style="width:48%;cursor:pointer;">
@@ -777,7 +779,7 @@
             <div style="font-size:11px;color:#ffcc00;margin-bottom:6px;font-weight:bold;">VIDEOS JULIA:</div>
             <div class="speed-control">
                 <label>julia-i - Vel: <span id="juliaVelI">1</span>x | Zoom: <span id="juliaZoomI">100</span>%</label>
-                <input type="range" min="50" max="300" value="100" id="juliaIVel"
+                <input type="range" min="50" max="500" value="100" id="juliaIVel"
                     oninput="setVideoConfig('julia','i','speed',this.value/100)" style="width:48%;cursor:pointer;">
                 <input type="range" min="50" max="200" value="100" id="juliaIZoom"
                     oninput="setVideoConfig('julia','i','zoom',this.value)" style="width:48%;cursor:pointer;">
@@ -801,33 +803,33 @@
                 <div style="font-size:9px;color:#aaa;margin-bottom:4px;">Videos Bubble (julia1-5):</div>
                 <div class="speed-control">
                     <label>julia1 - Vel: <span id="juliaVel1">1</span>x</label>
-                    <input type="range" min="50" max="300" value="100" id="julia1Vel"
+                    <input type="range" min="50" max="500" value="100" id="julia1Vel"
                         oninput="setVideoConfig('julia','1','speed',this.value/100)" style="width:100%;cursor:pointer;">
                 </div>
                 <div class="speed-control">
                     <label>julia2 - Vel: <span id="juliaVel2">1</span>x</label>
-                    <input type="range" min="50" max="300" value="100" id="julia2Vel"
+                    <input type="range" min="50" max="500" value="100" id="julia2Vel"
                         oninput="setVideoConfig('julia','2','speed',this.value/100)" style="width:100%;cursor:pointer;">
                 </div>
                 <div class="speed-control">
                     <label>julia3 - Vel: <span id="juliaVel3">1</span>x</label>
-                    <input type="range" min="50" max="300" value="100" id="julia3Vel"
+                    <input type="range" min="50" max="500" value="100" id="julia3Vel"
                         oninput="setVideoConfig('julia','3','speed',this.value/100)" style="width:100%;cursor:pointer;">
                 </div>
                 <div class="speed-control">
                     <label>julia4 - Vel: <span id="juliaVel4">1</span>x</label>
-                    <input type="range" min="50" max="300" value="100" id="julia4Vel"
+                    <input type="range" min="50" max="500" value="100" id="julia4Vel"
                         oninput="setVideoConfig('julia','4','speed',this.value/100)" style="width:100%;cursor:pointer;">
                 </div>
                 <div class="speed-control">
                     <label>julia5 - Vel: <span id="juliaVel5">1</span>x</label>
-                    <input type="range" min="50" max="300" value="100" id="julia5Vel"
+                    <input type="range" min="50" max="500" value="100" id="julia5Vel"
                         oninput="setVideoConfig('julia','5','speed',this.value/100)" style="width:100%;cursor:pointer;">
                 </div>
             </div>
             <div class="speed-control" style="margin-top:8px;">
                 <label>julia-f - Vel: <span id="juliaVelF">1</span>x | Zoom: <span id="juliaZoomF">100</span>%</label>
-                <input type="range" min="50" max="300" value="100" id="juliaFVel"
+                <input type="range" min="50" max="500" value="100" id="juliaFVel"
                     oninput="setVideoConfig('julia','f','speed',this.value/100)" style="width:48%;cursor:pointer;">
                 <input type="range" min="50" max="200" value="100" id="juliaFZoom"
                     oninput="setVideoConfig('julia','f','zoom',this.value)" style="width:48%;cursor:pointer;">
@@ -861,6 +863,9 @@
         </div>
     </div>
     <button class="show-outro-btn" onclick="toggleOutroPreview()">Editar Final</button>
+    <button id="recordBtn" class="show-outro-btn"
+        style="right:auto;left:20px;background:linear-gradient(135deg,#ff4444,#cc0000);" onclick="toggleRecording()">🔴
+        Grabar</button>
     <div class="phone-frame">
         <audio id="bgMusic" src="tech-audio.MP3" loop></audio>
         <div class="brand-pill" id="brandPill">
@@ -974,10 +979,11 @@
             { speed: 3, zoom: 140, zoomStart: 0, zoomEnd: 999, startTime: 0, endTime: null },
             { speed: 2, zoom: 50, zoomStart: 0, zoomEnd: 999, startTime: 0, endTime: null }
         ];
-        // Mensajes de Julia por video demo (1 comentario por cada video demo)
+        // Mensajes de Julia por evento (0=inicio demo1, 1=fin demo1, 2=fin demo2)
         const juliaCommentsPerDemo = [
-            '+50 casos para Abogados, Contadores y Consultores',
-            '¡Más de 50 casos de legal y profesional para que empieces a aplicar ya!'
+            '⚖️ +50 casos para Profesionales',
+            'TÚ eres el experto. La IA solo amplifica tu trabajo.',
+            '+150 casos totales para que empieces a aplicar ya!'
         ];
         // Cola de videos Julia para el bubble (julia1-5, si no existe se salta)
         // Cola de videos Julia para el bubble (julia1-5, si no existe se salta)
@@ -1229,9 +1235,61 @@
         }
         // Cargar preferencias al iniciar
         loadVideoConfigs();
-        function updateJuliaCommentForDemo(demoIndex) {
-            const msg = juliaCommentsPerDemo[demoIndex] || juliaCommentsPerDemo[0];
+        // Sistema de cola de mensajes Julia - V2026.2.14-G
+        let currentMessageShown = -1; // -1 = ninguno mostrado aún
+        const MESSAGE_DURATION = 5000; // 5 segundos mínimo por mensaje
+        let messageQueue = []; // Cola de mensajes pendientes
+        let isShowingMessage = false; // Flag para evitar overlap
+        let messageTimeout = null; // Timer actual
+
+        function showJuliaMessage(index) {
+            // Solo mostrar mensajes 0, 1, 2 (no repetir después)
+            if (index > 2) return;
+            // No repetir el mismo mensaje
+            if (index <= currentMessageShown) return;
+
+            const msg = juliaCommentsPerDemo[index];
+            if (!msg) return;
+
+            // Agregar a cola si no está ya
+            if (!messageQueue.includes(index)) {
+                messageQueue.push(index);
+                console.log('[JULIA MSG] Encolado mensaje', index);
+            }
+
+            // Procesar cola si no estamos mostrando nada
+            if (!isShowingMessage) {
+                processMessageQueue();
+            }
+        }
+
+        function processMessageQueue() {
+            if (messageQueue.length === 0) {
+                isShowingMessage = false;
+                return;
+            }
+
+            isShowingMessage = true;
+            const index = messageQueue.shift();
+            const msg = juliaCommentsPerDemo[index];
+
+            if (!msg || index <= currentMessageShown) {
+                // Mensaje inválido o ya mostrado, procesar siguiente
+                processMessageQueue();
+                return;
+            }
+
+            // Mostrar mensaje
             juliaComment.textContent = msg;
+            juliaComment.classList.add('visible');
+            currentMessageShown = index;
+            console.log('[JULIA MSG] Mostrando mensaje', index, ':', msg);
+
+            // Programar siguiente mensaje después de 5 segundos
+            if (messageTimeout) clearTimeout(messageTimeout);
+            messageTimeout = setTimeout(() => {
+                processMessageQueue();
+            }, MESSAGE_DURATION);
         }
         // --- FASE 1: INTRO ---
         function startIntroPhase() {
@@ -1310,13 +1368,13 @@
                 vidDemo.src = availableDemoVideos[0];
                 vidDemo.load();
             }
-            updateJuliaCommentForDemo(0);
             vidDemo.oncanplay = function () {
-                vidDemo.currentTime = demoVideoConfigs[0]?.startTime || 0;
+                const config = demoVideoConfigs[0] || { startTime: 0, zoom: 100, speed: 2 };
+                vidDemo.currentTime = config.startTime || 0;
                 vidDemo.muted = true;
-                vidDemo.playbackRate = demoSpeed;
+                vidDemo.playbackRate = config.speed || demoSpeed;
                 // Aplicar zoom del primer video
-                const zoom1 = demoVideoConfigs[0]?.zoom || 100;
+                const zoom1 = config.zoom || 100;
                 vidDemo.style.transform = 'scale(' + (zoom1 / 100) + ')';
                 vidDemo.play();
                 vidDemo.oncanplay = null;
@@ -1358,6 +1416,10 @@
                 console.log('[JULIA] Velocidad aplicada:', config.speed || 1);
                 vidJulia.play().then(() => {
                     console.log('[JULIA] Reproduciendo:', videoFile);
+                    // Mostrar burbuja SOLO cuando el video reproduce
+                    document.querySelector('.julia-bubble').style.display = 'block';
+                    // Mostrar mensaje asociado a este video Julia
+                    showJuliaMessage(index);
                 }).catch(err => {
                     console.error('[JULIA] Error play:', err);
                 });
@@ -1407,13 +1469,9 @@
             const duration = vidDemo.duration;
             const config = demoVideoConfigs[currentDemoIndex] || {};
             const endTime = config.endTime || duration;
-            const timeLeft = endTime - t;
-            // Mostrar comentario cuando faltan 10 segundos o menos (más tiempo para leer)
-            if (timeLeft <= 10 && timeLeft > 0) {
-                juliaComment.classList.add('visible');
-            } else {
-                juliaComment.classList.remove('visible');
-            }
+            // NOTA: La visibilidad del comentario ahora es controlada por processMessageQueue()
+            // No hacer toggle aquí para evitar parpadeo
+
             // Zoom temporal: aplicar solo entre zoomStart y zoomEnd
             const zoomStart = config.zoomStart || 0;
             const zoomEnd = config.zoomEnd || 999;
@@ -1447,8 +1505,8 @@
                 const nextDemo = availableDemoVideos[currentDemoIndex];
                 console.log('[DEMO] Cargando siguiente demo:', nextDemo);
 
-                // Actualizar comentario de Julia para el nuevo demo
-                updateJuliaCommentForDemo(currentDemoIndex);
+                // Mostrar mensaje 2 al FINAL del demo 1
+                showJuliaMessage(1);
                 // Julia sigue avanzando independientemente, NO resetear índice
 
                 vidDemo.src = nextDemo;
@@ -1463,7 +1521,8 @@
                     demoTransitioning = false; // Permitir siguiente transición
                 };
             } else {
-                // ES el último demo: marcar como completado y esperar que Julia termine
+                // Mostrar mensaje 3 al FINAL del demo 2
+                showJuliaMessage(2);
                 console.log('[SYNC] Último demo terminado, esperando que Julia termine...');
                 demosCompleted = true;
                 // Si Julia ya terminó (video pausado), ir a julia-f ahora
@@ -1571,6 +1630,14 @@
             currentDemoIndex = 0;
             demoTransitioning = false;
             demosCompleted = false;
+            // Reset message queue state
+            currentMessageShown = -1;
+            messageQueue = [];
+            isShowingMessage = false;
+            if (messageTimeout) {
+                clearTimeout(messageTimeout);
+                messageTimeout = null;
+            }
             // Restaurar elementos para nuevo ciclo
             document.querySelector('.main-container').style.display = '';
             document.querySelector('.bottom-message').style.display = '';
@@ -1673,6 +1740,169 @@
             location.reload();
         }
         document.addEventListener('DOMContentLoaded', init);
+
+        // --- SISTEMA DE GRABACIÓN V2026.2.14-F (FFmpeg Auto-Crop) ---
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let isRecording = false;
+        let screenStream = null;
+        let ffmpegLoaded = false;
+        let ffmpeg = null;
+
+        // Inicializar FFmpeg
+        async function initFFmpeg() {
+            if (ffmpegLoaded) return true;
+            try {
+                // Acceder a los globales correctos
+                const FFmpegLib = window.FFmpeg;
+                if (!FFmpegLib) throw new Error('FFmpeg library not loaded');
+
+                ffmpeg = new FFmpegLib.FFmpeg();
+                ffmpeg.on('log', ({ message }) => console.log('[FFMPEG]', message));
+                ffmpeg.on('progress', ({ progress }) => {
+                    document.getElementById('recordBtn').innerHTML = `⏳ ${Math.round(progress * 100)}%`;
+                });
+
+                await ffmpeg.load({
+                    coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
+                    wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm'
+                });
+
+                ffmpegLoaded = true;
+                console.log('[FFMPEG] Cargado correctamente');
+                return true;
+            } catch (e) {
+                console.error('[FFMPEG] Error cargando:', e);
+                return false;
+            }
+        }
+
+        function toggleRecording() {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        async function startRecording() {
+            // Pre-cargar FFmpeg mientras el usuario selecciona la pestaña
+            initFFmpeg();
+
+            try {
+                screenStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { cursor: 'never' },
+                    audio: true,
+                    preferCurrentTab: true
+                });
+
+                const options = { mimeType: 'video/webm;codecs=vp9' };
+                if (!MediaRecorder.isTypeSupported(options.mimeType)) options.mimeType = 'video/webm';
+
+                recordedChunks = [];
+                mediaRecorder = new MediaRecorder(screenStream, options);
+
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) recordedChunks.push(e.data);
+                };
+
+                mediaRecorder.onstop = async () => {
+                    if (screenStream) screenStream.getTracks().forEach(t => t.stop());
+
+                    document.getElementById('recordBtn').innerHTML = '⏳ Procesando...';
+                    document.getElementById('recordBtn').style.background = 'linear-gradient(135deg,#ffaa00,#ff8800)';
+
+                    const rawBlob = new Blob(recordedChunks, { type: 'video/webm' });
+
+                    // Intentar recortar con FFmpeg
+                    let finalBlob = rawBlob;
+                    if (ffmpegLoaded && ffmpeg) {
+                        try {
+                            finalBlob = await cropVideoToPhoneFrame(rawBlob);
+                        } catch (e) {
+                            console.error('[FFMPEG] Error recortando:', e);
+                            alert('Error al recortar. Se descargará el video completo.');
+                        }
+                    } else {
+                        alert('FFmpeg no cargó. Se descargará el video sin recortar.');
+                    }
+
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(finalBlob);
+                    a.download = 'ad-studio-legal-' + new Date().toISOString().slice(0, 10) + '.webm';
+                    a.click();
+
+                    document.getElementById('recordBtn').innerHTML = '🔴 Grabar';
+                    document.getElementById('recordBtn').style.background = 'linear-gradient(135deg,#ff4444,#cc0000)';
+                    console.log('[RECORD] Video descargado!');
+                };
+
+                screenStream.getVideoTracks()[0].onended = () => {
+                    if (isRecording) stopRecording();
+                };
+
+                mediaRecorder.start(100);
+                isRecording = true;
+                document.getElementById('recordBtn').innerHTML = '⏹️ Detener';
+                document.getElementById('recordBtn').style.background = 'linear-gradient(135deg,#44ff44,#00cc00)';
+
+                if (!isCinema) startCinemaMode();
+
+            } catch (e) {
+                console.error('[RECORD] Error:', e);
+                alert('Grabación cancelada');
+            }
+        }
+
+        async function cropVideoToPhoneFrame(inputBlob) {
+            // Convertir blob a Uint8Array
+            const inputData = new Uint8Array(await inputBlob.arrayBuffer());
+            // Escribir archivo de entrada
+            await ffmpeg.writeFile('input.webm', inputData);
+
+            // Obtener dimensiones del video grabado
+            const videoTrack = screenStream?.getVideoTracks()[0];
+            const settings = videoTrack?.getSettings() || { width: 1920, height: 1080 };
+            const srcW = settings.width || 1920;
+            const srcH = settings.height || 1080;
+
+            // Calcular posición del phone-frame centrado (375x667 en pantalla de srcW x srcH)
+            const phoneW = 375;
+            const phoneH = 667;
+            const cropX = Math.floor((srcW - phoneW) / 2);
+            const cropY = Math.floor((srcH - phoneH) / 2);
+
+            console.log(`[FFMPEG] Recortando: ${srcW}x${srcH} -> ${phoneW}x${phoneH} desde (${cropX},${cropY})`);
+
+            // Ejecutar ffmpeg para recortar
+            await ffmpeg.exec([
+                '-i', 'input.webm',
+                '-vf', `crop=${phoneW}:${phoneH}:${cropX}:${cropY}`,
+                '-c:a', 'copy',
+                'output.webm'
+            ]);
+
+            // Leer archivo de salida
+            const data = await ffmpeg.readFile('output.webm');
+
+            // Limpiar
+            await ffmpeg.deleteFile('input.webm');
+            await ffmpeg.deleteFile('output.webm');
+
+            return new Blob([data.buffer], { type: 'video/webm' });
+        }
+
+        function stopRecording() {
+            if (!isRecording) return;
+            isRecording = false;
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+        }
+
+        const originalStartOutroPhase = startOutroPhase;
+        startOutroPhase = function () {
+            originalStartOutroPhase();
+            if (isRecording) setTimeout(() => stopRecording(), 6000);
+        };
     </script>
 </body>
 
