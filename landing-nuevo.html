@@ -67,6 +67,16 @@
             if (parts.length === 2) return parts.pop().split(';').shift();
             return null;
         };
+        // Build fbc from raw URL fbclid (preserves original casing)
+        // Meta Pixel's _fbc cookie may lowercase the fbclid, causing CAPI warnings
+        window.getFbc = function () {
+            const params = new URLSearchParams(window.location.search);
+            const fbclid = params.get('fbclid');
+            if (fbclid) {
+                return 'fb.1.' + Date.now() + '.' + fbclid;
+            }
+            return window.getCookie('_fbc');
+        };
         // Generate ID early
         window.VIEW_CONTENT_ID = window.generateUUID();
     </script>
@@ -2346,7 +2356,7 @@
                 firebase.functions().httpsCallable('trackInitiateCheckout')({
                     eventId: initiateCheckoutId, // Same ID as Pixel for deduplication
                     fbp: getCookie('_fbp'),
-                    fbc: getCookie('_fbc'),
+                    fbc: getFbc(),
                     userAgent: navigator.userAgent,
                     email: userEmail, // Valid email if logged in, empty string if anon
                     firstName: nameParts[0] || '',
@@ -2506,7 +2516,7 @@
                     hiddenCoupon: hiddenCouponActive, // Flag para backend
                     // CAPI Data
                     fbp: getCookie('_fbp'),
-                    fbc: getCookie('_fbc'),
+                    fbc: getFbc(),
                     userAgent: navigator.userAgent,
                     eventId: window.currentInitiateCheckoutId || generateUUID() // Use generated ID or new one
                 });
@@ -2791,7 +2801,7 @@
                 const trySendCAPI = setInterval(function () {
                     attempts++;
                     const fbp = window.getCookie('_fbp');
-                    const fbc = window.getCookie('_fbc');
+                    const fbc = window.getFbc();
 
                     // Send condition: Cookies found OR timeout reached
                     if (fbp || attempts >= maxAttempts) {

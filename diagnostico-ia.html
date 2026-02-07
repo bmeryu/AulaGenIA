@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>¿Necesito aprender IA? — Diagnóstico Guiado | Aula GenIA</title>
+    <meta name="description"
+        content="Descubre en 3 minutos si necesitas aprender IA o si ChatGPT es suficiente para ti. Diagnóstico honesto y sin compromiso.">
+    <link rel="icon" href="https://aulagenia.cl/favicon.ico" type="image/x-icon">
+    <link href="css/styles.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- OG Tags -->
+    <meta property="og:title" content="¿Necesito aprender IA? — Diagnóstico Guiado">
+    <meta property="og:description"
+        content="Descubre en 3 minutos si necesitas aprender IA o si ChatGPT es suficiente para ti.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://aulagenia.cl/diagnostico-ia.html">
+
+    <style>
+        :root {
+            --brand-teal: #14b8a6;
+            --brand-blue: #3b82f6;
+            --brand-yellow: #f59e0b;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        /* ===== DIAGNOSTIC TOOL STYLES ===== */
+
+        .diag-hero {
+            background: linear-gradient(135deg, #0f766e 0%, #0e7490 40%, #1e40af 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diag-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .diag-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(45, 212, 191, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* Card container */
+        .diag-card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow:
+                0 4px 6px -1px rgba(0, 0, 0, 0.05),
+                0 20px 50px -12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Question transitions */
+        .diag-step {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .diag-step.active {
+            opacity: 1;
+            transform: translateY(0);
+            position: relative;
+            pointer-events: auto;
+        }
+
+        .diag-step.exit-left {
+            opacity: 0;
+            transform: translateX(-40px);
+        }
+
+        /* Option buttons */
+        .diag-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            text-align: left;
+            padding: 1.125rem 1.5rem;
+            border-radius: 1rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #334155;
+            font-weight: 500;
+        }
+
+        .diag-option:hover {
+            border-color: var(--brand-teal);
+            background: #f0fdfa;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -8px rgba(20, 184, 166, 0.2);
+        }
+
+        .diag-option:active {
+            transform: translateY(0);
+        }
+
+        .diag-option .opt-icon {
+            flex-shrink: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            background: #f1f5f9;
+            transition: all 0.25s ease;
+        }
+
+        .diag-option:hover .opt-icon {
+            background: #ccfbf1;
+            transform: scale(1.1);
+        }
+
+        /* Progress bar */
+        .diag-progress {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .diag-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-blue));
+            border-radius: 9999px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Conclusion cards */
+        .conclusion-card {
+            border-radius: 1.5rem;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.95) translateY(10px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .conclusion-card.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .conclusion-c1 {
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
+            border: 2px solid #a7f3d0;
+        }
+
+        .conclusion-c2 {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            border: 2px solid #bfdbfe;
+        }
+
+        .conclusion-c3 {
+            background: linear-gradient(135deg, #faf5ff 0%, #fdf4ff 100%);
+            border: 2px solid #e9d5ff;
+        }
+
+        .conclusion-c4 {
+            background: linear-gradient(135deg, #fffbeb 0%, #fefce8 100%);
+            border: 2px solid #fde68a;
+        }
+
+        /* Lead magnet section */
+        .lead-magnet {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease 0.4s;
+        }
+
+        .lead-magnet.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .lead-magnet input[type="email"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.75rem;
+            font-size: 0.9375rem;
+            transition: border-color 0.2s;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .lead-magnet input[type="email"]:focus {
+            border-color: var(--brand-teal);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+
+        .lead-magnet button {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #14b8a6, #0e7490);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            margin-top: 0.75rem;
+        }
+
+        .lead-magnet button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px -4px rgba(20, 184, 166, 0.3);
+        }
+
+        /* Back button */
+        .diag-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0.5rem 0;
+            transition: color 0.2s;
+            font-family: inherit;
+        }
+
+        .diag-back:hover {
+            color: #475569;
+        }
+
+        /* Restart button */
+        .diag-restart {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.75rem;
+            background: white;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            margin-top: 1.5rem;
+        }
+
+        .diag-restart:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+            color: #334155;
+        }
+
+        /* Step counter badge */
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            letter-spacing: 0.025em;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .diag-card {
+                border-radius: 1rem;
+            }
+
+            .diag-option {
+                padding: 1rem 1.125rem;
+                font-size: 0.9375rem;
+            }
+
+            .conclusion-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* Subtle float animation for hero icon */
+        @keyframes gentle-float {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-6px)
+            }
+        }
+
+        .float-gentle {
+            animation: gentle-float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- ===== NAVIGATION ===== -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center" aria-label="Página de inicio de Aula GenIA">
+                <img src="https://aulagenia.cl/Logo_AGIA_big.webp" alt="Logo de Aula GenIA" class="h-20 w-auto">
+            </a>
+            <div class="flex items-center gap-2 sm:gap-4">
+                <a href="quienes-somos.html"
+                    class="text-gray-700 font-semibold border-2 border-gray-300 rounded-full px-3 text-xs py-2 sm:px-5 sm:text-sm hover:bg-gray-100 hover:border-gray-400 transition-colors duration-300 hidden md:flex items-center">Quiénes
+                    Somos</a>
+                <a href="acceso.html"
+                    class="cta-button bg-gray-900 text-white font-bold rounded-full hover:bg-gray-700 px-4 py-1.5 sm:px-6 sm:py-2 flex flex-col items-center justify-center">
+                    <span class="text-sm sm:text-base leading-tight">🔓 Acceso</span>
+                    <span class="text-[9px] sm:text-[10px] font-normal opacity-75 leading-tight">Inicia tu
+                        viaje</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="diag-hero text-white py-16 md:py-20">
+        <div class="max-w-3xl mx-auto px-6 text-center relative z-10">
+            <div class="inline-block mb-5">
+                <span
+                    class="bg-white/15 backdrop-blur-md rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider border border-white/20">
+                    🧭 Herramienta Gratuita · 3 minutos
+                </span>
+            </div>
+
+            <div class="text-5xl mb-5 float-gentle">🤔</div>
+
+            <h1 class="text-3xl md:text-5xl font-black mb-4 leading-tight">
+                ¿Necesito aprender IA<br class="hidden sm:block"> o me basta con ChatGPT?
+            </h1>
+            <p class="text-lg md:text-xl text-white/85 max-w-2xl mx-auto leading-relaxed">
+                Responde unas pocas preguntas y obtén una respuesta honesta.
+                <br class="hidden md:block">
+                <span class="text-white/60">Sin venta, sin presión, sin trampa.</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== DIAGNOSTIC TOOL ===== -->
+    <section class="max-w-2xl mx-auto px-4 sm:px-6 -mt-8 pb-16 relative z-10">
+        <div class="diag-card p-6 sm:p-8" id="diagnostic-container">
+
+            <!-- Progress -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="step-badge" id="step-label">Pregunta 1 de 7</span>
+                    <span class="text-xs text-slate-400 font-medium" id="step-hint">Elige la que más te
+                        represente</span>
+                </div>
+                <div class="diag-progress">
+                    <div class="diag-progress-fill" id="progress-bar" style="width: 14%"></div>
+                </div>
+            </div>
+
+            <!-- Steps Container -->
+            <div id="steps-wrapper" style="position: relative; min-height: 320px;">
+
+                <!-- ===== Q1: Uso actual ===== -->
+                <div class="diag-step active" data-step="q1" data-qnum="1">
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
+                        ¿Para qué usas ChatGPT hoy?
+                    </h2>
+                    <p class="text-slate-500 text-sm mb-6">
+                        No hay respuesta correcta ni incorrecta. Solo queremos entender tu punto de partida.
+                    </p>
+                    <div class="space-y-3">
+                        <button class="diag-option" onclick="answer('q1','curiosidad','q2a')">
+                            <span class="opt-icon">💬</span>
+                            <span>Le hago preguntas sueltas, por curiosidad o para resolver dudas puntuales</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q1','trabajo','q2b')">
+                            <span class="opt-icon">💼</span>
+                            <span>Lo uso en mi trabajo regularmente para hacer cosas concretas</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q1','nada','q2c')">
+                            <span class="opt-icon">🤷</span>
+                            <span>Casi no lo uso o nunca lo he probado</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Q2A: Frustración (from curiosidad) ===== -->
+                <div class="diag-step" data-step="q2a" data-qnum="2">
+                    <button class="diag-back" onclick="goBack()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Volver
+                    </button>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2 mt-3">
+                        ¿Te pasa que ChatGPT no siempre te da lo que necesitas?
+                    </h2>
+                    <p class="text-slate-500 text-sm mb-6">
+                        Muchas personas sienten que las respuestas son genéricas o que pierden tiempo reescribiendo.
+                    </p>
+                    <div class="space-y-3">
+                        <button class="diag-option" onclick="answer('q2a','frustra_si','q3', 'needs_more')">
+                            <span class="opt-icon">😤</span>
+                            <span>Sí, a veces pierdo tiempo ajustando las respuestas o no obtengo lo que quiero</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q2a','funciona_bien','q3', 'satisfied')">
+                            <span class="opt-icon">👍</span>
+                            <span>No, en general me funciona bien para lo que necesito</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Q2B: Provecho (from trabajo) ===== -->
+                <div class="diag-step" data-step="q2b" data-qnum="2">
+                    <button class="diag-back" onclick="goBack()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Volver
+                    </button>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2 mt-3">
+                        ¿Sientes que le sacas todo el provecho a ChatGPT?
+                    </h2>
+                    <p class="text-slate-500 text-sm mb-6">
+                        Algunas personas sienten que la usan bien; otras intuyen que hay más, pero no saben qué.
+                    </p>
+                    <div class="space-y-3">
+                        <button class="diag-option" onclick="answer('q2b','domina','q3', 'satisfied')">
+                            <span class="opt-icon">💪</span>
+                            <span>Sí, la verdad la manejo bien para mis tareas</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q2b','no_provecho','q3', 'needs_more')">
+                            <span class="opt-icon">🤔</span>
+                            <span>Siento que hay más, pero no sé exactamente qué me estoy perdiendo</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Q2C: Automatizar (from nada) ===== -->
+                <div class="diag-step" data-step="q2c" data-qnum="2">
+                    <button class="diag-back" onclick="goBack()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Volver
+                    </button>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2 mt-3">
+                        ¿Hay algo en tu trabajo que te gustaría hacer más rápido o automatizar?
+                    </h2>
+                    <p class="text-slate-500 text-sm mb-6">
+                        Piensa en tareas repetitivas, reportes, correos, documentos… esas cosas que te quitan tiempo.
+                    </p>
+                    <div class="space-y-3">
+                        <button class="diag-option" onclick="answer('q2c','quiere_automatizar','q3', 'needs_more')">
+                            <span class="opt-icon">⚡</span>
+                            <span>Sí, hay varias cosas que me gustaría agilizar</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q2c','no_necesita','q3', 'not_ready')">
+                            <span class="opt-icon">🌿</span>
+                            <span>No realmente, estoy bien con cómo trabajo ahora</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Q3: Tipo de tareas (CONVERGE) ===== -->
+                <div class="diag-step" data-step="q3" data-qnum="3">
+                    <button class="diag-back" onclick="goBack()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Volver
+                    </button>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2 mt-3">
+                        En tu día a día laboral, ¿qué tipo de tareas te quitan más tiempo?
+                    </h2>
+                    <p class="text-slate-500 text-sm mb-6">
+                        Piensa en lo que más se repite en tu semana, no necesariamente lo más importante.
+                    </p>
+                    <div class="space-y-3">
+                        <button class="diag-option" onclick="answer('q3','comunicacion','q4')">
+                            <span class="opt-icon">📧</span>
+                            <span>Correos, mensajes, responder consultas</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q3','datos','q4')">
+                            <span class="opt-icon">📊</span>
+                            <span>Reportes, planillas, ordenar datos</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q3','contenido','q4')">
+                            <span class="opt-icon">✍️</span>
+                            <span>Crear contenido, textos, presentaciones</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q3','gestion','q4')">
+                            <span class="opt-icon">📋</span>
+                            <span>Coordinación, seguimiento, reuniones</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Q4: Tiempo repetitivo ===== -->
+                <div class="diag-step" data-step="q4" data-qnum="4">
+                    <button class="diag-back" onclick="goBack()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Volver
+                    </button>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2 mt-3">
+                        ¿Cuánto tiempo a la semana le dedicas a ese tipo de tareas repetitivas?
+                    </h2>
+                    <p class="text-slate-500 text-sm mb-6">
+                        No necesitas calcular exacto. Una estimación honesta está perfecto.
+                    </p>
+                    <div class="space-y-3">
+                        <button class="diag-option" onclick="answer('q4','poco_tiempo','q5', 'low_workload')">
+                            <span class="opt-icon">⏱️</span>
+                            <span>Menos de 2 horas por semana</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q4','medio_tiempo','q5', 'medium_workload')">
+                            <span class="opt-icon">⏳</span>
+                            <span>Entre 2 y 5 horas por semana</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q4','mucho_tiempo','q5', 'high_workload')">
+                            <span class="opt-icon">🔥</span>
+                            <span>Más de 5 horas por semana</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Q5: Reacción ante herramientas ===== -->
+                <div class="diag-step" data-step="q5" data-qnum="5">
+                    <button class="diag-back" onclick="goBack()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Volver
+                    </button>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2 mt-3">
+                        Cuando una herramienta digital no te funciona como esperabas, ¿qué haces?
+                    </h2>
+                    <p class="text-slate-500 text-sm mb-6">
+                        Piensa en la última vez que algo "no te resultó" en el computador o celular.
+                    </p>
+                    <div class="space-y-3">
+                        <button class="diag-option" onclick="answer('q5','busca_ayuda','q6', 'learner')">
+                            <span class="opt-icon">🔍</span>
+                            <span>Busco un tutorial o le pregunto a alguien</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q5','insiste','q6', 'learner')">
+                            <span class="opt-icon">💪</span>
+                            <span>Insisto hasta que funcione, pruebo cosas distintas</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q5','abandona','q6', 'not_ready')">
+                            <span class="opt-icon">🚪</span>
+                            <span>La dejo y sigo haciendo las cosas como siempre</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Q6: Experiencia aprendiendo ===== -->
+                <div class="diag-step" data-step="q6" data-qnum="6">
+                    <button class="diag-back" onclick="goBack()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Volver
+                    </button>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2 mt-3">
+                        ¿Alguna vez intentaste aprender algo digital nuevo y sentiste que te costó más de lo esperado?
+                    </h2>
+                    <p class="text-slate-500 text-sm mb-6">
+                        Puede ser una app, un programa, una red social, cualquier cosa.
+                    </p>
+                    <div class="space-y-3">
+                        <button class="diag-option" onclick="answer('q6','frustro','q7', 'needs_guidance')">
+                            <span class="opt-icon">😓</span>
+                            <span>Sí, me frustré y lo dejé</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q6','logro','q7', 'learner')">
+                            <span class="opt-icon">🎉</span>
+                            <span>Sí, me costó, pero al final lo logré</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q6','no_intento','q7')">
+                            <span class="opt-icon">🤷</span>
+                            <span>No he intentado aprender nada digital nuevo últimamente</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Q7: Disposición ===== -->
+                <div class="diag-step" data-step="q7" data-qnum="7">
+                    <button class="diag-back" onclick="goBack()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Volver
+                    </button>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2 mt-3">
+                        Última pregunta: si existiera una forma práctica de mejorar cómo trabajas, ¿le dedicarías
+                        tiempo?
+                    </h2>
+                    <p class="text-slate-500 text-sm mb-6">
+                        No hay respuesta mala. A veces simplemente no es el momento, y eso está perfecto.
+                    </p>
+                    <div class="space-y-3">
+                        <button class="diag-option" onclick="answer('q7','si_ahora','done', 'ready')">
+                            <span class="opt-icon">✋</span>
+                            <span>Sí, podría dedicar un rato cada día esta semana</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q7','si_despues','done', 'not_now')">
+                            <span class="opt-icon">📅</span>
+                            <span>Me interesa, pero ahora no tengo tiempo</span>
+                        </button>
+                        <button class="diag-option" onclick="answer('q7','no_necesita','done', 'satisfied')">
+                            <span class="opt-icon">🌿</span>
+                            <span>No creo que lo necesite por ahora</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===== CONCLUSIONS ===== -->
+        <div id="conclusion-area" class="hidden mt-6">
+
+            <!-- C1: ChatGPT te basta -->
+            <div id="conclusion-c1" class="conclusion-card conclusion-c1 hidden">
+                <div class="text-5xl mb-4">✅</div>
+                <h2 class="text-2xl sm:text-3xl font-black text-emerald-900 mb-3">
+                    ChatGPT te basta por ahora
+                </h2>
+                <p class="text-emerald-800 text-base sm:text-lg leading-relaxed max-w-lg mx-auto mb-4">
+                    Con lo que haces hoy, ChatGPT cubre tus necesidades. No necesitas aprender más por ahora, y eso
+                    <strong>no es un problema</strong> — es una señal de que estás usando la herramienta para lo que
+                    realmente te sirve.
+                </p>
+                <div class="bg-white/70 rounded-xl p-4 max-w-md mx-auto border border-emerald-200">
+                    <p class="text-sm text-emerald-700 font-medium">
+                        💡 Un consejo: si en algún momento sientes que ChatGPT se queda corto, ahí vale la pena
+                        explorar un poco más. Pero por ahora, estás bien.
+                    </p>
+                </div>
+            </div>
+
+            <!-- C2: Explora un poco más -->
+            <div id="conclusion-c2" class="conclusion-card conclusion-c2 hidden">
+                <div class="text-5xl mb-4">💡</div>
+                <h2 class="text-2xl sm:text-3xl font-black text-blue-900 mb-3">
+                    Hay espacio para explorar un poco más
+                </h2>
+                <p class="text-blue-800 text-base sm:text-lg leading-relaxed max-w-lg mx-auto mb-4">
+                    No necesitas un cambio radical, pero pequeños ajustes en cómo usas las herramientas que ya tienes
+                    podrían hacer una diferencia. A veces, saber pedirle mejor las cosas a ChatGPT ya es suficiente.
+                </p>
+                <div class="bg-white/70 rounded-xl p-4 max-w-md mx-auto border border-blue-200">
+                    <p class="text-sm text-blue-700 font-medium">
+                        💡 Un buen punto de partida: busca "cómo escribir mejores prompts" en YouTube. Hay recursos
+                        gratuitos muy buenos que pueden cambiar tu experiencia sin invertir más.
+                    </p>
+                </div>
+            </div>
+
+            <!-- C3: Aprender IA te haría bien -->
+            <div id="conclusion-c3" class="conclusion-card conclusion-c3 hidden">
+                <div class="text-5xl mb-4">🎯</div>
+                <h2 class="text-2xl sm:text-3xl font-black text-purple-900 mb-3">
+                    Aprender IA de verdad te haría bien
+                </h2>
+                <p class="text-purple-800 text-base sm:text-lg leading-relaxed max-w-lg mx-auto mb-4">
+                    Tu situación sugiere que aprender a usar IA de forma más estructurada podría ahorrarte tiempo real
+                    en tu semana. No se trata de "saber tecnología", sino de <strong>saber dar instrucciones
+                        efectivas</strong>.
+                </p>
+                <div class="bg-white/70 rounded-xl p-4 max-w-md mx-auto border border-purple-200">
+                    <p class="text-sm text-purple-700 font-medium">
+                        💡 El siguiente paso: explora herramientas y recursos que te enseñen a estructurar
+                        instrucciones para IA. Eso solo ya puede cambiar mucho tus resultados.
+                    </p>
+                </div>
+            </div>
+
+            <!-- C4: No es tu momento -->
+            <div id="conclusion-c4" class="conclusion-card conclusion-c4 hidden">
+                <div class="text-5xl mb-4">🤝</div>
+                <h2 class="text-2xl sm:text-3xl font-black text-amber-900 mb-3">
+                    No es tu momento, y está bien
+                </h2>
+                <p class="text-amber-800 text-base sm:text-lg leading-relaxed max-w-lg mx-auto mb-4">
+                    No todos necesitan aprender IA ahora. A veces es más importante enfocarse en otras prioridades.
+                    Cuando sientas la necesidad, las herramientas van a seguir estando ahí.
+                    <strong>No es urgente, no es una carrera.</strong>
+                </p>
+                <div class="bg-white/70 rounded-xl p-4 max-w-md mx-auto border border-amber-200">
+                    <p class="text-sm text-amber-700 font-medium">
+                        💡 Guarda esta página. Si más adelante cambia tu situación, puedes volver a hacer el
+                        diagnóstico y ver si la respuesta es diferente.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Lead Magnet (optional) -->
+            <div class="lead-magnet" id="lead-magnet">
+                <div class="text-center mb-4">
+                    <p class="text-slate-700 font-semibold text-sm sm:text-base">
+                        📬 ¿Te gustaría recibir un resumen con recursos gratuitos de IA?
+                    </p>
+                    <p class="text-slate-400 text-xs mt-1">
+                        Solo recursos útiles, sin spam. Completamente opcional.
+                    </p>
+                </div>
+                <form id="lead-form" onsubmit="handleLeadSubmit(event)">
+                    <input type="email" id="lead-email" placeholder="tu@email.com" required>
+                    <button type="submit" id="lead-submit-btn">Enviar recursos gratuitos</button>
+                </form>
+                <div id="lead-success" class="hidden text-center py-3">
+                    <p class="text-emerald-600 font-semibold text-sm">✅ ¡Listo! Te enviaremos los recursos pronto.</p>
+                </div>
+            </div>
+
+            <!-- Restart -->
+            <div class="text-center">
+                <button class="diag-restart" onclick="restartDiagnostic()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 4v6h6M23 20v-6h-6" />
+                        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
+                    </svg>
+                    Volver a empezar
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-gray-100 border-t border-gray-200">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+            <a href="index.html" class="flex items-center justify-center mb-4">
+                <img src="https://aulagenia.cl/Logo_AGIA_big.webp" alt="Logo de Aula GenIA al pie de página"
+                    loading="lazy" class="h-12 w-auto">
+            </a>
+            <div class="flex justify-center items-center gap-6 mb-4">
+                <a href="https://instagram.com/aulagenia" target="_blank" rel="noopener noreferrer"
+                    aria-label="Instagram de Aula GenIA" class="text-gray-500 hover:text-gray-800 transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.802c-3.116 0-3.483.01-4.71.068-2.69.123-3.996 1.428-4.12 4.12C3.12 9.483 3.11 9.85 3.11 12s.01 2.517.068 3.74c.124 2.692 1.43 3.996 4.12 4.12 1.227.058 1.594.068 4.71.068s3.483-.01 4.71-.068c2.69-.124 3.996-1.428 4.12-4.12.058-1.223.068-1.594.068-4.71s-.01-2.517-.068-3.74c-.124-2.692-1.43-3.996-4.12-4.12C15.483 3.973 15.116 3.965 12 3.965zM12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5zm0 5.698a1.948 1.948 0 110-3.896 1.948 1.948 0 010 3.896zM16.838 7.162a.96.96 0 100 1.92.96.96 0 000-1.92z" />
+                    </svg>
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                    aria-label="LinkedIn de Aula GenIA" class="text-gray-500 hover:text-gray-800 transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                </a>
+            </div>
+            <div class="text-sm space-x-4">
+                <a href="politica-privacidad.html" class="hover:underline">Política de Privacidad</a>
+                <span>&bull;</span>
+                <a href="terminoscondiciones.html" class="hover:underline">Términos y Condiciones</a>
+            </div>
+            <p class="text-sm mt-4">&copy; 2024 Aula GenIA - Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- ===== DIAGNOSTIC LOGIC ===== -->
+    <script>
+        // ===== STATE =====
+        let navHistory = [];      // stack of { step, signals_snapshot }
+        let currentStep = 'q1';
+        let questionNum = 1;
+        const totalQuestions = 7;
+        let signals = {};         // accumulated signals for conclusion logic
+
+        // ===== NAVIGATION =====
+        function answer(fromStep, value, toStep, signal) {
+            // Save signal if provided
+            if (signal) {
+                signals[signal] = (signals[signal] || 0) + 1;
+            }
+
+            // Save history for back
+            navHistory.push({
+                step: fromStep,
+                signalToRemove: signal || null
+            });
+
+            if (toStep === 'done') {
+                // Calculate and show conclusion
+                showConclusion(determineConclusion());
+                return;
+            }
+
+            // Transition steps
+            transitionTo(toStep);
+        }
+
+        function transitionTo(targetStepId) {
+            const currentEl = document.querySelector('.diag-step.active');
+            const targetEl = document.querySelector(`.diag-step[data-step="${targetStepId}"]`);
+
+            if (!currentEl || !targetEl) return;
+
+            // Animate out
+            currentEl.classList.add('exit-left');
+            currentEl.classList.remove('active');
+
+            setTimeout(() => {
+                currentEl.classList.remove('exit-left');
+                targetEl.classList.add('active');
+                currentStep = targetStepId;
+                questionNum = parseInt(targetEl.dataset.qnum) || questionNum + 1;
+                updateProgress();
+            }, 250);
+        }
+
+        function goBack() {
+            if (navHistory.length === 0) return;
+
+            const prev = navHistory.pop();
+
+            // Remove the signal that was added
+            if (prev.signalToRemove && signals[prev.signalToRemove]) {
+                signals[prev.signalToRemove]--;
+                if (signals[prev.signalToRemove] <= 0) {
+                    delete signals[prev.signalToRemove];
+                }
+            }
+
+            const currentEl = document.querySelector('.diag-step.active');
+            const targetEl = document.querySelector(`.diag-step[data-step="${prev.step}"]`);
+
+            if (!currentEl || !targetEl) return;
+
+            currentEl.classList.remove('active');
+
+            setTimeout(() => {
+                targetEl.classList.add('active');
+                currentStep = prev.step;
+                questionNum = parseInt(targetEl.dataset.qnum) || 1;
+                updateProgress();
+            }, 150);
+        }
+
+        function updateProgress() {
+            const pct = Math.min((questionNum / totalQuestions) * 100, 100);
+            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('step-label').textContent = `Pregunta ${questionNum} de ${totalQuestions}`;
+        }
+
+        // ===== CONCLUSION LOGIC =====
+        function determineConclusion() {
+            const s = signals;
+            const needsMore = (s.needs_more || 0);
+            const satisfied = (s.satisfied || 0);
+            const notReady = (s.not_ready || 0) + (s.not_now || 0);
+            const learner = (s.learner || 0);
+            const needsGuidance = (s.needs_guidance || 0);
+            const ready = (s.ready || 0);
+            const highWork = (s.high_workload || 0);
+            const medWork = (s.medium_workload || 0);
+            const lowWork = (s.low_workload || 0);
+
+            // C4: Not ready signals dominate, or user explicitly said "no time" + "not needed" + abandons tools
+            if (notReady >= 2 || (notReady >= 1 && satisfied >= 1 && lowWork >= 1)) {
+                return 'c4';
+            }
+
+            // C1: Satisfied with ChatGPT, low workload, not a learner type
+            if (satisfied >= 1 && lowWork >= 1 && needsMore === 0) {
+                return 'c1';
+            }
+
+            // C3: Needs more + ready + medium/high workload
+            if (ready >= 1 && (needsMore >= 1 || highWork >= 1 || medWork >= 1)) {
+                return 'c3';
+            }
+
+            // C3: Strong learner signals + high workload + ready
+            if (learner >= 2 && ready >= 1) {
+                return 'c3';
+            }
+
+            // C3: Needs guidance but ready and has workload
+            if (needsGuidance >= 1 && ready >= 1 && (medWork >= 1 || highWork >= 1)) {
+                return 'c3';
+            }
+
+            // C2: Moderate signals — some needs but not super ready
+            if (needsMore >= 1 || medWork >= 1 || needsGuidance >= 1) {
+                return 'c2';
+            }
+
+            // C1: Default satisfied
+            if (satisfied >= 1) {
+                return 'c1';
+            }
+
+            // Fallback
+            return 'c2';
+        }
+
+        function showConclusion(conclusionId) {
+            const container = document.getElementById('diagnostic-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(-10px)';
+            container.style.transition = 'all 0.4s ease';
+
+            setTimeout(() => {
+                container.classList.add('hidden');
+
+                const area = document.getElementById('conclusion-area');
+                area.classList.remove('hidden');
+
+                const card = document.getElementById(`conclusion-${conclusionId}`);
+                card.classList.remove('hidden');
+
+                requestAnimationFrame(() => {
+                    card.classList.add('visible');
+                });
+
+                setTimeout(() => {
+                    document.getElementById('lead-magnet').classList.add('visible');
+                }, 300);
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 400);
+        }
+
+        // ===== RESTART =====
+        function restartDiagnostic() {
+            navHistory = [];
+            currentStep = 'q1';
+            questionNum = 1;
+            signals = {};
+
+            document.querySelectorAll('.conclusion-card').forEach(c => {
+                c.classList.add('hidden');
+                c.classList.remove('visible');
+            });
+
+            document.getElementById('conclusion-area').classList.add('hidden');
+
+            const lm = document.getElementById('lead-magnet');
+            lm.classList.remove('visible');
+            document.getElementById('lead-form').classList.remove('hidden');
+            document.getElementById('lead-success').classList.add('hidden');
+            document.getElementById('lead-email').value = '';
+
+            document.querySelectorAll('.diag-step').forEach(s => {
+                s.classList.remove('active', 'exit-left');
+            });
+
+            document.querySelector('.diag-step[data-step="q1"]').classList.add('active');
+
+            const container = document.getElementById('diagnostic-container');
+            container.classList.remove('hidden');
+            container.style.opacity = '1';
+            container.style.transform = 'translateY(0)';
+
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== LEAD MAGNET =====
+        function handleLeadSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('lead-email').value;
+            if (!email) return;
+
+            const btn = document.getElementById('lead-submit-btn');
+            btn.textContent = 'Enviando...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('lead-form').classList.add('hidden');
+                document.getElementById('lead-success').classList.remove('hidden');
+                console.log('📧 Lead captured:', email);
+            }, 800);
+        }
+    </script>
+
+</body>
+
+</html>
