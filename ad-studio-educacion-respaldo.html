@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Studio Educacion - Meta Safe Zones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <style>
+        /* RESET & SETUP */
+        body {
+            background-color: #1f2937;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        /* FRAME - 9:16 por defecto */
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border-radius: 0px;
+            border: 1px solid #444;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        /* CINEMA MODE */
+        body.cinema-mode {
+            background-color: #000;
+        }
+
+        body.cinema-mode .phone-frame {
+            border: none;
+            box-shadow: none;
+        }
+
+        body.cinema-mode .controls,
+        body.cinema-mode .status-panel,
+        body.cinema-mode .show-outro-btn,
+        body.cinema-mode .template-panel,
+        body.cinema-mode .version-tag {
+            display: none !important;
+        }
+
+        /* BRAND COLORS */
+        .bg-brand {
+            background-color: #00d4a1;
+        }
+
+        .border-brand {
+            border-color: #00d4a1 !important;
+        }
+
+        /* LAYOUT PRINCIPAL */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* SECCION SUPERIOR: Hook */
+        /* Header compacto para maximizar espacio del video */
+        .top-message {
+            position: absolute;
+            top: 100px;
+            left: 0;
+            right: 0;
+            padding: 8px 12px;
+            text-align: center;
+            z-index: 25;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .hook-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            line-height: 1.2;
+        }
+
+        /* VIDEO DEMO - Maximizado */
+        /* Container del video demo - con position relative para la burbuja */
+        .demo-container {
+            flex: 1 1 auto;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+            min-height: 350px;
+        }
+
+        .demo-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+            transform-origin: center center;
+        }
+
+        /* Bubble Julia - Esquina inferior derecha, compacta */
+        .julia-bubble {
+            position: absolute;
+            bottom: 210px;
+            right: 12px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #00d4a1;
+            overflow: hidden;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 212, 161, 0.5);
+            background: #000;
+            display: none;
+        }
+
+        .julia-bubble video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Comentario Julia - Arriba de la burbuja */
+        .julia-comment {
+            position: absolute;
+            bottom: 320px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a1a1a;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            max-width: 140px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 101;
+            opacity: 0;
+            transform: scale(0.8) translateY(10px);
+            transition: all 0.3s ease-out;
+        }
+
+        .julia-comment.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .julia-comment::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 30px;
+            border-style: solid;
+            border-width: 8px 8px 0 8px;
+            border-color: rgba(255, 255, 255, 0.95) transparent transparent transparent;
+        }
+
+        /* SECCION INFERIOR: Mensaje debajo del CTA */
+        .bottom-message {
+            flex: 0 0 auto;
+            padding: 8px 12px 12px;
+            text-align: center;
+            position: absolute;
+            bottom: 135px;
+            background: none;
+            left: 0;
+            right: 0;
+            z-index: 55;
+            pointer-events: none;
+        }
+
+        .benefit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            color: #0d9488;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            border: 1px solid rgba(20, 184, 166, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sub-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 10px;
+            line-height: 1.3;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+            font-weight: 600;
+        }
+
+        /* CTA Flotante - Justo encima de safe zone Meta */
+        #cta-bottom {
+            position: absolute;
+            bottom: 195px;
+            left: 0;
+            right: 0;
+            padding: 0 15px;
+            text-align: center;
+            z-index: 55;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #FF4B2B 0%, #DC143C 100%);
+            color: white;
+            font-weight: 800;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 12px;
+            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+            animation: pulse 2s infinite;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 8px 25px rgba(220, 20, 60, 0.5);
+            }
+
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 10px 30px rgba(220, 20, 60, 0.6);
+            }
+        }
+
+        /* Brand Pill Central */
+        .brand-pill {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 2px solid #e5e7eb;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .brand-pill.visible {
+            opacity: 1;
+        }
+
+        .brand-pill span {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            color: #1a1a1a;
+            font-size: 14px;
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background: #00d4a1;
+            border-radius: 50%;
+        }
+
+        /* Overlay INTRO */
+        .intro-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 60;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .intro-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-overlay video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .intro-label {
+            position: absolute;
+            bottom: 160px;
+            left: 20px;
+            right: 20px;
+            background: #00d4a1;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            z-index: 65;
+            box-shadow: 0 4px 15px rgba(0, 212, 161, 0.3);
+            text-align: center;
+            animation: pulseGreen 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        @keyframes pulseGreen {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        /* OUTRO Screen */
+        .outro-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 70;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .outro-screen.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .outro-btn-animated {
+            background: linear-gradient(135deg, #00d4a1 0%, #0d9488 100%);
+            color: white;
+            font-weight: 800;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(0, 212, 161, 0.3);
+            animation: pulseGreen 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .white-logo {
+            filter: brightness(0) invert(1);
+        }
+
+        /* ZONAS SEGURAS META */
+        .safe-zones-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .safe-zones-overlay.visible {
+            opacity: 1;
+        }
+
+        .safe-zone {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background: rgba(255, 0, 0, 0.3);
+            border: 2px dashed rgba(255, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .safe-zone.top {
+            top: 0;
+        }
+
+        .safe-zone.bottom {
+            bottom: 0;
+        }
+
+        /* FORMAT SELECTOR */
+        .format-selector {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .format-btn {
+            flex: 1;
+            padding: 6px 8px;
+            font-size: 9px;
+            font-weight: bold;
+            background: #333;
+            color: #888;
+            border: 1px solid #444;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .format-btn:hover {
+            background: #444;
+            color: #fff;
+        }
+
+        .format-btn.active {
+            background: #00d4a1;
+            color: #000;
+            border-color: #00d4a1;
+        }
+
+        .safe-zone-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9px;
+            color: #aaa;
+            margin-bottom: 6px;
+        }
+
+        .format-info {
+            font-size: 8px;
+            color: #666;
+            text-align: center;
+        }
+
+        /* PANELS */
+        .version-tag {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            color: #555;
+            font-size: 10px;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .status-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            font-size: 12px;
+            z-index: 100;
+            border: 1px solid #333;
+            max-width: 280px;
+            overflow-y: auto;
+        }
+
+        .show-outro-btn {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            z-index: 101;
+            font-size: 10px;
+            background: #333;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .template-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            z-index: 100;
+            width: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #fbbf24;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+        }
+
+        .tpl-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 6px 10px;
+            margin-bottom: 4px;
+            background: #222;
+            color: #ccc;
+            border-radius: 4px;
+            font-size: 11px;
+            transition: all 0.2s;
+            border: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .tpl-btn:hover {
+            background: #333;
+            color: white;
+        }
+
+        .tpl-name {
+            color: white;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .btn-mini {
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .btn-save {
+            background: #2563eb;
+            width: 100%;
+        }
+
+        .reset-btn {
+            font-size: 9px;
+            color: #666;
+            text-decoration: underline;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .speed-control {
+            margin-top: 8px;
+        }
+
+        .speed-control label {
+            font-size: 10px;
+            color: #888;
+        }
+
+        .speed-buttons {
+            display: flex;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .speed-btn {
+            padding: 4px 10px;
+            font-size: 10px;
+            background: #333;
+            color: #888;
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .speed-btn.active {
+            background: #00d4a1;
+            color: #000;
+            border-color: #00d4a1;
+        }
+
+        [contenteditable]:focus {
+            outline: none;
+            border-bottom: 2px dashed #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="version-tag">Ad Studio Educacion v1.1</div>
+    <div class="template-panel">
+        <div>
+            <div class="section-title">Hooks</div>
+            <div id="list-hooks"></div>
+            <button onclick="saveTemplate('hooks')" class="btn-mini btn-save">Guardar Hook</button>
+        </div>
+        <div>
+            <div class="section-title">Beneficios</div>
+            <div id="list-benefits"></div>
+            <button onclick="saveTemplate('benefits')" class="btn-mini btn-save">Guardar Beneficio</button>
+        </div>
+        <div>
+            <div class="section-title">Boton CTA</div>
+            <div id="list-cta"></div>
+            <button onclick="saveTemplate('cta')" class="btn-mini btn-save">Guardar CTA</button>
+        </div>
+        <div>
+            <div class="section-title">Pantalla Final</div>
+            <div id="list-outro"></div>
+            <button onclick="saveTemplate('outro')" class="btn-mini btn-save">Guardar Final</button>
+        </div>
+        <button onclick="resetAllDefaults()" class="reset-btn">Restaurar Todo Original</button>
+    </div>
+    <div class="status-panel">
+        <h3 class="font-bold mb-2 text-yellow-400">EDUCACION:</h3>
+        <div style="margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid #333;">
+            <div style="font-size:10px; color:#888; margin-bottom:6px;">Formato Meta Ads:</div>
+            <div class="format-selector">
+                <button class="format-btn active" onclick="setMetaFormat('reels')" id="formatReels">Reels 9:16</button>
+                <button class="format-btn" onclick="setMetaFormat('feed45')" id="formatFeed45">Feed 4:5</button>
+                <button class="format-btn" onclick="setMetaFormat('feed11')" id="formatFeed11">Feed 1:1</button>
+            </div>
+            <div class="safe-zone-toggle">
+                <input type="checkbox" id="showSafeZones" onchange="toggleSafeZones(this.checked)">
+                <label for="showSafeZones">Mostrar zonas de riesgo</label>
+            </div>
+            <div class="format-info" id="formatInfo">
+                Reels/Stories: UI superior 14% + UI inferior 20%
+            </div>
+        </div>
+        <div id="status-text">Demo + Julia (Sin Comparativo)</div>
+        <!-- CONTROLES VIDEOS DEMO -->
+        <div style="margin-top:10px;border-top:1px solid #444;padding-top:8px;">
+            <div style="font-size:11px;color:#00d4a1;margin-bottom:6px;font-weight:bold;">VIDEOS DEMO:</div>
+            <div class="speed-control">
+                <label>1.mp4 - Vel: <span id="demoVel0">3</span>x | Zoom: <span id="demoZoom0">140</span>%</label>
+                <input type="range" min="50" max="300" value="300" id="demo0Vel"
+                    oninput="setVideoConfig('demo',0,'speed',this.value/100)" style="width:48%;cursor:pointer;">
+                <input type="range" min="50" max="200" value="140" id="demo0Zoom"
+                    oninput="setVideoConfig('demo',0,'zoom',this.value)" style="width:48%;cursor:pointer;">
+            </div>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+                <div style="flex:1;">
+                    <label style="font-size:9px;color:#888;">Inicio (s):</label>
+                    <input type="number" min="0" max="999" value="0" id="demo0Start"
+                        oninput="setVideoConfig('demo',0,'startTime',this.value)"
+                        style="width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:4px;padding:4px;font-size:10px;">
+                </div>
+                <div style="flex:1;">
+                    <label style="font-size:9px;color:#888;">Fin (s):</label>
+                    <input type="number" min="0" max="999" value="" id="demo0End" placeholder="auto"
+                        oninput="setVideoConfig('demo',0,'endTime',this.value || null)"
+                        style="width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:4px;padding:4px;font-size:10px;">
+                </div>
+            </div>
+            <div class="speed-control" style="margin-top:8px;">
+                <label>2.mp4 - Vel: <span id="demoVel1">2</span>x | Zoom: <span id="demoZoom1">50</span>%</label>
+                <input type="range" min="50" max="300" value="200" id="demo1Vel"
+                    oninput="setVideoConfig('demo',1,'speed',this.value/100)" style="width:48%;cursor:pointer;">
+                <input type="range" min="30" max="200" value="50" id="demo1Zoom"
+                    oninput="setVideoConfig('demo',1,'zoom',this.value)" style="width:48%;cursor:pointer;">
+            </div>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+                <div style="flex:1;">
+                    <label style="font-size:9px;color:#888;">Inicio (s):</label>
+                    <input type="number" min="0" max="999" value="0" id="demo1Start"
+                        oninput="setVideoConfig('demo',1,'startTime',this.value)"
+                        style="width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:4px;padding:4px;font-size:10px;">
+                </div>
+                <div style="flex:1;">
+                    <label style="font-size:9px;color:#888;">Fin (s):</label>
+                    <input type="number" min="0" max="999" value="" id="demo1End" placeholder="auto"
+                        oninput="setVideoConfig('demo',1,'endTime',this.value || null)"
+                        style="width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:4px;padding:4px;font-size:10px;">
+                </div>
+            </div>
+            <button onclick="saveVideoConfigs()"
+                style="margin-top:10px;width:100%;background:#2563eb;color:white;border:none;padding:6px;border-radius:4px;font-size:10px;cursor:pointer;">💾
+                Guardar Preferencias</button>
+        </div>
+        <!-- CONTROLES VIDEOS JULIA -->
+        <div style="margin-top:10px;border-top:1px solid #444;padding-top:8px;">
+            <div style="font-size:11px;color:#ffcc00;margin-bottom:6px;font-weight:bold;">VIDEOS JULIA:</div>
+            <div class="speed-control">
+                <label>julia-i - Vel: <span id="juliaVelI">1</span>x | Zoom: <span id="juliaZoomI">100</span>%</label>
+                <input type="range" min="50" max="300" value="100" id="juliaIVel"
+                    oninput="setVideoConfig('julia','i','speed',this.value/100)" style="width:48%;cursor:pointer;">
+                <input type="range" min="50" max="200" value="100" id="juliaIZoom"
+                    oninput="setVideoConfig('julia','i','zoom',this.value)" style="width:48%;cursor:pointer;">
+            </div>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+                <div style="flex:1;">
+                    <label style="font-size:9px;color:#888;">Inicio (s):</label>
+                    <input type="number" min="0" max="999" value="0" id="juliaIStart"
+                        oninput="setVideoConfig('julia','i','startTime',this.value)"
+                        style="width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:4px;padding:4px;font-size:10px;">
+                </div>
+                <div style="flex:1;">
+                    <label style="font-size:9px;color:#888;">Fin (s):</label>
+                    <input type="number" min="0" max="999" value="" id="juliaIEnd" placeholder="auto"
+                        oninput="setVideoConfig('julia','i','endTime',this.value || null)"
+                        style="width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:4px;padding:4px;font-size:10px;">
+                </div>
+            </div>
+            <div class="speed-control" style="margin-top:8px;">
+                <label>julia-f - Vel: <span id="juliaVelF">1</span>x | Zoom: <span id="juliaZoomF">100</span>%</label>
+                <input type="range" min="50" max="300" value="100" id="juliaFVel"
+                    oninput="setVideoConfig('julia','f','speed',this.value/100)" style="width:48%;cursor:pointer;">
+                <input type="range" min="50" max="200" value="100" id="juliaFZoom"
+                    oninput="setVideoConfig('julia','f','zoom',this.value)" style="width:48%;cursor:pointer;">
+            </div>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+                <div style="flex:1;">
+                    <label style="font-size:9px;color:#888;">Inicio (s):</label>
+                    <input type="number" min="0" max="999" value="0" id="juliaFStart"
+                        oninput="setVideoConfig('julia','f','startTime',this.value)"
+                        style="width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:4px;padding:4px;font-size:10px;">
+                </div>
+                <div style="flex:1;">
+                    <label style="font-size:9px;color:#888;">Fin (s):</label>
+                    <input type="number" min="0" max="999" value="" id="juliaFEnd" placeholder="auto"
+                        oninput="setVideoConfig('julia','f','endTime',this.value || null)"
+                        style="width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:4px;padding:4px;font-size:10px;">
+                </div>
+            </div>
+            <div style="margin-top:10px;padding-top:8px;border-top:1px solid #555;">
+                <label style="font-size:10px;color:#ffcc00;">Tamaño Burbuja: <span
+                        id="bubbleSizeLabel">100</span>px</label>
+                <input type="range" min="60" max="150" value="100" id="bubbleSizeSlider"
+                    oninput="setBubbleSize(this.value)" style="width:100%;cursor:pointer;">
+            </div>
+            <div style="margin-top:8px;">
+                <label style="font-size:10px;color:#ffcc00;">Posición Vertical: <span
+                        id="bubblePosLabel">210</span>px</label>
+                <input type="range" min="150" max="400" value="210" id="bubblePosSlider"
+                    oninput="setBubblePosition(this.value)" style="width:100%;cursor:pointer;">
+            </div>
+        </div>
+    </div>
+    <button class="show-outro-btn" onclick="toggleOutroPreview()">Editar Final</button>
+    <div class="phone-frame">
+        <audio id="bgMusic" src="tech-audio.MP3" loop></audio>
+        <div class="brand-pill" id="brandPill">
+            <div class="brand-dot"></div>
+        </div>
+        <div class="safe-zones-overlay" id="safeZonesOverlay">
+            <div class="safe-zone top" id="safeZoneTop" style="height: 14%;">
+                Zona UI Meta (nombre, hora)
+            </div>
+            <div class="safe-zone bottom" id="safeZoneBottom" style="height: 20%;">
+                Zona UI Meta (CTA, texto)
+            </div>
+        </div>
+        <!-- FASE 1: INTRO - Julia Fullscreen -->
+        <div id="introOverlay" class="intro-overlay">
+            <video id="vidIntro" src="julia-i.mp4" playsinline></video>
+            <div class="intro-label" id="introLabel" contenteditable="true">¡Recupera tus tardes y vuelve a descansar!
+            </div>
+        </div>
+        <div class="main-container">
+            <div class="top-message">
+                <span class="hook-emoji" id="hookEmoji" contenteditable="true"></span>
+                <div class="hook-text" id="hookText" contenteditable="true">¿Cansado de hacer rúbricas o planificar tus
+                    clases el fin de semana?</div>
+            </div>
+            <div class="demo-container">
+                <video id="vidDemo" src="1.mp4" playsinline muted></video>
+            </div>
+
+            <!-- Julia Bubble - FUERA del demo container, sobre todo -->
+            <div class="julia-bubble">
+                <video id="vidJulia" playsinline></video>
+            </div>
+            <div class="julia-comment" id="juliaComment">
+                ¡Rúbricas, informes y clases listas en segundos!
+            </div>
+
+        </div>
+        <div class="bottom-message">
+            <div class="benefit-badge" id="benefitBadge" contenteditable="true">Metodología Aplicada Aula GenIA: Sin
+                tecnicismos</div>
+            <div class="sub-text" id="subText" contenteditable="true">Garantía 7 días - Sin preguntas</div>
+        </div>
+        <div id="cta-bottom">
+            <div class="cta-button">
+                <span id="cta-text" contenteditable="true" class="pointer-events-auto">Descubre Pack Starter - Edición
+                    Educación ($8.900 CLP - Cupos Limitados)👇🚀</span>
+            </div>
+        </div>
+        <div id="outro" class="outro-screen">
+            <img src="Logo_AGIA.png" class="w-28 mb-4 white-logo" alt="Logo">
+            <h2 id="outro-title" contenteditable="true"
+                class="text-white text-2xl font-bold mb-2 font-['Montserrat'] text-center px-4">
+                Tu futuro en Inteligencia Artificial comienza aquí.
+            </h2>
+            <p id="outro-sub" contenteditable="true" class="text-gray-300 text-center px-6 mb-2 text-sm">
+                5 módulos aplicados ~ 4 horas + Certificado de Finalización
+            </p>
+            <p class="text-teal-400 text-center px-6 mb-2 text-xs font-semibold">
+                Más de 214 alumnos ya están transformando su forma de trabajar
+            </p>
+            <p class="text-gray-400 text-center px-6 mb-2 text-xs">
+                Metodología Aplicada Aula GenIA: Sin tecnicismos
+            </p>
+            <p class="text-yellow-400 text-center px-6 mb-4 text-xs font-bold">
+                ✅ Garantía 7 días - Sin preguntas
+            </p>
+            <div class="outro-btn-animated">
+                <span id="outro-btn" contenteditable="true">EMPIEZA HOY ($8.900 CLP)</span>
+            </div>
+        </div>
+    </div>
+    <div class="controls">
+        <p class="edit-tip text-yellow-300 text-sm mb-2">Edita textos y graba con Modo Cine</p>
+        <button onclick="startCinemaMode()"
+            class="bg-yellow-400 text-black px-10 py-4 rounded-full font-bold hover:bg-yellow-500 transition shadow-lg text-lg">
+            MODO CINE
+        </button>
+    </div>
+    <script>
+        // --- DEFAULTS & STATE ---
+        const DEF_HOOKS = [
+            { id: 1, name: "Tiempo", emoji: "", text: "Preparar clases te quita horas?" },
+            { id: 2, name: "Creatividad", emoji: "", text: "Sin ideas para tus clases?" },
+            { id: 3, name: "Estres", emoji: "", text: "El papeleo te agota?" }
+        ];
+        const DEF_BENEFITS = [
+            { id: 1, name: "50 Ejemplos", badge: "+50 ejemplos especificos listos para tus clases", sub: "Cero tecnicismo, 100% pedagogia" },
+            { id: 2, name: "Ahorro Tiempo", badge: "Recupera 10 horas semanales", sub: "Mas tiempo para lo que importa" },
+            { id: 3, name: "Sin Tecnologia", badge: "Sin curva de aprendizaje", sub: "Copiar, pegar y usar" }
+        ];
+        const DEF_CTA = [
+            { id: 1, name: "Pack Starter", text: "Pack Starter: Edicion Educacion ($8.900)" },
+            { id: 2, name: "Ver Demo", text: "Ver Demo Completo" },
+            { id: 3, name: "Oferta", text: "Oferta Especial -50%" }
+        ];
+        const DEF_OUTRO = [
+            { id: 1, name: "Empoderar", t: "Mas tiempo para ti, mejores clases para ellos", s: "Y recuerda: La IA no reemplaza docentes, empodera a quienes la adoptan primero.", b: "EMPIEZA HOY ($8.900)" },
+            { id: 2, name: "No quedarse atras", t: "No te quedes atras", s: "Tus colegas ya estan usando IA. La diferencia esta en quien empieza primero.", b: "UNETE AHORA" }
+        ];
+        // Videos demo disponibles
+        const availableDemoVideos = ['1.mp4', '2.mp4'];
+        let currentDemoIndex = 0;
+        // Configuracion de videos demo (velocidad, zoom, y rango de tiempo para zoom)
+        // zoomStart/zoomEnd: segundos donde aplicar zoom (resto = 100%)
+        const demoVideoConfigs = [
+            { speed: 3, zoom: 140, zoomStart: 0, zoomEnd: 999, startTime: 0, endTime: null },
+            { speed: 2, zoom: 50, zoomStart: 0, zoomEnd: 999, startTime: 0, endTime: null }
+        ];
+        // Mensajes de Julia por video demo (1 comentario por cada video demo)
+        const juliaCommentsPerDemo = [
+            '¡Rúbricas, informes y clases listas en segundos!',
+            '¡Más de 50 casos de educación para que empieces a aplicar ya!'
+        ];
+        // Cola de videos Julia para el bubble (julia1-5, si no existe se salta)
+        // Cola de videos Julia para el bubble (julia1-5, si no existe se salta)
+        const availableJuliaVideos = ['julia1.mp4', 'julia2.mp4', 'julia3.mp4', 'julia4.mp4', 'julia5.mp4'];
+        let currentJuliaIndex = 0;
+        // Configuracion de videos Julia (velocidad, zoom, startTime, endTime)
+        const juliaVideoConfigs = {
+            'i': { speed: 1, zoom: 100, startTime: 0, endTime: null },
+            '1': { speed: 1, zoom: 100 },
+            '2': { speed: 1, zoom: 100 },
+            '3': { speed: 1, zoom: 100 },
+            '4': { speed: 1, zoom: 100 },
+            '5': { speed: 1, zoom: 100 },
+            'f': { speed: 1, zoom: 100, startTime: 0, endTime: null }
+        };
+        let demoSpeed = 2;
+        let currentPhase = 'intro';
+        let isCinema = false;
+        // Elements
+        const vidIntro = document.getElementById('vidIntro');
+        const vidDemo = document.getElementById('vidDemo');
+        const vidJulia = document.getElementById('vidJulia');
+        const introOverlay = document.getElementById('introOverlay');
+        const juliaComment = document.getElementById('juliaComment');
+        const brandPill = document.getElementById('brandPill');
+        const outro = document.getElementById('outro');
+        const bgMusic = document.getElementById('bgMusic');
+        const ctaBottom = document.getElementById('cta-bottom');
+        // --- ZONAS SEGURAS META ---
+        const metaFormats = {
+            reels: { name: 'Reels/Stories', width: 375, height: 667, topZone: 14, bottomZone: 20, description: 'Reels/Stories: UI superior 14% + UI inferior 20%' },
+            feed45: { name: 'Feed 4:5', width: 375, height: 469, topZone: 5, bottomZone: 15, description: 'Feed 4:5: UI minima arriba 5% + CTA abajo 15%' },
+            feed11: { name: 'Feed 1:1', width: 375, height: 375, topZone: 5, bottomZone: 15, description: 'Feed 1:1: UI minima arriba 5% + CTA abajo 15%' }
+        };
+        let currentMetaFormat = 'reels';
+        function setMetaFormat(format) {
+            const config = metaFormats[format];
+            if (!config) return;
+            currentMetaFormat = format;
+            const phoneFrame = document.querySelector('.phone-frame');
+            phoneFrame.style.width = config.width + 'px';
+            phoneFrame.style.height = config.height + 'px';
+            document.getElementById('safeZoneTop').style.height = config.topZone + '%';
+            document.getElementById('safeZoneBottom').style.height = config.bottomZone + '%';
+            // CTA encima del mensaje
+            const ctaPositions = { reels: '195px', feed45: '120px', feed11: '100px' };
+            document.getElementById('cta-bottom').style.bottom = ctaPositions[format];
+            // Mensaje abajo (encima safe zone)
+            const msgPositions = { reels: '135px', feed45: '60px', feed11: '45px' };
+            document.querySelector('.bottom-message').style.bottom = msgPositions[format];
+            // Julia bubble: esquina inferior derecha, sobre el contenido demo
+            const juliaBubblePositions = { reels: '210px', feed45: '130px', feed11: '115px' };
+            document.querySelector('.julia-bubble').style.bottom = juliaBubblePositions[format];
+            // Comentario Julia: encima de la burbuja
+            const juliaCommentPositions = { reels: '320px', feed45: '240px', feed11: '225px' };
+            document.querySelector('.julia-comment').style.bottom = juliaCommentPositions[format];
+            document.querySelectorAll('.format-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('format' + format.charAt(0).toUpperCase() + format.slice(1)).classList.add('active');
+            document.getElementById('formatInfo').textContent = config.description;
+        }
+        function toggleSafeZones(show) {
+            const overlay = document.getElementById('safeZonesOverlay');
+            overlay.classList.toggle('visible', show);
+        }
+        function setDemoSpeed(speed) {
+            demoSpeed = speed;
+            vidDemo.playbackRate = speed;
+            document.querySelectorAll('#demo-speed-btns .speed-btn').forEach(btn => {
+                btn.classList.toggle('active', parseFloat(btn.dataset.speed) === speed);
+            });
+        }
+        // Funcion para configurar velocidad/zoom de cada video
+        function setVideoConfig(type, index, prop, value) {
+            const numValue = value === null || value === '' ? null : parseFloat(value);
+            if (type === 'demo') {
+                if (!demoVideoConfigs[index]) return;
+                demoVideoConfigs[index][prop] = numValue;
+                // Actualizar labels
+                if (prop === 'speed') {
+                    document.getElementById('demoVel' + index).textContent = numValue.toFixed(1);
+                    // Si es el video actual, aplicar inmediatamente
+                    if (currentDemoIndex === index && currentPhase === 'demo') {
+                        vidDemo.playbackRate = numValue;
+                    }
+                } else if (prop === 'zoom') {
+                    document.getElementById('demoZoom' + index).textContent = Math.round(numValue);
+                    if (currentDemoIndex === index && currentPhase === 'demo') {
+                        vidDemo.style.transform = 'scale(' + (numValue / 100) + ')';
+                    }
+                }
+                // startTime y endTime no requieren label update
+            } else if (type === 'julia') {
+                const key = String(index).toLowerCase();
+                if (!juliaVideoConfigs[key]) return;
+                juliaVideoConfigs[key][prop] = numValue;
+                // Actualizar labels
+                const labelId = prop === 'speed' ? 'juliaVel' : 'juliaZoom';
+                const labelSuffix = key === 'i' ? 'I' : key === 'f' ? 'F' : key;
+                const elem = document.getElementById(labelId + labelSuffix);
+                if (elem) {
+                    elem.textContent = prop === 'speed' ? numValue.toFixed(1) : Math.round(numValue);
+                }
+                // Aplicar si es el video actual
+                if (currentPhase === 'intro' && key === 'i') {
+                    if (prop === 'speed') vidIntro.playbackRate = numValue;
+                    if (prop === 'zoom') vidIntro.style.transform = 'scale(' + (numValue / 100) + ')';
+                }
+            }
+            console.log('[CONFIG]', type, index, prop, '=', numValue);
+        }
+        // Funcion para cambiar tamaño de burbuja Julia
+        function setBubbleSize(size) {
+            const bubble = document.querySelector('.julia-bubble');
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            document.getElementById('bubbleSizeLabel').textContent = size;
+            console.log('[BUBBLE] Tamaño:', size + 'px');
+        }
+        // Funcion para cambiar posicion vertical de burbuja Julia
+        function setBubblePosition(pos) {
+            const bubble = document.querySelector('.julia-bubble');
+            bubble.style.bottom = pos + 'px';
+            // Ajustar comentario (110px arriba de la burbuja)
+            document.querySelector('.julia-comment').style.bottom = (parseInt(pos) + 110) + 'px';
+            document.getElementById('bubblePosLabel').textContent = pos;
+            console.log('[BUBBLE] Posicion:', pos + 'px');
+        }
+        // Guardar preferencias en localStorage
+        function saveVideoConfigs() {
+            const configs = {
+                demo: demoVideoConfigs,
+                julia: juliaVideoConfigs,
+                demoSpeed: demoSpeed,
+                bubbleSize: parseInt(document.getElementById('bubbleSizeSlider').value),
+                bubblePosition: parseInt(document.getElementById('bubblePosSlider').value)
+            };
+            localStorage.setItem('adStudioVideoConfigs', JSON.stringify(configs));
+            alert('✅ Preferencias guardadas!');
+        }
+        // Cargar preferencias desde localStorage
+        function loadVideoConfigs() {
+            const saved = localStorage.getItem('adStudioVideoConfigs');
+            if (!saved) return;
+            try {
+                const configs = JSON.parse(saved);
+                // Aplicar configuraciones demo
+                if (configs.demo) {
+                    configs.demo.forEach((cfg, i) => {
+                        if (demoVideoConfigs[i]) {
+                            Object.assign(demoVideoConfigs[i], cfg);
+                            // Actualizar UI
+                            if (cfg.speed) {
+                                document.getElementById('demo' + i + 'Vel').value = cfg.speed * 100;
+                                document.getElementById('demoVel' + i).textContent = cfg.speed.toFixed(1);
+                            }
+                            if (cfg.zoom) {
+                                document.getElementById('demo' + i + 'Zoom').value = cfg.zoom;
+                                document.getElementById('demoZoom' + i).textContent = Math.round(cfg.zoom);
+                            }
+                            if (cfg.startTime !== undefined) {
+                                document.getElementById('demo' + i + 'Start').value = cfg.startTime || 0;
+                            }
+                            if (cfg.endTime !== undefined && cfg.endTime !== null) {
+                                document.getElementById('demo' + i + 'End').value = cfg.endTime;
+                            }
+                        }
+                    });
+                }
+                // Aplicar configuraciones julia
+                if (configs.julia) {
+                    Object.entries(configs.julia).forEach(([key, cfg]) => {
+                        if (juliaVideoConfigs[key]) {
+                            Object.assign(juliaVideoConfigs[key], cfg);
+                            // Actualizar UI para julia-i y julia-f
+                            if (key === 'i') {
+                                if (cfg.startTime !== undefined) {
+                                    const el = document.getElementById('juliaIStart');
+                                    if (el) el.value = cfg.startTime || 0;
+                                }
+                                if (cfg.endTime !== undefined && cfg.endTime !== null) {
+                                    const el = document.getElementById('juliaIEnd');
+                                    if (el) el.value = cfg.endTime;
+                                }
+                            }
+                            if (key === 'f') {
+                                if (cfg.startTime !== undefined) {
+                                    const el = document.getElementById('juliaFStart');
+                                    if (el) el.value = cfg.startTime || 0;
+                                }
+                                if (cfg.endTime !== undefined && cfg.endTime !== null) {
+                                    const el = document.getElementById('juliaFEnd');
+                                    if (el) el.value = cfg.endTime;
+                                }
+                            }
+                        }
+                    });
+                }
+                if (configs.demoSpeed) demoSpeed = configs.demoSpeed;
+                // Cargar tamaño de burbuja
+                if (configs.bubbleSize) {
+                    document.getElementById('bubbleSizeSlider').value = configs.bubbleSize;
+                    document.getElementById('bubbleSizeLabel').textContent = configs.bubbleSize;
+                    setBubbleSize(configs.bubbleSize);
+                }
+                // Cargar posicion de burbuja
+                if (configs.bubblePosition) {
+                    document.getElementById('bubblePosSlider').value = configs.bubblePosition;
+                    document.getElementById('bubblePosLabel').textContent = configs.bubblePosition;
+                    setBubblePosition(configs.bubblePosition);
+                }
+                console.log('[CONFIG] Preferencias cargadas desde localStorage');
+            } catch (e) {
+                console.error('[CONFIG] Error cargando preferencias:', e);
+            }
+        }
+        // Cargar preferencias al iniciar
+        loadVideoConfigs();
+        function updateJuliaCommentForDemo(demoIndex) {
+            const msg = juliaCommentsPerDemo[demoIndex] || juliaCommentsPerDemo[0];
+            juliaComment.textContent = msg;
+        }
+        // --- FASE 1: INTRO ---
+        function startIntroPhase() {
+            currentPhase = 'intro';
+            introOverlay.classList.remove('hidden');
+
+            // Ocultar burbuja Julia durante intro
+            document.querySelector('.julia-bubble').style.display = 'none';
+            juliaComment.classList.remove('visible');
+
+            const config = juliaVideoConfigs['i'] || {};
+            vidIntro.currentTime = config.startTime || 0;
+            vidIntro.playbackRate = config.speed || 1;
+            vidIntro.style.transform = 'scale(' + ((config.zoom || 100) / 100) + ')';
+            vidIntro.play();
+            bgMusic.currentTime = 0;
+            bgMusic.volume = 0.3;
+            bgMusic.play().catch(err => {
+                console.log('[AUDIO] Autoplay bloqueado, se reproducirá con interacción:', err);
+            });
+        }
+        // Detectar duraciones de videos y mostrar en campos Fin
+        vidIntro.addEventListener('loadedmetadata', () => {
+            const duration = Math.floor(vidIntro.duration);
+            // Actualizar placeholder con duración real
+            if (vidIntro.src.includes('julia-i')) {
+                const el = document.getElementById('juliaIEnd');
+                if (el && !el.value) el.placeholder = duration + 's';
+            } else if (vidIntro.src.includes('julia-f')) {
+                const el = document.getElementById('juliaFEnd');
+                if (el && !el.value) el.placeholder = duration + 's';
+            }
+        });
+        vidDemo.addEventListener('loadedmetadata', () => {
+            const duration = Math.floor(vidDemo.duration);
+            const elEnd = document.getElementById('demo' + currentDemoIndex + 'End');
+            if (elEnd && !elEnd.value) elEnd.placeholder = duration + 's';
+        });
+        // Control de endTime para julia-i y julia-f
+        vidIntro.addEventListener('timeupdate', () => {
+            if (currentPhase === 'intro') {
+                const config = juliaVideoConfigs['i'] || {};
+                const endTime = parseFloat(config.endTime);
+                if (!isNaN(endTime) && endTime > 0 && vidIntro.currentTime >= endTime) {
+                    vidIntro.pause();
+                    startDemoPhase();
+                }
+            } else if (currentPhase === 'julia-final') {
+                const config = juliaVideoConfigs['f'] || {};
+                const endTime = parseFloat(config.endTime);
+                if (!isNaN(endTime) && endTime > 0 && vidIntro.currentTime >= endTime) {
+                    vidIntro.pause();
+                    introOverlay.classList.add('hidden');
+                    startOutroPhase();
+                }
+            }
+        });
+        vidIntro.addEventListener('ended', () => {
+            if (currentPhase === 'intro') {
+                startDemoPhase();
+            } else if (currentPhase === 'julia-final') {
+                introOverlay.classList.add('hidden');
+                startOutroPhase();
+            }
+        });
+        // --- FASE 2: DEMO ---
+        function startDemoPhase() {
+            currentPhase = 'demo';
+            introOverlay.classList.add('hidden');
+
+            // Mostrar burbuja Julia durante demo
+            document.querySelector('.julia-bubble').style.display = 'block';
+
+            currentDemoIndex = 0;
+            if (availableDemoVideos.length > 0) {
+                vidDemo.src = availableDemoVideos[0];
+                vidDemo.load();
+            }
+            updateJuliaCommentForDemo(0);
+            vidDemo.oncanplay = function () {
+                vidDemo.currentTime = demoVideoConfigs[0]?.startTime || 0;
+                vidDemo.muted = true;
+                vidDemo.playbackRate = demoSpeed;
+                // Aplicar zoom del primer video
+                const zoom1 = demoVideoConfigs[0]?.zoom || 100;
+                vidDemo.style.transform = 'scale(' + (zoom1 / 100) + ')';
+                vidDemo.play();
+                vidDemo.oncanplay = null;
+            };
+            // Iniciar Julia bubble - carga el PRIMER video Julia de la secuencia
+            console.log('[JULIA] Iniciando secuencia con:', availableJuliaVideos[0]);
+            currentJuliaIndex = 0;
+            loadJuliaVideo(currentJuliaIndex);
+        }
+        // Funcion para cargar un video Julia por indice (con precarga)
+        function loadJuliaVideo(index) {
+            if (index >= availableJuliaVideos.length) {
+                console.log('[JULIA] Fin de secuencia, loop desde el primero');
+                index = 0;
+                currentJuliaIndex = 0;
+            }
+            const videoFile = availableJuliaVideos[index];
+            console.log('[JULIA] Precargando video:', videoFile);
+
+            // Crear video temporal para precargar
+            const preloadVideo = document.createElement('video');
+            preloadVideo.src = videoFile;
+            preloadVideo.preload = 'auto';
+
+            preloadVideo.oncanplaythrough = function () {
+                // Video precargado, ahora cambiar el src del video principal
+                console.log('[JULIA] Video precargado, cambiando a:', videoFile);
+                vidJulia.src = videoFile;
+                vidJulia.currentTime = 0;
+                vidJulia.play().then(() => {
+                    console.log('[JULIA] Reproduciendo:', videoFile);
+                }).catch(err => {
+                    console.error('[JULIA] Error play:', err);
+                });
+            };
+
+            preloadVideo.onerror = function (e) {
+                console.error('[JULIA] Error precargando:', videoFile, e);
+                // Si falla, intentar con el siguiente
+                if (index < availableJuliaVideos.length - 1) {
+                    currentJuliaIndex++;
+                    loadJuliaVideo(currentJuliaIndex);
+                }
+            };
+
+            preloadVideo.load();
+        }
+        // Funcion para aplicar zoom al video demo
+        function setDemoZoom(videoIndex, zoomPercent) {
+            demoVideoConfigs[videoIndex].zoom = zoomPercent;
+            if (currentDemoIndex === videoIndex) {
+                vidDemo.style.transform = 'scale(' + (zoomPercent / 100) + ')';
+            }
+            console.log('[ZOOM] Video', videoIndex, 'zoom:', zoomPercent + '%');
+        }
+        // Mostrar comentario de Julia y aplicar zoom temporal
+        vidDemo.addEventListener('timeupdate', () => {
+            const t = vidDemo.currentTime;
+            const duration = vidDemo.duration;
+            const config = demoVideoConfigs[currentDemoIndex] || {};
+            const endTime = config.endTime || duration;
+            const timeLeft = endTime - t;
+            // Mostrar comentario cuando faltan 10 segundos o menos (más tiempo para leer)
+            if (timeLeft <= 10 && timeLeft > 0) {
+                juliaComment.classList.add('visible');
+            } else {
+                juliaComment.classList.remove('visible');
+            }
+            // Zoom temporal: aplicar solo entre zoomStart y zoomEnd
+            const zoomStart = config.zoomStart || 0;
+            const zoomEnd = config.zoomEnd || 999;
+            const baseZoom = config.zoom || 100;
+            if (t >= zoomStart && t <= zoomEnd) {
+                vidDemo.style.transform = 'scale(' + (baseZoom / 100) + ')';
+            } else {
+                vidDemo.style.transform = 'scale(1)';
+            }
+            if (t >= endTime && currentPhase === 'demo') {
+                vidDemo.pause();
+                vidDemo.dispatchEvent(new Event('ended'));
+            }
+        });
+
+        // Flag para evitar múltiples transiciones
+        let demoTransitioning = false;
+        let demosCompleted = false; // Flag para saber si todos los demos terminaron
+
+        // Cuando termina un video demo
+        vidDemo.addEventListener('ended', () => {
+            if (currentPhase !== 'demo') return;
+            if (demoTransitioning) return; // Evitar doble procesamiento
+
+            const isLastDemo = currentDemoIndex >= availableDemoVideos.length - 1;
+
+            if (!isLastDemo) {
+                // NO es el último demo: cargar siguiente inmediatamente
+                demoTransitioning = true;
+                currentDemoIndex++;
+                const nextDemo = availableDemoVideos[currentDemoIndex];
+                console.log('[DEMO] Cargando siguiente demo:', nextDemo);
+
+                // Actualizar comentario de Julia para el nuevo demo
+                updateJuliaCommentForDemo(currentDemoIndex);
+                // Julia sigue avanzando independientemente, NO resetear índice
+
+                vidDemo.src = nextDemo;
+                vidDemo.load();
+                vidDemo.oncanplay = function () {
+                    const config = demoVideoConfigs[currentDemoIndex] || { startTime: 0, zoom: 100, speed: 2 };
+                    vidDemo.currentTime = config.startTime || 0;
+                    vidDemo.playbackRate = config.speed || demoSpeed;
+                    vidDemo.style.transform = 'scale(' + ((config.zoom || 100) / 100) + ')';
+                    vidDemo.play();
+                    vidDemo.oncanplay = null;
+                    demoTransitioning = false; // Permitir siguiente transición
+                };
+            } else {
+                // ES el último demo: marcar como completado y esperar que Julia termine
+                console.log('[SYNC] Último demo terminado, esperando que Julia termine...');
+                demosCompleted = true;
+                // Si Julia ya terminó (video pausado), ir a julia-f ahora
+                if (vidJulia.paused || vidJulia.ended) {
+                    console.log('[SYNC] Julia ya terminó, yendo a julia-f');
+                    juliaComment.classList.remove('visible');
+                    startJuliaFinalPhase();
+                }
+                // Si Julia sigue reproduciéndose, el evento 'ended' de Julia se encargará
+            }
+        });
+
+        // Cuando termina video Julia (en el bubble)
+        vidJulia.addEventListener('ended', () => {
+            if (currentPhase !== 'demo') return;
+
+            console.log('[JULIA] Video bubble terminado. demosCompleted:', demosCompleted);
+
+            // Si todos los demos terminaron, ir a julia-f
+            if (demosCompleted) {
+                console.log('[JULIA] Demos completados, yendo a julia-f');
+                juliaComment.classList.remove('visible');
+                startJuliaFinalPhase();
+                return;
+            }
+
+            // Si los demos siguen, avanzar al siguiente video Julia
+            currentJuliaIndex++;
+            if (currentJuliaIndex >= availableJuliaVideos.length) {
+                // Si llegamos al final de la cola Julia, reiniciar desde el primero
+                currentJuliaIndex = 0;
+            }
+            console.log('[JULIA] Avanzando a siguiente video:', availableJuliaVideos[currentJuliaIndex]);
+            loadJuliaVideo(currentJuliaIndex);
+        });
+        // --- FASE 3: JULIA FINAL (julia-f.mp4 fullscreen) ---
+        function startJuliaFinalPhase() {
+            currentPhase = 'julia-final';
+            juliaComment.classList.remove('visible');
+            vidJulia.pause();
+            // Ocultar demo, burbuja y CTA
+            document.querySelector('.main-container').style.display = 'none';
+            document.getElementById('cta-bottom').style.display = 'none';
+            document.querySelector('.julia-bubble').style.display = 'none';
+            document.querySelector('.bottom-message').style.display = 'none';
+            // Cambiar el label del intro para julia-f
+            document.getElementById('introLabel').textContent = 'Más de 214 alumnos ya están transformando su forma de trabajar';
+            introOverlay.classList.remove('hidden');
+            // Cargar julia-f
+            vidIntro.src = 'julia-f.mp4';
+            vidIntro.load();
+            const config = juliaVideoConfigs['f'] || { speed: 1, zoom: 100, startTime: 0 };
+            // Usar canplaythrough para mejor deteccion
+            const playHandler = function () {
+                vidIntro.currentTime = config.startTime || 0;
+                vidIntro.playbackRate = config.speed || 1;
+                vidIntro.style.transform = 'scale(' + ((config.zoom || 100) / 100) + ')';
+                vidIntro.play();
+                console.log('[JULIA-F] Reproduciendo julia-f.mp4 fullscreen desde', config.startTime || 0, 's');
+                vidIntro.removeEventListener('canplaythrough', playHandler);
+            };
+            vidIntro.addEventListener('canplaythrough', playHandler);
+            // Timeout de seguridad: si despues de 3s no carga, saltar al outro
+            setTimeout(() => {
+                if (currentPhase === 'julia-final' && vidIntro.readyState < 3) {
+                    console.log('[JULIA-F] Timeout, saltando al outro');
+                    vidIntro.removeEventListener('canplaythrough', playHandler);
+                    startOutroPhase();
+                }
+            }, 3000);
+        }
+        // --- FASE 4: OUTRO ---
+        function startOutroPhase() {
+            currentPhase = 'outro';
+            juliaComment.classList.remove('visible');
+            // Ocultar intro overlay y pausar video
+            introOverlay.classList.add('hidden');
+            vidIntro.pause();
+            // Asegurar que la burbuja siga oculta
+            document.querySelector('.julia-bubble').style.display = 'none';
+            // Mostrar outro directamente
+            outro.classList.add('visible');
+            setTimeout(() => {
+                if (isCinema) exitCinema();
+            }, 5000);
+        }
+        // --- CINEMA MODE ---
+        function startCinemaMode() {
+            isCinema = true;
+            document.body.classList.add('cinema-mode');
+            resetAll();
+            setTimeout(() => startIntroPhase(), 500);
+        }
+        function exitCinema() {
+            isCinema = false;
+            document.body.classList.remove('cinema-mode');
+            stopAll();
+        }
+        function resetAll() {
+            introOverlay.classList.remove('hidden');
+            outro.classList.remove('visible');
+            juliaComment.classList.remove('visible');
+            brandPill.classList.remove('visible');
+            ctaBottom.classList.remove('opacity-0');
+            currentDemoIndex = 0;
+            demoTransitioning = false;
+            demosCompleted = false;
+            // Restaurar elementos para nuevo ciclo
+            document.querySelector('.main-container').style.display = '';
+            document.querySelector('.bottom-message').style.display = '';
+            document.getElementById('cta-bottom').style.display = '';
+            document.getElementById('introLabel').textContent = '¡Recupera tus tardes y vuelve a descansar!';
+            vidIntro.src = 'julia-i.mp4';
+        }
+        function stopAll() {
+            vidIntro.pause();
+            vidDemo.pause();
+            vidJulia.pause();
+            bgMusic.pause();
+        }
+        function toggleOutroPreview() {
+            outro.classList.toggle('visible');
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.code === "Space" && !document.activeElement.isContentEditable) {
+                e.preventDefault();
+                isCinema ? exitCinema() : startCinemaMode();
+            }
+            if (e.key === "Escape") exitCinema();
+        });
+        // --- TEMPLATES ---
+        let dataHooks = [], dataBenefits = [], dataCta = [], dataOutro = [];
+        function init() {
+            dataHooks = JSON.parse(localStorage.getItem('edu_hooks') || JSON.stringify(DEF_HOOKS));
+            dataBenefits = JSON.parse(localStorage.getItem('edu_benefits') || JSON.stringify(DEF_BENEFITS));
+            dataCta = JSON.parse(localStorage.getItem('edu_cta') || JSON.stringify(DEF_CTA));
+            dataOutro = JSON.parse(localStorage.getItem('edu_outro') || JSON.stringify(DEF_OUTRO));
+            renderLists();
+        }
+        function renderLists() {
+            renderList('list-hooks', dataHooks, 'hooks');
+            renderList('list-benefits', dataBenefits, 'benefits');
+            renderList('list-cta', dataCta, 'cta');
+            renderList('list-outro', dataOutro, 'outro');
+        }
+        function renderList(divId, data, type) {
+            const container = document.getElementById(divId);
+            container.innerHTML = '';
+            data.forEach((item) => {
+                const btn = document.createElement('div');
+                btn.className = 'tpl-btn';
+                btn.onclick = () => apply(type, item);
+                btn.innerHTML = '<div class="tpl-name">' + item.name + '</div>';
+                container.appendChild(btn);
+            });
+        }
+        function apply(type, item) {
+            if (type === 'hooks') {
+                document.getElementById('hookEmoji').innerText = item.emoji || '';
+                document.getElementById('hookText').innerText = item.text;
+            }
+            if (type === 'benefits') {
+                document.getElementById('benefitBadge').innerText = item.badge;
+                document.getElementById('subText').innerText = item.sub;
+            }
+            if (type === 'cta') {
+                document.getElementById('cta-text').innerText = item.text;
+            }
+            if (type === 'outro') {
+                document.getElementById('outro-title').innerText = item.t;
+                document.getElementById('outro-sub').innerText = item.s;
+                document.getElementById('outro-btn').innerText = item.b;
+                outro.classList.add('visible');
+                setTimeout(() => {
+                    if (!isCinema) outro.classList.remove('visible');
+                }, 1000);
+            }
+        }
+        function saveTemplate(type) {
+            const name = prompt("Nombre:", "Nueva Plantilla");
+            if (!name) return;
+            const id = Date.now();
+            if (type === 'hooks') {
+                dataHooks.push({ id, name, emoji: document.getElementById('hookEmoji').innerText, text: document.getElementById('hookText').innerText });
+                localStorage.setItem('edu_hooks', JSON.stringify(dataHooks));
+            }
+            if (type === 'benefits') {
+                dataBenefits.push({ id, name, badge: document.getElementById('benefitBadge').innerText, sub: document.getElementById('subText').innerText });
+                localStorage.setItem('edu_benefits', JSON.stringify(dataBenefits));
+            }
+            if (type === 'cta') {
+                dataCta.push({ id, name, text: document.getElementById('cta-text').innerText });
+                localStorage.setItem('edu_cta', JSON.stringify(dataCta));
+            }
+            if (type === 'outro') {
+                dataOutro.push({ id, name, t: document.getElementById('outro-title').innerText, s: document.getElementById('outro-sub').innerText, b: document.getElementById('outro-btn').innerText });
+                localStorage.setItem('edu_outro', JSON.stringify(dataOutro));
+            }
+            renderLists();
+        }
+        function resetAllDefaults() {
+            if (!confirm("Restaurar todo?")) return;
+            localStorage.removeItem('edu_hooks');
+            localStorage.removeItem('edu_benefits');
+            localStorage.removeItem('edu_cta');
+            localStorage.removeItem('edu_outro');
+            location.reload();
+        }
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

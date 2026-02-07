@@ -88,7 +88,7 @@ function getEmailTemplateStarter({ name, email, resetLink }) {
                         <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+150 Casos Aplicados</strong>
                         <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Tu biblioteca de instrucciones lista para copiar y pegar en ChatGPT, Claude y Gemini.</div>
                         <div style="font-size: 13px;">
-                            <a href="https://aulagenia.cl/campus-curso-ia.html?course=ia-aplicada-starter#modulo-5" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a los Casos</a><br>
+                            <a href="https://aulagenia.cl/campus-curso-ia.html#modulo5" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a los Casos</a><br>
                             <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
                         </div>
                     </td>
@@ -198,7 +198,7 @@ function getEmailTemplatePRO({ name, email, resetLink }) {
                         <strong style="color: #1e293b; display: block; margin-bottom: 4px;">+150 Casos Aplicados</strong>
                         <div style="color: #64748b; font-size: 14px; margin-bottom: 4px;">Tu biblioteca de instrucciones lista para copiar y pegar en ChatGPT, Claude y Gemini.</div>
                         <div style="font-size: 13px;">
-                            <a href="https://aulagenia.cl/campus-curso-ia.html?course=ia-aplicada-starter#modulo-5" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a los Casos</a><br>
+                            <a href="https://aulagenia.cl/campus-curso-ia.html#modulo5" style="color: #0d9488; text-decoration: none; font-weight: 600;">👉 Acceder a los Casos</a><br>
                             <a href="https://aulagenia.cl/campus.html?download=pdf" style="color: #0d9488; text-decoration: none; font-weight: 600;">📥 Descargar PDF (Auto-descarga)</a>
                         </div>
                     </td>

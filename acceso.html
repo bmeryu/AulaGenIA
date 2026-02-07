@@ -380,9 +380,11 @@
 
                             console.log('✅ Email pre-llenado desde Flow:', emailFromUrl);
 
-                            // Check for Order ID
+                            // Check for Order ID & Amount
                             const orderIdFromUrl = urlParams.get('orderId');
+                            const amountFromUrl = urlParams.get('amount');
                             if (orderIdFromUrl) console.log('📦 Order ID:', orderIdFromUrl);
+                            if (amountFromUrl) console.log('💰 Amount from URL:', amountFromUrl);
 
                             // TRACKING: Disparar evento de Compra SOLO si viene de Flow y no se ha disparado antes en esta sesión
                             // Usamos OrderID si existe para mayor precisión, sino Email
@@ -390,7 +392,7 @@
 
                             if (typeof fbq !== 'undefined' && !sessionStorage.getItem(uniqueKey)) {
                                 const eventData = {
-                                    value: 8900,
+                                    value: amountFromUrl ? parseFloat(amountFromUrl) : 8900,
                                     currency: 'CLP',
                                     content_name: 'Flow Payment Return'
                                 };

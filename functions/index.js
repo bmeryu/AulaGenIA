@@ -1239,10 +1239,11 @@ exports.checkPendingHotmartPurchase = onCall(
 // SYSTEMA DE PAGOS FLOW (CHILE) - INTEGRACIÃN PRODUCCIÃN
 // =======================================================================================
 
-// Credenciales (PRODUCCIÓN)
-const FLOW_API_KEY = "1F52067F-EE87-492E-A1D9-4775L8BE40B4";
-const FLOW_SECRET_KEY = "ad4a0c0622988212d305d04ac5068d0e9042a11a";
-const FLOW_API_URL = "https://www.flow.cl/api";
+// Credenciales (SANDBOX - TESTING)
+// ⚠️ REVERTIR A PRODUCCIÓN ANTES DE PUSH A MAIN
+const FLOW_API_KEY = "1F31D9A0-28D7-4EA6-80F3-4E87LF908EE0";
+const FLOW_SECRET_KEY = "49e7033c82fb239c10ea111192b6c069b1231faf";
+const FLOW_API_URL = "https://sandbox.flow.cl/api";
 
 // Helper para firmar parÃ¡metros (HMAC SHA256) (Importado globalmente arriba, reutilizamos)
 function signFlowParams(params) {
@@ -1303,7 +1304,7 @@ exports.createFlowPayment = onCall(
             email: userEmail,
             paymentMethod: 9, // 9 = Webpay / Todos
             urlConfirmation: 'https://flowwebhook-3kbbtamy5q-uc.a.run.app',
-            urlReturn: `https://flowreturnredirect-3kbbtamy5q-uc.a.run.app?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}`,
+            urlReturn: `https://flowreturnredirect-3kbbtamy5q-uc.a.run.app?email=${encodeURIComponent(userEmail)}&orderId=${commerceOrder}&amount=${amount}`,
         };
 
         // =================================================================
@@ -1370,6 +1371,7 @@ exports.createFlowPayment = onCall(
                 enrollmentStatus: 'PENDING',
                 userId: request.auth ? request.auth.uid : null, // Opcional si no hay auth
                 leadId: request.data.leadId || null, // ID del lead si viene del formulario
+                nombre: request.data.nombre || null, // Guardar nombre para CAPI (CreateFlowPayment)
                 createdAt: admin.firestore.FieldValue.serverTimestamp(),
                 paymentMethod: 'FLOW_CLP_PROD',
                 // CAPI DATA STORAGE

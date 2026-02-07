@@ -6809,6 +6809,10 @@ document.addEventListener("DOMContentLoaded", () => {
               console.error("Error al cargar el progreso.", e);
             }
 
+            // Check for hash routing on load
+            const initialHash = window.location.hash;
+            const hasDeepLink = initialHash.startsWith('#caso/') || initialHash.startsWith('#segmento/') || initialHash === '#modulo5'; // AGREGADO: #modulo5 también es deep link
+
             // Load user segment from Firestore
             try {
               const userDoc = await t.collection("userProgress").doc(l.uid).get();
@@ -6831,24 +6835,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
               } else {
                 // Firestore is authoritative: if no segment in Firestore, clear localStorage and show modal
-                console.log("[Segment] No segment in Firestore - clearing localStorage and showing modal");
+                console.log("[Segment] No segment in Firestore - clearing localStorage");
                 localStorage.removeItem('userSegment');
                 currentUserSegment = null;
-                pendingSegmentModal = true; // Set flag BEFORE timeout to prevent tour
-                setTimeout(() => {
-                  if (window.showProfileSelectorModal) {
-                    window.showProfileSelectorModal();
-                  }
-                  pendingSegmentModal = false; // Clear flag after modal is shown
-                }, 1500);
+
+                // SOLO MOSTRAR SI NO HAY DEEP LINK ACTIVO (Para evitar interferencia con #modulo5)
+                if (!hasDeepLink) {
+                  console.log("[Segment] Showing modal (No Deep Link)");
+                  pendingSegmentModal = true; // Set flag BEFORE timeout to prevent tour
+                  setTimeout(() => {
+                    if (window.showProfileSelectorModal) {
+                      window.showProfileSelectorModal();
+                    }
+                    pendingSegmentModal = false; // Clear flag after modal is shown
+                  }, 1500);
+                } else {
+                  console.log("[Segment] Deep Link active (", initialHash, ") - Skipping Modal");
+                }
               }
             } catch (segErr) {
               console.error("Error loading segment:", segErr);
             }
 
             // Check for hash routing on load - with retry logic
-            const initialHash = window.location.hash;
-            const hasDeepLink = initialHash.startsWith('#caso/') || initialHash.startsWith('#segmento/');
 
             // Función para renderizar UI por defecto
             function renderDefaultUI() {
@@ -6896,33 +6905,57 @@ document.addEventListener("DOMContentLoaded", () => {
               } else if (hash === '#modulo5' || hash === '#casos') {
                 // Navegar al Módulo 5: Casos Aplicados
                 renderDefaultUI();
-                const modulesContainer = document.getElementById('modules-container');
-                if (modulesContainer) {
-                  // Encontrar el Módulo 5 (penúltimo acordeón - Casos Aplicados)
-                  const accordions = modulesContainer.querySelectorAll('.accordion-item');
-                  const module5Index = accordions.length - 2; // Penúltimo módulo
 
-                  if (accordions[module5Index]) {
-                    // Expandir el acordeón
-                    const accordionBtn = accordions[module5Index].querySelector('button, .accordion-header');
-                    const accordionContent = accordions[module5Index].querySelector('.accordion-content');
+                // Esperar a que el DOM se renderice
+                setTimeout(() => {
+                  const modulesContainer = document.getElementById('modules-container');
+                  if (modulesContainer) {
+                    // Encontrar el Módulo 5 (penúltimo acordeón - Casos Aplicados)
+                    // NOTA: Ajustar índice si cambia la cantidad de módulos
+                    const accordions = modulesContainer.querySelectorAll('.accordion-item');
+                    // Buscamos dinámicamente el texto para ser más robustos
+                    let module5Index = -1;
+                    accordions.forEach((acc, idx) => {
+                      if (acc.textContent.includes('Casos de Uso') || acc.textContent.includes('Módulo 5')) {
+                        module5Index = idx;
+                      }
+                    });
 
-                    if (accordionContent) {
-                      accordionContent.classList.add('open');
-                      // Expandir el ícono si existe
-                      const arrow = accordions[module5Index].querySelector('.arrow-down');
-                      if (arrow) arrow.style.transform = 'rotate(180deg)';
+                    if (module5Index === -1 && accordions.length > 0) module5Index = accordions.length - 2; // Fallback
+
+                    if (module5Index >= 0 && accordions[module5Index]) {
+                      // Expandir el acordeón
+                      const accordionBtn = accordions[module5Index].querySelector('button, .accordion-header');
+                      const accordionContent = accordions[module5Index].querySelector('.accordion-content');
+
+                      if (accordionContent) {
+                        accordionContent.classList.add('open');
+                        accordionContent.style.maxHeight = accordionContent.scrollHeight + "px"; // Forzar altura
+                        // Expandir el ícono si existe
+                        const arrow = accordions[module5Index].querySelector('.arrow-down');
+                        if (arrow) arrow.style.transform = 'rotate(180deg)';
+                      }
+
+                      // Scroll al módulo
+                      setTimeout(() => {
+                        accordions[module5Index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }, 100);
+
+                      // Auto-click first item in Module 5
+                      setTimeout(() => {
+                        const firstLessonLink = accordions[module5Index].querySelector('.lesson-item a');
+                        if (firstLessonLink) {
+                          console.log("Auto-clicking first lesson of Module 5");
+                          firstLessonLink.click();
+                        }
+
+                        // Limpiar URL AL FINAL para no romper navegación durante el proceso
+                        // history.replaceState(null, '', window.location.pathname); 
+                        // DEJAMOS EL HASH visible por ahora para debug usuario, o lo quitamos solo al final
+                      }, 500);
                     }
-
-                    // Scroll al módulo
-                    setTimeout(() => {
-                      accordions[module5Index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
-
-                    // Limpiar el hash para no interferir con navegación futura
-                    history.replaceState(null, '', window.location.pathname);
                   }
-                }
+                }, 500); // Mayor delay inicial
               } else {
                 // No hash de caso, renderizar vista por defecto
                 renderDefaultUI();

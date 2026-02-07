@@ -1865,13 +1865,16 @@
                     if (isRecording) stopRecording();
                 };
 
-                mediaRecorder.start(100);
-                isRecording = true;
-                document.getElementById('recordBtn').innerHTML = '⏹️ Detener';
-                document.getElementById('recordBtn').style.background = 'linear-gradient(135deg,#44ff44,#00cc00)';
+                // ESPERAR 500ms para asegurar que el cursor se oculte y la UI se limpie
+                setTimeout(() => {
+                    mediaRecorder.start(100);
+                    isRecording = true;
+                    document.getElementById('recordBtn').innerHTML = '⏹️ Detener';
+                    document.getElementById('recordBtn').style.background = 'linear-gradient(135deg,#44ff44,#00cc00)';
 
-                // ARREGLO: Iniciar reproducción AHORA que ya estamos grabando
-                setTimeout(() => startIntroPhase(), 500);
+                    // ARREGLO: Iniciar reproducción AHORA que ya estamos grabando
+                    setTimeout(() => startIntroPhase(), 500);
+                }, 500);
 
             } catch (e) {
                 console.error('[RECORD] Error:', e);
@@ -1892,8 +1895,9 @@
             const srcH = settings.height || 1080;
 
             // Calcular posición del phone-frame centrado
-            const phoneW = 375;
-            const phoneH = 667;
+            // AJUSTE: Usar dimensiones PARES (376x668) para evitar artefactos verdes en CapCut/VP9
+            const phoneW = 376;
+            const phoneH = 668;
             const cropX = Math.floor((srcW - phoneW) / 2);
             const cropY = Math.floor((srcH - phoneH) / 2);
 

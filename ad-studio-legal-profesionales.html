@@ -123,7 +123,7 @@
             overflow: hidden;
             z-index: 100;
             box-shadow: 0 4px 20px rgba(0, 212, 161, 0.5);
-            background: transparent;
+            background: #000;
             display: none;
         }
 
@@ -979,9 +979,9 @@
         ];
         // Mensajes de Julia por evento (0=inicio demo1, 1=fin demo1, 2=fin demo2)
         const juliaCommentsPerDemo = [
-            '⚖️ +50 casos para Profesionales',
+            '⚖️ Mira este caso aplicado a tu rubro...',
             'TÚ eres el experto. La IA solo amplifica tu trabajo.',
-            '+150 casos totales para que empieces a aplicar ya!'
+            '+150 casos como este en el Pack Completo!'
         ];
         // Cola de videos Julia para el bubble (julia1-5, si no existe se salta)
         // Cola de videos Julia para el bubble (julia1-5, si no existe se salta)
@@ -1261,9 +1261,12 @@
             }
         }
 
+        // CONSTANTES DE TIMING
+
         function processMessageQueue() {
             if (messageQueue.length === 0) {
                 isShowingMessage = false;
+                juliaComment.classList.remove('visible');
                 return;
             }
 
@@ -1358,8 +1361,7 @@
             currentPhase = 'demo';
             introOverlay.classList.add('hidden');
 
-            // Mostrar burbuja Julia durante demo
-            document.querySelector('.julia-bubble').style.display = 'block';
+            // La burbuja Julia se mostrará cuando el video esté reproduciéndose (en playJuliaVideo)
 
             currentDemoIndex = 0;
             if (availableDemoVideos.length > 0) {
@@ -1412,6 +1414,11 @@
                 const config = juliaVideoConfigs[juliaKey] || { speed: 1 };
                 vidJulia.playbackRate = config.speed || 1;
                 console.log('[JULIA] Velocidad aplicada:', config.speed || 1);
+
+                // Ocultar burbuja cuando termina el video
+                // Ocultar burbuja cuando termina el video
+                // SE ELIMINA onended aquí para usar el listener principal y evitar conflictos
+
                 vidJulia.play().then(() => {
                     console.log('[JULIA] Reproduciendo:', videoFile);
                     // Mostrar burbuja SOLO cuando el video reproduce
@@ -1537,24 +1544,38 @@
         vidJulia.addEventListener('ended', () => {
             if (currentPhase !== 'demo') return;
 
+            // Ocultar burbuja Y mensaje cuando video termina (evita glitch)
+            document.querySelector('.julia-bubble').style.display = 'none';
+            juliaComment.classList.remove('visible');
+
             console.log('[JULIA] Video bubble terminado. demosCompleted:', demosCompleted);
 
-            // Si todos los demos terminaron, ir a julia-f
-            if (demosCompleted) {
-                console.log('[JULIA] Demos completados, yendo a julia-f');
+            // Si todos los demos terminaron Y todos los julias se reprodujeron, ir a julia-f
+            // currentJuliaIndex se incrementará abajo, así que verificamos si YA estamos en el último
+            if (demosCompleted && currentJuliaIndex >= availableJuliaVideos.length - 1) {
+                console.log('[JULIA] Demos completados Y último Julia mostrado, yendo a julia-f');
                 juliaComment.classList.remove('visible');
                 startJuliaFinalPhase();
                 return;
             }
 
-            // Si los demos siguen, avanzar al siguiente video Julia
+            // Si hay más videos Julia, mostrarlos aunque los demos hayan terminado
             currentJuliaIndex++;
             if (currentJuliaIndex >= availableJuliaVideos.length) {
-                // Si llegamos al final de la cola Julia, reiniciar desde el primero
+                // Si llegamos al final de la cola Julia y demos completados, ir a julia-f
+                if (demosCompleted) {
+                    console.log('[JULIA] Todos los Julia mostrados, demos completados, yendo a julia-f');
+                    startJuliaFinalPhase();
+                    return;
+                }
+                // Si los demos siguen, reiniciar desde el primero
                 currentJuliaIndex = 0;
             }
-            console.log('[JULIA] Avanzando a siguiente video:', availableJuliaVideos[currentJuliaIndex]);
-            loadJuliaVideo(currentJuliaIndex);
+            // Pausa de 800ms antes del siguiente video (evita glitch)
+            setTimeout(() => {
+                console.log('[JULIA] Avanzando a siguiente video:', availableJuliaVideos[currentJuliaIndex]);
+                loadJuliaVideo(currentJuliaIndex);
+            }, 200);
         });
         // --- FASE 3: JULIA FINAL (julia-f-leg.mp4 fullscreen) ---
         function startJuliaFinalPhase() {
@@ -1590,7 +1611,7 @@
                     vidIntro.removeEventListener('canplaythrough', playHandler);
                     startOutroPhase();
                 }
-            }, 3000);
+            }, 5000);
         }
         // --- FASE 4: OUTRO ---
         function startOutroPhase() {
@@ -1852,13 +1873,17 @@
                     if (isRecording) stopRecording();
                 };
 
-                mediaRecorder.start(100);
-                isRecording = true;
-                document.getElementById('recordBtn').innerHTML = '⏹️ Detener';
-                document.getElementById('recordBtn').style.background = 'linear-gradient(135deg,#44ff44,#00cc00)';
+                // ESPERAR 500ms para asegurar que el cursor se oculte y la UI se limpie
+                setTimeout(() => {
+                    mediaRecorder.start(100);
+                    isRecording = true;
+                    document.getElementById('recordBtn').innerHTML = '⏹️ Detener';
+                    document.getElementById('recordBtn').style.background = 'linear-gradient(135deg,#44ff44,#00cc00)';
+                    console.log('[REC] Grabación iniciada');
 
-                // ARREGLO: Iniciar reproducción AHORA que ya estamos grabando
-                setTimeout(() => startIntroPhase(), 500);
+                    // Iniciar reproducción después de asegurar grabación
+                    setTimeout(() => startIntroPhase(), 200);
+                }, 500);
 
             } catch (e) {
                 console.error('[RECORD] Error:', e);
